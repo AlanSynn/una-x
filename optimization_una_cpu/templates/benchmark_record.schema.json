@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "evidence_class",
+    "source_sha",
+    "workload",
+    "boundary",
+    "wall_seconds",
+    "resource_budget",
+    "jit_state",
+    "cache_state",
+    "status"
+  ],
+  "properties": {
+    "evidence_class": {
+      "enum": [
+        "measured",
+        "derived_from_measured",
+        "hypothetical",
+        "unavailable"
+      ]
+    },
+    "source_sha": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "wheel_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "workload": {
+      "type": "string"
+    },
+    "boundary": {
+      "type": "string"
+    },
+    "wall_seconds": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "resource_budget": {
+      "type": "object"
+    },
+    "workers": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "threads_per_worker": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "effective_threads": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "jit_state": {
+      "type": "string"
+    },
+    "cache_state": {
+      "type": "string"
+    },
+    "process_tree_peak_bytes": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "output_bytes": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "status": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
