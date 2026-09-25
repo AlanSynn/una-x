@@ -1,0 +1,615 @@
+{
+  "schema_version": 1,
+  "serialization": "JSON subset of YAML; parse with json or a YAML parser",
+  "repository": "AlanSynn/una-x",
+  "integration_branch": "perf/una-cpu-throughput",
+  "expected_base_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+  "ownership_root": "logical repository paths for source/tests/benchmarks, packet-relative paths for evidence; no writes to prior/",
+  "tasks": [
+    {
+      "id": "T00",
+      "title": "Inventory laptop, complete repository, current refs and available workload",
+      "role": "source-auditor",
+      "depends_on": [],
+      "base_commit": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "base_rule": "Verify and use base_commit for initial source/oracle work; do not start from an unrelated moving default branch.",
+      "owned_files": [
+        "evidence/inventory/laptop.json",
+        "evidence/inventory/checkout.json",
+        "evidence/inventory/local_audit.md"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "SOURCE_AUDIT.md",
+        "BRANCH_AND_CI.md",
+        "RESOURCE_POLICY.md",
+        "WORKLOADS.md"
+      ],
+      "objective": "Establish real local facts, preserve user work, select immutable baseline and safe initial resource budget.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L0",
+      "resource_budget": "light; acquire exclusive heavy lease for test/compile execution",
+      "outputs": [
+        "evidence/inventory/laptop.json",
+        "evidence/inventory/checkout.json",
+        "evidence/inventory/local_audit.md"
+      ],
+      "reviewer": "coordinator",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": false,
+      "base_commit_status": "pinned_initial_reference",
+      "worker_base_from": "verified initial packet pin"
+    },
+    {
+      "id": "T01",
+      "title": "Verify complete-source oracle and candidate provenance",
+      "role": "source-auditor",
+      "depends_on": [
+        "T00"
+      ],
+      "base_commit": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "base_rule": "Verify and use base_commit for initial source/oracle work; do not start from an unrelated moving default branch.",
+      "owned_files": [
+        "evidence/contract/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "dossiers/01_oracle_and_source_bridge.md",
+        "NUMERICAL_CONTRACT.md"
+      ],
+      "objective": "Verify blobs/ASTs/caller closure; invalidate or repair historical extractions in new evidence only.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L0-L1",
+      "resource_budget": "light; acquire exclusive heavy lease for test/compile execution",
+      "outputs": [
+        "evidence/contract/source_identity.json",
+        "evidence/contract/oracle_bridge.json"
+      ],
+      "reviewer": "proof-reviewer",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": false,
+      "base_commit_status": "pinned_initial_reference",
+      "worker_base_from": "verified initial packet pin"
+    },
+    {
+      "id": "T02",
+      "title": "Build independent fixtures and state/artifact checks",
+      "role": "fixture-worker",
+      "depends_on": [
+        "T00"
+      ],
+      "base_commit": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "base_rule": "Verify and use base_commit for initial source/oracle work; do not start from an unrelated moving default branch.",
+      "owned_files": [
+        "tests/perf_contract/",
+        "evidence/probes/fixtures/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "dossiers/03_genuine_fixtures_and_state.md",
+        "VALIDATION_POLICY.md",
+        "WORKLOADS.md"
+      ],
+      "objective": "Build source-independent baseline fixtures, chronology and all-format comparisons.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L0-L2",
+      "resource_budget": "light; acquire exclusive heavy lease for test/compile execution",
+      "outputs": [
+        "evidence/probes/fixtures/manifest.json",
+        "evidence/probes/fixtures/baseline_signatures.json"
+      ],
+      "reviewer": "proof-reviewer",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": false,
+      "base_commit_status": "pinned_initial_reference",
+      "worker_base_from": "verified initial packet pin"
+    },
+    {
+      "id": "T03",
+      "title": "Integrate mandatory stable ordered CSR with original fallback",
+      "role": "implementer",
+      "depends_on": [
+        "T01"
+      ],
+      "base_commit": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "base_rule": "Verify and use base_commit for initial source/oracle work; do not start from an unrelated moving default branch.",
+      "owned_files": [
+        "src/urban_network_analysis/Engines/Accessibility.py",
+        "src/urban_network_analysis/Engines/AccessibilityWElevation.py",
+        "src/urban_network_analysis/Engines/_ordered_csr.py",
+        "evidence/integration/csr/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "dossiers/02_ordered_csr_integration.md",
+        "SEMANTIC_CONTRACT.md",
+        "NUMERICAL_CONTRACT.md"
+      ],
+      "objective": "Apply verified generator in clean isolated source, review diff and run focused exact tests.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L0-L1",
+      "resource_budget": "light; acquire exclusive heavy lease for test/compile execution",
+      "outputs": [
+        "evidence/integration/csr/source_manifest.json",
+        "evidence/integration/csr/test_log.txt"
+      ],
+      "reviewer": "proof-reviewer",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": false,
+      "base_commit_status": "pinned_initial_reference",
+      "worker_base_from": "verified initial packet pin"
+    },
+    {
+      "id": "T04",
+      "title": "Independent CSR equivalence review",
+      "role": "proof-reviewer",
+      "depends_on": [
+        "T02",
+        "T03"
+      ],
+      "base_commit": null,
+      "base_rule": "Coordinator must provide an actual immutable reviewed source SHA from worker_base_from in the task assignment before execution. Verify it with Git; never substitute expected_base_sha. Record blocked if no valid parent exists. Keep the baseline reference separate.",
+      "owned_files": [
+        "evidence/reviews/csr/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "dossiers/02_ordered_csr_integration.md",
+        "NUMERICAL_CONTRACT.md",
+        "VALIDATION_POLICY.md"
+      ],
+      "objective": "Review full-source transformation, adversarial tests, fallback and copied bit/ownership guarantees.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L0-L1",
+      "resource_budget": "light; acquire exclusive heavy lease for test/compile execution",
+      "outputs": [
+        "evidence/reviews/csr/review.json"
+      ],
+      "reviewer": "coordinator",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": true,
+      "base_commit_status": "unavailable_until_prerequisite_source_freeze",
+      "worker_base_from": "T03 immutable candidate source manifest after integration in worker worktree"
+    },
+    {
+      "id": "T05",
+      "title": "Build portable public-API and installed benchmark harness",
+      "role": "runtime-specialist",
+      "depends_on": [
+        "T00"
+      ],
+      "base_commit": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "base_rule": "Verify and use base_commit for initial source/oracle work; do not start from an unrelated moving default branch.",
+      "owned_files": [
+        "benchmarks/una_cpu/",
+        "evidence/probes/harness/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "dossiers/04_public_api_benchmark_harness.md",
+        "BENCHMARK_PROTOCOL.md",
+        "RESOURCE_POLICY.md"
+      ],
+      "objective": "Replace seed runner limitations with installed import checks, process-tree accounting and explicit timer boundaries.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L0-L1",
+      "resource_budget": "light; acquire exclusive heavy lease for test/compile execution",
+      "outputs": [
+        "evidence/probes/harness/selftests.json",
+        "evidence/probes/harness/review.json"
+      ],
+      "reviewer": "proof-reviewer",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": false,
+      "base_commit_status": "pinned_initial_reference",
+      "worker_base_from": "verified initial packet pin"
+    },
+    {
+      "id": "T06",
+      "title": "Genuine small public-API chronology and export validation",
+      "role": "fixture-worker",
+      "depends_on": [
+        "T01",
+        "T04",
+        "T05"
+      ],
+      "base_commit": null,
+      "base_rule": "Coordinator must provide an actual immutable reviewed source SHA from worker_base_from in the task assignment before execution. Verify it with Git; never substitute expected_base_sha. Record blocked if no valid parent exists. Keep the baseline reference separate.",
+      "owned_files": [
+        "evidence/trials/l2/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "dossiers/03_genuine_fixtures_and_state.md",
+        "VALIDATION_POLICY.md"
+      ],
+      "objective": "Run actual baseline/candidate public APIs with genuine L2 data; no bypass of topology/loading/export.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L2",
+      "resource_budget": "light; acquire exclusive heavy lease for test/compile execution",
+      "outputs": [
+        "evidence/trials/l2/results.json",
+        "evidence/trials/l2/manifest.json"
+      ],
+      "reviewer": "proof-reviewer",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": true,
+      "base_commit_status": "unavailable_until_prerequisite_source_freeze",
+      "worker_base_from": "T04 reviewed candidate SHA plus immutable baseline reference SHA"
+    },
+    {
+      "id": "T07",
+      "title": "Profile current stages and select equal-budget CPU settings",
+      "role": "benchmark-owner",
+      "depends_on": [
+        "T06"
+      ],
+      "base_commit": null,
+      "base_rule": "Coordinator must provide an actual immutable reviewed source SHA from worker_base_from in the task assignment before execution. Verify it with Git; never substitute expected_base_sha. Record blocked if no valid parent exists. Keep the baseline reference separate.",
+      "owned_files": [
+        "evidence/trials/l3_initial/",
+        "evidence/selection/initial/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "dossiers/05_cpu_profile_and_resource_selection.md",
+        "PERFORMANCE_MODEL.md",
+        "BENCHMARK_PROTOCOL.md",
+        "PROMOTION_POLICY.md"
+      ],
+      "objective": "Measure whole application, choose strongest original and candidate settings and assess optional-track coverage.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L3",
+      "resource_budget": "Exclusive benchmark host; bounded W*H<=C, RAM/disk/run ceilings in RESOURCE_POLICY.",
+      "outputs": [
+        "evidence/selection/initial/configuration.json",
+        "evidence/selection/initial/stage_model.json",
+        "evidence/selection/initial/followup_admission.json"
+      ],
+      "reviewer": "proof-reviewer",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": true,
+      "base_commit_status": "unavailable_until_prerequisite_source_freeze",
+      "worker_base_from": "T06 exactness-qualified candidate SHA plus immutable baseline reference SHA"
+    },
+    {
+      "id": "T08",
+      "title": "Decide one optional private scope-tail experiment",
+      "role": "implementer",
+      "depends_on": [
+        "T07"
+      ],
+      "base_commit": null,
+      "base_rule": "Coordinator must provide an actual immutable reviewed source SHA from worker_base_from in the task assignment before execution. Verify it with Git; never substitute expected_base_sha. Record blocked if no valid parent exists. Keep the baseline reference separate.",
+      "owned_files": [
+        "src/urban_network_analysis/Engines/Accessibility.py",
+        "src/urban_network_analysis/Engines/AccessibilityWElevation.py",
+        "tests/perf_contract/test_scope_tail.py",
+        "evidence/trials/scope_tail/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "dossiers/06_optional_private_scope_tail.md",
+        "NUMERICAL_CONTRACT.md",
+        "PROMOTION_POLICY.md"
+      ],
+      "objective": "Only after admission, implement one private projection alternative; otherwise record not_admitted. Remove rejected runtime.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L0-L3",
+      "resource_budget": "One alternative plus one repair iteration; heavy execution only through benchmark owner.",
+      "outputs": [
+        "evidence/trials/scope_tail/decision.json",
+        "evidence/trials/scope_tail/proof_or_rejection.md"
+      ],
+      "reviewer": "proof-reviewer",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": true,
+      "base_commit_status": "unavailable_until_prerequisite_source_freeze",
+      "worker_base_from": "T07 selected mandatory-CSR candidate SHA; never restart from the original baseline"
+    },
+    {
+      "id": "T09",
+      "title": "Independent review of final selected source closure",
+      "role": "proof-reviewer",
+      "depends_on": [
+        "T08"
+      ],
+      "base_commit": null,
+      "base_rule": "Coordinator must provide an actual immutable reviewed source SHA from worker_base_from in the task assignment before execution. Verify it with Git; never substitute expected_base_sha. Record blocked if no valid parent exists. Keep the baseline reference separate.",
+      "owned_files": [
+        "evidence/reviews/selected/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "dossiers/08_final_freeze_review_and_merge.md",
+        "MERGE_SCOPE.md",
+        "VALIDATION_POLICY.md"
+      ],
+      "objective": "Review accepted CSR and any optional delta, source dependency closure and removal of failed experiments.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L0-L3",
+      "resource_budget": "light; acquire exclusive heavy lease for test/compile execution",
+      "outputs": [
+        "evidence/reviews/selected/review.json"
+      ],
+      "reviewer": "coordinator",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": true,
+      "base_commit_status": "unavailable_until_prerequisite_source_freeze",
+      "worker_base_from": "T08 selected source SHA after accepting or removing optional work"
+    },
+    {
+      "id": "T10",
+      "title": "Build and qualify actual installed wheel and fallback",
+      "role": "packaging-specialist",
+      "depends_on": [
+        "T09",
+        "T05"
+      ],
+      "base_commit": null,
+      "base_rule": "Coordinator must provide an actual immutable reviewed source SHA from worker_base_from in the task assignment before execution. Verify it with Git; never substitute expected_base_sha. Record blocked if no valid parent exists. Keep the baseline reference separate.",
+      "owned_files": [
+        "evidence/installed/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "dossiers/07_wheel_and_default_path.md",
+        "PACKAGING_AND_DISTRIBUTION.md",
+        "DX_CONTRACT.md"
+      ],
+      "objective": "Prove real installed imports, actual optimized work, all required formats and unchanged user installation contract.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L2",
+      "resource_budget": "light; acquire exclusive heavy lease for test/compile execution",
+      "outputs": [
+        "evidence/installed/wheel_manifest.json",
+        "evidence/installed/path_selection.json",
+        "evidence/installed/results.json"
+      ],
+      "reviewer": "proof-reviewer",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": true,
+      "base_commit_status": "unavailable_until_prerequisite_source_freeze",
+      "worker_base_from": "T09 independently reviewed selected source SHA"
+    },
+    {
+      "id": "T11",
+      "title": "Freeze immutable candidate and run final confirmation",
+      "role": "benchmark-owner",
+      "depends_on": [
+        "T10"
+      ],
+      "base_commit": null,
+      "base_rule": "Coordinator must provide an actual immutable reviewed source SHA from worker_base_from in the task assignment before execution. Verify it with Git; never substitute expected_base_sha. Record blocked if no valid parent exists. Keep the baseline reference separate.",
+      "owned_files": [
+        "evidence/freeze/",
+        "evidence/trials/final/",
+        "evidence/selection/final/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "dossiers/08_final_freeze_review_and_merge.md",
+        "BENCHMARK_PROTOCOL.md",
+        "PROMOTION_POLICY.md"
+      ],
+      "objective": "Freeze source/wheel/harness/dependency/workload identity; run new installed L3 confirmation and full L4 only if available.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L3-L4",
+      "resource_budget": "Exclusive benchmark owner; one frozen candidate; final L3/L4 run/time limits apply.",
+      "outputs": [
+        "evidence/freeze/manifest.json",
+        "evidence/trials/final/raw.jsonl",
+        "evidence/selection/final/configuration.json",
+        "evidence/selection/final/gates.json"
+      ],
+      "reviewer": "proof-reviewer",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": true,
+      "base_commit_status": "unavailable_until_prerequisite_source_freeze",
+      "worker_base_from": "T10 installed-qualified source SHA and exact wheel hash"
+    },
+    {
+      "id": "T12",
+      "title": "Independent final evidence and claim audit",
+      "role": "proof-reviewer",
+      "depends_on": [
+        "T11"
+      ],
+      "base_commit": null,
+      "base_rule": "Coordinator must provide an actual immutable reviewed source SHA from worker_base_from in the task assignment before execution. Verify it with Git; never substitute expected_base_sha. Record blocked if no valid parent exists. Keep the baseline reference separate.",
+      "owned_files": [
+        "evidence/reviews/final/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "dossiers/08_final_freeze_review_and_merge.md",
+        "EVIDENCE_LEDGER.md",
+        "PROMOTION_POLICY.md"
+      ],
+      "objective": "Review uninstrumented installed boundary, fairness, raw timings, target absence and exact claims.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L3-L4",
+      "resource_budget": "light; acquire exclusive heavy lease for test/compile execution",
+      "outputs": [
+        "evidence/reviews/final/review.json"
+      ],
+      "reviewer": "coordinator",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": true,
+      "base_commit_status": "unavailable_until_prerequisite_source_freeze",
+      "worker_base_from": "T11 immutable final source/wheel/harness closure"
+    },
+    {
+      "id": "T13",
+      "title": "Disposable proposed-merge and runtime-closure rehearsal",
+      "role": "integrator",
+      "depends_on": [
+        "T12"
+      ],
+      "base_commit": null,
+      "base_rule": "Coordinator must provide an actual immutable reviewed source SHA from worker_base_from in the task assignment before execution. Verify it with Git; never substitute expected_base_sha. Record blocked if no valid parent exists. Keep the baseline reference separate.",
+      "owned_files": [
+        "evidence/integration/merge/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "BRANCH_AND_CI.md",
+        "MERGE_SCOPE.md",
+        "dossiers/08_final_freeze_review_and_merge.md"
+      ],
+      "objective": "Construct/test proposed merge without moving main, confirm source tree and required checks; do not promote missing gates.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "L2-integration",
+      "resource_budget": "light; acquire exclusive heavy lease for test/compile execution",
+      "outputs": [
+        "evidence/integration/merge/rehearsal.json"
+      ],
+      "reviewer": "proof-reviewer",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": true,
+      "base_commit_status": "unavailable_until_prerequisite_source_freeze",
+      "worker_base_from": "T12 reviewed final SHA plus freshly observed target-main SHA"
+    },
+    {
+      "id": "T14",
+      "title": "Close campaign and publish local decision artifacts",
+      "role": "coordinator",
+      "depends_on": [
+        "T13"
+      ],
+      "base_commit": null,
+      "base_rule": "Coordinator must provide an actual immutable reviewed source SHA from worker_base_from in the task assignment before execution. Verify it with Git; never substitute expected_base_sha. Record blocked if no valid parent exists. Keep the baseline reference separate.",
+      "owned_files": [
+        "evidence/final/",
+        "evidence/handover/completion/"
+      ],
+      "worktree_scope": "isolated task worktree; integrator alone writes named branch",
+      "read_context": [
+        "DECISION_CONTRACT.md",
+        "MERGE_SCOPE.md",
+        "EVIDENCE_LEDGER.md"
+      ],
+      "objective": "Produce finite outcome, exact merge manifest, raw evidence map and honest scope/limitations; no remote publication.",
+      "constraints": [
+        "Preserve frozen contracts; no remote writes or automatic main merge.",
+        "Retain raw evidence and exact scope; no competing heavy work."
+      ],
+      "proof_obligations": [
+        "Validate the task-specific proof and admitted domain; do not treat historical evidence as new execution."
+      ],
+      "validation_tier": "evidence audit",
+      "resource_budget": "light; acquire exclusive heavy lease for test/compile execution",
+      "outputs": [
+        "evidence/final/decision.json",
+        "evidence/final/merge_manifest.json",
+        "evidence/final/RESULTS.md"
+      ],
+      "reviewer": "integrator",
+      "completion_condition": "Outputs exist with actual evidence/status and reviewer disposition; unavailable gates have reasons. Ordinary failures repaired within scope or genuine blocker recorded.",
+      "baseline_reference_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "requires_resolved_parent_sha": true,
+      "base_commit_status": "unavailable_until_prerequisite_source_freeze",
+      "worker_base_from": "T13 rehearsed final source/tree and recorded review/gate dispositions"
+    }
+  ],
+  "dependency_semantics": "Dependencies require recorded terminal task dispositions, not fabricated passing gates. A blocked/failed prerequisite prevents dependent implementation or heavy execution; emit a blocked/not-executed record, continue independent work, and permit final disposition after all tasks are resolved.",
+  "assignment_policy": "Frozen packet definitions may contain null future candidate SHAs. Resolve each to a verified immutable Git SHA in a coordinator-owned assignment record before the task starts; unresolved tasks cannot execute. Never treat the original baseline SHA as a missing candidate SHA."
+}
