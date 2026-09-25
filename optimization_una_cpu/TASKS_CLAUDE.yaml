@@ -3,7 +3,7 @@
   "serialization": "JSON subset of YAML; parse with json or a YAML parser",
   "repository": "AlanSynn/una-x",
   "integration_branch": "perf/una-cpu-throughput",
-  "expected_base_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+  "expected_base_sha": null,
   "ownership_root": "logical repository paths for source/tests/benchmarks, packet-relative paths for evidence; no writes to prior/",
   "tasks": [
     {
@@ -611,5 +611,7 @@
     }
   ],
   "dependency_semantics": "Dependencies require recorded terminal task dispositions, not fabricated passing gates. A blocked/failed prerequisite prevents dependent implementation or heavy execution; emit a blocked/not-executed record, continue independent work, and permit final disposition after all tasks are resolved.",
-  "assignment_policy": "Frozen packet definitions may contain null future candidate SHAs. Resolve each to a verified immutable Git SHA in a coordinator-owned assignment record before the task starts; unresolved tasks cannot execute. Never treat the original baseline SHA as a missing candidate SHA."
+  "assignment_policy": "Frozen packet definitions may contain null future candidate SHAs. Resolve each to a verified immutable Git SHA in a coordinator-owned assignment record before the task starts; unresolved tasks cannot execute. Never treat the original baseline SHA as a missing candidate SHA.",
+  "upstream_audited_baseline_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+  "fork_base_policy": "Resolve and record the current main SHA at campaign start; do not require it to equal the upstream provenance SHA."
 }
