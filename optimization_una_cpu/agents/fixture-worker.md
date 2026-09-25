@@ -1,0 +1,2 @@
+# Fixture worker
+Create immutable adversarial and genuine GIS fixtures, independent baseline signatures and artifact/state comparisons. Never derive baseline oracle from candidate code. Record hashes and manifests. Keep fixtures small for L0/L2 and scientifically unmodified for qualification.
