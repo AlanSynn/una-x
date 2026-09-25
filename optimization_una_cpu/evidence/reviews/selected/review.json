@@ -1,0 +1,138 @@
+{
+  "task": "T09",
+  "reviewer": "independent-reviewer (T09, unaffiliated with T03/T04 authors)",
+  "review_date_utc": "2026-09-25",
+  "reviewed_commit": "251c67012ea33c950833d273b0e7f365be85110e",
+  "reviewed_commit_title": "T07: retain raw run logs (lease lines + incident traces) cited by configuration.json",
+  "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-integration",
+  "branch": "perf/una-cpu-throughput",
+  "worktree_status_at_review": "clean (no modified/untracked files before review verdict files were written)",
+  "fork_baseline_commit": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+  "verdict": "approve_with_notes",
+  "scope": [
+    "exact diff review of src/ vs fork baseline 98f498e",
+    "candidate builder purity (order-preserving regrouping, no weight arithmetic, no dtype changes)",
+    "guard/fallback structure and admitted domain",
+    "public API freeze on the two engine files",
+    "git blob hash verification vs source_manifest.json",
+    "L0 suite rerun",
+    "evidence-chain consistency spot-check (test_log, L2, selection, scope_tail)"
+  ],
+  "source_identity": {
+    "evidence_class": "measured",
+    "head_is_251c670": true,
+    "worktree_clean": true,
+    "src_identical_to_f57825d": "git diff f57825d..HEAD -- src/ tests/perf_contract/ is empty (measured)",
+    "src_files_changed_vs_98f498e": [
+      "src/urban_network_analysis/Engines/_ordered_csr.py (new, blob 186e82c0ddb612eae0a5550e5e0b06cf4f16785d)",
+      "src/urban_network_analysis/Engines/Accessibility.py (blob 473de486e5573992aba5079f3c8ac80668e61aa0)",
+      "src/urban_network_analysis/Engines/AccessibilityWElevation.py (blob dc75e48baf92817028a749a15778c6308e41c44f)"
+    ],
+    "no_other_src_changes": "git diff --stat 98f498e..HEAD -- src/ lists exactly these three files; remainder of the 98f498e..HEAD tree delta is confined to tests/perf_contract/, benchmarks/una_cpu/, and optimization_una_cpu/ (harness + evidence, none importable from the package runtime path beyond the Engines helper itself)",
+    "ancestry": "98f498e is an ancestor of HEAD (git merge-base --is-ancestor, measured)"
+  },
+  "blob_hash_verification": {
+    "evidence_class": "measured (git hash-object on working tree at HEAD, clean tree)",
+    "manifest": "optimization_una_cpu/evidence/integration/csr/source_manifest.json",
+    "results": {
+      "src/urban_network_analysis/Engines/_ordered_csr.py": "186e82c0ddb612eae0a5550e5e0b06cf4f16785d == manifest",
+      "src/urban_network_analysis/Engines/Accessibility.py": "473de486e5573992aba5079f3c8ac80668e61aa0 == manifest (baseline_blob 246fe43... matches diff old-index)",
+      "src/urban_network_analysis/Engines/AccessibilityWElevation.py": "dc75e48baf92817028a749a15778c6308e41c44f == manifest (baseline_blob 6906168... matches diff old-index)",
+      "tests/perf_contract/test_l0_ordered_csr.py": "90ba34f6153f6690c516111899ef55afdd0dfd53 == manifest",
+      "tests/perf_contract/test_l1_engine_arms.py": "8a059ad041c1c64375e00cb8407e791ba13eb3d4 == manifest",
+      "tests/perf_contract/_arm_runner.py": "192997d1345924748a99ce2e14b0156586d68ba9 == manifest",
+      "tests/perf_contract/ref_original_csr.py": "84ba8320c120add1e572068fcf74576f85a03f5a == manifest"
+    },
+    "mismatches": []
+  },
+  "builder_purity": {
+    "evidence_class": "derived from diff + measured via independent probe",
+    "no_floating_point_arithmetic_on_weights": "weights only pass through concatenate (bit-copy) and fancy-index gather; no add/mul/cast (diff inspection)",
+    "no_dtype_changes_on_outputs": "fast path emits pointer int64 (np.cumsum dtype=int64), neighbors int64, weights float64, is_network bool_ - identical to baseline np.zeros(...,int64)/np.array(...,int64)/np.array(...,float64)/np.array(...,bool_)",
+    "order_rule_equivalent": {
+      "structural_argument": "baseline visits nodes 0..V-1 and per node appends forward incidences (start==node) in edge order then reverse incidences (end==node) in edge order; candidate stable-sorts the concatenation [all forward in edge order; all reverse in edge order] by source node - a stable sort preserves input order among equal keys, and every forward incidence lies before every reverse incidence in the concatenated array, so each row is exactly forward-in-edge-order then reverse-in-edge-order",
+      "empirical": "400 randomized adversarial graphs (V in 0..8, E to 25, dense self-loops/parallel edges/isolated nodes/empty graphs, int64 and int32 endpoints, aliased ab/ba weights, weights including -0.0, NaN, +Inf, -Inf, 5e-324, DBL_MAX) compared bit-for-bit (float64 via uint64 views, dtype+shape asserted) against a verbatim transcription of the baseline loops: 0 mismatches; hand-checked 3-node/6-edge case row for node 1 = [0,2,1,0,0,2,1] (self-loop appears in both forward and reverse position)",
+      "parallel_edges_and_self_loops": "retained; no dedup anywhere in the builder (measured)"
+    },
+    "int32_admission_exactness": "int32->int64 astype is value-exact and commutes with the stable gather; baseline output is already int64 (list-to-array widening), so observable arrays are identical; measured on 200 int32 randomized graphs (subset of the 400 above)"
+  },
+  "guard_fallback": {
+    "evidence_class": "derived (code inspection) + measured (refusal sweep, parity probe)",
+    "fallback_verbatim": "both engine fallback blocks are byte-identical to the 98f498e originals after removing only the 4-space indentation and stripped trailing whitespace (programmatic line-by-line comparison, measured); exceptions on the fallback path are therefore baseline exceptions",
+    "only_memoryerror_caught": "confirmed: single `except MemoryError: return None`; any other failure inside the try propagates",
+    "admitted_domain_as_specified": [
+      "np.dtype(np.intp).itemsize == 8",
+      "node_count exactly type int (bool/np.integer/float refused), 0 <= node_count < intp_max",
+      "all four inputs exactly np.ndarray, ndim 1",
+      "ab/ba weights dtype exactly float64",
+      "endpoints both int64, or both int32 with node_count <= int32max (exact upcast)",
+      "equal lengths across endpoints and both weight arrays",
+      "edge_count <= min(intp_max, int64_max) // 2",
+      "endpoints within [0, node_count) (checked only when edge_count > 0)"
+    ],
+    "refusal_sweep": "15 crafted refusal cases all returned None (float/np.int64/bool/negative node_count, python lists, float32 weights, int16/uint64/mixed-width/big-endian endpoints, length mismatch, endpoint out of range, negative endpoint, int32 with node_count > int32max, 2-D arrays) (measured)",
+    "silent_domain_widening": "none found; the int32 admission is exact and its node_count <= int32max bound is conservative (exactness would hold for larger node_count; the bound only routes extra cases to the identical fallback - performance, not behavior)",
+    "exception_parity_note": "at absurd node_count (2**62, 2**63-2, unreachable via public API since node_count comes from node_points.shape[0]) both candidate helper and baseline transcription raise ValueError (bincount minlength vs np.zeros size limits) - parity measured, no divergence; the int32 upcast executes outside the try/except, so OOM during upcast would propagate instead of falling back (bounded at 16 B/edge vs a larger fallback footprint; note-only)"
+  },
+  "public_api_freeze": {
+    "evidence_class": "derived from diff",
+    "new_symbols": "only the private module Engines/_ordered_csr.py with private function _try_build_ordered_csr (underscore names, not exported by any __init__); referenced only from the two engine files (grep verified)",
+    "signature_or_behavior_changes": "none; the diff touches one import line per engine, the CSR construction block (original code preserved under `if ordered_csr is None:`), and the three adjacency assignment expressions (fast path assigns the builder's arrays directly, dtypes identical; fallback path uses the verbatim baseline np.array conversions)",
+    "errors_state_outputs_on_fallback": "identical by construction (verbatim code, measured byte-equality of the block)"
+  },
+  "l0_rerun": {
+    "evidence_class": "measured",
+    "command": "cd /Users/alansynn/orca/workspaces/una-x/wt-integration && env -u UNA_CANDIDATE_SRC NUMBA_CACHE_DIR=/Users/alansynn/orca/workspaces/una-x/venvs/nbc_cand /Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python -m pytest tests/perf_contract/test_l0_ordered_csr.py -q",
+    "result": "24 passed, exit 0 (ran twice: 7.75 s cold-ish cache, 7.80 s second run)",
+    "suite_composition": "10 test functions, 9 non-parametrized + 15 FALLBACK_CASES parametrized = 24 (measured)"
+  },
+  "cited_not_rerun": {
+    "l1": "evidence/integration/csr/test_log.txt: 12 passed final gate, 6 cases x 3 arms (baseline_a/baseline_b from main/src at 98f498e, candidate), per-case NPZ SHA-256 identical across arms; arm NPZ artifacts present in evidence/integration/csr/arms/ (presence verified, hashes not re-computed)",
+    "l2": "evidence/trials/l2/results.json: all_match true across accessibility_w1, accessibility_w1_noelev, flow_w1_gravitycap, odm_w1, error_paths legs (JSON reviewed, not re-executed)",
+    "l3_selection": "evidence/selection/initial/: configuration.json (5 configs, sum<=8 budget, queue 8, W3_medium_proxy 15400 edges) and followup_admission.json (all 12/0 jobs, 8x1 selected: cand 3.915 vs base 2.848 jobs/s, no RSS regression) - internally consistent (JSON reviewed, not re-executed)",
+    "scope_tail": "evidence/trials/scope_tail/decision.json: not_admitted, init share ~1% of centrality kernel, dossier 06 materiality gate failed, 0 implementation attempts - consistent with stage_model.json centrality median (1.0077 s) and the probe cross-check (2560 x 361 us ~ 0.92 s)"
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "minor",
+      "evidence_class": "measured + derived",
+      "title": "test_log.txt L0 line is stale relative to the pinned L0 file",
+      "detail": "evidence/integration/csr/test_log.txt (committed at 755c7b8, untouched since) records L0 '17 passed ... 11 guard-fallback cases', which matches the pre-amendment test_l0 blob 6ccc03dd (6 non-parametrized + 11 fallback cases = 17, derived). The manifest pins test_l0 blob 90ba34f6 (post-amendment: 9 + 15 = 24), and I measured 24 passed on that pinned blob (T04's amendment rerun likewise measured 24 passed). The L1 line (12 passed, 18 arms, int32_fallback case) is consistent with the manifest and artifacts.",
+      "impact": "evidence-chain hygiene only; no source impact; the current measured L0 result (24 passed) supersedes the stale line",
+      "recommendation": "append a one-line L0 refresh note to test_log.txt (or regenerate it) before freeze so the recorded L0 count matches the pinned blob"
+    },
+    {
+      "id": "F2",
+      "severity": "informational",
+      "evidence_class": "derived",
+      "title": "manifest/evidence timestamps are internally odd (likely local-time labels or pre-commit recording)",
+      "detail": "source_manifest.json hash_revision_utc=2026-09-25T19:30:00Z and test_log recorded_utc=21:36:30Z both precede the f57825d commit time (22:18:29Z) while citing blobs created by that commit. This is coherent only as evidence recorded against the working tree before committing, or as -0400 times mislabeled UTC. Hash values themselves verified correct against the actual tree.",
+      "impact": "none on correctness; note for the merge manifest's evidence ledger"
+    },
+    {
+      "id": "F3",
+      "severity": "informational",
+      "evidence_class": "derived",
+      "title": "engine_diff.patch covers only the two engine files and uses i/w diff prefixes",
+      "detail": "The recorded patch reproduces the actual two-engine diff exactly (verified against git diff 98f498e..HEAD -- <engines>; only git prefix cosmetics differ) and intentionally omits the new helper, whose provenance is carried by its blob hash in the manifest.",
+      "impact": "none; document scope if the patch is cited as the full source delta"
+    }
+  ],
+  "unavailable": [
+    "upstream provenance commit c15ebda6981397f46eed5c2d55229f71e57d44fb is not an object in this clone (git cat-file fails in both the worktree and the main checkout); the claim that 98f498e descends from that upstream state is accepted as a recorded claim per SOURCE_AUDIT/source_identity.json and could not be verified by object inspection here",
+    "L1 engine-arms suite not re-executed (per review brief: requires baseline env; slow) - cited evidence reviewed for internal consistency only",
+    "L2, L3 selection sweep, and scope-tail probe not re-executed (beyond the L0-only brief) - JSON evidence reviewed for internal consistency only",
+    "int32 boundary behavior at node_count == int32max and near intp_max is not executable on this machine (tens-of-GB allocations in both paths); refusal-side boundary is pinned by L0, admission-side boundary is code-inspection only",
+    "behavior on platforms with np.intp itemsize != 8 (guard returns None -> fallback) is by-construction identical but was not measured; this review measured macOS arm64 (intp itemsize 8) only"
+  ],
+  "consistency_spot_check_summary": {
+    "test_log_L1": "consistent (12/12, per-case SHA-256 triplets, arm artifacts present)",
+    "test_log_L0": "STALE (17 recorded vs 24 measured on pinned blob) - finding F1",
+    "l2_results": "consistent (all_match true, 5 legs, error_paths raise identically)",
+    "selection": "consistent (8x1, queue 8, budget sum<=8, workload W3 15400 edges, no RSS regression)",
+    "scope_tail": "consistent (not_admitted; arithmetic cross-checks against stage_model hold)",
+    "stage_model": "consistent (engine_ctor 245.4 ms -> 2.24 ms median, ~109x; other stages within spread, matching a construction-only change)"
+  },
+  "verdict_rationale": "The selected source (251c670, src identical to f57825d) contains exactly the reviewed guarded order-preserving CSR change: blob hashes all match the manifest, the fallback is baseline-verbatim, the builder is a pure regrouping proven order-equivalent structurally and measured bit-exact against a baseline transcription on 400 adversarial graphs plus 15 guard refusals, no public API surface changed, and the L0 suite passes (24/24) at the pinned blobs. Findings are evidence-hygiene only (stale L0 line in test_log.txt, timestamp labels), none touching source semantics."
+}

@@ -47,3 +47,34 @@ c993a6f75db83f2d12f2c1ddbef6387c7e049a23c8f008e9bf4502c03e03e15e  random_elev.ca
 2f30f7eded2f669fd8870aadeddc3a36c0e061f7721cc7ae56fc1f6674709936  same_symmetric.baseline_a.npz
 2f30f7eded2f669fd8870aadeddc3a36c0e061f7721cc7ae56fc1f6674709936  same_symmetric.baseline_b.npz
 2f30f7eded2f669fd8870aadeddc3a36c0e061f7721cc7ae56fc1f6674709936  same_symmetric.candidate.npz
+
+== REVISION (post-amendment f57825d; recorded 2026-09-25T23:59:00Z,
+   addresses T09 finding F1) ==
+The section above is the PRE-amendment record: L0 then counted 17 tests and
+the int32 stub case (then named int32_fallback) exercised the fallback path
+because the pre-amendment int64-only guard refused int32 endpoints.
+
+Post-amendment gate at the FROZEN blobs (source _ordered_csr.py 186e82c0,
+test_l0 90ba34f6, test_l1 8a059ad0, _arm_runner 192997d1):
+
+L0 (rerun at frozen source, measured): 24 passed in 7.56s, exit 0
+  (adds 300-case int32 exhaustive bit-exactness, int32 large-value upcast,
+  int32 read-only-input tests, and extra fallback-refusal cases)
+
+L1 (fresh per-case subprocess arms in /tmp/l1_arms, post-amendment):
+6 cases x 3 arms = 18 runs, rc=0 each; gate A (baseline_a == baseline_b) and
+gate B (candidate == baseline_a) bit-for-bit, all 6 cases.
+Case 6 renamed int32_realdata: stub now passes int32 endpoints on BOTH
+columns (the measured representation of real network files), so it exercises
+the ADMITTED int32 fast path, not the fallback. Per-case artifact SHA-256
+(identical across arms within each case; full hashes in l1_arms_hashes.txt):
+  59989fa7... extreme_finite_weights  (unchanged from pre-amendment record)
+  180e4781... int32_realdata          (new values: fast-path representation)
+  8a252884... micro_parallel          (unchanged)
+  3973e049... no_z_elev_on            (unchanged)
+  c993a6f7... random_elev             (unchanged)
+  2f30f7ed... same_symmetric          (unchanged)
+Fast-path/fallback path-selection additionally proven on the INSTALLED wheel
+by counter (evidence/installed/wheel_qualification_candidate.json):
+genuine int32 -> 1 call, CSR returned; crafted int16 -> guard refused,
+original builder executed, identical incidence counts.
