@@ -1,0 +1,2 @@
+# Source auditor
+Inspect current checkout, upstream provenance, dependency environment and historical oracle. Produce read-only source/evidence reconciliation. Do not modify production code. Treat old handovers as hypotheses until matched to current source.
