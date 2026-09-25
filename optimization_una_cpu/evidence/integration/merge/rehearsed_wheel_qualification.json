@@ -1,0 +1,31 @@
+{
+ "expect_csr": "present",
+ "wheel_sha256": "8b944b3cc4fb5a8721f027973739fb05b6c0d931186213456a5d59d8cbfdda02",
+ "python": "3.11.16",
+ "cwd": "/private/tmp",
+ "package_file": "/private/tmp/venv_rehearsal/lib/python3.11/site-packages/urban_network_analysis/__init__.py",
+ "in_site_packages": true,
+ "version_metadata": "2.6.0",
+ "version_package": "2.6.0",
+ "about": "None",
+ "helper_module": "/private/tmp/venv_rehearsal/lib/python3.11/site-packages/urban_network_analysis/Engines/Accessibility.py",
+ "genuine_int32": {
+  "calls": 1,
+  "returned_csr": 1,
+  "pointer_last": 80,
+  "incidences": 80
+ },
+ "crafted_int16": {
+  "calls": 1,
+  "returned_csr": 0,
+  "pointer_last": 80,
+  "incidences": 80
+ },
+ "export_files": [
+  "Results.csv",
+  "Results.feather",
+  "Results.geojson"
+ ],
+ "packet_modules_loaded": [],
+ "ok": true
+}

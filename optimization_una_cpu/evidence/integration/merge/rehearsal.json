@@ -1,0 +1,41 @@
+{
+ "task": "T13",
+ "recorded_utc": "2026-09-26T00:55:00Z",
+ "evidence_class": "measured",
+ "disposable_worktree": "/tmp/merge-rehearsal (removed after rehearsal; nothing merged into main)",
+ "rehearsal": {
+  "base_commit": "98f498e5b0ac97b05271d03812fa883b5e4afaba (fork target main SHA, branch AlanSynn/main, verified clean)",
+  "merged_branch": "perf/una-cpu-throughput",
+  "merged_head_at_rehearsal": "f7578a6",
+  "merge_command": "git merge --no-ff --no-edit perf/una-cpu-throughput",
+  "result": "clean merge, zero conflicts",
+  "merge_commit": "a6f9a9a"
+ },
+ "post_merge_checks": {
+  "src_blobs_match_freeze": {
+   "_ordered_csr.py": "186e82c0ddb612eae0a5550e5e0b06cf4f16785d",
+   "Accessibility.py": "473de486e5573992aba5079f3c8ac80668e61aa0",
+   "AccessibilityWElevation.py": "dc75e48baf92817028a749a15778c6308e41c44f",
+   "verdict": "identical to freeze/candidate.json"
+  },
+  "l0_in_merged_tree": "24 passed in 7.53s (exit 0)",
+  "wheel_from_merged_tree": {
+   "sha256": "8b944b3cc4fb5a8721f027973739fb05b6c0d931186213456a5d59d8cbfdda02",
+   "byte_identical_to_frozen_candidate_wheel": true
+  },
+  "clean_venv_install": "/tmp/venv_rehearsal (python 3.11.16, wheel + deps + pyarrow provision)",
+  "qualification": "wheel_qualify.py from CWD /tmp: site-packages import, int32 fast path engaged, int16 guard-refused fallback, 3 export formats written, no packet modules loaded (rehearsed_wheel_qualification.json)"
+ },
+ "file_scope_classification": {
+  "production_required": 3,
+  "test_evidence_required": 8,
+  "benchmark_helpers": 14,
+  "packet_evidence_research": 545,
+  "runtime_path_note": "installed runtime path contains only the package; wheel content diff vs baseline is exactly Engines/_ordered_csr.py; no import of optimization_una_cpu anywhere in the package (verified at runtime in venv)"
+ },
+ "disposition": {
+  "state": "rehearsal_complete_no_actual_merge",
+  "merge_not_performed": "campaign rule: no merge to main without explicit user authorization",
+  "recommended": "merge --no-ff of perf/una-cpu-throughput at reviewed SHA into main applies cleanly and preserves the frozen source"
+ }
+}
