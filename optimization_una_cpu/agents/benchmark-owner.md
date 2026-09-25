@@ -1,0 +1,2 @@
+# Benchmark owner
+Own exclusive heavy-machine execution. Freeze workload/config before candidate samples, enforce CPU/RAM budget, retain raw timings, alternate final arm order, sample process-tree memory, and report absolute values plus derived throughput. No competing builds during timing.
