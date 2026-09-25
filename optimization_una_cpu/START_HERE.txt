@@ -1,0 +1,22 @@
+You are the execution coordinator for the UNA CPU throughput campaign. Execute the work in this packet; do not return another plan and stop. Resolve ordinary implementation, test and packaging failures yourself. Escalate only a false high-level assumption or a required change to the frozen contract.
+
+Target: AlanSynn/una-x
+Proposed integration branch: perf/una-cpu-throughput
+Expected upstream audited baseline: c15ebda6981397f46eed5c2d55229f71e57d44fb\nCurrent fork baseline: use the current main SHA and record it before work.
+Packet root: the directory containing this file.
+
+Read CLAUDE_CODE_EXECUTION_PROMPT.md, DESIGN_AUTHORITY.md, SOURCE_AUDIT.md, PLAN.md and TASKS_CLAUDE.yaml first. Load individual contracts and dossiers only for the tasks that need them. Run python tools/validate_packet.py and python tools/verify_prior.py. They validate the packet and preserved evidence, not the application.
+
+Find an explicitly supplied repository path or the current Git checkout. Do not search my home directory or overwrite an existing checkout. If no checkout is available, clone the named public repository into a new working/checkout directory under this packet, then create isolated worktrees as BRANCH_AND_CI.md specifies. Inventory the actual laptop and Git state with the supplied read-only tools before making source changes. A different SHA requires a recorded reconciliation, not a blind patch.
+
+First verify the extracted oracle against the complete pinned checkout using prior/una_optimization/verify_repository.py. The previous work never executed the complete package. Keep baseline source independent of candidate code. If the historical extraction is wrong, record the discrepancy and rebuild the oracle from immutable baseline source, invalidating affected prior evidence.
+
+Integrate and independently review the supplied guarded order-preserving CSR candidate for Accessibility.py and AccessibilityWElevation.py. Preserve incidence order, duplicate edges, self-loops, dtypes, floating-point behavior, errors, state and artifacts. Do not rewrite Dijkstra, alter reductions or fix scientific behavior as a performance change. Use dossier 06 only if post-CSR profiling admits its one bounded private-scratch experiment. GPU work, new native backends and broad caches are out of scope.
+
+Build real public-API validation, including GIS loading/snapping, chronology, flow gravity-cap reuse, CSV/GeoJSON/Feather and installed-wheel execution. The old run_repository.py is a seed, not a trusted installed benchmark. Use a genuine tutorial workload when no user target is supplied; explicitly label it as a proxy. Never invent the missing production workload or throughput target.
+
+Delegate independent audit, fixtures, proof review, implementation and packaging scopes when agent tools exist. Otherwise execute roles sequentially and label independent review unavailable if independence cannot be obtained. One owner per writable scope. One exclusive performance owner; no competing builds/tests while benchmarking. Discover CPU/RAM limits and enforce RESOURCE_POLICY.md. Do not transplant the old two-worker configuration to my laptop without measurement.
+
+Use L0/L1 while editing, genuine L2 before tuning, bounded L3 for selection, and only the immutable final candidate for L4. Freeze inputs, thresholds and timing boundaries before comparisons. Retain raw absolute times, hashes, memory samples, thread counts and cold/warm separation. Finish with wheel verification and a disposable local merge rehearsal. Do not push, open a PR, merge main, release, rebase user work, change credentials/provider settings or discard dirty files.
+
+Terminate under DECISION_CONTRACT.md. Produce exact reviewed source SHA, evidence ledger, accepted/rejected registers, configuration, installed-path proof, scoped claims, explicit unavailable gates and a merge manifest. If genuine qualification fails, close the track with a truthful blocked, inconclusive or no-safe-merge disposition rather than inventing success or continuing indefinitely.
