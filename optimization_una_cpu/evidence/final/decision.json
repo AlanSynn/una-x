@@ -1,0 +1,133 @@
+{
+ "campaign_state": "qualified",
+ "campaign_state_rationale": "All technical gates pass for the claimed proxy scope (exactness L0/L1/L2, installed-path proof, complete-region performance, memory, independent reviews, merge rehearsal). merge_ready is NOT claimed: no CI exists, the actual production workload/target is unavailable, and no merge authorization was given.",
+ "track_states": {
+  "C1_ordered_csr": "qualified",
+  "C2_cpu_scheduling": "qualified",
+  "C3_scope_tail": "not_admitted",
+  "gpu_deferred": "rejected_in_this_campaign"
+ },
+ "merge_disposition": "do_not_merge",
+ "merge_disposition_note": "Rehearsal proves a clean --no-ff merge is available at any time; awaiting explicit user authorization (campaign rule).",
+ "final_source_sha": "f57825d",
+ "final_source_sha_note": "last commit touching src/; HEAD (2f4dae6) src/ blobs are identical (git diff f57825d..HEAD -- src/ is empty); branch perf/una-cpu-throughput in fork AlanSynn/una-x",
+ "upstream_provenance_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+ "fork_baseline_sha": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+ "accepted": [
+  {
+   "id": "C1",
+   "what": "guarded order-preserving CSR construction (_ordered_csr.py) for Accessibility and AccessibilityWElevation, with measured int32-upcast guard amendment",
+   "evidence": [
+    "integration/csr/source_manifest.json",
+    "integration/csr/test_log.txt (+REVISION)",
+    "trials/l2/results.json",
+    "reviews/csr/",
+    "reviews/selected/",
+    "freeze/candidate.json"
+   ],
+   "speedup": "engine ctor 245.4 ms -> 2.2 ms on W3 (109.5x, derived from measured stage walls); end-to-end job ~1.77 s -> ~1.27 s single-process"
+  },
+  {
+   "id": "C2",
+   "what": "CPU configuration: 8 spawn worker processes x 1 Numba thread, bounded queue 8 (sum=8 <= C=8)",
+   "evidence": [
+    "selection/initial/followup_admission.json",
+    "selection/final/configuration.json",
+    "trials/final/runs/"
+   ],
+   "speedup": "4.44 vs 3.33 jobs/s at 8x1 cand-vs-base (1.336x); 6.14x vs sequential baseline 1x1 (0.724 jobs/s)"
+  }
+ ],
+ "rejected": [
+  {
+   "id": "C3",
+   "what": "private search scratch/state reduction",
+   "reason": "measured init share ~1% of scope kernel (3542 ns alloc+init vs 361354 ns full search) - dossier 06 materiality gate failed; zero implementation attempts",
+   "evidence": "trials/scope_tail/decision.json"
+  },
+  {
+   "what": "scalar immediate Dijkstra relaxation",
+   "reason": "duplicate-neighbor semantic counterexample (register, design-rejected)"
+  },
+  {
+   "what": "reassociated/tree reductions",
+   "reason": "numerical contract (design-rejected)"
+  },
+  {
+   "what": "K-alternatives replacement with AggregateFlow",
+   "reason": "semantic contract (design-rejected)"
+  },
+  {
+   "what": "broad cross-run topology/result caches",
+   "reason": "state/artifact contract (design-rejected)"
+  },
+  {
+   "what": "blind public RunBatch parallelization",
+   "reason": "fallback/DX contract (design-rejected)"
+  },
+  {
+   "what": "GPU/native backend work",
+   "reason": "out of campaign scope"
+  }
+ ],
+ "blocked": [],
+ "measured_claims": [
+  "L0: 24 passed (3 runs at frozen blobs: 7.56s, 7.66s, 7.53s incl. rehearsed merge tree)",
+  "L1: 6 cases x 3 arms, bit-identical NPZ per case across arms (18 fresh subprocess runs, hashes preserved in evidence)",
+  "L2 genuine GIS public API: ALL_MATCH across 5 legs (accessibility, no-elev, flow gravity-cap, ODM, error paths)",
+  "Stage model (medians, n=5/tree): engine_ctor 245.38 ms -> 2.24 ms; all other stages unchanged within spread",
+  "Final confirmation (12-job batches, 8x1/q8, W3): cand 4.478/4.444/4.351, base 3.300/3.354 jobs/s",
+  "Installed wheels: baseline 653f6017..., candidate 8b944b3c...; qualification ok=true both; rehearsed-merge wheel byte-identical to frozen candidate wheel",
+  "Memory: max worker phase RSS 352.2 MB across all batch configs incl. 8 workers; no regression",
+  "CSR micro-bench (numpy-only): ~530x at W3 scale, ~5840x at 117760 nodes; in-engine ctor A/B on real W3 topology: 239.5 ms -> 1.96 ms per build"
+ ],
+ "derived_claims": [
+  "109.5x engine-construction speedup (ratio of measured medians)",
+  "1.336x batch throughput at selected config (cand/base medians)",
+  "6.14x end-to-end throughput vs sequential baseline reference (cross-config derivation)",
+  "scope-init Amdahl headroom < ~1% of end-to-end (init share 0.98% of kernel; kernel ~92% of centrality stage)",
+  "per-job baseline wall saving from stage model: ~0.24-0.28 s of ~1.5 s baseline job"
+ ],
+ "hypothetical_claims": [
+  "Gains are expected to persist or grow on larger genuine road networks (O(V*E) baseline construction scales worse than the candidate) - hypothetical until an L4 target run exists"
+ ],
+ "unavailable": [
+  {
+   "gate": "actual_target_L4",
+   "reason": "no production workload/target machine was supplied; W3 is a calibrated genuine-API proxy (recalibrated to 1.64 s job wall before any recorded measurement)"
+  },
+  {
+   "gate": "ci_status",
+   "reason": "no CI configured in this fork; BRANCH_AND_CI gates unverifiable"
+  },
+  {
+   "gate": "upstream_object_provenance",
+   "reason": "commit object c15ebda absent from clone (content-seeded fork); provenance rests on T01 blob-level oracle bridge"
+  },
+  {
+   "gate": "non_lp64_platforms",
+   "reason": "guard refuses non-8-byte intp by design; behavior on such platforms is fallback-equal but unmeasured"
+  },
+  {
+   "gate": "int32_boundary_node_counts",
+   "reason": "node_count near 2^31 admission boundary pinned by refusal tests, not measured at scale"
+  },
+  {
+   "gate": "flow_batch_sweep",
+   "reason": "flow analysis covered by stage model + L2 only; not batch-swept"
+  },
+  {
+   "gate": "single_sample_1x1_reference",
+   "reason": "baseline 1x1 reference is one 12-job batch run, not a multi-sample estimate"
+  },
+  {
+   "gate": "merge_and_release",
+   "reason": "not authorized; rehearsal only"
+  }
+ ],
+ "inherited_limitations": [
+  "NaN edge-weight input drives unbounded queue growth in compact_vector_node_view_scope in BOTH trees (~4.5 GB in 45 s probe) - upstream behavior, documented in integration/csr/nonfinite_weight_hazard.md, unchanged by this campaign",
+  "undeclared pyarrow dependency: Topology reads with use_arrow=True but pyarrow is not in Requires-Dist - upstream issue, identical both arms, recorded in installed/manifest.json",
+  "measurements on a shared laptop: lease recorded per run; thermal/load variance ~13% between sweep series"
+ ]
+}

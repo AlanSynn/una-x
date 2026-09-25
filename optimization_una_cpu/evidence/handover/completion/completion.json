@@ -1,0 +1,51 @@
+{
+  "task": "T14",
+  "recorded_utc": "2026-09-26T01:10:00Z",
+  "campaign_state": "qualified",
+  "branch": "perf/una-cpu-throughput (fork AlanSynn/una-x, worktree wt-integration)",
+  "final_head": "see git log; src/ blobs frozen at f57825d",
+  "references": {
+    "results": "evidence/final/RESULTS.md",
+    "decision": "evidence/final/decision.json",
+    "merge_manifest": "evidence/final/merge_manifest.json",
+    "freeze": "evidence/freeze/candidate.json"
+  },
+  "environment": {
+    "machine": "Apple M1 Pro (8P+2E, E-cores excluded by policy), 16 GiB, macOS Darwin 25.6.0",
+    "python": "3.11.16 (Homebrew) via venvs/campaign",
+    "key_packages": "numpy/numba/geopandas/pyogrio stack of venvs/campaign; NUMBA_CACHE_DIR routed to venvs/nbc_{base,cand}(_l2) so no JIT cache ever wrote into either source tree",
+    "key_repeats": "OMP/OPENBLAS/MKL_NUM_THREADS=1; NUMBA_NUM_THREADS per config; spawn-style workers only"
+  },
+  "exact_commands": {
+    "L0": "cd wt-integration && NUMBA_CACHE_DIR=.../nbc_cand python -m pytest tests/perf_contract/test_l0_ordered_csr.py -q",
+    "L1": "UNA_BASELINE_SRC=../main/src python -m pytest tests/perf_contract/test_l1_engine_arms.py -q",
+    "L2": "PYTHONPATH=<tree>/src NUMBA_CACHE_DIR=... python benchmarks/una_cpu/l2_trial.py",
+    "stage_model": "benchmarks/una_cpu/profile_stages.py --src-root <tree>/src --workload W3_medium_proxy --workload-dir /tmp/workloads --out <dir>",
+    "sweep": "benchmarks/una_cpu/t07_sweep.sh, t07_part3.sh (fix-ups), t11_final.sh (confirmation)",
+    "scope_probe": "benchmarks/una_cpu/scope_init_probe.py",
+    "wheel": "python -m pip wheel --no-deps -w <dir> <tree>; then wheel_qualify.py --expect-csr {present,absent} from CWD outside any repo"
+  },
+  "task_dispositions": {
+    "T00_inventory": "completed",
+    "T01_oracle_bridge": "completed (blob-level; upstream commit object absent from clone - recorded unavailable)",
+    "T02_fixtures_state": "completed",
+    "T03_csr_integration": "completed (incl. f57825d amendment)",
+    "T04_csr_review": "completed (approve_with_notes; findings addressed)",
+    "T05_harness": "completed",
+    "T06_l2_validation": "completed (ALL_MATCH)",
+    "T07_profile_selection": "completed (8x1/q8 selected)",
+    "T08_scope_tail": "completed (not_admitted, measured)",
+    "T09_selected_review": "completed (approve_with_notes; F1 addressed)",
+    "T10_installed_wheel": "completed (both wheels qualified; pyarrow finding recorded)",
+    "T11_freeze_final": "completed (PASS gates)",
+    "T12_final_audit": "completed (approve_with_notes; F1/F4 addressed)",
+    "T13_merge_rehearsal": "completed (clean, byte-identical wheel, no actual merge)",
+    "T14_close": "completed"
+  },
+  "not_done_without_authorization": ["merge to main", "push", "release", "CI setup", "GPU work"],
+  "handover_notes": [
+    "All raw absolute timings are in the per-run session.json/raw.jsonl records; nothing in RESULTS.md lacks a raw artifact behind it.",
+    "Batch harness hardening (spawn sys.path, readiness fail-fast, per-worker warm-up dirs, failure termination) is part of the branch and reusable for future sweeps.",
+    "If authorization to merge is later given: git merge --no-ff perf/una-cpu-throughput from main at 98f498e (or current) - rehearsal shows zero conflicts; re-run L0 post-merge as standard practice."
+  ]
+}

@@ -1,0 +1,47 @@
+{
+ "source_branch": "perf/una-cpu-throughput",
+ "final_source_sha": "f57825d",
+ "final_source_sha_note": "HEAD 2f4dae6 src/ identical (evidence-only commits after f57825d)",
+ "target_main_sha": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+ "merge_base": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+ "included_files": {
+  "production_required": [
+   "src/urban_network_analysis/Engines/_ordered_csr.py",
+   "src/urban_network_analysis/Engines/Accessibility.py",
+   "src/urban_network_analysis/Engines/AccessibilityWElevation.py"
+  ],
+  "test_evidence_required": "tests/perf_contract/ (8 files: L0/L1 suites, oracle transcription, stub topology, arm runner, stage probe, import helper)",
+  "benchmark_helpers": "benchmarks/una_cpu/ (14 files: harness, workload gen, profilers, drivers)",
+  "packet_evidence": "optimization_una_cpu/ (545 files: packet, dossiers, evidence)"
+ },
+ "excluded_research_files": "none excluded from branch; research material confined to optimization_una_cpu/ (MERGE_SCOPE allows), never on installed runtime path",
+ "active_path": "src/urban_network_analysis/Engines/{Accessibility,AccessibilityWElevation}._build_compact_graph_from_topology -> _try_build_ordered_csr (private module in Engines package)",
+ "fallback": "on None (unadmitted representation): original O(V*E) count+fill construction verbatim, including its exceptions",
+ "test_commands": [
+  "python -m pytest tests/perf_contract/test_l0_ordered_csr.py -q  # 24 passed",
+  "UNA_BASELINE_SRC=<main>/src python -m pytest tests/perf_contract/test_l1_engine_arms.py -q  # 12 passed",
+  "PYTHONPATH=<tree>/src python benchmarks/una_cpu/l2_trial.py  # ALL_MATCH",
+  "benchmarks/una_cpu/t11_final.sh  # final alternating confirmation"
+ ],
+ "installed_wheel_result": "candidate wheel 8b944b3c... qualified in clean venv (site-packages import, fast-path/fallback counters, 3 writers, no packet imports); rehearsed-merge wheel byte-identical",
+ "performance_evidence": [
+  "selection/initial/",
+  "selection/final/",
+  "trials/final/",
+  "integration/csr/csr_microbench.json"
+ ],
+ "memory_evidence": "max worker RSS 352.2 MB across sweep+final; per-run records in runs/*/session.json",
+ "actual_target_status": "unavailable (proxy W3 genuine-API workload calibrated to ~1.6 s baseline job wall)",
+ "review_status": "approve_with_notes x3 (reviews/csr T04, reviews/selected T09, reviews/final T12)",
+ "ci_status": "unavailable (no CI configured)",
+ "known_limitations": [
+  "NaN-weight kernel hazard inherited upstream (both trees)",
+  "undeclared pyarrow dependency (upstream)",
+  "shared-machine variance",
+  "flow path not batch-swept"
+ ],
+ "unverified_claims": [
+  "transfer of gains to larger/production networks (hypothetical)"
+ ],
+ "merge_disposition": "do_not_merge (clean merge proven in rehearsal at /tmp/merge-rehearsal, commit a6f9a9a, worktree discarded; awaiting explicit authorization)"
+}
