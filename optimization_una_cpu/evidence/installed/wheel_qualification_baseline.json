@@ -1,0 +1,19 @@
+{
+ "expect_csr": "absent",
+ "wheel_sha256": "653f6017e31de40fa5738f52f9557b259673289403261c1d28354d828c5246f6",
+ "python": "3.11.16",
+ "cwd": "/private/tmp",
+ "package_file": "/private/tmp/venv_wbase/lib/python3.11/site-packages/urban_network_analysis/__init__.py",
+ "in_site_packages": true,
+ "version_metadata": "2.6.0",
+ "version_package": "2.6.0",
+ "about": "None",
+ "helper_module": null,
+ "export_files": [
+  "Results.csv",
+  "Results.feather",
+  "Results.geojson"
+ ],
+ "packet_modules_loaded": [],
+ "ok": true
+}

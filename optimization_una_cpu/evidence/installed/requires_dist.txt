@@ -1,0 +1,9 @@
+Requires-Dist: geopandas
+Requires-Dist: networkx
+Requires-Dist: numba
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: psutil
+Requires-Dist: scikit-learn
+Requires-Dist: scipy
+Requires-Dist: shapely

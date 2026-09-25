@@ -1,0 +1,52 @@
+{
+  "task": "T10",
+  "recorded_utc": "2026-09-25T23:45:00Z",
+  "evidence_class": "measured (wheels built, installed into clean venvs, qualification script executed from CWD outside any repository)",
+  "wheels": {
+    "baseline": {
+      "path": "/tmp/wheels/base/urban_network_analysis-2.6.0-py3-none-any.whl",
+      "sha256": "653f6017e31de40fa5738f52f9557b259673289403261c1d28354d828c5246f6",
+      "built_from": "disposable git worktree at fork baseline commit 98f498e (created from wt-integration repo, removed after build; main checkout never written to - hatch_build.py writes _build_info.py into the tree it builds from, which is why a throwaway worktree was used)"
+    },
+    "candidate": {
+      "path": "/tmp/wheels/cand/urban_network_analysis-2.6.0-py3-none-any.whl",
+      "sha256": "8b944b3cc4fb5a8721f027973739fb05b6c0d931186213456a5d59d8cbfdda02",
+      "built_from": "wt-integration worktree (branch perf/una-cpu-throughput, HEAD 251c670; source files identical to f57825d)",
+      "determinism_note": "two independent candidate builds produced the byte-identical wheel (same sha256)"
+    },
+    "content_diff": "unzip -l diff: the ONLY file-level difference is urban_network_analysis/Engines/_ordered_csr.py present in candidate, absent in baseline; no packet/reference files in either wheel",
+    "metadata": "Requires-Dist identical between arms (requires_dist.txt); version 2.6.0 in both (campaign makes no version/API change)"
+  },
+  "installations": {
+    "baseline_venv": "/tmp/venv_wbase (python 3.11.16, fresh venv, wheel + PyPI deps)",
+    "candidate_venv": "/tmp/venv_wcand (python 3.11.16, fresh venv, wheel + PyPI deps)",
+    "import_path_proof": "urban_network_analysis.__file__ under venv site-packages in both qualification records; source trees absent from sys.path (script CWD /tmp, no PYTHONPATH)"
+  },
+  "qualification_results": {
+    "script": "benchmarks/una_cpu/wheel_qualify.py",
+    "candidate": {
+      "site_packages_import": true,
+      "version_match": "metadata == package == 2.6.0; about() works",
+      "helper_packaged": true,
+      "genuine_int32_input": "fast path engaged (1 call, 1 CSR returned, 80 incidences, pointer[-1]=80=2*40 edges)",
+      "crafted_int16_input": "guard refused (1 call, 0 CSR returned) and original fallback executed; identical incidence counts",
+      "writers": "Results.csv, Results.geojson, Results.feather all written non-empty through public ExportAccessibilityResults after real Topology.AddNetwork/AddOrigins/AddDestinations on generated GeoJSON",
+      "packet_modules_loaded": []
+    },
+    "baseline": {
+      "site_packages_import": true,
+      "version_match": true,
+      "helper_packaged": false,
+      "writers": "all three formats written",
+      "packet_modules_loaded": []
+    }
+  },
+  "findings": [
+    {
+      "severity": "medium (upstream-inherited, NOT introduced by this campaign)",
+      "finding": "Topology._get_gdf calls gpd.read_file(engine='pyogrio', use_arrow=True) but pyarrow is not a declared dependency. In a truly clean venv, AddNetwork raises RuntimeError('pyarrow required...'). Both wheels affected identically (identical Topology.py).",
+      "handling": "pyarrow provisioned explicitly in both qualification venvs before the writers proof; recorded here as an environment note and as a recommendation for a follow-up upstream PR (declare pyarrow or drop use_arrow). No packaging change was made in this campaign (would alter metadata beyond the CSR optimization)."
+    }
+  ],
+  "no_new_install_steps": "candidate wheel installs and runs with exactly the baseline dependency set; no extra steps beyond the upstream pyarrow gap noted above"
+}

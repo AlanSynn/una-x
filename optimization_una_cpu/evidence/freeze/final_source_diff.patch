@@ -1,0 +1,331 @@
+diff --git a/src/urban_network_analysis/Engines/Accessibility.py b/src/urban_network_analysis/Engines/Accessibility.py
+index 246fe43..473de48 100644
+--- a/src/urban_network_analysis/Engines/Accessibility.py
++++ b/src/urban_network_analysis/Engines/Accessibility.py
+@@ -36,6 +36,7 @@ import numba as nb
+ from ..Logger import Logger
+ from ..Topology import Topology, Network, AccessPoints
+ from .Base import Base
++from ._ordered_csr import _try_build_ordered_csr
+ 
+ # ============================================================================
+ # Accessibility Graph Engine Constants
+@@ -479,41 +480,50 @@ class Accessibility(Base):
+         d_start_weights = topology.destinations.weight_to_start.astype(np.float64)
+         d_end_weights = topology.destinations.weight_to_end.astype(np.float64)
+         
+-        # Build adjacency lists in compact vector format
+-        # Create CSR-like structure: pointer array and value arrays
+-        adjacency_pointer = np.zeros(node_count + 1, dtype=np.int64)
+-        adjacency_vector = []
+-        adjacency_vector_weights = []
+-        adjacynct_vector_network_node = []
+-        
+-        # Count neighbors per node
+-        for node in range(node_count):
+-            mask_start = start_nodes == node
+-            mask_end = end_nodes == node
+-            count = np.sum(mask_start) + np.sum(mask_end)
+-            adjacency_pointer[node + 1] = adjacency_pointer[node] + count
+-        
+-        # Fill adjacency vectors
+-        for node in range(node_count):
+-            # Add end nodes from edges starting at this node
+-            mask_start = start_nodes == node
+-            end_neighbors = end_nodes[mask_start]
+-            neighbor_weights = weights[mask_start]
+-            is_network = np.ones(len(end_neighbors), dtype=np.bool_)
+-            
+-            adjacency_vector.extend(end_neighbors)
+-            adjacency_vector_weights.extend(neighbor_weights)
+-            adjacynct_vector_network_node.extend(is_network)
+-            
+-            # Add start nodes from edges ending at this node
+-            mask_end = end_nodes == node
+-            start_neighbors = start_nodes[mask_end]
+-            neighbor_weights = weights[mask_end]
+-            is_network = np.ones(len(start_neighbors), dtype=np.bool_)
+-            
+-            adjacency_vector.extend(start_neighbors)
+-            adjacency_vector_weights.extend(neighbor_weights)
+-            adjacynct_vector_network_node.extend(is_network)
++        # Preserve forward-then-reverse input-edge order, including duplicates.
++        ordered_csr = _try_build_ordered_csr(
++            node_count, start_nodes, end_nodes, weights, weights
++        )
++        if ordered_csr is None:
++            # Build adjacency lists in compact vector format
++            # Create CSR-like structure: pointer array and value arrays
++            adjacency_pointer = np.zeros(node_count + 1, dtype=np.int64)
++            adjacency_vector = []
++            adjacency_vector_weights = []
++            adjacynct_vector_network_node = []
++
++            # Count neighbors per node
++            for node in range(node_count):
++                mask_start = start_nodes == node
++                mask_end = end_nodes == node
++                count = np.sum(mask_start) + np.sum(mask_end)
++                adjacency_pointer[node + 1] = adjacency_pointer[node] + count
++
++            # Fill adjacency vectors
++            for node in range(node_count):
++                # Add end nodes from edges starting at this node
++                mask_start = start_nodes == node
++                end_neighbors = end_nodes[mask_start]
++                neighbor_weights = weights[mask_start]
++                is_network = np.ones(len(end_neighbors), dtype=np.bool_)
++
++                adjacency_vector.extend(end_neighbors)
++                adjacency_vector_weights.extend(neighbor_weights)
++                adjacynct_vector_network_node.extend(is_network)
++
++                # Add start nodes from edges ending at this node
++                mask_end = end_nodes == node
++                start_neighbors = start_nodes[mask_end]
++                neighbor_weights = weights[mask_end]
++                is_network = np.ones(len(start_neighbors), dtype=np.bool_)
++
++                adjacency_vector.extend(start_neighbors)
++                adjacency_vector_weights.extend(neighbor_weights)
++                adjacynct_vector_network_node.extend(is_network)
++
++        else:
++            (adjacency_pointer, adjacency_vector, adjacency_vector_weights,
++             adjacynct_vector_network_node) = ordered_csr
+ 
+         # Create graph instance with required dtype and max_error arguments
+         graph = Accessibility.CompactNodeView(dtype=None, max_error=None)
+@@ -524,9 +534,18 @@ class Accessibility(Base):
+         
+         # Store compact adjacency data
+         graph.adjacency_pointer = adjacency_pointer
+-        graph.adjacency_vector = np.array(adjacency_vector, dtype=np.int64)
+-        graph.adjacency_vector_weights = np.array(adjacency_vector_weights, dtype=np.float64)
+-        graph.adjacynct_vector_network_node = np.array(adjacynct_vector_network_node, dtype=np.bool_)
++        graph.adjacency_vector = (
++            adjacency_vector if ordered_csr is not None
++            else np.array(adjacency_vector, dtype=np.int64)
++        )
++        graph.adjacency_vector_weights = (
++            adjacency_vector_weights if ordered_csr is not None
++            else np.array(adjacency_vector_weights, dtype=np.float64)
++        )
++        graph.adjacynct_vector_network_node = (
++            adjacynct_vector_network_node if ordered_csr is not None
++            else np.array(adjacynct_vector_network_node, dtype=np.bool_)
++        )
+         
+         # Store origin data
+         graph.o_terminal_idxs = np.array([o_start_nodes, o_end_nodes], dtype=np.int64).T
+diff --git a/src/urban_network_analysis/Engines/AccessibilityWElevation.py b/src/urban_network_analysis/Engines/AccessibilityWElevation.py
+index 6906168..dc75e48 100644
+--- a/src/urban_network_analysis/Engines/AccessibilityWElevation.py
++++ b/src/urban_network_analysis/Engines/AccessibilityWElevation.py
+@@ -35,6 +35,7 @@ import numba as nb
+ from ..Logger import Logger
+ from ..Topology import Topology, Network, AccessPoints
+ from .Base import Base
++from ._ordered_csr import _try_build_ordered_csr
+ 
+ # ============================================================================
+ # AccessibilityWElevation Graph Engine Constants
+@@ -567,42 +568,51 @@ class AccessibilityWElevation(Base):
+             )
+         # ------------------------------------------------------------------------
+         
+-        # Build adjacency lists in compact vector format (CSR-like structure)
+-        adjacency_pointer          = np.zeros(node_count + 1, dtype=np.int64)
+-        adjacency_vector           = []
+-        adjacency_vector_weights   = []
+-        adjacynct_vector_network_node = []
+-        
+-        # Count neighbours per node
+-        for node in range(node_count):
+-            mask_start = start_nodes == node
+-            mask_end   = end_nodes   == node
+-            count = np.sum(mask_start) + np.sum(mask_end)
+-            adjacency_pointer[node + 1] = adjacency_pointer[node] + count
+-        
+-        # Fill adjacency vectors with directional weights
+-        for node in range(node_count):
+-            # Forward edges: node is start_node → neighbour is end_node
+-            # Cost: AB_weights (uphill penalty applied if elevation rises A→B)
+-            mask_start       = start_nodes == node
+-            end_neighbors    = end_nodes[mask_start]
+-            neighbor_weights = ab_weights[mask_start]
+-            is_network       = np.ones(len(end_neighbors), dtype=np.bool_)
+-            
+-            adjacency_vector.extend(end_neighbors)
+-            adjacency_vector_weights.extend(neighbor_weights)
+-            adjacynct_vector_network_node.extend(is_network)
+-            
+-            # Backward edges: node is end_node → neighbour is start_node
+-            # Cost: BA_weights (uphill penalty applied if elevation rises B→A)
+-            mask_end         = end_nodes == node
+-            start_neighbors  = start_nodes[mask_end]
+-            neighbor_weights = ba_weights[mask_end]
+-            is_network       = np.ones(len(start_neighbors), dtype=np.bool_)
+-            
+-            adjacency_vector.extend(start_neighbors)
+-            adjacency_vector_weights.extend(neighbor_weights)
+-            adjacynct_vector_network_node.extend(is_network)
++        # Preserve forward-then-reverse input-edge order, including duplicates.
++        ordered_csr = _try_build_ordered_csr(
++            node_count, start_nodes, end_nodes, ab_weights, ba_weights
++        )
++        if ordered_csr is None:
++            # Build adjacency lists in compact vector format (CSR-like structure)
++            adjacency_pointer          = np.zeros(node_count + 1, dtype=np.int64)
++            adjacency_vector           = []
++            adjacency_vector_weights   = []
++            adjacynct_vector_network_node = []
++
++            # Count neighbours per node
++            for node in range(node_count):
++                mask_start = start_nodes == node
++                mask_end   = end_nodes   == node
++                count = np.sum(mask_start) + np.sum(mask_end)
++                adjacency_pointer[node + 1] = adjacency_pointer[node] + count
++
++            # Fill adjacency vectors with directional weights
++            for node in range(node_count):
++                # Forward edges: node is start_node → neighbour is end_node
++                # Cost: AB_weights (uphill penalty applied if elevation rises A→B)
++                mask_start       = start_nodes == node
++                end_neighbors    = end_nodes[mask_start]
++                neighbor_weights = ab_weights[mask_start]
++                is_network       = np.ones(len(end_neighbors), dtype=np.bool_)
++
++                adjacency_vector.extend(end_neighbors)
++                adjacency_vector_weights.extend(neighbor_weights)
++                adjacynct_vector_network_node.extend(is_network)
++
++                # Backward edges: node is end_node → neighbour is start_node
++                # Cost: BA_weights (uphill penalty applied if elevation rises B→A)
++                mask_end         = end_nodes == node
++                start_neighbors  = start_nodes[mask_end]
++                neighbor_weights = ba_weights[mask_end]
++                is_network       = np.ones(len(start_neighbors), dtype=np.bool_)
++
++                adjacency_vector.extend(start_neighbors)
++                adjacency_vector_weights.extend(neighbor_weights)
++                adjacynct_vector_network_node.extend(is_network)
++
++        else:
++            (adjacency_pointer, adjacency_vector, adjacency_vector_weights,
++             adjacynct_vector_network_node) = ordered_csr
+ 
+         # Create graph instance
+         graph = AccessibilityWElevation.CompactNodeView(dtype=None, max_error=None)
+@@ -611,9 +621,18 @@ class AccessibilityWElevation(Base):
+         graph.logger   = topology.logger
+         
+         graph.adjacency_pointer              = adjacency_pointer
+-        graph.adjacency_vector               = np.array(adjacency_vector,           dtype=np.int64)
+-        graph.adjacency_vector_weights       = np.array(adjacency_vector_weights,   dtype=np.float64)
+-        graph.adjacynct_vector_network_node  = np.array(adjacynct_vector_network_node, dtype=np.bool_)
++        graph.adjacency_vector = (
++            adjacency_vector if ordered_csr is not None
++            else np.array(adjacency_vector,           dtype=np.int64)
++        )
++        graph.adjacency_vector_weights = (
++            adjacency_vector_weights if ordered_csr is not None
++            else np.array(adjacency_vector_weights,   dtype=np.float64)
++        )
++        graph.adjacynct_vector_network_node = (
++            adjacynct_vector_network_node if ordered_csr is not None
++            else np.array(adjacynct_vector_network_node, dtype=np.bool_)
++        )
+         
+         graph.o_terminal_idxs    = np.array([o_start_nodes, o_end_nodes],     dtype=np.int64).T
+         graph.o_terminal_weights = np.array([o_start_weights, o_end_weights], dtype=np.float64).T
+diff --git a/src/urban_network_analysis/Engines/_ordered_csr.py b/src/urban_network_analysis/Engines/_ordered_csr.py
+new file mode 100644
+index 0000000..186e82c
+--- /dev/null
++++ b/src/urban_network_analysis/Engines/_ordered_csr.py
+@@ -0,0 +1,83 @@
++"""Private, order-preserving CSR construction for the accessibility engines.
++
++No edge-weight arithmetic is performed here. Unsupported representations return
++None so the caller executes its original construction, including its errors.
++"""
++from __future__ import annotations
++
++import numpy as np
++
++
++def _try_build_ordered_csr(node_count, start_nodes, end_nodes, ab_weights, ba_weights):
++    """Return owned CSR arrays, or None when the exact fast path is not admitted.
++
++    A row contains forward incidences in input-edge order, followed by reverse
++    incidences in input-edge order. Parallel edges and both incidences of a
++    self-loop are retained. Native int64 endpoints and float64 weights are the
++    normal representations produced by the existing accessibility builders;
++    int32 endpoints are additionally admitted via an exact value-preserving
++    upcast, because the original builder emits int64 neighbors from any
++    signed-endpoint input (its list-to-array conversion widens), so the
++    observable arrays are identical either way.
++    """
++    # The histogram output dtype is intp; keep the admitted platform explicit.
++    if np.dtype(np.intp).itemsize != 8:
++        return None
++    if type(node_count) is not int or not 0 <= node_count < np.iinfo(np.intp).max:
++        return None
++    arrays = (start_nodes, end_nodes, ab_weights, ba_weights)
++    if any(type(a) is not np.ndarray or a.ndim != 1 for a in arrays):
++        return None
++    if ab_weights.dtype != np.dtype(np.float64) or ba_weights.dtype != np.dtype(np.float64):
++        return None
++    # Signed endpoint arrays only, up to the width the original builder
++    # widens to int64 on output. int32 is upcast exactly (no value change);
++    # any other dtype keeps the original builder in charge.
++    if start_nodes.dtype == np.dtype(np.int64) and end_nodes.dtype == np.dtype(np.int64):
++        start_i64 = start_nodes
++        end_i64 = end_nodes
++    elif (
++        start_nodes.dtype == np.dtype(np.int32)
++        and end_nodes.dtype == np.dtype(np.int32)
++        and node_count <= np.iinfo(np.int32).max
++    ):
++        start_i64 = start_nodes.astype(np.int64)
++        end_i64 = end_nodes.astype(np.int64)
++    else:
++        return None
++    edge_count = start_i64.size
++    if any(a.size != edge_count for a in (end_i64, ab_weights, ba_weights)):
++        return None
++    # Bound integer prefix sums and the doubled incidence-array dimensions.
++    if edge_count > min(np.iinfo(np.intp).max, np.iinfo(np.int64).max) // 2:
++        return None
++    if edge_count and (
++        start_i64.min() < 0 or end_i64.min() < 0
++        or start_i64.max() >= node_count or end_i64.max() >= node_count
++    ):
++        return None
++
++    try:
++        # Stable sorting of [all forward incidences, all reverse incidences]
++        # reproduces BOTH order rules of the original per-node masked scans.
++        sources = np.concatenate((start_i64, end_i64))
++        counts = np.bincount(sources, minlength=node_count)
++        pointer = np.empty(node_count + 1, dtype=np.int64)
++        pointer[0] = 0
++        np.cumsum(counts, dtype=np.int64, out=pointer[1:])
++        del counts
++        order = np.argsort(sources, kind="stable")
++        del sources
++
++        unsorted_neighbors = np.concatenate((end_i64, start_i64))
++        neighbors = unsorted_neighbors[order]
++        del unsorted_neighbors
++        unsorted_weights = np.concatenate((ab_weights, ba_weights))
++        weights = unsorted_weights[order]
++        del unsorted_weights, order
++        is_network = np.ones(2 * edge_count, dtype=np.bool_)
++        return pointer, neighbors, weights, is_network
++    except MemoryError:
++        # Release this frame's scratch before the caller enters the old path.
++        # Do not catch unrelated failures or silently change the input domain.
++        return None

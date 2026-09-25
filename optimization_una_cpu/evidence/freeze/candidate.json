@@ -1,0 +1,39 @@
+{
+  "task": "T11",
+  "frozen_utc": "2026-09-25T23:50:00Z",
+  "frozen_commit": "251c670",
+  "branch": "perf/una-cpu-throughput",
+  "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-integration",
+  "fork_baseline_commit": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+  "upstream_provenance_commit": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+  "frozen_source_blobs": {
+    "src/urban_network_analysis/Engines/_ordered_csr.py": "186e82c0ddb612eae0a5550e5e0b06cf4f16785d",
+    "src/urban_network_analysis/Engines/Accessibility.py": "473de486e5573992aba5079f3c8ac80668e61aa0",
+    "src/urban_network_analysis/Engines/AccessibilityWElevation.py": "dc75e48baf92817028a749a15778c6308e41c44f",
+    "src/urban_network_analysis/Engines/Base.py": "17442082028d47a78c29806fb21ffa35071b9280",
+    "src/urban_network_analysis/Topology.py": "26ca999f32f20bbb447a91ea51d60a3408ea6948",
+    "src/urban_network_analysis/UNA.py": "f803a536277c178f512e08243ac12ce18bf3de46"
+  },
+  "src_diff_vs_baseline": {
+    "files_changed": 3,
+    "stat": "Engines/Accessibility.py 95 lines, Engines/AccessibilityWElevation.py 97 lines, Engines/_ordered_csr.py +83 new",
+    "full_patch": "freeze/final_source_diff.patch (331 lines, git diff 98f498e..HEAD -- src/)",
+    "assertion": "no other src/ changes exist vs the fork baseline"
+  },
+  "frozen_wheel": {
+    "path": "/tmp/wheels/cand/urban_network_analysis-2.6.0-py3-none-any.whl",
+    "sha256": "8b944b3cc4fb5a8721f027973739fb05b6c0d931186213456a5d59d8cbfdda02",
+    "built_from_commit": "source identical to f57825d / 251c670"
+  },
+  "selected_configuration": {
+    "workers": 8, "threads": 1, "queue": 8,
+    "budget_C": 8, "workers_x_threads": 8,
+    "workload": "W3_medium_proxy / accessibility",
+    "from": "selection/initial/followup_admission.json"
+  },
+  "freeze_rules": [
+    "No source file under src/ may change after this record until the merge decision; any change invalidates all downstream evidence and requires re-running L0/L1/L2/L3.",
+    "The final confirmation (trials/final) and the final audit (T12) must reference this SHA and these blob hashes.",
+    "No production instrumentation exists in the frozen source; path-selection proof is monkeypatch-based in wheel_qualify.py only (non-performance test)."
+  ]
+}
