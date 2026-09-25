@@ -1,0 +1,42 @@
+[
+  {
+    "status": "measured",
+    "scope": "tracemalloc_tracked_Python_and_NumPy_allocations_not_total_RSS",
+    "variant": "baseline",
+    "nodes": 4096,
+    "edges": 8064,
+    "current_bytes": 308416,
+    "peak_bytes": 1521563,
+    "csr_output_bytes": 306952
+  },
+  {
+    "status": "measured",
+    "scope": "tracemalloc_tracked_Python_and_NumPy_allocations_not_total_RSS",
+    "variant": "candidate",
+    "nodes": 4096,
+    "edges": 8064,
+    "current_bytes": 319584,
+    "peak_bytes": 561672,
+    "csr_output_bytes": 306952
+  },
+  {
+    "status": "measured",
+    "scope": "tracemalloc_tracked_Python_and_NumPy_allocations_not_total_RSS",
+    "variant": "baseline",
+    "nodes": 16384,
+    "edges": 32512,
+    "current_bytes": 1237696,
+    "peak_bytes": 6164539,
+    "csr_output_bytes": 1236488
+  },
+  {
+    "status": "measured",
+    "scope": "tracemalloc_tracked_Python_and_NumPy_allocations_not_total_RSS",
+    "variant": "candidate",
+    "nodes": 16384,
+    "edges": 32512,
+    "current_bytes": 1238147,
+    "peak_bytes": 2213675,
+    "csr_output_bytes": 1236488
+  }
+]
