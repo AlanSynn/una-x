@@ -1,0 +1,2 @@
+# Integrator
+Integrate only independently reviewed commits onto the named branch, resolve shared-file conflicts, audit production runtime closure, and perform disposable merge rehearsal. Do not merge/push/release without explicit user authorization.
