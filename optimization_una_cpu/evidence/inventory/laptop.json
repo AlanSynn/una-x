@@ -1,0 +1,51 @@
+{
+  "evidence_class": "measured",
+  "recorded_at": "2026-09-25T16:16:00-04:00",
+  "tool": "optimization_una_cpu/tools/probe_laptop.py plus direct system probes (sysctl, vm_stat, df, uptime)",
+  "platform": {
+    "system": "Darwin 25.6.0",
+    "platform_string": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "isa": "arm64 (Apple silicon, no x86 emulation observed)"
+  },
+  "cpu": {
+    "model": "Apple M1 Pro",
+    "logical_cpus": 10,
+    "physical_cpus": 10,
+    "performance_cores": 8,
+    "efficiency_cores": 2,
+    "affinity_mask": null,
+    "cpu_quota": "none observable (macOS has no cgroup cpu.max; taskpolicy not applied)",
+    "l3_cache_bytes": null,
+    "notes": "Two of the ten logical cores are efficiency cores; sustained-throughput budget therefore conservatively admitted as C=8."
+  },
+  "memory": {
+    "total_bytes": 17179869184,
+    "total_gib": 16,
+    "swap_total_bytes": 4294967296,
+    "swap_used_bytes_at_inventory": 3644235776,
+    "pages_free_at_inventory": 3728,
+    "page_size_bytes": 16384,
+    "pages_inactive_reclaimable": 208871,
+    "notes": "Machine shared with unrelated user work; load average 7.23/5.36/4.47 at inventory (15-day uptime, 21 terminal users). Memory pressure non-trivial: swap 3.4 GiB of 4 GiB used."
+  },
+  "disk": {
+    "data_volume_free_bytes": "142 GiB reported by df -h /Users (Data volume, 68% capacity)"
+  },
+  "admitted_resource_budget": {
+    "cpu_budget_C": 8,
+    "cpu_budget_basis": "sum(workers_i * effective_threads_i) <= 8 for all benchmark arms; efficiency cores excluded from sustained budget conservatively; no hard quota exists on macOS so this is a self-imposed policy recorded in advance",
+    "ram_policy": "single-job process-tree peak measured before any W>1; safety margin maintained against 16 GiB total with concurrent user load; queue depth bounded; one process owns one output directory",
+    "benchmark_exclusivity": "no other campaign build/test/profile runs while the benchmark owner executes; unrelated user processes outside campaign control are recorded via load-average samples, not evicted"
+  },
+  "python": {
+    "system_python": "3.14.7 (homebrew) - no scientific deps installed, unusable for campaign",
+    "campaign_python": "3.11.x (homebrew python@3.11)",
+    "campaign_venv": "/Users/alansynn/orca/workspaces/una-x/venvs/campaign",
+    "numba_threading_layer": "to be recorded after first import in dependency record (NUMA/threading layer probed at runtime)"
+  },
+  "unavailable": [
+    "CPU affinity/quota: not applicable on macOS; recorded rather than fabricated",
+    "precise P/E core scheduler guarantees: macOS scheduler does not expose them"
+  ]
+}

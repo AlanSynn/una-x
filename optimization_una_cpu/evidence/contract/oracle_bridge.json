@@ -1,0 +1,21 @@
+{
+  "evidence_class": "measured",
+  "recorded_at": "2026-09-25T16:20:00-04:00",
+  "method": "git blob-hash bridge. The upstream commit object c15ebda6981397f46eed5c2d55229f71e57d44fb is not present in the fork object database, so identity is proven at content level: git hash-object over fork files is compared with the upstream blob IDs recorded in prior/una_optimization/REPORT.md (source inventory S1/S2/S5/S6/S8). Blob IDs are SHA-1 over (blob, length, content), independent of repository history.",
+  "verifier": "prior/una_optimization/verify_repository.py executed against the fork checkout (exit 0), plus extended hash-object checks for UNA.py, Base.py, pyproject.toml",
+  "files": [
+    {"path": "src/urban_network_analysis/Engines/Accessibility.py", "upstream_blob": "246fe439591379038c5e73d0388f0720726213e9", "fork_blob": "246fe439591379038c5e73d0388f0720726213e9", "match": true, "prior_ref": "S1"},
+    {"path": "src/urban_network_analysis/Engines/AccessibilityWElevation.py", "upstream_blob": "69061684380ffa9d890b75804bbcd3b4642eae90", "fork_blob": "69061684380ffa9d890b75804bbcd3b4642eae90", "match": true, "prior_ref": "S2"},
+    {"path": "src/urban_network_analysis/UNA.py", "upstream_blob": "f803a536277c178f512e08243ac12ce18bf3de46", "fork_blob": "f803a536277c178f512e08243ac12ce18bf3de46", "match": true, "prior_ref": "S5"},
+    {"path": "src/urban_network_analysis/Engines/Base.py", "upstream_blob": "17442082028d47a78c29806fb21ffa35071b9280", "fork_blob": "17442082028d47a78c29806fb21ffa35071b9280", "match": true, "prior_ref": "S6"},
+    {"path": "pyproject.toml", "upstream_blob": "55c672756de24ecaa565df9ffd444d7587dc0fb4", "fork_blob": "55c672756de24ecaa565df9ffd444d7587dc0fb4", "match": true, "prior_ref": "S8"}
+  ],
+  "candidate_provenance": {
+    "patch": "prior/una_optimization/patches/ordered_csr.patch",
+    "implementation_copy": "prior/una_optimization (bundle)",
+    "decision": "Candidate patch context was authored against upstream blobs that match the fork baseline exactly, so the patch applies semantically without re-derivation. The integrator still re-authors the integration (not a blind git apply) so comments/style match the fork tree, and an independent reviewer re-derives the equivalence argument from the resulting diff.",
+    "prior_evidence_status": "historical synthetic/component evidence only; not upgraded. All laptop evidence is regenerated."
+  },
+  "conclusion": "Fork baseline source at the five audited files IS the upstream audited numerical implementation. The historical extracted oracle is correct; no invalidation of the prior extraction is required. Oracle SHA for all baseline comparisons: blob set above at fork SHA 98f498e5b0ac97b05271d03812fa883b5e4afaba.",
+  "unavailable": []
+}

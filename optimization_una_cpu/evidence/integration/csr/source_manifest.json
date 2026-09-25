@@ -1,0 +1,46 @@
+{
+  "task": "T03",
+  "recorded_utc": "2026-09-25T16:40:00Z",
+  "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-integration",
+  "branch": "perf/una-cpu-throughput",
+  "fork_baseline_commit": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+  "upstream_provenance_commit": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+  "change_class": "guarded order-preserving CSR construction (candidate packet patch, verbatim logic)",
+  "candidate_files": {
+    "src/urban_network_analysis/Engines/_ordered_csr.py": {
+      "status": "new",
+      "sha256_git_blob": "98504c2db622774e59903c19e760cec84b3e1fbc",
+      "origin": "supplied candidate patch prior/una_optimization/patches/ordered_csr.py (verbatim)"
+    },
+    "src/urban_network_analysis/Engines/Accessibility.py": {
+      "status": "modified",
+      "sha256_git_blob": "473de486e5573992aba5079f3c8ac80668e61aa0",
+      "baseline_blob": "246fe439591379038c5e73d0388f0720726213e9"
+    },
+    "src/urban_network_analysis/Engines/AccessibilityWElevation.py": {
+      "status": "modified",
+      "sha256_git_blob": "dc75e48baf92817028a749a15778c6308e41c44f",
+      "baseline_blob": "69061684380ffa9d890b75804bbcd3b4642eae90"
+    }
+  },
+  "verification_files": {
+    "tests/perf_contract/test_l0_ordered_csr.py": "6ccc03ddbf9a1d3a61f07ed7e3ecaf6835e97fe4",
+    "tests/perf_contract/test_l1_engine_arms.py": "aa37daba99efdae63199f2cd51c382902e0ff13e",
+    "tests/perf_contract/_arm_runner.py": "47993bc2a2ad7a8e74c87b93633874a735e482ae",
+    "tests/perf_contract/ref_original_csr.py": "84ba8320c120add1e572068fcf74576f85a03f5a",
+    "tests/perf_contract/stub_topology.py": "09d39ffc7989f2b8756e0d34d731367434480dac",
+    "benchmarks/una_cpu/l2_trial.py": "9797e842b21c44af1b75ec7a3ef5372bf7e916a2",
+    "benchmarks/una_cpu/l2_error_probe.py": "e178137768df04d89df098577fabc31304822745"
+  },
+  "engine_diff_patch": "optimization_una_cpu/evidence/integration/csr/engine_diff.patch",
+  "integration_shape": {
+    "both_engines": "CSR block replaced by _try_build_ordered_csr(...) call; on None the original O(V*E) count+fill loops execute unchanged; adjacency/matrix fields assigned conditionally",
+    "guard_domain": "1-D exact ndarray, int64 endpoints, float64 weights, equal lengths, node_count plain int, intp itemsize 8, endpoints within [0, node_count), edge_count <= intp_max//2; only MemoryError caught",
+    "fallback_preserved": "original builder code retained verbatim under `if ordered_csr is None:`"
+  },
+  "notes": [
+    "Evidence class: measured (blob hashes via git hash-object); integration shape derived from diff.",
+    "L0/L1 test evidence recorded in csr/test_log.txt after suite completion.",
+    "Baseline reference source (immutable oracle arm): /Users/alansynn/orca/workspaces/una-x/main/src at fork baseline commit 98f498e."
+  ]
+}

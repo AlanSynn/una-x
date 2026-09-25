@@ -1,0 +1,37 @@
+{
+  "evidence_class": "measured",
+  "recorded_at": "2026-09-25T16:15:00-04:00",
+  "tool": "optimization_una_cpu/tools/audit_checkout.py plus git plumbing",
+  "fork_checkout": {
+    "path": "/Users/alansynn/orca/workspaces/una-x/main",
+    "head_sha": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+    "branch": "AlanSynn/main",
+    "local_main_branch_sha": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+    "status": "clean (no staged, unstaged, or untracked files at campaign start)",
+    "remote_origin_fetch": "https://github.com/alansynn/una-x (fetch)",
+    "remote_origin_push": "https://github.com/alansynn/una-x (push)"
+  },
+  "worktrees_at_campaign_start": [
+    {"path": "/Users/alansynn/Workspace/una-x", "sha": "98f498e5b0ac97b05271d03812fa883b5e4afaba", "branch": "main"},
+    {"path": "/Users/alansynn/orca/workspaces/una-x/main", "sha": "98f498e5b0ac97b05271d03812fa883b5e4afaba", "branch": "AlanSynn/main"},
+    {"path": "/Users/alansynn/orca/workspaces/.orca-preparing/14628-...", "sha": "98f498e5b0ac97b05271d03812fa883b5e4afaba", "branch": "detached (locked, host tooling)"}
+  ],
+  "campaign_worktrees_created": [
+    {
+      "path": "/Users/alansynn/orca/workspaces/una-x/wt-integration",
+      "branch": "perf/una-cpu-throughput",
+      "created_from": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+      "purpose": "integration branch for candidate source, tests, harness, and packet evidence"
+    }
+  ],
+  "upstream_provenance": {
+    "audited_upstream": "City-Form-Lab/urban_network_analysis@c15ebda6981397f46eed5c2d55229f71e57d44fb",
+    "upstream_commit_object_in_fork_odb": false,
+    "finding": "The fork was seeded from upstream content; the upstream commit object is NOT present in this repository's object database (git cat-file fails). Provenance is therefore established at content level via git blob-hash bridge, not via git history.",
+    "consequence": "Blob-hash oracle bridge is the admissible identity proof; no git-history-based merge-base against upstream exists. Recorded as reconciliation, not silently assumed."
+  },
+  "main_protection": {
+    "main_touched_during_campaign": false,
+    "policy": "All source/test/harness/evidence writes happen in campaign worktrees on perf/una-cpu-throughput; main checkout remains read-only reference."
+  }
+}

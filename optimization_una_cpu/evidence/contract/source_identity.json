@@ -1,0 +1,34 @@
+{
+  "evidence_class": "measured",
+  "recorded_at": "2026-09-25T16:20:00-04:00",
+  "fork_baseline": {
+    "repository": "AlanSynn/una-x",
+    "checkout": "/Users/alansynn/orca/workspaces/una-x/main",
+    "branch": "AlanSynn/main",
+    "sha": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+    "status": "clean"
+  },
+  "campaign_runtime_environment": {
+    "python": "3.11.16",
+    "venv": "/Users/alansynn/orca/workspaces/una-x/venvs/campaign",
+    "packages": {
+      "numpy": "2.4.6",
+      "numba": "0.67.0",
+      "pandas": "3.0.6",
+      "geopandas": "1.1.4",
+      "shapely": "2.1.2",
+      "pyarrow": "25.0.1",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "psutil": "installed (version pinned in pip freeze record)"
+    },
+    "numba_threading_layer": "workqueue (macOS arm64 default; TBB/OpenMP layers not installed)",
+    "numba_default_threads": 10,
+    "package_version_imported_from_fork_source": "2.6.0",
+    "import_smoke_test": "UNA() instantiation and both non-turn engine module imports OK from fork source with PYTHONPATH"
+  },
+  "notes": [
+    "Fork package version string is 2.6.0 while the audited upstream files still match upstream blobs byte-for-byte; version bump therefore predates the campaign and is part of the fork baseline.",
+    "pandas 3.0.6 is a major-version upgrade relative to the prior sandbox's pandas 2.2.3; L0/L2 baseline evidence on this laptop is generated under this exact environment so baseline/candidate comparisons remain internally valid. Cross-environment transfer of absolute numbers is not claimed."
+  ]
+}

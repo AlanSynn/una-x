@@ -1,0 +1,49 @@
+L0/L1 execution log — recorded 2026-09-25T21:36:30Z
+runner: Python 3.11.16 on arm64
+
+== L0: tests/perf_contract/test_l0_ordered_csr.py ==
+command: python -m pytest tests/perf_contract/test_l0_ordered_csr.py -v
+result: 17 passed in 0.15s (all green; bit-exact CSR equality vs
+independent oracle transcription; 11 guard-fallback cases -> None;
+nonfinite float bits pass through identically at CSR level)
+
+== L1: tests/perf_contract/test_l1_engine_arms.py ==
+command: UNA_BASELINE_SRC=.../main/src python -m pytest tests/perf_contract/test_l1_engine_arms.py -v
+final gate run: 12 passed in 42.96s (L1_REUSE_DIR=/tmp/l1_arms:
+artifacts produced by FRESH per-case subprocesses immediately prior;
+per-case split adopted after two SIGKILL(-9) terminations traced to the
+NaN-weight pathology documented in nonfinite_weight_hazard.md)
+
+arms: baseline_a, baseline_b (immutable baseline tree main/src), candidate
+(wt-integration/src). 6 cases x 3 arms = 18 fresh runs, each rc=0:
+  random_elev            baseline_a/b, candidate  (2-4 s each)
+  same_symmetric         baseline_a/b, candidate
+  no_z_elev_on           baseline_a/b, candidate
+  micro_parallel         baseline_a/b, candidate
+  extreme_finite_weights baseline_a/b, candidate
+  int32_fallback         baseline_a/b, candidate
+
+gate A: baseline_a == baseline_b bit-for-bit, all 6 cases (determinism)
+gate B: candidate == baseline_a bit-for-bit, all 6 cases
+compared arrays per case: acc/awe CSR pointer+neighbors+weights+flags,
+per-origin scope_weights, centrality reach/gravity/knn, OD matrix
+
+== arm artifact SHA-256 (sha256sum; identical per case across arms) ==
+59989fa7c717ab220842457e253182f03bf0c161e486683a387be32892454909  extreme_finite_weights.baseline_a.npz
+59989fa7c717ab220842457e253182f03bf0c161e486683a387be32892454909  extreme_finite_weights.baseline_b.npz
+59989fa7c717ab220842457e253182f03bf0c161e486683a387be32892454909  extreme_finite_weights.candidate.npz
+f98b15b75ac90c80c827b440882fbe618529e5358cb8af6882021cb6608b8096  int32_fallback.baseline_a.npz
+f98b15b75ac90c80c827b440882fbe618529e5358cb8af6882021cb6608b8096  int32_fallback.baseline_b.npz
+f98b15b75ac90c80c827b440882fbe618529e5358cb8af6882021cb6608b8096  int32_fallback.candidate.npz
+8a252884f0d8e1f4cc5145401e6887177e0905972f68e65825d3b3380f714706  micro_parallel.baseline_a.npz
+8a252884f0d8e1f4cc5145401e6887177e0905972f68e65825d3b3380f714706  micro_parallel.baseline_b.npz
+8a252884f0d8e1f4cc5145401e6887177e0905972f68e65825d3b3380f714706  micro_parallel.candidate.npz
+3973e0494177bb4e53624875c35a7bb6cb262d0dd43318e2fa151766648817cf  no_z_elev_on.baseline_a.npz
+3973e0494177bb4e53624875c35a7bb6cb262d0dd43318e2fa151766648817cf  no_z_elev_on.baseline_b.npz
+3973e0494177bb4e53624875c35a7bb6cb262d0dd43318e2fa151766648817cf  no_z_elev_on.candidate.npz
+c993a6f75db83f2d12f2c1ddbef6387c7e049a23c8f008e9bf4502c03e03e15e  random_elev.baseline_a.npz
+c993a6f75db83f2d12f2c1ddbef6387c7e049a23c8f008e9bf4502c03e03e15e  random_elev.baseline_b.npz
+c993a6f75db83f2d12f2c1ddbef6387c7e049a23c8f008e9bf4502c03e03e15e  random_elev.candidate.npz
+2f30f7eded2f669fd8870aadeddc3a36c0e061f7721cc7ae56fc1f6674709936  same_symmetric.baseline_a.npz
+2f30f7eded2f669fd8870aadeddc3a36c0e061f7721cc7ae56fc1f6674709936  same_symmetric.baseline_b.npz
+2f30f7eded2f669fd8870aadeddc3a36c0e061f7721cc7ae56fc1f6674709936  same_symmetric.candidate.npz

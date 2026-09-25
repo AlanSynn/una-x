@@ -35,6 +35,7 @@ import numba as nb
 from ..Logger import Logger
 from ..Topology import Topology, Network, AccessPoints
 from .Base import Base
+from ._ordered_csr import _try_build_ordered_csr
 
 # ============================================================================
 # AccessibilityWElevation Graph Engine Constants
@@ -567,42 +568,51 @@ class AccessibilityWElevation(Base):
             )
         # ------------------------------------------------------------------------
         
-        # Build adjacency lists in compact vector format (CSR-like structure)
-        adjacency_pointer          = np.zeros(node_count + 1, dtype=np.int64)
-        adjacency_vector           = []
-        adjacency_vector_weights   = []
-        adjacynct_vector_network_node = []
-        
-        # Count neighbours per node
-        for node in range(node_count):
-            mask_start = start_nodes == node
-            mask_end   = end_nodes   == node
-            count = np.sum(mask_start) + np.sum(mask_end)
-            adjacency_pointer[node + 1] = adjacency_pointer[node] + count
-        
-        # Fill adjacency vectors with directional weights
-        for node in range(node_count):
-            # Forward edges: node is start_node → neighbour is end_node
-            # Cost: AB_weights (uphill penalty applied if elevation rises A→B)
-            mask_start       = start_nodes == node
-            end_neighbors    = end_nodes[mask_start]
-            neighbor_weights = ab_weights[mask_start]
-            is_network       = np.ones(len(end_neighbors), dtype=np.bool_)
-            
-            adjacency_vector.extend(end_neighbors)
-            adjacency_vector_weights.extend(neighbor_weights)
-            adjacynct_vector_network_node.extend(is_network)
-            
-            # Backward edges: node is end_node → neighbour is start_node
-            # Cost: BA_weights (uphill penalty applied if elevation rises B→A)
-            mask_end         = end_nodes == node
-            start_neighbors  = start_nodes[mask_end]
-            neighbor_weights = ba_weights[mask_end]
-            is_network       = np.ones(len(start_neighbors), dtype=np.bool_)
-            
-            adjacency_vector.extend(start_neighbors)
-            adjacency_vector_weights.extend(neighbor_weights)
-            adjacynct_vector_network_node.extend(is_network)
+        # Preserve forward-then-reverse input-edge order, including duplicates.
+        ordered_csr = _try_build_ordered_csr(
+            node_count, start_nodes, end_nodes, ab_weights, ba_weights
+        )
+        if ordered_csr is None:
+            # Build adjacency lists in compact vector format (CSR-like structure)
+            adjacency_pointer          = np.zeros(node_count + 1, dtype=np.int64)
+            adjacency_vector           = []
+            adjacency_vector_weights   = []
+            adjacynct_vector_network_node = []
+
+            # Count neighbours per node
+            for node in range(node_count):
+                mask_start = start_nodes == node
+                mask_end   = end_nodes   == node
+                count = np.sum(mask_start) + np.sum(mask_end)
+                adjacency_pointer[node + 1] = adjacency_pointer[node] + count
+
+            # Fill adjacency vectors with directional weights
+            for node in range(node_count):
+                # Forward edges: node is start_node → neighbour is end_node
+                # Cost: AB_weights (uphill penalty applied if elevation rises A→B)
+                mask_start       = start_nodes == node
+                end_neighbors    = end_nodes[mask_start]
+                neighbor_weights = ab_weights[mask_start]
+                is_network       = np.ones(len(end_neighbors), dtype=np.bool_)
+
+                adjacency_vector.extend(end_neighbors)
+                adjacency_vector_weights.extend(neighbor_weights)
+                adjacynct_vector_network_node.extend(is_network)
+
+                # Backward edges: node is end_node → neighbour is start_node
+                # Cost: BA_weights (uphill penalty applied if elevation rises B→A)
+                mask_end         = end_nodes == node
+                start_neighbors  = start_nodes[mask_end]
+                neighbor_weights = ba_weights[mask_end]
+                is_network       = np.ones(len(start_neighbors), dtype=np.bool_)
+
+                adjacency_vector.extend(start_neighbors)
+                adjacency_vector_weights.extend(neighbor_weights)
+                adjacynct_vector_network_node.extend(is_network)
+
+        else:
+            (adjacency_pointer, adjacency_vector, adjacency_vector_weights,
+             adjacynct_vector_network_node) = ordered_csr
 
         # Create graph instance
         graph = AccessibilityWElevation.CompactNodeView(dtype=None, max_error=None)
@@ -611,9 +621,18 @@ class AccessibilityWElevation(Base):
         graph.logger   = topology.logger
         
         graph.adjacency_pointer              = adjacency_pointer
-        graph.adjacency_vector               = np.array(adjacency_vector,           dtype=np.int64)
-        graph.adjacency_vector_weights       = np.array(adjacency_vector_weights,   dtype=np.float64)
-        graph.adjacynct_vector_network_node  = np.array(adjacynct_vector_network_node, dtype=np.bool_)
+        graph.adjacency_vector = (
+            adjacency_vector if ordered_csr is not None
+            else np.array(adjacency_vector,           dtype=np.int64)
+        )
+        graph.adjacency_vector_weights = (
+            adjacency_vector_weights if ordered_csr is not None
+            else np.array(adjacency_vector_weights,   dtype=np.float64)
+        )
+        graph.adjacynct_vector_network_node = (
+            adjacynct_vector_network_node if ordered_csr is not None
+            else np.array(adjacynct_vector_network_node, dtype=np.bool_)
+        )
         
         graph.o_terminal_idxs    = np.array([o_start_nodes, o_end_nodes],     dtype=np.int64).T
         graph.o_terminal_weights = np.array([o_start_weights, o_end_weights], dtype=np.float64).T
