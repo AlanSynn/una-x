@@ -1,0 +1,2 @@
+# Runtime specialist
+Build benchmark/process/memory harness outside runtime package. Record actual worker/thread masks, boundaries, startup/JIT/cache, process-tree memory and output completion. Do not tune production semantics or claim profiler time as application time.
