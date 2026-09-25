@@ -1,0 +1,98 @@
+{
+ "5": {
+  "type": "worker_ready",
+  "worker_id": 5,
+  "import_ns": 2410091416,
+  "warmup_ns": 407546542,
+  "warmup_peak_rss_bytes": 319995904,
+  "numba_effective_threads": 1,
+  "numba_requested_threads": "1",
+  "threading_layer": "workqueue",
+  "import_path": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/__init__.py",
+  "pid": 56313
+ },
+ "0": {
+  "type": "worker_ready",
+  "worker_id": 0,
+  "import_ns": 2410316084,
+  "warmup_ns": 412280667,
+  "warmup_peak_rss_bytes": 321716224,
+  "numba_effective_threads": 1,
+  "numba_requested_threads": "1",
+  "threading_layer": "workqueue",
+  "import_path": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/__init__.py",
+  "pid": 56308
+ },
+ "6": {
+  "type": "worker_ready",
+  "worker_id": 6,
+  "import_ns": 2409756250,
+  "warmup_ns": 414011208,
+  "warmup_peak_rss_bytes": 318947328,
+  "numba_effective_threads": 1,
+  "numba_requested_threads": "1",
+  "threading_layer": "workqueue",
+  "import_path": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/__init__.py",
+  "pid": 56314
+ },
+ "4": {
+  "type": "worker_ready",
+  "worker_id": 4,
+  "import_ns": 2410124667,
+  "warmup_ns": 413154083,
+  "warmup_peak_rss_bytes": 321896448,
+  "numba_effective_threads": 1,
+  "numba_requested_threads": "1",
+  "threading_layer": "workqueue",
+  "import_path": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/__init__.py",
+  "pid": 56312
+ },
+ "1": {
+  "type": "worker_ready",
+  "worker_id": 1,
+  "import_ns": 2409459625,
+  "warmup_ns": 437479958,
+  "warmup_peak_rss_bytes": 323698688,
+  "numba_effective_threads": 1,
+  "numba_requested_threads": "1",
+  "threading_layer": "workqueue",
+  "import_path": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/__init__.py",
+  "pid": 56309
+ },
+ "3": {
+  "type": "worker_ready",
+  "worker_id": 3,
+  "import_ns": 2410054959,
+  "warmup_ns": 462240708,
+  "warmup_peak_rss_bytes": 321470464,
+  "numba_effective_threads": 1,
+  "numba_requested_threads": "1",
+  "threading_layer": "workqueue",
+  "import_path": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/__init__.py",
+  "pid": 56311
+ },
+ "7": {
+  "type": "worker_ready",
+  "worker_id": 7,
+  "import_ns": 2410080250,
+  "warmup_ns": 462336167,
+  "warmup_peak_rss_bytes": 321552384,
+  "numba_effective_threads": 1,
+  "numba_requested_threads": "1",
+  "threading_layer": "workqueue",
+  "import_path": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/__init__.py",
+  "pid": 56315
+ },
+ "2": {
+  "type": "worker_ready",
+  "worker_id": 2,
+  "import_ns": 2409482917,
+  "warmup_ns": 464439875,
+  "warmup_peak_rss_bytes": 321798144,
+  "numba_effective_threads": 1,
+  "numba_requested_threads": "1",
+  "threading_layer": "workqueue",
+  "import_path": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/__init__.py",
+  "pid": 56310
+ }
+}

@@ -1,0 +1,21 @@
+{
+"type": "FeatureCollection",
+"name": "Results",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32616" } },
+"features": [
+{ "type": "Feature", "properties": { "reach": 15, "gravity_logistic": 13.828670335315515, "gravity_exponential": 12.212802367574152, "knn_logistic": 3.0024285043937087 }, "geometry": { "type": "Point", "coordinates": [ 632.772470580563208, 474.569487390787003 ] } },
+{ "type": "Feature", "properties": { "reach": 6, "gravity_logistic": 5.9010105670586137, "gravity_exponential": 5.1862769348774895, "knn_logistic": 1.6301779059567965 }, "geometry": { "type": "Point", "coordinates": [ 684.887426259072186, 179.083462497958749 ] } },
+{ "type": "Feature", "properties": { "reach": 4, "gravity_logistic": 4.375027780322128, "gravity_exponential": 3.9422156428167359, "knn_logistic": 2.8891390232865755 }, "geometry": { "type": "Point", "coordinates": [ 155.99884015802769, 90.770175755700961 ] } },
+{ "type": "Feature", "properties": { "reach": 6, "gravity_logistic": 6.2897341314254458, "gravity_exponential": 5.4934320122476832, "knn_logistic": 3.3870392812839833 }, "geometry": { "type": "Point", "coordinates": [ 647.193171432008967, 631.274828778156461 ] } },
+{ "type": "Feature", "properties": { "reach": 4, "gravity_logistic": 4.3649232409830008, "gravity_exponential": 3.9307980844424475, "knn_logistic": 3.3135446623818758 }, "geometry": { "type": "Point", "coordinates": [ 194.636158386026835, 91.566941996004928 ] } },
+{ "type": "Feature", "properties": { "reach": 15, "gravity_logistic": 14.104525172920299, "gravity_exponential": 12.422235691472773, "knn_logistic": 4.0940967462343973 }, "geometry": { "type": "Point", "coordinates": [ 446.937567100855517, 396.175847729326051 ] } },
+{ "type": "Feature", "properties": { "reach": 14, "gravity_logistic": 13.006565605449209, "gravity_exponential": 11.411526090785046, "knn_logistic": 2.7962316837749635 }, "geometry": { "type": "Point", "coordinates": [ 489.878098301728471, 265.363215791275252 ] } },
+{ "type": "Feature", "properties": { "reach": 11, "gravity_logistic": 10.343219931114128, "gravity_exponential": 9.0317871509970651, "knn_logistic": 2.2082373396787229 }, "geometry": { "type": "Point", "coordinates": [ 33.74667205238152, 537.939492068510276 ] } },
+{ "type": "Feature", "properties": { "reach": 3, "gravity_logistic": 3.4475839214515869, "gravity_exponential": 3.0388164866526939, "knn_logistic": 2.1318718890787114 }, "geometry": { "type": "Point", "coordinates": [ 561.469641846273703, 92.22700947615246 ] } },
+{ "type": "Feature", "properties": { "reach": 5, "gravity_logistic": 4.9400003943442607, "gravity_exponential": 4.3224584230126588, "knn_logistic": 2.2948710397344838 }, "geometry": { "type": "Point", "coordinates": [ 805.851775553973425, 222.708492967838794 ] } },
+{ "type": "Feature", "properties": { "reach": 8, "gravity_logistic": 7.7035407924384121, "gravity_exponential": 6.9062702450542446, "knn_logistic": 3.2997489967030913 }, "geometry": { "type": "Point", "coordinates": [ 700.156001122927478, 537.384817768306789 ] } },
+{ "type": "Feature", "properties": { "reach": 17, "gravity_logistic": 16.053361362603191, "gravity_exponential": 14.018015563952879, "knn_logistic": 2.1381002173598587 }, "geometry": { "type": "Point", "coordinates": [ 155.653597467620898, 266.108153039301783 ] } },
+{ "type": "Feature", "properties": { "reach": 14, "gravity_logistic": 13.3209097335219, "gravity_exponential": 11.654496887045394, "knn_logistic": 3.8922718413767075 }, "geometry": { "type": "Point", "coordinates": [ 490.087583524983074, 537.73526796846545 ] } },
+{ "type": "Feature", "properties": { "reach": 15, "gravity_logistic": 14.007075928126726, "gravity_exponential": 12.290384646774156, "knn_logistic": 4.0809249476527665 }, "geometry": { "type": "Point", "coordinates": [ 414.069696721190326, 362.253781724279349 ] } }
+]
+}

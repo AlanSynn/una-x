@@ -1,0 +1,130 @@
+{
+ "task": "T11",
+ "recorded_utc": "2026-09-26T00:25:00Z",
+ "evidence_class": "measured",
+ "frozen_source_commit": "743c760 (src/ blobs identical to 251c670/f57825d; see freeze/candidate.json)",
+ "order": "cand, base, cand, base, cand (alternating to cancel drift)",
+ "config": {
+  "workers": 8,
+  "threads": 1,
+  "queue": 8,
+  "jobs": 12,
+  "workload": "W3_medium_proxy/accessibility",
+  "budget_C": 8
+ },
+ "runs": {
+  "run1_cand": {
+   "tput": 4.477741009512308,
+   "wall_s": 2.67992275,
+   "done": 12,
+   "failed": 0,
+   "max_rss_bytes": 324222976,
+   "mem_end_avail_bytes": 6120161280,
+   "loadavg_end": [
+    6.2529296875,
+    4.4658203125,
+    4.3671875
+   ],
+   "workers": 8,
+   "threads": 1,
+   "queue": 8
+  },
+  "run2_base": {
+   "tput": 3.2997285004838037,
+   "wall_s": 3.636662834,
+   "done": 12,
+   "failed": 0,
+   "max_rss_bytes": 352206848,
+   "mem_end_avail_bytes": 5611503616,
+   "loadavg_end": [
+    6.392578125,
+    4.5244140625,
+    4.38818359375
+   ],
+   "workers": 8,
+   "threads": 1,
+   "queue": 8
+  },
+  "run3_cand": {
+   "tput": 4.4444253762134975,
+   "wall_s": 2.700011584,
+   "done": 12,
+   "failed": 0,
+   "max_rss_bytes": 349782016,
+   "mem_end_avail_bytes": 5679644672,
+   "loadavg_end": [
+    9.79443359375,
+    5.28759765625,
+    4.65869140625
+   ],
+   "workers": 8,
+   "threads": 1,
+   "queue": 8
+  },
+  "run4_base": {
+   "tput": 3.3543555144770125,
+   "wall_s": 3.577438333,
+   "done": 12,
+   "failed": 0,
+   "max_rss_bytes": 350961664,
+   "mem_end_avail_bytes": 5676646400,
+   "loadavg_end": [
+    9.59814453125,
+    5.39306640625,
+    4.703125
+   ],
+   "workers": 8,
+   "threads": 1,
+   "queue": 8
+  },
+  "run5_cand": {
+   "tput": 4.351440529048314,
+   "wall_s": 2.757707458,
+   "done": 12,
+   "failed": 0,
+   "max_rss_bytes": 350093312,
+   "mem_end_avail_bytes": 5661507584,
+   "loadavg_end": [
+    12.1123046875,
+    5.98388671875,
+    4.91552734375
+   ],
+   "workers": 8,
+   "threads": 1,
+   "queue": 8
+  }
+ },
+ "medians": {
+  "candidate_jobs_per_s": 4.4444253762134975,
+  "baseline_jobs_per_s": 3.327042007480408,
+  "candidate_walls_s": [
+   2.67992275,
+   2.700011584,
+   2.757707458
+  ],
+  "baseline_walls_s": [
+   3.636662834,
+   3.577438333
+  ]
+ },
+ "gate": {
+  "cand_beats_base_every_run": true,
+  "speedup_at_selected_config_x": 1.336,
+  "end_to_end_vs_sequential_baseline_x": 6.14,
+  "note": "0.724 jobs/s = baseline 1x1 from selection/initial sweep (single-job reference)"
+ },
+ "memory": {
+  "max_worker_phase_rss_bytes": 352206848,
+  "max_worker_phase_rss_mb": 352.2,
+  "mem_available_at_end_min_bytes": 5611503616,
+  "verdict": "no memory regression; 8 workers fit comfortably in 16 GiB (67-69% free during sweep)"
+ },
+ "consistency_with_initial_sweep": {
+  "initial_cand_8x1_jobs_per_s": 3.915,
+  "final_cand_median_jobs_per_s": 4.4444253762134975,
+  "deviation": "final ~13% higher; run-to-run thermal/load variance; config ranking unchanged (8x1 top in both series), selection robust",
+  "raw_initial": "selection/initial/runs/",
+  "raw_final": "trials/final/runs/"
+ },
+ "raw": "trials/final/runs/<name>/{session.json,raw.jsonl,workers.json} + .log"
+}
