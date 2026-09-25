@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Numba compilation caches
+*.nbi
+*.nbc
+
+# Build artifacts
+dist/
+build/
+src/urban_network_analysis/_build_info.py
+
+# macOS
+.DS_Store
+
+# Editors / envs
+.vscode/
+.venv/
