@@ -130,14 +130,18 @@ def generate_w1(data_dir: Path):
 
 
 def generate_w3(data_dir: Path):
-    """Medium proxy fixture: 46x40 grid, elevation, 320 origins, 640
-    destinations, 8 obstacles. Sized so CSR/search/export contributions are
-    stable on the laptop budget."""
+    """Medium proxy fixture: 92x80 grid, elevation, 2560 origins, 2560
+    destinations, 8 obstacles. Sized so a single accessibility job runs in
+    the ~2-8 s band on the laptop budget — large enough that CSR/search/
+    export contributions are separable, small enough for repeated runs.
+    (Recalibrated 2026-09-25 from an initial 46x40/320/640 draft whose
+    0.37 s job wall left selection measurements noise-dominated; change
+    made before any L3/L4 measurement was recorded. W1 is untouched.)"""
     data_dir = Path(data_dir)
     data_dir.mkdir(parents=True, exist_ok=True)
-    net, node_xy = _grid_network(46, 40, 55.0, 9.0, seed=101, with_z=True)
-    origins = _points_on_network(net, node_xy, 320, seed=202)
-    dests = _points_on_network(net, node_xy, 640, seed=303)
+    net, node_xy = _grid_network(92, 80, 55.0, 9.0, seed=101, with_z=True)
+    origins = _points_on_network(net, node_xy, 2560, seed=202)
+    dests = _points_on_network(net, node_xy, 2560, seed=303)
     obstacles = _obstacles(node_xy, 8, seed=404)
     net.to_file(data_dir / "network.geojson", driver="GeoJSON")
     origins.to_file(data_dir / "origins.geojson", driver="GeoJSON")
@@ -150,10 +154,10 @@ def generate_w3(data_dir: Path):
         "origins": "origins.geojson",
         "destinations": "destinations.geojson",
         "obstacles": "obstacles.geojson",
-        "nodes_est": 46 * 40,
+        "nodes_est": 92 * 80,
         "edges_est": len(net),
-        "origins_n": 320,
-        "destinations_n": 640,
+        "origins_n": 2560,
+        "destinations_n": 2560,
     }
 
 
@@ -226,6 +230,9 @@ def settings_for(spec_name: str, data_dir: Path, output_root: Path,
         data_folder=str(data_dir),
         output_folder=str(output_root),
         output_file_name="Results",
+        network_file="network.geojson",
+        origins_file="origins.geojson",
+        destinations_file="destinations.geojson",
         obstacle_points_file="obstacles.geojson",
     )
     if analysis == "flow":

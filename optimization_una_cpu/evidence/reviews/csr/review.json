@@ -1,0 +1,82 @@
+{
+  "reviewer": "independent-subagent",
+  "reviewed_commit": "755c7b8",
+  "review_date_utc": "2026-09-25",
+  "verdict": "approve_with_notes",
+  "scope": {
+    "candidate": "src/urban_network_analysis/Engines/_ordered_csr.py (git blob 98504c2db622774e59903c19e760cec84b3e1fbc)",
+    "integrations": [
+      "src/urban_network_analysis/Engines/Accessibility.py (blob 473de486e5573992aba5079f3c8ac80668e61aa0)",
+      "src/urban_network_analysis/Engines/AccessibilityWElevation.py (blob dc75e48baf92817028a749a15778c6308e41c44f)"
+    ],
+    "baseline_tree": "/Users/alansynn/orca/workspaces/una-x/main/src (Accessibility.py blob 246fe439591379038c5e73d0388f0720726213e9, AccessibilityWElevation.py blob 69061684380ffa9d890b75804bbcd3b4642eae90, hash-verified with git hash-object)",
+    "environment": "Python 3.11.16, numpy 2.4.6, macOS arm64 (intp itemsize 8)"
+  },
+  "dimensions": {
+    "order_equivalence": {
+      "result": "pass",
+      "argument": "For node n the baseline produces, per row: [end_nodes[i], weights_ab[i] for i ascending with start_nodes[i]==n] ++ [start_nodes[j], weights_ba[j] for j ascending with end_nodes[j]==n]. The candidate concatenates forward incidences (indices 0..E-1) and reverse incidences (indices E..2E-1) and stable-sorts by source. For a fixed source n, all forward indices (< E) sort before all reverse indices (>= E), and stability preserves ascending edge order within each group. Both incidence orders are therefore reproduced exactly, including the within-row forward/reverse interleaving question: for edges i=(u,v), j=(v,u), u's row is [v@i-forward, v@j-reverse] in both schemes because i < E+j; v's row is [u@j-forward, u@i-reverse] because j < E+i. Self-loops contribute forward then reverse in both; parallel/duplicate edges are kept distinct by stability; empty rows give repeated pointer values in both. bincount counts equal mask sums; cumsum(int64) equals the baseline's chained int64 adds (max total 2*edge_count <= intp_max-1 by the guard, no overflow).",
+      "empirical": "2661+ differential cases vs ref_original_csr.original_builder_core, all bit-exact (values, dtypes, .tobytes()): 1161 exhaustive directed multigraphs (2 nodes x <=4 edges, 3 nodes x <=3 edges, including all self-loop/parallel/duplicate/isolated/empty combinations), 300 NaN/inf/signed-zero/denormal bit-pattern trials, 1500 random graphs up to 9 nodes / 59 edges with 40 percent duplication, hand-checked (u,v),(v,u) interleavings in both edge orders."
+    },
+    "guard_domain": {
+      "result": "pass_with_note",
+      "verified": [
+        "intp itemsize gate: on non-lp64 platforms bincount/cumsum dtype assumptions are refused (returns None)",
+        "type(node_count) is int: rejects bool, np.integer, float; 0 <= node_count < intp_max keeps node_count+1 a legal numpy dimension",
+        "exact np.ndarray type (rejects ndarray subclasses such as masked arrays) and ndim==1; big-endian '>i8' and '<f8'-style dtypes are refused (dtype equality includes byte order), so no silent casts or reinterpretation; strided/negative-stride/F-order/read-only inputs are safe (all reads are via concatenate/fancy-index copies)",
+        "equal-length check via .size catches any mismatch including weights-only mismatches (probed both ab-only and ba-only)",
+        "edge_count <= min(intp_max, int64_max)//2 bounds the doubled incidence arrays and the prefix-sum maximum (2*edge_count <= intp_max-1)",
+        "endpoint range check (min>=0, max<node_count, skipped when edge_count==0) makes bincount output exactly node_count long and guarantees cumsum out-slice shape match; node_count==0 with edges is refused",
+        "np.argsort(kind='stable') is deterministic (radix/mergesort family for int64 in numpy 2.4.6)"
+      ],
+      "note": "For node_count >= 2**60 the pointer/bincount allocations exceed numpy's size limit and raise ValueError('array is too big'), which the helper's except MemoryError does not catch, so it escapes instead of returning None. Measured on numpy 2.4.6: the fallback's first statement np.zeros(node_count+1, int64) raises the identical ValueError type and message, so end-to-end observable behavior (exception type/message) is unchanged; only the traceback gains the helper frame. Domain is unreachable from real flows (node_count = node_points.shape[0], so a real array of that size must already exist). For allocations within numpy's limit but beyond RAM the fast path may die by OS OOM rather than MemoryError; the baseline loop is strictly heavier in time and memory at those sizes, so no candidate-specific regression. Cosmetic hardening option: reject node_count > intp_max//8 to keep the entire admitted domain inside the MemoryError-only contract."
+    },
+    "fallback": {
+      "result": "pass",
+      "verified": "Both engines' `if ordered_csr is None:` blocks are the baseline count+fill loops verbatim: indent-normalized line-by-line equality against the actual baseline files (main/src), blank-line-insensitive; whole-file AST equality additionally shown between the committed engines and a baseline copy patched with the supplied candidate packet. The fallback therefore retains baseline dtype/casting behavior for int32 endpoints, float32 weights, big-endian arrays, subclassed arrays, out-of-range endpoints, etc. (all probed to return None). L1 case int32_fallback (citable evidence) exercised the fallback through both engines with bit-identical arm artifacts."
+    },
+    "ownership_bits": {
+      "result": "pass",
+      "verified": [
+        "All four returned arrays are freshly allocated: np.empty pointer, concatenate+fancy-index neighbors/weights, np.ones flags; flags.owndata True, writeable True, C-contiguous; np.shares_memory false against every input and across all four outputs (probed with aliased ab_weights is ba_weights, as the elevation engine passes in symmetric mode)",
+        "Inputs never mutated (byte-compared before/after, including read-only inputs)",
+        "Weight bits pass through with no arithmetic: byte-level equality with the oracle for +0.0/-0.0, +/-inf, 1e-320 denormals, FLT64 max, quiet NaNs with distinct payloads, negative NaNs, and sNaN-pattern bits; NaN payload placement hand-verified per row (payloads survive both concatenate and gather)",
+        "Same field dtypes as baseline graph_engine attributes: pointer int64, neighbors int64, weights float64, flags bool_ (numba kernels therefore compile identical signatures; L1 state/output artifacts are SHA-256-identical across arms per case)"
+      ]
+    },
+    "integration": {
+      "result": "pass",
+      "verified": [
+        "diff -rq of the full urban_network_analysis package: candidate tree differs from baseline by exactly Accessibility.py, AccessibilityWElevation.py (modified) and _ordered_csr.py (new); AccessibilityWTurns.py is byte-identical (turn flow intentionally retains its own construction)",
+        "Each engine has exactly one CSR construction site (_build_compact_graph_from_topology), now routed through the helper; no other code path altered",
+        "The three conditional field assignments all test the same `ordered_csr is not None` predicate; all four names (pointer, vector, weights, flags) are bound in both branches before use, so no stale-array fallback is possible; graph.adjacency_pointer assignment follows the branch join in both paths",
+        "Call arguments match baseline semantics: Accessibility passes (weights, weights) (same float64-cast array, matching its two mask gathers); AccessibilityWElevation passes (ab_weights, ba_weights) (aliased or distinct exactly as its baseline gathers use them)",
+        "Real-flow admission: Topology casts network start/end to int64 (Topology.py:183-184) and both engines cast weights to float64, so public GIS flows take the fast path; any deviation falls back"
+      ]
+    }
+  },
+  "counterexamples_attempted": [
+    {"case": "within-row forward/reverse interleaving: edges (u,v),(v,u) in both orders, distinct per-direction weights, hand-computed row layouts", "outcome": "FAILED to break equivalence (candidate rows byte-equal oracle and hand expectation)"},
+    {"case": "exhaustive directed multigraphs on 2-3 nodes (1161 cases) incl. all self-loop/duplicate/isolated/empty shapes", "outcome": "FAILED to break equivalence"},
+    {"case": "NaN payload/signed-zero/sNaN/denormal/inf bit patterns through forward and reverse incidences, aliased weight arrays", "outcome": "FAILED to break bit-level equivalence"},
+    {"case": "guard escape probes: bool/np.integer/float node_count, ndarray subclass, masked array, big-endian dtypes, weight-only length mismatches, endpoint==node_count, node_count==0 with edges, empty-but-wrong-dtype arrays", "outcome": "All correctly refused (None) -> original path"},
+    {"case": "node_count beyond numpy allocation limit (>= 2**60) to escape the MemoryError-only catch", "outcome": "PARTIAL SUCCESS as an observation: ValueError('array is too big') escapes the helper; judged benign because the original builder raises the identical ValueError type+message at the same call depth (measured on numpy 2.4.6); unreachable from real flows"},
+    {"case": "reviewer-harness false alarms (recorded for transparency): np.array_equal without equal_nan=True rejects NaN-bearing rows, and one hand-computed NaN row expectation was wrong; byte-level comparisons and corrected checks all PASS; these were harness defects, not candidate defects", "outcome": "Resolved as harness errors"}
+  ],
+  "l0_rerun": {
+    "command": "cd /Users/alansynn/orca/workspaces/una-x/wt-integration && /Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python -m pytest tests/perf_contract/test_l0_ordered_csr.py -v",
+    "result": "17 passed in 0.14s (matches recorded evidence)"
+  },
+  "cited_not_rerun": {
+    "l1": "optimization_una_cpu/evidence/integration/csr/test_log.txt: 12 passed, 6 adversarial cases x 3 arms (fresh subprocess per case), baseline determinism gate then candidate bit-identity; per-case arm NPZ SHA-256 identical across arms",
+    "arms": "optimization_una_cpu/evidence/integration/csr/arms/*.npz",
+    "hazard": "optimization_una_cpu/evidence/integration/csr/nonfinite_weight_hazard.md reviewed and accepted: NaN edge-weight queue growth is an inherited upstream kernel property present identically in both trees; candidate changes only CSR construction upstream of the kernel"
+  },
+  "notes": [
+    "PROVENANCE (non-blocking): source_manifest.json verification_files entries for tests/perf_contract/test_l1_engine_arms.py (recorded aa37daba..., committed git blob 188f332e...) and tests/perf_contract/_arm_runner.py (recorded 47993bc2..., committed eddc8f34...) are stale. Consistent with the manifest being recorded 16:40Z, before the post-SIGKILL per-case subprocess redesign described in test_log.txt. All other manifest entries (3 engine blobs, ref_original_csr.py, stub_topology.py, l2_trial.py, l2_error_probe.py) verified correct. Recommend regenerating the manifest or recording the two current blobs in an addendum.",
+    "PROVENANCE (non-blocking): the supplied packet patch optimization_una_cpu/prior/una_optimization/patches/ordered_csr.patch is rejected by strict `git apply` (missing final newline on its last line; LF-normalized against this CRLF repository; applies only with --ignore-whitespace). Committed _ordered_csr.py is byte-identical to the patch's new-file content modulo one trailing newline, and both committed engines are AST-identical to the packet-patched baseline copies; byte differences are line-ending and trailing-whitespace normalization only (repo-native CRLF retained). The commit message's 'verbatim' is accurate semantically, not byte-for-byte.",
+    "GUARD (non-blocking, see guard_domain note): only MemoryError is caught; numpy size-limit ValueError for node_count >= 2**60 escapes with identical type/message to the fallback's own error. Cosmetic hardening possible (node_count <= intp_max//8); no behavioral change required.",
+    "WORKTREE (non-blocking): wt-integration working tree contains post-commit, uncommitted benchmark experiments (benchmarks/una_cpu/workload_gen.py modified; csr_microbench.py, profile_stages.py untracked). All reviewed source (src/, tests/) is clean at 755c7b8; the experiments are outside the reviewed change surface.",
+    "Oracle provenance independently checked: ref_original_csr.original_builder_core matches the baseline count+fill loops in both baseline engine files (read directly from main/src); baseline blobs hash-verified against the manifest's baseline_blob entries."
+  ]
+}

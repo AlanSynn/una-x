@@ -1,0 +1,68 @@
+{
+ "reps": 5,
+ "results": [
+  {
+   "node_count": 7310,
+   "edges": 15334,
+   "original_walls_ns": [
+    260391458,
+    258951167,
+    259087834,
+    260174875,
+    259000417
+   ],
+   "candidate_walls_ns": [
+    614750,
+    502584,
+    485959,
+    496875,
+    486625
+   ],
+   "original_best_ms": 258.951167,
+   "candidate_best_ms": 0.485959,
+   "bit_equal": true
+  },
+  {
+   "node_count": 29412,
+   "edges": 62023,
+   "original_walls_ns": [
+    3242734625,
+    3237662666,
+    3246612084,
+    3271761875,
+    3240758917
+   ],
+   "candidate_walls_ns": [
+    2101709,
+    1994500,
+    1967875,
+    2014209,
+    2080833
+   ],
+   "original_best_ms": 3237.662666,
+   "candidate_best_ms": 1.967875,
+   "bit_equal": true
+  },
+  {
+   "node_count": 117649,
+   "edges": 248610,
+   "original_walls_ns": [
+    48758291625,
+    49270788166,
+    48301051541,
+    48318894333,
+    48355636792
+   ],
+   "candidate_walls_ns": [
+    10413250,
+    8432750,
+    8448500,
+    8330583,
+    8274209
+   ],
+   "original_best_ms": 48301.051541,
+   "candidate_best_ms": 8.274209,
+   "bit_equal": true
+  }
+ ]
+}

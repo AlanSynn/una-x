@@ -25,13 +25,18 @@
   },
   "verification_files": {
     "tests/perf_contract/test_l0_ordered_csr.py": "6ccc03ddbf9a1d3a61f07ed7e3ecaf6835e97fe4",
-    "tests/perf_contract/test_l1_engine_arms.py": "aa37daba99efdae63199f2cd51c382902e0ff13e",
-    "tests/perf_contract/_arm_runner.py": "47993bc2a2ad7a8e74c87b93633874a735e482ae",
+    "tests/perf_contract/test_l1_engine_arms.py": "188f332ec03fd1c87d983e2e0da5256b2c83cb64",
+    "tests/perf_contract/_arm_runner.py": "eddc8f34fd69a0853495e67f1f1cbbcf00566474",
+    "tests/perf_contract/_stage_probe.py": "df843236e7ee3345c0f3760da5897f7c7691d6fc",
     "tests/perf_contract/ref_original_csr.py": "84ba8320c120add1e572068fcf74576f85a03f5a",
     "tests/perf_contract/stub_topology.py": "09d39ffc7989f2b8756e0d34d731367434480dac",
     "benchmarks/una_cpu/l2_trial.py": "9797e842b21c44af1b75ec7a3ef5372bf7e916a2",
-    "benchmarks/una_cpu/l2_error_probe.py": "e178137768df04d89df098577fabc31304822745"
+    "benchmarks/una_cpu/l2_error_probe.py": "e178137768df04d89df098577fabc31304822745",
+    "benchmarks/una_cpu/workload_gen.py": "fd37e67de72f869a155600befca97fb3b108c941",
+    "benchmarks/una_cpu/profile_stages.py": "3d1986f217d39207b437a6e3c4fdc83e9d215025",
+    "benchmarks/una_cpu/csr_microbench.py": "0e96297882822b6fb72332ba8bbeae414f48df58"
   },
+  "hash_revision_note": "test_l1_engine_arms.py and _arm_runner.py re-hashed after the per-case subprocess redesign that followed the two SIGKILL terminations (see nonfinite_weight_hazard.md); correction surfaced by the T04 independent review. Engine source hashes are unchanged since first record.",
   "engine_diff_patch": "optimization_una_cpu/evidence/integration/csr/engine_diff.patch",
   "integration_shape": {
     "both_engines": "CSR block replaced by _try_build_ordered_csr(...) call; on None the original O(V*E) count+fill loops execute unchanged; adjacency/matrix fields assigned conditionally",

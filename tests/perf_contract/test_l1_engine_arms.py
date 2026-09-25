@@ -28,7 +28,7 @@ CANDIDATE_SRC = Path(
 BASELINE_SRC = os.environ.get("UNA_BASELINE_SRC")
 
 CASES = ["random_elev", "same_symmetric", "no_z_elev_on", "micro_parallel",
-         "extreme_finite_weights", "int32_fallback"]
+         "extreme_finite_weights", "int32_realdata"]
 
 pytestmark = pytest.mark.skipif(
     BASELINE_SRC is None, reason="UNA_BASELINE_SRC not set; L1 needs the "

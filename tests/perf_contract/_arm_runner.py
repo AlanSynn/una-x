@@ -103,11 +103,11 @@ def build_cases():
         z=None, o=o5, d=d5, settings=dict(elevation=True, elevation_penalty=0.3,
                                           search_radius=40.0))))
 
-    # 6: int32 endpoints -> helper refuses, both arms use original path
+    # 6: int32 endpoints (the representation real topologies use) -> fast path
     s6, e6 = rand_graph(10, 24)
     o6 = access_points(10, 3, rng, lambda r, n: r.random(n))
     d6 = access_points(10, 5, rng, lambda r, n: r.random(n))
-    cases.append(("int32_fallback", dict(
+    cases.append(("int32_realdata", dict(
         start=s6, end=e6, weights=rng.random(24) * 10.0, node_count=10,
         z=None, o=o6, d=d6, start_dtype=np.int32,
         settings=dict(elevation=True, elevation_penalty=0.3,

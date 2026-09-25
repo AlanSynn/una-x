@@ -53,6 +53,16 @@ def _make_job_spec(spec, out_root, job_id, assert_mode, source_root):
     }
 
 
+def _default_numba_cache_dir(arm, src):
+    """Keep JIT caches OUT of both source trees (baseline immutability)."""
+    env_dir = os.environ.get("NUMBA_CACHE_DIR")
+    if env_dir:
+        return env_dir
+    tag = "cand" if arm == "wheel" else (
+        "cand" if src and "wt-integration" in str(src) else "base")
+    return f"/Users/alansynn/orca/workspaces/una-x/venvs/nbc_{tag}"
+
+
 def run_single(args, spec, out_dir):
     results = []
     for i in range(args.jobs):
@@ -71,6 +81,7 @@ def run_single(args, spec, out_dir):
         env.setdefault("OMP_NUM_THREADS", "1")
         env.setdefault("OPENBLAS_NUM_THREADS", "1")
         env.setdefault("MKL_NUM_THREADS", "1")
+        env["NUMBA_CACHE_DIR"] = _default_numba_cache_dir(args.arm, args.src)
         # Launch from outside any checkout: neutral scratch cwd.
         cwd = str(out_dir)
 
@@ -119,7 +130,9 @@ def run_batch(args, spec, out_dir):
 
     env_note = {"NUMBA_NUM_THREADS": str(args.threads),
                 "OMP_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1",
-                "MKL_NUM_THREADS": "1"}
+                "MKL_NUM_THREADS": "1",
+                "NUMBA_CACHE_DIR": _default_numba_cache_dir(args.arm,
+                                                            args.src)}
     if args.arm == "source":
         env_note["PYTHONPATH"] = str(args.src)
 

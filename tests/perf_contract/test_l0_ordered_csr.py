@@ -100,6 +100,62 @@ def test_exhaustive_tiny_graphs_bit_exact():
         _assert_owned(flag, np.bool_)
 
 
+def test_exhaustive_tiny_graphs_int32_endpoints_bit_exact():
+    """Amended guard domain: int32 endpoints are admitted via exact upcast.
+    The oracle (original builder) widens to int64 on output regardless of
+    endpoint dtype, so arrays must be bit-identical in value AND dtype."""
+    rng = np.random.default_rng(20260926)
+    for _ in range(300):
+        nc = int(rng.integers(1, 7))
+        ne = int(rng.integers(0, 30))
+        edges = [(int(rng.integers(0, nc)), int(rng.integers(0, nc)))
+                 for _ in range(ne)]
+        arr = (np.array(edges, dtype=np.int64) if edges
+               else np.zeros((0, 2), dtype=np.int64))
+        start = arr[:, 0].astype(np.int32)
+        end = arr[:, 1].astype(np.int32)
+        w_ab = rng.random(ne)
+        w_ba = rng.random(ne)
+        got = _try_build_ordered_csr(nc, start, end, w_ab, w_ba)
+        assert got is not None, (nc, edges)
+        want = original_builder_core(
+            nc, start.astype(np.int64), end.astype(np.int64), w_ab, w_ba)
+        _assert_csr_equal(got, want)
+
+
+def test_int32_inputs_upcast_exactly_large_values():
+    """int32 endpoint values well beyond int16 must survive the upcast
+    bit-exactly. (Values near 2**31 are unreachable in practice: the range
+    guard requires node_count above the endpoint value, and both builders
+    allocate O(node_count); refusal at node_count > int32max is pinned by
+    the FALLBACK_CASES parametrized test.)"""
+    hi = 1_000_001
+    start = np.array([0, hi, hi, 0], dtype=np.int32)
+    end = np.array([hi, 0, 0, hi], dtype=np.int32)
+    w_ab = np.array([1.0, 2.0, 3.0, 4.0])
+    w_ba = np.array([5.0, 6.0, 7.0, 8.0])
+    got = _try_build_ordered_csr(hi + 1, start, end, w_ab, w_ba)
+    assert got is not None
+    _assert_csr_equal(got, original_builder_core(
+        hi + 1, start.astype(np.int64), end.astype(np.int64), w_ab, w_ba))
+
+
+def test_int32_read_only_inputs_accepted_and_unchanged():
+    start = np.array([0, 1, 2, 1], dtype=np.int32)
+    end = np.array([1, 2, 0, 0], dtype=np.int32)
+    ro_start = start.copy(); ro_start.flags.writeable = False
+    ro_end = end.copy(); ro_end.flags.writeable = False
+    before = (ro_start.tobytes(), ro_end.tobytes())
+    got = _try_build_ordered_csr(3, ro_start, ro_end,
+                                 np.array([1.0, 2.0, 3.0, 4.0]),
+                                 np.array([5.0, 6.0, 7.0, 8.0]))
+    assert got is not None
+    assert (ro_start.tobytes(), ro_end.tobytes()) == before
+    _assert_csr_equal(got, original_builder_core(
+        3, ro_start.astype(np.int64), ro_end.astype(np.int64),
+        np.array([1.0, 2.0, 3.0, 4.0]), np.array([5.0, 6.0, 7.0, 8.0])))
+
+
 def test_special_float_bit_patterns_preserved():
     """Signed zero, nonfinites and subnormals must land in rows bit-exactly,
     including duplicated occurrences of identical bit patterns."""
@@ -158,9 +214,26 @@ def test_read_only_and_strided_inputs_accepted_and_unchanged():
 
 
 FALLBACK_CASES = {
-    "int32_endpoints": lambda: dict(
+    "int16_endpoints": lambda: dict(
+        node_count=3, start=np.array([0, 1], dtype=np.int16),
+        end=np.array([1, 2], dtype=np.int16),
+        w_ab=np.array([1.0, 2.0]), w_ba=np.array([3.0, 4.0])),
+    "uint32_endpoints": lambda: dict(
+        node_count=3, start=np.array([0, 1], dtype=np.uint32),
+        end=np.array([1, 2], dtype=np.uint32),
+        w_ab=np.array([1.0, 2.0]), w_ba=np.array([3.0, 4.0])),
+    "mixed_int32_int64_endpoints": lambda: dict(
         node_count=3, start=np.array([0, 1], dtype=np.int32),
+        end=np.array([1, 2], dtype=np.int64),
+        w_ab=np.array([1.0, 2.0]), w_ba=np.array([3.0, 4.0])),
+    "int32_node_count_above_int32_range": lambda: dict(
+        node_count=np.iinfo(np.int32).max + 1,
+        start=np.array([0, 1], dtype=np.int32),
         end=np.array([1, 2], dtype=np.int32),
+        w_ab=np.array([1.0, 2.0]), w_ba=np.array([3.0, 4.0])),
+    "int32_endpoint_out_of_range": lambda: dict(
+        node_count=2, start=np.array([0, 5], dtype=np.int32),
+        end=np.array([1, 0], dtype=np.int32),
         w_ab=np.array([1.0, 2.0]), w_ba=np.array([3.0, 4.0])),
     "float32_weights": lambda: dict(
         node_count=3, start=np.array([0, 1], dtype=np.int64),
@@ -227,6 +300,8 @@ def test_fallback_domain_matches_oracle_via_original_core():
             continue
         if type(kwargs["node_count"]) is not int:
             continue  # range() would reject; caller error path preserved
+        if kwargs["node_count"] > 10**6:
+            continue  # oracle allocation prohibitive; None refusal pinned above
         try:
             want = original_builder_core(
                 int(kwargs["node_count"]),

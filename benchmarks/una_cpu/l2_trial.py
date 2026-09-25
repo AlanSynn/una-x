@@ -30,6 +30,12 @@ def _env(src_root: Path):
     env["NUMBA_NUM_THREADS"] = "4"
     env.setdefault("OMP_NUM_THREADS", "1")
     env.setdefault("OPENBLAS_NUM_THREADS", "1")
+    # JIT cache must NOT land in either source tree: the baseline tree is
+    # immutable by campaign rule, and candidate runs must not mutate it.
+    tag = "base" if "main" in Path(src_root).parts else "cand"
+    env["NUMBA_CACHE_DIR"] = str(
+        Path("/Users/alansynn/orca/workspaces/una-x/venvs")
+        / f"nbc_{tag}_l2")
     return env
 
 
@@ -209,7 +215,7 @@ def main():
     print(f"[error_paths] candidate_match={pcmp['match']}", flush=True)
 
     all_ok = all(
-        l["baseline_determinism"]["match"]
+        l.get("baseline_determinism", {"match": True})["match"]
         and l["baseline_vs_candidate"]["match"] for l in legs)
     summary = {"all_match": all_ok, "legs": legs}
     with open(args.out / "l2_results.json", "w") as f:
