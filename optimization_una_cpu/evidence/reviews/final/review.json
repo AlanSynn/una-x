@@ -1,0 +1,188 @@
+{
+  "task": "T12",
+  "role": "independent final evidence auditor (pre-merge-rehearsal audit of the whole evidence chain)",
+  "audit_date_utc": "2026-09-26",
+  "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-integration",
+  "branch": "perf/una-cpu-throughput",
+  "head_at_audit": "edd266bef2890ba24fd7c0d662ac4243dd30f041",
+  "auditor_isolation": "read-only; only reviews/final/review.json and review.md written; L0 suite re-executed (sanctioned); no L1/L2/benchmarks re-run",
+  "verdict": "approve_with_notes",
+  "frozen_candidate": {
+    "frozen_source_commits": ["251c670 (freeze record field)", "743c760 (post-review evidence commit)", "f57825d (last src-touching commit)"],
+    "src_blob_identity_verified": "git diff f57825d..HEAD -- src/ empty; git diff 251c670 743c760 -- src/ empty; git diff 743c760..HEAD -- src/ empty (measured)",
+    "freeze_record": "optimization_una_cpu/evidence/freeze/candidate.json",
+    "fork_baseline": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+    "upstream_provenance_sha": "c15ebda6981397f46eed5c2d55229f71e57d44fb (object ABSENT from this clone; blob-level bridge per contract/oracle_bridge.json)"
+  },
+  "verifications_performed": [
+    {
+      "id": "V1",
+      "claim": "freeze blob hashes match the frozen source",
+      "method": "git hash-object on all 6 listed src files at worktree HEAD",
+      "result": "PASS - all 6 hashes equal freeze/candidate.json AND integration/csr/source_manifest.json entries (_ordered_csr 186e82c0, Accessibility 473de486, AccessibilityWElevation dc75e48b, Base 17442082, Topology 26ca999f, UNA f803a536)",
+      "evidence_class": "measured"
+    },
+    {
+      "id": "V2",
+      "claim": "no src/ change after final performance evidence",
+      "method": "git log 98f498e..HEAD -- src/; git diff f57825d..HEAD -- src/",
+      "result": "PASS - only 755c7b8 and f57825d touch src/; diff vs HEAD empty; freeze/final_source_diff.patch is byte-identical to git diff 98f498e..HEAD -- src/ (331 lines, exactly 3 files: 2 modified engines + 1 new helper)",
+      "evidence_class": "measured"
+    },
+    {
+      "id": "V3",
+      "claim": "campaign did not modify the baseline tree",
+      "method": "git -C main status --porcelain; git -C main rev-parse HEAD",
+      "result": "PASS - clean; HEAD == 98f498e5b0ac97b05271d03812fa883b5e4afaba",
+      "evidence_class": "measured"
+    },
+    {
+      "id": "V4",
+      "claim": "stage_model.json medians derive from stage_runs raw",
+      "method": "recomputed medians of stages_ns across base_rep1..5 and cand_rep1..5 stage_profile.json for all 9 stages x 2 arms",
+      "result": "PASS - all 18 medians match stage_model.json exactly (engine_ctor 245379333 ns -> 2240125 ns; saving 243139208 ns exact; speedup recomputed 109.54 vs recorded 109.5); workload counts identical across all 10 raw files",
+      "evidence_class": "measured (independent recompute)"
+    },
+    {
+      "id": "V5",
+      "claim": "selection/final/configuration.json matches raw sessions",
+      "method": "field-by-field comparison against trials/final/runs/*/session.json",
+      "result": "PASS - all 5 runs exact on throughput, batch_wall_ns, max worker phase RSS, jobs done/failed, workers/threads/queue, cpu_budget_check, mem_available, loadavg; medians recompute exactly (cand 4.4444253762134975, base 3.327042007480408 jobs/s); speedup recomputed 1.3358 (recorded 1.336); every cand run beats every base run; 6.14x end-to-end = 4.4444/0.7236 (base 1x1 raw 0.7236)",
+      "evidence_class": "measured (independent recompute)"
+    },
+    {
+      "id": "V6",
+      "claim": "installed wheel sha256s match the actual artifacts",
+      "method": "shasum -a 256 on /tmp/wheels/base and /tmp/wheels/cand (files still present)",
+      "result": "PASS - base 653f6017... and cand 8b944b3c... equal installed/manifest.json; cand hash also equals freeze/candidate.json frozen_wheel; wheel content diff is exactly urban_network_analysis/Engines/_ordered_csr.py added; Requires-Dist identical; Version 2.6.0 both (independently re-unzipped)",
+      "evidence_class": "measured"
+    },
+    {
+      "id": "V7",
+      "claim": "l1_arms_hashes.txt: 18 lines, one SHA per case across the 3 arms",
+      "method": "line count + re-hash of npz artifacts",
+      "result": "PASS - exactly 18 hash lines, 6 cases x 3 arms, identical SHA within each case; re-hashed live artifacts: post-amendment /tmp/l1_arms (incl. int32_realdata 180e4781) matches all 6 recorded SHAs; committed evidence/integration/csr/arms/ npz match the PRE-amendment record (int32_fallback f98b15b7) - see finding F1",
+      "evidence_class": "measured"
+    },
+    {
+      "id": "V8",
+      "claim": "fixture manifests match real files",
+      "method": "sha256 of W1 (bench_work/fixtures) and W3 (/tmp/workloads) geojson files",
+      "result": "PASS - all 8 hashes equal probes/fixtures/manifest.json and trials/l2/manifest.json",
+      "evidence_class": "measured"
+    },
+    {
+      "id": "V9",
+      "claim": "L0 suite green at frozen blobs",
+      "method": "env -u UNA_CANDIDATE_SRC NUMBA_CACHE_DIR=.../nbc_cand campaign python -m pytest tests/perf_contract/test_l0_ordered_csr.py -q",
+      "result": "PASS - 24 passed in 7.66s (matches test_log.txt REVISION and T09 l0_rerun)",
+      "evidence_class": "measured (re-executed)"
+    },
+    {
+      "id": "V10",
+      "claim": "initial sweep table matches raw",
+      "method": "read all 10 runs/<arm>_<W>x<H>/session.json throughput values",
+      "result": "PASS - values match followup_admission.json (base 0.724/1.232/1.912/2.496/2.848; cand 0.925/2.105/3.292/3.580/3.915); 8x1 top for both arms; 12/0 everywhere",
+      "evidence_class": "measured"
+    },
+    {
+      "id": "V11",
+      "claim": "L2 ALL_MATCH and scope_tail not_admitted are internally consistent",
+      "method": "JSON cross-check; arithmetic cross-check of scope-tail Amdahl figures",
+      "result": "PASS - 5 legs all_match incl. error_paths raising identically; init share 0.0098 with cross-check 2560 x 361us ~ 0.92 s vs centrality median 1.0077 s holds; 0 implementation attempts",
+      "evidence_class": "derived from measured records (not re-executed)"
+    },
+    {
+      "id": "V12",
+      "claim": "no overclaim of GPU / real L4 / upstream object provenance / CI",
+      "method": "grep of evidence tree + doc inspection",
+      "result": "PASS - zero GPU mentions in evidence; no L4 measurements claimed (W3 recalibration note only); upstream provenance consistently recorded as blob-level bridge with the commit object explicitly absent; no .github and no CI status claimed anywhere",
+      "evidence_class": "derived"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "minor",
+      "evidence_class": "measured",
+      "title": "Post-amendment L1 raw npz artifacts exist only in volatile /tmp/l1_arms, not committed under evidence/integration/csr/arms/",
+      "detail": "The committed arms/ directory retains the PRE-amendment gate artifacts (int32_fallback npz f98b15b7..., nonfinite_weights logs). The artifacts backing the FROZEN gate (l1_arms_hashes.txt, incl. int32_realdata 180e4781...) were verified by me in /tmp/l1_arms today and match, but /tmp is not durable evidence.",
+      "impact": "Hashes are committed and currently reproducible against /tmp; raw post-amendment artifacts would be lost on tmp reaping.",
+      "recommendation": "Copy /tmp/l1_arms per-case npz+log for the 6 frozen-gate cases into evidence/integration/csr/arms_post_amendment/ (or equivalent) before the merge rehearsal."
+    },
+    {
+      "id": "F2",
+      "severity": "informational",
+      "evidence_class": "derived",
+      "title": "reviews/csr ctor_ab citation (W3 E=15400, 239.9 ms -> 1.96 ms best-of-5) has no committed raw artifact",
+      "detail": "The numbers appear only inside reviews/csr/review.json ('per amendment record'). The committed csr_microbench.json instead shows E=15334: 258.95 ms -> 0.486 ms and E=62023: 3237.7 ms -> 1.968 ms (bit_equal true), so the 1.96 ms figure coincides with the E=62023 row, not the cited E=15400 run. The citation is unreproducible from committed evidence alone.",
+      "impact": "None on the decision: construction-speed evidence of record is the committed, independently recomputed stage_model engine_ctor (245.4 ms -> 2.24 ms) plus csr_microbench.json; the kernel-only numbers are corroborative context, and BENCHMARK_PROTOCOL forbids promoting kernel-only speed anyway.",
+      "recommendation": "Cite csr_microbench.json (committed raw) instead of the uncommitted ctor_ab run, or commit the ctor_ab raw output."
+    },
+    {
+      "id": "F3",
+      "severity": "informational",
+      "evidence_class": "derived",
+      "title": "Frozen-SHA labeling should state blob identity, not a single SHA",
+      "detail": "freeze/candidate.json records frozen_commit 251c670 while T11 evidence references 743c760; both are correct only because src/ is blob-identical across f57825d/251c670/743c760/HEAD (verified by 0-byte diffs). decision.json and merge_manifest.json should carry the blob-hash set (or the patch) as the identity, with the SHA range as provenance.",
+      "impact": "Wording only; hashes themselves verified.",
+      "recommendation": "decision.json: 'src blobs identical to freeze/candidate.json at any commit in 743c760..edd266b'."
+    },
+    {
+      "id": "F4",
+      "severity": "informational",
+      "evidence_class": "measured",
+      "title": "wt-integration working tree not clean at audit time",
+      "detail": "benchmarks/una_cpu/t11_final.sh has an uncommitted mode flip 100644 -> 100755; content byte-identical. No src/ or tests/ file is modified.",
+      "impact": "None on frozen source; hygiene for the merge rehearsal snapshot.",
+      "recommendation": "Commit the mode change or reset it before T14."
+    },
+    {
+      "id": "F5",
+      "severity": "informational",
+      "evidence_class": "derived",
+      "title": "Minor wording drift between installed/manifest.json and wheel_qualification_candidate.json",
+      "detail": "manifest.json says 'about() works'; the qualification record shows \"about\": \"None\" (about() returned None / repr None) while version_metadata == version_package == 2.6.0 passed.",
+      "impact": "Cosmetic; the substantive version-match and path proofs are intact.",
+      "recommendation": "Reword to 'about() callable, returned None; version checks passed'."
+    },
+    {
+      "id": "F6",
+      "severity": "informational",
+      "evidence_class": "derived",
+      "title": "recorded_utc labels remain pre-commit / possibly local-time (carries T09 F2)",
+      "detail": "e.g. selection recorded 23:05Z, installed 23:45Z, freeze 23:50Z precede the cabf313/c29b409 commit times; freeze frozen_utc 23:50Z precedes trials/final recorded 00:25Z next 'day'. All hash-addressed content verified regardless of label skew.",
+      "impact": "None on correctness.",
+      "recommendation": "Note the labeling convention in the merge manifest evidence ledger."
+    }
+  ],
+  "consistency_summary": {
+    "freeze_vs_manifest": "consistent (6/6 blob hashes equal)",
+    "src_freeze": "consistent (no src change after f57825d; patch byte-identical to git diff)",
+    "stage_model_vs_raw": "consistent (18/18 medians exact)",
+    "final_config_vs_raw": "consistent (5/5 runs exact; medians exact; 1.336x at config; 6.14x end-to-end vs base 1x1)",
+    "wheels": "consistent (sha256, content diff, Requires-Dist, version)",
+    "l1_arms": "consistent (18 lines; one SHA per case; live artifacts match)",
+    "fixtures": "consistent (8/8 hashes)",
+    "l2_scope_tail_selection": "consistent",
+    "reviews": "both approve_with_notes; T09 F1 addressed by test_log.txt REVISION at 743c760",
+    "overclaim_scan": "clean"
+  },
+  "unavailable_gates_expected_in_decision_json": [
+    {"gate": "actual_target / L4", "status": "unavailable", "reason": "No unreduced production workload or throughput target was supplied; all performance evidence is the W3_medium_proxy (92x80 / 2560x2560 / 15400 edges) L3 proxy plus installed-wheel qualification. Claim scope must be proxy-qualified, not production-wide."},
+    {"gate": "upstream commit-object provenance", "status": "unavailable", "reason": "c15ebda6981397f46eed5c2d55229f71e57d44fb is not an object in the fork ODB; provenance rests on the blob-level bridge (contract/oracle_bridge.json, 5 audited files matching upstream blob IDs). Must be stated as reconciliation, not git-history descent."},
+    {"gate": "CI / required checks", "status": "unavailable", "reason": "No CI is configured in the fork (no .github workflows) and no CI run exists for any SHA; per DECISION_CONTRACT the merge_ready state therefore cannot be claimed - expect 'qualified'."},
+    {"gate": "merge rehearsal", "status": "unavailable (pending)", "reason": "T12 precedes it; rehearsal outcome is a T14 input."},
+    {"gate": "non-lp64 / non-macOS-arm64 behavior", "status": "unavailable", "reason": "Only macOS arm64 (intp itemsize 8) measured; other platforms fall back by construction (guard returns None) but were not executed."},
+    {"gate": "int32max / 2**60-scale node_count boundaries", "status": "unavailable", "reason": "Admission-side boundary needs tens-of-GB allocations in both paths; refusal side pinned by L0, admission side is code-inspection + review probes only."},
+    {"gate": "GPU", "status": "unavailable / out of scope", "reason": "Excluded by campaign charter; correctly never claimed."},
+    {"gate": "flow-path batch sweep", "status": "unavailable", "reason": "Flow analysis measured via stage model + L2 only; batch sweep covered the accessibility workload (recorded limitation in followup_admission.json scope_note)."},
+    {"gate": "single-sample sequential reference", "status": "limitation", "reason": "The 6.14x end-to-end figure divides by one base_1x1 run (0.7236 jobs/s) from the initial sweep, not an alternating block; the 1.336x at-config figure is the alternating-order measurement of record."}
+  ],
+  "inherited_limitations_to_carry": [
+    "NaN edge weights cause unbounded queue growth in the upstream scope kernel in BOTH trees (integration/csr/nonfinite_weight_hazard.md); outside safe domain, not introduced or masked by the candidate.",
+    "pyarrow is used by Topology._get_gdf but undeclared in package metadata; affects both wheels identically; provisioned explicitly in qualification venvs; upstream follow-up recommended (installed/manifest.json finding).",
+    "Machine shared with unrelated user load (swap 3.4/4 GiB at inventory, loadavg 5-7); absolute numbers are laptop-local; cross-environment transfer not claimed."
+  ],
+  "verdict_rationale": "Every load-bearing claim recomputed from raw artifacts holds exactly: frozen blob hashes, byte-identical freeze patch, untouched baseline, exact stage-model and final-config medians from raw runs, matching wheel hashes and content diff, 18-line arm hash table verified against live artifacts, matching fixture hashes, and a green 24/24 L0 rerun at the frozen blobs. Both prior reviews are approve_with_notes and their findings were addressed (F1 log refresh) or remain non-blocking notes. All findings here are evidence hygiene or wording; none touches source semantics, numerical behavior, or the measured performance result. Approve the evidence chain for the merge rehearsal, conditional on the listed unavailable gates being carried verbatim into decision.json."
+}
