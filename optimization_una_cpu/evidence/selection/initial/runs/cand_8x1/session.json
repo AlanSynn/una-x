@@ -1,0 +1,68 @@
+{
+ "mode": "batch",
+ "workers": 8,
+ "threads": 1,
+ "queue": 8,
+ "jobs": 12,
+ "jobs_done": 12,
+ "jobs_failed": 0,
+ "batch_wall_ns": 3065003042,
+ "throughput_jobs_per_s": 3.9151674029562025,
+ "worker_exits": {
+  "6": {
+   "type": "worker_exit",
+   "worker_id": 6,
+   "phase_peak_rss_bytes": 316997632
+  },
+  "0": {
+   "type": "worker_exit",
+   "worker_id": 0,
+   "phase_peak_rss_bytes": 317194240
+  },
+  "4": {
+   "type": "worker_exit",
+   "worker_id": 4,
+   "phase_peak_rss_bytes": 318029824
+  },
+  "7": {
+   "type": "worker_exit",
+   "worker_id": 7,
+   "phase_peak_rss_bytes": 317063168
+  },
+  "3": {
+   "type": "worker_exit",
+   "worker_id": 3,
+   "phase_peak_rss_bytes": 315408384
+  },
+  "5": {
+   "type": "worker_exit",
+   "worker_id": 5,
+   "phase_peak_rss_bytes": 318783488
+  },
+  "2": {
+   "type": "worker_exit",
+   "worker_id": 2,
+   "phase_peak_rss_bytes": 315998208
+  },
+  "1": {
+   "type": "worker_exit",
+   "worker_id": 1,
+   "phase_peak_rss_bytes": 316817408
+  }
+ },
+ "cpu_budget_check": {
+  "admitted_C": 8,
+  "workers_x_threads": 8,
+  "within_budget": true
+ },
+ "resource_at_end": {
+  "loadavg": [
+   6.84521484375,
+   4.8544921875,
+   4.27587890625
+  ],
+  "mem_total_bytes": 17179869184,
+  "mem_available_bytes": 6344998912,
+  "cpu_percent_interval": 18.3
+ }
+}

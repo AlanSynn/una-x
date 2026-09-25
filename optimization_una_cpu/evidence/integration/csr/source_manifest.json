@@ -1,46 +1,52 @@
 {
   "task": "T03",
   "recorded_utc": "2026-09-25T16:40:00Z",
+  "hash_revision_utc": "2026-09-25T19:30:00Z",
   "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-integration",
   "branch": "perf/una-cpu-throughput",
+  "head_commit": "f57825d",
   "fork_baseline_commit": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
   "upstream_provenance_commit": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
-  "change_class": "guarded order-preserving CSR construction (candidate packet patch, verbatim logic)",
+  "change_class": "guarded order-preserving CSR construction (candidate packet patch, plus a measured int32-upcast guard amendment at f57825d)",
   "candidate_files": {
     "src/urban_network_analysis/Engines/_ordered_csr.py": {
       "status": "new",
-      "sha256_git_blob": "98504c2db622774e59903c19e760cec84b3e1fbc",
-      "origin": "supplied candidate patch prior/una_optimization/patches/ordered_csr.py (verbatim)"
+      "sha256_git_blob": "186e82c0ddb612eae0a5550e5e0b06cf4f16785d",
+      "origin": "supplied candidate patch prior/una_optimization/patches/ordered_csr.py with the guard amendment of commit f57825d (int32 endpoints admitted via exact value-preserving upcast; measured motivation: real topologies carry int32 endpoints, so the pre-amendment int64-only guard silently fell back to the original builder on genuine data)",
+      "prior_recorded_blob": "98504c2db622774e59903c19e760cec84b3e1fbc",
+      "prior_recorded_blob_note": "blob as first integrated at 755c7b8, before the f57825d amendment"
     },
     "src/urban_network_analysis/Engines/Accessibility.py": {
       "status": "modified",
       "sha256_git_blob": "473de486e5573992aba5079f3c8ac80668e61aa0",
-      "baseline_blob": "246fe439591379038c5e73d0388f0720726213e9"
+      "baseline_blob": "246fe439591379038c5e73d0388f0720726213e9",
+      "unchanged_since_first_record": true
     },
     "src/urban_network_analysis/Engines/AccessibilityWElevation.py": {
       "status": "modified",
       "sha256_git_blob": "dc75e48baf92817028a749a15778c6308e41c44f",
-      "baseline_blob": "69061684380ffa9d890b75804bbcd3b4642eae90"
+      "baseline_blob": "69061684380ffa9d890b75804bbcd3b4642eae90",
+      "unchanged_since_first_record": true
     }
   },
   "verification_files": {
-    "tests/perf_contract/test_l0_ordered_csr.py": "6ccc03ddbf9a1d3a61f07ed7e3ecaf6835e97fe4",
-    "tests/perf_contract/test_l1_engine_arms.py": "188f332ec03fd1c87d983e2e0da5256b2c83cb64",
-    "tests/perf_contract/_arm_runner.py": "eddc8f34fd69a0853495e67f1f1cbbcf00566474",
+    "tests/perf_contract/test_l0_ordered_csr.py": "90ba34f6153f6690c516111899ef55afdd0dfd53",
+    "tests/perf_contract/test_l1_engine_arms.py": "8a059ad041c1c64375e00cb8407e791ba13eb3d4",
+    "tests/perf_contract/_arm_runner.py": "192997d1345924748a99ce2e14b0156586d68ba9",
     "tests/perf_contract/_stage_probe.py": "df843236e7ee3345c0f3760da5897f7c7691d6fc",
     "tests/perf_contract/ref_original_csr.py": "84ba8320c120add1e572068fcf74576f85a03f5a",
     "tests/perf_contract/stub_topology.py": "09d39ffc7989f2b8756e0d34d731367434480dac",
-    "benchmarks/una_cpu/l2_trial.py": "9797e842b21c44af1b75ec7a3ef5372bf7e916a2",
+    "benchmarks/una_cpu/l2_trial.py": "20605ce084ec5f29c7ae97b1c15cc3bb03f3fcb9",
     "benchmarks/una_cpu/l2_error_probe.py": "e178137768df04d89df098577fabc31304822745",
     "benchmarks/una_cpu/workload_gen.py": "fd37e67de72f869a155600befca97fb3b108c941",
     "benchmarks/una_cpu/profile_stages.py": "3d1986f217d39207b437a6e3c4fdc83e9d215025",
     "benchmarks/una_cpu/csr_microbench.py": "0e96297882822b6fb72332ba8bbeae414f48df58"
   },
-  "hash_revision_note": "test_l1_engine_arms.py and _arm_runner.py re-hashed after the per-case subprocess redesign that followed the two SIGKILL terminations (see nonfinite_weight_hazard.md); correction surfaced by the T04 independent review. Engine source hashes are unchanged since first record.",
+  "hash_revision_note": "Re-hash after amendment commit f57825d and the per-case subprocess redesign of the L1 harness that followed the two SIGKILL terminations (see nonfinite_weight_hazard.md). Corrections surfaced by the T04 independent review; prior values were 98504c2d (_ordered_csr.py, pre-amendment), 6ccc03dd (test_l0), 188f332e (test_l1), eddc8f34 (_arm_runner). Engine source hashes verified unchanged since first record. test_l0 hash additionally moved with the int32 test extensions accompanying the amendment; l2_trial.py hash moved with the error_paths summary-key fix.",
   "engine_diff_patch": "optimization_una_cpu/evidence/integration/csr/engine_diff.patch",
   "integration_shape": {
     "both_engines": "CSR block replaced by _try_build_ordered_csr(...) call; on None the original O(V*E) count+fill loops execute unchanged; adjacency/matrix fields assigned conditionally",
-    "guard_domain": "1-D exact ndarray, int64 endpoints, float64 weights, equal lengths, node_count plain int, intp itemsize 8, endpoints within [0, node_count), edge_count <= intp_max//2; only MemoryError caught",
+    "guard_domain": "1-D exact ndarray endpoints in {int64, int32 with node_count <= int32max}, float64 weights, equal lengths, node_count plain int, intp itemsize 8, endpoints within [0, node_count), edge_count <= min(intp_max, int64_max)//2; only MemoryError caught",
     "fallback_preserved": "original builder code retained verbatim under `if ordered_csr is None:`"
   },
   "notes": [

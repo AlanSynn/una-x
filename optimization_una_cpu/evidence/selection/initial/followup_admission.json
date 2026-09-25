@@ -1,0 +1,113 @@
+{
+ "task": "T07",
+ "recorded_utc": "2026-09-25T23:05:00Z",
+ "evidence_class": "measured (one 12-job batch run per arm per config; per-job walls tight within runs, see raw.jsonl)",
+ "throughput_table": {
+  "1x1": {
+   "base": {
+    "throughput_jobs_per_s": 0.724,
+    "batch_wall_s": 16.583,
+    "jobs_done": 12,
+    "jobs_failed": 0,
+    "max_worker_phase_rss_bytes": 351748096,
+    "within_budget": true
+   },
+   "cand": {
+    "throughput_jobs_per_s": 0.925,
+    "batch_wall_s": 12.974,
+    "jobs_done": 12,
+    "jobs_failed": 0,
+    "max_worker_phase_rss_bytes": 346669056,
+    "within_budget": true
+   }
+  },
+  "1x8": {
+   "base": {
+    "throughput_jobs_per_s": 1.232,
+    "batch_wall_s": 9.737,
+    "jobs_done": 12,
+    "jobs_failed": 0,
+    "max_worker_phase_rss_bytes": 352174080,
+    "within_budget": true
+   },
+   "cand": {
+    "throughput_jobs_per_s": 2.105,
+    "batch_wall_s": 5.701,
+    "jobs_done": 12,
+    "jobs_failed": 0,
+    "max_worker_phase_rss_bytes": 348225536,
+    "within_budget": true
+   }
+  },
+  "2x4": {
+   "base": {
+    "throughput_jobs_per_s": 1.912,
+    "batch_wall_s": 6.275,
+    "jobs_done": 12,
+    "jobs_failed": 0,
+    "max_worker_phase_rss_bytes": 352878592,
+    "within_budget": true
+   },
+   "cand": {
+    "throughput_jobs_per_s": 3.292,
+    "batch_wall_s": 3.645,
+    "jobs_done": 12,
+    "jobs_failed": 0,
+    "max_worker_phase_rss_bytes": 350928896,
+    "within_budget": true
+   }
+  },
+  "4x2": {
+   "base": {
+    "throughput_jobs_per_s": 2.496,
+    "batch_wall_s": 4.808,
+    "jobs_done": 12,
+    "jobs_failed": 0,
+    "max_worker_phase_rss_bytes": 345964544,
+    "within_budget": true
+   },
+   "cand": {
+    "throughput_jobs_per_s": 3.58,
+    "batch_wall_s": 3.352,
+    "jobs_done": 12,
+    "jobs_failed": 0,
+    "max_worker_phase_rss_bytes": 344915968,
+    "within_budget": true
+   }
+  },
+  "8x1": {
+   "base": {
+    "throughput_jobs_per_s": 2.848,
+    "batch_wall_s": 4.214,
+    "jobs_done": 12,
+    "jobs_failed": 0,
+    "max_worker_phase_rss_bytes": 352780288,
+    "within_budget": true
+   },
+   "cand": {
+    "throughput_jobs_per_s": 3.915,
+    "batch_wall_s": 3.065,
+    "jobs_done": 12,
+    "jobs_failed": 0,
+    "max_worker_phase_rss_bytes": 318783488,
+    "within_budget": true
+   }
+  }
+ },
+ "raw": "runs/<arm>_<W>x<H>/{session.json,raw.jsonl,workers.json}",
+ "reading": {
+  "monotone_in_workers": "throughput rises with worker count at fixed budget for both arms",
+  "threads_vs_workers": "at equal W*H, more workers with fewer threads wins (8x1 > 4x2 > 2x4 > 1x8 on candidate): the kernel mix is dominated by per-origin Dijkstra without intra-job numba parallelism at this workload scale",
+  "wave_packing_note": "12 jobs / 8 workers leaves the second wave 4/8 packed; 4x2 packs 3 full waves of 4 - and 8x1 still wins, so the choice is not a packing artifact",
+  "memory": "max worker phase RSS ~350 MB across all configs; 8x1 shows NO memory regression (319 MB)"
+ },
+ "selected": {
+  "workers": 8,
+  "threads": 1,
+  "queue": 8,
+  "analysis": "accessibility",
+  "workload": "W3_medium_proxy"
+ },
+ "selected_rationale": "highest measured throughput on both arms (cand 3.915, base 2.848 jobs/s), within budget (8*1=8<=8), no memory regression; final alternating-order confirmation follows in T11 before freeze",
+ "scope_note": "selection is for THIS campaign's admitted workloads regime (W3 accessibility); flow path measured only via stage model + L2 scope, not batch-swept (recorded as a limitation)"
+}

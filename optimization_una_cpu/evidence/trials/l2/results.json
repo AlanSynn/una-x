@@ -1,0 +1,118 @@
+{
+ "all_match": true,
+ "legs": [
+  {
+   "leg": "accessibility_w1",
+   "analysis": "accessibility",
+   "overrides": null,
+   "baseline_determinism": {
+    "match": true,
+    "detail": null
+   },
+   "baseline_vs_candidate": {
+    "match": true,
+    "artifact_diffs": [],
+    "state_diffs": [],
+    "n_files_compared": 3
+   },
+   "baseline_state": {
+    "reach_len": 14,
+    "edge_flow_len": null,
+    "resolved_gravity_cap": null
+   },
+   "n_artifacts": 3
+  },
+  {
+   "leg": "accessibility_w1_noelev",
+   "analysis": "accessibility",
+   "overrides": {
+    "elevation": false
+   },
+   "baseline_determinism": {
+    "match": true,
+    "detail": null
+   },
+   "baseline_vs_candidate": {
+    "match": true,
+    "artifact_diffs": [],
+    "state_diffs": [],
+    "n_files_compared": 3
+   },
+   "baseline_state": {
+    "reach_len": 14,
+    "edge_flow_len": null,
+    "resolved_gravity_cap": null
+   },
+   "n_artifacts": 3
+  },
+  {
+   "leg": "flow_w1_gravitycap",
+   "analysis": "flow",
+   "overrides": null,
+   "baseline_determinism": {
+    "match": true,
+    "detail": null
+   },
+   "baseline_vs_candidate": {
+    "match": true,
+    "artifact_diffs": [],
+    "state_diffs": [],
+    "n_files_compared": 3
+   },
+   "baseline_state": {
+    "reach_len": null,
+    "edge_flow_len": 150,
+    "resolved_gravity_cap": {
+     "spec": "p95",
+     "used": "p95",
+     "value": 12.9808,
+     "metric": "gravity_exponential",
+     "n_origins": 14
+    }
+   },
+   "n_artifacts": 3
+  },
+  {
+   "leg": "odm_w1",
+   "analysis": "odm",
+   "baseline_determinism": {
+    "match": true
+   },
+   "baseline_vs_candidate": {
+    "match": true,
+    "artifact_diffs": [],
+    "state_diffs": [],
+    "n_files_compared": 1
+   },
+   "n_artifacts": 1
+  },
+  {
+   "leg": "error_paths",
+   "baseline_vs_candidate": {
+    "match": true,
+    "cases": [
+     "crs_mismatch",
+     "missing_network",
+     "polygon_network"
+    ]
+   },
+   "baseline_cases": {
+    "missing_network": {
+     "raised": true,
+     "type": "FileNotFoundError",
+     "message": "Network file not found: /Users/alansynn/orca/workspaces/una-x/bench_work/fixtures/W1_small_genuine/does_not_exist.geojson"
+    },
+    "crs_mismatch": {
+     "raised": true,
+     "type": "FileNotFoundError",
+     "message": "Destinations file not found: /Users/alansynn/orca/workspaces/una-x/bench_work/fixtures/W1_small_genuine/bad_crs_destinations.geojson"
+    },
+    "polygon_network": {
+     "raised": true,
+     "type": "FileNotFoundError",
+     "message": "Network file not found: /Users/alansynn/orca/workspaces/una-x/bench_work/fixtures/W1_small_genuine/polygon_network.geojson"
+    }
+   }
+  }
+ ]
+}

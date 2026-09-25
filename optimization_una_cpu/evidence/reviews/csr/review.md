@@ -167,3 +167,112 @@ both trees; the candidate only changes construction upstream of the kernel.
 - This summary: `optimization_una_cpu/evidence/reviews/csr/review.md`
 - Reviewer differential harness (throwaway, outside both trees):
   `/tmp/csr_review_pkt/adv_diff.py`
+
+---
+
+# Amendment re-review: commit `f57825d` (int32 endpoint admission)
+
+- Amended file: `src/urban_network_analysis/Engines/_ordered_csr.py`
+  (blob `186e82c0...`; pre-amendment `98504c2d...`)
+- Diff scope verified: helper changes are confined to the endpoint dtype branch
+  (int64 pair unchanged; int32 pair admitted iff `node_count <= int32max` with a
+  single exact `astype(np.int64)`; everything else refused) plus `start_i64`/
+  `end_i64` renames. Sort/gather/return logic byte-identical. Companions: int32
+  L0 cases, `int32_realdata` L1 rename, manifest hash corrections, benchmark probes.
+
+## Amendment verdict: approve_with_notes
+
+## 1. Upcast exactness — PASS
+
+The original builder emits int64 neighbors from ANY signed integer endpoint
+dtype: its output step is `np.array(python_list, dtype=np.int64)`, which widens
+each endpoint scalar exactly (`int32 -> int64` is bijective). So output dtype
+was already int64 for int32 inputs and the values are exactly the int32 values.
+The candidate's whole-array `astype(np.int64)` is elementwise-exact, commutes
+with the stable gather (`(A.astype(int64))[order] == A[order].astype(int64)`),
+and `bincount`/pointer/range checks depend only on values, which the upcast
+preserves; ordering logic is dtype-independent. Hence `candidate(int32) ==
+original(int32)` bit-for-bit across the whole admitted domain.
+
+Empirically: 400-case direct verification of the widening claim itself —
+`oracle(raw int32) == oracle(int64-cast)` including dtypes and bytes. This
+closes the one implicit dependency of the new L0, which compares
+candidate(int32) against oracle(pre-upcast) inputs. Plus candidate(int32) vs
+oracle(raw int32) on: 85 exhaustive 2-node int32 multigraphs, reciprocal-edge
+interleavings in both orders (hand-checked), aliased `start is end` self-loops,
+aliased ab/ba weights, strided and negative-stride views, read-only arrays
+(unmutated; outputs owndata/writable), and empty int32 arrays at node_count
+0/1/5. All bit-exact.
+
+## 2. The `node_count <= int32max` boundary — PASS (conservative, not minimal)
+
+Safe and defensible. Exactness alone would not require any node_count bound:
+the endpoint range check (`max < node_count`) is dtype-independent and the
+upcast is exact regardless of node_count; int32 inputs with node_count in
+`(int32max, intp_max]` would also be output-identical. The bound therefore only
+routes an academically unreachable regime (node_count > 2^31 implies a real
+node_points array of tens of GB) to the identical-output fallback. The boundary
+is inclusive at int32max (admitted; L0 pins refusal at int32max+1, re-probed
+here — it refuses in the dtype branch before any allocation). A tidy side
+effect: inside the admitted int32 domain the baseline's per-node
+`start_nodes == node` python-int comparisons stay within int32-representable
+values. Untestable corner: admitted configs near node_count == int32max need
+>= 17GB for pointer/bincount in BOTH paths — equivalent resource behavior;
+refusal-side checks are cheap and pinned.
+
+## 3. What the new L0 misses — covered by this review's probes
+
+New L0 covers int32 random graphs (dtype+byte asserts), upcast fidelity at
+1e6-scale values, read-only int32, and refusals for int16/uint32/mixed
+int32+int64/int32-out-of-range/node_count>int32max. Gaps I probed directly:
+int8/uint8/uint16/big-endian `>i4` (same exact-dtype refusal — all refused),
+mixed dtype in the opposite direction (int64 start + int32 end — refused),
+negative int32 endpoints (refuse before allocation; the original's silent-drop
+behavior for negatives is preserved by the verbatim fallback), int32 layout
+variants (strided/negative-stride/aliased/empty — all exact), and the
+oracle-level widening check above. Note: `test_fallback_domain_matches_oracle_`
+`via_original_core` now skips node_count > 10**6, so the int32max+1 case has
+its None refusal pinned but no oracle-equality check — acceptable, the fallback
+is baseline code verbatim.
+
+## 4. Resource window (note only)
+
+The int32->int64 `astype` copies run in the guard section, BEFORE the
+`try/except MemoryError`; an OOM during upcast would propagate instead of
+falling back. Transient cost is 16 bytes/edge versus the fallback's 40-70+
+bytes/edge of Python-list growth — no realistic regression; same theoretical
+class as the base review's OOM caveat. No change required.
+
+## Amendment L0 rerun
+
+```
+cd /Users/alansynn/orca/workspaces/una-x/wt-integration && \
+/Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python -m pytest \
+  tests/perf_contract/test_l0_ordered_csr.py
+=> 24 passed in 7.49s  (matches the amendment's recorded evidence)
+```
+
+L1 (12 passed, 18 fresh arms, `int32_realdata` now fast-path and bit-identical),
+L2 ALL_MATCH, and the ctor A/B (W3, E=15400: 239.9 ms -> 1.96 ms best-of-5) are
+cited from the amendment record, not re-executed, per review brief.
+
+## Amendment notes (non-blocking)
+
+1. **Manifest staleness reintroduced.** At `f57825d`, `source_manifest.json`
+   still records `_ordered_csr.py` blob `98504c2d...` (actual `186e82c0...`),
+   `test_l0_ordered_csr.py` `6ccc03dd...` (actual `90ba34f6...`),
+   `test_l1_engine_arms.py` `188f332e...` (actual `8a059ad0...`), and
+   `_arm_runner.py` `eddc8f34...` (actual `192997d1...`) — all four files this
+   very commit modified, in the same commit that added `hash_revision_note`
+   correcting the two previously flagged. The `candidate_files` origin note
+   "supplied candidate patch (verbatim)" is also no longer accurate: the helper
+   now intentionally diverges from the packet. Recommend re-hashing all four
+   and rewording the origin (e.g., "packet patch + reviewed amendment
+   f57825d").
+2. Base-review provenance notes that remain accurate: packet-patch mechanics
+   (malformed final newline, LF vs CRLF) and the ValueError-above-2**60
+   exception-parity nuance (the astype sits upstream of those allocations; the
+   admitted/refused domains are otherwise unchanged).
+3. Worktree: untracked `optimization_una_cpu/evidence/probes/fixtures/` and
+   `optimization_una_cpu/evidence/trials/l2/` exist at review time (probe/L2
+   outputs not yet committed).

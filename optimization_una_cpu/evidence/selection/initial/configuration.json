@@ -1,0 +1,46 @@
+{
+  "task": "T07",
+  "recorded_utc": "2026-09-25T23:05:00Z",
+  "evidence_class": "measured (raw session.json/raw.jsonl per run retained under runs/; stage profiles under stage_runs/)",
+  "machine_lease": {
+    "policy": "exclusive while sweeping; operator parked heavy work",
+    "loadavg_before_each_run": "recorded in runs/*.log and stage_runs/driver.log lease lines",
+    "mem_free_percent_range_observed": "67-69%"
+  },
+  "arms": {
+    "candidate_source": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src (branch perf/una-cpu-throughput, HEAD f57825d)",
+    "baseline_source": "/Users/alansynn/orca/workspaces/una-x/main/src (fork baseline 98f498e, clean, no _ordered_csr.py)",
+    "import_path_assert": "profile_stages asserts import under the declared src root; batch workers.json records una_pkg.__file__ per worker (spot-verified base_8x1 -> main/src, cand runs -> wt-integration/src)"
+  },
+  "workload": {
+    "name": "W3_medium_proxy",
+    "analysis": "accessibility",
+    "fixture_dir": "/tmp/workloads/W3_medium_proxy",
+    "manifest_sha256s": "see /tmp/workloads/W3_medium_proxy/manifest.json (network 345e172a...); counts: 15400 network edges, 2560 origins, 2560 destinations, graph 7360 nodes / 30800 directed incidences",
+    "recalibration_note": "W3 resized 46x40/320/640 -> 92x80/2560/2560 BEFORE any recorded L3/L4 measurement so a job is ~1.6 s baseline (documented in workload_gen.py)"
+  },
+  "sweep_protocol": {
+    "mode": "batch (spawn-style persistent workers, bounded queue, warm-up excluded from timed window)",
+    "configs": [[1, 1], [1, 8], [2, 4], [4, 2], [8, 1]],
+    "workers_x_threads_budget": "sum <= C=8 (preregistered; 2 E-cores excluded)",
+    "jobs_per_config": 12,
+    "queue": 8,
+    "order": "candidate then baseline per config; 8x1 last (highest potential memory pressure)",
+    "timed_window": "dispatch-through-last-result; producers block on the bounded queue so dispatch is included",
+    "jits_caches": "NUMBA_CACHE_DIR routed to venvs/nbc_cand and venvs/nbc_base; never into either source tree"
+  },
+  "harness_files": {
+    "benchmarks/una_cpu/runner.py": "a8bb62c859e62d385f3f892071fc0074332fb294",
+    "benchmarks/una_cpu/batch_worker.py": "d5f947cccbcfb3f02068de775b2d987366f751fe",
+    "benchmarks/una_cpu/job.py": "d28252a51c2970365aa9a848a29ef0fb071b7b06",
+    "benchmarks/una_cpu/profile_stages.py": "3d1986f217d39207b437a6e3c4fdc83e9d215025",
+    "benchmarks/una_cpu/t07_sweep.sh": "55ef3e649d4b1423475a789b5a73776d6159903c",
+    "benchmarks/una_cpu/t07_part3.sh": "4bfd70072af25236540f29e50772ce1772ef0496"
+  },
+  "harness_incidents": [
+    "Incident 1 (fixed pre-evidence): spawn workers died on import - sys.path is fixed at interpreter start so a PYTHONPATH set inside _worker_entry was invisible; fixed by explicit sys.path insertion + fail-fast readiness barrier.",
+    "Incident 2 (fixed pre-evidence): base_2x4 first attempt - concurrent workers raced writing ONE shared warm-up GeoJSON; GDAL cannot overwrite an existing dataset so the loser died DataSourceError. Fixed with per-worker warm-up dirs. The failed attempt's runner then hung in multiprocessing's atexit join of the surviving worker; fixed by terminating workers on any barrier/collection exception. Rerun completed 12/0 (tput 1.912).",
+    "Incident 3 (operator): stage-model part 1 of the first sweep attempted before the W3 fixture existed (runner generates fixtures, profile_stages does not) - all 10 stage runs failed fast with FileNotFoundError and were rerun in part 3 after fixtures existed. Failed attempt logs retained in stage_runs/driver.log.",
+    "No measurement above was taken while any incident was active; each affected run was rerun clean."
+  ]
+}

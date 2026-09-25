@@ -1,0 +1,42 @@
+{
+ "task": "T06",
+ "recorded": "2026-09-25",
+ "baseline_src": "/Users/alansynn/orca/workspaces/una-x/main/src (fork baseline 98f498e, blob-verified vs upstream c15ebda)",
+ "candidate_src": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src @ f57825d",
+ "fixture": "W1_small_genuine",
+ "fixture_sha256": {
+  "destinations.geojson": "12a097532b06482e8d66cf52bbdf318ea41a21445f2254b4c017921a2f3e9e35",
+  "network.geojson": "69e29a7f0068290fa983513310e8653bfa2127aaa5f8fd703c8fb5461bd25aeb",
+  "obstacles.geojson": "6bafcfc7bbe4c6908a06a9713d95a49177944f1e600156f17b0460105ff57351",
+  "origins.geojson": "fe2ffd35eb030d2b0fbad14003c9c082b60635205419e4bbfb99a32b7ee2d98d"
+ },
+ "legs": {
+  "accessibility_w1": {
+   "determinism": true,
+   "candidate_match": true,
+   "n_artifacts": 3
+  },
+  "accessibility_w1_noelev": {
+   "determinism": true,
+   "candidate_match": true,
+   "n_artifacts": 3
+  },
+  "flow_w1_gravitycap": {
+   "determinism": true,
+   "candidate_match": true,
+   "n_artifacts": 3
+  },
+  "odm_w1": {
+   "determinism": true,
+   "candidate_match": true,
+   "n_artifacts": 1
+  },
+  "error_paths": {
+   "determinism": true,
+   "candidate_match": true,
+   "n_artifacts": null
+  }
+ },
+ "all_match": true,
+ "artifact_hash_normalization": "leading timestamped output-policy folder stripped; file contents compared by sha256"
+}

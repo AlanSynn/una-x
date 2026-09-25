@@ -67,6 +67,64 @@
     "command": "cd /Users/alansynn/orca/workspaces/una-x/wt-integration && /Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python -m pytest tests/perf_contract/test_l0_ordered_csr.py -v",
     "result": "17 passed in 0.14s (matches recorded evidence)"
   },
+  "amendment_review": {
+    "reviewed_commit": "f57825d",
+    "reviewed_commit_title": "Amend CSR guard: admit int32 endpoints via exact upcast",
+    "amended_file": "src/urban_network_analysis/Engines/_ordered_csr.py (git blob 186e82c0ddb612eae0a5550e5e0b06cf4f16785d; pre-amendment 98504c2db622774e59903c19e760cec84b3e1fbc)",
+    "diff_scope_verified": "helper diff confined to the endpoint dtype branch (int64 pair admitted unchanged; int32 pair admitted iff node_count <= int32max, upcast via astype(np.int64) once; everything else refused) plus start_i64/end_i64 renames through the size/range checks and try block; the sort/gather/return logic is byte-for-byte unchanged. Companion changes: int32 L0 cases, int32_realdata L1 case rename, corrected/new manifest hashes, benchmark probes.",
+    "verdict": "approve_with_notes",
+    "dimensions": {
+      "upcast_exactness": {
+        "result": "pass",
+        "argument": "The original builder emits int64 neighbors from ANY signed integer endpoint dtype: its output conversion np.array(python_list, dtype=np.int64) widens each endpoint scalar exactly (int32 -> int64 is bijective), so output dtype was already int64 and values are exactly the int32 values. The candidate's whole-array astype(np.int64) is elementwise-exact, commutes with the stable gather ((A.astype(int64))[order] == A[order].astype(int64)), and bincount/pointer/range checks depend only on values, which the upcast preserves. Ordering logic is dtype-independent. Therefore candidate(int32) == original(int32) bit-for-bit on the whole admitted domain.",
+        "empirical": [
+          "Direct verification of the widening claim itself (which the new L0 relies on implicitly, since it compares candidate(int32) against oracle(pre-upcast) inputs): oracle(raw int32 inputs) == oracle(int64-cast inputs) on 400 random graphs, dtype and bytes",
+          "candidate(int32) vs oracle(raw int32): 85 exhaustive 2-node int32 multigraphs (<=3 edges), reciprocal-edge interleavings in both edge orders hand-checked, aliased start==end self-loops, aliased ab/ba weights, strided views, negative strides, read-only arrays (unmutated, outputs owndata/writable), empty int32 arrays at node_count 0/1/5",
+          "campaign L1 int32_realdata (cited, not re-run) exercises the fast path end-to-end with bit-identical arms"
+        ]
+      },
+      "boundary_choice": {
+        "result": "pass_with_note",
+        "analysis": "The node_count <= int32max bound is safe and defensible but conservative, not the maximal admissible domain. Exactness would hold for any node_count: the endpoint range check (max < node_count) is what keeps values valid and is dtype-independent, and the upcast is exact regardless of node_count. The bound's only effect is that int32 inputs with node_count in (int32max, intp_max] take the fallback, which produces identical output. Inclusive boundary: node_count == int32max is admitted; refusal at int32max+1 is pinned by L0 and re-probed here. Side benefit: within the admitted int32 domain, node_count <= int32max keeps the baseline's per-node `start_nodes == node` python-int comparisons within int32-representable values (not required for equivalence, but tidy). Untestable corner: admitted configs with node_count near int32max need >= 17GB for pointer/bincount in BOTH paths (equivalent resource behavior; L0 cannot execute them; refusal-side boundary checks are cheap and pinned)."
+      },
+      "l0_gaps": {
+        "result": "pass_with_note",
+        "covered_by_new_l0": "int32 random graphs with dtype+byte asserts; upcast fidelity at 1e6-scale values; read-only int32; refusals int16/uint32/mixed int32+int64/int32-out-of-range/node_count>int32max",
+        "missed_by_new_l0_closed_by_this_review": [
+          "other integer dtypes sharing the exact-dtype refusal mechanism (int8, uint8, uint16, big-endian '>i4') - all refused as expected",
+          "mixed dtype in the opposite direction (int64 start + int32 end) - refused",
+          "int32 layout variants: strided views, negative strides, aliased arrays, empty arrays - all exact vs oracle",
+          "direct oracle-level verification of the widening claim (see upcast_exactness)",
+          "negative int32 endpoints (min < 0) refuse before any allocation; the original's silent-drop behavior for negatives is preserved by the verbatim fallback"
+        ],
+        "note": "test_fallback_domain_matches_oracle_via_original_core now skips node_count > 10**6, so the int32max+1 refused case has its None refusal pinned but no oracle-equality check. Acceptable: the fallback is baseline code verbatim."
+      },
+      "resource_window": {
+        "result": "note_only",
+        "analysis": "The int32->int64 astype copies execute in the guard section BEFORE the try/except MemoryError, so an OOM during upcast would propagate instead of falling back. Transient cost is 16 bytes/edge; the fallback needs 40-70+ bytes/edge of Python-list growth, so there is no realistic regression - same theoretical class as the base review's OOM caveat. No change required."
+      }
+    },
+    "counterexamples_attempted": [
+      {"case": "oracle widening divergence: oracle(raw int32) vs oracle(int64-cast), 400 random graphs", "outcome": "FAILED to break (bit-identical incl. dtype)"},
+      {"case": "85 exhaustive int32 2-node multigraphs + reciprocal interleavings both orders with hand-computed rows", "outcome": "FAILED to break (one initial hand-expectation error in my own harness was corrected; oracle comparisons passed throughout)"},
+      {"case": "int32 strided/negative-stride/aliased/read-only/empty layouts with mutation and ownership checks", "outcome": "FAILED to break"},
+      {"case": "refusal-boundary probes: int8/uint8/uint16/uint32/'>i4'/mixed both directions/negative int32/int32 oob/nc=int32max+1/nc=int32max with oob endpoint/np.int64 node_count", "outcome": "All refused correctly; refusals allocate nothing (verified nc=int32max+1 refuses in the dtype branch before pointer/bincount)"}
+    ],
+    "l0_rerun": {
+      "command": "cd /Users/alansynn/orca/workspaces/una-x/wt-integration && /Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python -m pytest tests/perf_contract/test_l0_ordered_csr.py",
+      "result": "24 passed in 7.49s (matches the amendment's recorded evidence)"
+    },
+    "cited_not_rerun": {
+      "l1": "12 passed, 18 fresh arms, int32_realdata now fast-path and bit-identical (per amendment record)",
+      "l2": "ALL_MATCH re-run on genuine public-API legs (per amendment record)",
+      "ctor_ab": "W3 E=15400 in-engine builder A/B 239.9ms -> 1.96ms best-of-5 (per amendment record; not re-executed per review brief)"
+    },
+    "notes": [
+      "MANIFEST STALENESS REINTRODUCED (non-blocking): at f57825d, source_manifest.json still records _ordered_csr.py blob 98504c2d... (actual 186e82c0...), test_l0_ordered_csr.py 6ccc03dd... (actual 90ba34f6...), test_l1_engine_arms.py 188f332e... (actual 8a059ad0...), and _arm_runner.py eddc8f34... (actual 192997d1...) - i.e., all four files this commit modified are stale in the same commit that added hash_revision_note correcting the two previously flagged. Additionally the candidate_files origin note 'supplied candidate patch (verbatim)' is no longer accurate: the helper now intentionally diverges from the packet by the int32 admission. Recommend re-hashing all four and rewording the origin note (e.g., 'packet patch + reviewed amendment f57825d').",
+      "Base-review provenance notes that remain accurate: packet patch mechanics (malformed final newline, LF vs CRLF) and the ValueError-above-2**60 exception-parity nuance (unchanged by this amendment: the astype is upstream of those allocations and the refused/admitted domains are otherwise identical).",
+      "Worktree: untracked optimization_una_cpu/evidence/probes/fixtures/ and optimization_una_cpu/evidence/trials/l2/ exist at review time (probe/L2 outputs not yet committed)."
+    ]
+  },
   "cited_not_rerun": {
     "l1": "optimization_una_cpu/evidence/integration/csr/test_log.txt: 12 passed, 6 adversarial cases x 3 arms (fresh subprocess per case), baseline determinism gate then candidate bit-identity; per-case arm NPZ SHA-256 identical across arms",
     "arms": "optimization_una_cpu/evidence/integration/csr/arms/*.npz",

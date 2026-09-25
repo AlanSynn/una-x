@@ -1,0 +1,49 @@
+{
+ "kernel_module": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/Engines/AccessibilityWElevation.py",
+ "probe_origins": 24,
+ "reps": 30,
+ "graph_nodes": 7360,
+ "graph_edges_directed": 30800,
+ "origin_terminal_counts_first24": [
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2
+ ],
+ "picked_origin_index": 0,
+ "radii_tested": {
+  "r_zero": {
+   "radius": 0.0,
+   "median_ns": 3542.0
+  },
+  "r_small": {
+   "radius": 12.0,
+   "median_ns": 3459.0
+  },
+  "r_full": {
+   "radius": 1200.0,
+   "median_ns": 361354.0
+  }
+ },
+ "init_share_of_kernel": 0.009802022393553137
+}

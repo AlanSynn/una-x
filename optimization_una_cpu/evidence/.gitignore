@@ -1,0 +1,4 @@
+# Bulk generated job artifacts: their evidence value is the per-job SHA-256
+# hash recorded in each run's raw.jsonl / manifest.json, not the bytes here.
+outputs/
+warmup/

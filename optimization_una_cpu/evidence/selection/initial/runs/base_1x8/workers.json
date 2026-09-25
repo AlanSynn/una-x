@@ -1,0 +1,14 @@
+{
+ "0": {
+  "type": "worker_ready",
+  "worker_id": 0,
+  "import_ns": 1978758333,
+  "warmup_ns": 270188917,
+  "warmup_peak_rss_bytes": 319651840,
+  "numba_effective_threads": 8,
+  "numba_requested_threads": "8",
+  "threading_layer": "workqueue",
+  "import_path": "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/__init__.py",
+  "pid": 96135
+ }
+}

@@ -1,0 +1,42 @@
+{
+ "src_root": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src",
+ "import_path": "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/__init__.py",
+ "workload": "W3_medium_proxy",
+ "analysis": "accessibility",
+ "resource_at_start": {
+  "loadavg": [
+   7.1484375,
+   5.6123046875,
+   4.65380859375
+  ],
+  "mem_available_bytes": 5002149888
+ },
+ "stages_ns": {
+  "validation_ns": 136916,
+  "add_network_ns": 153883584,
+  "add_origins_ns": 23413667,
+  "add_destinations_ns": 20940541,
+  "add_obstacles_ns": 6441958,
+  "engine_ctor_ns": 2240125,
+  "engine_ctor_repeat_ns": 2047708,
+  "centrality_ns": 1007720625,
+  "export_ns": 50151542
+ },
+ "counts": {
+  "n_network_edges": 15400,
+  "n_origins": 2560,
+  "n_destinations": 2560,
+  "graph_nodes": 7360,
+  "graph_edges_directed": 30800
+ },
+ "resolved_gravity_cap": null,
+ "resource_at_end": {
+  "loadavg": [
+   7.13623046875,
+   5.63525390625,
+   4.66748046875
+  ],
+  "mem_available_bytes": 4998119424
+ },
+ "python": "3.11.16"
+}

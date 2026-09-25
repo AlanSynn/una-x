@@ -1,0 +1,94 @@
+{
+ "arm": "source",
+ "src": "/Users/alansynn/orca/workspaces/una-x/main/src",
+ "workload_manifest": {
+  "name": "W3_medium_proxy",
+  "class": "proxy-medium",
+  "network": "network.geojson",
+  "origins": "origins.geojson",
+  "destinations": "destinations.geojson",
+  "obstacles": "obstacles.geojson",
+  "nodes_est": 7360,
+  "edges_est": 15400,
+  "origins_n": 2560,
+  "destinations_n": 2560,
+  "files": {
+   "network": {
+    "file": "network.geojson",
+    "sha256": "345e172a9837e1693ef57f9f6be8345c1dca3b51e3eb3eeb7935b1f3e378d0fd",
+    "bytes": 4381695
+   },
+   "origins": {
+    "file": "origins.geojson",
+    "sha256": "3a65dc1a572bb4e28ad204cb2feb1c8b5d11b92bff0c16e40e36793a74d3eaad",
+    "bytes": 471466
+   },
+   "destinations": {
+    "file": "destinations.geojson",
+    "sha256": "3702121c8d32d665c70f07677b59937d366554c02f77c43db3ad7ecd23868b95",
+    "bytes": 471435
+   },
+   "obstacles": {
+    "file": "obstacles.geojson",
+    "sha256": "ece8d58004230309b4c384f46fff86f801c246ffa57e073aa8d96059417f81d0",
+    "bytes": 1494
+   }
+  }
+ },
+ "analysis": "accessibility",
+ "mode": "batch",
+ "jobs": 12,
+ "workers": 2,
+ "threads": 4,
+ "queue": 8,
+ "cpu_budget": 8,
+ "label": "",
+ "settings": {
+  "network_weight_column": "Geometric",
+  "network_precision": 3,
+  "origin_weight_column": "weight",
+  "destination_weight_column": "weight",
+  "search_radius": 1200,
+  "elevation": true,
+  "elevation_penalty": 4,
+  "turns": false,
+  "knn_weights": [
+   1.0,
+   1.0,
+   0.5
+  ],
+  "knn_decay": "logistic",
+  "gravity_beta": 0.001,
+  "gravity_plateau": 0,
+  "gravity_logistic_midpoint": 500,
+  "calculate_reach": true,
+  "calculate_exponential_gravity": true,
+  "calculate_logistic_gravity": true,
+  "calculate_knn_access": true,
+  "output_geojson": true,
+  "output_feather": true,
+  "output_csv": true,
+  "output_wStamp": true,
+  "csv_delimiter": ",",
+  "progressbar": false,
+  "logger_verbosity": 0,
+  "data_folder": "/tmp/workloads/W3_medium_proxy",
+  "output_folder": "/Users/alansynn/orca/workspaces/una-x/wt-integration/optimization_una_cpu/evidence/selection/initial/runs/base_2x4/outputs",
+  "output_file_name": "Results",
+  "network_file": "network.geojson",
+  "origins_file": "origins.geojson",
+  "destinations_file": "destinations.geojson",
+  "obstacle_points_file": "obstacles.geojson"
+ },
+ "resource_at_start": {
+  "loadavg": [
+   7.08154296875,
+   5.80224609375,
+   4.76220703125
+  ],
+  "mem_total_bytes": 17179869184,
+  "mem_available_bytes": 5090099200,
+  "cpu_percent_interval": 0.0
+ },
+ "python": "3.11.16"
+}

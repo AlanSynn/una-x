@@ -1,0 +1,33 @@
+{
+  "task": "T08",
+  "recorded_utc": "2026-09-25T23:15:00Z",
+  "decision": "not_admitted",
+  "dossier_gate": "dossiers/06_optional_private_scope_tail.md: admission requires a post-CSR profile showing MATERIAL end-to-end service in per-origin allocation/initialization of Dijkstra search state, plus a projection-pi proof target. At most one implementation attempt; stop immediately on low Amdahl coverage.",
+  "probe": {
+    "method": "scope_init_probe.py times the UNMODIFIED upstream kernel compact_vector_node_view_scope on the real W3 topology (public-API-built engine, candidate tree; kernel identical in both trees) at radius 0 (no relaxations -> allocation + O(V) init only) versus the workload's full search radius (1200.0). 30 reps per radius, median.",
+    "raw": "scope_init_probe.json",
+    "kernel_file": "wt-integration/src/.../AccessibilityWElevation.py (compact_vector_node_view_scope, untouched by the CSR campaign)",
+    "results": {
+      "alloc_init_only_median_ns": 3542.0,
+      "full_search_median_ns": 361354.0,
+      "init_share_of_kernel": 0.0098
+    },
+    "coverage_cross_check": "2560 origins x 361 us full-search ~= 0.92 s, i.e. the kernel accounts for ~92% of the measured 1.008 s centrality stage - the probe region is the right one."
+  },
+  "amdahl_arithmetic": {
+    "centrality_share_of_candidate_job": "~1.008 s of ~1.27 s stage-model job sum (~80%)",
+    "init_share_of_centrality": "<= ~1%",
+    "bounded_end_to_end_headroom": "< ~1% even if per-origin init were eliminated entirely (perfect optimization, zero risk), before any proof burden"
+  },
+  "verdict": {
+    "materiality_gate": "FAILED - init share is ~1%, not material by any reading of dossier 06",
+    "proof_burden_vs_gain": "the projection-pi proof (pi(F(s,u)) = F'(pi(s),u) for every transition, duplicate-neighbor and heap-ordering preservation) is disproportionate to a sub-1% complete-region gain",
+    "implementation_attempts": 0,
+    "risks_avoided": "generation-counter overflow/lifetime semantics, heap ordering changes, added synchronization"
+  },
+  "notes": [
+    "Evidence class: measured (kernel timings on real workload topology) + derived (Amdahl bound).",
+    "The scratch-state experiment is closed for this campaign; no source change was made or attempted for it.",
+    "Remaining end-to-end time is dominated by the Dijkstra search itself and GIS I/O - real work, out of the dossier's admitted scope."
+  ]
+}

@@ -1,0 +1,75 @@
+{
+ "recorded": "2026-09-25",
+ "generator": "benchmarks/una_cpu/workload_gen.py (f57825d)",
+ "note": "W3 recalibrated from 46x40/320/640 to 92x80/2560/2560 before any L3/L4 measurement; W1 untouched",
+ "workloads": {
+  "W1_small_genuine": {
+   "name": "W1_small_genuine",
+   "class": "genuine-small",
+   "network": "network.geojson",
+   "origins": "origins.geojson",
+   "destinations": "destinations.geojson",
+   "obstacles": "obstacles.geojson",
+   "nodes_est": 80,
+   "edges_est": 150,
+   "origins_n": 14,
+   "destinations_n": 26,
+   "files": {
+    "network": {
+     "file": "network.geojson",
+     "sha256": "69e29a7f0068290fa983513310e8653bfa2127aaa5f8fd703c8fb5461bd25aeb",
+     "bytes": 41742
+    },
+    "origins": {
+     "file": "origins.geojson",
+     "sha256": "fe2ffd35eb030d2b0fbad14003c9c082b60635205419e4bbfb99a32b7ee2d98d",
+     "bytes": 2670
+    },
+    "destinations": {
+     "file": "destinations.geojson",
+     "sha256": "12a097532b06482e8d66cf52bbdf318ea41a21445f2254b4c017921a2f3e9e35",
+     "bytes": 4840
+    },
+    "obstacles": {
+     "file": "obstacles.geojson",
+     "sha256": "6bafcfc7bbe4c6908a06a9713d95a49177944f1e600156f17b0460105ff57351",
+     "bytes": 810
+    }
+   }
+  },
+  "W3_medium_proxy": {
+   "name": "W3_medium_proxy",
+   "class": "proxy-medium",
+   "network": "network.geojson",
+   "origins": "origins.geojson",
+   "destinations": "destinations.geojson",
+   "obstacles": "obstacles.geojson",
+   "nodes_est": 7360,
+   "edges_est": 15400,
+   "origins_n": 2560,
+   "destinations_n": 2560,
+   "files": {
+    "network": {
+     "file": "network.geojson",
+     "sha256": "345e172a9837e1693ef57f9f6be8345c1dca3b51e3eb3eeb7935b1f3e378d0fd",
+     "bytes": 4381695
+    },
+    "origins": {
+     "file": "origins.geojson",
+     "sha256": "3a65dc1a572bb4e28ad204cb2feb1c8b5d11b92bff0c16e40e36793a74d3eaad",
+     "bytes": 471466
+    },
+    "destinations": {
+     "file": "destinations.geojson",
+     "sha256": "3702121c8d32d665c70f07677b59937d366554c02f77c43db3ad7ecd23868b95",
+     "bytes": 471435
+    },
+    "obstacles": {
+     "file": "obstacles.geojson",
+     "sha256": "ece8d58004230309b4c384f46fff86f801c246ffa57e073aa8d96059417f81d0",
+     "bytes": 1494
+    }
+   }
+  }
+ }
+}

@@ -146,28 +146,66 @@ def run_batch(args, spec, out_dir):
     for w in range(args.workers):
         p = ctx.Process(target=_worker_entry,
                         args=(w, spec_queue, result_queue,
-                              str(warm_spec_path), _make_worker_env()))
+                              str(warm_spec_path), _make_worker_env(),
+                              env_note.get("PYTHONPATH")))
         p.start()
         procs.append(p)
 
+    def _shutdown_workers():
+        # multiprocessing joins active children at interpreter exit; a worker
+        # parked in spec_queue.get() would hang this process forever unless we
+        # terminate it before raising.
+        for p in procs:
+            if p.is_alive():
+                p.terminate()
+
+    try:
+        summary = _collect_results(args, spec, spec_queue, result_queue,
+                                   procs, out_dir)
+    except BaseException:
+        _shutdown_workers()
+        raise
+    return summary
+
+
+def _collect_results(args, spec, spec_queue, result_queue, procs, out_dir):
+    """Readiness barrier, timed dispatch/collect, graceful shutdown.
+
+    Any exception leaves workers terminated (see caller) so the parent never
+    hangs in multiprocessing's atexit join.
+    """
     readies = {}
-    deadline = time.time() + 1800
+    deadline = time.time() + 900
     while len(readies) < args.workers and time.time() < deadline:
-        msg = result_queue.get(timeout=1800)
-        if msg["type"] == "worker_ready":
+        try:
+            msg = result_queue.get(timeout=120)
+        except Exception:
+            msg = None
+        if msg is not None and msg["type"] == "worker_ready":
             readies[msg["worker_id"]] = msg
+        # A worker that died before ready would otherwise hang the barrier:
+        # fail fast with its exit code instead.
+        for p in procs:
+            if p.exitcode is not None and not any(
+                    r.get("pid") == p.pid for r in readies.values()):
+                raise RuntimeError(
+                    f"worker pid={p.pid} exited code={p.exitcode} before "
+                    f"ready ({len(readies)}/{args.workers} ready); stderr "
+                    f"above")
     if len(readies) < args.workers:
         raise RuntimeError(f"only {len(readies)}/{args.workers} workers became ready")
 
     with open(out_dir / "workers.json", "w") as f:
         json.dump(readies, f, indent=1, default=str)
 
+    # Timed window covers dispatch through last result: producers block on the
+    # bounded queue, so dispatch time is part of the batch's honest wall.
+    t0 = time.perf_counter_ns()
     for i in range(args.jobs):
         job_spec = _make_job_spec(spec, out_dir / "outputs", i,
                                   args.arm, args.src)
         spec_queue.put(job_spec)
 
-    t0 = time.perf_counter_ns()
     done = 0
     failed = 0
     while done + failed < args.jobs:
@@ -217,12 +255,30 @@ def run_batch(args, spec, out_dir):
     return summary
 
 
-def _worker_entry(worker_id, spec_queue, result_queue, warmup_spec, env):
+def _worker_entry(worker_id, spec_queue, result_queue, warmup_spec, env,
+                  extra_sys_path):
     """spawn target: rebuild environment then enter the worker loop."""
     os.environ.clear()
     os.environ.update(env)
+    # sys.path was fixed at interpreter start, before `env` was applied, so a
+    # PYTHONPATH inside `env` is invisible to imports: add it explicitly.
+    if extra_sys_path:
+        sys.path.insert(0, extra_sys_path)
+    # Per-worker warm-up output dir: GDAL's GeoJSON driver cannot overwrite
+    # an existing dataset, so concurrent workers writing one shared warm-up
+    # file race and the loser dies with DataSourceError.
+    with open(warmup_spec) as f:
+        wspec = json.load(f)
+    wdir = Path(wspec["output_root"]) / f"worker_{worker_id}"
+    wdir.mkdir(parents=True, exist_ok=True)
+    wspec["output_root"] = str(wdir)
+    wspec["settings"]["output_folder"] = str(wdir)
+    wpath = Path(warmup_spec).with_name(
+        f"warmup_spec_w{worker_id}.json")
+    with open(wpath, "w") as f:
+        json.dump(wspec, f)
     import batch_worker
-    batch_worker.worker_loop(worker_id, spec_queue, result_queue, warmup_spec)
+    batch_worker.worker_loop(worker_id, spec_queue, result_queue, str(wpath))
 
 
 def main():

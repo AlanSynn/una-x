@@ -1,0 +1,194 @@
+{
+ "task": "T07",
+ "recorded_utc": "2026-09-25T23:05:00Z",
+ "evidence_class": "measured (10 fresh runs, alternating trees per rep; profile_stages.py replicates the public RunAccessibility call sequence with per-stage walls; no internals patched)",
+ "order": "base rep1, cand rep1, ..., base rep5, cand rep5 (drift-canceling alternation)",
+ "per_stage_median_ns": {
+  "validation_ns": 148750,
+  "add_network_ns": 149674833,
+  "add_origins_ns": 22928791,
+  "add_destinations_ns": 21549250,
+  "add_obstacles_ns": 6850667,
+  "engine_ctor_ns": 245379333,
+  "engine_ctor_repeat_ns": 245317708,
+  "centrality_ns": 1026743750,
+  "export_ns": 49308625
+ },
+ "stages": {
+  "validation_ns": {
+   "baseline_median_ns": 148750,
+   "candidate_median_ns": 143208,
+   "baseline_all_ns": [
+    148750,
+    140459,
+    184458,
+    139917,
+    157875
+   ],
+   "candidate_all_ns": [
+    136916,
+    151834,
+    134208,
+    156750,
+    143208
+   ]
+  },
+  "add_network_ns": {
+   "baseline_median_ns": 149674833,
+   "candidate_median_ns": 152419708,
+   "baseline_all_ns": [
+    226997875,
+    152497791,
+    148087625,
+    145844166,
+    149674833
+   ],
+   "candidate_all_ns": [
+    153883584,
+    152419708,
+    154779041,
+    147371333,
+    145011459
+   ]
+  },
+  "add_origins_ns": {
+   "baseline_median_ns": 22928791,
+   "candidate_median_ns": 23413667,
+   "baseline_all_ns": [
+    25876708,
+    22928791,
+    23132250,
+    22664500,
+    22609208
+   ],
+   "candidate_all_ns": [
+    23413667,
+    23391250,
+    22301500,
+    24450625,
+    24002125
+   ]
+  },
+  "add_destinations_ns": {
+   "baseline_median_ns": 21549250,
+   "candidate_median_ns": 23005125,
+   "baseline_all_ns": [
+    21549250,
+    21471959,
+    23543542,
+    22379916,
+    21020292
+   ],
+   "candidate_all_ns": [
+    20940541,
+    22552375,
+    23005125,
+    23863958,
+    23148167
+   ]
+  },
+  "add_obstacles_ns": {
+   "baseline_median_ns": 6850667,
+   "candidate_median_ns": 6946791,
+   "baseline_all_ns": [
+    6850667,
+    5818291,
+    7945917,
+    6867625,
+    5747000
+   ],
+   "candidate_all_ns": [
+    6441958,
+    8011500,
+    5745875,
+    6946791,
+    7448541
+   ]
+  },
+  "engine_ctor_ns": {
+   "baseline_median_ns": 245379333,
+   "candidate_median_ns": 2240125,
+   "baseline_all_ns": [
+    245379333,
+    244336500,
+    261788250,
+    243817042,
+    245764792
+   ],
+   "candidate_all_ns": [
+    2240125,
+    2508958,
+    2075041,
+    2445667,
+    2151042
+   ]
+  },
+  "engine_ctor_repeat_ns": {
+   "baseline_median_ns": 245317708,
+   "candidate_median_ns": 2251375,
+   "baseline_all_ns": [
+    245317708,
+    243301667,
+    247915875,
+    244342250,
+    249280250
+   ],
+   "candidate_all_ns": [
+    2047708,
+    2362083,
+    2055916,
+    2274208,
+    2251375
+   ]
+  },
+  "centrality_ns": {
+   "baseline_median_ns": 1026743750,
+   "candidate_median_ns": 1007720625,
+   "baseline_all_ns": [
+    1064209875,
+    1026767917,
+    1026743750,
+    1004382250,
+    1026523125
+   ],
+   "candidate_all_ns": [
+    1007720625,
+    1059151917,
+    998824500,
+    1005740166,
+    1033342958
+   ]
+  },
+  "export_ns": {
+   "baseline_median_ns": 49308625,
+   "candidate_median_ns": 47192042,
+   "baseline_all_ns": [
+    58185125,
+    49162125,
+    52781167,
+    46388708,
+    49308625
+   ],
+   "candidate_all_ns": [
+    50151542,
+    47192042,
+    48660875,
+    45641542,
+    47082500
+   ]
+  }
+ },
+ "derived": {
+  "engine_ctor_saving_median_ns": 243139208,
+  "engine_ctor_speedup_x": 109.5,
+  "note": "centrality/add_*/export deltas are within run-to-run spread: the CSR change touches only graph construction, as designed."
+ },
+ "counts": {
+  "n_network_edges": 15400,
+  "n_origins": 2560,
+  "n_destinations": 2560,
+  "graph_nodes": 7360,
+  "graph_edges_directed": 30800
+ },
+ "raw": "stage_runs/{base,cand}_rep{1..5}/stage_profile.json"
+}

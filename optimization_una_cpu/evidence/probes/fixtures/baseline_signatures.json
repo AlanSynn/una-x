@@ -1,0 +1,32 @@
+{
+ "recorded": "2026-09-25",
+ "baseline": "main/src @ 98f498e",
+ "signatures": {
+  "W1_accessibility_baseline": {
+   "source": "/Users/alansynn/orca/workspaces/una-x/venvs/bench_out/smoke_base_w1",
+   "returncode": 0,
+   "wall_ns": 4855049958,
+   "peak_rss_bytes": 427180032,
+   "reach_len": 14,
+   "output_files_sha256": {
+    "Results.csv": "48b0a9ca8a08d8ebb62d3c5436ef983d6fb09cb481cbede8e2bf6b14a76df3ab",
+    "Results.feather": "1b665109dd0f6c59f080d4c51123a7de171cfe32cca8847c968e9c17c28f09a6",
+    "Results.geojson": "ce2973a97533f69881c639c7abc8f458e7ccda82b91b69eba3ad17605c04c97d"
+   },
+   "n_output_files": 3
+  },
+  "W3_accessibility_baseline": {
+   "source": "/Users/alansynn/orca/workspaces/una-x/venvs/bench_out/calib_base_w3",
+   "returncode": 0,
+   "wall_ns": 1637501250,
+   "peak_rss_bytes": 341950464,
+   "reach_len": 2560,
+   "output_files_sha256": {
+    "Results.csv": "5b9b194e8c8241eb41424377700a61d9be03a4c321f67be8307fb6e2909b0a46",
+    "Results.feather": "0f836685010a419462d7f8e39c278fe0b931eafb95d3bea6d80d962ef54a5874",
+    "Results.geojson": "5369d1c40537a486bc7d3675c702d7a06c2b88433210a58779ba04142924acba"
+   },
+   "n_output_files": 3
+  }
+ }
+}
