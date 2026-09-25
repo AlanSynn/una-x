@@ -1,0 +1,38 @@
+Process SpawnProcess-1:
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/runner.py", line 245, in _worker_entry
+    batch_worker.worker_loop(worker_id, spec_queue, result_queue, warmup_spec)
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/batch_worker.py", line 42, in worker_loop
+    _run_job_body(wspec)
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/batch_worker.py", line 109, in _run_job_body
+    una.RunAccessibility()
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/UNA.py", line 266, in RunAccessibility
+    self.accessibility.ExportAccessibilityResults(self.settings, folder_prefix="accessibility_", file_name=self.settings.output_file_name)
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/Engines/Base.py", line 201, in ExportAccessibilityResults
+    results_gdf.to_file(geojson_path, driver='GeoJSON')
+  File "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/lib/python3.11/site-packages/geopandas/geodataframe.py", line 1632, in to_file
+    _to_file(self, filename, driver, schema, index, **kwargs)
+  File "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/lib/python3.11/site-packages/geopandas/io/file.py", line 731, in _to_file
+    _to_file_pyogrio(df, filename, driver, schema, crs, mode, metadata, **kwargs)
+  File "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/lib/python3.11/site-packages/geopandas/io/file.py", line 793, in _to_file_pyogrio
+    pyogrio.write_dataframe(df, filename, driver=driver, metadata=metadata, **kwargs)
+  File "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/lib/python3.11/site-packages/pyogrio/geopandas.py", line 948, in write_dataframe
+    write(
+  File "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/lib/python3.11/site-packages/pyogrio/raw.py", line 733, in write
+    ogr_write(
+  File "pyogrio/_io.pyx", line 2986, in pyogrio._io.ogr_write
+  File "pyogrio/_io.pyx", line 2801, in pyogrio._io.create_ogr_dataset_layer
+  File "pyogrio/_io.pyx", line 2572, in pyogrio._io.ogr_create
+pyogrio.errors.DataSourceError: Driver GeoJSON does not support write functionality
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/runner.py", line 320, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/runner.py", line 316, in main
+    run_batch(args, run_spec, args.out)
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/runner.py", line 168, in run_batch
+    raise RuntimeError(
+RuntimeError: worker pid=96404 exited code=1 before ready (1/2 ready); stderr above

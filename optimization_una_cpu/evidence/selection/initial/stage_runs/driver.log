@@ -1,0 +1,200 @@
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 151, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 93, in main
+    t0 = t(); una.topology.AddNetwork(s); t1 = t()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/Topology.py", line 119, in AddNetwork
+    raise FileNotFoundError(f"Network file not found: {source_file}")
+FileNotFoundError: Network file not found: /tmp/workloads/W3_medium_proxy/network.geojson
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 151, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 93, in main
+    t0 = t(); una.topology.AddNetwork(s); t1 = t()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/Topology.py", line 119, in AddNetwork
+    raise FileNotFoundError(f"Network file not found: {source_file}")
+FileNotFoundError: Network file not found: /tmp/workloads/W3_medium_proxy/network.geojson
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 151, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 93, in main
+    t0 = t(); una.topology.AddNetwork(s); t1 = t()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/Topology.py", line 119, in AddNetwork
+    raise FileNotFoundError(f"Network file not found: {source_file}")
+FileNotFoundError: Network file not found: /tmp/workloads/W3_medium_proxy/network.geojson
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 151, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 93, in main
+    t0 = t(); una.topology.AddNetwork(s); t1 = t()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/Topology.py", line 119, in AddNetwork
+    raise FileNotFoundError(f"Network file not found: {source_file}")
+FileNotFoundError: Network file not found: /tmp/workloads/W3_medium_proxy/network.geojson
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 151, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 93, in main
+    t0 = t(); una.topology.AddNetwork(s); t1 = t()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/Topology.py", line 119, in AddNetwork
+    raise FileNotFoundError(f"Network file not found: {source_file}")
+FileNotFoundError: Network file not found: /tmp/workloads/W3_medium_proxy/network.geojson
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 151, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 93, in main
+    t0 = t(); una.topology.AddNetwork(s); t1 = t()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/Topology.py", line 119, in AddNetwork
+    raise FileNotFoundError(f"Network file not found: {source_file}")
+FileNotFoundError: Network file not found: /tmp/workloads/W3_medium_proxy/network.geojson
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 151, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 93, in main
+    t0 = t(); una.topology.AddNetwork(s); t1 = t()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/Topology.py", line 119, in AddNetwork
+    raise FileNotFoundError(f"Network file not found: {source_file}")
+FileNotFoundError: Network file not found: /tmp/workloads/W3_medium_proxy/network.geojson
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 151, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 93, in main
+    t0 = t(); una.topology.AddNetwork(s); t1 = t()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/Topology.py", line 119, in AddNetwork
+    raise FileNotFoundError(f"Network file not found: {source_file}")
+FileNotFoundError: Network file not found: /tmp/workloads/W3_medium_proxy/network.geojson
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 151, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 93, in main
+    t0 = t(); una.topology.AddNetwork(s); t1 = t()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/Topology.py", line 119, in AddNetwork
+    raise FileNotFoundError(f"Network file not found: {source_file}")
+FileNotFoundError: Network file not found: /tmp/workloads/W3_medium_proxy/network.geojson
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 151, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/benchmarks/una_cpu/profile_stages.py", line 93, in main
+    t0 = t(); una.topology.AddNetwork(s); t1 = t()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/wt-integration/src/urban_network_analysis/Topology.py", line 119, in AddNetwork
+    raise FileNotFoundError(f"Network file not found: {source_file}")
+FileNotFoundError: Network file not found: /tmp/workloads/W3_medium_proxy/network.geojson
+{
+ "validation_ns": 148750,
+ "add_network_ns": 226997875,
+ "add_origins_ns": 25876708,
+ "add_destinations_ns": 21549250,
+ "add_obstacles_ns": 6850667,
+ "engine_ctor_ns": 245379333,
+ "engine_ctor_repeat_ns": 245317708,
+ "centrality_ns": 1064209875,
+ "export_ns": 58185125
+}
+{
+ "validation_ns": 136916,
+ "add_network_ns": 153883584,
+ "add_origins_ns": 23413667,
+ "add_destinations_ns": 20940541,
+ "add_obstacles_ns": 6441958,
+ "engine_ctor_ns": 2240125,
+ "engine_ctor_repeat_ns": 2047708,
+ "centrality_ns": 1007720625,
+ "export_ns": 50151542
+}
+{
+ "validation_ns": 140459,
+ "add_network_ns": 152497791,
+ "add_origins_ns": 22928791,
+ "add_destinations_ns": 21471959,
+ "add_obstacles_ns": 5818291,
+ "engine_ctor_ns": 244336500,
+ "engine_ctor_repeat_ns": 243301667,
+ "centrality_ns": 1026767917,
+ "export_ns": 49162125
+}
+{
+ "validation_ns": 151834,
+ "add_network_ns": 152419708,
+ "add_origins_ns": 23391250,
+ "add_destinations_ns": 22552375,
+ "add_obstacles_ns": 8011500,
+ "engine_ctor_ns": 2508958,
+ "engine_ctor_repeat_ns": 2362083,
+ "centrality_ns": 1059151917,
+ "export_ns": 47192042
+}
+{
+ "validation_ns": 184458,
+ "add_network_ns": 148087625,
+ "add_origins_ns": 23132250,
+ "add_destinations_ns": 23543542,
+ "add_obstacles_ns": 7945917,
+ "engine_ctor_ns": 261788250,
+ "engine_ctor_repeat_ns": 247915875,
+ "centrality_ns": 1026743750,
+ "export_ns": 52781167
+}
+{
+ "validation_ns": 134208,
+ "add_network_ns": 154779041,
+ "add_origins_ns": 22301500,
+ "add_destinations_ns": 23005125,
+ "add_obstacles_ns": 5745875,
+ "engine_ctor_ns": 2075041,
+ "engine_ctor_repeat_ns": 2055916,
+ "centrality_ns": 998824500,
+ "export_ns": 48660875
+}
+{
+ "validation_ns": 139917,
+ "add_network_ns": 145844166,
+ "add_origins_ns": 22664500,
+ "add_destinations_ns": 22379916,
+ "add_obstacles_ns": 6867625,
+ "engine_ctor_ns": 243817042,
+ "engine_ctor_repeat_ns": 244342250,
+ "centrality_ns": 1004382250,
+ "export_ns": 46388708
+}
+{
+ "validation_ns": 156750,
+ "add_network_ns": 147371333,
+ "add_origins_ns": 24450625,
+ "add_destinations_ns": 23863958,
+ "add_obstacles_ns": 6946791,
+ "engine_ctor_ns": 2445667,
+ "engine_ctor_repeat_ns": 2274208,
+ "centrality_ns": 1005740166,
+ "export_ns": 45641542
+}
+{
+ "validation_ns": 157875,
+ "add_network_ns": 149674833,
+ "add_origins_ns": 22609208,
+ "add_destinations_ns": 21020292,
+ "add_obstacles_ns": 5747000,
+ "engine_ctor_ns": 245764792,
+ "engine_ctor_repeat_ns": 249280250,
+ "centrality_ns": 1026523125,
+ "export_ns": 49308625
+}
+{
+ "validation_ns": 143208,
+ "add_network_ns": 145011459,
+ "add_origins_ns": 24002125,
+ "add_destinations_ns": 23148167,
+ "add_obstacles_ns": 7448541,
+ "engine_ctor_ns": 2151042,
+ "engine_ctor_repeat_ns": 2251375,
+ "centrality_ns": 1033342958,
+ "export_ns": 47082500
+}
