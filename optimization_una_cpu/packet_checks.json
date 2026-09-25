@@ -1,0 +1,179 @@
+{
+  "status": "pass",
+  "kind": "packet_mechanical_validation_not_application_qualification",
+  "checked_utc": "2026-09-23T21:26:23.682508+00:00",
+  "packet_id": "optimization_una_cpu",
+  "checks": [
+    {
+      "name": "required_files",
+      "status": "pass",
+      "errors": [],
+      "detail": 37
+    },
+    {
+      "name": "task_schema",
+      "status": "pass",
+      "errors": [],
+      "detail": 15
+    },
+    {
+      "name": "unique_ids_existing_dependencies_acyclic_DAG",
+      "status": "pass",
+      "errors": [],
+      "detail": null
+    },
+    {
+      "name": "nonoverlapping_unordered_writable_scopes",
+      "status": "pass",
+      "errors": [],
+      "detail": null
+    },
+    {
+      "name": "task_context_and_role_files_exist",
+      "status": "pass",
+      "errors": [],
+      "detail": null
+    },
+    {
+      "name": "integration_branch_consistency",
+      "status": "pass",
+      "errors": [],
+      "detail": "perf/una-cpu-throughput"
+    },
+    {
+      "name": "expected_SHA_fields",
+      "status": "pass",
+      "errors": [],
+      "detail": "c15ebda6981397f46eed5c2d55229f71e57d44fb"
+    },
+    {
+      "name": "START_HERE_size",
+      "status": "pass",
+      "errors": [],
+      "detail": 3981
+    },
+    {
+      "name": "existing_internal_Markdown_links",
+      "status": "pass",
+      "errors": [],
+      "detail": 16
+    },
+    {
+      "name": "promotion_gates_preregistered_and_repeated",
+      "status": "pass",
+      "errors": [],
+      "detail": [
+        "G_SOURCE",
+        "G_EXACT",
+        "G_PIPELINE",
+        "G_REGRESSION",
+        "G_RESOURCE",
+        "G_INSTALLED",
+        "G_REVIEW",
+        "G_TARGET"
+      ]
+    },
+    {
+      "name": "finite_final_states",
+      "status": "pass",
+      "errors": [],
+      "detail": [
+        "merge_ready",
+        "qualified",
+        "improvement_only",
+        "blocked",
+        "no_safe_merge",
+        "no_change"
+      ]
+    },
+    {
+      "name": "local_only_publication_dirty_state_policy",
+      "status": "pass",
+      "errors": [],
+      "detail": null
+    },
+    {
+      "name": "expensive_validation_and_machine_limits",
+      "status": "pass",
+      "errors": [],
+      "detail": {
+        "max_implementation_candidates": 3,
+        "max_optional_numerical_hypotheses": 1,
+        "max_configurations_per_arm": 6,
+        "screening_batches_per_configuration": 2,
+        "confirmation_pairs": 5,
+        "max_inconclusive_repeat_blocks": 1,
+        "l3_total_seconds": 1800,
+        "l4_total_seconds": 2700,
+        "l4_max_warm_pairs": 3,
+        "l4_max_cold_runs_per_arm": 1
+      }
+    },
+    {
+      "name": "CPU_scope_and_trusted_fallback",
+      "status": "pass",
+      "errors": [],
+      "detail": null
+    },
+    {
+      "name": "evidence_classes_and_unexecuted_gate_templates",
+      "status": "pass",
+      "errors": [],
+      "detail": "Schema-level enforcement; prose claims still require review."
+    },
+    {
+      "name": "guide_identity",
+      "status": "pass",
+      "errors": [],
+      "detail": null
+    },
+    {
+      "name": "prior_archive_and_extraction_integrity",
+      "status": "pass",
+      "errors": [],
+      "detail": {
+        "status": "pass",
+        "kind": "integrity_check",
+        "archive_sha256": "804607a97f1b8c5c2b3a50f2b01ba5107118d93d223aa3f3801c9d627b3112e7",
+        "archive_members_checked": 215,
+        "prior_manifest_members_checked": 214,
+        "candidate_hashes_checked": 2,
+        "does_not_establish": [
+          "complete-source oracle correctness",
+          "new benchmark execution",
+          "installed package qualification",
+          "laptop or production performance"
+        ]
+      }
+    },
+    {
+      "name": "supplied_tool_Python_syntax",
+      "status": "pass",
+      "errors": [],
+      "detail": 5
+    },
+    {
+      "name": "basic_secret_pattern_scan",
+      "status": "pass",
+      "errors": [],
+      "detail": "Heuristic; not a credential or exhaustive security audit."
+    },
+    {
+      "name": "authored_payload_SHA256_inventory",
+      "status": "pass",
+      "errors": [],
+      "detail": 70
+    }
+  ],
+  "check_count": 20,
+  "task_count": 15,
+  "dossier_count": 8,
+  "agent_prompt_count": 9,
+  "does_not_establish": [
+    "complete-repository oracle equality",
+    "laptop runtime correctness",
+    "new performance results",
+    "independent code review",
+    "release or actual-target qualification"
+  ]
+}
