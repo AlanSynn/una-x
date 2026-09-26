@@ -1,0 +1,141 @@
+{
+ "schema_version": 1,
+ "task": "F1R",
+ "record": "screen_spec",
+ "role": "independent-reviewer (screen-spec owner)",
+ "generated_utc": "2026-09-26T11:40:00Z",
+ "status": "DRAFT - execution-blocked until all preconditions in 'preconditions' are met; coordinator commits this spec; executor may not run until then",
+ "provenance": {
+  "proof_chain": [
+   "cb7f671 F1I proof v1",
+   "49255e8 F1I proof amendment (secs 5b/5c/5d) - THE reviewed proof",
+   "8ba1aa7 H05 erratum F1I-K-label: K = --flow-stripes = topology.num_threads; (W,K,H) ordering; grid + capacity constraint unchanged",
+   "8a9f31a F1I proof review v1 (APPROVE, zero blocking)",
+   "edb3c1e F1I proof review re-target to 49255e8 (verdict extends unchanged; F1I-N2 RESOLVED)"
+  ],
+  "dispatch_inputs": [
+   "coordinator dispatch terms (a)-(f) post-A1R, confirmed by reviewer with amendments recorded below",
+   "control_addendum_A1R.json v2: C1 gate granularity (per mandatory workload, never averaged) and C2 cold-gate reading (binds by default; explicitly bounded warm-only is the sanctioned exception) incorporated verbatim as governing",
+   "F1I-N2 resolution: screen defined in HARNESS terms (--flow-stripes), K-matched arms mandatory",
+   "F1I-N3: triple frozen a priori; B0-only mini-selection cannot discriminate F1 (B0 serializes the kernel at any stripe count: GIL-bound, H05 probe observed_max_concurrent=1)"
+  ],
+  "statistic_precedent": "a1rp disposition dataset statistic convention, per /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_screen_summary.json (proxy_speedup_median_b0_over_cand); A1R provenance lesson applied: this spec is committed BEFORE any execution, so there is exactly one schedule and no interim-spec divergence"
+ },
+ "preconditions": [
+  "P1: coordinator commits this spec to evidence/F1R/screen_spec.json",
+  "P2: F1I Phase 2 evidence committed by f1-impl, including proof obligation 9.2 artifacts (in-module inspect_llvm of _accumulate_od_flow at the observed signature, B0 tree vs candidate tree, committed under evidence/F1I/)",
+  "P3: reviewer verification of the 9.2 artifacts recorded: FP census counts AND site sequence equal across trees, ONLY permitted delta GIL save/restore; any other delta = proof rejection and F1R does not open",
+  "P4: candidate_commit pinned by a one-line amendment to this spec (must be the Phase-2 commit; its AggregateFlow.py blob must differ from 0114ce8f318a3247b62e3d468e32d54e692737a2 by EXACTLY the decorator line - reviewer verifies before pinning)",
+  "P5: fresh heavy-execution lease granted with memory admission re-check per RESOURCES.md"
+ ],
+ "frozen_triple": {
+  "value": {"W": 1, "K": 8, "H": 1},
+  "declared": "A PRIORI (before any F1 timing run)",
+  "meaning": "W = --workers (outer jobs) = 1; K = --flow-stripes = topology.num_threads = 8 (flow stripe executor pool, AggregateFlow.py:1148; BuildClusters pool :730 shares the knob but flow is the only analysis in this screen); H = --numba-threads (NUMBA_NUM_THREADS) = 1",
+  "rationale": [
+   "max-stripe on-grid entry: W*(H+K) = 1*(1+8) = 9 = C; B0 ambient default K=9 (cpu_count-1) is off-grid, so K=8 is the frozen entry expressing the thesis (un-serializing the kernel at maximum on-grid striping)",
+   "H=1 pins numba-internal threading inert (the kernel is njit non-parallel, proof sec 5c: H inert for this kernel), so the ONLY concurrency source is the engine executor - attribution is structural",
+   "F1I-N3 + team-lead endorsement: a priori freeze because B0-only selection cannot discriminate (B0 serialized at any K)"
+  ]
+ },
+ "arms_and_sources": {
+  "b0": {
+   "commit": "361928e4ba38f34622cafe065b0025244db61368",
+   "tree": "/Users/alansynn/orca/workspaces/una-x/wt-b0 (detached at B0)",
+   "aggregate_flow_blob": "0114ce8f318a3247b62e3d468e32d54e692737a2"
+  },
+  "candidate": {
+   "commit": "PENDING - pinned by amendment per precondition P4",
+   "blob_check": "AggregateFlow.py blob differs from 0114ce8f by exactly one decorator line (@nb.njit(cache=True, fastmath=True) -> @nb.njit(cache=True, fastmath=True, nogil=True) on _accumulate_od_flow); NO other src/ byte differs"
+  },
+  "packaging": "per-arm wheels + per-arm venvs per the a1r_wheel_and_venv.json recipe (b0 wheel 71fd5615..., cand wheel from Phase-2 commit archive); alias-loaded installs",
+  "cache_roots": "PER-ARM NUMBA_CACHE_DIR, created fresh at block 1, carried through blocks 2-3. Rationale (binding): numba cache entries pickle the loading module name - alias-loaded (wheel/install path) and real-name imports must NEVER share a NUMBA_CACHE_DIR, or one arm can be served the other's machine code. Roots, their paths and their entry counts recorded per run."
+ },
+ "screen_shape": {
+  "cell": "O3_FLOW, workload variant sel1024 (frozen at H05: preregistration workloads.origin_selection.O3_FLOW; sel-all capacity refusal recorded there)",
+  "harness_invocation_per_run": "--mode single --jobs 1 --workers 1 --numba-threads 1 --flow-stripes 8",
+  "identical_for_both_arms": true,
+  "k_match_rule": "K_s=8 in BOTH arms in every gate-eligible block (dossier rule: never compare K=1 vs K=8); DECISION.md same-configuration attribution requirement satisfied by construction",
+  "window_definition": "bare complete-job window per HARNESS.md: start at worker ready, end at the HARNESS.md End definition (run.py end-of-run validation: all expected jobs, no duplicates, correct analysis/results/artifact signatures, no failures/timeouts). NO instrumentation inside the timing window (A1R schedule-1 lesson: instrumented windows are a demotion risk and are not the disposition data). System load and RSS sampled outside the window."
+ },
+ "matrix": {
+  "blocks": 3,
+  "runs_total": 6,
+  "block_structure": "each block = one b0 run + one candidate run, adjacent in time",
+  "arm_order": "AB,BA,AB with A=b0 (prefix of the frozen paired_protocol AB,BA,AB,BA,AB; 3 blocks is the screen ceiling, 5 is the final-protocol shape)",
+  "cache_state": "block 1 = cold (fresh per-arm cache roots, first compile recorded); blocks 2-3 = warm",
+  "ceiling": "HARD: 3 paired blocks per revision, no additional gate-eligible blocks past the first conformant matrix (control_addendum_A1R discipline_note); instrumented pilots are not a substitute for blocks and do not extend the matrix"
+ },
+ "per_run_verification": {
+  "engine_config_observed": "ALL THREE fields must equal the frozen values on every flow run: flow_stripes_requested == 8 AND topology_num_threads == 8 AND engine_num_threads == 8 (worker.py:522-531; the three-field block exists to catch a break anywhere along the request->topology->engine chain; a single mismatch disqualifies the block)",
+  "byte_identity": "candidate output artifact sha256 == b0 output artifact sha256 in EVERY block. The proof predicts bit-identity (exactness induction; reviewer IR census: 92 identical FP sites, sole compiled delta GIL save/restore). ANY byte delta = REJECTION of the track, not an investigation item",
+  "completeness": "HARNESS.md End conformance per run; output radii/counts match the frozen workload contract (a1rp recipe)",
+  "records": "per-run JSON under evidence/F1R/raw/f1r_*.json including NUMBA_CACHE_DIR path + entry counts, wheel/venv identity, lease id, unrelated system load"
+ },
+ "statistics": {
+  "convention": "ratios are b0_wall/cand_wall for speedup (>1 favors candidate); candidate-over-b0 for regressions (>1 = candidate slower). Stated explicitly because direction errors occurred in A1R",
+  "per_block_speedup": "r_i = b0_wall_i / cand_wall_i for blocks 2-3 (warm); r_1 recorded but block 1 is the cold block",
+  "proxy_speedup": "median(b0 wall of all 3 blocks) / median(cand wall of all 3 blocks) - the a1r_screen_summary statistic proxy_speedup_median_b0_over_cand, replicated exactly for cross-track comparability (ACCESS 2.668/2.5776=1.0351 precedent)",
+  "mean_of_ratios": "mean(r_i over warm blocks), descriptive only",
+  "cold_regression": "cand_wall_block1 / b0_wall_block1 (>1 = candidate slower on first process)",
+  "paired_ci": "t-interval on the 3 paired log-ratio differences (2 dof), reported with its limited small-sample precision per DECISION.md; fixed-seed paired bootstrap of log ratios as descriptive interval. The 5-pair CI shape is the Q00/Q10 protocol, not the screen's",
+  "unit": "the pair (block) is the sampling unit, never the job (DECISION.md)"
+ },
+ "gates": {
+  "granularity": "C1: evaluated PER MANDATORY WORKLOAD on the O3_FLOW cell alone; never averaged across cells; this screen says nothing about ACCESS/HOLDOUT cells",
+  "admit_screen": "proxy_speedup >= 1.1 AND paired-CI lower bound of speedup > 1.0 AND cold_regression <= 1.05",
+  "cold_gate": "C2 governing reading: the cold gate binds by default; an explicitly bounded warm-only qualification is the packet-sanctioned exception constraining the final claim shape. Route chosen at Q00, not here; both cold and warm are documented regardless (coordinator dispatch term f)",
+  "investigate_trigger": "any single run where cand_wall / b0_wall (paired, same block) > 1.1 triggers investigation, not automatic rejection (frozen decision_rule)",
+  "failure_disposition": "a failed screen does not reject a zero-semantic-risk source change by itself; it forecloses claiming the cell (C1 cell_failure_consequence). Disposition vocabulary: screened_in / not_demonstrated_at_screen / blocked / rejected - never 'passed' without evidence"
+ },
+ "cold_expectation": {
+  "expected": "approximately parity. F1 adds NO kernels; the compiled body is identical except GIL save/restore (reviewer IR census, proof 5b), so there is NO A1-style one-time JIT deficit. With per-arm fresh cache roots the first compile is symmetric across arms",
+  "anomaly_reading": "cold_regression materially above 1.05 is an ANOMALY to investigate (e.g. cache-keying or import-path asymmetry), not an anticipated finding; the C2 route machinery is carried but is NOT expected to engage for F1"
+ },
+ "diagnostics_class": {
+  "definition": "runs outside the 3-block matrix; documented in the screen record; NEVER entering gate math, proxy, CI, or the block ceiling",
+  "k1_negative_control": {
+   "required": false,
+   "shape": "one block, both arms --flow-stripes 1, fresh cache roots; expected ~parity (mechanism demonstration: with 1 stripe the nogil change has nothing to overlap)",
+   "rule": "K=1 results are never compared against K=8 runs as performance evidence (dispatch term d; dossier K-matched rule)"
+  },
+  "instrumented_concurrency": {
+   "required": false,
+   "shape": "separate instrumented runs (engine-level concurrency counters or h05 probe wrappers), NEVER inside bare timing windows",
+   "rule": "in-window instrumentation would repeat the A1R schedule-1 defect; config-level engine_config_observed is the only in-window verification"
+  }
+ },
+ "exactness_anchor": {
+  "requirement": "the F1R screen record (selection.json) MUST cite the F1I Phase-2 in-module census artifacts (proof obligation 9.2, committed under evidence/F1I/) as the numeric-identity anchor, and MUST record their hashes as verified by the reviewer (precondition P3)",
+  "division_of_labor": "the census owns numeric identity; the screen owns speed. Screen timing evidence is admissible only against a verified-exact kernel"
+ },
+ "budget_and_revisions": {
+  "heavy_wall": "6 gate-eligible runs (+ optional diagnostics); a1rp executed 12 runs plus pilots inside 750.7 s; h05 sizes the lease. Campaign heavy wall remaining after A1R: 14400 - 750.7 = 13649.3 s",
+  "revisions": "<= 2 revisions per DECISION.md and proof sec 5d; any change to this spec AFTER first execution = revision 2, recorded with rationale; no schedule-to-schedule tuning (A1R precedent: candidate frozen before screening)"
+ },
+ "deliverables": {
+  "executor": ["evidence/F1R/raw/f1r_*.json (one per run)", "campaign_data/f1r_screen_summary.json + campaign_data_manifest.json (out-of-repo residency manifest, A1R convention)", "lease log"],
+  "reviewer": ["evidence/F1R/selection.json (disposition, statistics, byte-identity arrays, exactness-anchor citation)", "evidence/F1R/review.json (verdict + findings)"],
+  "coordinator": ["commit of this spec and of candidate pin amendment", "control addendum entry if any ruling is needed"]
+ },
+ "executor_assignment": "h05-profiler, under a fresh heavy lease. Reviewer (this file's author) executes nothing and holds no lease",
+ "out_of_scope": [
+  "no source edits by executor or reviewer (implementation is f1-impl's, committed before P2)",
+  "no harness changes for this screen: worker.py engine_config_observed (522-531) is already sufficient; modifying the harness mid-screen would invalidate comparability",
+  "no gate-eligible runs at K != 8",
+  "campaign standing constraints: no GPU, no native backend, no relaxed math, no broad cache, no public RunBatch parallelization, no scientific bug fixing"
+ ],
+ "amendment_log": [
+  {
+   "rev": 1,
+   "utc": "2026-09-26T11:40:00Z",
+   "note": "initial draft. Two reviewer classifications beyond the coordinator dispatch terms, subject to coordinator countermand before P1: (1) diagnostics-class separation - K=1 control and instrumented concurrency are outside the block matrix and gate math; in-window verification is engine_config_observed only; (2) cold-expectation reset - F1 expects cold parity, cold>1.05 is an anomaly reading, C2 route carried but not expected to engage"
+  },
+  {
+   "rev": 2,
+   "utc": "2026-09-26T07:45:00Z",
+   "role": "coordinator",
+   "note": "P1 commit review: BOTH rev-1 classifications ACCEPTED, no countermand. Both were pre-accepted as F1R amendments and generalized to all R tasks in control_addendum_A1R.json v3_amendment (commit b093301: R_task_spec_protocol + bare_window_instrumentation_rule); this spec is their F1R instance. Coordinator has verified the spec against the dispatch terms (a)-(f), the C1/C2 rulings, the frozen grid (candidates_WKH ordering per erratum 8ba1aa7), and the wall arithmetic (14400 - 750.7 = 13649.3). Candidate commit is intentionally PENDING per P4 - the pin amendment follows Phase-2 landing, reviewer blob verification, and is itself not a revision (pre-execution). Spec committed unchanged apart from this log entry."
+  }
+ ]
+}
