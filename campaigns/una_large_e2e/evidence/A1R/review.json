@@ -61,23 +61,23 @@
   "raw": ["/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_replay_cold.json", "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_replay_warm.json"]
  },
  "phase_c_screen": {
-  "summary": "28/28 valid runs (16 schedule-1 + 12 schedule-2); full numbers, gates and disposition recorded in evidence/A1R/selection.json; screen executed by h05-profiler under lease A1R-lease-20260926, disposition owned by reviewer",
+  "summary": "28/28 valid runs across two blocks; DISPOSITION DATASET is the spec-executed a1rp_* block (12 runs, (W,H)=(1,8) on-grid pinned and verified in-run, bare complete-job window, per-arm fresh cache roots, AB/BA/AB with symmetric cold pair 1); the a1r_* 16-run block was team-lead's interim spec (H=10 ambient off-grid, instrumented windows) and is retained as supplementary diagnostics only; full numbers, gates and disposition in evidence/A1R/selection.json",
   "headline": {
-   "O3_HOLDOUT": "decisive: median-of-pair-ratios 1.390 (sched1) / 1.306 (sched2); every warm pair in both schedules candidate-favorable (min 1.176)",
-   "O3_ACCESS": "marginal: proxy ratio-of-medians 1.089 (sched1) / 1.058 (sched2) - below the 1.1 screen bar; median-of-pair-ratios 1.112 / 1.060; one of five warm pairs regressed 7.7% (below the 1.1 investigate threshold)",
-   "cold": "cand/b0 1.21/1.15 (sched1) reproduced at 1.20/1.13 (sched2): one-time JIT of the 2 extra scratch-module kernels (+ guard overload), ~1.3-1.4s absolute, warm-invisible"
+   "O3_HOLDOUT": "decisive: proxy 1.2954 on the disposition dataset (warm pairs 1.3168/1.2954, all candidate-favorable; supplementary block 1.3898/1.3058 agrees)",
+   "O3_ACCESS": "not demonstrated at screen: proxy 1.0351 on the disposition dataset - below the 1.1 bar; median improvement 5.8% is within the candidate arm's own warm spread; candidate is faster in every warm pair but the p3 margin is 1.1% (noise)",
+   "cold": "cand/b0 1.197/1.1321 (disposition dataset), reproduced at 1.211/1.150 (supplementary): one-time first-call JIT of the 2 extra _large_access_scratch kernels (+ guard overload), ~1.3-1.4s absolute, warm-invisible"
    }
  },
  "findings": [
   {"id":"A1R-F1","severity":"minor","finding":"ir_side_by_side.md table undercounts candidate fcmp sites (8 vs census 10); census file is correct"},
   {"id":"A1R-F2","severity":"minor","finding":"peak_rss_tree_mib null in all schedule-1 matrix records (instrument did not populate the field); schedule-2 records carry peak_rss_ru_maxrss_mib (worst observed 591.4 MiB, far under ceiling); ceiling re-check at every admission, 0 refusals"},
-  {"id":"A1R-F3","severity":"protocol_note","finding":"schedule-2 (a1rp) block exceeds the <=3-warm-pair screen instruction by +2 warm pairs and +1 cold pair per cell; heavy budget held at 750.7s/14400s; all records valid and retained; incorporated rather than discarded"},
-  {"id":"A1R-F4","severity":"protocol_note","finding":"thread regime differs between schedules (sched1 ambient 10 threads, sched2 pinned NUMBA_NUM_THREADS=8): within-schedule paired comparisons are the decision basis; pooled ratios descriptive only; byte outputs identical across regimes"},
+  {"id":"A1R-F3","severity":"protocol_note","finding":"two screen blocks exist under different specs: the a1r_* 16-run block was team-lead's interim spec executed before the reviewer spec landed (H=10 ambient - off the frozen S01 grid with W*H=10 > C=9 - and instrumented windows with sampler+spans inside the timing window); it is demoted to supplementary diagnostics. The a1rp_* 12-run block is the spec-executed disposition dataset ((W,H)=(1,8) on-grid, bare complete-job window, per-arm fresh cache roots, in-run thread verification). Directionally consistent blocks; 750.7s/14400s lease held across both"},
+  {"id":"A1R-F4","severity":"protocol_note","finding":"thread regime differs between blocks (interim ambient 10, disposition set pinned NUMBA_NUM_THREADS=8 verified in-run as config==8 and get_num_threads()==8 in every record): disposition statistics are within-block only; cross-block comparisons are corroboration, not pooling; byte outputs identical across regimes"},
   {"id":"A1R-F5","severity":"bookkeeping","finding":"h05 message quoted lease 665.0s; a1r_lease_log.json cumulative_heavy_s=750.7 (includes the a1rp block and a retained failed first build rc=2, retried rc=0) is authoritative"},
   {"id":"A1R-F6","severity":"risk_carry_forward","finding":"C2 cold-gate risk: reproducible cold median ratio 1.13-1.21 vs frozen maximum_cold_median_time_ratio 1.05; the frozen preregistration is internally in tension (decision_rule includes the cold gate; environment_freeze says warm for qualification runs with cold documented at O2_cold); if the cold gate binds at Q00, A1 as-is is NOT admitted; resolution belongs to the campaign owner"},
-  {"id":"A1R-F7","severity":"risk_carry_forward","finding":"C1 ACCESS marginality: realized proxy ~1.06-1.09 at r=500; benefit concentrates at r=1200; Q00's paired-CI-lower>1.0 may fail on ACCESS-like cells (incl. O2); expectation recorded now so qualification is not surprised"}
+  {"id":"A1R-F7","severity":"risk_carry_forward","finding":"C1 ACCESS + gate granularity: realized proxy 1.035 (disposition dataset; 1.058-1.089 supplementary) at r=500 - the 1.1 screen-in bar is NOT met on that cell; benefit concentrates at r=1200; the frozen decision_rule does not state whether paired-CI/proxy gates evaluate per-track or per-cell, and if per-cell, A1 fails on ACCESS-like cells (incl. O2) at Q00 and the HOLDOUT gain is lost with it; owner must rule on gate granularity BEFORE Q00"}
  ],
- "verdict": "approve - Phase A conform, no blocking findings; screen disposition screened_in (provisional pending I00/W00/S01/Q00/Q10) with conditions C1 and C2 recorded in selection.json",
+ "verdict": "approve - Phase A conform, no blocking findings; screen disposition screened_in (provisional pending I00/W00/S01/Q00/Q10): O3_HOLDOUT screened in decisively, O3_ACCESS not demonstrated at screen (carried by the single-change patch), with conditions C1 and C2 recorded in selection.json",
  "citations": [
   "src/urban_network_analysis/Engines/_large_access_scratch.py",
   "src/urban_network_analysis/Engines/Accessibility.py",

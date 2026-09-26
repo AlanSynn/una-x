@@ -34,5 +34,31 @@
     "discipline_note": "future R tasks (F1R..A3R): screening must stay within 3 paired blocks per revision; instrumented pilots are not a substitute and extra blocks are not to be executed past the first conformant matrix"
   },
   "heavy_wall_after_A1R_s": 750.7,
-  "heavy_wall_budget_s": 14400.0
+  "heavy_wall_budget_s": 14400.0,
+  "v2_amendment": {
+    "recorded_utc": "2026-09-26T07:20:00Z",
+    "trigger": "reviewer re-anchor after screen-executor reconciliation: selection.json v2 + review.json F3/F4 corrections committed by coordinator; the a1r_* 16-run block (team-lead interim spec: H=10 ambient, off the frozen W*H<=C=9 grid, instrumentation inside the timing window) is DEMOTED to supplementary diagnostics; the disposition dataset is the a1rp_* 12-run block ((W,H)=(1,8) on-grid, bare windows).",
+    "corrected_screen_numbers": {
+      "O3_HOLDOUT": "screened_in decisive: proxy 1.2954, warm pairs 1.3168/1.2954, every warm pair candidate-favorable",
+      "O3_ACCESS": "NOT DEMONSTRATED at screen: proxy 1.0351 fails the 1.1 bar; 5.8% median improvement within the candidate arm's warm spread; candidate faster in every warm pair but margin thin",
+      "cold_cand_over_b0": "1.197/1.132 (disposition dataset), reproduced 1.211/1.150 by the supplementary block - one-time JIT of 2 added kernels"
+    },
+    "supersedes": "the C1 fact line above (the '~1.06-1.09' range mixed both schedules' instruments); per-cell dispositions in evidence/A1R/selection.json v2 are authoritative",
+    "coordinator_rulings": {
+      "C1_gate_granularity": {
+        "ruling": "Gates evaluate PER MANDATORY WORKLOAD, never per-track averaged. Basis: DECISION.md run budget ('five pairs per mandatory workload') and primary gate phrasing; no packet text supports averaging across cells.",
+        "mandatory_set_rule": "Q00 must fix the mandatory set as the FULL frozen workload set actually exercised by the screened-in tracks (O3_ACCESS, O3_HOLDOUT, O3_FLOW, plus O2 as protected small cell) - the set may not be curated to exclude cells a candidate is expected to fail.",
+        "cell_failure_consequence": "A cell failing the 1.1/paired-CI bar does not reject a zero-semantic-risk source change that decisively passes another frozen cell, but it FORBIDS claiming that cell; the final publication claim is scoped to passing cells and every per-cell result is published. In the packet's terminal vocabulary this is the improvement_only/scoped-claim space, never qualified_proxy across all cells.",
+        "user_override": "campaign owner may override this reading any time before Q00; recorded now so qualification is not surprised"
+      },
+      "C2_cold_gate": {
+        "ruling": "The cold gate binds by default (maximum_cold_median_time_ratio 1.05). DECISION.md's own exception is sanctioned: 'Cold process median must not regress by more than 5% without an explicitly bounded warm-only qualification; warm-only means no blanket-default promotion claim.'",
+        "mitigation_options_for_Q00": [
+          "install-time precompile/warm of added kernels as a W00 build step (if Q10 cold diagnostics then normalize, the gate is met outright - no warm-only carve-out needed)",
+          "documented-cold status + explicitly bounded warm-only qualification, with the claim constrained accordingly"
+        ],
+        "user_override": "campaign owner may override any time before Q00"
+      }
+    }
+  }
 }
