@@ -1,0 +1,135 @@
+{
+ "task": "H04 observed-scale B0-vs-B0 determinism double run",
+ "fresh_process": true,
+ "import_root": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src",
+ "V_second": 49159,
+ "E_second": 69957,
+ "cap_second": 7540.0175,
+ "resolved_second": {
+  "spec": "p95",
+  "used": "p95",
+  "value": 7540.0175,
+  "metric": "gravity_exponential",
+  "n_origins": 16
+ },
+ "accessibility_arrays": {
+  "reach": {
+   "run1": "76cf3fbb378cd5010cc4575d5690eaf139774262b9048d55b9d6c8de0e2cac8a",
+   "run2": "76cf3fbb378cd5010cc4575d5690eaf139774262b9048d55b9d6c8de0e2cac8a",
+   "match": true
+  },
+  "gravity_exponential": {
+   "run1": "851734cf9078d1d6b19afe7696d2674429bc01498bbf960e9651983feee48cb4",
+   "run2": "851734cf9078d1d6b19afe7696d2674429bc01498bbf960e9651983feee48cb4",
+   "match": true
+  },
+  "gravity_logistic": {
+   "run1": "3abceb3d5f5a9915c8ac8fa32d1bcfde77f1816e09ce92d2a65842d04344a5b9",
+   "run2": "3abceb3d5f5a9915c8ac8fa32d1bcfde77f1816e09ce92d2a65842d04344a5b9",
+   "match": true
+  },
+  "knn_access": {
+   "run1": "a96f7cebb07ec19a5a9e21b85b204ea74bb6a7c71ce8938b1172c65bbf077778",
+   "run2": "a96f7cebb07ec19a5a9e21b85b204ea74bb6a7c71ce8938b1172c65bbf077778",
+   "match": true
+  }
+ },
+ "flow_arrays": {
+  "edge_flow": {
+   "run1": "c082d46087c599b7443bd065d8211c712a6d7ace98ef454f0a2dff5ddb9cfc0c",
+   "run2": "c082d46087c599b7443bd065d8211c712a6d7ace98ef454f0a2dff5ddb9cfc0c",
+   "match": true
+  },
+  "edge_flow_AB": {
+   "run1": "025f3d105401aecaf59221e2263a6e285ae90ba8f0ef15458b160168ccc750ea",
+   "run2": "025f3d105401aecaf59221e2263a6e285ae90ba8f0ef15458b160168ccc750ea",
+   "match": true
+  },
+  "edge_flow_BA": {
+   "run1": "71e0471e72f620c33a8a9e1b5c776373d3f084106cf4aae7b48fc7ecc6a96dc6",
+   "run2": "71e0471e72f620c33a8a9e1b5c776373d3f084106cf4aae7b48fc7ecc6a96dc6",
+   "match": true
+  }
+ },
+ "cap_match": true,
+ "V_E_match": true,
+ "run2_artifacts": {
+  "acc1": {
+   "Results.feather": "4341c5cf4c53929040dc88e4303a965f1a5820a1ec4d4bf28c6f6e152dfa25bc",
+   "Results.geojson": "0f5c09f448097cdcf8d88141f8116068fb3723f131f2edf99adb4298447f0590",
+   "Results.csv": "f0d6e0e9d667b565e07d3294ad12e30e4189b56ab8f79e77c770b0db1c8cdaec"
+  },
+  "flow": {
+   "Results.feather": "2f53fd68afa7e45a647af86d3d07631c41e57431743195a45f19110cea6a6ff7",
+   "Results.geojson": "41f58b68f0692952f0611c7988b25b66867d2df56840a0672c0ac7528b548c2f",
+   "Results.csv": "6f0d232d64171dcf239481d6dba3ac54dc54fe430959917b32db685454dcf4d1"
+  }
+ },
+ "run1_artifacts": {
+  "acc1": {
+   "accessibility_2026-09-25_2252/Results.feather": {
+    "sha256": "4341c5cf4c53929040dc88e4303a965f1a5820a1ec4d4bf28c6f6e152dfa25bc",
+    "bytes": 13842
+   },
+   "accessibility_2026-09-25_2252/Results.geojson": {
+    "sha256": "0f5c09f448097cdcf8d88141f8116068fb3723f131f2edf99adb4298447f0590",
+    "bytes": 4541
+   },
+   "accessibility_2026-09-25_2252/Results.csv": {
+    "sha256": "f0d6e0e9d667b565e07d3294ad12e30e4189b56ab8f79e77c770b0db1c8cdaec",
+    "bytes": 1746
+   }
+  },
+  "flow": {
+   "flow_2026-09-25_2252/Results.feather": {
+    "sha256": "2f53fd68afa7e45a647af86d3d07631c41e57431743195a45f19110cea6a6ff7",
+    "bytes": 5471130
+   },
+   "flow_2026-09-25_2252/Results.geojson": {
+    "sha256": "41f58b68f0692952f0611c7988b25b66867d2df56840a0672c0ac7528b548c2f",
+    "bytes": 21086002
+   },
+   "flow_2026-09-25_2252/Results.csv": {
+    "sha256": "6f0d232d64171dcf239481d6dba3ac54dc54fe430959917b32db685454dcf4d1",
+    "bytes": 696535
+   }
+  }
+ },
+ "artifact_byte_matches": {
+  "acc1": {
+   "Results.csv": [
+    "f0d6e0e9d667b565e07d3294ad12e30e4189b56ab8f79e77c770b0db1c8cdaec",
+    "f0d6e0e9d667b565e07d3294ad12e30e4189b56ab8f79e77c770b0db1c8cdaec",
+    true
+   ],
+   "Results.feather": [
+    "4341c5cf4c53929040dc88e4303a965f1a5820a1ec4d4bf28c6f6e152dfa25bc",
+    "4341c5cf4c53929040dc88e4303a965f1a5820a1ec4d4bf28c6f6e152dfa25bc",
+    true
+   ],
+   "Results.geojson": [
+    "0f5c09f448097cdcf8d88141f8116068fb3723f131f2edf99adb4298447f0590",
+    "0f5c09f448097cdcf8d88141f8116068fb3723f131f2edf99adb4298447f0590",
+    true
+   ]
+  },
+  "flow": {
+   "Results.csv": [
+    "6f0d232d64171dcf239481d6dba3ac54dc54fe430959917b32db685454dcf4d1",
+    "6f0d232d64171dcf239481d6dba3ac54dc54fe430959917b32db685454dcf4d1",
+    true
+   ],
+   "Results.feather": [
+    "2f53fd68afa7e45a647af86d3d07631c41e57431743195a45f19110cea6a6ff7",
+    "2f53fd68afa7e45a647af86d3d07631c41e57431743195a45f19110cea6a6ff7",
+    true
+   ],
+   "Results.geojson": [
+    "41f58b68f0692952f0611c7988b25b66867d2df56840a0672c0ac7528b548c2f",
+    "41f58b68f0692952f0611c7988b25b66867d2df56840a0672c0ac7528b548c2f",
+    true
+   ]
+  }
+ },
+ "verdict": "BIT_IDENTICAL"
+}

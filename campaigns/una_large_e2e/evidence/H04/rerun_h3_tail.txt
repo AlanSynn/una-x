@@ -1,0 +1,28 @@
+=== H03 oracle suite rerun (H04 reviewer) ===
+host=COD-MBP16-LOAN2 start_utc=2026-09-26T02:48:07Z
+test_l1_determinism.py::test_in_process_double_run_bit_identical PASSED  [ 58%]
+test_l1_determinism.py::test_flow_engine_repeat_run_bit_identical PASSED [ 60%]
+test_l1_determinism.py::test_parallel_kernel_identical_across_numba_thread_counts PASSED [ 62%]
+test_l1_determinism.py::test_subprocess_b0_vs_b0_bit_identical PASSED    [ 64%]
+test_l1_determinism.py::test_hazard_negative_weight_nontermination_is_bounded PASSED [ 66%]
+test_l1_determinism.py::test_hazard_probe_domains_recorded[nan_edge] PASSED [ 67%]
+test_l1_determinism.py::test_hazard_probe_domains_recorded[nan_origin] PASSED [ 69%]
+test_l1_determinism.py::test_hazard_probe_domains_recorded[inf_cutoff] PASSED [ 71%]
+test_negative_mutations.py::test_negative_a1_immediate_update_caught_on_downstream_duplicate PASSED [ 73%]
+test_negative_mutations.py::test_negative_terminal_assignment_order_caught PASSED [ 75%]
+test_negative_mutations.py::test_negative_a2_python_min_semantics_caught_on_signed_zero PASSED [ 77%]
+test_negative_mutations.py::test_negative_a2_reversed_retained_order_caught PASSED [ 79%]
+test_negative_mutations.py::test_negative_f1_shifted_stripe_assignment_caught PASSED [ 81%]
+test_negative_mutations.py::test_negative_f1_descending_final_sum_caught PASSED [ 83%]
+test_negative_mutations.py::test_f2_stale_scratch_is_inert_on_corpus_documented PASSED [ 84%]
+test_negative_mutations.py::test_negative_f3_reversed_where_caught PASSED [ 86%]
+test_negative_mutations.py::test_negative_a3_dropped_seed_writes_caught PASSED [ 88%]
+test_sentinel_probe.py::test_probe_admits_on_normal_cutoff PASSED        [ 90%]
+test_sentinel_probe.py::test_probe_refuses_on_two_pow_53_rounding_hazard PASSED [ 92%]
+test_sentinel_probe.py::test_probe_refuses_on_maxfloat_cutoff PASSED     [ 94%]
+test_sentinel_probe.py::test_probe_documents_d_zero_scope PASSED         [ 96%]
+test_sentinel_probe.py::test_probe_refuses_infinite_sentinel_from_bounded_child PASSED [ 98%]
+test_sentinel_probe.py::test_probe_condition_matches_compiled_filter PASSED [100%]
+
+============================= 53 passed in 34.86s ==============================
+H03_EXIT_CODE=0

@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "task": "H04",
+  "record": "review",
+  "role": "independent-reviewer (no part in H00-H03 implementation; no co-authoring of fixes)",
+  "reviewed_utc": "2026-09-26T03:05:00Z",
+  "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e",
+  "head_at_review": "ad778ea764cc6bbcf39e8376433fd75b162e4816 (perf/una-large-e2e, clean)",
+  "branch_history_verified": "ea08947 (packet publication) -> bf42e36 (H00) -> 06badae (H01) -> c2fd628 (H02) -> ad778ea (H03); bf42e36 verified ancestor of HEAD; H01's source_commit_at_freeze=bf42e36 exists",
+  "review_method": "Per VALIDATION.md 'Review records': identities re-derived with git rev-parse / shasum; H02+H03 suites RERUN by this reviewer; central harness claims verified against actual code (identity.py, pool.py, worker.py, manifest.py); golden assets and oracle file inventory spot-verified on disk; observed L2 executed by the reviewer in B0 per VALIDATION.md L2 (see observed_l2.json). Counts of test files were never treated as proof.",
+  "identities_verified": {
+    "b0_commit": "361928e4ba38f34622cafe065b0025244db61368 (wt-b0 detached, clean, 0 porcelain entries)",
+    "b0_root_tree": "089d29205918197c783e34c46eec76bf27090c10 (matches H00 identity.json)",
+    "b0_src_tree": "a5883dddcef3afb8debdb4438a6338da886add6f",
+    "packet_ea08947_src_tree": "a5883dddcef3afb8debdb4438a6338da886add6f (byte-identical to B0 src)",
+    "archive_tree_identity": "361928e:optimization_una_cpu == ea08947:campaigns/history/una_cpu_2026_09/packet == 917475d210218a7f3ae2765d5b8e6a1c9c587842 (verified by git rev-parse)",
+    "b0_root_tree_equals_361928e_tree": "089d29205918197c783e34c46eec76bf27090c10 (verified)"
+  },
+  "suite_reruns": {
+    "h02_harness": {
+      "command": "cd tests/large_e2e/harness && python -m pytest . -v (campaign venv, PYTHONPATH/L1_REUSE_DIR unset)",
+      "result": "62 passed in 85.01s",
+      "exit_code": 0,
+      "raw_tail": "evidence/H04/rerun_h2_tail.txt",
+      "vs_recorded": "62 passed in 85.55s (H02) — consistent"
+    },
+    "h03_oracle": {
+      "command": "cd tests/large_e2e/oracle && PYTHONPATH=wt-b0/src NUMBA_CACHE_DIR=nbc_oracle NUMBA_NUM_THREADS=2 python -m pytest -v (L1_REUSE_DIR unset)",
+      "result": "53 passed in 34.86s",
+      "exit_code": 0,
+      "raw_tail": "evidence/H04/rerun_h3_tail.txt",
+      "vs_recorded": "53 passed in 33.19s (H03) — consistent"
+    }
+  },
+  "golden_and_input_hash_verification": {
+    "h01_inputs_5_of_5": {
+      "20260703_PercLenNetwork_InnerCore.geojson": {"sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799", "bytes": 71290787, "match": true},
+      "Cambridge_building_centroids.geojson": {"sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc", "bytes": 5982662, "match": true},
+      "MA_bus_stops.geojson": {"sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c", "bytes": 2641054, "match": true},
+      "20260703_PercLenNetwork_InnerCore_3D.geojson": {"sha256": "6f72bcb2aedecb72b36298645b45ca5551ec32514ab017c8113cb54f3530f9f5", "bytes": 66301651, "match": true},
+      "tut4_observers_main_st.geojson": {"sha256": "7ae641853fecb6c3331bcb6675a0c0f7b05ab79c7ebbc368f2ca0e447e45b063", "bytes": 1531, "match": true}
+    },
+    "h01_manifests_and_selections_10_of_10": "all four workload manifests and all six origin-selection files re-hashed; every sha256 matches workloads.json/selection.json records",
+    "o2_selection_rederivation": "numpy.random.default_rng(20260925).choice(14751,16,replace=False) re-derived by this reviewer under numpy 2.4.6: ordered list AND raw draw order reproduce O2.origin_indices.json exactly",
+    "h03_golden_assets_3_of_3": {
+      "golden_b0.npz": "ea61d7309faf95628cd62db117c3a8c77371e9b11cc0d9da6f438bce9b4dcae8",
+      "golden_b0.json": "d0226dd31bd5ce519f302968a8205460a1f2af67f03f978bfd411bc34677975b",
+      "golden_b0.hashes.json": "f93fdd641fbb1eb97dda1d4e3dd8662c71029c783dc0b215e4a4134b328f8913"
+    },
+    "h03_file_inventory_spot_checks_5_of_5": ["comparator.py", "fixtures.py", "golden/build_golden.py", "trace_flow.py", "child_hazard.py — all sha256 match oracle_manifest.json file_inventory_sha256 (compare_arms.py has no recorded hash: noted, N11)"],
+    "stub_or_empty_artifact_check": "rejected — all reviewed artifacts are populated (H02 62-test subprocess evidence; H03 1031-array goldens; L2 outputs up to 21MB with verified schemas and non-zero content)"
+  },
+  "code_level_verification": {
+    "h02_identity_containment": "identity.py:check_under_site_packages uses Path.resolve()+relative_to AND os.path.commonpath (both sanctioned mechanisms; string-prefix rejected by construction) — HARNESS.md req 2 satisfied in code, not just tests",
+    "h02_bounded_queues": "pool.py: input Queue(maxsize=queue_depth), result Queue(maxsize=spec.result_queue_maxsize()); monotonic deadlines on every phase (_check_deadline); liveness polled each loop; peak_in_flight recorded — HARNESS.md req 5 satisfied",
+    "h02_timing_window": "worker.py: application_start_ns immediately before UNA construction, application_end_ns at public-method return; constructor counted once; resolved_gravity_cap only REPORTED (worker.py:532), never pre-resolved; dispatch calls only RunAccessibility/RunFlow/RunODM — HARNESS.md req 9 satisfied",
+    "h02_input_rehash": "manifest.py:rehash_inputs compares sha256+bytes per file vs manifest, raises ValidationError on first mismatch — req 8 satisfied",
+    "h01_weight_column_semantics": "Topology.BuildAccessPoints confirms origin_weight_column='Count' is the unit-weights sentinel (np.ones) exactly as H01 documented; destination weekly_departures consumed as float64 with NaN warning path (not triggered: 0 nulls)"
+  },
+  "verdicts": {
+    "H00_identity_and_control": "approve",
+    "H01_observed_fixtures_and_workloads": "approve",
+    "H02_benchmark_harness": "approve_with_notes",
+    "H03_numerical_oracles": "approve_with_notes",
+    "observed_L2": "pass (executed; see observed_l2.json)",
+    "overall": "approve_with_notes — H05 may proceed on all six hypotheses; the notes below become CONDITIONS at the stated downstream gates"
+  },
+  "findings": [
+    {
+      "id": "H04-N1",
+      "severity": "major (conditional gate, not an H05 blocker)",
+      "area": "H03 oracle coverage",
+      "finding": "The turn-aware flow kernel path (_accumulate_od_flow_turns) is uncovered by traces, goldens, or the battery (corpus runs turns=False). All campaign workloads run turns=False, so H05 profiling/admission is unaffected; but DECISION.md requires the proof reviewer to approve the admitted domain and test matrix, and campaign protected cells include turns on/off.",
+      "evidence": "H03 oracle_manifest.json limitations_and_gaps[0]; workloads.json (all workloads turns=False); VALIDATION.md L2 protected cells.",
+      "required_fix": "At F1R/F2R/F3R admission approval: each dossier must PROVE its source closure excludes _accumulate_od_flow_turns and the shared flow driver, OR commission an H03 turns supplement (fixture + trace + golden for the turns path) before its candidate can leave review_pending. Until then any candidate touching shared flow driver code is review-gated, not blocked for H05."
+    },
+    {
+      "id": "H04-N2",
+      "severity": "major (must close at W00)",
+      "area": "H02 harness",
+      "finding": "Installed-mode identity guards were validated only against a physically laid-out synthetic venv (stub package + dist-info), never against a real built wheel. HARNESS.md req 2 and BENCHMARKS installed-path screening depend on the guard holding for real wheel layouts (data dirs, .data subpaths, RECORD entries).",
+      "evidence": "H02 protocol.json limitations[9]; test_identity_guard.py synthetic layouts.",
+      "required_fix": "W00 must include an explicit real-wheel guard proof (run.py installed mode against the actual built B0 wheel, plus one tamper probe) and record it; until then no installed-qualified record exists (the harness already structurally refuses installed records without wheel identity, which contains the blast radius)."
+    },
+    {
+      "id": "H04-N3",
+      "severity": "moderate",
+      "area": "H02 harness",
+      "finding": "Dedicated per-pool thread inspection (Arrow, turn/cluster pools) is captured only indirectly via the Settings echo; HARNESS.md req 3 names them explicitly, and numba-specific effective counts are observed but asserted by no test.",
+      "evidence": "H02 protocol.json limitations[2], sampled_vs_enforced entries; inspect_thread_pools records numba + BLAS env only.",
+      "required_fix": "Before S01 (scheduling selection) and before F1 admission evidence is accepted (DECISION.md: F1 requires observed serialization/low concurrent kernel execution — decorator inspection insufficient), H05 profiling records must be supplemented with a direct per-pool inventory (threadpoolctl-style or explicit executor objects) captured identically in both arms. Does not block starting H05."
+    },
+    {
+      "id": "H04-N4",
+      "severity": "moderate",
+      "area": "H03 oracle coverage / L1",
+      "finding": "VALIDATION.md L1 requires kernel-boundary checks on actual typed arrays captured from the observed B0 topology (incl. int32 endpoint inputs) and validation of ALL specializations used by final workloads. H03 covers L0 corpus + L1 determinism (double runs, thread counts, arm-vs-arm) and a specialization inventory from the corpus, but no observed-typed-array kernel boundary tests exist yet.",
+      "evidence": "H03 oracle_manifest comparison_scope + limitations (corpus <=~200 nodes); VALIDATION.md L1.",
+      "required_fix": "Before A1R/A2R/A3R/F1R/F2R/F3R approvals, capture observed-scale typed arrays from a B0 O2/O3 pass and run candidate-vs-B0 kernel comparisons on them. Partial mitigation already exists: this reviewer's observed-scale double run (observed_l2.json) proves B0-vs-B0 bit-identity of the engine-level outputs (C/F layouts both exercised) across fresh processes."
+    },
+    {
+      "id": "H04-N5",
+      "severity": "minor",
+      "area": "H03 oracle coverage",
+      "finding": "F2 stale-scratch inertness (no dd_buf/pd_buf reset between ODs) is proven only at corpus scale via a geometric argument; the F2 reset obligation is enforced by journal + code review, not output bytes. A candidate that silently REMOVES a needed reset at observed scale would not be caught by output comparison at corpus scale.",
+      "evidence": "H03 test_results.json proven_inert; oracle_manifest findings[4].",
+      "required_fix": "F2R review must explicitly re-verify the geometric inertness argument at O3_FLOW scale (or add one observed-scale scratch-journal probe). No H05 blocker."
+    },
+    {
+      "id": "H04-N6",
+      "severity": "minor",
+      "area": "H02 harness",
+      "finding": "Worker-side stuck-result-channel path (put deadline then exit 73) is implemented but exercised by no test; deadlock-freedom is structural (bounded maxsize + interleaved drain) plus the slow-drain input-queue test. Warm-up record fields (warmup_ns, warmup hashes) are recorded but asserted by no test.",
+      "evidence": "H02 protocol.json limitations[3][4].",
+      "required_fix": "Acceptable to proceed; if any H05 run exhibits writer/queue anomalies, add the two tests before relying on those paths in qualification."
+    },
+    {
+      "id": "H04-N7",
+      "severity": "minor",
+      "area": "H02 harness",
+      "finding": "ODM dispatcher path is mock/stub-tested only; the real-engine ODM path was never executed in H02. RunODM is outside the six-hypothesis portfolio and all current workloads, so nothing in H05 depends on it.",
+      "evidence": "H02 protocol.json limitations[0].",
+      "required_fix": "Keep RunODM out of any qualified claim until a real-engine ODM diagnostic exists; no action needed for H05."
+    },
+    {
+      "id": "H04-N8",
+      "severity": "minor",
+      "area": "H02 harness",
+      "finding": "identity_sha256 is an unkeyed canonical-JSON integrity hash; macOS USS/PSS unavailable to non-root (sampler falls back to RSS, declared conservative, identical both arms); cold-process compile-cold semantics rely on operator-supplied fresh --cache-root (harness never wipes caches). All three are declared honestly in protocol.json.",
+      "evidence": "H02 protocol.json limitations[5][6][7][8], sampled_vs_enforced.",
+      "required_fix": "None required; conditions already stated. Reviewer confirms the declarations match the code."
+    },
+    {
+      "id": "H04-N9",
+      "severity": "minor (recorded B0 behavior, not a defect to fix)",
+      "area": "B0 state chronology (observed L2)",
+      "finding": "Two inherited state quirks observed at O2 scale: (a) UNA.has_flow_results is never set True by RunFlow (engine-level flow.has_flow_results carries the state); (b) RunAccessibility does not clear a previous RunFlow's stored engine/results (stale una.flow remains). Also RunFlow re-reads the full network GeoJSON on the same object (arrays rebound, V/E deterministic 49159/69957).",
+      "evidence": "observed_l2.json chronology calls 2-3, readiness/state_transitions_recorded.",
+      "required_fix": "None — B0 behavior is preserved by contract. Candidate reviews must NOT count these as candidate regressions, and chronology comparisons must expect them on both arms."
+    },
+    {
+      "id": "H04-N10",
+      "severity": "minor",
+      "area": "H01 manifests",
+      "finding": "O2/O3 manifests carry counts.V/E = null by design pending this load pass. This review measured them: V=49159, E=69957 for the InnerCore network at network_precision=3 (stable across two fresh processes). Only the integrator/H01 owner may backfill manifests.",
+      "evidence": "observed_l2.json load_pass; O2.manifest.json counts.note.",
+      "required_fix": "Coordinator should route the measured V/E (with a pointer to this evidence) to the manifest owner; ready_for_qualification stays false until wheel (W00) and stripe/thread profile (H05/S01) land."
+    },
+    {
+      "id": "H04-N11",
+      "severity": "minor",
+      "area": "H03 records",
+      "finding": "benchmarks/large_e2e/oracle/compare_arms.py has no sha256 in oracle_manifest file_inventory_sha256 (a prose note instead), so its identity is pinned only indirectly via the exercising test.",
+      "evidence": "oracle_manifest.json file_inventory_sha256 last entry.",
+      "required_fix": "Add its sha256 in the next H03 manifest touch (reviewer verified current content compiles into the 53-pass suite; hash observed 2e10ae50010a662624ae3cdc42d7436c446be15756244ed8b51a7cf822e75a65 at review time)."
+    }
+  ],
+  "h05_admission_blocking_matrix": {
+    "A1": {"h02_blocks": false, "h03_blocks": false, "conditions": "N4 (observed typed arrays) before A1R approval"},
+    "A2": {"h02_blocks": false, "h03_blocks": false, "conditions": "N4 before A2R approval"},
+    "A3": {"h02_blocks": false, "h03_blocks": false, "conditions": "N4 before A3R approval"},
+    "F1": {"h02_blocks": false, "h03_blocks": false, "conditions": "N1 (turns-path exclusion proof or H03 supplement) and N3 (per-pool inventory + observed kernel-concurrency evidence, per DECISION.md F1 admission) at approval time; N4 before F1R"},
+    "F2": {"h02_blocks": false, "h03_blocks": false, "conditions": "N1 at approval time if source closure touches the shared driver; N5 at F2R; N4 before F2R"},
+    "F3": {"h02_blocks": false, "h03_blocks": false, "conditions": "N1 at approval time if source closure touches gradient/flow shared code; N4 before F3R"}
+  },
+  "observed_l2_summary": {
+    "V_E_observed": {"V": 49159, "E": 69957},
+    "wall_times_L2_chronology_only": {"run_accessibility_s": 5.977, "run_flow_auto_cap_s": 5.995, "reuse_accessibility_radius800_s": 1.923},
+    "auto_cap_p95": 7540.0175,
+    "warnings": "none (0 of 135 logger entries)",
+    "observed_scale_determinism": "BIT_IDENTICAL across two fresh processes (all metric/flow arrays byte-equal; all artifacts byte-identical; V/E and cap stable)",
+    "peak_rss_mib": 2522,
+    "details": "evidence/H04/observed_l2.json"
+  },
+  "hashes_of_reviewed_evidence": {
+    "control.json": "ce2dc35f96f20037869220c7a5ca92eb72d3796bb34dd6bc43b609351744673f",
+    "H00/identity.json": "62e8d4cc521e30d9d6dfe7ed1d6217ec7220472307795727e40ea9dd896a25f2",
+    "H00/verify_source.json": "63dc053396ed4074c6d08a7b93815c4b8a4705b4cf78bf20482226c835ef2982",
+    "H00/validate_packet.json": "e807ae2bbe9ba11862930e9a4bfd85c2140ec9c7d89bb86af7358f742508643e",
+    "H00/resources.json": "c77ae22c0c780e946c767b29f5208293f1e474855a12fa0df31bdc390e37562f",
+    "H01/acquisition.json": "974a199b86641a71257f34f47500e034de151f6b4df1fb1edd0a2cba18320920",
+    "H01/selection.json": "66d4d67284fb9e0cf58e53af58580cb295c681d1e02ad00464b5d51ca8135770",
+    "H01/workloads.json": "4744ddb1af4316751a23a3d40bd1a140c82adb4cc0ea6c9023c399e940ae1309",
+    "H02/protocol.json": "661ccfbedea27154bd073a7f2721cac59b5e990e282c5d21b15cb6512ce2a466",
+    "H02/test_results.json": "f1e372b8292b95a23e62c2fdee2d0706116e82e6c66f9258931d22ea8e294cd3",
+    "H03/oracle_manifest.json": "0457640dafcf105b2e13c5eb153a6c8a9bc9bd5252eb1442acfd488b3d903f3c",
+    "H03/test_results.json": "48947e6dd2a00f2f21f495e34940d2ffe28e8f5e1c5e6df6d71b8b26a63590c6",
+    "H03/pytest_final_verbose.txt": "993c2b21a1b9f2c37fee6beb1c59f6417b25a2e54b5da8c91c3d421c3860b4c2"
+  },
+  "git_writes": "none; evidence/H04/** is untracked working-tree content for the coordinator to commit",
+  "independence_statement": "This reviewer implemented none of H00-H03, authored no fixes, and will not co-author remediations; findings are routed to owners via the coordinator."
+}
