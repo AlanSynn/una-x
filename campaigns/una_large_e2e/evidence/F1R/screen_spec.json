@@ -26,7 +26,8 @@
   "P2: F1I Phase 2 evidence committed by f1-impl, including proof obligation 9.2 artifacts (in-module inspect_llvm of _accumulate_od_flow at the observed signature, B0 tree vs candidate tree, committed under evidence/F1I/)",
   "P3: reviewer verification of the 9.2 artifacts recorded: FP census counts AND site sequence equal across trees, ONLY permitted delta GIL save/restore; any other delta = proof rejection and F1R does not open",
   "P4: candidate_commit pinned by a one-line amendment to this spec (must be the Phase-2 commit; its AggregateFlow.py blob must differ from 0114ce8f318a3247b62e3d468e32d54e692737a2 by EXACTLY the decorator line - reviewer verifies before pinning)",
-  "P5: fresh heavy-execution lease granted with memory admission re-check per RESOURCES.md"
+  "P4b: execution driver evidence/F1R/f1r_bare_job.py authored by the executor, committed by the coordinator, and verified line-by-line by the reviewer against driver_obligations_binding BEFORE any gate-eligible window opens",
+  "P5: fresh heavy-execution lease granted with memory admission re-check per RESOURCES.md; per-window watchdog budget 2600 MiB (reviewer ruling with rev 4): refused at any window whose admission shows 0.80*available < 2620 MiB; H05 sel1024 flow peak ~2489 MiB leaves ~111 MiB trip margin; a mid-matrix refusal voids the partial matrix and the conformant matrix restarts as a whole (still 3 blocks, no partial-matrix disposition)"
  ],
  "frozen_triple": {
   "value": {"W": 1, "K": 8, "H": 1},
@@ -54,10 +55,17 @@
  },
  "screen_shape": {
   "cell": "O3_FLOW, workload variant sel1024 (frozen at H05: preregistration workloads.origin_selection.O3_FLOW; sel-all capacity refusal recorded there)",
-  "harness_invocation_per_run": "--mode single --jobs 1 --workers 1 --numba-threads 1 --flow-stripes 8",
+  "execution_vehicle": "REV 4 CORRECTION: the gate-eligible vehicle is the dedicated bare-job driver evidence/F1R/f1r_bare_job.py (executor-authored, coordinator-committed and reviewer-verified BEFORE any gate-eligible window), per the A1R disposition-dataset precedent (evidence/A1R/a1r_bare_job.py; lease-log windows pairs_run:a1rp_* are the receipts). run.py is NOT the screen vehicle: its cache-root preflight (harness/spec.py:206-208, H02) forbids nonempty roots by design - a final-protocol session guard, never satisfied by the a1rp warm pairs, which were produced under the A1R bare driver. Driver parameters: --manifest <O3_FLOW manifest> --cell O3_FLOW --arm b0|cand --flow-stripes 8 --numba-threads 1, one job per invocation, W=1",
+  "driver_obligations_binding": [
+   "NUMBA_CACHE_DIR taken from ambient environment (per-arm persistent roots; wiped fresh before block 1 only, then carried through blocks 2-3 exactly as a1rp did)",
+   "flow-stripes wiring via una.topology.num_threads = 8 BEFORE engine construction - the public attribute, mirroring harness worker.py:498-500 (user-facing configuration, not a source change)",
+   "three-field in-run verification recorded from the LIVE objects after construction and re-read after the run: flow_stripes_requested (echo of request), topology_num_threads, engine_num_threads - the worker.py:522-531 equivalents",
+   "complete-job window = exactly ONE public analysis call with NO leaf instrumentation (a1r_bare_job.py:157-164 skeleton); input rehash, manifest/selection identity checks, byte hashes of all outputs, ru_maxrss, loadavg per run",
+   "per-window memory admission in the lease-runner wrapper exactly as A1R: available_at_admission, ceiling 0.80xavailable, pressure_stop, watchdog fields recorded per window in the lease log"
+  ],
   "identical_for_both_arms": true,
   "k_match_rule": "K_s=8 in BOTH arms in every gate-eligible block (dossier rule: never compare K=1 vs K=8); DECISION.md same-configuration attribution requirement satisfied by construction",
-  "window_definition": "bare complete-job window per HARNESS.md: start at worker ready, end at the HARNESS.md End definition (run.py end-of-run validation: all expected jobs, no duplicates, correct analysis/results/artifact signatures, no failures/timeouts). NO instrumentation inside the timing window (A1R schedule-1 lesson: instrumented windows are a demotion risk and are not the disposition data). System load and RSS sampled outside the window."
+  "window_definition": "bare complete-job window: construct UNA + settings outside the window, time exactly ONE public analysis call inside it, all observation (byte hashes, counts, config re-read) AFTER the window. NO instrumentation inside the timing window (A1R schedule-1 lesson). System load and RSS sampled outside the window."
  },
  "matrix": {
   "blocks": 3,
@@ -122,7 +130,7 @@
  "executor_assignment": "h05-profiler, under a fresh heavy lease. Reviewer (this file's author) executes nothing and holds no lease",
  "out_of_scope": [
   "no source edits by executor or reviewer (implementation is f1-impl's, committed before P2)",
-  "no harness changes for this screen: worker.py engine_config_observed (522-531) is already sufficient; modifying the harness mid-screen would invalidate comparability",
+  "no harness changes for this screen: benchmarks/large_e2e/** stays byte-frozen; the screen vehicle is the evidence/F1R/ bare driver (evidence-directory tooling per the A1R precedent), not a harness modification",
   "no gate-eligible runs at K != 8",
   "campaign standing constraints: no GPU, no native backend, no relaxed math, no broad cache, no public RunBatch parallelization, no scientific bug fixing"
  ],
@@ -143,6 +151,12 @@
    "utc": "2026-09-26T12:10:00Z",
    "role": "reviewer",
    "note": "P4 pin (pre-execution, not a revision): candidate commit = c1d7edc (AggregateFlow.py blob 455e92adb5f23748903435d3d6340a5d8a9c47d3). Blob check VERIFIED at P3 - evidence/F1R/p3_verification.json, 24/24 checks PASS, sole semantic IR delta = GIL save/restore, strict element-wise module identity after normalization. Arms_and_sources.candidate updated from PENDING to the pinned commit; NO other operative clause altered"
+  },
+  {
+   "rev": 4,
+   "utc": "2026-09-26T12:55:00Z",
+   "role": "reviewer",
+   "note": "PRE-EXECUTION correction (not a revision-budget item, same class as rev 3), ruling on executor blocker F1R-CACHE-1 reported by h05-profiler before any gate-eligible window: rev-1's run.py invocation string was reviewer defect - the a1rp disposition dataset never ran under run.py; it ran under the dedicated committed bare driver evidence/A1R/a1r_bare_job.py (lease-log windows pairs_run:a1rp_* are the receipts), which is the only mechanism consistent with the H02 cache-root preflight (harness/spec.py:206-208 refuses nonempty roots) AND warm pair reuse. screen_shape corrected to the precedent vehicle (evidence/F1R/f1r_bare_job.py) with binding driver obligations (three-field live-object verification, public-attribute stripes wiring, one-public-call window, per-window admission records); new precondition P4b (driver committed + reviewer-verified before execution); P5 gains the memory ruling (watchdog 2600 MiB, refusal when 0.80*available < 2620 MiB, voided matrices restart whole). Executor options (a) all-cold and (b) batch-per-block and (c) harness change are REJECTED. Matrix, statistics, gates, triple, byte-identity and exactness-anchor clauses are UNCHANGED - they were written for the precedent model."
   }
  ]
 }
