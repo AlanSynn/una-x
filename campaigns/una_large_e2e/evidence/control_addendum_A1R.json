@@ -91,5 +91,13 @@
     "user_surface": "Freeing ambient memory is owner-side action (browser tabs / desktop apps); the coordinator surfaced it in-session as OPTIONAL. The screen proceeds autonomously on recovery and does not block on owner action.",
     "no_gate_change": true,
     "process_note": "filed BEFORE the first gate-eligible window per the R_task_spec_protocol principle (one committed schedule governing execution); interpretive record only - screen_spec.json rev 4 bytes untouched, freeze on evidence/F1R/ intact"
+  },
+  "v4a_clarification_bar_binding_point": {
+    "recorded_utc": "2026-09-26T09:50:13Z",
+    "trigger": "executor query before matrix fire: the frozen supervisor (bfc52e9a) has no per-block interlock - --stage run executes all 6 gate-eligible runs back-to-back, with the ruled per-window admission guard as the only mid-matrix gate. Enforcing the v4 2800 MiB bar literally 'before each block' would require a post-commit supervisor delta (pause/resume state machine) through the h04 freeze.",
+    "clarification": "The v4 bar binds at every matrix ENTRY: the initial fire and any re-entry after a void/restart, enforced by the executor's read-only watch loop (same psutil call the admission guard uses). WITHIN a matrix, the sole binding mid-matrix protection is the frozen P5 per-window guard: refuse any window whose admission shows 0.80*available < 2620 MiB, voiding the matrix, which then restarts as a whole and re-enters only at the v4 bar. The v4 'read recorded per record' clause maps to each run's lease-log available_at_admission_bytes, verified post-hoc by the reviewer against these thresholds; a mid-matrix window opening above the ruled refusal threshold but below the v4 bar is CONFORMANT (the ruled ~111 MiB watchdog margin over the ~2489 MiB sel1024 peak is intact at any passing admission), not a ruling violation.",
+    "rationale": "the per-window guard reads availability at the moment of Popen - strictly fresher than any pre-block read - using the same psutil quantity; an in-supervisor interlock would duplicate it with staler data, require editing frozen reviewer-verified bytes post-commit, and add a new pause/resume failure surface for headroom beyond what P5 requires. Entry-bar + per-window-guard + void-restart-whole already bounds the worst case: a mid-matrix ambient collapse costs a voided matrix and a bar-gated re-entry, never an under-protected window.",
+    "no_gate_change": true,
+    "process_note": "coordinator clarification of v4 within its owning record, filed BEFORE matrix fire; no screen_spec byte touched; reviewer ack requested for the verification-queue mapping (pre-block reads := per-run lease admission bytes)"
   }
 }
