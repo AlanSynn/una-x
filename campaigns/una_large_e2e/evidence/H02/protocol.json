@@ -1,0 +1,341 @@
+{
+  "schema_version": 1,
+  "task": "H02",
+  "spec": "campaigns/una_large_e2e/HARNESS.md (binding)",
+  "recorded_utc": "2026-09-26T02:00:34Z",
+  "worktree": "wt-large-e2e (branch perf/una-large-e2e); uncommitted \u2014 coordinator commits",
+  "owned_files": [
+    "benchmarks/large_e2e/run.py",
+    "benchmarks/large_e2e/harness/__init__.py",
+    "benchmarks/large_e2e/harness/spec.py",
+    "benchmarks/large_e2e/harness/manifest.py",
+    "benchmarks/large_e2e/harness/identity.py",
+    "benchmarks/large_e2e/harness/dispatch.py",
+    "benchmarks/large_e2e/harness/faults.py",
+    "benchmarks/large_e2e/harness/sampler.py",
+    "benchmarks/large_e2e/harness/worker.py",
+    "benchmarks/large_e2e/harness/pool.py",
+    "benchmarks/large_e2e/harness/verify.py",
+    "benchmarks/large_e2e/harness/session.py",
+    "tests/large_e2e/harness/conftest.py",
+    "tests/large_e2e/harness/stubkit.py",
+    "tests/large_e2e/harness/test_dispatch.py",
+    "tests/large_e2e/harness/test_cli_validation.py",
+    "tests/large_e2e/harness/test_identity_guard.py",
+    "tests/large_e2e/harness/test_pool_faults.py",
+    "tests/large_e2e/harness/test_sampler.py",
+    "campaigns/una_large_e2e/evidence/H02/test_results.json",
+    "campaigns/una_large_e2e/evidence/H02/protocol.json"
+  ],
+  "frozen_cli": {
+    "usage": "<arm-python> <repo>/benchmarks/large_e2e/run.py --manifest <workload.json> --arm <label> --identity <arm_identity.json> --mode single|batch --jobs <K> --workers <W> --numba-threads <H> --flow-stripes <Kflow-or-default> --queue-depth <Q> --writer-limit <L> --cpu-budget <C> --memory-budget-mib <M> --timeout-s <T> --cache-root <unique-cache-root> --out <new-run-directory>",
+    "extra_test_only_flags": [
+      "--diagnostic-source-root <dir> (distinctly named source mode; records can never be installed-qualified)",
+      "--test-fault <name> (harness self-test only; measurement_class=harness_selftest; never qualifies)"
+    ],
+    "validation_before_work": {
+      "implementation": "benchmarks/large_e2e/run.py:main + harness/spec.py:RunSpec(validate_paths/validate_environment/validate_admission) + harness/manifest.py:load_manifest/rehash_inputs + harness/identity.py:load_identity",
+      "note": "exit codes: 2=rejected_before_work, 1=ran-but-invalid, 0=valid; no implicit paths \u2014 every path arrives via CLI"
+    },
+    "no_hidden_source_arm": {
+      "implementation": "run.py:main identity-kind match + worker.py:validate_identity_and_import",
+      "note": "installed mode REQUIRES identity_kind=installed_wheel; diagnostic mode REQUIRES diagnostic_source and structurally emits qualification_valid=false (session.py:finalize_session)"
+    }
+  },
+  "mandatory_behaviors": {
+    "1_one_shared_dispatcher": {
+      "implementation": {
+        "implementation": "harness/dispatch.py:execute_analysis + validate_analysis + ANALYSIS_TO_METHOD + extract_signature",
+        "note": "single and batch modes both call execute_analysis (run.py:_execute_mode); unsupported analysis raises UnsupportedAnalysisError, never defaults"
+      },
+      "tests": [
+        "test_dispatch.py (8 tests): exact call lists, zero wrong-method calls, invalid analyses error, signature honesty (mock-based, as HARNESS.md prescribes)"
+      ]
+    },
+    "2_identity_guards": {
+      "implementation": {
+        "implementation": "harness/identity.py:check_under_site_packages (Path.resolve + relative_to AND os.path.commonpath), guard_no_pythonpath, guard_repository_shadow, scan_pth_files (all non-comment .pth content refused in installed mode), scan_editable_install, require_dist_info, hash_package_tree/verify (excludes __pycache__/*.pyc), verify_imported_modules; worker.py:validate_identity_and_import runs ALL guards in-process before engine use",
+        "note": "version string alone is never identity; whole-tree sha256 + identity_sha256 canonical-JSON integrity; interpreter path+version match; per-job records carry identity_sha256/fingerprint/tree sha256"
+      },
+      "tests": [
+        "test_identity_guard.py (12 tests): resolution vs string-prefix, .pth hooks, source .pth, repository shadow, sys.path source entry, editable markers, changed module hash, version drift, tampered identity integrity, package relocated to sibling dir (e2e), positive installed control, real-engine diagnostic smoke"
+      ]
+    },
+    "3_env_and_pool_limits_before_imports": {
+      "implementation": {
+        "implementation": "worker.py:apply_worker_env (replaces os.environ BEFORE numerical imports) + inspect_thread_pools (numba effective count + threading_layer best-effort + BLAS env); run.py builds the allowlisted worker_env with NUMBA_NUM_THREADS, single-thread BLAS/OpenMP pins, NUMBA_CACHE_DIR; spec.py:validate_admission rejects insufficient budget",
+        "note": "requested vs effective recorded separately (effective is None where numba absent)"
+      }
+    },
+    "4_fresh_workers_and_warmup": {
+      "implementation": {
+        "implementation": "harness/pool.py:WorkerPool.spawn_workers (mp spawn context, daemon=False, owned handles only); worker.py:run_job (fresh UNA/Settings/Topology + unique output dir per job); worker_main warm-up block (batch mode) matches manifest analysis, records hashes/metadata, then rmtree",
+        "note": "workers never share live engine objects; single mode = fresh 1-worker pool per job"
+      }
+    },
+    "5_bounded_queues_liveness_cancellation": {
+      "implementation": {
+        "implementation": "pool.py:dispatch_and_drain (in-flight capped at --queue-depth; interleaved non-blocking drains; short POLL/PUT timeouts + overall monotonic deadline; duplicate id counting), wait_ready (bounded readiness barrier + liveness), _check_liveness (prompt PoolFailure on exit), cancel_and_terminate + shutdown (terminate/join ONLY owned children), worker.py:_put_message (bounded result put with hard deadline then os._exit(73))",
+        "note": "result channel bound = queue_depth + 2*W + 8 (spec.result_queue_maxsize); abrupt death retains results already received (run.py harvests retained results on the failure path)"
+      }
+    },
+    "6_writer_semaphore": {
+      "implementation": {
+        "implementation": "worker.py:WriterAdapter.install/snapshot \u2014 shared threading.Semaphore(L) wrapped around the EXISTING Engines.Base export entry methods (ExportAccessibilityResults/ExportFlowResult/ExportODM); production export policy untouched; peak active recorded",
+        "note": "L=W default policy declared in spec.describe; verify.py raises writers_not_returned / writer_limit_exceeded"
+      }
+    },
+    "7_process_tree_sampler": {
+      "implementation": {
+        "implementation": "harness/sampler.py:ProcessTreeSampler._walk_tree (root + children(recursive=True) in ONE instant; summed RSS labelled conservative; USS/PSS where available with macOS AccessDenied fallback to RSS; per-sample system available + swap; per-pid capped list), _loop (fixed declared interval measured from tick start, overhead measured, deterministic decimation past 4000 samples), watchdog trips (memory budget; external pressure stop max(1GiB, 0.10*physical)) signalled via trip_event polled by the pool",
+        "note": "identical sampling code for every arm at the declared 0.25 s interval"
+      }
+    },
+    "8_input_rehash": {
+      "implementation": {
+        "implementation": "manifest.py:rehash_inputs (sha256+size per input vs manifest) executed inside whole-session accounting BEFORE work; mismatch -> exit 2 input_rehash_mismatch; spec.validate_paths prevents output/warmup collisions with inputs, cache root and nonempty previous out dirs",
+        "note": "immutable filenames alone are insufficient \u2014 bytes are verified"
+      }
+    },
+    "9_real_public_method_timing": {
+      "implementation": {
+        "implementation": "worker.py:run_job (application_start_ns immediately before UNA construction through application_end_ns at public-method return; constructor counted ONCE; settings assembly timed separately; no gravity-cap pre-resolution \u2014 dispatch calls ONLY RunAccessibility/RunFlow/RunODM via execute_analysis)",
+        "note": "fault hooks (test-only) sit OUTSIDE the timed application window except where the fault is the behavior under test"
+      }
+    },
+    "10_rich_records_on_success_and_failure": {
+      "implementation": {
+        "implementation": "worker.py:run_job + worker_main job_result/job_failed records (analysis, method_called, engine/result signature, application spans, settings before/after, output counts/bytes/sha256 per file, identity_sha256/fingerprint/kind, tree sha256, measurement_class, thread pool observations, writer snapshot, rss_at_end); run.py writes raw records for BOTH outcomes; session.py builds the parent session record",
+        "note": "unexpected exceptions fail loudly (worker_failed_guard / job_failed); no fallback from candidate import to baseline"
+      }
+    }
+  },
+  "time_definitions": {
+    "application_ns": {
+      "implementation": "worker.py:run_job (t_app0..t_app1; application_start_ns/application_end_ns recorded)",
+      "note": ""
+    },
+    "cold_process_ns": {
+      "implementation": "run.py:_execute_mode single branch (per-job spawn->exit) + _single_times",
+      "note": ""
+    },
+    "warm_batch_application_wall_ns": {
+      "implementation": "pool.py:dispatch_and_drain returns dispatch_start/last_application_event; run.py:_batch_times",
+      "note": ""
+    },
+    "validated_batch_wall_ns": {
+      "implementation": "verify.py:verify_results stamps _verified_at_monotonic; run.py:_batch_times; session.py:finalize_session computes primary throughput = validated / validated_batch_wall_s only when the whole run validates",
+      "note": ""
+    },
+    "whole_session_ns": {
+      "implementation": "run.py:main session_start_monotonic .. finalize; rehash is inside the window; warm-up never hidden (separate warmup_ns + note)",
+      "note": ""
+    }
+  },
+  "start_end_protocol": {
+    "start_barrier": {
+      "implementation": "pool.py:wait_ready collects every worker's ready record (identity summary, import record, warm-up metadata) before dispatch",
+      "note": ""
+    },
+    "end_requirements": {
+      "implementation": "verify.py:verify_results \u2014 all expected ids, no duplicates, engine signature match, coordinator re-hash of every artifact byte, zero-size and companion-pattern re-checks, no failed jobs, workers not force-terminated, exit records present, no surviving owned processes, writers returned/within limit",
+      "note": ""
+    }
+  },
+  "required_negative_tests": {
+    "dispatch_exactness_and_invalid_analysis": {
+      "test": "test_dispatch.py (8 tests)",
+      "kind": "in-process mocks (prescribed by HARNESS.md)",
+      "status": "pass",
+      "note": ""
+    },
+    "wrong_engine_signature_invalid": {
+      "test": "test_pool_faults.py::test_wrong_engine_signature_rejected",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "zero_size_placeholder_invalid": {
+      "test": "test_pool_faults.py::test_zero_size_output_rejected_by_worker",
+      "kind": "real run.py subprocess (worker-side refusal; coordinator re-check also present in verify.py)",
+      "status": "pass",
+      "note": ""
+    },
+    "duplicate_job_id_invalid": {
+      "test": "test_pool_faults.py::test_duplicate_job_id_rejected",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "missing_required_companion_invalid": {
+      "test": "test_pool_faults.py::test_missing_companion_file_rejected",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "altered_bytes_invalid": {
+      "test": "test_pool_faults.py::test_altered_bytes_caught_by_coordinator_rehash",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "worker_raise_records_failure_and_pool_keeps_draining": {
+      "test": "test_pool_faults.py::test_worker_raise_records_failure_and_invalidates",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "exit_before_ready_fails_fast": {
+      "test": "test_pool_faults.py::test_exit_before_ready_fails_fast",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "dies_while_coordinator_puts": {
+      "test": "test_pool_faults.py::test_die_while_dispatch_prompt_cancellation",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "hangs_after_output_terminated_no_survivors": {
+      "test": "test_pool_faults.py::test_hang_after_output_terminated_at_shutdown",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "never_sends_sentinel_bounded_shutdown": {
+      "test": "test_pool_faults.py::test_never_send_sentinel_marks_protocol_incomplete",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "full_queues_no_deadlock": {
+      "test": "test_pool_faults.py::test_slow_drain_bounded_queue_completes_without_deadlock (queue_depth=1, 4 jobs)",
+      "kind": "real run.py subprocess; result-channel bound is structural (maxsize) with interleaved draining",
+      "status": "pass",
+      "note": ""
+    },
+    "sibling_site_packages_fake_prefix": {
+      "test": "test_identity_guard.py::test_site_packages_fake_sibling_prefix_rejected (guard primitive) + test_package_only_in_fake_sibling_cannot_be_reached (e2e relocation)",
+      "kind": "subprocess + e2e",
+      "status": "pass",
+      "note": ""
+    },
+    "editable_pth_import": {
+      "test": "test_identity_guard.py::test_editable_pth_import_rejected + test_path_pth_into_source_tree_rejected",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "cached_filename_changed_bytes": {
+      "test": "test_cli_validation.py::test_cached_filename_with_changed_bytes_rejected",
+      "kind": "real run.py subprocess (valid run, then mutated input -> exit 2 input_rehash_mismatch)",
+      "status": "pass",
+      "note": ""
+    },
+    "parent_grandchild_sampler_included": {
+      "test": "test_sampler.py::test_child_and_grandchild_in_same_simultaneous_snapshot + test_summary_labels_conservative_sampled_semantics",
+      "kind": "real child+grandchild processes with page-touched allocations",
+      "status": "pass",
+      "note": ""
+    },
+    "numba1_larger_flow_executor_mismatch": {
+      "test": "test_cli_validation.py::test_numba1_with_larger_flow_executor_mismatch_detected + test_flow_w_times_h_plus_k_must_fit_budget",
+      "kind": "real run.py subprocess (flow analysis; gate scoped to flow)",
+      "status": "pass",
+      "note": ""
+    },
+    "changed_module_hash_invalidates_warm_identity": {
+      "test": "test_identity_guard.py::test_changed_module_source_hash_invalidates_warm_identity",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "nonexistent_manifest_zero_budget_negative_workers_collision": {
+      "test": "test_cli_validation.py (25 tests incl. argparse-level and pre-work rejections)",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "one_failed_job_never_qualifies": {
+      "test": "test_pool_faults.py::test_worker_raise_records_failure_and_invalidates (counts.successful==0, qualification_valid false)",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    },
+    "installed_mode_refuses_pythonpath_and_NUMBA_DISABLE_JIT": {
+      "test": "test_cli_validation.py::test_pythonpath_rejected_in_installed_mode + test_numba_disable_jit_rejected_in_installed_mode",
+      "kind": "real run.py subprocess",
+      "status": "pass",
+      "note": ""
+    }
+  },
+  "sampled_vs_enforced": [
+    {
+      "item": "per-worker CPU counts (NUMBA_NUM_THREADS, BLAS/OpenMP pins)",
+      "status": "ENFORCED",
+      "how": "worker env replaced before numerical imports; admission W*H<=C pre-work; effective counts OBSERVED (inspect_thread_pools) but not enforceable"
+    },
+    {
+      "item": "writer concurrency",
+      "status": "ENFORCED",
+      "how": "shared semaphore around Engines.Base export entry methods; peak recorded per worker"
+    },
+    {
+      "item": "input queue / result channel capacity",
+      "status": "ENFORCED",
+      "how": "mp.Queue maxsize on both sides; interleaved dispatch/drain"
+    },
+    {
+      "item": "worker liveness / timeouts",
+      "status": "ENFORCED",
+      "how": "exitcode polling each loop pass; monotonic deadlines on every phase; SIGTERM only to owned children"
+    },
+    {
+      "item": "identity / import provenance",
+      "status": "ENFORCED",
+      "how": "in-process guards before engine import; whole-tree and imported-module hashes; coordinator re-hash of outputs"
+    },
+    {
+      "item": "input bytes vs manifest",
+      "status": "ENFORCED",
+      "how": "rehash before work, exit 2 on mismatch"
+    },
+    {
+      "item": "process-tree memory",
+      "status": "SAMPLED (watchdog)",
+      "how": "0.25 s simultaneous recursive snapshots; trips memory budget / external pressure stop; peaks are sampled, NOT caps (declared in every session record)"
+    },
+    {
+      "item": "worker self peak RSS",
+      "status": "SAMPLED",
+      "how": "worker-local 0.1 s thread; informational"
+    },
+    {
+      "item": "numba threading layer / effective threads",
+      "status": "SAMPLED/OBSERVED",
+      "how": "recorded once post-init (None where unavailable); never enforced"
+    }
+  ],
+  "limitations": [
+    "ODM is implemented and dispatcher-tested (mocks + stub engine end-to-end export), but ODM was NOT exercised against the REAL engine in H02; real-engine diagnostic smoke covers RunAccessibility only.",
+    "The real-engine diagnostic run uses NUMBA_DISABLE_JIT=1 for speed; such records are structurally non-qualifying (measurement_class=diagnostic_source) and timings are not comparable to JIT runs.",
+    "inspect_thread_pools output is recorded in every ready/job record but no test asserts numba-specific values (the stub arm has no numba; effective counts are honest Nones there). Arrow and turn/cluster pools are captured indirectly via full Settings echo, not by dedicated inspection.",
+    "The worker-side stuck-result-channel path (_put_message deadline then exit 73) is implemented but never triggered by a test; bounded-queue deadlock-freedom is proven structurally (bounded maxsize + interleaved draining) and by the slow_drain full-input-queue run.",
+    "Warm-up hash-then-discard is implemented and recorded (warmup_ns, warmup file hashes); no dedicated test asserts the warmup record fields.",
+    "The flow worst-case admission gate W*(H+K)<=C is scoped to analysis=flow in batch mode: AggregateFlow's stripe executor only exists for flow runs; accessibility/ODM would otherwise be refused by the production-default stripe estimate (cpu_count-1) that they never spawn. Recorded in admission as flow_worst_case_gate.",
+    "On macOS, USS/PSS are denied to non-root (AccessDenied): the sampler falls back to plain RSS for those processes instead of dropping them (implemented + labelled); on Linux USS/PSS are recorded.",
+    "cold_process_ns compile-cold semantics require the operator to designate a NEW --cache-root for the cold test; the harness never wipes caches.",
+    "identity_sha256 is a canonical-JSON integrity hash, not a keyed signature: tampering requires re-signing, which the tree/module-hash and dist-info guards then catch against disk; arms are trusted to the extent the campaign controls identity generation.",
+    "Installed-mode guards were validated against a physically laid-out stub venv (package + dist-info inside a synthetic site-packages), not against a real built wheel; W00 (build wheels + installed execution proof) is the task that exercises a real wheel."
+  ],
+  "commands": [
+    {
+      "purpose": "full H02 evidence run",
+      "command": "cd <repo>/tests/large_e2e/harness && /Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python -m pytest . -v",
+      "exit_code": 0,
+      "summary": "62 passed in 85.55s",
+      "output": "campaigns/una_large_e2e/evidence/H02/test_results.json (unmodified)"
+    }
+  ]
+}
