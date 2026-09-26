@@ -59,6 +59,17 @@
         ],
         "user_override": "campaign owner may override any time before Q00"
       }
-    }
+    },
+    "W00_precompile_reading": {
+      "flag": "reviewer boundary flag: does install-time precompile/warm of added kernels collide with the campaign's 'broad cache' prohibition?",
+      "reading": "NO COLLISION. The prohibition (campaign contract) targets result memoization - caching computed outputs. Numba cache=True caches compiled machine code, not results; B0 itself already ships cache=True kernels (H04/H05 runs populated NUMBA_CACHE_DIR from baseline source). Install-time pre-population moves the identical JIT compile to install time, adding no numerical surface and no result cache. Compliant as a W00 build step.",
+      "condition": "if any W00/Q00 proposal goes beyond compilation warm-up (caching or reusing computed results across runs), it is out of bounds and must not be baked in",
+      "user_override": "campaign owner may override before W00"
+    },
+    "R00_checklist_items": [
+      "confirm campaign_data/{a1r_wheel_and_venv.json, a1r_lease_log.json, a1r_screen_summary.json} outside-repo residency is adequately covered by in-repo evidence copies (reviewer nit, accepted)",
+      "verify W00 real-wheel guard proof exists (H04-N2) and any install-time precompile step stayed within the W00_precompile_reading",
+      "confirm C1/C2 rulings were applied in Q00 protocol as recorded here (or documented overrides exist)"
+    ]
   }
 }
