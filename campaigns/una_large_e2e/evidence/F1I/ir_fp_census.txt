@@ -1,0 +1,188 @@
+==== B0 kernel _accumulate_od_flow ====
+   0  fadd       fast                         double %.457, %.422
+   1  fcmp       fast                         ugt double %.475, %arg.budget
+   2  fadd       fast                         double %.3735, %.3700
+   3  fadd       fast                         double %.3737, %.3770
+   4  fcmp       fast                         ogt double %.3771, %arg.budget
+   5  fsub       fast                         double %.3771, %arg.d_shortest
+   6  fcmp       fast                         olt double %.4016, 0.000000e+00
+   7  fcmp                                    oeq double %arg.decay_midpoint, 0.000000e+00
+   8  fcmp       fast                         ugt double %excess.4.4, 0.000000e+00
+   9  fmul       fast                         double %excess.4.4, %
+  10  fadd       fast                         double %"$1590call.9.4.4", %q_sum.4.24056
+  11  fcmp       fast                         ugt double %q_sum.3.1, 0.000000e+00
+  12  fadd       fast                         double %.4991, %.4956
+  13  fadd       fast                         double %.4993, %.5026
+  14  fcmp       fast                         ogt double %.5027, %arg.budget
+  15  fsub       fast                         double %.5027, %arg.d_shortest
+  16  fcmp       fast                         olt double %.5254, 0.000000e+00
+  17  fcmp                                    oeq double %arg.decay_midpoint, 0.000000e+00
+  18  fcmp       fast                         ugt double %excess.5.4, 0.000000e+00
+  19  fmul       fast                         double %excess.5.4, %
+  20  fmul       fast                         double %arg.trip_volume, %"$2220call.9.4.4"
+  21  fmul       fast                         double %, %
+  22  fadd       fast                         double %.5541, %
+  23  fadd       fast                         double %.5614, %
+  24  fadd       fast                         double %.5679, %
+  25  fcmp       fast                         ugt double %.5965, 0.000000e+00
+  26  fadd       fast                         double %.6482, %.5965
+  27  fadd       fast                         double %.6556, %.5965
+  28  fcmp       fast                         ugt double %.6793, 0.000000e+00
+  29  fadd       fast                         double %.7307, %.6793
+  30  fadd       fast                         double %.7381, %.6793
+  31  fadd       fast                         double %.7698, %.7667
+  32  fadd       fast                         double %.7730, %.7729
+  33  fadd       fast                         double %.7698.1, %.7667.1
+  34  fadd       fast                         double %.7730.1, %.7729.1
+  35  fadd       fast                         double %.7698.2, %.7667.2
+  36  fadd       fast                         double %.7730.2, %.7729.2
+  37  fadd       fast                         double %.7698.3, %.7667.3
+  38  fadd       fast                         double %.7730.3, %.7729.3
+  39  fadd       fast                         double %.7698.4, %.7667.4
+  40  fadd       fast                         double %.7730.4, %.7729.4
+  41  fadd       fast                         double %.7698.5, %.7667.5
+  42  fadd       fast                         double %.7730.5, %.7729.5
+  43  fadd       fast                         double %.7698.6, %.7667.6
+  44  fadd       fast                         double %.7730.6, %.7729.6
+  45  fadd       fast                         double %.7698.7, %.7667.7
+  46  fadd       fast                         double %.7730.7, %.7729.7
+  47  fadd       fast                         double %.7698.epil, %.7667.epil
+  48  fadd       fast                         double %.7730.epil, %.7729.epil
+  49  fdiv       fast                         double 1.000000e+00, %arg.decay_midpoint
+  50  fmul       fast                         double %excess.4.4, 0x4012616719161D2B
+  51  fmul       fast                         double %, %
+  52  fadd       fast                         double %.4135.le, 1.000000e+00
+  53  fcmp       fast                         oeq double %.4140, 0.000000e+00
+  54  fdiv       fast                         double 1.000000e+00, %.4140
+  55  fdiv       fast                         double 1.000000e+00, %arg.decay_midpoint
+  56  fdiv       fast                         double 1.000000e+00, %q_sum.3.1
+  57  fmul       fast                         double %excess.5.4, 0x4012616719161D2B
+  58  fmul       fast                         double %, %
+  59  fadd       fast                         double %.5373.le, 1.000000e+00
+  60  fcmp       fast                         oeq double %.5378, 0.000000e+00
+  61  fdiv       fast                         double 1.000000e+00, %.5378
+  62  fcmp                                    olt double %.45.i.fr.i, %.45.i33.i
+  63  fcmp                                    ord double %.45.i33.i, 0.000000e+00
+  64  fcmp                                    uno double %.45.i.fr.i, 0.000000e+00
+  65  fcmp                                    uno double %.45.i.fr.i, 0.000000e+00
+  66  fcmp                                    olt double %.45.i.fr.i, %.45.i37.us.i
+  67  fcmp                                    uge double %.45.i.fr.i, %.45.i37.i
+  68  fcmp                                    ord double %.45.i37.i, 0.000000e+00
+  69  fcmp                                    olt double %.45.i, %.45.i83
+  70  fcmp                                    ord double %.45.i83, 0.000000e+00
+  71  fcmp                                    uno double %.45.i, 0.000000e+00
+  72  fcmp                                    olt double %.45.i55, %.45.i87
+  73  fcmp                                    ord double %.45.i87, 0.000000e+00
+  74  fcmp                                    uno double %.45.i55, 0.000000e+00
+  75  fcmp                                    olt double %.45.i59, %.45.i99
+  76  fcmp                                    ord double %.45.i99, 0.000000e+00
+  77  fcmp                                    uno double %.45.i59, 0.000000e+00
+  78  fcmp                                    ord double %.45.i63.fr, 0.000000e+00
+  79  fcmp                                    uge double %.45.i67, %.45.i63.fr
+  80  fcmp                                    uno double %.45.i67, 0.000000e+00
+  81  fcmp                                    ord double %.45.i63.fr, 0.000000e+00
+  82  fcmp                                    olt double %.45.i71.us, %.45.i63.fr
+  83  fcmp                                    uge double %.45.i71, %.45.i63.fr
+  84  fcmp                                    uno double %.45.i71, 0.000000e+00
+  85  fcmp                                    uno double %.45.i63.fr, 0.000000e+00
+  86  fcmp                                    uge double %.45.i63.fr, %.45.i75
+  87  fcmp                                    ord double %.45.i75, 0.000000e+00
+  88  fcmp                                    uno double %.45.i63.fr, 0.000000e+00
+  89  fcmp                                    olt double %.45.i63.fr, %.45.i79.us
+  90  fcmp                                    uge double %.45.i63.fr, %.45.i79
+  91  fcmp                                    ord double %.45.i79, 0.000000e+00
+
+==== candidate _accumulate_od_flow (nogil=True) ====
+   0  fadd       fast                         double %.457, %.422
+   1  fcmp       fast                         ugt double %.475, %arg.budget
+   2  fadd       fast                         double %.3735, %.3700
+   3  fadd       fast                         double %.3737, %.3770
+   4  fcmp       fast                         ogt double %.3771, %arg.budget
+   5  fsub       fast                         double %.3771, %arg.d_shortest
+   6  fcmp       fast                         olt double %.4016, 0.000000e+00
+   7  fcmp                                    oeq double %arg.decay_midpoint, 0.000000e+00
+   8  fcmp       fast                         ugt double %excess.4.4, 0.000000e+00
+   9  fmul       fast                         double %excess.4.4, %
+  10  fadd       fast                         double %"$1590call.9.4.4", %q_sum.4.24056
+  11  fcmp       fast                         ugt double %q_sum.3.1, 0.000000e+00
+  12  fadd       fast                         double %.4991, %.4956
+  13  fadd       fast                         double %.4993, %.5026
+  14  fcmp       fast                         ogt double %.5027, %arg.budget
+  15  fsub       fast                         double %.5027, %arg.d_shortest
+  16  fcmp       fast                         olt double %.5254, 0.000000e+00
+  17  fcmp                                    oeq double %arg.decay_midpoint, 0.000000e+00
+  18  fcmp       fast                         ugt double %excess.5.4, 0.000000e+00
+  19  fmul       fast                         double %excess.5.4, %
+  20  fmul       fast                         double %arg.trip_volume, %"$2220call.9.4.4"
+  21  fmul       fast                         double %, %
+  22  fadd       fast                         double %.5541, %
+  23  fadd       fast                         double %.5614, %
+  24  fadd       fast                         double %.5679, %
+  25  fcmp       fast                         ugt double %.5965, 0.000000e+00
+  26  fadd       fast                         double %.6482, %.5965
+  27  fadd       fast                         double %.6556, %.5965
+  28  fcmp       fast                         ugt double %.6793, 0.000000e+00
+  29  fadd       fast                         double %.7307, %.6793
+  30  fadd       fast                         double %.7381, %.6793
+  31  fadd       fast                         double %.7698, %.7667
+  32  fadd       fast                         double %.7730, %.7729
+  33  fadd       fast                         double %.7698.1, %.7667.1
+  34  fadd       fast                         double %.7730.1, %.7729.1
+  35  fadd       fast                         double %.7698.2, %.7667.2
+  36  fadd       fast                         double %.7730.2, %.7729.2
+  37  fadd       fast                         double %.7698.3, %.7667.3
+  38  fadd       fast                         double %.7730.3, %.7729.3
+  39  fadd       fast                         double %.7698.4, %.7667.4
+  40  fadd       fast                         double %.7730.4, %.7729.4
+  41  fadd       fast                         double %.7698.5, %.7667.5
+  42  fadd       fast                         double %.7730.5, %.7729.5
+  43  fadd       fast                         double %.7698.6, %.7667.6
+  44  fadd       fast                         double %.7730.6, %.7729.6
+  45  fadd       fast                         double %.7698.7, %.7667.7
+  46  fadd       fast                         double %.7730.7, %.7729.7
+  47  fadd       fast                         double %.7698.epil, %.7667.epil
+  48  fadd       fast                         double %.7730.epil, %.7729.epil
+  49  fdiv       fast                         double 1.000000e+00, %arg.decay_midpoint
+  50  fmul       fast                         double %excess.4.4, 0x4012616719161D2B
+  51  fmul       fast                         double %, %
+  52  fadd       fast                         double %.4135.le, 1.000000e+00
+  53  fcmp       fast                         oeq double %.4140, 0.000000e+00
+  54  fdiv       fast                         double 1.000000e+00, %.4140
+  55  fdiv       fast                         double 1.000000e+00, %arg.decay_midpoint
+  56  fdiv       fast                         double 1.000000e+00, %q_sum.3.1
+  57  fmul       fast                         double %excess.5.4, 0x4012616719161D2B
+  58  fmul       fast                         double %, %
+  59  fadd       fast                         double %.5373.le, 1.000000e+00
+  60  fcmp       fast                         oeq double %.5378, 0.000000e+00
+  61  fdiv       fast                         double 1.000000e+00, %.5378
+  62  fcmp                                    olt double %.45.i.fr.i, %.45.i33.i
+  63  fcmp                                    ord double %.45.i33.i, 0.000000e+00
+  64  fcmp                                    uno double %.45.i.fr.i, 0.000000e+00
+  65  fcmp                                    uno double %.45.i.fr.i, 0.000000e+00
+  66  fcmp                                    olt double %.45.i.fr.i, %.45.i37.us.i
+  67  fcmp                                    uge double %.45.i.fr.i, %.45.i37.i
+  68  fcmp                                    ord double %.45.i37.i, 0.000000e+00
+  69  fcmp                                    olt double %.45.i, %.45.i83
+  70  fcmp                                    ord double %.45.i83, 0.000000e+00
+  71  fcmp                                    uno double %.45.i, 0.000000e+00
+  72  fcmp                                    olt double %.45.i55, %.45.i87
+  73  fcmp                                    ord double %.45.i87, 0.000000e+00
+  74  fcmp                                    uno double %.45.i55, 0.000000e+00
+  75  fcmp                                    olt double %.45.i59, %.45.i99
+  76  fcmp                                    ord double %.45.i99, 0.000000e+00
+  77  fcmp                                    uno double %.45.i59, 0.000000e+00
+  78  fcmp                                    ord double %.45.i63.fr, 0.000000e+00
+  79  fcmp                                    uge double %.45.i67, %.45.i63.fr
+  80  fcmp                                    uno double %.45.i67, 0.000000e+00
+  81  fcmp                                    ord double %.45.i63.fr, 0.000000e+00
+  82  fcmp                                    olt double %.45.i71.us, %.45.i63.fr
+  83  fcmp                                    uge double %.45.i71, %.45.i63.fr
+  84  fcmp                                    uno double %.45.i71, 0.000000e+00
+  85  fcmp                                    uno double %.45.i63.fr, 0.000000e+00
+  86  fcmp                                    uge double %.45.i63.fr, %.45.i75
+  87  fcmp                                    ord double %.45.i75, 0.000000e+00
+  88  fcmp                                    uno double %.45.i63.fr, 0.000000e+00
+  89  fcmp                                    olt double %.45.i63.fr, %.45.i79.us
+  90  fcmp                                    uge double %.45.i63.fr, %.45.i79
+  91  fcmp                                    ord double %.45.i79, 0.000000e+00
+

@@ -189,7 +189,7 @@ def _decay(curve_id, beta, midpoint, excess):
     return 1.0 / (1.0 + np.exp(k * excess))
 
 
-@nb.njit(cache=True, fastmath=True)
+@nb.njit(cache=True, fastmath=True, nogil=True)
 def _accumulate_od_flow(
     indptr, indices, weights, edge_id_of_arc, dir_of_arc,
     d_o, d_d, pred_o, pred_d,

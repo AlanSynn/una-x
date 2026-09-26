@@ -1,0 +1,37 @@
+{
+  "specialization": "int32 CSR/edge_id/pred, int8 dir, float64 distances/weights/outputs, int64 scalars",
+  "verdict": "PASS \u2014 counts AND site sequence equal; sole IR delta is PyEval_SaveThread/RestoreThread x2 in the candidate",
+  "b0": {
+    "file": "ir_b0_accumulate_od_flow.ll",
+    "sha256": "328bb1d7111e6c95f923306b977b2d30de8e2426c31c0a0ea5b40a3277edeb6c",
+    "fp_site_count": 92,
+    "site_sequence_sha256": "f443ec3ae89dfd5c73cdf0cbcbba311b55dd36f0dd2838f0ed8fa472091d61c5",
+    "fma_fmuladd_sites": 0,
+    "gil": {
+      "PyEval_SaveThread": 0,
+      "PyEval_RestoreThread": 0
+    }
+  },
+  "cand": {
+    "file": "ir_cand_accumulate_od_flow.ll",
+    "sha256": "072185a7d5471efacb97cc3c37507a4290320ae4a64f3b380e7f68d8669cf5f2",
+    "fp_site_count": 92,
+    "site_sequence_sha256": "f443ec3ae89dfd5c73cdf0cbcbba311b55dd36f0dd2838f0ed8fa472091d61c5",
+    "fma_fmuladd_sites": 0,
+    "gil": {
+      "PyEval_SaveThread": 2,
+      "PyEval_RestoreThread": 2
+    }
+  },
+  "full_ir_residual": {
+    "gil_lines": [
+      "+  %.457 = call ptr @PyEval_SaveThread()",
+      "+  call void @PyEval_RestoreThread(ptr %.457)",
+      "+declare ptr @PyEval_SaveThread() local_unnamed_addr",
+      "+declare void @PyEval_RestoreThread(ptr) local_unnamed_addr"
+    ],
+    "paired_lines": 168,
+    "non_mechanical_pairs": [],
+    "classification": "sole semantic delta = the GIL save/restore pair (2 declares + 2 calls around the kernel invocation in the CPython wrapper); every other diff line pairs with an identical renumber-insensitive line (SSA temp numbers, block-label numbering, module-name length prefix, ABI mangling)"
+  }
+}

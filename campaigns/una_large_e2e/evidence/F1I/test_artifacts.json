@@ -1,0 +1,265 @@
+{
+  "census": {
+    "nrt_per_call": {
+      "b0": [
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        }
+      ],
+      "cand": [
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        },
+        {
+          "alloc": 48,
+          "free": 48
+        }
+      ],
+      "h05_rate": 48
+    },
+    "source_diff": {
+      "added": "@nb.njit(cache=True, fastmath=True, nogil=True)",
+      "b0_path": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src/urban_network_analysis/Engines/AggregateFlow.py",
+      "cand_path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src/urban_network_analysis/Engines/AggregateFlow.py",
+      "removed": "@nb.njit(cache=True, fastmath=True)"
+    },
+    "specializations": {
+      "_accumulate_od_flow": {
+        "signatures": [
+          "(Array(int32, 1, 'C', False, aligned=True), Array(int32, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(int32, 1, 'C', False, aligned=True), Array(int8, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(int32, 1, 'C', False, aligned=True), Array(int32, 1, 'C', False, aligned=True), int64, int64, int64, int64, float64, float64, int64, float64, float64, float64, int64, Array(float64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True))"
+        ]
+      }
+    },
+    "targetoptions": {
+      "_accumulate_od_flow": {
+        "b0": {
+          "boundscheck": null,
+          "fastmath": true,
+          "nogil": "<absent>",
+          "nopython": true
+        },
+        "cand": {
+          "boundscheck": null,
+          "fastmath": true,
+          "nogil": true,
+          "nopython": true
+        }
+      },
+      "_accumulate_od_flow_turns": {
+        "b0": {
+          "boundscheck": null,
+          "fastmath": true,
+          "nopython": true
+        },
+        "cand": {
+          "boundscheck": null,
+          "fastmath": true,
+          "nopython": true
+        }
+      },
+      "_build_line_csr_turns": {
+        "b0": {
+          "boundscheck": null,
+          "nopython": true
+        },
+        "cand": {
+          "boundscheck": null,
+          "nopython": true
+        }
+      },
+      "_decay": {
+        "b0": {
+          "boundscheck": null,
+          "inline": "always",
+          "nopython": true
+        },
+        "cand": {
+          "boundscheck": null,
+          "inline": "always",
+          "nopython": true
+        }
+      },
+      "_find_arc": {
+        "b0": {
+          "boundscheck": null,
+          "inline": "always",
+          "nopython": true
+        },
+        "cand": {
+          "boundscheck": null,
+          "inline": "always",
+          "nopython": true
+        }
+      }
+    },
+    "turns_kernel_targetoptions": {
+      "_accumulate_od_flow_turns": {
+        "b0": {
+          "boundscheck": null,
+          "fastmath": true,
+          "nopython": true
+        },
+        "cand": {
+          "boundscheck": null,
+          "fastmath": true,
+          "nopython": true
+        }
+      }
+    }
+  },
+  "first_divergences": {},
+  "notes": {
+    "m1_b0": {
+      "mutations_caught": [
+        {
+          "array": "final_BA",
+          "first_diff_byte": 0
+        },
+        {
+          "array": "final_node",
+          "first_diff_byte": 48
+        }
+      ]
+    },
+    "m1_cand": {
+      "mutations_caught": [
+        {
+          "array": "final_BA",
+          "first_diff_byte": 0
+        },
+        {
+          "array": "final_node",
+          "first_diff_byte": 48
+        }
+      ]
+    },
+    "m2_b0": {
+      "mutations_caught": [
+        {
+          "array": "final_AB",
+          "first_diff_byte": 8
+        },
+        {
+          "array": "final_BA",
+          "first_diff_byte": 0
+        },
+        {
+          "array": "final_node",
+          "first_diff_byte": 16
+        }
+      ]
+    },
+    "m2_cand": {
+      "mutations_caught": [
+        {
+          "array": "final_AB",
+          "first_diff_byte": 8
+        },
+        {
+          "array": "final_BA",
+          "first_diff_byte": 0
+        },
+        {
+          "array": "final_node",
+          "first_diff_byte": 16
+        }
+      ]
+    },
+    "m3_first_divergences": {
+      "mutations_caught": [
+        {
+          "array": "out_AB",
+          "case": "m_base",
+          "first_diff_byte": 0
+        },
+        {
+          "array": "out_AB",
+          "case": "m_base_nonode",
+          "first_diff_byte": 0
+        },
+        {
+          "array": "out_AB",
+          "case": "m_uturn_leaf",
+          "first_diff_byte": 16
+        },
+        {
+          "array": "out_AB",
+          "case": "m_decay_exponential",
+          "first_diff_byte": 0
+        },
+        {
+          "array": "out_AB",
+          "case": "m_decay_logistic",
+          "first_diff_byte": 0
+        }
+      ]
+    },
+    "t6_budget_override": {
+      "first_diff_byte": 351984,
+      "kind": "byte-divergence",
+      "record": 0
+    }
+  },
+  "warmup_s": {
+    "engine_warmup/b0/base_k1": 0.000459,
+    "engine_warmup/cand/base_k1": 0.00039,
+    "kernel_warmup/b0/m_base": 9e-06,
+    "kernel_warmup/cand/m_base": 5e-06,
+    "specialization_warmup/b0/_accumulate_od_flow": 0.210261,
+    "specialization_warmup/cand/_accumulate_od_flow": 0.004116
+  }
+}
