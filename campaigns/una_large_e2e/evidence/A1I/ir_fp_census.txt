@@ -1,0 +1,46 @@
+==== B0 kernel compact_vector_node_view_scope (elevation module) (ir_b0_compact_vector_node_view_scope.ll) ====
+%.748 = fcmp fast olt double %.196, %arg.cutoff
+%8 = fadd fast double %7, %arg.cutoff
+%16 = fadd fast <2 x double> %wide.load, %broadcast.splat362
+%17 = fadd fast <2 x double> %wide.load365, %broadcast.splat362
+%18 = fadd fast <2 x double> %wide.load366, %broadcast.splat362
+%19 = fadd fast <2 x double> %wide.load367, %broadcast.splat362
+%.6.i132 = fadd fast double %.414.us, %arg.cutoff
+%.6.i133 = fadd fast double %.414, %arg.cutoff
+%.706 = fcmp fast olt double %.229, %arg.cutoff
+%.6.i181 = fadd fast double %.1235, %.841.fca.0.load
+%.6.i181.1 = fadd fast double %.1235.1, %.841.fca.0.load
+%.6.i181.2 = fadd fast double %.1235.2, %.841.fca.0.load
+%.6.i181.3 = fadd fast double %.1235.3, %.841.fca.0.load
+%.6.i181.4 = fadd fast double %.1235.4, %.841.fca.0.load
+%.6.i181.5 = fadd fast double %.1235.5, %.841.fca.0.load
+%.6.i181.epil = fadd fast double %.1235.epil, %.841.fca.0.load
+%.7.i = fcmp fast ole double %.1847, %arg.cutoff
+%.8.i = fcmp fast olt double %.1847, %.1838
+%.190 = fcmp fast une double %.141.unpack, %.182.unpack
+%.192 = fcmp fast olt double %.141.unpack, %.182.unpack
+%.119.i = fcmp fast une double %.53.unpack.i, %.106.unpack.i
+%.121.i = fcmp fast olt double %.53.unpack.i, %.106.unpack.i
+%.119.i = fcmp fast une double %.53.unpack.i, %.106.unpack.i
+%.121.i = fcmp fast olt double %.53.unpack.i, %.106.unpack.i
+
+==== candidate kernel _a1_scope_search (helper module) (ir_cand_a1_scope_search.ll) ====
+%.776 = fcmp fast olt double %.224, %arg.cutoff
+%.1116 = fadd fast double %.1114, %.869.fca.0.load
+%.1159 = fcmp fast ugt double %.1116, %arg.cutoff
+%.1198 = fcmp fast olt double %.1116, %.1194
+%11 = fadd fast double %10, %arg.cutoff
+%19 = fadd fast <2 x double> %wide.load, %broadcast.splat97
+%20 = fadd fast <2 x double> %wide.load100, %broadcast.splat97
+%21 = fadd fast <2 x double> %wide.load101, %broadcast.splat97
+%22 = fadd fast <2 x double> %wide.load102, %broadcast.splat97
+%.6.i25 = fadd fast double %.442.us, %arg.cutoff
+%.6.i26 = fadd fast double %.442, %arg.cutoff
+%.734 = fcmp fast olt double %.257, %arg.cutoff
+%.190 = fcmp fast une double %.141.unpack, %.182.unpack
+%.192 = fcmp fast olt double %.141.unpack, %.182.unpack
+%.119.i = fcmp fast une double %.53.unpack.i, %.106.unpack.i
+%.121.i = fcmp fast olt double %.53.unpack.i, %.106.unpack.i
+%.119.i = fcmp fast une double %.53.unpack.i, %.106.unpack.i
+%.121.i = fcmp fast olt double %.53.unpack.i, %.106.unpack.i
+

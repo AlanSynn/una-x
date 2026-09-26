@@ -1,0 +1,51 @@
+{
+ "schema_version": 1,
+ "task": "A1I",
+ "record": "design_revision",
+ "revision_id": "D5-R1",
+ "role": "implementation-owner",
+ "generated_utc": "2026-09-26T00:00:00Z",
+ "status": "RECORDED — uses the dossier's single allowed design revision (dossiers/A1_snapshot_scratch.md: \"One design and one performance revision maximum\"); no performance revision has been used",
+ "scope_of_change": {
+  "what": "the thread-count source feeding guard condition 12 (scratch cap) in _a1_scope_admits",
+  "unchanged": [
+   "the 256 MiB cap constant (_A1_SCRATCH_CAP_BYTES = 268435456)",
+   "the refusal rule and its direction: refuse iff max_degree > CAP_ELEMS // threads_bound (over-refusal only, never under-allocation)",
+   "the two-phase kernel design D1-D4, D6",
+   "every other guard condition (1-11)"
+  ]
+ },
+ "mechanism_old": {
+  "proof_text": "proof.md section 2 D5: 'the per-origin scratch is np.empty(max_degree) x2 inside prange; bound multiplied active-search scratch under RESOURCES: refuse when max_degree * get_num_threads() exceeds 256 MiB'",
+  "mechanism": "nb.get_num_threads() read inside the guard at admission time"
+ },
+ "mechanism_new": {
+  "mechanism": "nb.config.NUMBA_NUM_THREADS read through a tiny @nb.njit(nogil=True, cache=False) callee _a1_threads_bound()",
+  "source": "src/urban_network_analysis/Engines/_large_access_scratch.py",
+  "rationale": "nb.config.NUMBA_NUM_THREADS is numba's configured default pool size and the set_num_threads() maximum, so it bounds the runtime thread count H from above in the same process"
+ },
+ "forced_by": {
+  "finding": "a direct or callee-isolated nb.get_num_threads() call poisons numba caching of every caller",
+  "probe_facts": [
+   "calling nb.get_num_threads() inside a cache=True njit driver emits NumbaWarning: 'Cannot cache compiled function ... because it uses dynamic globals' and the function is not cached",
+   "isolating the call in a cache=False njit callee does NOT help: numba inlines the callee and the caller is still marked as using dynamic globals (verified with a real prange parallel=True driver and with a sequential njit driver)",
+   "the poisoning violates proof section 7.4 (no flag change: cache=True must survive) and proof section 3 ('warns nothing') — a silent cache loss on every driver, repeated per process"
+   ]
+ },
+ "baking_boundary": {
+  "fact": "both nb.config.NUMBA_NUM_THREADS and import-time module globals are read at FIRST COMPILE and baked into the cached compiled function; the numba on-disk cache does not invalidate when the env var or global changes later (controlled probe: cache built under NUMBA_NUM_THREADS=2 still returns 2 when the module is re-imported in a process with NUMBA_NUM_THREADS=8, no recompile)",
+  "within_one_process": "safe by construction: the baked value is the building process's pool maximum, and set_num_threads() cannot exceed it, so baked_H >= runtime_H and the cap over-refuses at worst",
+  "across_processes": "residual hole: a cache built under a SMALLER H and reused by a process with a LARGER H would admit rows whose total footprint exceeds 256 MiB (bounded by CAP * H_new/H_baked)",
+  "campaign_mitigation": "does not occur in campaign runs: the benchmark harness freezes NUMBA_NUM_THREADS per run and pins a distinct NUMBA_CACHE_DIR per run, so a cache is never reused under a larger H; the A1 test suite likewise gives every bounded child a fresh per-arm cache directory",
+  "disclosure": "recorded here because the A1R reviewer must be able to weigh it; the guard never under-allocates within a process, so the failure mode is excess scratch memory, never incorrect results"
+ },
+ "dossier_grounding": {
+  "quote": "Compute maximum degree once from unchanged pointer data and bound multiplied active-search scratch under RESOURCES",
+  "note": "the dossier fixes the RESOURCE BUDGET (256 MiB) and the multiplied-bound requirement, not the API used to learn the thread count; D5-R1 changes only that API"
+ },
+ "test_impact": {
+  "guard_condition_12": "unchanged refusal class; test_guard_refuses_scratch_cap passes with the real 16,777,217-wide row (> CAP_ELEMS // threads_bound for every threads_bound >= 1)",
+  "silence": "test_t17_no_new_warnings_on_either_route passes on both routes (the poisoning warning is gone)",
+  "cache": "verified separately: a config-constant-reading driver caches cleanly and hits the cache in a second process with zero warnings"
+ }
+}

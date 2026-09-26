@@ -36,6 +36,7 @@ from ..Logger import Logger
 from ..Topology import Topology, Network, AccessPoints
 from .Base import Base
 from ._ordered_csr import _try_build_ordered_csr
+from ._large_access_scratch import _a1_scope_admits, _a1_scope_search
 
 # ============================================================================
 # AccessibilityWElevation Graph Engine Constants
@@ -217,6 +218,44 @@ def od_compact_vector_node_view_scope(
     n_count = adjacency_pointer.shape[0] - 1
 
     od_distances = np.empty((o_count, d_count), dtype=adjacency_vector_weights.dtype)
+
+    # A1 snapshot-preserving scratch route (campaign una_large_e2e):
+    # admitted inputs run the per-origin two-phase search kernel; every
+    # refusal falls through to the original loop below, unchanged.
+    a1_admitted, a1_max_degree = _a1_scope_admits(
+        adjacency_pointer,
+        adjacency_vector,
+        adjacency_vector_weights,
+        adjacynct_vector_network_node,
+        o_terminal_idxs,
+        o_terminal_weights,
+        cutoff,
+    )
+    if a1_admitted:
+        for i in nb.prange(o_count):
+            eligible_offset = np.empty(a1_max_degree, dtype=np.int64)
+            eligible_weight = np.empty(a1_max_degree, dtype=np.float64)
+            scope_weights = _a1_scope_search(
+                o_terminal_idxs[i],
+                o_terminal_weights[i],
+                adjacency_pointer,
+                adjacency_vector,
+                adjacency_vector_weights,
+                adjacynct_vector_network_node,
+                cutoff,
+                d_count,
+                eligible_offset,
+                eligible_weight,
+            )[0]
+            # Adjust for destination positions on edges
+            od_distances[i] = adjust_destination_distances(
+                scope_weights,
+                d_terminal_idxs,
+                d_terminal_weights,
+                d_count,
+            )
+        return od_distances
+
     for i in nb.prange(o_count):
         scope_weights = compact_vector_node_view_scope(
             o_terminal_idxs[i],
@@ -273,6 +312,60 @@ def integrated_scope_access(
     gravity_logistic = np.empty(o_count, dtype=adjacency_vector_weights.dtype)
 
     knn_access = np.empty(o_count, dtype=adjacency_vector_weights.dtype)
+
+    # A1 snapshot-preserving scratch route (campaign una_large_e2e):
+    # admitted inputs run the per-origin two-phase search kernel; every
+    # refusal falls through to the original loop below, unchanged.
+    a1_admitted, a1_max_degree = _a1_scope_admits(
+        adjacency_pointer,
+        adjacency_vector,
+        adjacency_vector_weights,
+        adjacynct_vector_network_node,
+        o_terminal_idxs,
+        o_terminal_weights,
+        cutoff,
+    )
+    if a1_admitted:
+        for o_pos in nb.prange(o_count):
+            eligible_offset = np.empty(a1_max_degree, dtype=np.int64)
+            eligible_weight = np.empty(a1_max_degree, dtype=np.float64)
+            scope_weights = _a1_scope_search(
+                o_terminal_idxs[o_pos],
+                o_terminal_weights[o_pos],
+                adjacency_pointer,
+                adjacency_vector,
+                adjacency_vector_weights,
+                adjacynct_vector_network_node,
+                cutoff,
+                d_count,
+                eligible_offset,
+                eligible_weight,
+            )[0]
+
+            # Adjust for destination positions on edges
+            d_distance = adjust_destination_distances(
+                scope_weights,
+                d_terminal_idxs,
+                d_terminal_weights,
+                d_count,
+            )
+
+            reach[o_pos], gravity_exponential[o_pos], gravity_logistic[o_pos], knn_access[o_pos] = reach_gravity_knn_access(
+                d_distance=d_distance,
+                d_weights=d_weights,
+                cutoff=cutoff,
+                gravity_beta=gravity_beta,
+                gravity_plateau=gravity_plateau,
+                gravity_logistic_midpoint=gravity_logistic_midpoint,
+                gravity_growth_rate=gravity_growth_rate,
+                knn_gravity_plateau=gravity_plateau,
+                knn_weights=knn_weights,
+                knn_gravity_beta=gravity_beta,
+                knn_decay=knn_decay,
+                knn_gravity_logistic_midpoint=gravity_logistic_midpoint,
+                knn_gravity_growth_rate=gravity_growth_rate,
+            )
+        return reach, gravity_exponential, gravity_logistic, knn_access
 
     for o_pos in nb.prange(o_count):
         scope_weights = compact_vector_node_view_scope(
