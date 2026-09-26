@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "record": "control_addendum_A1R",
+  "role": "coordinator/integrator",
+  "recorded_utc": "2026-09-26T07:05:00Z",
+  "purpose": "Record the governing readings and deviations surfaced by the A1R disposition, before Q00. No frozen gate value is changed; this file interprets, it does not amend.",
+  "a1r_disposition": {
+    "verdict": "approve / screened_in, provisional until I00/W00/S01/Q00/Q10 (DECISION.md)",
+    "review": "campaigns/una_large_e2e/evidence/A1R/review.json",
+    "selection": "campaigns/una_large_e2e/evidence/A1R/selection.json",
+    "selected_source_advanced_to": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29 (src tree b121ec0b4312f12caa98bc115243652e1564d3ec)"
+  },
+  "C1_access_marginality": {
+    "flag": "reviewer condition C1",
+    "fact": "A1 benefit concentrates at radius 1200 (O3_HOLDOUT median-of-pair-ratios 1.390/1.306 across two schedules); at radius 500 (O3_ACCESS, and by extension O2-like small-radius profiles) realized proxy ~1.06-1.09, below the 1.1 primary proxy bar on the stricter statistic in both schedules",
+    "consequence": "Q00/Q10 paired-CI-lower>1.0 may fail on ACCESS-like cells; the source change cannot be applied per-cell. Honest terminal space if final gates split: improvement_only or a radius-scoped claim, decided at Q10 with DECISION.md, never asserted as blanket throughput qualification.",
+    "no_action_now": true
+  },
+  "C2_cold_gate_reading": {
+    "flag": "reviewer condition C2: frozen preregistration internally in tension (decision_rule includes maximum_cold_median_time_ratio 1.05; environment_freeze says warm-for-qualification with cold documented)",
+    "governing_reading": "DECISION.md protected-cells clause: 'Cold process median must not regress by more than 5% without an explicitly bounded warm-only qualification; warm-only means no blanket-default promotion claim.' The packet therefore answers the question it was feared to leave open: the cold gate binds by default; an explicitly bounded warm-only qualification is the packet-sanctioned exception, and taking it constrains the final claim shape (no blanket-default promotion).",
+    "measured": "cold cand/b0 median ratio reproduced 1.20/1.13 (two schedules), caused by one-time JIT of the 2 added scratch kernels (~1.3-1.4 s), warm-invisible",
+    "decision_point": "Q00 freeze chooses the qualification route (cold-gate-conformant vs explicitly bounded warm-only); Z00 publishes the claim shape accordingly. Campaign owner may override before Q00; nothing in the packet requires stopping before then.",
+    "no_action_now": true
+  },
+  "screening_block_deviation": {
+    "fact": "A1 screening schedule 1 (instrumented matrix) ran 4 paired blocks per cell against the DECISION.md text 'at most three paired screening blocks per revision'; schedule 2 (a1rp, the disposition dataset) ran 3 per cell conformantly",
+    "mitigations": [
+      "candidate source was frozen at 7a27866 before any screening ran; no schedule-to-schedule tuning was possible or attempted",
+      "both schedules produced byte-identical outputs and consistent ratios; schedule 2 superseded schedule 1 for disposition",
+      "schedule 1 retained, clearly labeled supplementary diagnostics, in evidence/A1R/raw/a1r_*.json",
+      "hard budget bound held throughout: cumulative heavy wall 750.7 s of 14400 s"
+    ],
+    "discipline_note": "future R tasks (F1R..A3R): screening must stay within 3 paired blocks per revision; instrumented pilots are not a substitute and extra blocks are not to be executed past the first conformant matrix"
+  },
+  "heavy_wall_after_A1R_s": 750.7,
+  "heavy_wall_budget_s": 14400.0
+}

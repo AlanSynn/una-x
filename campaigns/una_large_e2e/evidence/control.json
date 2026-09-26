@@ -3,10 +3,24 @@
   "campaign_id": "una-large-e2e-2026-09",
   "initialized_utc": "2026-09-26T00:00:00Z",
   "selected_source": {
-    "commit": "361928e4ba38f34622cafe065b0025244db61368",
-    "src_tree": "a5883dddcef3afb8debdb4438a6338da886add6f",
-    "equivalence_note": "SELECTED_SOURCE_SHA initialized to B0-equivalent source per EXECUTION.md; src tree identical at packet publication commit ea08947. Only the integrator advances it, after review/screening proof.",
-    "accepted_tracks": [],
+    "commit": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29",
+    "src_tree": "b121ec0b4312f12caa98bc115243652e1564d3ec",
+    "equivalence_note": "SELECTED_SOURCE_SHA initialized to B0-equivalent source per EXECUTION.md; src tree identical at packet publication commit ea08947. Only the integrator advances it, after review/screening proof. Advanced at A1R disposition (integrator commit ec28ac9 records the disposition; control advance commit follows).",
+    "accepted_tracks": [
+      {
+        "track": "A1",
+        "status": "screened_in_provisional",
+        "source_commit": "7a27866",
+        "src_tree": "b121ec0b4312f12caa98bc115243652e1564d3ec",
+        "review": "campaigns/una_large_e2e/evidence/A1R/review.json",
+        "selection": "campaigns/una_large_e2e/evidence/A1R/selection.json",
+        "conditions": [
+          "provisional until I00/W00/S01/Q00/Q10 per DECISION.md",
+          "C1: ACCESS-cell proxy marginal (~1.06-1.09 < 1.1 bar at r=500); HOLDOUT decisive (1.31-1.39)",
+          "C2: cold median ratio 1.13-1.21 vs frozen 1.05 gate - warm-invisible JIT of 2 added kernels; DECISION.md permits explicitly bounded warm-only qualification at the price of no blanket-default promotion claim; governing reading recorded in evidence/control_addendum_A1R.json"
+        ]
+      }
+    ],
     "rejected_or_not_admitted": []
   },
   "comparator": {
