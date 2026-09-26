@@ -50,15 +50,24 @@ def load_arm(root=None):
     ns.root = root
 
     mod_acc = importlib.import_module("urban_network_analysis.Engines.Accessibility")
+    mod_acce = importlib.import_module(
+        "urban_network_analysis.Engines.AccessibilityWElevation")
     mod_flow = importlib.import_module("urban_network_analysis.Engines.AggregateFlow")
     mod_pkg = importlib.import_module("urban_network_analysis")
     mod_settings = importlib.import_module("urban_network_analysis.Settings")
     mod_logger = importlib.import_module("urban_network_analysis.Logger")
 
     ns.Accessibility = mod_acc.Accessibility
+    ns.AccessibilityWElevation = mod_acce.AccessibilityWElevation
     ns.AggregateFlow = mod_flow.AggregateFlow
     ns.Settings = mod_settings.Settings
     ns.Logger = mod_logger.Logger
+
+    # AccessibilityWElevation kernel family (a separate duplicated njit
+    # family; the one the observed O2 pass actually exercises)
+    ns.integrated_scope_access_elevation = mod_acce.integrated_scope_access
+    ns.od_compact_vector_node_view_scope_elevation = (
+        mod_acce.od_compact_vector_node_view_scope)
 
     # Accessibility kernel family
     ns.reach_gravity_knn_access = mod_acc.reach_gravity_knn_access
@@ -81,6 +90,7 @@ def load_arm(root=None):
     ns.module_files = {
         "urban_network_analysis": mod_pkg.__file__,
         "Engines.Accessibility": mod_acc.__file__,
+        "Engines.AccessibilityWElevation": mod_acce.__file__,
         "Engines.AggregateFlow": mod_flow.__file__,
         "Settings": mod_settings.__file__,
         "Logger": mod_logger.__file__,

@@ -185,6 +185,6 @@
     "tests/large_e2e/oracle/test_sentinel_probe.py": "9c424c806a7827b5247535a519c107bca363cd7f190b28b1b52be5545bb873a7",
     "tests/large_e2e/oracle/child_hazard.py": "06c947d86154b7d1906673dd6879e4644a218a05fb1d564d3bf7148ae6a9eafb",
     "tests/large_e2e/oracle/golden/build_golden.py": "3271b37b0271489957591ec094c580822072a2a1628275cb206f3dc5e3737954",
-    "benchmarks/large_e2e/oracle/compare_arms.py": "see benchmarks/large_e2e/oracle (unchanged since validation; exercised by test_subprocess_b0_vs_b0_bit_identical)"
+    "benchmarks/large_e2e/oracle/compare_arms.py": "2e10ae50010a662624ae3cdc42d7436c446be15756244ed8b51a7cf822e75a65 (sha256 added per H04-N11; identical to the hash the H04 reviewer observed at review time; exercised by test_subprocess_b0_vs_b0_bit_identical)"
   }
 }
