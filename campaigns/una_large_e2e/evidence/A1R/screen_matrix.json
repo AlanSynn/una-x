@@ -1,0 +1,527 @@
+{
+ "task": "A1R",
+ "record": "screen_matrix",
+ "role": "screen-executor",
+ "descriptive_only": "timings/hashes aggregated for h04-reviewer's disposition; NO gate verdicts are issued here",
+ "candidate_commit": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29",
+ "lease_id": "A1R-lease-20260926",
+ "lease_log": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_lease_log.json",
+ "heavy_wall": {
+  "opening_balance_s": 426.4,
+  "cumulative_incl_opening_s": 665.0,
+  "budget_s": 14400.0
+ },
+ "arms": {
+  "b0": {
+   "python": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+   "cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "wheel_sha256": "71fd5615b5683f3c798938a2762824da9ba3fada801aaa840343e7378d4fc979"
+  },
+  "cand": {
+   "python": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+   "cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "wheel_sha256": "9d808304a987af9efe5ccfcbe709ce6b7f9e953098dfc6dd4b5e91c8c141026e"
+  }
+ },
+ "fleet_finding_applied": "per-arm NUMBA_CACHE_DIR roots (cache entries pickle the loading module name)",
+ "slots": [
+  {
+   "run_id": "a1r_O3_ACCESS_b0_cold",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "pair_index": 0,
+   "pair_order": "AB",
+   "cold": true,
+   "window_s": 6.6418,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_root_wiped_before_run": true,
+   "cache_files_after": 8,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_ACCESS_cand_cold",
+   "cell": "O3_ACCESS",
+   "arm": "cand",
+   "pair_index": 0,
+   "pair_order": "AB",
+   "cold": true,
+   "window_s": 8.0403,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_root_wiped_before_run": true,
+   "cache_files_after": 10,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_ACCESS_b0_w1",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "pair_index": 1,
+   "pair_order": "AB",
+   "cold": false,
+   "window_s": 2.8037,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_root_wiped_before_run": false,
+   "cache_files_after": 8,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_ACCESS_cand_w1",
+   "cell": "O3_ACCESS",
+   "arm": "cand",
+   "pair_index": 1,
+   "pair_order": "AB",
+   "cold": false,
+   "window_s": 2.5212,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_root_wiped_before_run": false,
+   "cache_files_after": 10,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_ACCESS_cand_w2",
+   "cell": "O3_ACCESS",
+   "arm": "cand",
+   "pair_index": 2,
+   "pair_order": "BA",
+   "cold": false,
+   "window_s": 2.427,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_root_wiped_before_run": false,
+   "cache_files_after": 10,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_ACCESS_b0_w2",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "pair_index": 2,
+   "pair_order": "BA",
+   "cold": false,
+   "window_s": 2.7461,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_root_wiped_before_run": false,
+   "cache_files_after": 8,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_ACCESS_b0_w3",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "pair_index": 3,
+   "pair_order": "AB",
+   "cold": false,
+   "window_s": 2.4797,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_root_wiped_before_run": false,
+   "cache_files_after": 8,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_ACCESS_cand_w3",
+   "cell": "O3_ACCESS",
+   "arm": "cand",
+   "pair_index": 3,
+   "pair_order": "AB",
+   "cold": false,
+   "window_s": 2.6769,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_root_wiped_before_run": false,
+   "cache_files_after": 10,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_HOLDOUT_b0_cold",
+   "cell": "O3_HOLDOUT",
+   "arm": "b0",
+   "pair_index": 0,
+   "pair_order": "AB",
+   "cold": true,
+   "window_s": 6.809,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_root_wiped_before_run": true,
+   "cache_files_after": 8,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_HOLDOUT_cand_cold",
+   "cell": "O3_HOLDOUT",
+   "arm": "cand",
+   "pair_index": 0,
+   "pair_order": "AB",
+   "cold": true,
+   "window_s": 7.8286,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_root_wiped_before_run": true,
+   "cache_files_after": 10,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_HOLDOUT_b0_w1",
+   "cell": "O3_HOLDOUT",
+   "arm": "b0",
+   "pair_index": 1,
+   "pair_order": "AB",
+   "cold": false,
+   "window_s": 3.5661,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_root_wiped_before_run": false,
+   "cache_files_after": 8,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_HOLDOUT_cand_w1",
+   "cell": "O3_HOLDOUT",
+   "arm": "cand",
+   "pair_index": 1,
+   "pair_order": "AB",
+   "cold": false,
+   "window_s": 2.5659,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_root_wiped_before_run": false,
+   "cache_files_after": 10,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_HOLDOUT_cand_w2",
+   "cell": "O3_HOLDOUT",
+   "arm": "cand",
+   "pair_index": 2,
+   "pair_order": "BA",
+   "cold": false,
+   "window_s": 2.5594,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_root_wiped_before_run": false,
+   "cache_files_after": 10,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_HOLDOUT_b0_w2",
+   "cell": "O3_HOLDOUT",
+   "arm": "b0",
+   "pair_index": 2,
+   "pair_order": "BA",
+   "cold": false,
+   "window_s": 3.6027,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_root_wiped_before_run": false,
+   "cache_files_after": 8,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_HOLDOUT_b0_w3",
+   "cell": "O3_HOLDOUT",
+   "arm": "b0",
+   "pair_index": 3,
+   "pair_order": "AB",
+   "cold": false,
+   "window_s": 3.1487,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_root_wiped_before_run": false,
+   "cache_files_after": 8,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": []
+  },
+  {
+   "run_id": "a1r_O3_HOLDOUT_cand_w3",
+   "cell": "O3_HOLDOUT",
+   "arm": "cand",
+   "pair_index": 3,
+   "pair_order": "AB",
+   "cold": false,
+   "window_s": 2.6781,
+   "peak_rss_tree_mib": null,
+   "pressure_breach": false,
+   "rc": 0,
+   "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_root_wiped_before_run": false,
+   "cache_files_after": 10,
+   "numba_cache_dir_env": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "import_identity_ok": true,
+   "imported_from": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis",
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "accessibility_array_sha256": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": []
+  }
+ ],
+ "problems": [],
+ "utc": "2026-09-26T06:43:09Z"
+}
