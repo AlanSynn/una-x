@@ -1,0 +1,91 @@
+{
+ "schema_version": 1,
+ "task": "A1R",
+ "record": "review",
+ "role": "independent-reviewer",
+ "generated_utc": "2026-09-26T08:10:00Z",
+ "subject": {
+  "candidate_commit": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29",
+  "diff_base": "5854588 (A1I Phase 1 + approved A1I proof review)",
+  "approved_proof": "campaigns/una_large_e2e/dossiers/A1_snapshot_scratch.md + evidence/A1I/proof.md",
+  "allowed_design_revision": "evidence/A1I/design_revision_D5.json (D5-R1, the dossier's single allowed revision)"
+ },
+ "phase_a_verdict": "conform - no blocking findings; implementation matches the approved proof line-for-line; the one allowed design revision (D5-R1) is sound and semantically inert",
+ "phase_a_checks": {
+  "1_implementation_vs_proof": {
+   "result": "conform",
+   "method": "programmatic prologue byte-identity diff of both engine mirrors (Accessibility.py, AccessibilityWElevation.py) 5854588..7a27866: zero mismatches outside the declared insertion regions; diff is insertion-only (+94/+93 lines, no deletions); per driver per mirror: guard once before prange, admitted branch allocates eligible_offset np.empty(max_degree,int64) + eligible_weight np.empty(max_degree,float64) per prange iteration, calls _a1_scope_search(...)[0], then the identical adjust/reach calls and return; the original prange loop is textually unchanged below the branch",
+   "scratch_semantics": "phase one writes absolute offsets+costs into caller-owned scratch with NO label writes; phase two replays stored pairs in ascending order - preserves the baseline's pre-row S0 snapshot, later-larger duplicate overwrite, and heap visit sequence (proof obligation: snapshot semantics)",
+   "compiler_obligation": "fast-flags identical to baseline kernels; no relaxed-math arm; NO change to numerical stripe partition or public contract (signatures untouched, insertion-only)"
+   },
+  "2_design_revision_D5R1": {
+   "result": "sound",
+   "verified": [
+    "nb.get_num_threads() dynamic-global cache poisoning replaced by nb.config.NUMBA_NUM_THREADS read inside @nb.njit(nogil=True, cache=False) callee _a1_threads_bound; baked at first compile; bounds runtime H from above within a process",
+    "cap arithmetic unchanged: refuse iff max_degree > _A1_SCRATCH_CAP_ELEMS // threads_bound, _A1_SCRATCH_CAP_BYTES=268435456, _A1_SCRATCH_CAP_ELEMS=16777216 (equiv H*max_degree*16B > 256 MiB)",
+    "refusal direction unchanged and over-refusal only: stub/guard returns (False,0), dispatch falls through to the unchanged original loop - a refused input computes exactly the baseline path",
+    "callee introduces no numeric surface (returns an int; no array math; not in the FP dataflow)",
+    "cross-process baking hole (cache baked under smaller H reused under larger H) is disclosed in design_revision_D5.json as excess-memory-only, never wrong results; cannot occur under per-run cache roots + frozen H; reviewer's Phase B warm replay demonstrated valid cross-process cache reuse (zero NumbaWarnings); test_z_multithread exercises children with per-arm cache roots"
+    ]
+   },
+  "3_test_pin_corrections": {
+   "result": "all five preserve or strengthen pin force",
+   "items": [
+    "T5/T10 output layout: layout-only correction, comparison force unchanged (assert_array_bytes_equal retained)",
+    "T16 replaced: prior pin captured 0 OD driver records (vacuous); replacement is an observed-scale both-arm OD byte-compare plus the three-way candidate==B0==stored triangle - strictly stronger",
+    "OOB-terminal moved to bounded child processes after a real in-process SIGBUS was observed: preserves the pin (fatal-signal identity SIGILL/SIGBUS/SIGSEGV asserted, never a Python exception) while keeping the suite runnable",
+    "int32_ptr reclassified typing-identity: correct - the comparison evidence (byte equality) is unchanged; classification now matches what the test actually proves"
+    ]
+   },
+  "4_byte_equality_assertions": {
+   "result": "verified",
+   "detail": "every candidate-vs-baseline comparison in tests/large_e2e/A1/ uses comparator.assert_array_bytes_equal; assert_array_within_ulp (ULP<=4) is confined to pure-Python-trace vs compiled tests, never candidate-vs-baseline; T13 refusal case asserts byte-equal outputs plus the NRT routing signature (167 vs 16575 allocs/call admitted; refusal 16735==16735 exact)"
+   },
+  "5_ir_blocking_obligation_proof_7_3": {
+   "result": "satisfied",
+   "detail": "0 fmuladd/llvm.fma sites in BOTH kernels; every fadd and fcmp carries fast in both kernels (reviewer verified via full line dumps after an initial grep-pattern error produced false negatives - corrected before recording); the single fadd has two loaded operands, no reassociation site; phase two is FP-free; candidate's 10 fcmp sites map 1:1 to B0's 10",
+   "minor_finding_F1": "evidence/A1I/ir_side_by_side.md table undercounts candidate fcmp as 8; its own ir_fp_census.txt has 10 (grep-verified). Bookkeeping only - the verbatim census is authoritative and correct"
+   },
+  "6_suites_and_hashes": {
+   "result": "pass",
+   "detail": "reviewer independently reran on a fresh cache root: A1 suite 118 passed (114.93s), numerical oracle 64 passed (38.13s); all 8 A1I artifact sha256 values recomputed by reviewer match result.json"
+   },
+  "7_quirks_and_ub_posture": {
+   "result": "preserved",
+   "detail": "H04-N9 quirks untouched; baseline kernel UB exposure (no validation/early returns, boundscheck off) is deliberately NOT altered - the runtime guard's 12-condition scan only steers the private route away from malformed inputs, it does not fix or mask baseline behavior, consistent with the campaign no-bug-fix rule and PR-N1's UB-only exposure note"
+   }
+ },
+ "phase_b_replay": {
+  "result": "pass",
+  "detail": "reviewer's own observed-fixture replay (replay_integrated_scope_access) importing the oracle record, support.b0, and the candidate under alias una_a1_cand in separate processes over one fresh NUMBA_CACHE_DIR per import identity (fleet finding respected): 8/8 outputs candidate==B0==stored byte-equal, in BOTH the cold-compile and warm-cache processes; zero NumbaWarnings captured in either process",
+  "raw": ["/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_replay_cold.json", "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_replay_warm.json"]
+ },
+ "phase_c_screen": {
+  "summary": "28/28 valid runs (16 schedule-1 + 12 schedule-2); full numbers, gates and disposition recorded in evidence/A1R/selection.json; screen executed by h05-profiler under lease A1R-lease-20260926, disposition owned by reviewer",
+  "headline": {
+   "O3_HOLDOUT": "decisive: median-of-pair-ratios 1.390 (sched1) / 1.306 (sched2); every warm pair in both schedules candidate-favorable (min 1.176)",
+   "O3_ACCESS": "marginal: proxy ratio-of-medians 1.089 (sched1) / 1.058 (sched2) - below the 1.1 screen bar; median-of-pair-ratios 1.112 / 1.060; one of five warm pairs regressed 7.7% (below the 1.1 investigate threshold)",
+   "cold": "cand/b0 1.21/1.15 (sched1) reproduced at 1.20/1.13 (sched2): one-time JIT of the 2 extra scratch-module kernels (+ guard overload), ~1.3-1.4s absolute, warm-invisible"
+   }
+ },
+ "findings": [
+  {"id":"A1R-F1","severity":"minor","finding":"ir_side_by_side.md table undercounts candidate fcmp sites (8 vs census 10); census file is correct"},
+  {"id":"A1R-F2","severity":"minor","finding":"peak_rss_tree_mib null in all schedule-1 matrix records (instrument did not populate the field); schedule-2 records carry peak_rss_ru_maxrss_mib (worst observed 591.4 MiB, far under ceiling); ceiling re-check at every admission, 0 refusals"},
+  {"id":"A1R-F3","severity":"protocol_note","finding":"schedule-2 (a1rp) block exceeds the <=3-warm-pair screen instruction by +2 warm pairs and +1 cold pair per cell; heavy budget held at 750.7s/14400s; all records valid and retained; incorporated rather than discarded"},
+  {"id":"A1R-F4","severity":"protocol_note","finding":"thread regime differs between schedules (sched1 ambient 10 threads, sched2 pinned NUMBA_NUM_THREADS=8): within-schedule paired comparisons are the decision basis; pooled ratios descriptive only; byte outputs identical across regimes"},
+  {"id":"A1R-F5","severity":"bookkeeping","finding":"h05 message quoted lease 665.0s; a1r_lease_log.json cumulative_heavy_s=750.7 (includes the a1rp block and a retained failed first build rc=2, retried rc=0) is authoritative"},
+  {"id":"A1R-F6","severity":"risk_carry_forward","finding":"C2 cold-gate risk: reproducible cold median ratio 1.13-1.21 vs frozen maximum_cold_median_time_ratio 1.05; the frozen preregistration is internally in tension (decision_rule includes the cold gate; environment_freeze says warm for qualification runs with cold documented at O2_cold); if the cold gate binds at Q00, A1 as-is is NOT admitted; resolution belongs to the campaign owner"},
+  {"id":"A1R-F7","severity":"risk_carry_forward","finding":"C1 ACCESS marginality: realized proxy ~1.06-1.09 at r=500; benefit concentrates at r=1200; Q00's paired-CI-lower>1.0 may fail on ACCESS-like cells (incl. O2); expectation recorded now so qualification is not surprised"}
+ ],
+ "verdict": "approve - Phase A conform, no blocking findings; screen disposition screened_in (provisional pending I00/W00/S01/Q00/Q10) with conditions C1 and C2 recorded in selection.json",
+ "citations": [
+  "src/urban_network_analysis/Engines/_large_access_scratch.py",
+  "src/urban_network_analysis/Engines/Accessibility.py",
+  "src/urban_network_analysis/Engines/AccessibilityWElevation.py",
+  "campaigns/una_large_e2e/evidence/A1I/{proof.md,design_revision_D5.json,result.json,ir_side_by_side.md,ir_fp_census.txt}",
+  "campaigns/una_large_e2e/evidence/A1R/{screen_matrix.json,selection.json,raw/}",
+  "tests/large_e2e/A1/",
+  "campaigns/una_large_e2e/evidence/H05/preregistration.json",
+  "/Users/alansynn/orca/workspaces/una-x/campaign_data/{a1r_lease_log.json,a1r_wheel_and_venv.json,a1r_replay_cold.json,a1r_replay_warm.json}"
+ ]
+}
