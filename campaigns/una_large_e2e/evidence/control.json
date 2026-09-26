@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "campaign_id": "una-large-e2e-2026-09",
+  "initialized_utc": "2026-09-26T00:00:00Z",
+  "selected_source": {
+    "commit": "361928e4ba38f34622cafe065b0025244db61368",
+    "src_tree": "a5883dddcef3afb8debdb4438a6338da886add6f",
+    "equivalence_note": "SELECTED_SOURCE_SHA initialized to B0-equivalent source per EXECUTION.md; src tree identical at packet publication commit ea08947. Only the integrator advances it, after review/screening proof.",
+    "accepted_tracks": [],
+    "rejected_or_not_admitted": []
+  },
+  "comparator": {
+    "final_comparator": "B0 (361928e, includes ordered CSR)",
+    "pre_csr_98f498e": "provenance only, never the primary comparator",
+    "upstream_c15ebda": "provenance only"
+  },
+  "branches_and_worktrees": {
+    "integration_branch": "perf/una-large-e2e",
+    "integration_worktree": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e",
+    "baseline_worktree": "/Users/alansynn/orca/workspaces/una-x/wt-b0 (detached at B0)",
+    "main_untouched": true
+  },
+  "budgets": {
+    "total_heavy_wall_seconds": 14400,
+    "budget_source": "campaign.json (policy); DECISION.md run budget: baseline pilots <=2/cell, screening <=3 paired blocks/revision, <=2 revisions, sweep <=6 W/H configs x 2 batches/family, final 5 pairs/mandatory workload, +1 diagnostic repeat, L4 1 pair (+1 documented-failure rerun)",
+    "cpu_slots_policy": {
+      "C": 9,
+      "derivation": "10 logical CPUs, round down, reserve one for coordinator/sampler per RESOURCES.md default; user supplied no different budget",
+      "heterogeneity": "8 P-cores + 2 E-cores; placement is macOS-scheduler-controlled. No P-core-only pinning claim is made. W*H_numba<=C is necessary but NOT sufficient for flow (separate topology/turn/cluster/BLAS/Arrow pools charged per RESOURCES.md).",
+      "numba_default_threads_observed": 10,
+      "numba_threading_layer_observed": "workqueue"
+    },
+    "memory_policy": {
+      "ceiling_mib": "min(10650, 0.80 * available_at_admission); re-measure available RAM at each heavy-lease admission",
+      "physical_bytes": 17179869184,
+      "pressure_stop_available_bytes": "max(1GiB, 0.10*phys) = 1717986918",
+      "admission_time_observation": "at H00 the machine showed 82.4% RAM used and 7.4/8.6 GiB swap used (2.83 GiB available) — heavy-execution leases must re-check and may be refused or downsized per RESOURCES.md; unrelated system load recorded per-run"
+    },
+    "disk_free_at_H00_bytes": 145548189696
+  },
+  "gates_frozen_from_campaign_json": {
+    "minimum_removable_fraction": 0.05,
+    "proxy_speedup": 1.1,
+    "paired_ci_lower_exclusive": 1.0,
+    "maximum_protected_median_time_ratio": 1.05,
+    "maximum_cold_median_time_ratio": 1.05,
+    "investigate_single_slowdown_ratio": 1.1,
+    "note": "policy constants, not measured targets (DECISION.md)"
+  },
+  "portfolio": ["A1", "A2", "A3", "F1", "F2", "F3"],
+  "scheduling_track": "S (external job scheduling/writers) via S01; public RunBatch unchanged",
+  "availability": {
+    "production_target_U4": "unavailable - not supplied; O3 remains an observed proxy, never claimed as L4",
+    "observed_inputs": "pending H01 acquisition from inputs_catalog.json (Boston tutorial at upstream c15ebda); until then all performance work is blocked on observed cells",
+    "CI": "none in this fork; recorded unavailable, never passed",
+    "second_observed_morphology": "unavailable - O3_HOLDOUT is same-network generalization only"
+  },
+  "ownership_map": {
+    "source": "implementation-owners via dossier scopes; integrator sole owner of shared-source advances",
+    "harness": "benchmarks/large_e2e/** + tests/large_e2e/harness/**",
+    "oracles": "tests/large_e2e/oracle/** + benchmarks/large_e2e/oracle/**",
+    "performance_lease": "single global heavy-execution lease; coordinator does read-only work only during leases",
+    "reviews": "independent subagent reviewers, separate from implementation"
+  }
+}

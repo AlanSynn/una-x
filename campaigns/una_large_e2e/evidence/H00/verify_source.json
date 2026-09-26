@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "head": "ea089478ba0e968a5fbf802ed18fbfaef6d73873",
+  "worktree_status": "?? campaigns/una_large_e2e/evidence/H00/",
+  "checks": [
+    {
+      "check": "baseline_src",
+      "object": "361928e4ba38f34622cafe065b0025244db61368:src",
+      "expected": "a5883dddcef3afb8debdb4438a6338da886add6f",
+      "actual": "a5883dddcef3afb8debdb4438a6338da886add6f",
+      "pass": true,
+      "error": null
+    },
+    {
+      "check": "requested_src",
+      "object": "HEAD:src",
+      "expected": "a5883dddcef3afb8debdb4438a6338da886add6f",
+      "actual": "a5883dddcef3afb8debdb4438a6338da886add6f",
+      "pass": true,
+      "error": null
+    },
+    {
+      "check": "historical_archive",
+      "object": "HEAD:campaigns/history/una_cpu_2026_09/packet",
+      "expected": "917475d210218a7f3ae2765d5b8e6a1c9c587842",
+      "actual": "917475d210218a7f3ae2765d5b8e6a1c9c587842",
+      "pass": true,
+      "error": null
+    },
+    {
+      "check": "blob:src/urban_network_analysis/Engines/Accessibility.py",
+      "object": "HEAD:src/urban_network_analysis/Engines/Accessibility.py",
+      "expected": "473de486e5573992aba5079f3c8ac80668e61aa0",
+      "actual": "473de486e5573992aba5079f3c8ac80668e61aa0",
+      "pass": true,
+      "error": null
+    },
+    {
+      "check": "blob:src/urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "object": "HEAD:src/urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "expected": "dc75e48baf92817028a749a15778c6308e41c44f",
+      "actual": "dc75e48baf92817028a749a15778c6308e41c44f",
+      "pass": true,
+      "error": null
+    },
+    {
+      "check": "blob:src/urban_network_analysis/Engines/_ordered_csr.py",
+      "object": "HEAD:src/urban_network_analysis/Engines/_ordered_csr.py",
+      "expected": "186e82c0ddb612eae0a5550e5e0b06cf4f16785d",
+      "actual": "186e82c0ddb612eae0a5550e5e0b06cf4f16785d",
+      "pass": true,
+      "error": null
+    },
+    {
+      "check": "blob:src/urban_network_analysis/Engines/AggregateFlow.py",
+      "object": "HEAD:src/urban_network_analysis/Engines/AggregateFlow.py",
+      "expected": "0114ce8f318a3247b62e3d468e32d54e692737a2",
+      "actual": "0114ce8f318a3247b62e3d468e32d54e692737a2",
+      "pass": true,
+      "error": null
+    },
+    {
+      "check": "blob:src/urban_network_analysis/Topology.py",
+      "object": "HEAD:src/urban_network_analysis/Topology.py",
+      "expected": "26ca999f32f20bbb447a91ea51d60a3408ea6948",
+      "actual": "26ca999f32f20bbb447a91ea51d60a3408ea6948",
+      "pass": true,
+      "error": null
+    },
+    {
+      "check": "blob:src/urban_network_analysis/UNA.py",
+      "object": "HEAD:src/urban_network_analysis/UNA.py",
+      "expected": "f803a536277c178f512e08243ac12ce18bf3de46",
+      "actual": "f803a536277c178f512e08243ac12ce18bf3de46",
+      "pass": true,
+      "error": null
+    },
+    {
+      "check": "runtime_worktree_clean",
+      "pass": true
+    }
+  ],
+  "scope": "initial B0 source/archive bridge, not a candidate correctness test",
+  "note": "A selected runtime change is expected to differ from B0; record/review its new identity rather than editing this baseline manifest."
+}

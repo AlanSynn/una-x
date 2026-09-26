@@ -1,0 +1,1658 @@
+{
+  "ok": true,
+  "task_count": 26,
+  "checks": [
+    {
+      "check": "file:AUTHORITY.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:EXECUTION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:HARNESS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:MODEL.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:OPERATIONS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:README.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:RESOURCES.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:SOURCE_AUDIT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:START_HERE.txt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:TASKS_CLAUDE.yaml",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:WORKLOADS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:campaign.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:inputs_catalog.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:tests/test_packet.py",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:tools/check_evidence.py",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:tools/compare_npz.py",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "file:tools/verify_source.py",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "baseline_sha",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "src_tree_sha",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "archive_tree_sha",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no_auto_publish",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "cpu_only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "exact_portfolio",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "branch",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "dag_identity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "start_size",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "input:network",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "input:origins",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "input:destinations",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "input:network_3d",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "input:observers",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "unique_task_ids",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H00:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "H00:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H00:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H00:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H00:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H00:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H00:context:AUTHORITY.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H00:context:SOURCE_AUDIT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H00:context:OPERATIONS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H00:context:RESOURCES.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H01:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "H01:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H01:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H01:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H01:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H01:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H01:context:WORKLOADS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H01:context:inputs_catalog.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H01:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H02:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "H02:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H02:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H02:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H02:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H02:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H02:context:HARNESS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H02:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H02:context:RESOURCES.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H03:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "H03:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H03:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H03:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H03:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H03:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H03:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H03:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H03:context:SOURCE_AUDIT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H04:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "H04:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H04:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H04:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H04:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H04:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H04:context:HARNESS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H04:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H04:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H04:context:OPERATIONS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H05:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "H05:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H05:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H05:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H05:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H05:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H05:context:MODEL.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H05:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H05:context:WORKLOADS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H05:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1I:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "A1I:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1I:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1I:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1I:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1I:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1I:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1I:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1I:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1I:context:dossiers/A1_snapshot_scratch.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1R:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "A1R:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1R:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1R:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1R:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1R:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1R:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1R:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1R:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A1R:context:dossiers/A1_snapshot_scratch.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1I:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "F1I:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1I:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1I:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1I:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1I:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1I:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1I:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1I:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1I:context:dossiers/F1_fixed_stripe_nogil.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1R:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "F1R:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1R:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1R:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1R:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1R:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1R:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1R:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1R:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F1R:context:dossiers/F1_fixed_stripe_nogil.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3I:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "F3I:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3I:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3I:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3I:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3I:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3I:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3I:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3I:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3I:context:dossiers/F3_gradient_workspace.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3R:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "F3R:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3R:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3R:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3R:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3R:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3R:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3R:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3R:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F3R:context:dossiers/F3_gradient_workspace.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2I:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "A2I:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2I:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2I:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2I:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2I:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2I:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2I:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2I:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2I:context:dossiers/A2_destination_locality.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2R:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "A2R:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2R:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2R:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2R:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2R:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2R:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2R:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2R:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A2R:context:dossiers/A2_destination_locality.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2I:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "F2I:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2I:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2I:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2I:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2I:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2I:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2I:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2I:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2I:context:dossiers/F2_local_overlap.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2R:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "F2R:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2R:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2R:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2R:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2R:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2R:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2R:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2R:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "F2R:context:dossiers/F2_local_overlap.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3I:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "A3I:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3I:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3I:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3I:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3I:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3I:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3I:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3I:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3I:context:dossiers/A3_private_scope.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3R:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "A3R:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3R:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3R:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3R:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3R:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3R:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3R:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3R:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A3R:context:dossiers/A3_private_scope.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "I00:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "I00:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "I00:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "I00:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "I00:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "I00:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "I00:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "I00:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "I00:context:MODEL.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "I00:context:OPERATIONS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "W00:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "W00:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "W00:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "W00:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "W00:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "W00:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "W00:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "W00:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "W00:context:HARNESS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "W00:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "S01:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "S01:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "S01:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "S01:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "S01:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "S01:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "S01:context:RESOURCES.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "S01:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "S01:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "S01:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "S01:context:dossiers/F1_fixed_stripe_nogil.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q00:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "Q00:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q00:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q00:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q00:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q00:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q00:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q00:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q00:context:OPERATIONS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q10:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "Q10:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q10:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q10:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q10:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q10:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q10:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q10:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q10:context:RESOURCES.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Q10:context:WORKLOADS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "R00:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "R00:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "R00:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "R00:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "R00:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "R00:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "R00:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "R00:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "R00:context:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "R00:context:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "M00:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "M00:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "M00:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "M00:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "M00:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "M00:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "M00:context:OPERATIONS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "M00:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "M00:context:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Z00:fields",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "Z00:dependencies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Z00:proof",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Z00:outputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Z00:reviewer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Z00:base",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Z00:context:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Z00:context:OPERATIONS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Z00:context:SOURCE_AUDIT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "acyclic",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no_concurrent_scope_conflicts",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "registry_active",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "entrypoint:CLAUDE.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "entrypoint:.claude/commands/goal.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:.gitignore",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:AUTHORITY.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:BENCHMARKS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:CONTRACT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:DECISION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:EXECUTION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:HARNESS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:MODEL.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:OPERATIONS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:README.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:RESOURCES.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:SOURCE_AUDIT.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:START_HERE.txt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:TASKS_CLAUDE.yaml",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:VALIDATION.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:WORKLOADS.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:campaign.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:dossiers/A1_snapshot_scratch.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:dossiers/A2_destination_locality.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:dossiers/A3_private_scope.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:dossiers/F1_fixed_stripe_nogil.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:dossiers/F2_local_overlap.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:dossiers/F3_gradient_workspace.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:evidence/README.md",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:inputs_catalog.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:templates/final_decision.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:templates/merge_manifest.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:templates/run_record.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:templates/task_record.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:tests/test_packet.py",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:tools/check_evidence.py",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:tools/compare_npz.py",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:tools/validate_packet.py",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "hash:tools/verify_source.py",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "errors": [],
+  "scope": "packet consistency only; no application qualification"
+}

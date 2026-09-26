@@ -1,0 +1,52 @@
+{
+  "task": "H00",
+  "recorded_utc": "2026-09-26T00:00:00Z",
+  "role": "source-auditor",
+  "validation_tier": "read_only",
+  "identities": {
+    "baseline_B0": {
+      "commit": "361928e4ba38f34622cafe065b0025244db61368",
+      "root_tree": "089d29205918197c783e34c46eec76bf27090c10",
+      "src_tree": "a5883dddcef3afb8debdb4438a6338da886add6f",
+      "source_blob_proofs": "campaigns/una_large_e2e/evidence/H00/verify_source.json (10/10 pass at this checkout)"
+    },
+    "packet_publication": {
+      "commit": "ea089478ba0e968a5fbf802ed18fbfaef6d73873",
+      "src_tree": "a5883dddcef3afb8debdb4438a6338da886add6f",
+      "src_tree_identical_to_B0": true,
+      "runtime_unaffected_by_packet_publication": true
+    },
+    "archive": {
+      "path": "campaigns/history/una_cpu_2026_09/packet",
+      "tree": "917475d210218a7f3ae2765d5b8e6a1c9c587842",
+      "byte_identity_proof": "git rev-parse 361928e:optimization_una_cpu == git rev-parse ea08947:campaigns/history/una_cpu_2026_09/packet == 917475d210218a7f3ae2765d5b8e6a1c9c587842 (identical tree hash = byte-for-byte identical content, including evidence/)",
+      "old_path_now": "optimization_una_cpu/ contains only a README tombstone at ea08947"
+    },
+    "provenance_only": {
+      "upstream": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+      "pre_csr": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+      "note": "historical references, not comparators (AUTHORITY.md)"
+    }
+  },
+  "workspaces": {
+    "session_checkout": "/Users/alansynn/orca/workspaces/una-x/main (branch AlanSynn/main at ea08947, clean)",
+    "integration": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e (branch perf/una-large-e2e created from packet publication ea08947)",
+    "baseline_detached": "/Users/alansynn/orca/workspaces/una-x/wt-b0 (detached HEAD at B0 361928e, clean; wheels built here without editing baseline sources)",
+    "campaign_venv": "/Users/alansynn/orca/workspaces/una-x/venvs/campaign (python 3.11.16; full geo stack; used for coordination/tests — arms get their own installed envs at W00/S01/Q10)"
+  },
+  "dirty_work_preservation": {
+    "session_checkout_porcelain_entries": 0,
+    "wt_b0_porcelain_entries": 0,
+    "note": "no stash, no reset, no tracked modification anywhere; all campaign writes are new files on perf/una-large-e2e or outside the repo"
+  },
+  "packet_checks": {
+    "validate_packet": "330/330 checks pass (evidence/H00/validate_packet.json)",
+    "packet_unittest": "30 passed (evidence/H00/packet_tests.txt)",
+    "verify_source": "10/10 pass (evidence/H00/verify_source.json)"
+  },
+  "unavailable_or_unsupported_observations": [
+    "No cgroup/affinity quota on macOS; CPU budget is a policy number, not a pinning claim",
+    "Real native pool inventory (BLAS/OpenMP loaded) deferred to per-run runtime inspection; threadpoolctl reported no loaded pools in the audit process itself",
+    "No accelerator discovered; GPU out of scope by policy"
+  ]
+}
