@@ -1,0 +1,368 @@
+{
+  "checks": {
+    "engine_vs_replica_row_order": {
+      "flt_inf_incidence_weight/adjacency_pointer": true,
+      "flt_inf_incidence_weight/adjacency_vector": true,
+      "flt_inf_incidence_weight/adjacency_vector_weights": true,
+      "flt_inf_incidence_weight/adjacynct_vector_network_node": true,
+      "flt_maxfloat_cutoff/adjacency_pointer": true,
+      "flt_maxfloat_cutoff/adjacency_vector": true,
+      "flt_maxfloat_cutoff/adjacency_vector_weights": true,
+      "flt_maxfloat_cutoff/adjacynct_vector_network_node": true,
+      "flt_near_overflow_finite/adjacency_pointer": true,
+      "flt_near_overflow_finite/adjacency_vector": true,
+      "flt_near_overflow_finite/adjacency_vector_weights": true,
+      "flt_near_overflow_finite/adjacynct_vector_network_node": true,
+      "flt_nextafter_cutoff/adjacency_pointer": true,
+      "flt_nextafter_cutoff/adjacency_vector": true,
+      "flt_nextafter_cutoff/adjacency_vector_weights": true,
+      "flt_nextafter_cutoff/adjacynct_vector_network_node": true,
+      "flt_sentinel_two_pow_53/adjacency_pointer": true,
+      "flt_sentinel_two_pow_53/adjacency_vector": true,
+      "flt_sentinel_two_pow_53/adjacency_vector_weights": true,
+      "flt_sentinel_two_pow_53/adjacynct_vector_network_node": true,
+      "flt_signed_zero/adjacency_pointer": true,
+      "flt_signed_zero/adjacency_vector": true,
+      "flt_signed_zero/adjacency_vector_weights": true,
+      "flt_signed_zero/adjacynct_vector_network_node": true,
+      "flt_subnormals/adjacency_pointer": true,
+      "flt_subnormals/adjacency_vector": true,
+      "flt_subnormals/adjacency_vector_weights": true,
+      "flt_subnormals/adjacynct_vector_network_node": true,
+      "l0_degree_one_terminal/adjacency_pointer": true,
+      "l0_degree_one_terminal/adjacency_vector": true,
+      "l0_degree_one_terminal/adjacency_vector_weights": true,
+      "l0_degree_one_terminal/adjacynct_vector_network_node": true,
+      "l0_disconnected_components/adjacency_pointer": true,
+      "l0_disconnected_components/adjacency_vector": true,
+      "l0_disconnected_components/adjacency_vector_weights": true,
+      "l0_disconnected_components/adjacynct_vector_network_node": true,
+      "l0_duplicate_directed/adjacency_pointer": true,
+      "l0_duplicate_directed/adjacency_vector": true,
+      "l0_duplicate_directed/adjacency_vector_weights": true,
+      "l0_duplicate_directed/adjacynct_vector_network_node": true,
+      "l0_empty_edges/adjacency_pointer": true,
+      "l0_empty_edges/adjacency_vector": true,
+      "l0_empty_edges/adjacency_vector_weights": true,
+      "l0_empty_edges/adjacynct_vector_network_node": true,
+      "l0_isolated_origin_destination/adjacency_pointer": true,
+      "l0_isolated_origin_destination/adjacency_vector": true,
+      "l0_isolated_origin_destination/adjacency_vector_weights": true,
+      "l0_isolated_origin_destination/adjacynct_vector_network_node": true,
+      "l0_overlapping_host_edges/adjacency_pointer": true,
+      "l0_overlapping_host_edges/adjacency_vector": true,
+      "l0_overlapping_host_edges/adjacency_vector_weights": true,
+      "l0_overlapping_host_edges/adjacynct_vector_network_node": true,
+      "l0_parallel_cheap_first/adjacency_pointer": true,
+      "l0_parallel_cheap_first/adjacency_vector": true,
+      "l0_parallel_cheap_first/adjacency_vector_weights": true,
+      "l0_parallel_cheap_first/adjacynct_vector_network_node": true,
+      "l0_parallel_cheap_last/adjacency_pointer": true,
+      "l0_parallel_cheap_last/adjacency_vector": true,
+      "l0_parallel_cheap_last/adjacency_vector_weights": true,
+      "l0_parallel_cheap_last/adjacynct_vector_network_node": true,
+      "l0_same_terminal_unequal_costs/adjacency_pointer": true,
+      "l0_same_terminal_unequal_costs/adjacency_vector": true,
+      "l0_same_terminal_unequal_costs/adjacency_vector_weights": true,
+      "l0_same_terminal_unequal_costs/adjacynct_vector_network_node": true,
+      "l0_self_loop/adjacency_pointer": true,
+      "l0_self_loop/adjacency_vector": true,
+      "l0_self_loop/adjacency_vector_weights": true,
+      "l0_self_loop/adjacynct_vector_network_node": true,
+      "l0_tiny_random_dup_loop/adjacency_pointer": true,
+      "l0_tiny_random_dup_loop/adjacency_vector": true,
+      "l0_tiny_random_dup_loop/adjacency_vector_weights": true,
+      "l0_tiny_random_dup_loop/adjacynct_vector_network_node": true,
+      "l1_int32_endpoints/adjacency_pointer": true,
+      "l1_int32_endpoints/adjacency_vector": true,
+      "l1_int32_endpoints/adjacency_vector_weights": true,
+      "l1_int32_endpoints/adjacynct_vector_network_node": true,
+      "metric_empty_knn_weights/adjacency_pointer": true,
+      "metric_empty_knn_weights/adjacency_vector": true,
+      "metric_empty_knn_weights/adjacency_vector_weights": true,
+      "metric_empty_knn_weights/adjacynct_vector_network_node": true,
+      "metric_knn_exponential_k1/adjacency_pointer": true,
+      "metric_knn_exponential_k1/adjacency_vector": true,
+      "metric_knn_exponential_k1/adjacency_vector_weights": true,
+      "metric_knn_exponential_k1/adjacynct_vector_network_node": true,
+      "metric_knn_logistic_k3/adjacency_pointer": true,
+      "metric_knn_logistic_k3/adjacency_vector": true,
+      "metric_knn_logistic_k3/adjacency_vector_weights": true,
+      "metric_knn_logistic_k3/adjacynct_vector_network_node": true,
+      "metric_knn_none_long_weights/adjacency_pointer": true,
+      "metric_knn_none_long_weights/adjacency_vector": true,
+      "metric_knn_none_long_weights/adjacency_vector_weights": true,
+      "metric_knn_none_long_weights/adjacynct_vector_network_node": true,
+      "metric_zero_beta_plateau/adjacency_pointer": true,
+      "metric_zero_beta_plateau/adjacency_vector": true,
+      "metric_zero_beta_plateau/adjacency_vector_weights": true,
+      "metric_zero_beta_plateau/adjacynct_vector_network_node": true
+    },
+    "input_immutability": {
+      "flt_inf_incidence_weight": true,
+      "flt_maxfloat_cutoff": true,
+      "flt_near_overflow_finite": true,
+      "flt_nextafter_cutoff": true,
+      "flt_sentinel_two_pow_53": true,
+      "flt_signed_zero": true,
+      "flt_subnormals": true,
+      "l0_degree_one_terminal": true,
+      "l0_disconnected_components": true,
+      "l0_duplicate_directed": true,
+      "l0_empty_edges": true,
+      "l0_isolated_origin_destination": true,
+      "l0_overlapping_host_edges": true,
+      "l0_parallel_cheap_first": true,
+      "l0_parallel_cheap_last": true,
+      "l0_same_terminal_unequal_costs": true,
+      "l0_self_loop": true,
+      "l0_tiny_random_dup_loop": true,
+      "l1_int32_endpoints": true,
+      "metric_empty_knn_weights": true,
+      "metric_knn_exponential_k1": true,
+      "metric_knn_logistic_k3": true,
+      "metric_knn_none_long_weights": true,
+      "metric_zero_beta_plateau": true
+    },
+    "scope_output_ownership": {
+      "flt_inf_incidence_weight/0": false,
+      "flt_maxfloat_cutoff/0": false,
+      "flt_near_overflow_finite/0": false,
+      "flt_nextafter_cutoff/0": false,
+      "flt_sentinel_two_pow_53/0": false,
+      "flt_signed_zero/0": false,
+      "flt_subnormals/0": false,
+      "l0_degree_one_terminal/0": false,
+      "l0_disconnected_components/0": false,
+      "l0_duplicate_directed/0": false,
+      "l0_empty_edges/0": false,
+      "l0_isolated_origin_destination/0": false,
+      "l0_overlapping_host_edges/0": false,
+      "l0_parallel_cheap_first/0": false,
+      "l0_parallel_cheap_last/0": false,
+      "l0_same_terminal_unequal_costs/0": false,
+      "l0_self_loop/0": false,
+      "l0_tiny_random_dup_loop/0": false,
+      "l0_tiny_random_dup_loop/1": false,
+      "l1_int32_endpoints/0": false,
+      "metric_empty_knn_weights/0": false,
+      "metric_empty_knn_weights/1": false,
+      "metric_knn_exponential_k1/0": false,
+      "metric_knn_exponential_k1/1": false,
+      "metric_knn_logistic_k3/0": false,
+      "metric_knn_logistic_k3/1": false,
+      "metric_knn_none_long_weights/0": false,
+      "metric_knn_none_long_weights/1": false,
+      "metric_zero_beta_plateau/0": false,
+      "metric_zero_beta_plateau/1": false
+    }
+  },
+  "fixture_seed": 20260925,
+  "flow_grad_chunks": {
+    "1": {
+      "n_chunks": 3
+    },
+    "2": {
+      "n_chunks": 2
+    },
+    "3": {
+      "n_chunks": 1
+    },
+    "5555555": {
+      "n_chunks": 1
+    }
+  },
+  "flow_params": {
+    "beta": 0.001,
+    "buffer": 1.0,
+    "closest_dest": false,
+    "compute_node_flow": true,
+    "decay": false,
+    "decay_curve": "exponential",
+    "decay_method": "gravity_cap",
+    "elevation": false,
+    "elevation_penalty": 4.0,
+    "gravity_cap": 100.0,
+    "mode": "ratio",
+    "path_penalty": "exponential",
+    "ratio": 1.5,
+    "route_beta": 0.3,
+    "route_midpoint": 100.0,
+    "search_radius": 6.0,
+    "turn_amt": 32.0,
+    "turn_thresh": 45.0,
+    "use_d_weights": true,
+    "use_o_weights": true,
+    "use_turns": false
+  },
+  "import_root": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src",
+  "l1_reuse_dir": null,
+  "module_files": {
+    "Engines.Accessibility": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src/urban_network_analysis/Engines/Accessibility.py",
+    "Engines.AggregateFlow": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src/urban_network_analysis/Engines/AggregateFlow.py",
+    "Logger": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src/urban_network_analysis/Logger.py",
+    "Settings": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src/urban_network_analysis/Settings.py",
+    "urban_network_analysis": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src/urban_network_analysis/__init__.py"
+  },
+  "numba_cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_oracle",
+  "numba_num_threads": "2",
+  "profile": {
+    "env": {
+      "L1_REUSE_DIR": null,
+      "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_oracle",
+      "NUMBA_NUM_THREADS": "2",
+      "NUMBA_PARALLEL_DIAGNOSTICS": null
+    },
+    "kernel_n_signatures": {
+      "_accumulate_od_flow": 1,
+      "_decay": 0,
+      "_find_arc": 0,
+      "adjust_destination_distances": 2,
+      "compact_vector_node_view_scope": 2,
+      "integrated_scope_access": 3,
+      "od_compact_vector_node_view_scope": 3,
+      "reach_gravity_knn_access": 0
+    },
+    "kernel_targetoptions": {
+      "_accumulate_od_flow": {
+        "boundscheck": null,
+        "fastmath": true,
+        "nopython": true
+      },
+      "_decay": {
+        "boundscheck": null,
+        "inline": "always",
+        "nopython": true
+      },
+      "_find_arc": {
+        "boundscheck": null,
+        "inline": "always",
+        "nopython": true
+      },
+      "adjust_destination_distances": {
+        "boundscheck": null,
+        "fastmath": true,
+        "nogil": true,
+        "nopython": true,
+        "parallel": false
+      },
+      "compact_vector_node_view_scope": {
+        "boundscheck": null,
+        "fastmath": true,
+        "nogil": true,
+        "nopython": true,
+        "parallel": false
+      },
+      "integrated_scope_access": {
+        "boundscheck": null,
+        "fastmath": true,
+        "nogil": true,
+        "nopython": true,
+        "parallel": true
+      },
+      "od_compact_vector_node_view_scope": {
+        "boundscheck": null,
+        "fastmath": true,
+        "nogil": true,
+        "nopython": true,
+        "parallel": true
+      },
+      "reach_gravity_knn_access": {
+        "boundscheck": null,
+        "fastmath": true,
+        "nogil": true,
+        "nopython": true,
+        "parallel": false
+      }
+    },
+    "llvmlite_version": "0.49.0",
+    "numba_threading_layer": "workqueue",
+    "numba_version": "0.67.0",
+    "numpy_version": "2.4.6",
+    "platform": {
+      "cpu_count": 10,
+      "machine": "arm64",
+      "processor": "arm",
+      "system": "Darwin"
+    },
+    "python": {
+      "executable": "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python",
+      "gil_free_enabled": false,
+      "implementation": "CPython",
+      "version": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+      "version_short": "3.11.16"
+    },
+    "scipy_version": "1.17.1",
+    "verified_live_facts": {
+      "_accumulate_od_flow_fastmath": true,
+      "_accumulate_od_flow_nogil": false,
+      "accessibility_kernels_nogil_fastmath": true,
+      "parallel_variants_use_parallel": true
+    }
+  },
+  "refusal_probes": {
+    "engine_mismatched_origin_weights": {
+      "exception_type": "ValueError",
+      "expected_type": "Exception",
+      "raised": true
+    },
+    "scope_cutoff_none": {
+      "exception_type": "TypingError",
+      "expected_type": "Exception",
+      "raised": true
+    },
+    "scope_cutoff_str": {
+      "exception_type": "TypingError",
+      "expected_type": "Exception",
+      "raised": true
+    },
+    "scope_object_weights": {
+      "exception_type": "TypingError",
+      "expected_type": "Exception",
+      "raised": true
+    }
+  },
+  "self_determinism": {
+    "all_identical": true,
+    "runs": [
+      {
+        "first_mismatch": null,
+        "identical_to_first": true,
+        "n_keys": 1031,
+        "run": 0
+      },
+      {
+        "first_mismatch": null,
+        "identical_to_first": true,
+        "n_keys": 1031,
+        "run": 1
+      }
+    ]
+  },
+  "signatures": {
+    "_accumulate_od_flow": [
+      "(Array(int32, 1, 'C', False, aligned=True), Array(int32, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(int32, 1, 'C', False, aligned=True), Array(int8, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(int32, 1, 'C', False, aligned=True), Array(int32, 1, 'C', False, aligned=True), int64, int64, int64, int64, float64, float64, int64, float64, float64, float64, int64, Array(float64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True))"
+    ],
+    "_decay": [],
+    "adjust_destination_distances": [
+      "(Array(float64, 1, 'C', False, aligned=True), Array(int64, 2, 'C', False, aligned=True), Array(float64, 2, 'C', False, aligned=True), int64)",
+      "(Array(float64, 1, 'C', False, aligned=True), Array(int64, 2, 'F', False, aligned=True), Array(float64, 2, 'F', False, aligned=True), int64)"
+    ],
+    "compact_vector_node_view_scope": [
+      "(Array(int64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(bool, 1, 'C', False, aligned=True), float64, int64)",
+      "(Array(int64, 1, 'A', False, aligned=True), Array(float64, 1, 'A', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(bool, 1, 'C', False, aligned=True), float64, int64)"
+    ],
+    "integrated_scope_access": [
+      "(Array(int64, 2, 'C', False, aligned=True), Array(float64, 2, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(bool, 1, 'C', False, aligned=True), Array(int64, 2, 'C', False, aligned=True), Array(float64, 2, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), float64, float64, float64, float64, unicode_type, Array(float64, 1, 'C', False, aligned=True), float64)",
+      "(Array(int64, 2, 'F', False, aligned=True), Array(float64, 2, 'F', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(bool, 1, 'C', False, aligned=True), Array(int64, 2, 'F', False, aligned=True), Array(float64, 2, 'F', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), float64, float64, float64, float64, unicode_type, Array(float64, 1, 'C', False, aligned=True), float64)",
+      "(Array(int64, 2, 'C', False, aligned=True), Array(float64, 2, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(bool, 1, 'C', False, aligned=True), Array(int64, 2, 'F', False, aligned=True), Array(float64, 2, 'F', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), float64, float64, float64, float64, unicode_type, Array(float64, 1, 'C', False, aligned=True), float64)"
+    ],
+    "od_compact_vector_node_view_scope": [
+      "(Array(int64, 2, 'C', False, aligned=True), Array(float64, 2, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(bool, 1, 'C', False, aligned=True), float64, int64, Array(int64, 2, 'C', False, aligned=True), Array(float64, 2, 'C', False, aligned=True))",
+      "(Array(int64, 2, 'F', False, aligned=True), Array(float64, 2, 'F', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(bool, 1, 'C', False, aligned=True), float64, int64, Array(int64, 2, 'F', False, aligned=True), Array(float64, 2, 'F', False, aligned=True))",
+      "(Array(int64, 2, 'C', False, aligned=True), Array(float64, 2, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(bool, 1, 'C', False, aligned=True), float64, int64, Array(int64, 2, 'F', False, aligned=True), Array(float64, 2, 'F', False, aligned=True))"
+    ],
+    "reach_gravity_knn_access": []
+  },
+  "warnings": []
+}
