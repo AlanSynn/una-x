@@ -1,0 +1,2345 @@
+{
+ "schema_version": 1,
+ "task": "H05",
+ "record": "stage_model",
+ "role": "performance-owner",
+ "generated_utc": "2026-09-26T04:36:26Z",
+ "measurement_class": "installed_wheel_fresh_venv",
+ "timing_class": "single_session_instrumented_NOT_qualification",
+ "timing_class_note": "every number below is one instrumented session at observed scale on a shared laptop: B0 profile EVIDENCE for admission decisions and stage weighting, NOT a performance result and NOT comparable across sessions beyond test-retest",
+ "environment": {
+  "b0_commit": "361928e4ba38f34622cafe065b0025244db61368",
+  "wheel_sha256": "71fd5615b5683f3c798938a2762824da9ba3fada801aaa840343e7378d4fc979",
+  "runtime_venv": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel",
+  "identity_ok": true,
+  "versions": {
+   "python": "3.11.16",
+   "numpy": "2.4.6",
+   "numba": "0.67.0",
+   "scipy": "1.17.1",
+   "pandas": "3.0.6",
+   "geopandas": "1.1.4",
+   "shapely": "2.1.2",
+   "sklearn": "1.9.1",
+   "psutil": "7.2.2",
+   "pyogrio": "0.13.0",
+   "pyarrow": "25.0.1",
+   "threadpoolctl": "3.7.0"
+  },
+  "numba_num_threads": 10,
+  "numba_threading_layer": null,
+  "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_h05",
+  "L1_REUSE_DIR": "unset",
+  "host": "COD-MBP16-LOAN2",
+  "wheel_build_note": [
+   "wheel built from `git archive` of the verified HEAD tree; hatch_build bakes commit_date='unknown' (no .git in the archive) \u2014 code is byte-identical to the tree; W00 rebuilds from the real tree with git"
+  ]
+ },
+ "cells": {
+  "O2_cold": {
+   "session_json": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_sessions/O2_cold.json",
+   "session_sha256": "0bfdbafe67f86348b44826a20f8a05c2c117e4f47d0f267ce57539f6875643a4",
+   "mode": "clean",
+   "window_s": 5.872665709,
+   "peak_rss_sampled_mib": 541.671875,
+   "ru_maxrss_mib": 545.9375,
+   "rss_after_window_mib": 542.328125,
+   "pressure_breach": null,
+   "partition_ok": true,
+   "partition_residue_s": 0.000327208,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 16,
+    "D_rows": 6661
+   },
+   "top_stage_inclusive_s": {
+    "settings_validation": 0.000168916,
+    "topology_add_network": 1.742140209,
+    "topology_add_origins": 0.008589,
+    "topology_add_destinations": 0.0890055,
+    "acc_engine_construct": 0.010813584,
+    "acc_centrality": 3.990864458,
+    "export_accessibility_results": 0.030756834
+   },
+   "inner_stage_inclusive_s": {
+    "acc_search_kernel_integrated": 3.990572292
+   },
+   "dispatchers_final_sigcounts": {
+    "awe_integrated_scope_access": 1,
+    "af_accumulate_od_flow": 0,
+    "af_compute_trip_volumes": null
+   },
+   "first_call_stages": [
+    "acc_centrality",
+    "acc_engine_construct",
+    "acc_search_kernel_integrated",
+    "export_accessibility_results",
+    "settings_validation",
+    "topology_add_destinations",
+    "topology_add_network",
+    "topology_add_origins",
+    "topology_build_access_points"
+   ],
+   "od_kernel_aggregate": null,
+   "gravity_cap": null,
+   "origin_selection": {
+    "selection_manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O2.origin_indices.json",
+    "selection_manifest_sha256": "4204decff0a1eb0651bf346ca5a9d0a5908d3067f3d3838793eaeb605494c990",
+    "selected_count": 16,
+    "workload_variant": "O2",
+    "attribute_crosscheck": "fid/id/lon/lat row-by-row vs selection manifest: ok",
+    "fixture": {
+     "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/h05_origins_fixture_O2_cold_16.geojson",
+     "sha256": "65e1f1cead89687defd7af1b253ecc3e43548c5a32d0da250a6c439cce0f4354",
+     "rows": 16,
+     "note": "derived in-run from verified selection manifest; attributes sliced untouched, row order = ordered_indices"
+    }
+   },
+   "input_rehash_all_match": true,
+   "pools_post_window": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84413770
+     ]
+    },
+    "process_num_threads": 22,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:16:10Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:16:10Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "numba_num_threads": 10,
+   "numba_threading_layer": null,
+   "nrt_stats_enabled": false,
+   "settings_assembled": {
+    "name": "Default",
+    "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+    "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+    "origins_file": "h05_origins_fixture_O2_cold_16.geojson",
+    "destinations_file": "MA_bus_stops.geojson",
+    "network_weight_column": "Geometric",
+    "network_weight_default": 1.0,
+    "network_precision": 3,
+    "network_saved_nodes": false,
+    "network_load_nodes": true,
+    "calculate_reach": true,
+    "calculate_exponential_gravity": true,
+    "calculate_logistic_gravity": true,
+    "calculate_knn_access": true,
+    "origin_weight_column": "Count",
+    "destination_weight_column": "weekly_departures",
+    "origin_uid_column": null,
+    "origin_destination_id_column": "",
+    "destination_id_column": "",
+    "default_cost": 1.0,
+    "use_nearest_destination": false,
+    "search_radius": 500,
+    "clasters": 1,
+    "cluster_parallel": false,
+    "cluster_workers": 1,
+    "gravity_beta": 0.001,
+    "gravity_logistic_midpoint": 500,
+    "gravity_plateau": 0,
+    "gravity_decay_constant": 4.59511985013459,
+    "knn_weights": [
+     1.0,
+     1.0,
+     0.5
+    ],
+    "knn_decay": "logistic",
+    "elevation": false,
+    "elevation_penalty": 4,
+    "turns": false,
+    "turn_threshold": 45,
+    "turn_penalty": 32,
+    "output_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_out/O2_cold",
+    "output_wStamp": true,
+    "output_copy_source_data": false,
+    "output_geojson": true,
+    "output_feather": true,
+    "output_csv": true,
+    "output_shp": false,
+    "csv_delimiter": ",",
+    "result_prefix": "",
+    "output_file_name": "Results",
+    "flow_engine": "aggregate_flow",
+    "flow_detour_ratio": 1.05,
+    "flow_detour_buffer": 100.0,
+    "flow_detour_mode": "ratio",
+    "flow_decay": true,
+    "flow_decay_curve": "exponential",
+    "flow_decay_method": "closest",
+    "flow_gravity_cap": 1.0,
+    "flow_path_detour_penalty": "logistic",
+    "flow_route_enumeration_beta": 0.0,
+    "flow_route_enumeration_logistic_midpoint": 150.0,
+    "flow_origin_weights": true,
+    "flow_destination_weights": true,
+    "flow_return_directional": false,
+    "observer_points_file": null,
+    "observer_points_uid_column": null,
+    "observer_points_snap_to": "edge",
+    "obstacle_points_file": null,
+    "obstacle_points_uid_column": null,
+    "obstacle_points_penalty_column": "penalty",
+    "obstacle_points_direction_column": null,
+    "obstacle_points_snap_to": "edge",
+    "flow_track_obstacle_points_usage": false,
+    "flow_k_nearest_destinations": 0,
+    "flow_max_destinations_per_origin": 0,
+    "flow_n_alternatives": 30,
+    "flow_alternative_penalty_factor": 1.01,
+    "flow_route_id_column": null,
+    "flow_output_routes": false,
+    "flow_debug_print_paths": false,
+    "flow_track_origins_per_destination": false,
+    "flow_compute_node_flow": false,
+    "batch_composite_output": false,
+    "batch_composite_result_column": "knn_access",
+    "batch_composite_column_prefix": "",
+    "batch_composite_sum_column_name": "composite_sum",
+    "progressbar": true,
+    "logger_verbosity": 1
+   },
+   "accessibility_arrays": {
+    "reach": {
+     "dtype": "int64",
+     "dtype_str": "<i8",
+     "shape": [
+      16
+     ],
+     "first_k": [
+      2357,
+      2517,
+      1856,
+      1339,
+      2678,
+      7882,
+      7422,
+      7001
+     ],
+     "sha256_bytes": "76cf3fbb378cd5010cc4575d5690eaf139774262b9048d55b9d6c8de0e2cac8a",
+     "n_nonfinite": 0
+    },
+    "gravity_exponential": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      16
+     ],
+     "first_k": [
+      1699.66154665573,
+      1808.0969295316722,
+      1180.9210848775083,
+      955.8327745688853,
+      1758.0629038529469,
+      5371.6579658706705,
+      5573.957696944463,
+      5044.156762593407
+     ],
+     "sha256_bytes": "851734cf9078d1d6b19afe7696d2674429bc01498bbf960e9651983feee48cb4",
+     "n_nonfinite": 0
+    },
+    "gravity_logistic": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      16
+     ],
+     "first_k": [
+      1785.734214703381,
+      1990.1540392038441,
+      1128.8843285756357,
+      1093.9668106115616,
+      1763.39672227454,
+      5588.562787642268,
+      5919.371003130629,
+      5413.206050174508
+     ],
+     "sha256_bytes": "3abceb3d5f5a9915c8ac8fa32d1bcfde77f1816e09ce92d2a65842d04344a5b9",
+     "n_nonfinite": 0
+    },
+    "knn_access": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      16
+     ],
+     "first_k": [
+      606.6151084728419,
+      1113.689094111239,
+      1128.8843285756357,
+      1093.9668106115616,
+      1234.5599043626223,
+      1504.8886299398862,
+      1747.4842062099979,
+      1053.4159644845695
+     ],
+     "sha256_bytes": "a96f7cebb07ec19a5a9e21b85b204ea74bb6a7c71ce8938b1172c65bbf077778",
+     "n_nonfinite": 0
+    }
+   }
+  },
+  "O2_warm": {
+   "session_json": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_sessions/O2_warm.json",
+   "session_sha256": "e929cc980c60e9f4c37bdb030bdc7e96c39dfbb54b6ddc04225882df4acd53b6",
+   "mode": "clean",
+   "window_s": 2.027115208,
+   "peak_rss_sampled_mib": 478.109375,
+   "ru_maxrss_mib": 502.140625,
+   "rss_after_window_mib": 498.34375,
+   "pressure_breach": null,
+   "partition_ok": true,
+   "partition_residue_s": 0.000538582,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 16,
+    "D_rows": 6661
+   },
+   "top_stage_inclusive_s": {
+    "settings_validation": 0.000178084,
+    "topology_add_network": 1.725740833,
+    "topology_add_origins": 0.0072555,
+    "topology_add_destinations": 0.071057417,
+    "acc_engine_construct": 0.011599083,
+    "acc_centrality": 0.194036459,
+    "export_accessibility_results": 0.01670925
+   },
+   "inner_stage_inclusive_s": {
+    "acc_search_kernel_integrated": 0.193816541
+   },
+   "dispatchers_final_sigcounts": {
+    "awe_integrated_scope_access": 1,
+    "af_accumulate_od_flow": 0,
+    "af_compute_trip_volumes": null
+   },
+   "first_call_stages": [
+    "acc_centrality",
+    "acc_engine_construct",
+    "acc_search_kernel_integrated",
+    "export_accessibility_results",
+    "settings_validation",
+    "topology_add_destinations",
+    "topology_add_network",
+    "topology_add_origins",
+    "topology_build_access_points"
+   ],
+   "od_kernel_aggregate": null,
+   "gravity_cap": null,
+   "origin_selection": {
+    "selection_manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O2.origin_indices.json",
+    "selection_manifest_sha256": "4204decff0a1eb0651bf346ca5a9d0a5908d3067f3d3838793eaeb605494c990",
+    "selected_count": 16,
+    "workload_variant": "O2",
+    "attribute_crosscheck": "fid/id/lon/lat row-by-row vs selection manifest: ok",
+    "fixture": {
+     "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/h05_origins_fixture_O2_warm_16.geojson",
+     "sha256": "4e8b73b3149d767c92e32efa0b2a71c95feddbdd468aabb406ddbe2c0257b14e",
+     "rows": 16,
+     "note": "derived in-run from verified selection manifest; attributes sliced untouched, row order = ordered_indices"
+    }
+   },
+   "input_rehash_all_match": true,
+   "pools_post_window": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84416733
+     ]
+    },
+    "process_num_threads": 23,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:16:36Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:16:36Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "numba_num_threads": 10,
+   "numba_threading_layer": null,
+   "nrt_stats_enabled": false,
+   "settings_assembled": {
+    "name": "Default",
+    "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+    "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+    "origins_file": "h05_origins_fixture_O2_warm_16.geojson",
+    "destinations_file": "MA_bus_stops.geojson",
+    "network_weight_column": "Geometric",
+    "network_weight_default": 1.0,
+    "network_precision": 3,
+    "network_saved_nodes": false,
+    "network_load_nodes": true,
+    "calculate_reach": true,
+    "calculate_exponential_gravity": true,
+    "calculate_logistic_gravity": true,
+    "calculate_knn_access": true,
+    "origin_weight_column": "Count",
+    "destination_weight_column": "weekly_departures",
+    "origin_uid_column": null,
+    "origin_destination_id_column": "",
+    "destination_id_column": "",
+    "default_cost": 1.0,
+    "use_nearest_destination": false,
+    "search_radius": 500,
+    "clasters": 1,
+    "cluster_parallel": false,
+    "cluster_workers": 1,
+    "gravity_beta": 0.001,
+    "gravity_logistic_midpoint": 500,
+    "gravity_plateau": 0,
+    "gravity_decay_constant": 4.59511985013459,
+    "knn_weights": [
+     1.0,
+     1.0,
+     0.5
+    ],
+    "knn_decay": "logistic",
+    "elevation": false,
+    "elevation_penalty": 4,
+    "turns": false,
+    "turn_threshold": 45,
+    "turn_penalty": 32,
+    "output_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_out/O2_warm",
+    "output_wStamp": true,
+    "output_copy_source_data": false,
+    "output_geojson": true,
+    "output_feather": true,
+    "output_csv": true,
+    "output_shp": false,
+    "csv_delimiter": ",",
+    "result_prefix": "",
+    "output_file_name": "Results",
+    "flow_engine": "aggregate_flow",
+    "flow_detour_ratio": 1.05,
+    "flow_detour_buffer": 100.0,
+    "flow_detour_mode": "ratio",
+    "flow_decay": true,
+    "flow_decay_curve": "exponential",
+    "flow_decay_method": "closest",
+    "flow_gravity_cap": 1.0,
+    "flow_path_detour_penalty": "logistic",
+    "flow_route_enumeration_beta": 0.0,
+    "flow_route_enumeration_logistic_midpoint": 150.0,
+    "flow_origin_weights": true,
+    "flow_destination_weights": true,
+    "flow_return_directional": false,
+    "observer_points_file": null,
+    "observer_points_uid_column": null,
+    "observer_points_snap_to": "edge",
+    "obstacle_points_file": null,
+    "obstacle_points_uid_column": null,
+    "obstacle_points_penalty_column": "penalty",
+    "obstacle_points_direction_column": null,
+    "obstacle_points_snap_to": "edge",
+    "flow_track_obstacle_points_usage": false,
+    "flow_k_nearest_destinations": 0,
+    "flow_max_destinations_per_origin": 0,
+    "flow_n_alternatives": 30,
+    "flow_alternative_penalty_factor": 1.01,
+    "flow_route_id_column": null,
+    "flow_output_routes": false,
+    "flow_debug_print_paths": false,
+    "flow_track_origins_per_destination": false,
+    "flow_compute_node_flow": false,
+    "batch_composite_output": false,
+    "batch_composite_result_column": "knn_access",
+    "batch_composite_column_prefix": "",
+    "batch_composite_sum_column_name": "composite_sum",
+    "progressbar": true,
+    "logger_verbosity": 1
+   },
+   "accessibility_arrays": {
+    "reach": {
+     "dtype": "int64",
+     "dtype_str": "<i8",
+     "shape": [
+      16
+     ],
+     "first_k": [
+      2357,
+      2517,
+      1856,
+      1339,
+      2678,
+      7882,
+      7422,
+      7001
+     ],
+     "sha256_bytes": "76cf3fbb378cd5010cc4575d5690eaf139774262b9048d55b9d6c8de0e2cac8a",
+     "n_nonfinite": 0
+    },
+    "gravity_exponential": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      16
+     ],
+     "first_k": [
+      1699.66154665573,
+      1808.0969295316722,
+      1180.9210848775083,
+      955.8327745688853,
+      1758.0629038529469,
+      5371.6579658706705,
+      5573.957696944463,
+      5044.156762593407
+     ],
+     "sha256_bytes": "851734cf9078d1d6b19afe7696d2674429bc01498bbf960e9651983feee48cb4",
+     "n_nonfinite": 0
+    },
+    "gravity_logistic": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      16
+     ],
+     "first_k": [
+      1785.734214703381,
+      1990.1540392038441,
+      1128.8843285756357,
+      1093.9668106115616,
+      1763.39672227454,
+      5588.562787642268,
+      5919.371003130629,
+      5413.206050174508
+     ],
+     "sha256_bytes": "3abceb3d5f5a9915c8ac8fa32d1bcfde77f1816e09ce92d2a65842d04344a5b9",
+     "n_nonfinite": 0
+    },
+    "knn_access": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      16
+     ],
+     "first_k": [
+      606.6151084728419,
+      1113.689094111239,
+      1128.8843285756357,
+      1093.9668106115616,
+      1234.5599043626223,
+      1504.8886299398862,
+      1747.4842062099979,
+      1053.4159644845695
+     ],
+     "sha256_bytes": "a96f7cebb07ec19a5a9e21b85b204ea74bb6a7c71ce8938b1172c65bbf077778",
+     "n_nonfinite": 0
+    }
+   }
+  },
+  "ACCESS_od": {
+   "session_json": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_sessions/ACCESS_od.json",
+   "session_sha256": "3d2c40cebd0532c0e7ad33e0f4d4be79da12ace48c53e87664d0e1cd160d5105",
+   "mode": "od_level",
+   "window_s": 2.590216958,
+   "peak_rss_sampled_mib": 496.40625,
+   "ru_maxrss_mib": 505.625,
+   "rss_after_window_mib": 501.828125,
+   "pressure_breach": null,
+   "partition_ok": true,
+   "partition_residue_s": 0.000519042,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "top_stage_inclusive_s": {
+    "settings_validation": 0.000161625,
+    "topology_add_network": 1.80221825,
+    "topology_add_origins": 0.160389708,
+    "topology_add_destinations": 0.075406625,
+    "acc_engine_construct": 0.010943792,
+    "acc_centrality": 0.3343705,
+    "export_accessibility_results": 0.206207416
+   },
+   "inner_stage_inclusive_s": {
+    "acc_search_kernel_integrated": 0.334095375
+   },
+   "dispatchers_final_sigcounts": {
+    "awe_integrated_scope_access": 1,
+    "af_accumulate_od_flow": 0,
+    "af_compute_trip_volumes": null
+   },
+   "first_call_stages": [
+    "acc_centrality",
+    "acc_engine_construct",
+    "acc_search_kernel_integrated",
+    "export_accessibility_results",
+    "settings_validation",
+    "topology_add_destinations",
+    "topology_add_network",
+    "topology_add_origins",
+    "topology_build_access_points"
+   ],
+   "od_kernel_aggregate": {
+    "n_calls": 0,
+    "sum_ns": 0,
+    "mean_ns": null,
+    "min_ns": null,
+    "max_ns": null,
+    "observed_max_concurrent": 0,
+    "n_per_call_spans_kept": 0,
+    "per_call_spans_sample": [],
+    "nrt_samples": [],
+    "nrt_note": "NRT delta read every 256 calls",
+    "note": "max_concurrent updated at kernel enter/exit and sampled by a 2 ms monitor thread; >1 proves simultaneous kernel execution"
+   },
+   "gravity_cap": null,
+   "origin_selection": {
+    "selection_manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS_sel_all.origin_indices.json",
+    "selection_manifest_sha256": "2e535cbc45531d86b15a748e96888fe8bb007be7a05afee79683b718ce3586cd",
+    "selected_count": 14751,
+    "workload_variant": "O3_ACCESS_sel_all",
+    "fixture": "none \u2014 ordered_indices is the identity; verified source file used directly, no rewrite"
+   },
+   "input_rehash_all_match": true,
+   "pools_post_window": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84418287
+     ]
+    },
+    "process_num_threads": 23,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:16:49Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:16:49Z"
+     },
+     {
+      "executor_id": 3,
+      "max_workers": 10,
+      "created_under_stage": "export_accessibility_results",
+      "created_utc": "2026-09-26T04:16:50Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "numba_num_threads": 10,
+   "numba_threading_layer": null,
+   "nrt_stats_enabled": false,
+   "settings_assembled": {
+    "name": "Default",
+    "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+    "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+    "origins_file": "Cambridge_building_centroids.geojson",
+    "destinations_file": "MA_bus_stops.geojson",
+    "network_weight_column": "Geometric",
+    "network_weight_default": 1.0,
+    "network_precision": 3,
+    "network_saved_nodes": false,
+    "network_load_nodes": true,
+    "calculate_reach": true,
+    "calculate_exponential_gravity": true,
+    "calculate_logistic_gravity": true,
+    "calculate_knn_access": true,
+    "origin_weight_column": "Count",
+    "destination_weight_column": "weekly_departures",
+    "origin_uid_column": null,
+    "origin_destination_id_column": "",
+    "destination_id_column": "",
+    "default_cost": 1.0,
+    "use_nearest_destination": false,
+    "search_radius": 500,
+    "clasters": 1,
+    "cluster_parallel": false,
+    "cluster_workers": 1,
+    "gravity_beta": 0.001,
+    "gravity_logistic_midpoint": 500,
+    "gravity_plateau": 0,
+    "gravity_decay_constant": 4.59511985013459,
+    "knn_weights": [
+     1.0,
+     1.0,
+     0.5
+    ],
+    "knn_decay": "logistic",
+    "elevation": false,
+    "elevation_penalty": 4,
+    "turns": false,
+    "turn_threshold": 45,
+    "turn_penalty": 32,
+    "output_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_out/ACCESS_od",
+    "output_wStamp": true,
+    "output_copy_source_data": false,
+    "output_geojson": true,
+    "output_feather": true,
+    "output_csv": true,
+    "output_shp": false,
+    "csv_delimiter": ",",
+    "result_prefix": "",
+    "output_file_name": "Results",
+    "flow_engine": "aggregate_flow",
+    "flow_detour_ratio": 1.05,
+    "flow_detour_buffer": 100.0,
+    "flow_detour_mode": "ratio",
+    "flow_decay": true,
+    "flow_decay_curve": "exponential",
+    "flow_decay_method": "closest",
+    "flow_gravity_cap": 1.0,
+    "flow_path_detour_penalty": "logistic",
+    "flow_route_enumeration_beta": 0.0,
+    "flow_route_enumeration_logistic_midpoint": 150.0,
+    "flow_origin_weights": true,
+    "flow_destination_weights": true,
+    "flow_return_directional": false,
+    "observer_points_file": null,
+    "observer_points_uid_column": null,
+    "observer_points_snap_to": "edge",
+    "obstacle_points_file": null,
+    "obstacle_points_uid_column": null,
+    "obstacle_points_penalty_column": "penalty",
+    "obstacle_points_direction_column": null,
+    "obstacle_points_snap_to": "edge",
+    "flow_track_obstacle_points_usage": false,
+    "flow_k_nearest_destinations": 0,
+    "flow_max_destinations_per_origin": 0,
+    "flow_n_alternatives": 30,
+    "flow_alternative_penalty_factor": 1.01,
+    "flow_route_id_column": null,
+    "flow_output_routes": false,
+    "flow_debug_print_paths": false,
+    "flow_track_origins_per_destination": false,
+    "flow_compute_node_flow": false,
+    "batch_composite_output": false,
+    "batch_composite_result_column": "knn_access",
+    "batch_composite_column_prefix": "",
+    "batch_composite_sum_column_name": "composite_sum",
+    "progressbar": true,
+    "logger_verbosity": 1
+   },
+   "accessibility_arrays": {
+    "reach": {
+     "dtype": "int64",
+     "dtype_str": "<i8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      1389,
+      935,
+      1240,
+      1244,
+      927,
+      927,
+      622,
+      622
+     ],
+     "sha256_bytes": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+     "n_nonfinite": 0
+    },
+    "gravity_exponential": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      1005.5404258464483,
+      691.7520503336779,
+      867.8183192148771,
+      934.2845243461899,
+      610.7540063343398,
+      610.9692277787195,
+      415.0471774967206,
+      415.209251783913
+     ],
+     "sha256_bytes": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+     "n_nonfinite": 0
+    },
+    "gravity_logistic": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      1101.3900554656,
+      789.3874860821986,
+      945.7404908181068,
+      1053.4752034127964,
+      606.8359504733698,
+      608.2129264823268,
+      438.7660699733186,
+      439.22801829140656
+     ],
+     "sha256_bytes": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+     "n_nonfinite": 0
+    },
+    "knn_access": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      699.278578653504,
+      674.8399779436902,
+      602.162118161319,
+      709.9102734197364,
+      351.8130972617334,
+      351.80257810756507,
+      438.7660699733186,
+      439.22801829140656
+     ],
+     "sha256_bytes": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a",
+     "n_nonfinite": 0
+    }
+   }
+  },
+  "ACCESS_clean": {
+   "session_json": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_sessions/ACCESS_clean.json",
+   "session_sha256": "601f1fe15ea918f523e293585dab706baade57fa9ab58aaeecd6355668b2e6d6",
+   "mode": "clean",
+   "window_s": 2.638809125,
+   "peak_rss_sampled_mib": 472.84375,
+   "ru_maxrss_mib": 481.9375,
+   "rss_after_window_mib": 478.140625,
+   "pressure_breach": null,
+   "partition_ok": true,
+   "partition_residue_s": 0.000419458,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "top_stage_inclusive_s": {
+    "settings_validation": 0.000218208,
+    "topology_add_network": 1.8365425,
+    "topology_add_origins": 0.159060583,
+    "topology_add_destinations": 0.071169292,
+    "acc_engine_construct": 0.011190917,
+    "acc_centrality": 0.351554209,
+    "export_accessibility_results": 0.208653958
+   },
+   "inner_stage_inclusive_s": {
+    "acc_search_kernel_integrated": 0.351253708
+   },
+   "dispatchers_final_sigcounts": {
+    "awe_integrated_scope_access": 1,
+    "af_accumulate_od_flow": 0,
+    "af_compute_trip_volumes": null
+   },
+   "first_call_stages": [
+    "acc_centrality",
+    "acc_engine_construct",
+    "acc_search_kernel_integrated",
+    "export_accessibility_results",
+    "settings_validation",
+    "topology_add_destinations",
+    "topology_add_network",
+    "topology_add_origins",
+    "topology_build_access_points"
+   ],
+   "od_kernel_aggregate": null,
+   "gravity_cap": null,
+   "origin_selection": {
+    "selection_manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS_sel_all.origin_indices.json",
+    "selection_manifest_sha256": "2e535cbc45531d86b15a748e96888fe8bb007be7a05afee79683b718ce3586cd",
+    "selected_count": 14751,
+    "workload_variant": "O3_ACCESS_sel_all",
+    "fixture": "none \u2014 ordered_indices is the identity; verified source file used directly, no rewrite"
+   },
+   "input_rehash_all_match": true,
+   "pools_post_window": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84424497
+     ]
+    },
+    "process_num_threads": 22,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:17:36Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:17:36Z"
+     },
+     {
+      "executor_id": 3,
+      "max_workers": 10,
+      "created_under_stage": "export_accessibility_results",
+      "created_utc": "2026-09-26T04:17:37Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "numba_num_threads": 10,
+   "numba_threading_layer": null,
+   "nrt_stats_enabled": false,
+   "settings_assembled": {
+    "name": "Default",
+    "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+    "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+    "origins_file": "Cambridge_building_centroids.geojson",
+    "destinations_file": "MA_bus_stops.geojson",
+    "network_weight_column": "Geometric",
+    "network_weight_default": 1.0,
+    "network_precision": 3,
+    "network_saved_nodes": false,
+    "network_load_nodes": true,
+    "calculate_reach": true,
+    "calculate_exponential_gravity": true,
+    "calculate_logistic_gravity": true,
+    "calculate_knn_access": true,
+    "origin_weight_column": "Count",
+    "destination_weight_column": "weekly_departures",
+    "origin_uid_column": null,
+    "origin_destination_id_column": "",
+    "destination_id_column": "",
+    "default_cost": 1.0,
+    "use_nearest_destination": false,
+    "search_radius": 500,
+    "clasters": 1,
+    "cluster_parallel": false,
+    "cluster_workers": 1,
+    "gravity_beta": 0.001,
+    "gravity_logistic_midpoint": 500,
+    "gravity_plateau": 0,
+    "gravity_decay_constant": 4.59511985013459,
+    "knn_weights": [
+     1.0,
+     1.0,
+     0.5
+    ],
+    "knn_decay": "logistic",
+    "elevation": false,
+    "elevation_penalty": 4,
+    "turns": false,
+    "turn_threshold": 45,
+    "turn_penalty": 32,
+    "output_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_out/ACCESS_clean",
+    "output_wStamp": true,
+    "output_copy_source_data": false,
+    "output_geojson": true,
+    "output_feather": true,
+    "output_csv": true,
+    "output_shp": false,
+    "csv_delimiter": ",",
+    "result_prefix": "",
+    "output_file_name": "Results",
+    "flow_engine": "aggregate_flow",
+    "flow_detour_ratio": 1.05,
+    "flow_detour_buffer": 100.0,
+    "flow_detour_mode": "ratio",
+    "flow_decay": true,
+    "flow_decay_curve": "exponential",
+    "flow_decay_method": "closest",
+    "flow_gravity_cap": 1.0,
+    "flow_path_detour_penalty": "logistic",
+    "flow_route_enumeration_beta": 0.0,
+    "flow_route_enumeration_logistic_midpoint": 150.0,
+    "flow_origin_weights": true,
+    "flow_destination_weights": true,
+    "flow_return_directional": false,
+    "observer_points_file": null,
+    "observer_points_uid_column": null,
+    "observer_points_snap_to": "edge",
+    "obstacle_points_file": null,
+    "obstacle_points_uid_column": null,
+    "obstacle_points_penalty_column": "penalty",
+    "obstacle_points_direction_column": null,
+    "obstacle_points_snap_to": "edge",
+    "flow_track_obstacle_points_usage": false,
+    "flow_k_nearest_destinations": 0,
+    "flow_max_destinations_per_origin": 0,
+    "flow_n_alternatives": 30,
+    "flow_alternative_penalty_factor": 1.01,
+    "flow_route_id_column": null,
+    "flow_output_routes": false,
+    "flow_debug_print_paths": false,
+    "flow_track_origins_per_destination": false,
+    "flow_compute_node_flow": false,
+    "batch_composite_output": false,
+    "batch_composite_result_column": "knn_access",
+    "batch_composite_column_prefix": "",
+    "batch_composite_sum_column_name": "composite_sum",
+    "progressbar": true,
+    "logger_verbosity": 1
+   },
+   "accessibility_arrays": {
+    "reach": {
+     "dtype": "int64",
+     "dtype_str": "<i8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      1389,
+      935,
+      1240,
+      1244,
+      927,
+      927,
+      622,
+      622
+     ],
+     "sha256_bytes": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+     "n_nonfinite": 0
+    },
+    "gravity_exponential": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      1005.5404258464483,
+      691.7520503336779,
+      867.8183192148771,
+      934.2845243461899,
+      610.7540063343398,
+      610.9692277787195,
+      415.0471774967206,
+      415.209251783913
+     ],
+     "sha256_bytes": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+     "n_nonfinite": 0
+    },
+    "gravity_logistic": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      1101.3900554656,
+      789.3874860821986,
+      945.7404908181068,
+      1053.4752034127964,
+      606.8359504733698,
+      608.2129264823268,
+      438.7660699733186,
+      439.22801829140656
+     ],
+     "sha256_bytes": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+     "n_nonfinite": 0
+    },
+    "knn_access": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      699.278578653504,
+      674.8399779436902,
+      602.162118161319,
+      709.9102734197364,
+      351.8130972617334,
+      351.80257810756507,
+      438.7660699733186,
+      439.22801829140656
+     ],
+     "sha256_bytes": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a",
+     "n_nonfinite": 0
+    }
+   }
+  },
+  "FLOW_sel1024_od": {
+   "session_json": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_sessions/FLOW_sel1024_od.json",
+   "session_sha256": "d0a8210efec8b35f1369067b0e6765f2d2f227fa28be94bbe6d38086ea15aab9",
+   "mode": "od_level",
+   "window_s": 8.8614135,
+   "peak_rss_sampled_mib": 2489.5,
+   "ru_maxrss_mib": 2532.984375,
+   "rss_after_window_mib": 1301.609375,
+   "pressure_breach": null,
+   "partition_ok": true,
+   "partition_residue_s": 0.000706166,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 1024,
+    "D_rows": 6661
+   },
+   "top_stage_inclusive_s": {
+    "settings_validation": 0.000234584,
+    "topology_add_network": 1.754383125,
+    "topology_add_origins": 0.022060791,
+    "topology_add_destinations": 0.080581375,
+    "flow_build_clusters": 0.060431667,
+    "flow_auto_cap_resolve": 0.260946334,
+    "flow_engine_construct": 6.3708e-05,
+    "flow_engine_centrality": 5.832348958,
+    "export_flow_result": 0.849656792
+   },
+   "inner_stage_inclusive_s": {
+    "flow_prepare_params": 2.5291e-05,
+    "flow_build_digraph": 0.2650355,
+    "flow_build_csr": 0.123957541,
+    "flow_gradient_precompute": 1.8406795,
+    "flow_origin_loop": 3.601705167,
+    "flow_observer_flows": 2.4542e-05,
+    "flow_trip_volumes": 8.672475512,
+    "flow_od_kernel": 17.165668058,
+    "scipy_dijkstra": 5.787744549,
+    "acc_search_kernel_integrated": 0.247148083
+   },
+   "dispatchers_final_sigcounts": {
+    "awe_integrated_scope_access": 1,
+    "af_accumulate_od_flow": 1,
+    "af_compute_trip_volumes": null
+   },
+   "first_call_stages": [
+    "acc_centrality",
+    "acc_engine_construct",
+    "acc_search_kernel_integrated",
+    "export_flow_result",
+    "flow_auto_cap_resolve",
+    "flow_build_clusters",
+    "flow_build_csr",
+    "flow_build_digraph",
+    "flow_engine_centrality",
+    "flow_engine_construct",
+    "flow_gradient_precompute",
+    "flow_observer_flows",
+    "flow_origin_loop",
+    "flow_prepare_params",
+    "flow_trip_volumes",
+    "scipy_dijkstra",
+    "settings_validation",
+    "topology_add_destinations",
+    "topology_add_network",
+    "topology_add_origins",
+    "topology_build_access_points"
+   ],
+   "od_kernel_aggregate": {
+    "n_calls": 8217,
+    "sum_ns": 17578805432,
+    "mean_ns": 2139321.581112328,
+    "min_ns": 45250,
+    "max_ns": 1929925833,
+    "observed_max_concurrent": 9,
+    "n_per_call_spans_kept": 0,
+    "per_call_spans_sample": [],
+    "nrt_samples": [],
+    "nrt_note": "NRT delta read every 256 calls",
+    "note": "max_concurrent updated at kernel enter/exit and sampled by a 2 ms monitor thread; >1 proves simultaneous kernel execution"
+   },
+   "gravity_cap": {
+    "before": "p95",
+    "after": 7422.1767,
+    "note": "resolved INSIDE the public call when the settings value was a percentile string (never pre-resolved)"
+   },
+   "origin_selection": {
+    "selection_manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_FLOW_sel1024.origin_indices.json",
+    "selection_manifest_sha256": "e03659db8b54b76fdd65904f895403622fee5c315ff1c2a0d545c8113060ad60",
+    "selected_count": 1024,
+    "workload_variant": "O3_FLOW_sel1024",
+    "chosen_variant": "sel1024",
+    "fixture": {
+     "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/h05_origins_fixture_FLOW_sel1024_od_1024.geojson",
+     "sha256": "412ca46cd4807e6d1d19eb957b58d93b8d19a06a2ec68077209fe7268eae5c4e",
+     "rows": 1024,
+     "note": "derived in-run from verified selection manifest; attributes sliced untouched, row order = ordered_indices"
+    }
+   },
+   "input_rehash_all_match": true,
+   "pools_post_window": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84427610
+     ]
+    },
+    "process_num_threads": 31,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:18:01Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:18:01Z"
+     },
+     {
+      "executor_id": 3,
+      "max_workers": 9,
+      "created_under_stage": "flow_origin_loop",
+      "created_utc": "2026-09-26T04:18:04Z"
+     },
+     {
+      "executor_id": 4,
+      "max_workers": 10,
+      "created_under_stage": "export_flow_result",
+      "created_utc": "2026-09-26T04:18:08Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "numba_num_threads": 10,
+   "numba_threading_layer": null,
+   "nrt_stats_enabled": false,
+   "settings_assembled": {
+    "name": "Default",
+    "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+    "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+    "origins_file": "h05_origins_fixture_FLOW_sel1024_od_1024.geojson",
+    "destinations_file": "MA_bus_stops.geojson",
+    "network_weight_column": "Geometric",
+    "network_weight_default": 1.0,
+    "network_precision": 3,
+    "network_saved_nodes": false,
+    "network_load_nodes": true,
+    "calculate_reach": true,
+    "calculate_exponential_gravity": true,
+    "calculate_logistic_gravity": true,
+    "calculate_knn_access": true,
+    "origin_weight_column": "Count",
+    "destination_weight_column": "weekly_departures",
+    "origin_uid_column": null,
+    "origin_destination_id_column": "",
+    "destination_id_column": "",
+    "default_cost": 1.0,
+    "use_nearest_destination": false,
+    "search_radius": 500,
+    "clasters": 1,
+    "cluster_parallel": false,
+    "cluster_workers": 1,
+    "gravity_beta": 0.001,
+    "gravity_logistic_midpoint": 500,
+    "gravity_plateau": 0,
+    "gravity_decay_constant": 4.59511985013459,
+    "knn_weights": [
+     1.0,
+     1.0,
+     0.5
+    ],
+    "knn_decay": "logistic",
+    "elevation": false,
+    "elevation_penalty": 4,
+    "turns": false,
+    "turn_threshold": 45,
+    "turn_penalty": 32,
+    "output_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_out/FLOW_sel1024_od",
+    "output_wStamp": true,
+    "output_copy_source_data": false,
+    "output_geojson": true,
+    "output_feather": true,
+    "output_csv": true,
+    "output_shp": false,
+    "csv_delimiter": ",",
+    "result_prefix": "",
+    "output_file_name": "Results",
+    "flow_engine": "aggregate_flow",
+    "flow_detour_ratio": 1.05,
+    "flow_detour_buffer": 100.0,
+    "flow_detour_mode": "ratio",
+    "flow_decay": true,
+    "flow_decay_curve": "exponential",
+    "flow_decay_method": "gravity_cap",
+    "flow_gravity_cap": "p95",
+    "flow_path_detour_penalty": "logistic",
+    "flow_route_enumeration_beta": 0.0,
+    "flow_route_enumeration_logistic_midpoint": 150.0,
+    "flow_origin_weights": true,
+    "flow_destination_weights": true,
+    "flow_return_directional": false,
+    "observer_points_file": null,
+    "observer_points_uid_column": null,
+    "observer_points_snap_to": "edge",
+    "obstacle_points_file": null,
+    "obstacle_points_uid_column": null,
+    "obstacle_points_penalty_column": "penalty",
+    "obstacle_points_direction_column": null,
+    "obstacle_points_snap_to": "edge",
+    "flow_track_obstacle_points_usage": false,
+    "flow_k_nearest_destinations": 0,
+    "flow_max_destinations_per_origin": 0,
+    "flow_n_alternatives": 30,
+    "flow_alternative_penalty_factor": 1.01,
+    "flow_route_id_column": null,
+    "flow_output_routes": false,
+    "flow_debug_print_paths": false,
+    "flow_track_origins_per_destination": false,
+    "flow_compute_node_flow": false,
+    "batch_composite_output": false,
+    "batch_composite_result_column": "knn_access",
+    "batch_composite_column_prefix": "",
+    "batch_composite_sum_column_name": "composite_sum",
+    "progressbar": true,
+    "logger_verbosity": 1
+   },
+   "accessibility_arrays": null
+  },
+  "FLOW_chosen_od": {
+   "session_json": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_sessions/FLOW_chosen_od.json",
+   "session_sha256": "8bb65cc6009754770c6cd521dd22993fbbed876cd093ef159cd2d1726d35e821",
+   "mode": "od_level",
+   "window_s": 6.687906041,
+   "peak_rss_sampled_mib": 2489.125,
+   "ru_maxrss_mib": 2577.515625,
+   "rss_after_window_mib": 1955.109375,
+   "pressure_breach": null,
+   "partition_ok": true,
+   "partition_residue_s": 0.000661666,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 1024,
+    "D_rows": 6661
+   },
+   "top_stage_inclusive_s": {
+    "settings_validation": 0.000222042,
+    "topology_add_network": 1.7196525,
+    "topology_add_origins": 0.017254,
+    "topology_add_destinations": 0.072539083,
+    "flow_build_clusters": 0.036980583,
+    "flow_auto_cap_resolve": 0.163460375,
+    "flow_engine_construct": 2.75e-05,
+    "flow_engine_centrality": 3.82067725,
+    "export_flow_result": 0.856431042
+   },
+   "inner_stage_inclusive_s": {
+    "flow_prepare_params": 3.2292e-05,
+    "flow_build_digraph": 0.251155333,
+    "flow_build_csr": 0.109261417,
+    "flow_gradient_precompute": 1.73529525,
+    "flow_origin_loop": 1.723733125,
+    "flow_observer_flows": 5.375e-05,
+    "flow_trip_volumes": 8.990625423,
+    "flow_od_kernel": 0.213409841,
+    "scipy_dijkstra": 5.488787475,
+    "acc_search_kernel_integrated": 0.150975208
+   },
+   "dispatchers_final_sigcounts": {
+    "awe_integrated_scope_access": 1,
+    "af_accumulate_od_flow": 1,
+    "af_compute_trip_volumes": null
+   },
+   "first_call_stages": [
+    "acc_centrality",
+    "acc_engine_construct",
+    "acc_search_kernel_integrated",
+    "export_flow_result",
+    "flow_auto_cap_resolve",
+    "flow_build_clusters",
+    "flow_build_csr",
+    "flow_build_digraph",
+    "flow_engine_centrality",
+    "flow_engine_construct",
+    "flow_gradient_precompute",
+    "flow_observer_flows",
+    "flow_origin_loop",
+    "flow_prepare_params",
+    "flow_trip_volumes",
+    "scipy_dijkstra",
+    "settings_validation",
+    "topology_add_destinations",
+    "topology_add_network",
+    "topology_add_origins",
+    "topology_build_access_points"
+   ],
+   "od_kernel_aggregate": {
+    "n_calls": 8217,
+    "sum_ns": 638797485,
+    "mean_ns": 77740.96202993793,
+    "min_ns": 45833,
+    "max_ns": 25906416,
+    "observed_max_concurrent": 9,
+    "n_per_call_spans_kept": 0,
+    "per_call_spans_sample": [],
+    "nrt_samples": [],
+    "nrt_note": "NRT delta read every 256 calls",
+    "note": "max_concurrent updated at kernel enter/exit and sampled by a 2 ms monitor thread; >1 proves simultaneous kernel execution"
+   },
+   "gravity_cap": {
+    "before": "p95",
+    "after": 7422.1767,
+    "note": "resolved INSIDE the public call when the settings value was a percentile string (never pre-resolved)"
+   },
+   "origin_selection": {
+    "selection_manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_FLOW_sel1024.origin_indices.json",
+    "selection_manifest_sha256": "e03659db8b54b76fdd65904f895403622fee5c315ff1c2a0d545c8113060ad60",
+    "selected_count": 1024,
+    "workload_variant": "O3_FLOW_sel1024",
+    "chosen_variant": "sel1024",
+    "fixture": {
+     "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/h05_origins_fixture_FLOW_chosen_od_1024.geojson",
+     "sha256": "caaae11322579a69623743f21ae78adb9f28b3a3f8fe6f76f56f58f86f89a5a3",
+     "rows": 1024,
+     "note": "derived in-run from verified selection manifest; attributes sliced untouched, row order = ordered_indices"
+    }
+   },
+   "input_rehash_all_match": true,
+   "pools_post_window": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84434163
+     ]
+    },
+    "process_num_threads": 31,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:19:48Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:19:48Z"
+     },
+     {
+      "executor_id": 3,
+      "max_workers": 9,
+      "created_under_stage": "flow_origin_loop",
+      "created_utc": "2026-09-26T04:19:50Z"
+     },
+     {
+      "executor_id": 4,
+      "max_workers": 10,
+      "created_under_stage": "export_flow_result",
+      "created_utc": "2026-09-26T04:19:52Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "numba_num_threads": 10,
+   "numba_threading_layer": null,
+   "nrt_stats_enabled": false,
+   "settings_assembled": {
+    "name": "Default",
+    "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+    "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+    "origins_file": "h05_origins_fixture_FLOW_chosen_od_1024.geojson",
+    "destinations_file": "MA_bus_stops.geojson",
+    "network_weight_column": "Geometric",
+    "network_weight_default": 1.0,
+    "network_precision": 3,
+    "network_saved_nodes": false,
+    "network_load_nodes": true,
+    "calculate_reach": true,
+    "calculate_exponential_gravity": true,
+    "calculate_logistic_gravity": true,
+    "calculate_knn_access": true,
+    "origin_weight_column": "Count",
+    "destination_weight_column": "weekly_departures",
+    "origin_uid_column": null,
+    "origin_destination_id_column": "",
+    "destination_id_column": "",
+    "default_cost": 1.0,
+    "use_nearest_destination": false,
+    "search_radius": 500,
+    "clasters": 1,
+    "cluster_parallel": false,
+    "cluster_workers": 1,
+    "gravity_beta": 0.001,
+    "gravity_logistic_midpoint": 500,
+    "gravity_plateau": 0,
+    "gravity_decay_constant": 4.59511985013459,
+    "knn_weights": [
+     1.0,
+     1.0,
+     0.5
+    ],
+    "knn_decay": "logistic",
+    "elevation": false,
+    "elevation_penalty": 4,
+    "turns": false,
+    "turn_threshold": 45,
+    "turn_penalty": 32,
+    "output_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_out/FLOW_chosen_od",
+    "output_wStamp": true,
+    "output_copy_source_data": false,
+    "output_geojson": true,
+    "output_feather": true,
+    "output_csv": true,
+    "output_shp": false,
+    "csv_delimiter": ",",
+    "result_prefix": "",
+    "output_file_name": "Results",
+    "flow_engine": "aggregate_flow",
+    "flow_detour_ratio": 1.05,
+    "flow_detour_buffer": 100.0,
+    "flow_detour_mode": "ratio",
+    "flow_decay": true,
+    "flow_decay_curve": "exponential",
+    "flow_decay_method": "gravity_cap",
+    "flow_gravity_cap": "p95",
+    "flow_path_detour_penalty": "logistic",
+    "flow_route_enumeration_beta": 0.0,
+    "flow_route_enumeration_logistic_midpoint": 150.0,
+    "flow_origin_weights": true,
+    "flow_destination_weights": true,
+    "flow_return_directional": false,
+    "observer_points_file": null,
+    "observer_points_uid_column": null,
+    "observer_points_snap_to": "edge",
+    "obstacle_points_file": null,
+    "obstacle_points_uid_column": null,
+    "obstacle_points_penalty_column": "penalty",
+    "obstacle_points_direction_column": null,
+    "obstacle_points_snap_to": "edge",
+    "flow_track_obstacle_points_usage": false,
+    "flow_k_nearest_destinations": 0,
+    "flow_max_destinations_per_origin": 0,
+    "flow_n_alternatives": 30,
+    "flow_alternative_penalty_factor": 1.01,
+    "flow_route_id_column": null,
+    "flow_output_routes": false,
+    "flow_debug_print_paths": false,
+    "flow_track_origins_per_destination": false,
+    "flow_compute_node_flow": false,
+    "batch_composite_output": false,
+    "batch_composite_result_column": "knn_access",
+    "batch_composite_column_prefix": "",
+    "batch_composite_sum_column_name": "composite_sum",
+    "progressbar": true,
+    "logger_verbosity": 1
+   },
+   "accessibility_arrays": null
+  },
+  "HOLDOUT_clean": {
+   "session_json": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_sessions/HOLDOUT_clean.json",
+   "session_sha256": "3259167f9f703b0dd43327578d6aeac04f37881ccba09c76ab0a124ef4ee66c4",
+   "mode": "clean",
+   "window_s": 3.736267791,
+   "peak_rss_sampled_mib": 504.703125,
+   "ru_maxrss_mib": 513.78125,
+   "rss_after_window_mib": 509.984375,
+   "pressure_breach": null,
+   "partition_ok": true,
+   "partition_residue_s": 0.000457999,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "top_stage_inclusive_s": {
+    "settings_validation": 0.000166792,
+    "topology_add_network": 1.765181375,
+    "topology_add_origins": 0.156938333,
+    "topology_add_destinations": 0.071118042,
+    "acc_engine_construct": 0.010588375,
+    "acc_centrality": 1.534749958,
+    "export_accessibility_results": 0.197066917
+   },
+   "inner_stage_inclusive_s": {
+    "acc_search_kernel_integrated": 1.534404833
+   },
+   "dispatchers_final_sigcounts": {
+    "awe_integrated_scope_access": 1,
+    "af_accumulate_od_flow": 0,
+    "af_compute_trip_volumes": null
+   },
+   "first_call_stages": [
+    "acc_centrality",
+    "acc_engine_construct",
+    "acc_search_kernel_integrated",
+    "export_accessibility_results",
+    "settings_validation",
+    "topology_add_destinations",
+    "topology_add_network",
+    "topology_add_origins",
+    "topology_build_access_points"
+   ],
+   "od_kernel_aggregate": null,
+   "gravity_cap": null,
+   "origin_selection": {
+    "selection_manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT_sel_all.origin_indices.json",
+    "selection_manifest_sha256": "73415976c0cfac456e49d7bd24bd80d4f0dc8f8b408ff820043beed1207f3990",
+    "selected_count": 14751,
+    "workload_variant": "O3_HOLDOUT_sel_all",
+    "fixture": "none \u2014 ordered_indices is the identity; verified source file used directly, no rewrite"
+   },
+   "input_rehash_all_match": true,
+   "pools_post_window": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84436353
+     ]
+    },
+    "process_num_threads": 22,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:20:20Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:20:20Z"
+     },
+     {
+      "executor_id": 3,
+      "max_workers": 10,
+      "created_under_stage": "export_accessibility_results",
+      "created_utc": "2026-09-26T04:20:21Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "numba_num_threads": 10,
+   "numba_threading_layer": null,
+   "nrt_stats_enabled": false,
+   "settings_assembled": {
+    "name": "Default",
+    "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+    "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+    "origins_file": "Cambridge_building_centroids.geojson",
+    "destinations_file": "MA_bus_stops.geojson",
+    "network_weight_column": "Geometric",
+    "network_weight_default": 1.0,
+    "network_precision": 3,
+    "network_saved_nodes": false,
+    "network_load_nodes": true,
+    "calculate_reach": true,
+    "calculate_exponential_gravity": true,
+    "calculate_logistic_gravity": true,
+    "calculate_knn_access": true,
+    "origin_weight_column": "Count",
+    "destination_weight_column": "weekly_departures",
+    "origin_uid_column": null,
+    "origin_destination_id_column": "",
+    "destination_id_column": "",
+    "default_cost": 1.0,
+    "use_nearest_destination": false,
+    "search_radius": 1200,
+    "clasters": 1,
+    "cluster_parallel": false,
+    "cluster_workers": 1,
+    "gravity_beta": 0.001,
+    "gravity_logistic_midpoint": 500,
+    "gravity_plateau": 0,
+    "gravity_decay_constant": 4.59511985013459,
+    "knn_weights": [
+     1.0,
+     1.0,
+     0.5
+    ],
+    "knn_decay": "logistic",
+    "elevation": false,
+    "elevation_penalty": 4,
+    "turns": false,
+    "turn_threshold": 45,
+    "turn_penalty": 32,
+    "output_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_out/HOLDOUT_clean",
+    "output_wStamp": true,
+    "output_copy_source_data": false,
+    "output_geojson": true,
+    "output_feather": true,
+    "output_csv": true,
+    "output_shp": false,
+    "csv_delimiter": ",",
+    "result_prefix": "",
+    "output_file_name": "Results",
+    "flow_engine": "aggregate_flow",
+    "flow_detour_ratio": 1.05,
+    "flow_detour_buffer": 100.0,
+    "flow_detour_mode": "ratio",
+    "flow_decay": true,
+    "flow_decay_curve": "exponential",
+    "flow_decay_method": "closest",
+    "flow_gravity_cap": 1.0,
+    "flow_path_detour_penalty": "logistic",
+    "flow_route_enumeration_beta": 0.0,
+    "flow_route_enumeration_logistic_midpoint": 150.0,
+    "flow_origin_weights": true,
+    "flow_destination_weights": true,
+    "flow_return_directional": false,
+    "observer_points_file": null,
+    "observer_points_uid_column": null,
+    "observer_points_snap_to": "edge",
+    "obstacle_points_file": null,
+    "obstacle_points_uid_column": null,
+    "obstacle_points_penalty_column": "penalty",
+    "obstacle_points_direction_column": null,
+    "obstacle_points_snap_to": "edge",
+    "flow_track_obstacle_points_usage": false,
+    "flow_k_nearest_destinations": 0,
+    "flow_max_destinations_per_origin": 0,
+    "flow_n_alternatives": 30,
+    "flow_alternative_penalty_factor": 1.01,
+    "flow_route_id_column": null,
+    "flow_output_routes": false,
+    "flow_debug_print_paths": false,
+    "flow_track_origins_per_destination": false,
+    "flow_compute_node_flow": false,
+    "batch_composite_output": false,
+    "batch_composite_result_column": "knn_access",
+    "batch_composite_column_prefix": "",
+    "batch_composite_sum_column_name": "composite_sum",
+    "progressbar": true,
+    "logger_verbosity": 1
+   },
+   "accessibility_arrays": {
+    "reach": {
+     "dtype": "int64",
+     "dtype_str": "<i8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      12772,
+      12016,
+      10839,
+      10894,
+      8141,
+      8141,
+      8627,
+      8627
+     ],
+     "sha256_bytes": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+     "n_nonfinite": 0
+    },
+    "gravity_exponential": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      5948.573813892722,
+      5323.632460133802,
+      4831.536445633907,
+      4616.187728642029,
+      3411.8482161211455,
+      3415.400158436927,
+      3848.637904099907,
+      3850.1407820347254
+     ],
+     "sha256_bytes": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+     "n_nonfinite": 0
+    },
+    "gravity_logistic": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      2327.622692562395,
+      1693.9408059092352,
+      1601.4387899300139,
+      1439.3047726536847,
+      848.5040786738969,
+      852.1257685257904,
+      1036.1720488420942,
+      1038.3608919370167
+     ],
+     "sha256_bytes": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+     "n_nonfinite": 0
+    },
+    "knn_access": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      699.278578653504,
+      674.8399779436902,
+      602.162118161319,
+      709.9102734197364,
+      351.8130972617334,
+      351.80257810756507,
+      504.16674327641243,
+      504.76532888807515
+     ],
+     "sha256_bytes": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6",
+     "n_nonfinite": 0
+    }
+   }
+  },
+  "HOLDOUT_elev": {
+   "session_json": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_sessions/HOLDOUT_elev.json",
+   "session_sha256": "cab77e76ca7686225a0066686b7f4180e827ae7c1816f23704ad6ffd0f7da627",
+   "mode": "clean",
+   "window_s": 2.989783833,
+   "peak_rss_sampled_mib": 503.515625,
+   "ru_maxrss_mib": 507.296875,
+   "rss_after_window_mib": 503.5,
+   "pressure_breach": null,
+   "partition_ok": true,
+   "partition_residue_s": 0.000494208,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "top_stage_inclusive_s": {
+    "settings_validation": 0.000168958,
+    "topology_add_network": 1.633065792,
+    "topology_add_origins": 0.15180025,
+    "topology_add_destinations": 0.072778292,
+    "acc_engine_construct": 0.011328583,
+    "acc_centrality": 0.92094875,
+    "export_accessibility_results": 0.199199
+   },
+   "inner_stage_inclusive_s": {
+    "acc_search_kernel_integrated": 0.920583666
+   },
+   "dispatchers_final_sigcounts": {
+    "awe_integrated_scope_access": 1,
+    "af_accumulate_od_flow": 0,
+    "af_compute_trip_volumes": null
+   },
+   "first_call_stages": [
+    "acc_centrality",
+    "acc_engine_construct",
+    "acc_search_kernel_integrated",
+    "export_accessibility_results",
+    "settings_validation",
+    "topology_add_destinations",
+    "topology_add_network",
+    "topology_add_origins",
+    "topology_build_access_points"
+   ],
+   "od_kernel_aggregate": null,
+   "gravity_cap": null,
+   "origin_selection": {
+    "selection_manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT_sel_all.origin_indices.json",
+    "selection_manifest_sha256": "73415976c0cfac456e49d7bd24bd80d4f0dc8f8b408ff820043beed1207f3990",
+    "selected_count": 14751,
+    "workload_variant": "O3_HOLDOUT_sel_all",
+    "fixture": "none \u2014 ordered_indices is the identity; verified source file used directly, no rewrite"
+   },
+   "input_rehash_all_match": true,
+   "pools_post_window": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84436793
+     ]
+    },
+    "process_num_threads": 23,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:20:29Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:20:29Z"
+     },
+     {
+      "executor_id": 3,
+      "max_workers": 10,
+      "created_under_stage": "export_accessibility_results",
+      "created_utc": "2026-09-26T04:20:30Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "numba_num_threads": 10,
+   "numba_threading_layer": null,
+   "nrt_stats_enabled": false,
+   "settings_assembled": {
+    "name": "Default",
+    "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+    "network_file": "20260703_PercLenNetwork_InnerCore_3D.geojson",
+    "origins_file": "Cambridge_building_centroids.geojson",
+    "destinations_file": "MA_bus_stops.geojson",
+    "network_weight_column": "Geometric",
+    "network_weight_default": 1.0,
+    "network_precision": 3,
+    "network_saved_nodes": false,
+    "network_load_nodes": true,
+    "calculate_reach": true,
+    "calculate_exponential_gravity": true,
+    "calculate_logistic_gravity": true,
+    "calculate_knn_access": true,
+    "origin_weight_column": "Count",
+    "destination_weight_column": "weekly_departures",
+    "origin_uid_column": null,
+    "origin_destination_id_column": "",
+    "destination_id_column": "",
+    "default_cost": 1.0,
+    "use_nearest_destination": false,
+    "search_radius": 1200,
+    "clasters": 1,
+    "cluster_parallel": false,
+    "cluster_workers": 1,
+    "gravity_beta": 0.001,
+    "gravity_logistic_midpoint": 500,
+    "gravity_plateau": 0,
+    "gravity_decay_constant": 4.59511985013459,
+    "knn_weights": [
+     1.0,
+     1.0,
+     0.5
+    ],
+    "knn_decay": "logistic",
+    "elevation": true,
+    "elevation_penalty": 4,
+    "turns": false,
+    "turn_threshold": 45,
+    "turn_penalty": 32,
+    "output_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_out/HOLDOUT_elev",
+    "output_wStamp": true,
+    "output_copy_source_data": false,
+    "output_geojson": true,
+    "output_feather": true,
+    "output_csv": true,
+    "output_shp": false,
+    "csv_delimiter": ",",
+    "result_prefix": "",
+    "output_file_name": "Results",
+    "flow_engine": "aggregate_flow",
+    "flow_detour_ratio": 1.05,
+    "flow_detour_buffer": 100.0,
+    "flow_detour_mode": "ratio",
+    "flow_decay": true,
+    "flow_decay_curve": "exponential",
+    "flow_decay_method": "closest",
+    "flow_gravity_cap": 1.0,
+    "flow_path_detour_penalty": "logistic",
+    "flow_route_enumeration_beta": 0.0,
+    "flow_route_enumeration_logistic_midpoint": 150.0,
+    "flow_origin_weights": true,
+    "flow_destination_weights": true,
+    "flow_return_directional": false,
+    "observer_points_file": null,
+    "observer_points_uid_column": null,
+    "observer_points_snap_to": "edge",
+    "obstacle_points_file": null,
+    "obstacle_points_uid_column": null,
+    "obstacle_points_penalty_column": "penalty",
+    "obstacle_points_direction_column": null,
+    "obstacle_points_snap_to": "edge",
+    "flow_track_obstacle_points_usage": false,
+    "flow_k_nearest_destinations": 0,
+    "flow_max_destinations_per_origin": 0,
+    "flow_n_alternatives": 30,
+    "flow_alternative_penalty_factor": 1.01,
+    "flow_route_id_column": null,
+    "flow_output_routes": false,
+    "flow_debug_print_paths": false,
+    "flow_track_origins_per_destination": false,
+    "flow_compute_node_flow": false,
+    "batch_composite_output": false,
+    "batch_composite_result_column": "knn_access",
+    "batch_composite_column_prefix": "",
+    "batch_composite_sum_column_name": "composite_sum",
+    "progressbar": true,
+    "logger_verbosity": 1
+   },
+   "accessibility_arrays": {
+    "reach": {
+     "dtype": "int64",
+     "dtype_str": "<i8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      11741,
+      9689,
+      9241,
+      8928,
+      8141,
+      8141,
+      8627,
+      8627
+     ],
+     "sha256_bytes": "7d634d777c4d772efdf4a24f10a9ed00d04ef061fad8b8635d278ee423db8052",
+     "n_nonfinite": 0
+    },
+    "gravity_exponential": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      5449.069080212653,
+      4426.395876073966,
+      4257.121142984042,
+      3859.053627929862,
+      3349.372950893556,
+      3352.845485426938,
+      3771.2664523008257,
+      3772.739116988622
+     ],
+     "sha256_bytes": "b7f2b23af617082be59a6e66a0cdfd95bd01e12d6b3bb9e352c790bec858b8db",
+     "n_nonfinite": 0
+    },
+    "gravity_logistic": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      2099.5998569901826,
+      1472.0443250122582,
+      1501.0507169726932,
+      1331.9937474439487,
+      804.5055025730414,
+      807.8987439370802,
+      954.6578067820001,
+      956.6900826825989
+     ],
+     "sha256_bytes": "dcc6730b226b530acbe6671c80a3ae5e6aaa93b79099c0564dec6f533ac57d72",
+     "n_nonfinite": 0
+    },
+    "knn_access": {
+     "dtype": "float64",
+     "dtype_str": "<f8",
+     "shape": [
+      14751
+     ],
+     "first_k": [
+      685.7415394322676,
+      657.9834043146367,
+      594.1967017495238,
+      700.4630630424534,
+      347.5966951013751,
+      347.5939670419826,
+      485.4889558433218,
+      486.10478963348805
+     ],
+     "sha256_bytes": "d8d45e472f2d536b06606d6120cca56106b1cdeb39bd1af301cc7b5079270546",
+     "n_nonfinite": 0
+    }
+   }
+  }
+ },
+ "cross_checks": {
+  "V_E_all_cells": "V=49159 E=69957 observed in every cell (matches H01 manifests and H04 load pass)",
+  "O2_reach_first3_vs_H04": {
+   "measured": [
+    2357,
+    2517,
+    1856
+   ],
+   "h04_l2": [
+    2357,
+    2517,
+    1856
+   ],
+   "match": true
+  },
+  "holdout_3d_variant_VE": {
+   "network": "20260703_PercLenNetwork_InnerCore_3D.geojson",
+   "observed": [
+    49159,
+    69957
+   ],
+   "verdict": "identical to 2D file; no divergence to propagate into F3 capacity math (H01 aggregate-identical coordinates claim confirmed at load level)",
+   "engine_line": "Using AccessibilityWElevation (elevation penalty=4)"
+  },
+  "gravity_cap_determinism": {
+   "O2_h04": 7540.0175,
+   "O2_h05": null,
+   "O3_FLOW": 7422.1767,
+   "note": "cap is per-origin-set; identical across repeat sessions of the same origin set (deterministic)"
+  }
+ },
+ "kernel_specializations_dispatched": {
+  "O2_and_O3_ACCESS": {
+   "search_kernel": "integrated_scope_access (elevation family) \u2014 sigcount 0->1 at first acc_centrality; base Accessibility family NOT dispatched",
+   "matches_H03_O2_observed": true
+  },
+  "O3_ACCESS_decay_params": {
+   "gravity_beta": 0.001,
+   "gravity_plateau": 0,
+   "gravity_growth_rate": 0.00919023970026918,
+   "growth_rate_derivation": "gravity_decay_constant/gravity_logistic_midpoint = 4.59511985013459/500 (B0 Centrality line 395); replica validated 32/32 origins at ULP 0 with these values (A2 validation)"
+  },
+  "O3_FLOW": {
+   "accumulate_od_flow": "1 signature compiled (sigcount 0->1); 8217 calls at sel1024 (8.02/origin)",
+   "compute_trip_volumes": "plain-Python dispatcher over per-mode njit kernels; flow_decay_method=gravity_cap cap=7422.1767 -> 'gravity_cap' specialization (H03 O2 also observed 'exponential'+'gravity_cap' with cap 7540.0175 from the O2 origin set)",
+   "scipy_dijkstra": "1024 per-origin calls + 4 setup calls (1028 spans) at sel1024",
+   "gradient_limit": 525.0,
+   "gradient_limit_derivation": "_gradient_limit_for = _cutoff_for_shortest(search_radius=500, mode='ratio', ratio=1.05) = 500*1.05; SAME as O2 despite differing origin sets (both derive from frozen settings, not from origins)"
+  }
+ },
+ "stage_weights_chosen_flow": {
+  "basis": "FLOW_chosen_od window (chosen variant sel1024, second O3_FLOW pilot)",
+  "window_s": 6.687906041,
+  "add_network_s": 1.7196525,
+  "auto_cap_resolve_s": 0.163460375,
+  "gradient_precompute_s": 1.73529525,
+  "origin_loop_s": 1.723733125,
+  "export_s": 0.856431042,
+  "shares_of_window": {
+   "add_network": 0.25712868713431736,
+   "auto_cap": 0.02444118891591946,
+   "gradient_precompute": 0.2594676479247505,
+   "origin_loop": 0.25773883700409483,
+   "export": 0.12805667973647897
+  },
+  "note": "shares are of the whole public-call window including load and exports; the flow engine centrality stage decomposes as grad+loop; test-retest spread on origin_loop is 1.72-3.60 s across the two sel1024 sessions (first includes in-window JIT of per-call kernels despite warm process cache)"
+ },
+ "invalid_windows": {
+  "first_O2_cold_2026-09-26T00:0x": {
+   "what": "window ran with the FULL 14751-row origins file: the profiler ignored manifest.origin_selection (bug fixed same session; O2 must be the 16 pinned origins)",
+   "disposition": "session JSON overwritten by the corrected run; wall time stays in the heavy ledger (honest accounting); run is NOT a pilot and NOT evidence"
+  }
+ }
+}
