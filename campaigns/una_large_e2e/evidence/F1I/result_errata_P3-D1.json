@@ -1,0 +1,28 @@
+{
+ "schema_version": 1,
+ "task": "F1I",
+ "record": "result_errata",
+ "erratum_id": "P3-D1",
+ "role": "coordinator/integrator",
+ "generated_utc": "2026-09-26T08:40:48Z",
+ "routed_by": "h04-reviewer finding at P3 (evidence/F1R/p3_verification.json); hash independently recomputed by the coordinator from the committed blob before this erratum was filed",
+ "status": "CONFIRMED_CORRECTED - stale hash pointer in result.json evidence inventory",
+ "committed_evidence_affected": {
+  "file": "evidence/F1I/result.json",
+  "disposition": "UNMODIFIED - this erratum corrects the record in place; the committed file is not rewritten",
+  "section_affected": "evidence_files_sha256.test_artifacts_json"
+ },
+ "claim_in_committed_result": {
+  "statement": "evidence_files_sha256 records test_artifacts.json as ab31a03bf65d9a6ff0df49b20528...",
+  "verdict": "STALE - withdrawn as the hash of the committed file"
+ },
+ "actual_fact": {
+  "cause": "the suite artifact dump (test_artifacts.json, mtime 04:30) was rewritten after result.json (04:28) took its hash inventory; the pointer went stale between the two writes",
+  "corrected_hash": "00a5264d6962389159557ba2f50c165ee21b1b19705139986a08c960fb8001ed",
+  "verification": "coordinator recomputed sha256 of the committed blob at c1d7edc519f254c0e81475509d34b437e33abf09; reviewer independently derived the same value at P3",
+  "content_note": "the file's content is the benign T1-T13 artifact dump; no obligation binds to this hash - the binding census/blob obligations verify against hashes the reviewer recomputed directly from the committed .ll files and git blobs, and the suite pass counts (F1 30/30, oracle 64/64) come from the coordinator's independent re-run, not from this file"
+ },
+ "severity": "non-blocking (P3 PASS 24/24 unaffected)",
+ "lesson_for_R00": "hash inventories must be regenerated after the last artifact write in a task's evidence directory",
+ "process_note": "erratum written by the coordinator; committed result.json intentionally left byte-identical; no heavy execution performed"
+}

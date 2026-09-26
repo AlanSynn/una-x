@@ -1,0 +1,60 @@
+{
+ "schema_version": 1,
+ "task": "F1R",
+ "record": "p3_verification",
+ "role": "independent-reviewer",
+ "generated_utc": "2026-09-26T12:10:00Z",
+ "subject": {
+  "phase2_commit": "c1d7edc",
+  "satisfies": ["precondition P2 (Phase-2 evidence committed)", "precondition P3 (reviewer verification of obligation 9.2 artifacts)", "precondition P4 blob check"],
+  "verdict": "PASS - obligation 9.2 census independently reproduced from committed artifacts; sole semantic IR delta = GIL save/restore; P4 blob check passes; one non-blocking record-keeping defect found (D1 below)"
+ },
+ "scope_verification": {
+  "git_diff_e95de8e_c1d7edc": "src/ touched ONLY in AggregateFlow.py (1 line changed); plus new tests/large_e2e/F1/ (13 files) and evidence/F1I/ artifacts; 23 files, 11335 insertions, 1 deletion",
+  "p4_blob_check": "e95de8e:AggregateFlow.py = 0114ce8f318a3247b62e3d468e32d54e692737a2 (B0-identical); c1d7edc:AggregateFlow.py = 455e92adb5f23748903435d3d6340a5d8a9c47d3; blob-level git diff = EXACTLY the decorator line @nb.njit(cache=True, fastmath=True) -> @nb.njit(cache=True, fastmath=True, nogil=True) on _accumulate_od_flow. PASSES the spec's arms_and_sources.candidate.blob_check",
+  "file_hashes": "src file sha256: candidate tree 73ac95b341ed128e77afc69e0789550fadeaadca13446f438ce771f966f48978, B0 tree 2547e06bad6fb301304fca9b40fe7195c0594e7240cb4f570cd667655be14923 - both match result.json records"
+ },
+ "census_verification": {
+  "method": "reviewer wrote an independent verifier (campaign_data/f1i_p3_verify/verify.py, no numba import, no compile, pure text analysis of committed files) with four layers: (1) verbatim replication of capture_ir.py's census to reproduce recorded hashes; (2) reviewer's own FP-site census with independent regex and token-level normalization; (3) reviewer's own normalization + difflib residual classification; (4) STRICT element-wise line-sequence identity with no diff alignment at all; plus (5) committed-blob hash confirmation via git show",
+  "results_24_checks_all_pass": true,
+  "key_results": [
+   "replication: fp_site_count 92 = 92 recorded; site_sequence_sha256 f443ec3ae89dfd5c73cdf0cbcbba311b55dd36f0dd2838f0ed8fa472091d61c5 reproduces from BOTH committed .ll files; fma/fmuladd/llvm.fma = 0 both arms",
+   "independent census: 92 FP sites per arm by reviewer's own regex, sequences EQUAL, fast-flag inventory {'', 'fast'} only (no new fast-flagged form)",
+   "raw GIL grep: b0 0 SaveThread / 0 RestoreThread; cand 2 / 2",
+   "strict element-wise identity: after reviewer normalization (module name, Itanium length prefixes 22/11 and [554]/[556], ABI mangling B2v1/B3v41 family, block labels B\\d+, SSA temps, metadata ids), both modules reduce to 3762 non-blank lines that are IDENTICAL element-by-element once the candidate's 4 GIL lines are dropped; zero mismatches, no alignment heuristic involved",
+   "residual decomposition: +6 lines in candidate = 4 GIL lines (2 declares + 2 calls: PyEval_SaveThread/RestoreThread around the compiled body) + 2 blank lines (LLVM formatting around the inserted declares; semantically nil); 0 non-blank removals, 0 non-GIL insertions",
+   "committed-blob identity: sha256 of git-show'd c1d7edc blobs == worktree files == recorded hashes for both .ll and ir_census.json",
+   "in-module proof: mangled env names inside the IR embed the module of origin - b0 under 22urban_network_analysis (oracle import), candidate under 11una_f1_cand (alias import) - and the observed 23-parameter specialization (int32 CSR/edge/pred x4, int8 dir, float64 arrays x5, int64/float64 scalar pattern) is encoded in both envs",
+   "stub guard honored: committed .ll files are 273,670 / 273,898 bytes (A1I-N1 stub lesson explicitly guarded in capture_ir.py with a >50,000-byte assertion and a fresh per-run NUMBA_CACHE_DIR)"
+  ],
+  "artifact_hashes_recomputed_by_reviewer": {
+   "ir_b0_accumulate_od_flow.ll": "328bb1d7111e6c95f923306b977b2d30de8e2426c31c0a0ea5b40a3277edeb6c",
+   "ir_cand_accumulate_od_flow.ll": "072185a7d5471efacb97cc3c37507a4290320ae4a64f3b380e7f68d8669cf5f2",
+   "ir_census.json": "3880e3dd9183d361e20b75f52f30bf632585d0dc7422ceedc7f59eba9fd965ae",
+   "ir_fp_census.txt": "c3b6535a92d61576dfdc17b63cb83b2e8edf17dd9687a7a4ff00d3d8fa248a8b",
+   "ir_side_by_side.md": "b28e07cfda3ae524ea51712f2e8ed387032e175e1ec806b88a4022bd1b294af3",
+   "capture_ir.py": "b5949c10ae94857cfb7119ec163d7b2a5cefd2cba3bb8a484077f0f63eac021d",
+   "src_candidate": "73ac95b341ed128e77afc69e0789550fadeaadca13446f438ce771f966f48978",
+   "src_b0": "2547e06bad6fb301304fca9b40fe7195c0594e7240cb4f570cd667655be14923"
+  }
+ },
+ "defects": [
+  {
+   "id": "P3-D1",
+   "severity": "non-blocking_record_defect",
+   "finding": "result.json evidence_files_sha256.test_artifacts.json records ab31a03bf65d9a6ff0df49b205285d2959fd38250f894d5b861e5e36c62db90c, but the COMMITTED file (c1d7edc, worktree-clean) hashes to 00a5264d6962389159557ba2f50c165ee21b1b19705139986a08c960fb8001ed. File mtime (04:30) is newer than result.json (04:28): the suite-artifact dump was rewritten after the hash inventory was taken and the pointer was not refreshed.",
+   "why_non_blocking": "git pins the committed bytes; the file's content is the benign T1-T13 artifact dump (census/warmup/divergences/notes); the binding P3 obligations (9.2 census artifacts, blob scope) verify against hashes the reviewer recomputed directly; the suite pass counts (F1 30/30, oracle 64/64) were independently re-run by the coordinator, not taken from this file",
+   "required_disposition": "one-line erratum (F1I-P3-D1) by the implementer or coordinator: record the corrected hash 00a5264d6962389159557ba2f50c165ee21b1b19705139986a08c960fb8001ed for the committed test_artifacts.json; committed result.json intentionally left byte-identical per the campaign erratum convention",
+   "lesson": "hash inventories must be regenerated AFTER the last artifact write (same class as the H04 never-write-an-uncomputed-hash rule)"
+  }
+ ],
+ "suite_status_note": "F1 suite 30/30 and oracle 64/64 re-run independently by the coordinator before committing c1d7edc (their verification step); reviewer did not re-run suites - reviewer scope per the agreed division of labor is the 9.2 census + blob check, both PASS",
+ "precondition_board_after_this_record": {
+  "P1": "SATISFIED (e95de8e)",
+  "P2": "SATISFIED (c1d7edc)",
+  "P3": "SATISFIED by this record",
+  "P4": "blob check PASSED; candidate pin = c1d7edc authored by reviewer as screen_spec.json amendment_log rev 3, awaiting coordinator commit",
+  "P5": "open - fresh heavy lease at execution; D1 erratum may be committed before or with the pin"
+ },
+ "scope_confirmation": "reviewer made no source edits and no git writes; verifier script and its outputs live outside the repo under campaign_data/f1i_p3_verify/ (verify.py); this file and the spec rev-3 amendment are the reviewer's only repo writes"
+}

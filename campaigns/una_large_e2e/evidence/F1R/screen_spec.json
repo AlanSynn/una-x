@@ -45,8 +45,9 @@
    "aggregate_flow_blob": "0114ce8f318a3247b62e3d468e32d54e692737a2"
   },
   "candidate": {
-   "commit": "PENDING - pinned by amendment per precondition P4",
-   "blob_check": "AggregateFlow.py blob differs from 0114ce8f by exactly one decorator line (@nb.njit(cache=True, fastmath=True) -> @nb.njit(cache=True, fastmath=True, nogil=True) on _accumulate_od_flow); NO other src/ byte differs"
+   "commit": "c1d7edc (pinned per precondition P4 by this rev-3 amendment; Phase-2 commit)",
+   "aggregate_flow_blob": "455e92adb5f23748903435d3d6340a5d8a9c47d3",
+   "blob_check": "VERIFIED by reviewer at P3 (evidence/F1R/p3_verification.json): blob-level git diff 0114ce8f318a3247b62e3d468e32d54e692737a2 -> 455e92adb5f23748903435d3d6340a5d8a9c47d3 is exactly one decorator line (@nb.njit(cache=True, fastmath=True) -> @nb.njit(cache=True, fastmath=True, nogil=True) on _accumulate_od_flow); NO other src/ byte differs between e95de8e and c1d7edc"
   },
   "packaging": "per-arm wheels + per-arm venvs per the a1r_wheel_and_venv.json recipe (b0 wheel 71fd5615..., cand wheel from Phase-2 commit archive); alias-loaded installs",
   "cache_roots": "PER-ARM NUMBA_CACHE_DIR, created fresh at block 1, carried through blocks 2-3. Rationale (binding): numba cache entries pickle the loading module name - alias-loaded (wheel/install path) and real-name imports must NEVER share a NUMBA_CACHE_DIR, or one arm can be served the other's machine code. Roots, their paths and their entry counts recorded per run."
@@ -136,6 +137,12 @@
    "utc": "2026-09-26T07:45:00Z",
    "role": "coordinator",
    "note": "P1 commit review: BOTH rev-1 classifications ACCEPTED, no countermand. Both were pre-accepted as F1R amendments and generalized to all R tasks in control_addendum_A1R.json v3_amendment (commit b093301: R_task_spec_protocol + bare_window_instrumentation_rule); this spec is their F1R instance. Coordinator has verified the spec against the dispatch terms (a)-(f), the C1/C2 rulings, the frozen grid (candidates_WKH ordering per erratum 8ba1aa7), and the wall arithmetic (14400 - 750.7 = 13649.3). Candidate commit is intentionally PENDING per P4 - the pin amendment follows Phase-2 landing, reviewer blob verification, and is itself not a revision (pre-execution). Spec committed unchanged apart from this log entry."
+  },
+  {
+   "rev": 3,
+   "utc": "2026-09-26T12:10:00Z",
+   "role": "reviewer",
+   "note": "P4 pin (pre-execution, not a revision): candidate commit = c1d7edc (AggregateFlow.py blob 455e92adb5f23748903435d3d6340a5d8a9c47d3). Blob check VERIFIED at P3 - evidence/F1R/p3_verification.json, 24/24 checks PASS, sole semantic IR delta = GIL save/restore, strict element-wise module identity after normalization. Arms_and_sources.candidate updated from PENDING to the pinned commit; NO other operative clause altered"
   }
  ]
 }
