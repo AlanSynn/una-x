@@ -1,0 +1,872 @@
+{
+  "schema_version": 1,
+  "task": "H01",
+  "campaign": "una_large_e2e",
+  "catalog": {
+    "path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/inputs_catalog.json",
+    "repository": "City-Form-Lab/urban_network_analysis",
+    "ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+    "classification": "observed_tutorial_proxy_not_user_production",
+    "redistribution": "Do not republish data by default; check dataset-specific terms and attribution.",
+    "metadata_source_tree": "b92e680f32770395358e8594d8b619c890eb9f30"
+  },
+  "tool": {
+    "script": "benchmarks/large_e2e/acquire.py",
+    "script_sha256": "6a7b33c3126836606adc3ab2da70caa82e593d18975132ffdd153c1cc5d057b0",
+    "python": "3.11.16",
+    "numpy": "2.4.6",
+    "geopandas": "1.1.4",
+    "pyogrio": "0.13.0",
+    "gdal": "3.12.4"
+  },
+  "data_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+  "files": {
+    "network": {
+      "schema": {
+        "inspected_utc": "2026-09-26T01:12:47Z",
+        "file": {
+          "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson",
+          "bytes_on_disk": 71290787,
+          "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+          "blob_sha_computed": "77d00e0218af42df0942fbc4dcd6b1242c3b814c",
+          "blob_sha_expected": "77d00e0218af42df0942fbc4dcd6b1242c3b814c",
+          "bytes_expected": 71290787,
+          "size_match": true,
+          "blob_sha_match": true
+        },
+        "pyogrio_read_info": {
+          "driver": "GeoJSON",
+          "layer_name": "20260703_PercLenNetwork_InnerCore",
+          "crs": "EPSG:6491",
+          "fields": [
+            "FID",
+            "OBJECTID_1",
+            "seg_id",
+            "non_motor",
+            "elevated",
+            "Shape_Leng",
+            "highway_fl",
+            "water_flag",
+            "night_val",
+            "NDVImean",
+            "HyExpLen",
+            "AADT",
+            "ROW_m",
+            "Swalk_m",
+            "Open_pct",
+            "building_c",
+            "Amenities",
+            "Shape_Le_1",
+            "PercLength",
+            "motor",
+            "Delta",
+            "PctDelta",
+            "minuteman",
+            "PerLen2040",
+            "PerLen60",
+            "PercLen_NR",
+            "PctDeltaNR",
+            "PercLenMainSt",
+            "Scen1_HyExpLen",
+            "PercLen_Scen1"
+          ],
+          "dtypes": [
+            "int32",
+            "int32",
+            "int32",
+            "object",
+            "object",
+            "float64",
+            "int32",
+            "object",
+            "float64",
+            "float64",
+            "float64",
+            "int32",
+            "float64",
+            "float64",
+            "float64",
+            "int32",
+            "int32",
+            "float64",
+            "float64",
+            "int32",
+            "float64",
+            "float64",
+            "int32",
+            "float64",
+            "float64",
+            "float64",
+            "float64",
+            "int32",
+            "float64",
+            "float64"
+          ],
+          "geometry_type": "LineString Z",
+          "features": 69957
+        },
+        "geometry": {
+          "n_rows": 69957,
+          "geometry_types": {
+            "LineString": 69957
+          },
+          "n_missing_geometry": 0,
+          "n_invalid_geometry": 0,
+          "n_empty_geometry": 0,
+          "n_with_z": 69957,
+          "n_without_z": 0,
+          "crs": "EPSG:6491",
+          "crs_epsg": 6491
+        },
+        "columns": {
+          "columns": [
+            "FID",
+            "OBJECTID_1",
+            "seg_id",
+            "non_motor",
+            "elevated",
+            "Shape_Leng",
+            "highway_fl",
+            "water_flag",
+            "night_val",
+            "NDVImean",
+            "HyExpLen",
+            "AADT",
+            "ROW_m",
+            "Swalk_m",
+            "Open_pct",
+            "building_c",
+            "Amenities",
+            "Shape_Le_1",
+            "PercLength",
+            "motor",
+            "Delta",
+            "PctDelta",
+            "minuteman",
+            "PerLen2040",
+            "PerLen60",
+            "PercLen_NR",
+            "PctDeltaNR",
+            "PercLenMainSt",
+            "Scen1_HyExpLen",
+            "PercLen_Scen1"
+          ],
+          "dtypes": {
+            "FID": "int32",
+            "OBJECTID_1": "int32",
+            "seg_id": "int32",
+            "non_motor": "str",
+            "elevated": "str",
+            "Shape_Leng": "float64",
+            "highway_fl": "int32",
+            "water_flag": "str",
+            "night_val": "float64",
+            "NDVImean": "float64",
+            "HyExpLen": "float64",
+            "AADT": "int32",
+            "ROW_m": "float64",
+            "Swalk_m": "float64",
+            "Open_pct": "float64",
+            "building_c": "int32",
+            "Amenities": "int32",
+            "Shape_Le_1": "float64",
+            "PercLength": "float64",
+            "motor": "int32",
+            "Delta": "float64",
+            "PctDelta": "float64",
+            "minuteman": "int32",
+            "PerLen2040": "float64",
+            "PerLen60": "float64",
+            "PercLen_NR": "float64",
+            "PctDeltaNR": "float64",
+            "PercLenMainSt": "float64",
+            "Scen1_HyExpLen": "float64",
+            "PercLen_Scen1": "float64"
+          },
+          "null_or_nan_counts": {
+            "FID": 0,
+            "OBJECTID_1": 0,
+            "seg_id": 0,
+            "non_motor": 0,
+            "elevated": 0,
+            "Shape_Leng": 0,
+            "highway_fl": 0,
+            "water_flag": 0,
+            "night_val": 0,
+            "NDVImean": 0,
+            "HyExpLen": 0,
+            "AADT": 0,
+            "ROW_m": 0,
+            "Swalk_m": 0,
+            "Open_pct": 0,
+            "building_c": 0,
+            "Amenities": 0,
+            "Shape_Le_1": 0,
+            "PercLength": 0,
+            "motor": 0,
+            "Delta": 0,
+            "PctDelta": 0,
+            "minuteman": 0,
+            "PerLen2040": 0,
+            "PerLen60": 0,
+            "PercLen_NR": 0,
+            "PctDeltaNR": 0,
+            "PercLenMainSt": 69952,
+            "Scen1_HyExpLen": 0,
+            "PercLen_Scen1": 0
+          }
+        },
+        "role_facts": {
+          "geometric_length_stats": {
+            "n": 69957,
+            "n_null": 0,
+            "n_nonfinite": 0,
+            "n_nonpositive": 0,
+            "n_zero": 0,
+            "min": 0.3508279459084715,
+            "max": 4242.172761496358,
+            "sum": 7258443.613622238
+          },
+          "node_id_columns_present": {
+            "_node_start_id": false,
+            "_node_end_id": false
+          },
+          "z_value_stats": {
+            "n": 304781,
+            "n_null": 0,
+            "n_nonfinite": 0,
+            "n_nonpositive": 3619,
+            "n_zero": 3257,
+            "min": -13.0,
+            "max": 194.0,
+            "sum": 8917138.0,
+            "n_distinct": 200
+          },
+          "baseline_semantics": "network_weight_column='Geometric' uses geometry.length at load; zero-length segments are recorded here but NOT cleaned"
+        }
+      },
+      "download": {
+        "id": "network",
+        "repo_path": "docs/Boston/20260703_PercLenNetwork_InnerCore.geojson",
+        "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/20260703_PercLenNetwork_InnerCore.geojson",
+        "default_required": true,
+        "attribution": {
+          "repository": null,
+          "ref": null,
+          "upstream_path": "docs/Boston/20260703_PercLenNetwork_InnerCore.geojson",
+          "note": null
+        },
+        "existing_file": {
+          "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson",
+          "bytes_on_disk": 71290787,
+          "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+          "blob_sha_computed": "77d00e0218af42df0942fbc4dcd6b1242c3b814c",
+          "blob_sha_expected": "77d00e0218af42df0942fbc4dcd6b1242c3b814c",
+          "bytes_expected": 71290787,
+          "size_match": true,
+          "blob_sha_match": true
+        },
+        "bytes_on_disk": 71290787,
+        "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+        "status": "already_present_verified"
+      }
+    },
+    "origins": {
+      "schema": {
+        "inspected_utc": "2026-09-26T01:12:38Z",
+        "file": {
+          "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson",
+          "bytes_on_disk": 5982662,
+          "sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+          "blob_sha_computed": "26b50459c7b16f35944728b50410f6ba297ee20a",
+          "blob_sha_expected": "26b50459c7b16f35944728b50410f6ba297ee20a",
+          "bytes_expected": 5982662,
+          "size_match": true,
+          "blob_sha_match": true
+        },
+        "pyogrio_read_info": {
+          "driver": "GeoJSON",
+          "layer_name": "Cambridge_building_centroids",
+          "crs": "EPSG:6491",
+          "fields": [
+            "fid",
+            "id",
+            "class",
+            "subtype",
+            "fp_area_m2",
+            "height_m",
+            "height_source",
+            "n_floors",
+            "floors_source",
+            "gfa_m2",
+            "lon",
+            "lat"
+          ],
+          "dtypes": [
+            "int32",
+            "object",
+            "object",
+            "object",
+            "float64",
+            "float64",
+            "object",
+            "int32",
+            "object",
+            "float64",
+            "float64",
+            "float64"
+          ],
+          "geometry_type": "Point",
+          "features": 14751
+        },
+        "geometry": {
+          "n_rows": 14751,
+          "geometry_types": {
+            "Point": 14751
+          },
+          "n_missing_geometry": 0,
+          "n_invalid_geometry": 0,
+          "n_empty_geometry": 0,
+          "n_with_z": 0,
+          "n_without_z": 14751,
+          "crs": "EPSG:6491",
+          "crs_epsg": 6491
+        },
+        "columns": {
+          "columns": [
+            "fid",
+            "id",
+            "class",
+            "subtype",
+            "fp_area_m2",
+            "height_m",
+            "height_source",
+            "n_floors",
+            "floors_source",
+            "gfa_m2",
+            "lon",
+            "lat"
+          ],
+          "dtypes": {
+            "fid": "int32",
+            "id": "str",
+            "class": "str",
+            "subtype": "str",
+            "fp_area_m2": "float64",
+            "height_m": "float64",
+            "height_source": "str",
+            "n_floors": "int32",
+            "floors_source": "str",
+            "gfa_m2": "float64",
+            "lon": "float64",
+            "lat": "float64"
+          },
+          "null_or_nan_counts": {
+            "fid": 0,
+            "id": 0,
+            "class": 8292,
+            "subtype": 8210,
+            "fp_area_m2": 0,
+            "height_m": 686,
+            "height_source": 0,
+            "n_floors": 0,
+            "floors_source": 0,
+            "gfa_m2": 0,
+            "lon": 0,
+            "lat": 0
+          }
+        },
+        "role_facts": {
+          "count_column_literal_present": false,
+          "baseline_semantics": "Settings.origin_weight_column='Count' is baseline's unit-weights sentinel (Topology.BuildAccessPoints builds np.ones); a literal 'Count' attribute is not required by the engine"
+        }
+      },
+      "download": {
+        "id": "origins",
+        "repo_path": "docs/Boston/Cambridge_building_centroids.geojson",
+        "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/Cambridge_building_centroids.geojson",
+        "default_required": true,
+        "attribution": {
+          "repository": null,
+          "ref": null,
+          "upstream_path": "docs/Boston/Cambridge_building_centroids.geojson",
+          "note": null
+        },
+        "existing_file": {
+          "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson",
+          "bytes_on_disk": 5982662,
+          "sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+          "blob_sha_computed": "26b50459c7b16f35944728b50410f6ba297ee20a",
+          "blob_sha_expected": "26b50459c7b16f35944728b50410f6ba297ee20a",
+          "bytes_expected": 5982662,
+          "size_match": true,
+          "blob_sha_match": true
+        },
+        "bytes_on_disk": 5982662,
+        "sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+        "status": "already_present_verified"
+      }
+    },
+    "destinations": {
+      "schema": {
+        "inspected_utc": "2026-09-26T01:12:40Z",
+        "file": {
+          "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson",
+          "bytes_on_disk": 2641054,
+          "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+          "blob_sha_computed": "7ec8b100ac441ef5e049c5c86ba6d511143f5bbc",
+          "blob_sha_expected": "7ec8b100ac441ef5e049c5c86ba6d511143f5bbc",
+          "bytes_expected": 2641054,
+          "size_match": true,
+          "blob_sha_match": true
+        },
+        "pyogrio_read_info": {
+          "driver": "GeoJSON",
+          "layer_name": "MA_bus_stops",
+          "crs": "EPSG:6491",
+          "fields": [
+            "stop_id",
+            "stop_name",
+            "municipality",
+            "station_type",
+            "modes_served",
+            "multimodal",
+            "dep_bus",
+            "dep_rapid_transit",
+            "dep_commuter_rail",
+            "weekly_departures",
+            "Count"
+          ],
+          "dtypes": [
+            "object",
+            "object",
+            "object",
+            "object",
+            "object",
+            "bool",
+            "int32",
+            "int32",
+            "int32",
+            "int32",
+            "int32"
+          ],
+          "geometry_type": "Point",
+          "features": 6661
+        },
+        "geometry": {
+          "n_rows": 6661,
+          "geometry_types": {
+            "Point": 6661
+          },
+          "n_missing_geometry": 0,
+          "n_invalid_geometry": 0,
+          "n_empty_geometry": 0,
+          "n_with_z": 0,
+          "n_without_z": 6661,
+          "crs": "EPSG:6491",
+          "crs_epsg": 6491
+        },
+        "columns": {
+          "columns": [
+            "stop_id",
+            "stop_name",
+            "municipality",
+            "station_type",
+            "modes_served",
+            "multimodal",
+            "dep_bus",
+            "dep_rapid_transit",
+            "dep_commuter_rail",
+            "weekly_departures",
+            "Count"
+          ],
+          "dtypes": {
+            "stop_id": "str",
+            "stop_name": "str",
+            "municipality": "str",
+            "station_type": "str",
+            "modes_served": "str",
+            "multimodal": "bool",
+            "dep_bus": "int32",
+            "dep_rapid_transit": "int32",
+            "dep_commuter_rail": "int32",
+            "weekly_departures": "int32",
+            "Count": "int32"
+          },
+          "null_or_nan_counts": {
+            "stop_id": 0,
+            "stop_name": 0,
+            "municipality": 0,
+            "station_type": 0,
+            "modes_served": 0,
+            "multimodal": 0,
+            "dep_bus": 0,
+            "dep_rapid_transit": 0,
+            "dep_commuter_rail": 0,
+            "weekly_departures": 0,
+            "Count": 0
+          }
+        },
+        "role_facts": {
+          "weekly_departures_present": true,
+          "weekly_departures_stats": {
+            "n": 6661,
+            "n_null": 0,
+            "n_nonfinite": 0,
+            "n_nonpositive": 0,
+            "n_zero": 0,
+            "min": 5.0,
+            "max": 10721.0,
+            "sum": 2238643.0
+          },
+          "weekly_departures_quality": "all values finite and positive"
+        }
+      },
+      "download": {
+        "id": "destinations",
+        "repo_path": "docs/Boston/MA_bus_stops.geojson",
+        "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/MA_bus_stops.geojson",
+        "default_required": true,
+        "attribution": {
+          "repository": null,
+          "ref": null,
+          "upstream_path": "docs/Boston/MA_bus_stops.geojson",
+          "note": null
+        },
+        "existing_file": {
+          "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson",
+          "bytes_on_disk": 2641054,
+          "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+          "blob_sha_computed": "7ec8b100ac441ef5e049c5c86ba6d511143f5bbc",
+          "blob_sha_expected": "7ec8b100ac441ef5e049c5c86ba6d511143f5bbc",
+          "bytes_expected": 2641054,
+          "size_match": true,
+          "blob_sha_match": true
+        },
+        "bytes_on_disk": 2641054,
+        "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+        "status": "already_present_verified"
+      }
+    },
+    "network_3d": {
+      "schema": {
+        "inspected_utc": "2026-09-26T01:12:51Z",
+        "file": {
+          "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore_3D.geojson",
+          "bytes_on_disk": 66301651,
+          "sha256": "6f72bcb2aedecb72b36298645b45ca5551ec32514ab017c8113cb54f3530f9f5",
+          "blob_sha_computed": "ac05ba2307ccc55443da51aa5100c03ada4eb751",
+          "blob_sha_expected": "ac05ba2307ccc55443da51aa5100c03ada4eb751",
+          "bytes_expected": 66301651,
+          "size_match": true,
+          "blob_sha_match": true
+        },
+        "pyogrio_read_info": {
+          "driver": "GeoJSON",
+          "layer_name": "20260703_PercLenNetwork_InnerCore_3D",
+          "crs": "EPSG:6491",
+          "fields": [
+            "FID",
+            "OBJECTID_1",
+            "seg_id",
+            "non_motor",
+            "elevated",
+            "Shape_Leng",
+            "highway_fl",
+            "water_flag",
+            "night_val",
+            "NDVImean",
+            "HyExpLen",
+            "AADT",
+            "ROW_m",
+            "Swalk_m",
+            "Open_pct",
+            "building_c",
+            "Amenities",
+            "Shape_Le_1",
+            "PercLength",
+            "motor",
+            "Delta",
+            "PctDelta",
+            "minuteman",
+            "PerLen2040",
+            "PerLen60",
+            "PercLen_NR",
+            "PctDeltaNR"
+          ],
+          "dtypes": [
+            "int32",
+            "int32",
+            "int32",
+            "object",
+            "object",
+            "float64",
+            "int32",
+            "object",
+            "float64",
+            "float64",
+            "float64",
+            "int32",
+            "float64",
+            "float64",
+            "float64",
+            "int32",
+            "int32",
+            "float64",
+            "float64",
+            "int32",
+            "float64",
+            "float64",
+            "int32",
+            "float64",
+            "float64",
+            "float64",
+            "float64"
+          ],
+          "geometry_type": "LineString Z",
+          "features": 69957
+        },
+        "geometry": {
+          "n_rows": 69957,
+          "geometry_types": {
+            "LineString": 69957
+          },
+          "n_missing_geometry": 0,
+          "n_invalid_geometry": 0,
+          "n_empty_geometry": 0,
+          "n_with_z": 69957,
+          "n_without_z": 0,
+          "crs": "EPSG:6491",
+          "crs_epsg": 6491
+        },
+        "columns": {
+          "columns": [
+            "FID",
+            "OBJECTID_1",
+            "seg_id",
+            "non_motor",
+            "elevated",
+            "Shape_Leng",
+            "highway_fl",
+            "water_flag",
+            "night_val",
+            "NDVImean",
+            "HyExpLen",
+            "AADT",
+            "ROW_m",
+            "Swalk_m",
+            "Open_pct",
+            "building_c",
+            "Amenities",
+            "Shape_Le_1",
+            "PercLength",
+            "motor",
+            "Delta",
+            "PctDelta",
+            "minuteman",
+            "PerLen2040",
+            "PerLen60",
+            "PercLen_NR",
+            "PctDeltaNR"
+          ],
+          "dtypes": {
+            "FID": "int32",
+            "OBJECTID_1": "int32",
+            "seg_id": "int32",
+            "non_motor": "str",
+            "elevated": "str",
+            "Shape_Leng": "float64",
+            "highway_fl": "int32",
+            "water_flag": "str",
+            "night_val": "float64",
+            "NDVImean": "float64",
+            "HyExpLen": "float64",
+            "AADT": "int32",
+            "ROW_m": "float64",
+            "Swalk_m": "float64",
+            "Open_pct": "float64",
+            "building_c": "int32",
+            "Amenities": "int32",
+            "Shape_Le_1": "float64",
+            "PercLength": "float64",
+            "motor": "int32",
+            "Delta": "float64",
+            "PctDelta": "float64",
+            "minuteman": "int32",
+            "PerLen2040": "float64",
+            "PerLen60": "float64",
+            "PercLen_NR": "float64",
+            "PctDeltaNR": "float64"
+          },
+          "null_or_nan_counts": {
+            "FID": 0,
+            "OBJECTID_1": 0,
+            "seg_id": 0,
+            "non_motor": 0,
+            "elevated": 0,
+            "Shape_Leng": 0,
+            "highway_fl": 0,
+            "water_flag": 0,
+            "night_val": 0,
+            "NDVImean": 0,
+            "HyExpLen": 0,
+            "AADT": 0,
+            "ROW_m": 0,
+            "Swalk_m": 0,
+            "Open_pct": 0,
+            "building_c": 0,
+            "Amenities": 0,
+            "Shape_Le_1": 0,
+            "PercLength": 0,
+            "motor": 0,
+            "Delta": 0,
+            "PctDelta": 0,
+            "minuteman": 0,
+            "PerLen2040": 0,
+            "PerLen60": 0,
+            "PercLen_NR": 0,
+            "PctDeltaNR": 0
+          }
+        },
+        "role_facts": {
+          "geometric_length_stats": {
+            "n": 69957,
+            "n_null": 0,
+            "n_nonfinite": 0,
+            "n_nonpositive": 0,
+            "n_zero": 0,
+            "min": 0.3508279459084715,
+            "max": 4242.172761496358,
+            "sum": 7258443.613622238
+          },
+          "node_id_columns_present": {
+            "_node_start_id": false,
+            "_node_end_id": false
+          },
+          "z_value_stats": {
+            "n": 304781,
+            "n_null": 0,
+            "n_nonfinite": 0,
+            "n_nonpositive": 3619,
+            "n_zero": 3257,
+            "min": -13.0,
+            "max": 194.0,
+            "sum": 8917138.0,
+            "n_distinct": 200
+          },
+          "baseline_semantics": "network_weight_column='Geometric' uses geometry.length at load; zero-length segments are recorded here but NOT cleaned",
+          "z_note": "n_with_z counts features whose coordinates carry a third dimension; the elevation engine consumes per-node Z (cost += coefficient * max(0, z_end - z_start)), so a constant-Z file would make elevation=True a no-op"
+        }
+      },
+      "download": {
+        "id": "network_3d",
+        "repo_path": "docs/Boston/20260703_PercLenNetwork_InnerCore_3D.geojson",
+        "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/20260703_PercLenNetwork_InnerCore_3D.geojson",
+        "default_required": false,
+        "attribution": {
+          "repository": null,
+          "ref": null,
+          "upstream_path": "docs/Boston/20260703_PercLenNetwork_InnerCore_3D.geojson",
+          "note": null
+        },
+        "existing_file": {
+          "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore_3D.geojson",
+          "bytes_on_disk": 66301651,
+          "sha256": "6f72bcb2aedecb72b36298645b45ca5551ec32514ab017c8113cb54f3530f9f5",
+          "blob_sha_computed": "ac05ba2307ccc55443da51aa5100c03ada4eb751",
+          "blob_sha_expected": "ac05ba2307ccc55443da51aa5100c03ada4eb751",
+          "bytes_expected": 66301651,
+          "size_match": true,
+          "blob_sha_match": true
+        },
+        "bytes_on_disk": 66301651,
+        "sha256": "6f72bcb2aedecb72b36298645b45ca5551ec32514ab017c8113cb54f3530f9f5",
+        "status": "already_present_verified"
+      }
+    },
+    "observers": {
+      "schema": {
+        "inspected_utc": "2026-09-26T01:12:37Z",
+        "file": {
+          "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/tut4_observers_main_st.geojson",
+          "bytes_on_disk": 1531,
+          "sha256": "7ae641853fecb6c3331bcb6675a0c0f7b05ab79c7ebbc368f2ca0e447e45b063",
+          "blob_sha_computed": "e8402fc881a70e8987a585310a63a231596fbf42",
+          "blob_sha_expected": "e8402fc881a70e8987a585310a63a231596fbf42",
+          "bytes_expected": 1531,
+          "size_match": true,
+          "blob_sha_match": true
+        },
+        "pyogrio_read_info": {
+          "driver": "GeoJSON",
+          "layer_name": "tut4_observers_main_st2",
+          "crs": "EPSG:6491",
+          "fields": [
+            "observer_id"
+          ],
+          "dtypes": [
+            "object"
+          ],
+          "geometry_type": "Point Z",
+          "features": 7
+        },
+        "geometry": {
+          "n_rows": 7,
+          "geometry_types": {
+            "Point": 7
+          },
+          "n_missing_geometry": 0,
+          "n_invalid_geometry": 0,
+          "n_empty_geometry": 0,
+          "n_with_z": 7,
+          "n_without_z": 0,
+          "crs": "EPSG:6491",
+          "crs_epsg": 6491
+        },
+        "columns": {
+          "columns": [
+            "observer_id"
+          ],
+          "dtypes": {
+            "observer_id": "str"
+          },
+          "null_or_nan_counts": {
+            "observer_id": 0
+          }
+        },
+        "role_facts": {
+          "baseline_semantics": "observers are optional passive flow counters (flow only); observer_points_snap_to='edge' default"
+        }
+      },
+      "download": {
+        "id": "observers",
+        "repo_path": "docs/Boston/tut4_observers_main_st.geojson",
+        "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/tut4_observers_main_st.geojson",
+        "default_required": false,
+        "attribution": {
+          "repository": null,
+          "ref": null,
+          "upstream_path": "docs/Boston/tut4_observers_main_st.geojson",
+          "note": null
+        },
+        "existing_file": {
+          "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/tut4_observers_main_st.geojson",
+          "bytes_on_disk": 1531,
+          "sha256": "7ae641853fecb6c3331bcb6675a0c0f7b05ab79c7ebbc368f2ca0e447e45b063",
+          "blob_sha_computed": "e8402fc881a70e8987a585310a63a231596fbf42",
+          "blob_sha_expected": "e8402fc881a70e8987a585310a63a231596fbf42",
+          "bytes_expected": 1531,
+          "size_match": true,
+          "blob_sha_match": true
+        },
+        "bytes_on_disk": 1531,
+        "sha256": "7ae641853fecb6c3331bcb6675a0c0f7b05ab79c7ebbc368f2ca0e447e45b063",
+        "status": "already_present_verified"
+      }
+    }
+  },
+  "totals": {
+    "bytes_downloaded_this_run": 0,
+    "bytes_on_disk": 146217685
+  }
+}

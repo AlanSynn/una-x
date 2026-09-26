@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "task": "H01",
+  "campaign": "una_large_e2e",
+  "dataset_class": "observed_tutorial_proxy",
+  "label_synthetic": false,
+  "source": {
+    "repository": "City-Form-Lab/urban_network_analysis",
+    "ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+    "classification": "observed_tutorial_proxy_not_user_production",
+    "license_note": "Upstream code is MIT-licensed; dataset-specific redistribution terms are not settled by the code license. Data stays local, is not republished, and attribution follows the catalog: Do not republish data by default; check dataset-specific terms and attribution."
+  },
+  "crs": "EPSG:6491",
+  "inputs": {
+    "network": {
+      "id": "network",
+      "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/20260703_PercLenNetwork_InnerCore.geojson",
+      "repo_path": "docs/Boston/20260703_PercLenNetwork_InnerCore.geojson",
+      "git_blob_sha_expected": "77d00e0218af42df0942fbc4dcd6b1242c3b814c",
+      "git_blob_sha_match": true,
+      "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+      "bytes": 71290787,
+      "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson",
+      "crs": "EPSG:6491",
+      "geometry_types": {
+        "LineString": 69957
+      },
+      "feature_count": 69957,
+      "n_with_z": 69957,
+      "n_invalid_geometry": 0
+    },
+    "origins": {
+      "id": "origins",
+      "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/Cambridge_building_centroids.geojson",
+      "repo_path": "docs/Boston/Cambridge_building_centroids.geojson",
+      "git_blob_sha_expected": "26b50459c7b16f35944728b50410f6ba297ee20a",
+      "git_blob_sha_match": true,
+      "sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+      "bytes": 5982662,
+      "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson",
+      "crs": "EPSG:6491",
+      "geometry_types": {
+        "Point": 14751
+      },
+      "feature_count": 14751,
+      "n_with_z": 0,
+      "n_invalid_geometry": 0
+    },
+    "destinations": {
+      "id": "destinations",
+      "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/MA_bus_stops.geojson",
+      "repo_path": "docs/Boston/MA_bus_stops.geojson",
+      "git_blob_sha_expected": "7ec8b100ac441ef5e049c5c86ba6d511143f5bbc",
+      "git_blob_sha_match": true,
+      "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+      "bytes": 2641054,
+      "local_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson",
+      "crs": "EPSG:6491",
+      "geometry_types": {
+        "Point": 6661
+      },
+      "feature_count": 6661,
+      "n_with_z": 0,
+      "n_invalid_geometry": 0
+    }
+  },
+  "data_finding_notes": {
+    "origin_weight_column": {
+      "count_column_literal_present": false,
+      "baseline_semantics": "Settings.origin_weight_column='Count' is baseline's unit-weights sentinel (Topology.BuildAccessPoints builds np.ones); a literal 'Count' attribute is not required by the engine"
+    },
+    "destination_weight_column": {
+      "weekly_departures_present": true,
+      "weekly_departures_stats": {
+        "n": 6661,
+        "n_null": 0,
+        "n_nonfinite": 0,
+        "n_nonpositive": 0,
+        "n_zero": 0,
+        "min": 5.0,
+        "max": 10721.0,
+        "sum": 2238643.0
+      },
+      "weekly_departures_quality": "all values finite and positive"
+    },
+    "network_cost": {
+      "geometric_length_stats": {
+        "n": 69957,
+        "n_null": 0,
+        "n_nonfinite": 0,
+        "n_nonpositive": 0,
+        "n_zero": 0,
+        "min": 0.3508279459084715,
+        "max": 4242.172761496358,
+        "sum": 7258443.613622238
+      },
+      "node_id_columns_present": {
+        "_node_start_id": false,
+        "_node_end_id": false
+      },
+      "z_value_stats": {
+        "n": 304781,
+        "n_null": 0,
+        "n_nonfinite": 0,
+        "n_nonpositive": 3619,
+        "n_zero": 3257,
+        "min": -13.0,
+        "max": 194.0,
+        "sum": 8917138.0,
+        "n_distinct": 200
+      },
+      "baseline_semantics": "network_weight_column='Geometric' uses geometry.length at load; zero-length segments are recorded here but NOT cleaned"
+    },
+    "policy": "missing required weight columns are errors, not guessed substitutions; nothing in the data was cleaned, reprojected or simplified"
+  },
+  "stripe_thread_profile": null,
+  "output_policy": {
+    "output_root": "unique campaign-owned per-job directory under the run's --out root; never inside the inputs tree; no two jobs share a root",
+    "output_wStamp": true,
+    "output_wStamp_note": "captured unchanged (baseline default) per WORKLOADS timestamp policy; applied equally in every arm and declared here",
+    "formats_enabled": [
+      "geojson",
+      "feather",
+      "csv"
+    ],
+    "output_copy_source_data": false,
+    "durability": "baseline synchronous writers only; no fsync, atomic publication or crash-recovery claims beyond baseline",
+    "checkpoint": "none - baseline has no checkpoint/resume; a failed job is re-run from scratch in a fresh output root",
+    "verification": "outputs re-hashed and compared before a job is counted successful; verification cost accounted separately from application time (BENCHMARKS.md)"
+  },
+  "environment": {
+    "reference": "campaigns/una_large_e2e/evidence/H00/resources.json",
+    "python": "3.11.16",
+    "numpy": "2.4.6",
+    "numba": "0.67.0",
+    "geopandas": "1.1.4",
+    "pyogrio": "0.13.0",
+    "shapely": "2.1.2",
+    "source_commit_at_freeze": "bf42e36a21a74dd232a895e07a703f601f076aa9",
+    "source_tree": "this checkout (branch perf/una-large-e2e), unmodified src/",
+    "wheel": null,
+    "wheel_status": "pending_W00 - baseline wheel not built yet",
+    "note": "timed runs happen only in clean installed (noneditable) environments per BENCHMARKS.md; this manifest freezes data and settings, not the eventual wheel identity"
+  },
+  "preprocessing": {
+    "script": "benchmarks/large_e2e/acquire.py",
+    "script_sha256": "6a7b33c3126836606adc3ab2da70caa82e593d18975132ffdd153c1cc5d057b0",
+    "data_modifications": "none - files are byte-identical to the catalog blobs (git blob SHA + SHA-256 verified); selection only reads row indices, never rewrites IDs or geometry"
+  },
+  "workload_id": "O3_FLOW",
+  "role": "same full network/destination layer with a preregistered origin selection from {256, 1024, all}; radius 500; AggregateFlow; automatic gravity cap p95. The actual variant is chosen at H05 from baseline-only resource/time pilots (largest selection that fits); a subset is never described as full-origin flow. K-alternatives stays a protected small test, not replaced by aggregate flow.",
+  "origin_selection": {
+    "choice_policy": "H05 picks the largest variant that fits baseline-only resource/time pilots before candidate timings",
+    "chosen_variant": null,
+    "variants": [
+      {
+        "selection_manifest": "tests/large_e2e/inputs/O3_FLOW_sel256.origin_indices.json",
+        "selection_manifest_sha256": "9a55ecb48e03735d0c5b06cb500c9aff5a66e3f03400901e427cf2a323f5f7b3",
+        "seed": 20260925,
+        "numpy_version": "2.4.6",
+        "requested_k": 256,
+        "selected_count": 256,
+        "ordered_indices": null,
+        "ordered_indices_note": "persisted in the selection manifest (see selection_manifest)",
+        "variant_id": "sel256"
+      },
+      {
+        "selection_manifest": "tests/large_e2e/inputs/O3_FLOW_sel1024.origin_indices.json",
+        "selection_manifest_sha256": "e03659db8b54b76fdd65904f895403622fee5c315ff1c2a0d545c8113060ad60",
+        "seed": 20260925,
+        "numpy_version": "2.4.6",
+        "requested_k": 1024,
+        "selected_count": 1024,
+        "ordered_indices": null,
+        "ordered_indices_note": "persisted in the selection manifest (see selection_manifest)",
+        "variant_id": "sel1024"
+      },
+      {
+        "selection_manifest": "tests/large_e2e/inputs/O3_FLOW_sel_all.origin_indices.json",
+        "selection_manifest_sha256": "b060d28d303fd00c4599a52adcf0acd0ca2e8b1d75c31832c17611a1e02a8046",
+        "seed": 20260925,
+        "numpy_version": "2.4.6",
+        "requested_k": "all",
+        "selected_count": 14751,
+        "ordered_indices": null,
+        "ordered_indices_note": "persisted in the selection manifest (see selection_manifest)",
+        "variant_id": "selall"
+      }
+    ]
+  },
+  "counts": {
+    "V": null,
+    "E": null,
+    "E_geojson_features": 69957,
+    "O": null,
+    "O_note": "per-variant 256 / 1024 / all(origins); fixed at H05",
+    "D": 6661,
+    "note": "V/E are actual node/arc counts after a baseline Topology load pass (BuildTopology with network_precision=3 may merge nodes / drop degenerate arcs); the GeoJSON feature count is recorded separately as E_geojson_features. pending_load_pass."
+  },
+  "settings_overrides": {
+    "network_weight_column": "Geometric",
+    "origin_weight_column": "Count",
+    "destination_weight_column": "weekly_departures",
+    "search_radius": 500,
+    "turns": false,
+    "elevation": false,
+    "calculate_reach": true,
+    "calculate_exponential_gravity": true,
+    "calculate_logistic_gravity": true,
+    "calculate_knn_access": true,
+    "output_csv": true,
+    "output_geojson": true,
+    "output_feather": true,
+    "flow_engine": "aggregate_flow",
+    "flow_decay": true,
+    "flow_decay_method": "gravity_cap",
+    "flow_gravity_cap": "p95"
+  },
+  "settings_before": {
+    "_version": "1.0",
+    "name": "Default",
+    "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+    "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+    "origins_file": "Cambridge_building_centroids.geojson",
+    "destinations_file": "MA_bus_stops.geojson",
+    "network_weight_column": "Geometric",
+    "network_weight_default": 1.0,
+    "network_precision": 3,
+    "network_saved_nodes": false,
+    "network_load_nodes": true,
+    "calculate_reach": true,
+    "calculate_exponential_gravity": true,
+    "calculate_logistic_gravity": true,
+    "calculate_knn_access": true,
+    "origin_weight_column": "Count",
+    "destination_weight_column": "weekly_departures",
+    "origin_uid_column": null,
+    "origin_destination_id_column": "",
+    "destination_id_column": "",
+    "default_cost": 1.0,
+    "use_nearest_destination": false,
+    "search_radius": 500,
+    "clasters": 1,
+    "cluster_parallel": false,
+    "cluster_workers": 1,
+    "gravity_beta": 0.001,
+    "gravity_logistic_midpoint": 500,
+    "gravity_plateau": 0,
+    "gravity_decay_constant": 4.59511985013459,
+    "knn_weights": [
+      1.0,
+      1.0,
+      0.5
+    ],
+    "knn_decay": "logistic",
+    "elevation": false,
+    "elevation_penalty": 4,
+    "turns": false,
+    "turn_threshold": 45,
+    "turn_penalty": 32,
+    "output_folder": null,
+    "output_wStamp": true,
+    "output_copy_source_data": false,
+    "output_geojson": true,
+    "output_feather": true,
+    "output_csv": true,
+    "output_shp": false,
+    "csv_delimiter": ",",
+    "result_prefix": "",
+    "output_file_name": "Results",
+    "flow_engine": "aggregate_flow",
+    "flow_detour_ratio": 1.05,
+    "flow_detour_buffer": 100.0,
+    "flow_detour_mode": "ratio",
+    "flow_decay": true,
+    "flow_decay_curve": "exponential",
+    "flow_decay_method": "gravity_cap",
+    "flow_gravity_cap": "p95",
+    "flow_path_detour_penalty": "logistic",
+    "flow_route_enumeration_beta": 0.0,
+    "flow_route_enumeration_logistic_midpoint": 150.0,
+    "flow_origin_weights": true,
+    "flow_destination_weights": true,
+    "flow_return_directional": false,
+    "observer_points_file": null,
+    "observer_points_uid_column": null,
+    "observer_points_snap_to": "edge",
+    "obstacle_points_file": null,
+    "obstacle_points_uid_column": null,
+    "obstacle_points_penalty_column": "penalty",
+    "obstacle_points_direction_column": null,
+    "obstacle_points_snap_to": "edge",
+    "flow_track_obstacle_points_usage": false,
+    "flow_k_nearest_destinations": 0,
+    "flow_max_destinations_per_origin": 0,
+    "flow_n_alternatives": 30,
+    "flow_alternative_penalty_factor": 1.01,
+    "flow_route_id_column": null,
+    "flow_output_routes": false,
+    "flow_debug_print_paths": false,
+    "flow_track_origins_per_destination": false,
+    "flow_compute_node_flow": false,
+    "batch_composite_output": false,
+    "batch_composite_result_column": "knn_access",
+    "batch_composite_column_prefix": "",
+    "batch_composite_sum_column_name": "composite_sum",
+    "progressbar": true,
+    "logger_verbosity": 1
+  },
+  "settings_provenance": {
+    "settings_module_loaded_from": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src/urban_network_analysis/Settings.py"
+  },
+  "settings_validation": {
+    "ran": true,
+    "passed": true,
+    "side_effects_note": "Settings.Validation() filled output_folder from data_folder/Results because it was left null; the recorded settings_before dict is the pre-Validation capture and keeps output_folder null (the harness assigns a unique per-job root)"
+  },
+  "settings_after": null,
+  "settings_after_note": "pending first baseline RunFlow pass: flow_gravity_cap 'p95' resolves to a numeric value and is written back to Settings (before/after capture required by WORKLOADS); the resolved number will be pinned in this manifest at H05",
+  "expected_engine": "UNA.RunFlow with flow_engine='aggregate_flow' (Engines.AggregateFlow.AggregateFlow)",
+  "required_outputs": [
+    "<job_output_root>/flow_<YYYY-MM-DD_HHMM>/<output_file_name>.feather",
+    "<job_output_root>/flow_<YYYY-MM-DD_HHMM>/<output_file_name>.geojson",
+    "<job_output_root>/flow_<YYYY-MM-DD_HHMM>/<output_file_name>.csv",
+    "companion outputs only if the frozen settings enable them (flow_compute_node_flow=False, no observers/obstacles: none expected)"
+  ],
+  "target_status": "observed tutorial proxy; NOT the user's U4 production target and never reported as an L4 success",
+  "blocked": [
+    "V/E counts pending a baseline Topology load pass (H05); a null required field means not ready for qualification",
+    "baseline wheel not built yet (W00); timed runs require a clean installed environment",
+    "numerical stripe/thread profile null until frozen (H05/S01)"
+  ],
+  "ready_for_qualification": false
+}

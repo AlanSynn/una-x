@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "task": "H01",
+  "seed": 20260925,
+  "numpy_version": "2.4.6",
+  "procedure": "Per variant, with a FRESH generator: rng = numpy.random.default_rng(20260925); draw = rng.choice(n_origins, size=k, replace=False); ordered = numpy.sort(draw). The ordered list is the derived fixture (original row order of the origins layer); the raw draw order is kept only for reproduction audit. Variants are independent fresh-seed draws so each list is reproducible on its own.",
+  "source": {
+    "repo_path": "docs/Boston/Cambridge_building_centroids.geojson",
+    "sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+    "feature_count": 14751
+  },
+  "variants": {
+    "O2": {
+      "path": "tests/large_e2e/inputs/O2.origin_indices.json",
+      "sha256": "4204decff0a1eb0651bf346ca5a9d0a5908d3067f3d3838793eaeb605494c990",
+      "requested_k": 16,
+      "selected_count": 16,
+      "first_ordered": 1184,
+      "last_ordered": 13699
+    },
+    "O3_FLOW_sel256": {
+      "path": "tests/large_e2e/inputs/O3_FLOW_sel256.origin_indices.json",
+      "sha256": "9a55ecb48e03735d0c5b06cb500c9aff5a66e3f03400901e427cf2a323f5f7b3",
+      "requested_k": 256,
+      "selected_count": 256,
+      "first_ordered": 25,
+      "last_ordered": 14741
+    },
+    "O3_FLOW_sel1024": {
+      "path": "tests/large_e2e/inputs/O3_FLOW_sel1024.origin_indices.json",
+      "sha256": "e03659db8b54b76fdd65904f895403622fee5c315ff1c2a0d545c8113060ad60",
+      "requested_k": 1024,
+      "selected_count": 1024,
+      "first_ordered": 10,
+      "last_ordered": 14739
+    },
+    "O3_FLOW_sel_all": {
+      "path": "tests/large_e2e/inputs/O3_FLOW_sel_all.origin_indices.json",
+      "sha256": "b060d28d303fd00c4599a52adcf0acd0ca2e8b1d75c31832c17611a1e02a8046",
+      "requested_k": "all",
+      "selected_count": 14751,
+      "first_ordered": 0,
+      "last_ordered": 14750
+    },
+    "O3_ACCESS_sel_all": {
+      "path": "tests/large_e2e/inputs/O3_ACCESS_sel_all.origin_indices.json",
+      "sha256": "2e535cbc45531d86b15a748e96888fe8bb007be7a05afee79683b718ce3586cd",
+      "requested_k": "all",
+      "selected_count": 14751,
+      "first_ordered": 0,
+      "last_ordered": 14750
+    },
+    "O3_HOLDOUT_sel_all": {
+      "path": "tests/large_e2e/inputs/O3_HOLDOUT_sel_all.origin_indices.json",
+      "sha256": "73415976c0cfac456e49d7bd24bd80d4f0dc8f8b408ff820043beed1207f3990",
+      "requested_k": "all",
+      "selected_count": 14751,
+      "first_ordered": 0,
+      "last_ordered": 14750
+    }
+  }
+}

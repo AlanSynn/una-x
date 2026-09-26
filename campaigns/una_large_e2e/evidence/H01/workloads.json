@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "task": "H01",
+  "generated_utc": "2026-09-26T01:14:19Z",
+  "workload_classes": {
+    "O2": {
+      "manifest": "tests/large_e2e/inputs/O2.manifest.json",
+      "manifest_sha256": "9edd02abd06c01868c7e1f78154c48300d8d1660527ce8ba23881cc96fec55c5",
+      "dataset_class": "observed_tutorial_proxy",
+      "expected_engine": "UNA.RunAccessibility",
+      "ready_for_qualification": false
+    },
+    "O3_ACCESS": {
+      "manifest": "tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+      "manifest_sha256": "271693c33a7a9cfd104ac6bddbc3f771bfce9e9fce9d63d8aec2ed107699d099",
+      "dataset_class": "observed_tutorial_proxy",
+      "expected_engine": "UNA.RunAccessibility",
+      "ready_for_qualification": false
+    },
+    "O3_FLOW": {
+      "manifest": "tests/large_e2e/inputs/O3_FLOW.manifest.json",
+      "manifest_sha256": "9d060d3b443c38e22a808994e4ac84bb7e9f21b380bea3860a031bd2082e8f2a",
+      "dataset_class": "observed_tutorial_proxy",
+      "expected_engine": "UNA.RunFlow with flow_engine='aggregate_flow' (Engines.AggregateFlow.AggregateFlow)",
+      "ready_for_qualification": false
+    },
+    "O3_HOLDOUT": {
+      "manifest": "tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+      "manifest_sha256": "ca47a9a31f2f88bd179fe9ace622f466778c018473447aaaf03fcf0de6150b6f",
+      "dataset_class": "observed_tutorial_proxy",
+      "expected_engine": "UNA.RunAccessibility",
+      "ready_for_qualification": false
+    }
+  },
+  "selection_files": {
+    "O2": {
+      "path": "tests/large_e2e/inputs/O2.origin_indices.json",
+      "sha256": "4204decff0a1eb0651bf346ca5a9d0a5908d3067f3d3838793eaeb605494c990",
+      "requested_k": 16,
+      "selected_count": 16,
+      "first_ordered": 1184,
+      "last_ordered": 13699
+    },
+    "O3_FLOW_sel256": {
+      "path": "tests/large_e2e/inputs/O3_FLOW_sel256.origin_indices.json",
+      "sha256": "9a55ecb48e03735d0c5b06cb500c9aff5a66e3f03400901e427cf2a323f5f7b3",
+      "requested_k": 256,
+      "selected_count": 256,
+      "first_ordered": 25,
+      "last_ordered": 14741
+    },
+    "O3_FLOW_sel1024": {
+      "path": "tests/large_e2e/inputs/O3_FLOW_sel1024.origin_indices.json",
+      "sha256": "e03659db8b54b76fdd65904f895403622fee5c315ff1c2a0d545c8113060ad60",
+      "requested_k": 1024,
+      "selected_count": 1024,
+      "first_ordered": 10,
+      "last_ordered": 14739
+    },
+    "O3_FLOW_sel_all": {
+      "path": "tests/large_e2e/inputs/O3_FLOW_sel_all.origin_indices.json",
+      "sha256": "b060d28d303fd00c4599a52adcf0acd0ca2e8b1d75c31832c17611a1e02a8046",
+      "requested_k": "all",
+      "selected_count": 14751,
+      "first_ordered": 0,
+      "last_ordered": 14750
+    },
+    "O3_ACCESS_sel_all": {
+      "path": "tests/large_e2e/inputs/O3_ACCESS_sel_all.origin_indices.json",
+      "sha256": "2e535cbc45531d86b15a748e96888fe8bb007be7a05afee79683b718ce3586cd",
+      "requested_k": "all",
+      "selected_count": 14751,
+      "first_ordered": 0,
+      "last_ordered": 14750
+    },
+    "O3_HOLDOUT_sel_all": {
+      "path": "tests/large_e2e/inputs/O3_HOLDOUT_sel_all.origin_indices.json",
+      "sha256": "73415976c0cfac456e49d7bd24bd80d4f0dc8f8b408ff820043beed1207f3990",
+      "requested_k": "all",
+      "selected_count": 14751,
+      "first_ordered": 0,
+      "last_ordered": 14750
+    }
+  },
+  "settings_hashes": {
+    "O2": "e9b35e1fb6caa2414b46b08c8444829e85cb2397fc009fa41da598ffaa2f69e6",
+    "O3_ACCESS": "e9b35e1fb6caa2414b46b08c8444829e85cb2397fc009fa41da598ffaa2f69e6",
+    "O3_FLOW": "29d42ee7f98c3188328e0769478fd4cc45e904457dd80107ecdc396edaa57c68",
+    "O3_HOLDOUT": "9fde55d81c2df6c1874437e9904329d25b9ea7b6850454e0eafc9e9d88e91bf7"
+  },
+  "unavailable": [
+    {
+      "class": "U4",
+      "definition": "user's actual production dataset/settings/outputs/job volume/throughput target",
+      "status": "unavailable - not supplied; O3 is never substituted for it and never reported as an L4 success"
+    }
+  ],
+  "blocked": [
+    {
+      "workload": "O2",
+      "reason": "V/E counts pending a baseline Topology load pass (H05); a null required field means not ready for qualification"
+    },
+    {
+      "workload": "O2",
+      "reason": "baseline wheel not built yet (W00); timed runs require a clean installed environment"
+    },
+    {
+      "workload": "O2",
+      "reason": "numerical stripe/thread profile null until frozen (H05/S01)"
+    },
+    {
+      "workload": "O3_ACCESS",
+      "reason": "V/E counts pending a baseline Topology load pass (H05); a null required field means not ready for qualification"
+    },
+    {
+      "workload": "O3_ACCESS",
+      "reason": "baseline wheel not built yet (W00); timed runs require a clean installed environment"
+    },
+    {
+      "workload": "O3_ACCESS",
+      "reason": "numerical stripe/thread profile null until frozen (H05/S01)"
+    },
+    {
+      "workload": "O3_FLOW",
+      "reason": "V/E counts pending a baseline Topology load pass (H05); a null required field means not ready for qualification"
+    },
+    {
+      "workload": "O3_FLOW",
+      "reason": "baseline wheel not built yet (W00); timed runs require a clean installed environment"
+    },
+    {
+      "workload": "O3_FLOW",
+      "reason": "numerical stripe/thread profile null until frozen (H05/S01)"
+    },
+    {
+      "workload": "O3_HOLDOUT",
+      "reason": "V/E counts pending a baseline Topology load pass (H05); a null required field means not ready for qualification"
+    },
+    {
+      "workload": "O3_HOLDOUT",
+      "reason": "baseline wheel not built yet (W00); timed runs require a clean installed environment"
+    },
+    {
+      "workload": "O3_HOLDOUT",
+      "reason": "numerical stripe/thread profile null until frozen (H05/S01)"
+    }
+  ],
+  "notes": [
+    "all observed workloads are dataset class observed_tutorial_proxy (upstream Boston tutorial data), not user production data",
+    "V/E counts pending a baseline load pass (recorded per manifest)",
+    "stripe/thread profile null until frozen (H05/S01)"
+  ]
+}
