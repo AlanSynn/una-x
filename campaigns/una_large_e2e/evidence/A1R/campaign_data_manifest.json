@@ -1,0 +1,25 @@
+{
+ "task": "A1R",
+ "record": "campaign_data_manifest",
+ "role": "screen-executor",
+ "purpose": "self-containment support for the A1R packet: these three A1R records live outside the repo in campaign_data; coordinator packaging convention (copy under evidence/A1R/ vs commit manifest) is the coordinator's call \u2014 this manifest records sha256 + absolute path + bytes for either option",
+ "files": [
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_wheel_and_venv.json",
+   "sha256": "44ef2809a55a7241e6bbe54acd17eb8b824e1483e399d3c9fad3af114dbcf14f",
+   "bytes": 6128
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_lease_log.json",
+   "sha256": "5179179d9bd3c33d43c897a4d586e563a5f02f248c7a104ea514636331b4d767",
+   "bytes": 91971
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_screen_summary.json",
+   "sha256": "b2c067d8fe3c1a5e4b88dd197b684af8bb6c1dd690178585a6cee53758ad4476",
+   "bytes": 15566
+  }
+ ],
+ "utc": "2026-09-26T07:06:29Z",
+ "note_placeholder_fix": "initial write carried a placeholder utc; corrected to actual write time"
+}

@@ -1,0 +1,1327 @@
+{
+ "lease_id": "A1R-lease-20260926",
+ "opening_balance_s": 426.4,
+ "opening_balance_source": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_lease_log.json",
+ "opening_balance_matches_h05_cumulative": true,
+ "windows": [
+  {
+   "what": "build",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:36:34Z",
+   "available_at_admission_bytes": 3675308032,
+   "ceiling_bytes": 2940246425,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    5.94580078125,
+    4.5029296875,
+    4.18359375
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_build_candidate.py"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_build"
+   },
+   "end_utc": "2026-09-26T06:37:39Z",
+   "wall_s": 65.1,
+   "rc": 2,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "[a1r] wheel: /Users/alansynn/orca/workspaces/una-x/campaign_data/wheels_a1r/urban_network_analysis-2.6.0-py3-none-any.whl\n      sha256 9d808304a987af9efe5ccfcbe709ce6b7f9e953098dfc6dd4b5e91c8c141026e\n      identity_ok=True a1_symbols_ok=True pinned={'python': True, 'numpy': True, 'numba': True, 'geopandas': True, 'pyogrio': True, 'shapely': False}\n",
+   "loadavg_at_completion": [
+    23.38671875,
+    10.1044921875,
+    6.31884765625
+   ]
+  },
+  {
+   "what": "build",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:38:06Z",
+   "available_at_admission_bytes": 3541450752,
+   "ceiling_bytes": 2833160601,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    23.037109375,
+    11.08984375,
+    6.783203125
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_build_candidate.py"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_build"
+   },
+   "end_utc": "2026-09-26T06:39:10Z",
+   "wall_s": 64.3,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "[a1r] wheel: /Users/alansynn/orca/workspaces/una-x/campaign_data/wheels_a1r/urban_network_analysis-2.6.0-py3-none-any.whl\n      sha256 9d808304a987af9efe5ccfcbe709ce6b7f9e953098dfc6dd4b5e91c8c141026e\n      identity_ok=True a1_symbols_ok=True pinned={'python': True, 'numpy': True, 'numba': True, 'geopandas': True, 'pyogrio': True, 'shapely': True}\n",
+   "loadavg_at_completion": [
+    19.51416015625,
+    12.13671875,
+    7.4814453125
+   ]
+  },
+  {
+   "what": "run:a1r_O3_ACCESS_b0_cold",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:39:29Z",
+   "available_at_admission_bytes": 3506618368,
+   "ceiling_bytes": 2805294694,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    27.044921875,
+    14.29052734375,
+    8.359375
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_b0_cold.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_b0_cold",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_ACCESS_b0_cold"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0"
+   },
+   "end_utc": "2026-09-26T06:39:40Z",
+   "wall_s": 11.0,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000043 | UNA | UNA instance created. Topology and Settings initialized\n    1.8594 |        0.000492 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    2.0827 |        0.128030 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.1165 |        0.000186 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.1710 |        0.054542 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.1893 |        0.000217 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.1893 |        0.000021 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.2005 |        0.011240 | AccessibilityWElevation | Graph engine initialized\n    2.2007 |        0.000133 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    6.6493 |        0.000001 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_b0_cold/accessibility_2026-09-26_0239\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_b0_cold.json window=6.642s partition_ok=True\n",
+   "loadavg_at_completion": [
+    27.43798828125,
+    14.79150390625,
+    8.60595703125
+   ]
+  },
+  {
+   "what": "run:a1r_O3_ACCESS_cand_cold",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:40:58Z",
+   "available_at_admission_bytes": 3651305472,
+   "ceiling_bytes": 2921044377,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    29.36865234375,
+    17.5205078125,
+    10.1171875
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_cand_cold.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_cand_cold",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_ACCESS_cand_cold"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand"
+   },
+   "end_utc": "2026-09-26T06:41:10Z",
+   "wall_s": 11.9,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000037 | UNA | UNA instance created. Topology and Settings initialized\n    1.8177 |        0.000324 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    2.0460 |        0.131672 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0715 |        0.000182 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.1271 |        0.055575 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.1439 |        0.000195 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.1439 |        0.000019 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.1565 |        0.012590 | AccessibilityWElevation | Graph engine initialized\n    2.1566 |        0.000044 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    8.0477 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_cand_cold/accessibility_2026-09-26_0241\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_cand_cold.json window=8.040s partition_ok=True\n",
+   "loadavg_at_completion": [
+    29.06884765625,
+    18.00732421875,
+    10.41796875
+   ]
+  },
+  {
+   "what": "run:a1r_O3_ACCESS_b0_w1",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:41:10Z",
+   "available_at_admission_bytes": 3608379392,
+   "ceiling_bytes": 2886703513,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    29.06884765625,
+    18.00732421875,
+    10.41796875
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_b0_w1.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_b0_w1",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_ACCESS_b0_w1"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0"
+   },
+   "end_utc": "2026-09-26T06:41:17Z",
+   "wall_s": 6.2,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000043 | UNA | UNA instance created. Topology and Settings initialized\n    1.8203 |        0.000186 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    2.0530 |        0.132549 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0774 |        0.000218 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.1334 |        0.055947 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.1494 |        0.000161 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.1494 |        0.000020 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.1622 |        0.012773 | AccessibilityWElevation | Graph engine initialized\n    2.1622 |        0.000069 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    2.8115 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_b0_w1/accessibility_2026-09-26_0241\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_b0_w1.json window=2.804s partition_ok=True\n",
+   "loadavg_at_completion": [
+    28.74267578125,
+    18.123046875,
+    10.5029296875
+   ]
+  },
+  {
+   "what": "run:a1r_O3_ACCESS_cand_w1",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:41:17Z",
+   "available_at_admission_bytes": 3492773888,
+   "ceiling_bytes": 2794219110,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    28.74267578125,
+    18.123046875,
+    10.5029296875
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_cand_w1.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_cand_w1",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_ACCESS_cand_w1"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand"
+   },
+   "end_utc": "2026-09-26T06:41:22Z",
+   "wall_s": 5.2,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000039 | UNA | UNA instance created. Topology and Settings initialized\n    1.7591 |        0.000138 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9860 |        0.138741 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0111 |        0.000255 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0703 |        0.059191 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0911 |        0.000214 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0911 |        0.000020 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.1022 |        0.011047 | AccessibilityWElevation | Graph engine initialized\n    2.1023 |        0.000119 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    2.5292 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_cand_w1/accessibility_2026-09-26_0241\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_cand_w1.json window=2.521s partition_ok=True\n",
+   "loadavg_at_completion": [
+    28.28271484375,
+    18.20361328125,
+    10.57568359375
+   ]
+  },
+  {
+   "what": "run:a1r_O3_ACCESS_cand_w2",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:41:22Z",
+   "available_at_admission_bytes": 3463348224,
+   "ceiling_bytes": 2770678579,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    28.28271484375,
+    18.20361328125,
+    10.57568359375
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_cand_w2.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_cand_w2",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_ACCESS_cand_w2"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand"
+   },
+   "end_utc": "2026-09-26T06:41:27Z",
+   "wall_s": 4.8,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000043 | UNA | UNA instance created. Topology and Settings initialized\n    1.6941 |        0.000140 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9112 |        0.129232 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9347 |        0.000233 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9898 |        0.055056 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0105 |        0.000195 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0105 |        0.000021 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0213 |        0.010760 | AccessibilityWElevation | Graph engine initialized\n    2.0214 |        0.000090 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    2.4345 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_cand_w2/accessibility_2026-09-26_0241\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_cand_w2.json window=2.427s partition_ok=True\n",
+   "loadavg_at_completion": [
+    27.298828125,
+    18.1669921875,
+    10.607421875
+   ]
+  },
+  {
+   "what": "run:a1r_O3_ACCESS_b0_w2",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:41:27Z",
+   "available_at_admission_bytes": 3554410496,
+   "ceiling_bytes": 2843528396,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    27.298828125,
+    18.1669921875,
+    10.607421875
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_b0_w2.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_b0_w2",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_ACCESS_b0_w2"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0"
+   },
+   "end_utc": "2026-09-26T06:41:33Z",
+   "wall_s": 5.7,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000040 | UNA | UNA instance created. Topology and Settings initialized\n    1.8093 |        0.000179 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    2.0423 |        0.135117 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0658 |        0.000238 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.1221 |        0.056238 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.1377 |        0.000180 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.1377 |        0.000020 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.1501 |        0.012344 | AccessibilityWElevation | Graph engine initialized\n    2.1501 |        0.000046 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    2.7541 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_b0_w2/accessibility_2026-09-26_0241\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_b0_w2.json window=2.746s partition_ok=True\n",
+   "loadavg_at_completion": [
+    26.3134765625,
+    18.1142578125,
+    10.6328125
+   ]
+  },
+  {
+   "what": "run:a1r_O3_ACCESS_b0_w3",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:41:33Z",
+   "available_at_admission_bytes": 3399237632,
+   "ceiling_bytes": 2719390105,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    26.3134765625,
+    18.1142578125,
+    10.6328125
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_b0_w3.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_b0_w3",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_ACCESS_b0_w3"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0"
+   },
+   "end_utc": "2026-09-26T06:41:38Z",
+   "wall_s": 4.9,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000040 | UNA | UNA instance created. Topology and Settings initialized\n    1.6738 |        0.000169 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.8975 |        0.127949 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9378 |        0.000229 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9916 |        0.053846 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0142 |        0.000203 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0142 |        0.000021 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0250 |        0.010723 | AccessibilityWElevation | Graph engine initialized\n    2.0251 |        0.000066 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    2.4879 |        0.000001 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_b0_w3/accessibility_2026-09-26_0241\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_b0_w3.json window=2.480s partition_ok=True\n",
+   "loadavg_at_completion": [
+    25.4072265625,
+    18.0625,
+    10.658203125
+   ]
+  },
+  {
+   "what": "run:a1r_O3_ACCESS_cand_w3",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:41:38Z",
+   "available_at_admission_bytes": 3582705664,
+   "ceiling_bytes": 2866164531,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    25.4072265625,
+    18.0625,
+    10.658203125
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_cand_w3.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_cand_w3",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_ACCESS_cand_w3"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand"
+   },
+   "end_utc": "2026-09-26T06:41:43Z",
+   "wall_s": 5.5,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000044 | UNA | UNA instance created. Topology and Settings initialized\n    1.7945 |        0.000202 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    2.0344 |        0.139196 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0721 |        0.000257 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.1300 |        0.057938 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.1539 |        0.000178 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.1539 |        0.000021 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.1660 |        0.012033 | AccessibilityWElevation | Graph engine initialized\n    2.1661 |        0.000148 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    2.6857 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_ACCESS_cand_w3/accessibility_2026-09-26_0241\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_ACCESS_cand_w3.json window=2.677s partition_ok=True\n",
+   "loadavg_at_completion": [
+    24.89404296875,
+    18.07763671875,
+    10.70703125
+   ]
+  },
+  {
+   "what": "run:a1r_O3_HOLDOUT_b0_cold",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:41:43Z",
+   "available_at_admission_bytes": 3354968064,
+   "ceiling_bytes": 2683974451,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    24.89404296875,
+    18.07763671875,
+    10.70703125
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_b0_cold.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_cold",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_HOLDOUT_b0_cold"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0"
+   },
+   "end_utc": "2026-09-26T06:41:53Z",
+   "wall_s": 9.5,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000038 | UNA | UNA instance created. Topology and Settings initialized\n    1.7098 |        0.000134 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9295 |        0.131460 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9536 |        0.000239 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0090 |        0.055413 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0278 |        0.000214 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0278 |        0.000020 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0385 |        0.010649 | AccessibilityWElevation | Graph engine initialized\n    2.0386 |        0.000056 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    6.8165 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_cold/accessibility_2026-09-26_0241\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_b0_cold.json window=6.809s partition_ok=True\n",
+   "loadavg_at_completion": [
+    22.3505859375,
+    17.7607421875,
+    10.6806640625
+   ]
+  },
+  {
+   "what": "run:a1r_O3_HOLDOUT_cand_cold",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:41:53Z",
+   "available_at_admission_bytes": 3697377280,
+   "ceiling_bytes": 2957901824,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    22.3505859375,
+    17.7607421875,
+    10.6806640625
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_cand_cold.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_cand_cold",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_HOLDOUT_cand_cold"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand"
+   },
+   "end_utc": "2026-09-26T06:42:04Z",
+   "wall_s": 10.7,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000041 | UNA | UNA instance created. Topology and Settings initialized\n    1.7107 |        0.000428 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9375 |        0.137037 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9648 |        0.000259 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0190 |        0.054234 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0360 |        0.000217 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0361 |        0.000020 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0476 |        0.011520 | AccessibilityWElevation | Graph engine initialized\n    2.0478 |        0.000150 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    7.8361 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_cand_cold/accessibility_2026-09-26_0242\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_cand_cold.json window=7.829s partition_ok=True\n",
+   "loadavg_at_completion": [
+    20.0703125,
+    17.4228515625,
+    10.64306640625
+   ]
+  },
+  {
+   "what": "run:a1r_O3_HOLDOUT_b0_w1",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:42:04Z",
+   "available_at_admission_bytes": 3911974912,
+   "ceiling_bytes": 3129579929,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    20.0703125,
+    17.4228515625,
+    10.64306640625
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_b0_w1.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_w1",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_HOLDOUT_b0_w1"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0"
+   },
+   "end_utc": "2026-09-26T06:42:10Z",
+   "wall_s": 6.2,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000042 | UNA | UNA instance created. Topology and Settings initialized\n    1.7090 |        0.000147 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9343 |        0.131612 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9574 |        0.000233 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0121 |        0.054739 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0278 |        0.000205 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0278 |        0.000019 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0387 |        0.010835 | AccessibilityWElevation | Graph engine initialized\n    2.0388 |        0.000122 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    3.5738 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_w1/accessibility_2026-09-26_0242\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_b0_w1.json window=3.566s partition_ok=True\n",
+   "loadavg_at_completion": [
+    20.4208984375,
+    17.56201171875,
+    10.77001953125
+   ]
+  },
+  {
+   "what": "run:a1r_O3_HOLDOUT_cand_w1",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:42:10Z",
+   "available_at_admission_bytes": 3768123392,
+   "ceiling_bytes": 3014498713,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    20.4208984375,
+    17.56201171875,
+    10.77001953125
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_cand_w1.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_cand_w1",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_HOLDOUT_cand_w1"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand"
+   },
+   "end_utc": "2026-09-26T06:42:15Z",
+   "wall_s": 5.2,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000037 | UNA | UNA instance created. Topology and Settings initialized\n    1.7093 |        0.000144 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9357 |        0.136752 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9598 |        0.000200 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0160 |        0.056209 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0325 |        0.000221 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0326 |        0.000020 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0438 |        0.011181 | AccessibilityWElevation | Graph engine initialized\n    2.0439 |        0.000072 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    2.5731 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_cand_w1/accessibility_2026-09-26_0242\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_cand_w1.json window=2.566s partition_ok=True\n",
+   "loadavg_at_completion": [
+    18.9453125,
+    17.30322265625,
+    10.71826171875
+   ]
+  },
+  {
+   "what": "run:a1r_O3_HOLDOUT_cand_w2",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:42:15Z",
+   "available_at_admission_bytes": 3551002624,
+   "ceiling_bytes": 2840802099,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    18.9453125,
+    17.30322265625,
+    10.71826171875
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_cand_w2.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_cand_w2",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_HOLDOUT_cand_w2"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand"
+   },
+   "end_utc": "2026-09-26T06:42:20Z",
+   "wall_s": 5.0,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000035 | UNA | UNA instance created. Topology and Settings initialized\n    1.7207 |        0.000155 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9433 |        0.130345 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9691 |        0.000274 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0255 |        0.056360 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0416 |        0.000216 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0417 |        0.000020 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0525 |        0.010827 | AccessibilityWElevation | Graph engine initialized\n    2.0526 |        0.000060 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    2.5677 |        0.000001 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_cand_w2/accessibility_2026-09-26_0242\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_cand_w2.json window=2.559s partition_ok=True\n",
+   "loadavg_at_completion": [
+    17.5078125,
+    17.0322265625,
+    10.6611328125
+   ]
+  },
+  {
+   "what": "run:a1r_O3_HOLDOUT_b0_w2",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:42:20Z",
+   "available_at_admission_bytes": 3809951744,
+   "ceiling_bytes": 3047961395,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    17.5078125,
+    17.0322265625,
+    10.6611328125
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_b0_w2.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_w2",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_HOLDOUT_b0_w2"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0"
+   },
+   "end_utc": "2026-09-26T06:42:27Z",
+   "wall_s": 6.2,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000036 | UNA | UNA instance created. Topology and Settings initialized\n    1.6893 |        0.000133 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9138 |        0.134984 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9601 |        0.000283 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0146 |        0.054437 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0373 |        0.000192 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0374 |        0.000019 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0481 |        0.010767 | AccessibilityWElevation | Graph engine initialized\n    2.0482 |        0.000081 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    3.6103 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_w2/accessibility_2026-09-26_0242\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_b0_w2.json window=3.603s partition_ok=True\n",
+   "loadavg_at_completion": [
+    16.185546875,
+    16.765625,
+    10.6044921875
+   ]
+  },
+  {
+   "what": "run:a1r_O3_HOLDOUT_b0_w3",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:42:27Z",
+   "available_at_admission_bytes": 3803709440,
+   "ceiling_bytes": 3042967552,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    16.185546875,
+    16.765625,
+    10.6044921875
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_b0_w3.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_w3",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_HOLDOUT_b0_w3"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0"
+   },
+   "end_utc": "2026-09-26T06:42:32Z",
+   "wall_s": 5.6,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0000 |        0.000038 | UNA | UNA instance created. Topology and Settings initialized\n    1.6972 |        0.000128 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9138 |        0.131560 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9376 |        0.000224 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9938 |        0.056129 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0099 |        0.000189 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0099 |        0.000023 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0205 |        0.010513 | AccessibilityWElevation | Graph engine initialized\n    2.0205 |        0.000068 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    3.1560 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_w3/accessibility_2026-09-26_0242\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_b0_w3.json window=3.149s partition_ok=True\n",
+   "loadavg_at_completion": [
+    15.60986328125,
+    16.63623046875,
+    10.5947265625
+   ]
+  },
+  {
+   "what": "run:a1r_O3_HOLDOUT_cand_w3",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:42:32Z",
+   "available_at_admission_bytes": 3826827264,
+   "ceiling_bytes": 3061461811,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    15.60986328125,
+    16.63623046875,
+    10.5947265625
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--mode",
+    "clean",
+    "--out",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_cand_w3.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_cand_w3",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--lease-id",
+    "A1R-lease-20260926",
+    "--run-id",
+    "a1r_O3_HOLDOUT_cand_w3"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand"
+   },
+   "end_utc": "2026-09-26T06:42:38Z",
+   "wall_s": 5.6,
+   "rc": 0,
+   "pressure_breach_file": null,
+   "watchdog_note": null,
+   "tail": "    0.0001 |        0.000058 | UNA | UNA instance created. Topology and Settings initialized\n    1.7737 |        0.000167 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9947 |        0.127314 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0213 |        0.000240 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0763 |        0.054956 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0953 |        0.000224 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0953 |        0.000019 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.1085 |        0.013166 | AccessibilityWElevation | Graph engine initialized\n    2.1085 |        0.000065 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    2.6857 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_cand_w3/accessibility_2026-09-26_0242\n[h05] session written: /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_cand_w3.json window=2.678s partition_ok=True\n",
+   "loadavg_at_completion": [
+    14.439453125,
+    16.37646484375,
+    10.5380859375
+   ]
+  },
+  {
+   "what": "pairs_run:a1rp_O3_ACCESS_p1_AB_b0",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:49:23Z",
+   "available_at_admission_bytes": 3558227968,
+   "ceiling_bytes": 2846582374,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    3.17919921875,
+    7.05322265625,
+    8.03076171875
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_bare_job.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--out-json",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1rp_O3_ACCESS_p1_AB_b0.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_ACCESS_p1_AB_b0",
+    "--run-id",
+    "a1rp_O3_ACCESS_p1_AB_b0"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+    "NUMBA_NUM_THREADS": "8"
+   },
+   "end_utc": "2026-09-26T06:49:33Z",
+   "wall_s": 9.8,
+   "rc": 0,
+   "tail": "    0.0000 |        0.000044 | UNA | UNA instance created. Topology and Settings initialized\n    1.7807 |        0.000434 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9996 |        0.126930 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0270 |        0.000117 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0812 |        0.054233 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0967 |        0.000060 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0967 |        0.000002 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.1075 |        0.010758 | AccessibilityWElevation | Graph engine initialized\n    2.1075 |        0.000002 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    6.5985 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_ACCESS_p1_AB_b0/accessibility_2026-09-26_0249\n[a1r-job] ok win=6.598s peak=544.9MiB\n",
+   "loadavg_at_completion": [
+    3.0712890625,
+    6.90283203125,
+    7.96533203125
+   ]
+  },
+  {
+   "what": "pairs_run:a1rp_O3_ACCESS_p1_AB_cand",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:49:33Z",
+   "available_at_admission_bytes": 3583131648,
+   "ceiling_bytes": 2866505318,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    3.0712890625,
+    6.90283203125,
+    7.96533203125
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_bare_job.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--out-json",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1rp_O3_ACCESS_p1_AB_cand.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_ACCESS_p1_AB_cand",
+    "--run-id",
+    "a1rp_O3_ACCESS_p1_AB_cand"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+    "NUMBA_NUM_THREADS": "8"
+   },
+   "end_utc": "2026-09-26T06:49:44Z",
+   "wall_s": 11.0,
+   "rc": 0,
+   "tail": "    0.0000 |        0.000037 | UNA | UNA instance created. Topology and Settings initialized\n    1.7491 |        0.000162 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9678 |        0.129648 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9928 |        0.000117 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0503 |        0.057446 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0655 |        0.000062 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0655 |        0.000007 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0764 |        0.010862 | AccessibilityWElevation | Graph engine initialized\n    2.0764 |        0.000002 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    7.8981 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_ACCESS_p1_AB_cand/accessibility_2026-09-26_0249\n[a1r-job] ok win=7.898s peak=591.4MiB\n",
+   "loadavg_at_completion": [
+    3.4345703125,
+    6.85595703125,
+    7.93603515625
+   ]
+  },
+  {
+   "what": "pairs_run:a1rp_O3_ACCESS_p2_BA_cand",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:49:44Z",
+   "available_at_admission_bytes": 3549904896,
+   "ceiling_bytes": 2839923916,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    3.4345703125,
+    6.85595703125,
+    7.93603515625
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_bare_job.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--out-json",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1rp_O3_ACCESS_p2_BA_cand.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_ACCESS_p2_BA_cand",
+    "--run-id",
+    "a1rp_O3_ACCESS_p2_BA_cand"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+    "NUMBA_NUM_THREADS": "8"
+   },
+   "end_utc": "2026-09-26T06:49:49Z",
+   "wall_s": 5.0,
+   "rc": 0,
+   "tail": "    0.0000 |        0.000040 | UNA | UNA instance created. Topology and Settings initialized\n    1.6622 |        0.000139 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.8846 |        0.130898 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9072 |        0.000098 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9618 |        0.054579 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    1.9779 |        0.000069 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    1.9779 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    1.9886 |        0.010742 | AccessibilityWElevation | Graph engine initialized\n    1.9886 |        0.000002 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    2.4052 |        0.000002 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_ACCESS_p2_BA_cand/accessibility_2026-09-26_0249\n[a1r-job] ok win=2.405s peak=505.8MiB\n",
+   "loadavg_at_completion": [
+    3.3994140625,
+    6.79150390625,
+    7.90673828125
+   ]
+  },
+  {
+   "what": "pairs_run:a1rp_O3_ACCESS_p2_BA_b0",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:49:49Z",
+   "available_at_admission_bytes": 3513417728,
+   "ceiling_bytes": 2810734182,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    3.3994140625,
+    6.79150390625,
+    7.90673828125
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_bare_job.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--out-json",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1rp_O3_ACCESS_p2_BA_b0.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_ACCESS_p2_BA_b0",
+    "--run-id",
+    "a1rp_O3_ACCESS_p2_BA_b0"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+    "NUMBA_NUM_THREADS": "8"
+   },
+   "end_utc": "2026-09-26T06:49:54Z",
+   "wall_s": 5.5,
+   "rc": 0,
+   "tail": "    0.0000 |        0.000041 | UNA | UNA instance created. Topology and Settings initialized\n    1.7486 |        0.000174 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9684 |        0.128233 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9954 |        0.000090 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0493 |        0.053842 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0659 |        0.000067 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0659 |        0.000002 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0765 |        0.010626 | AccessibilityWElevation | Graph engine initialized\n    2.0765 |        0.000002 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    2.6681 |        0.000005 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_ACCESS_p2_BA_b0/accessibility_2026-09-26_0249\n[a1r-job] ok win=2.668s peak=504.9MiB\n",
+   "loadavg_at_completion": [
+    3.287109375,
+    6.7119140625,
+    7.8720703125
+   ]
+  },
+  {
+   "what": "pairs_run:a1rp_O3_ACCESS_p3_AB_b0",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:49:54Z",
+   "available_at_admission_bytes": 3489841152,
+   "ceiling_bytes": 2791872921,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    3.287109375,
+    6.7119140625,
+    7.8720703125
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_bare_job.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--out-json",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1rp_O3_ACCESS_p3_AB_b0.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_ACCESS_p3_AB_b0",
+    "--run-id",
+    "a1rp_O3_ACCESS_p3_AB_b0"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+    "NUMBA_NUM_THREADS": "8"
+   },
+   "end_utc": "2026-09-26T06:49:59Z",
+   "wall_s": 4.9,
+   "rc": 0,
+   "tail": "    0.0000 |        0.000040 | UNA | UNA instance created. Topology and Settings initialized\n    1.6729 |        0.000130 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.8923 |        0.132952 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9175 |        0.000112 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9737 |        0.056176 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    1.9932 |        0.000063 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    1.9932 |        0.000002 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0042 |        0.011045 | AccessibilityWElevation | Graph engine initialized\n    2.0042 |        0.000003 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    2.6060 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_ACCESS_p3_AB_b0/accessibility_2026-09-26_0249\n[a1r-job] ok win=2.606s peak=504.5MiB\n",
+   "loadavg_at_completion": [
+    3.103515625,
+    6.61669921875,
+    7.83154296875
+   ]
+  },
+  {
+   "what": "pairs_run:a1rp_O3_ACCESS_p3_AB_cand",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:49:59Z",
+   "available_at_admission_bytes": 3536830464,
+   "ceiling_bytes": 2829464371,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    3.103515625,
+    6.61669921875,
+    7.83154296875
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_bare_job.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+    "--cell",
+    "O3_ACCESS",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--out-json",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1rp_O3_ACCESS_p3_AB_cand.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_ACCESS_p3_AB_cand",
+    "--run-id",
+    "a1rp_O3_ACCESS_p3_AB_cand"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+    "NUMBA_NUM_THREADS": "8"
+   },
+   "end_utc": "2026-09-26T06:50:05Z",
+   "wall_s": 5.4,
+   "rc": 0,
+   "tail": "    0.0000 |        0.000040 | UNA | UNA instance created. Topology and Settings initialized\n    1.7800 |        0.000186 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    2.0013 |        0.130746 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0268 |        0.000113 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0811 |        0.054292 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0975 |        0.000059 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0975 |        0.000004 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.1081 |        0.010623 | AccessibilityWElevation | Graph engine initialized\n    2.1081 |        0.000002 | AccessibilityWElevation | Calculating centrality with radius (weight) 500\n    2.5778 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_ACCESS_p3_AB_cand/accessibility_2026-09-26_0250\n[a1r-job] ok win=2.578s peak=504.6MiB\n",
+   "loadavg_at_completion": [
+    2.93505859375,
+    6.5234375,
+    7.79150390625
+   ]
+  },
+  {
+   "what": "pairs_run:a1rp_O3_HOLDOUT_p1_AB_b0",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:50:05Z",
+   "available_at_admission_bytes": 3482025984,
+   "ceiling_bytes": 2785620787,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    2.93505859375,
+    6.5234375,
+    7.79150390625
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_bare_job.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--out-json",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1rp_O3_HOLDOUT_p1_AB_b0.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_HOLDOUT_p1_AB_b0",
+    "--run-id",
+    "a1rp_O3_HOLDOUT_p1_AB_b0"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+    "NUMBA_NUM_THREADS": "8"
+   },
+   "end_utc": "2026-09-26T06:50:14Z",
+   "wall_s": 9.6,
+   "rc": 0,
+   "tail": "    0.0001 |        0.000047 | UNA | UNA instance created. Topology and Settings initialized\n    1.6616 |        0.000158 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.8754 |        0.126563 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.8980 |        0.000093 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9534 |        0.055401 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    1.9699 |        0.000072 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    1.9699 |        0.000004 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    1.9809 |        0.010947 | AccessibilityWElevation | Graph engine initialized\n    1.9809 |        0.000003 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    7.0532 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_HOLDOUT_p1_AB_b0/accessibility_2026-09-26_0250\n[a1r-job] ok win=7.053s peak=592.4MiB\n",
+   "loadavg_at_completion": [
+    2.5634765625,
+    6.32470703125,
+    7.7060546875
+   ]
+  },
+  {
+   "what": "pairs_run:a1rp_O3_HOLDOUT_p1_AB_cand",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:50:14Z",
+   "available_at_admission_bytes": 3578855424,
+   "ceiling_bytes": 2863084339,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    2.5634765625,
+    6.32470703125,
+    7.7060546875
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_bare_job.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--out-json",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1rp_O3_HOLDOUT_p1_AB_cand.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_HOLDOUT_p1_AB_cand",
+    "--run-id",
+    "a1rp_O3_HOLDOUT_p1_AB_cand"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+    "NUMBA_NUM_THREADS": "8"
+   },
+   "end_utc": "2026-09-26T06:50:25Z",
+   "wall_s": 10.9,
+   "rc": 0,
+   "tail": "    0.0000 |        0.000041 | UNA | UNA instance created. Topology and Settings initialized\n    1.7426 |        0.000170 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9687 |        0.132086 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9953 |        0.000095 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0489 |        0.053622 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0637 |        0.000062 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0637 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0744 |        0.010674 | AccessibilityWElevation | Graph engine initialized\n    2.0744 |        0.000002 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    7.9850 |        0.000001 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_HOLDOUT_p1_AB_cand/accessibility_2026-09-26_0250\n[a1r-job] ok win=7.985s peak=534.2MiB\n",
+   "loadavg_at_completion": [
+    4.92041015625,
+    6.69482421875,
+    7.8203125
+   ]
+  },
+  {
+   "what": "pairs_run:a1rp_O3_HOLDOUT_p2_BA_cand",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:50:25Z",
+   "available_at_admission_bytes": 3603202048,
+   "ceiling_bytes": 2882561638,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    4.92041015625,
+    6.69482421875,
+    7.8203125
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_bare_job.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--out-json",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1rp_O3_HOLDOUT_p2_BA_cand.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_HOLDOUT_p2_BA_cand",
+    "--run-id",
+    "a1rp_O3_HOLDOUT_p2_BA_cand"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+    "NUMBA_NUM_THREADS": "8"
+   },
+   "end_utc": "2026-09-26T06:50:31Z",
+   "wall_s": 5.4,
+   "rc": 0,
+   "tail": "    0.0001 |        0.000046 | UNA | UNA instance created. Topology and Settings initialized\n    1.7116 |        0.000154 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9704 |        0.166295 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9931 |        0.000091 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0486 |        0.055443 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0657 |        0.000071 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0657 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0768 |        0.011106 | AccessibilityWElevation | Graph engine initialized\n    2.0768 |        0.000003 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    2.6079 |        0.000001 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_HOLDOUT_p2_BA_cand/accessibility_2026-09-26_0250\n[a1r-job] ok win=2.608s peak=481.1MiB\n",
+   "loadavg_at_completion": [
+    4.685546875,
+    6.58837890625,
+    7.76953125
+   ]
+  },
+  {
+   "what": "pairs_run:a1rp_O3_HOLDOUT_p2_BA_b0",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:50:31Z",
+   "available_at_admission_bytes": 3492904960,
+   "ceiling_bytes": 2794323968,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    4.685546875,
+    6.58837890625,
+    7.76953125
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_bare_job.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--out-json",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1rp_O3_HOLDOUT_p2_BA_b0.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_HOLDOUT_p2_BA_b0",
+    "--run-id",
+    "a1rp_O3_HOLDOUT_p2_BA_b0"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+    "NUMBA_NUM_THREADS": "8"
+   },
+   "end_utc": "2026-09-26T06:50:37Z",
+   "wall_s": 6.5,
+   "rc": 0,
+   "tail": "    0.0000 |        0.000044 | UNA | UNA instance created. Topology and Settings initialized\n    1.7505 |        0.000183 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9672 |        0.128033 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9918 |        0.000087 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0466 |        0.054770 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0633 |        0.000064 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0633 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0740 |        0.010713 | AccessibilityWElevation | Graph engine initialized\n    2.0740 |        0.000004 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    3.4340 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_HOLDOUT_p2_BA_b0/accessibility_2026-09-26_0250\n[a1r-job] ok win=3.434s peak=503.7MiB\n",
+   "loadavg_at_completion": [
+    4.39013671875,
+    6.4951171875,
+    7.7294921875
+   ]
+  },
+  {
+   "what": "pairs_run:a1rp_O3_HOLDOUT_p3_AB_b0",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:50:37Z",
+   "available_at_admission_bytes": 3487760384,
+   "ceiling_bytes": 2790208307,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    4.39013671875,
+    6.4951171875,
+    7.7294921875
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_bare_job.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+    "--out-json",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1rp_O3_HOLDOUT_p3_AB_b0.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_HOLDOUT_p3_AB_b0",
+    "--run-id",
+    "a1rp_O3_HOLDOUT_p3_AB_b0"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+    "NUMBA_NUM_THREADS": "8"
+   },
+   "end_utc": "2026-09-26T06:50:43Z",
+   "wall_s": 6.0,
+   "rc": 0,
+   "tail": "    0.0000 |        0.000040 | UNA | UNA instance created. Topology and Settings initialized\n    1.6887 |        0.000129 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    1.9040 |        0.128681 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9286 |        0.000094 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    1.9851 |        0.056498 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0031 |        0.000075 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.0031 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.0140 |        0.010963 | AccessibilityWElevation | Graph engine initialized\n    2.0140 |        0.000002 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    3.5410 |        0.000001 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_HOLDOUT_p3_AB_b0/accessibility_2026-09-26_0250\n[a1r-job] ok win=3.541s peak=504.1MiB\n",
+   "loadavg_at_completion": [
+    4.11865234375,
+    6.40380859375,
+    7.68994140625
+   ]
+  },
+  {
+   "what": "pairs_run:a1rp_O3_HOLDOUT_p3_AB_cand",
+   "lease_id": "A1R-lease-20260926",
+   "start_utc": "2026-09-26T06:50:43Z",
+   "available_at_admission_bytes": 3523919872,
+   "ceiling_bytes": 2819135897,
+   "pressure_stop_bytes": 1717986918,
+   "loadavg_at_admission": [
+    4.11865234375,
+    6.40380859375,
+    7.68994140625
+   ],
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/a1r_bare_job.py",
+    "--manifest",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+    "--cell",
+    "O3_HOLDOUT",
+    "--expected-site-packages",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+    "--out-json",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1rp_O3_HOLDOUT_p3_AB_cand.json",
+    "--output-root",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_HOLDOUT_p3_AB_cand",
+    "--run-id",
+    "a1rp_O3_HOLDOUT_p3_AB_cand"
+   ],
+   "env": {
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+    "NUMBA_NUM_THREADS": "8"
+   },
+   "end_utc": "2026-09-26T06:50:49Z",
+   "wall_s": 5.7,
+   "rc": 0,
+   "tail": "    0.0001 |        0.000048 | UNA | UNA instance created. Topology and Settings initialized\n    1.8088 |        0.000191 | Network added | Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.\n    2.0329 |        0.130365 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.0618 |        0.000097 | Origins added | Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points.\n    2.1166 |        0.054825 | Build AccessPoints | Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.1329 |        0.000059 | Destinations added | Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points.\n    2.1329 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation \u2014 symmetric weights)\n    2.1438 |        0.010912 | AccessibilityWElevation | Graph engine initialized\n    2.1438 |        0.000002 | AccessibilityWElevation | Calculating centrality with radius (weight) 1200\n    2.7337 |        0.000000 | ExportAccessibilityResults | All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/a1rp_O3_HOLDOUT_p3_AB_cand/accessibility_2026-09-26_0250\n[a1r-job] ok win=2.734s peak=506.1MiB\n",
+   "loadavg_at_completion": [
+    4.18896484375,
+    6.38037109375,
+    7.673828125
+   ]
+  }
+ ],
+ "cumulative_heavy_s": 750.7
+}
