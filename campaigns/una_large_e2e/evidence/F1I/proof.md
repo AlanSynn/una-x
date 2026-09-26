@@ -369,6 +369,108 @@ deterministic; only rate/ETA (timing fields, preregistered
 structural comparison per CONTRACT) vary. No log line is added or
 removed.
 
+## 5b. FP surface inventory (reviewer focus 1: no new reassociation site)
+
+nogil is numerically inert, but the flow kernel is the FP-heaviest
+code in the packet, so the claim is pinned at the level of every
+floating-point ACCUMULATION site, not just the decorator. The complete
+per-stripe FP surface (all sites UNCHANGED BYTES between B0 and
+candidate; each is a single float64 add/mul/div in a fixed
+single-thread sequence owned by one stripe):
+
+* In-driver per origin (vectorized numpy, unchanged): `d_o[dest_node_ids]`
+  gather (1070), `_compute_trip_volumes` exp/logistic math (1468-1544),
+  `_cutoff_for_shortest` (144-151, 1087-1089). None of these is
+  restructured by F1.
+* In-kernel pass 1: `excess = d_o[u] + arc_w + d_d[x] - d_shortest`
+  (295), clamp (296-297), `q_sum += _decay(...)` (298 — the per-OD
+  total-decay SUM, operand order fixed by `reach_nodes` order),
+  `scale = trip_volume / q_sum` (302).
+* In-kernel pass 2: `excess` recompute (326), `q = scale * _decay(...)`
+  (329), `out_AB[eid] += q` / `out_BA[eid] += q` (331-335),
+  `acc_o[u] += q` / `acc_d[x] += q` (336-337).
+* In-kernel pass 3 (descending d_o): `out_AB[eid] += f` /
+  `out_BA[eid] += f` (352-357), `acc_o[pv] += f` (358 — including the
+  off-envelope writes; they are part of B0's arithmetic and stay).
+* In-kernel pass 4 (descending d_d): same pattern (370-376),
+  `acc_d[pv] += f` (377).
+* In-kernel node flow: `out_node_flow[v] += acc_o[v] + acc_d[v]` (384).
+* Post-loop, main thread: slot-order reduction
+  `edge_flow_AB += local_AB[slot]`, `edge_flow_BA += local_BA[slot]`,
+  `node_flow += local_node[slot]` (1156-1160) — the association
+  obligation, proven identical by the section 5 induction (K, slot
+  order, and `+=` elementwise association unchanged); then
+  `edge_flow = edge_flow_AB + edge_flow_BA` (830) and observer sums
+  (865, 878-880).
+
+Why no NEW reassociation site can appear: reassociation and FMA
+formation are properties of the compiled function, driven by the
+fast-math flags and the IR presented to instruction selection. F1
+changes neither the IR's FP instructions nor the flags — the body is
+byte-unchanged, `fastmath=True` is unchanged, and `nogil=True` only
+adds GIL-state save/restore calls around the body, which contain no
+FP operations and do not alter instruction selection for the
+unchanged IR. This is asserted at compile-evidence level, not
+assumed: Phase 2 delivers the A1I 7.3 discipline (`ir_fp_census.txt`
+precedent in `evidence/A1I/`) — `inspect_llvm` of
+`_accumulate_od_flow` at the observed signature both arms, an
+extracted census of every fast-flagged FP instruction (`fadd fast`,
+`fmul fast`, `fcmp fast`, vector forms, and explicitly
+`fmuladd`/`fma` intrinsics) with BOTH files committed to
+`evidence/F1I/` and the COUNTS AND SITE SEQUENCE asserted equal.
+Any fmuladd/FMA site in the candidate census that is absent from the
+B0 census, any reordered fadd sequence, or any changed fast flag is
+a compiler-equivalence failure = REJECTION.
+
+Byte-identical outputs are then the conjunction of: identical FP
+sites and flags (this section + 9.2), identical per-stripe operand
+sequences (section 5 induction: stripe-private state, read-only
+shared closure), and identical reduction association (section 5).
+
+## 5c. Parallelism locus (reviewer focus 2: where the concurrency lives)
+
+The committed design puts the concurrency at the ENGINE level:
+Python threads of the EXISTING `ThreadPoolExecutor(max_workers=K)`
+(1148-1153) executing the fixed-stripe tasks, which the nogil release
+lets overlap INSIDE each compiled `_accumulate_od_flow` call. Explicitly:
+
+* NOT numba-internal parallelism: there is no `prange` and no
+  `parallel=True` anywhere in `AggregateFlow.py` (grep-verified);
+  `_accumulate_od_flow` stays `parallel=False` (default). Numba's
+  internal thread pool / threading layer (`workqueue`, control.json)
+  is NOT engaged by this kernel and is NOT the locus; numba's H
+  (NUMBA_NUM_THREADS) does no work for this kernel in either arm.
+* NOT a stripe scheme inside the kernel: the kernel is per-OD and
+  thread-agnostic; stripe decomposition, membership, and the
+  slot-order reduction live in the Python driver (1044, 1156-1160),
+  unchanged bytes.
+* Therefore the load-bearing component of the frozen (W, H, K) screen
+  triple for F1 is **K — the engine flow stripe count** (`--flow-stripes`,
+  HARNESS.md frozen interface; req 3 "frozen flow stripe count is
+  numerical identity"), which in the engine IS `n_threads` =
+  `topology.num_threads` (Topology.py:79 default cpu_count-1 = 9;
+  Base.py:125), not numba's thread count. H remains frozen and
+  equal in both arms as for every screen, but F1's mechanism does not
+  route through it; W is the outer job pool, untouched.
+* Consequence for F1R in-run verification fields: candidate
+  concurrency should be observed at the engine level (concurrent
+  in-kernel counters as in the H05 probe's `observed_max_concurrent`),
+  not by numba-pool inspection; a K=1 arm is the negative control by
+  construction — with one stripe the executor fast path (1144-1146)
+  runs and the GIL release has nothing to overlap, so F1 is inert at
+  K=1 and must remain byte-identical there (T3/T9 exercise it).
+* BuildClusters pool (`Topology.py:730`) and every other Topology
+  pool are outside F1's writable scope — untouched, as the
+  coordinator note states.
+
+## 5d. Note on the one-revision budget
+
+Confirmed by the coordinator: the dossier's one-performance-revision
+budget (forced by evidence) applies to F1 exactly as it did in A1I
+(DECISION.md: one design per hypothesis, at most one performance
+revision after the initial screened version). Proof approval precedes
+any implementation.
+
 Exceptions: worker exceptions propagate via `f.result()` and the
 executor context semantics terminate outstanding stripe work exactly
 as B0 — the code is unchanged (1148-1153). On failure the reduction
@@ -448,12 +550,15 @@ Source-level argument is NOT claimed sufficient. Phase 2 delivers:
    neither observes the candidate tree, so the oracle suite stays
    green; cross-arm comparison in `compare_arms.py` is output-bytes
    only.
-2. **IR side-by-side**: `inspect_llvm` of `_accumulate_od_flow` at
-   the observed signature(s), B0 tree vs candidate tree, recorded in
-   `evidence/F1I/ir_*.{ll,md}` + an FP-op census (fadd/fmul/fcmp
-   counts and order in the four passes identical; the ONLY expected
-   differences are GIL save/restore calls; no new fastmath-affected
-   instruction, no FMA introduction, no reassociation delta).
+2. **IR side-by-side with FP census (section 5b discipline)**:
+   `inspect_llvm` of `_accumulate_od_flow` at the observed signature(s),
+   B0 tree vs candidate tree, recorded in `evidence/F1I/ir_*.{ll,md}`
+   plus a census of every fast-flagged FP instruction (fadd/fmul/fcmp
+   incl. vector forms, and explicitly fmuladd/FMA intrinsics): counts
+   AND site sequence asserted equal; the ONLY permitted differences
+   are GIL save/restore calls. No new fastmath-affected instruction,
+   no FMA introduction, no reassociation delta — any delta is a
+   compiler-equivalence failure = REJECTION.
 3. **Specialization census equality**: the candidate compiles the
    SAME set of `_accumulate_od_flow` signatures as B0 on the same
    battery (runner-style inventory), including the int32-CSR
@@ -582,3 +687,13 @@ D5 (no screening in F1I). The turns-closure conclusion of section 3
 is the H04-N1 "PROVE exclusion" branch — if the reviewer rejects it,
 the fallback is commissioning the H03 turns supplement before
 implementation (coordinator decision).
+
+The proof reviewer's two pre-declared review focuses are addressed in
+dedicated sections: FP surface (focus 1) in section 5b + obligation
+9.2 (complete FP-accumulation-site inventory; A1I 7.3 census
+discipline with fmuladd/FMA explicitly named; byte-identical outputs
+plus no-new-reassociation claim); parallelism locus (focus 2) in
+section 5c (engine-level ThreadPoolExecutor dispatch of nogil calls;
+no prange; K = engine flow stripe count is the load-bearing screen
+component; numba H not engaged by this kernel; BuildClusters pool out
+of scope).
