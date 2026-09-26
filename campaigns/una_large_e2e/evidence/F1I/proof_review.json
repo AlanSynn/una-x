@@ -1,0 +1,98 @@
+{
+ "schema_version": 1,
+ "task": "F1I",
+ "record": "proof_review",
+ "role": "independent-proof-reviewer",
+ "generated_utc": "2026-09-26T10:20:00Z",
+ "subject": {
+  "proof_commit": "cb7f6718168db8e80023892d8b62d769ef607df7",
+  "artifacts": ["evidence/F1I/proof.md", "evidence/F1I/admission.json"],
+  "head_at_review": "cb7f671 (src tree b121ec0b4312f12caa98bc115243652e1564d3ec == control.json selected source; AggregateFlow.py blob 0114ce8f318a3247b62e3d468e32d54e692737a2 at BOTH 361928e and HEAD, reviewer re-derived via git rev-parse)",
+  "implementation_status": "not started (hard stop honored: no src changes at cb7f671)"
+ },
+ "verdict": "approve",
+ "blocking_changes": 0,
+ "verification_summary": "Every load-bearing claim was verified against actual source and actual compiled IR, not against the proof's assertions. The change surface is exactly one decorator kwarg; the turns closure is empty as claimed; the FP surface is byte-identical at the IR level with the sole delta being GIL save/restore; the read/write audit matches the code; the exactness induction is sound.",
+ "checks": {
+  "1_change_surface": {
+   "result": "verified",
+   "detail": "AggregateFlow.py:192 is exactly '@nb.njit(cache=True, fastmath=True)' on _accumulate_od_flow (def at 193); the candidate adds nogil=True and touches no other byte of src/. Reviewer extracted lines 159-386 verbatim into two standalone variants differing ONLY in the decorator line (diff inspected: 1 line); the no-prange/no-parallel claim grep-verified (only comment hits)."
+  },
+  "2_turns_closure_H04_N1": {
+   "result": "verified - PROVEN EXCLUDED branch is sound; no H03 turns supplement required for F1",
+   "detail": [
+    "call graph re-derived by reviewer grep: _accumulate_od_flow has exactly ONE production reference (AggregateFlow.py:1098) inside the nested _process_stripe of _process_origins_aggregate (966), whose only caller is Centrality line 827, inside the else of 'if ns[\"use_turns\"]:': at 785; _accumulate_od_flow_turns has exactly two references total (def 1673, call 1387); _build_line_csr_turns called only at 1193; the two pipelines have separate _process_stripe closures, buffers and locks",
+    "all other repo references to _accumulate_od_flow are read-only consumers (oracle targetoptions readers test_l1_determinism/compiler_profile, compiled-kernel drivers test_l0_traces/observed_replay with captured inputs, trace replica, capture/instrument wrappers h05_profile) - none is a call path into the engine",
+    "recompilation closure: the turns kernel's bytecode and targetoptions (line 1672 decorator) are unchanged, so under any numba cache keying it serves identical compiled code - 'not even recompiled' is safe",
+    "shared inline='always' helpers _find_arc (165-172) / _decay (175-189) unchanged and embedded per-caller at IR level; _find_arc called only by the node kernel (262/273/350/369); reviewer's IR experiment embeds both helpers and confirms the whole-body census",
+    "shared pre-branch Python code (_prepare_params/_build_digraph/_build_csr/_gradient_limit*/_normalize_method/_cutoff_for_shortest/_compute_trip_volumes) and post-branch tail (829-842) untouched by a decorator kwarg",
+    "empirical pin T8 (turns=True candidate-vs-B0 byte-equal + turns targetoptions census) correctly planned as the Phase-2 behavioral complement"
+   ]
+  },
+  "3_fp_surface_actual_IR": {
+   "result": "verified - reviewer's own compile experiment, not the flag's reputation",
+   "method": "extracted AggregateFlow.py lines 159-386 verbatim (decay constants + _find_arc + _decay + kernel); built two variants whose diff is exactly the decorator line; compiled BOTH at the observed signature dtypes (int32 CSR/edge ids, int8 dir, float64 distances/weights/outputs, int32 predecessors, int64 scalars, float64[0] node-flow output); inspected LLVM for each and censused every FP instruction in order",
+   "results": {
+    "both_compile": true,
+    "signatures_identical": true,
+    "fp_site_count_both": 92,
+    "fp_site_sequences_identical": true,
+    "fast_flag_inventory_identical": true,
+    "fma_fmuladd_sites_both": 0,
+    "gil_save_restore": "PyEval_SaveThread x2 + PyEval_RestoreThread x2 in candidate ONLY; zero in B0 variant",
+    "raw_artifacts": {
+     "b0_ir_sha256": "15bc3aaa54a924692c78e37a60c9c1dba4a3a270c67f0cb9c9b2740c1f81fe4f",
+     "cand_ir_sha256": "764c3748fcd4fc586357c1e5de68c786e2904faa38ceec7088fee28ee6d669e1",
+     "census_sha256": "1451a35768615a466a72573edbe337c86dc70351d1e600ce24070bd843b84c60",
+     "variant_sources": ["76e5fc7ba910b8f5b9fc34268e82fcc4f612e879e754f8c296e7f06ea0a88a61", "b436a6a40c75c84d53b7246aa9b75f2a711f6ee76ed241a110818a32b6ad5d0a"],
+     "dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1i_ir_check/ (per-variant fresh NUMBA_CACHE_DIRs)"
+    }
+   },
+   "consequence": "the ONLY compiled delta is GIL-state save/restore; no new FP instruction, no FMA formation, no reassociation, no fast-flag change. This is the strongest possible proof-time verification of proof.md 5b; the Phase-2 obligation 9.2 (in-module inspect_llvm both trees, artifacts committed to evidence/F1I/) REMAINS BINDING as the packet artifact"
+  },
+  "4_read_write_audit": {
+   "result": "verified against code",
+   "detail": "kernel writes ONLY out_AB/out_BA/out_node_flow (stripe-private slots 1017-1025; shared shape-0 _empty_node guarded at 380) and its own per-call temporaries (224, 236, 243-244, 252-253, 308-309); CSR (incl. obstacle-mutated weights, built pre-loop at 657-699), sparse gradients (908-961), dest arrays and ns-scalars read-only; dd_buf/pd_buf stripe-private (1041-1042) with self-contained scatter/reset (1093-1096, 1112-1113); progress counter and logs under progress_lock (1028-1029, 1123-1136); reduction strictly post-join main thread (1148-1153 join, 1156-1160). scipy Dijkstra was already concurrent in B0 (comment at 1061-1063; H05 probe buffers-independent) - F1 changes nothing there."
+  },
+  "5_exactness_induction": {
+   "result": "sound",
+   "detail": "stripe membership (range(slot, n_origins, n_threads) at 1044), per-stripe ascending origin order, ascending destination loop, fixed in-kernel pass orders, and slot-order reduction are all unchanged bytes; with disjoint stripe read/write sets (check 4) and an identical compiled instruction stream (check 3), each stripe's partials are bit-identical regardless of interleaving; reduction association identical. np.argsort determinism: fixed algorithm, same input array to the same compiled code both arms. Run-to-run determinism (T4) and K-matched-only comparisons follow. The dossier's 'never compare K=1 vs K=8' rule is honored by the test design (separate K reference pairs) and will be binding in the F1R screen."
+  },
+  "6_D1_D5": {
+   "D1_no_guard": "confirmed - every path IS B0's code; no input reroutes; the strongest form of the unchanged-fallback obligation",
+   "D2_compile_failure_is_rejection": "confirmed as the correct reading; reviewer's experiment additionally shows the observed specialization compiles under nogil",
+   "D3_warmup_harness_obligation": "confirmed - matches dossier text ('deliberate non-performance warm-up in both arms, recording startup cost')",
+   "D4_no_scheduler": "confirmed - CONTRACT.md:19 verbatim: K/per-stripe ops/final order are numerical dependencies; H<K scheduling 'not required for F1'; no work stealing/atomics/tree reduction anywhere",
+   "D5_no_screening_in_F1I": "confirmed - F1I delivers exactness evidence only; screening is F1R's within the 3-paired-block discipline"
+  },
+  "7_parallelism_locus": {
+   "result": "confirmed - engine-level ThreadPoolExecutor threads (1148-1153) overlapping inside the nogil compiled call; NOT numba-internal (no prange, parallel=False default); the load-bearing screen knob is the FLOW STRIPE COUNT (engine n_threads = topology.num_threads, Topology.py:79 default cpu_count-1, Base.py:125; harness frozen interface --flow-stripes, HARNESS.md:12, recorded in-run by harness/worker.py:498,523); K=1 is the structural negative control (fast path 1144-1146)"
+  },
+  "8_admission_recheck": {
+   "result": "verified - AggregateFlow.py blob 0114ce8f identical at 361928e and HEAD (reviewer git rev-parse); temporaries arithmetic reproduced: 3*56844*1 + 2*56844*8 = 1,080,036 B (reach/cont_o/cont_d boolean + acc_o/acc_d float64, lines 224/252-253/308-309); cited H05 facts match the code line-for-line; DECISION.md's F1 admission requirement (observed serialization) satisfied by the committed probe F1_002800.json (observed_max_concurrent=1, parallel/serial=0.82)"
+  },
+  "9_H03_frozen_fact_safety": {
+   "result": "verified - subtle and correctly handled",
+   "detail": "test_l1_determinism.py:32-37 pins nogil-is-False against b() = b0() from b0_import.B0_ROOT = /Users/alansynn/orca/workspaces/una-x/wt-b0/src (the B0 TREE, not the candidate tree); the golden-profile assertion at :66 binds a record whose import_root is asserted == B0_ROOT. After F1I lands, the oracle suite observes B0 only and stays green; cross-arm comparison is output-bytes only. No pressure is created to weaken frozen-fact tests."
+  }
+ },
+ "findings": [
+  {
+   "id": "F1I-N1",
+   "severity": "informational",
+   "finding": "reviewer's IR census (check 3) is a standalone verbatim extraction at a representative observed-dtype specialization; it verifies the MECHANISM at proof time. The binding packet artifact remains proof.md obligation 9.2: in-module inspect_llvm of both trees at Phase 2, artifacts committed to evidence/F1I/, counts and site sequence asserted equal. Any delta beyond GIL save/restore there = rejection per the proof's own rule."
+  },
+  {
+   "id": "F1I-N2",
+   "severity": "finding_requiring_resolution_before_F1R",
+   "finding": "K-NAMING COLLISION: proof.md 5c uses 'K' for the engine FLOW STRIPE COUNT (= topology.num_threads, settable via --flow-stripes), while the H05 preregistration's flow-grid key 'candidates_WKH' defines K as 'flow engine internal thread pool size (BuildClusters workers)' (Topology.py:730 uses the same topology.num_threads for that pool). The two K's are different knobs sharing a letter; a screen could pin the wrong one. Resolution for the F1R spec (reviewer-owned, will be stated explicitly): the screen shape is defined in HARNESS terms - --flow-stripes pins the stripe count K_s identically in both arms (K-matched mandatory per the dossier), W=1 outer job, remaining knobs per HARNESS.md, W*(H+K) <= 9 respected with in-run verification of stripes_requested; the preregistration's H/K letter mapping for the flow cell should be reconciled by the coordinator (owner of the frozen grid) and recorded, so S01 later inherits an unambiguous vocabulary."
+  },
+  {
+   "id": "F1I-N3",
+   "severity": "informational",
+   "finding": "B0-only triple mini-selection (the A1R template) cannot discriminate F1's benefit because B0 serializes the kernel at any stripe count (GIL-bound: observed_max_concurrent=1 at 9 threads); the F1R screen triple will therefore be frozen A PRIORI at the max-H-fitting frozen candidate shape expressing the thesis (stripes=8, W=1, K-matched arms), with the B0-only selection method reserved for cells where B0 timing actually discriminates. Recorded now so the spec is not accused of departing from the A1R template without cause."
+  }
+ ],
+ "scope_confirmation": "reviewer made no source edits and no git writes; all raw artifacts of this review live under campaign_data/f1i_ir_check/ (hashes recorded above) and this file",
+ "verdict_basis": "the proof's claims survive independent verification at every point the coordinator flagged plus the standard terms: change surface (1 line), turns closure (empty intersection, call-graph re-derived), FP surface (actual IR: 92 identical FP sites, 0 FMA, sole delta GIL save/restore), read/write audit (matches code), exactness induction (sound), D1-D5 (faithful to CONTRACT and dossier), admission recheck (blob + arithmetic verified), H03 frozen-fact safety (B0-rooted namespace)"
+}
