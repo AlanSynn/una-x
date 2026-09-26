@@ -71,5 +71,16 @@
       "verify W00 real-wheel guard proof exists (H04-N2) and any install-time precompile step stayed within the W00_precompile_reading",
       "confirm C1/C2 rulings were applied in Q00 protocol as recorded here (or documented overrides exist)"
     ]
+  },
+  "v3_amendment": {
+    "recorded_utc": "2026-09-26T07:38:37Z",
+    "trigger": "F1R dispatch-term confirmation from the independent reviewer; protocol hardening extended to ALL remaining R tasks",
+    "R_task_spec_protocol": {
+      "ruling": "For every remaining R task (F1R, F3R, A2R, F2R, A3R): the screen spec is filed by the review owner BEFORE any execution, committed by the coordinator first, and only then does the screen executor run under a fresh heavy lease. This closes the a1r_/a1rp_ provenance gap permanently (A1R schedule 1 executed against an uncommitted interim team-lead spec).",
+      "bare_window_instrumentation_rule": "Inside bare disposition windows, in-run verification is config-level ONLY (harness-recorded engine_config_observed fields; zero perturbation). Any richer observation (concurrency counters, tracing, thread-pool inspection) is DIAGNOSTIC class: separate instrumented runs OUTSIDE the paired matrix, documented in the screen record, never entering gate math or the paired-block ceiling. Optional diagnostic controls (e.g. F1 K=1 structural negative control) are the executor's discretion under lease budget and earn no gate credit by design.",
+      "basis": "instrumentation inside timing windows is precisely what demoted A1R schedule 1 (v2_amendment.screening_block_deviation); this generalizes the discipline_note from a block-count rule into an instrumentation-placement rule"
+    },
+    "F1_specific_terms_note": "F1R-specific amendments (a priori frozen triple (W,K,H)=(1,8,1) with three-field in-run config verification flow_stripes_requested==8 AND topology_num_threads==8 AND engine_num_threads==8; byte identity mandatory in every pair with any delta = rejection not investigation; symmetric-cold expectation - F1 adds no kernels so per-arm fresh cache roots make first-compile symmetric and the C2 route machinery is carried but NOT anticipated to engage) live in evidence/F1R/screen_spec.json, reviewer-owned, coordinator-committed before execution per the R_task_spec_protocol.",
+    "user_override": "campaign owner may override any time before Q00"
   }
 }
