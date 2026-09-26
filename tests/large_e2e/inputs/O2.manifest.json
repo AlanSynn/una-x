@@ -177,12 +177,12 @@
     "ordered_indices_note": "embedded above"
   },
   "counts": {
-    "V": null,
-    "E": null,
+    "V": 49159,
+    "E": 69957,
     "E_geojson_features": 69957,
     "O": 16,
     "D": 6661,
-    "note": "V/E are actual node/arc counts after a baseline Topology load pass (BuildTopology with network_precision=3 may merge nodes / drop degenerate arcs); the GeoJSON feature count is recorded separately as E_geojson_features. pending_load_pass."
+    "note": "measured by H04 independent review, observed_l2.json load_pass, stable across two fresh processes"
   },
   "settings_overrides": {
     "network_weight_column": "Geometric",
@@ -308,7 +308,6 @@
   ],
   "target_status": "observed L2 fixture; not a performance-scale claim",
   "blocked": [
-    "V/E counts pending a baseline Topology load pass (H05); a null required field means not ready for qualification",
     "baseline wheel not built yet (W00); timed runs require a clean installed environment",
     "numerical stripe/thread profile null until frozen (H05/S01)"
   ],
