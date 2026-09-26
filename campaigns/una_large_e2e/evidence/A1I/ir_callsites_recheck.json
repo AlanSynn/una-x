@@ -1,0 +1,68 @@
+{
+ "probe": "A1I_admission_recheck",
+ "method": "identical to evidence/H05/h05_probe_kernels.py:nrt_callsites (dynamic NRT alloc callsites from inspect_llvm, summed over compiled signatures)",
+ "src_tree_expected": "a5883dddcef3afb8debdb4438a6338da886add6f",
+ "kernels": {
+  "compact_vector_node_view_scope": {
+   "n_signatures": 1,
+   "signatures": [
+    {
+     "index": 0,
+     "str(sig)": "(Array(int64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(bool, 1, 'C', False, aligned=True), float64, int64)",
+     "n_static_callsites": 1,
+     "n_dynamic_callsites": 12
+    }
+   ],
+   "total_dynamic_callsites": 12,
+   "compile_s": 0.9,
+   "expected_from_H05": 12,
+   "match": true
+  },
+  "adjust_destination_distances": {
+   "n_signatures": 1,
+   "signatures": [
+    {
+     "index": 0,
+     "str(sig)": "(Array(float64, 1, 'C', False, aligned=True), Array(int64, 2, 'C', False, aligned=True), Array(float64, 2, 'C', False, aligned=True), int64)",
+     "n_static_callsites": 0,
+     "n_dynamic_callsites": 2
+    }
+   ],
+   "total_dynamic_callsites": 2,
+   "compile_s": 0.08,
+   "expected_from_H05": 0,
+   "match": false
+  },
+  "reach_gravity_knn_access": {
+   "n_signatures": 1,
+   "signatures": [
+    {
+     "index": 0,
+     "str(sig)": "(Array(float64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), float64, float64, float64, float64, float64, Array(float64, 1, 'C', False, aligned=True), float64, unicode_type, float64, float64, float64)",
+     "n_static_callsites": 0,
+     "n_dynamic_callsites": 13
+    }
+   ],
+   "total_dynamic_callsites": 13,
+   "compile_s": 1.54,
+   "expected_from_H05": 13,
+   "match": true
+  },
+  "integrated_scope_access": {
+   "n_signatures": 1,
+   "signatures": [
+    {
+     "index": 0,
+     "str(sig)": "(Array(int64, 2, 'C', False, aligned=True), Array(float64, 2, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(int64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), Array(bool, 1, 'C', False, aligned=True), Array(int64, 2, 'C', False, aligned=True), Array(float64, 2, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True), float64, float64, float64, float64, unicode_type, Array(float64, 1, 'C', False, aligned=True), float64)",
+     "n_static_callsites": 1,
+     "n_dynamic_callsites": 30
+    }
+   ],
+   "total_dynamic_callsites": 30,
+   "compile_s": 1.32,
+   "expected_from_H05": 30,
+   "match": true
+  }
+ },
+ "all_match": false
+}

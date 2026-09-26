@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "task": "A1I",
+  "record": "admission",
+  "role": "implementation-owner",
+  "generated_utc": "2026-09-26T04:58:41Z",
+  "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e",
+  "branch": "perf/una-large-e2e",
+  "source_pin": {
+    "head_at_recheck": "6205086ef64773440c4f705bee2139a4c40b49a5",
+    "src_tree_hash_command": "git rev-parse HEAD:src",
+    "src_tree_hash": "a5883dddcef3afb8debdb4438a6338da886add6f",
+    "expected_src_tree_hash": "a5883dddcef3afb8debdb4438a6338da886add6f",
+    "match": true,
+    "git_status_porcelain_entries": 0,
+    "note": "a5883dd... is the B0 (361928e) reviewed selected source tree; H04 identities_verified confirms the same value for b0_src_tree"
+  },
+  "reverified_facts": {
+    "ir_dynamic_alloc_callsites": {
+      "method": "identical to evidence/H05/h05_probe_kernels.py:nrt_callsites — dynamic-size NRT alloc callsites parsed from inspect_llvm of the compiled dispatchers, summed over compiled signatures; fresh compile at the observed dtypes (int64 pointers/terminals, float64 weights, bool flags) in a private temp NUMBA_CACHE_DIR",
+      "script": "evidence/A1I/recheck_ir_callsites.py",
+      "raw": "evidence/A1I/ir_callsites_recheck.json",
+      "integrated_scope_access": {"got": 30, "h05": 30, "match": true},
+      "compact_vector_node_view_scope": {"got": 12, "h05": 12, "match": true},
+      "reach_gravity_knn_access": {"got": 13, "h05": 13, "match": true},
+      "adjust_destination_distances": {"got": 2, "h05": 0, "match": false, "finding": "see findings[0]"}
+    },
+    "runtime_nrt_per_origin_call": {
+      "committed_evidence": "campaigns/una_large_e2e/evidence/H05/memory_lifetimes.json runtime_nrt_evidence.integrated_scope_access",
+      "values": {"alloc_per_call_min": 9563127, "alloc_per_call_median": 9563127.0, "alloc_per_call_max": 9563127, "free_per_call_median": 9563127.0},
+      "measured_at_src_tree": "a5883dddcef3afb8debdb4438a6338da886add6f (H05 ran on this exact source; raw probe /Users/alansynn/orca/workspaces/una-x/campaign_data/h05_probes/A1_002140.json, n_origins=32)",
+      "recheck_method": "measurement accepted as committed evidence per task routing (measured at this exact source); code-inspection consistency check performed instead of a re-run",
+      "code_inspection_consistency": {
+        "per_pop_allocation_sites": [
+          "Accessibility.py:148 slice + scalar add -> new float64 row array",
+          "Accessibility.py:152 adjacency_vector[slice] int64 gather array",
+          "Accessibility.py:152 o_scope_weights[fancy-index] float64 gather array",
+          "Accessibility.py:151 <= cutoff bool array",
+          "Accessibility.py:152 < gathered bool array",
+          "Accessibility.py:150-153 & of two bool arrays",
+          "Accessibility.py:150 np.nonzero -> int64 index arrays"
+        ],
+        "per_call_allocation_sites": [
+          "Accessibility.py:127 o_scope_weights np.ones(nd)+cutoff",
+          "Accessibility.py:128 o_scope_pred np.empty(0)",
+          "Accessibility.py:185 d_distances np.empty(d_count) (adjust_destination_distances, per origin call)",
+          "Accessibility.py:63-66/84-90 reach_gravity_knn_access filter/sort temporaries (per origin call)"
+        ],
+        "verdict": "order-of-magnitude consistent: >=7 NRT arrays per heap pop at ~1.4M pops/origin reproduces the measured 9.563M/call rate; alloc==free confirms per-call churn, not retention"
+      }
+    },
+    "kernel_sites_verified_with_line_citations": {
+      "AccessibilityWElevation.py:144-148": "the same per-pop allocation row as Accessibility.py:148-152 (the family the observed O2 pass actually exercises — sidecar calls.integrated_scope_access module == AccessibilityWElevation)",
+      "Accessibility.py:143-161": "while-queue row: slice-add, two gathers, two compares, boolean-and, nonzero, staged writes/pushes",
+      "Accessibility.py:121-140": "identical init/sentinel/terminal/seed/push prologue (kept byte-identical by the candidate)",
+      "Accessibility.py:224-241 and 291-326": "the two drivers (od_compact..., integrated...) whose prange bodies call the kernel once per origin",
+      "Accessibility.py:185": "adjust_destination_distances in-function np.empty (contradicts the H05 'already caller-buffered' note)"
+    },
+    "observed_dtypes_admitted_domain_cross_check": "tests/large_e2e/oracle/test_l1_observed.py::test_observed_dtypes_pin_endpoint_typing: adjacency_pointer int64, adjacency_vector int64, weights float64, flags bool, o_terminal_idxs int64, reach out int64 — matches the guard's admitted specialization exactly"
+  },
+  "findings": [
+    {
+      "id": "A1I-N1",
+      "severity": "minor (evidence correction; no admission impact)",
+      "finding": "H05's recorded 'adjust_destination_distances: 0 dynamic alloc callsites — already caller-buffered' is an artifact: the raw probe A1_002140.json shows llvm_bytes=210 and zero NRT symbols for that kernel (an empty-IR inspect_llvm read, most plausibly the cache-hit path), while the source allocates d_distances=np.empty(d_count) in-function (Accessibility.py:185 / AccessibilityWElevation.py:181) and a fresh compile shows 2 dynamic NRT alloc callsites. The pattern-viability argument in the A1 admission reasoning cited this sub-fact as corroboration only; the load-bearing facts (9,563,127 NRT allocs per integrated single-origin call, 32/32 origins, alloc==free; 30 dynamic sites in integrated_scope_access; 12 in the search kernel) were re-verified exactly at this source and are unaffected. No measured number was altered; this record supersedes the '0/caller-buffered' characterization for A1 purposes. Routed for information to h05-profiler via team-lead."
+    }
+  ],
+  "verdict": "ADMITTED — all dossier preconditions verified on this source: surviving per-pop allocation/gather overhead inside the search kernel (12 dynamic sites in compact_vector_node_view_scope; 9.56M NRT allocs per integrated single-origin call, all freed in-call); complete-job coverage carried by the H05 stage model (accessibility search kernel dominates the O2 ACCESS window); admitted domain (float64 weights/labels, int64 pointer/indices, bool flags, finite nonnegative costs/cutoff, valid CSR, bounded scratch) is realizable and the unchanged original path is the fallback.",
+  "next_step": "proof.md for independent review before any implementation (dossier: proof required before code promotion)"
+}
