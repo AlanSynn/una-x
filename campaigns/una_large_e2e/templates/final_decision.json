@@ -1,0 +1,22 @@
+{
+  "campaign_state": null,
+  "performance_number_class": null,
+  "primary_scope": null,
+  "source_commit": null,
+  "source_tree": null,
+  "baseline_commit": "361928e4ba38f34622cafe065b0025244db61368",
+  "accepted": [],
+  "rejected": [],
+  "not_admitted": [],
+  "capacity_only": [],
+  "raw_evidence_index": null,
+  "installed_status": "unavailable",
+  "review_status": "unavailable",
+  "ci_status": "unavailable",
+  "actual_target_status": "unavailable",
+  "measured_claims": [],
+  "derived_claims": [],
+  "hypothetical_claims": [],
+  "unavailable": [],
+  "merge_disposition": "do_not_merge"
+}

@@ -1,19 +1,13 @@
-# UNA-X Claude Code handoff
+# UNA-X: active execution authority
 
-This repository is a development fork of `City-Form-Lab/urban_network_analysis`, seeded from upstream commit `c15ebda6981397f46eed5c2d55229f71e57d44fb`.
+The active campaign is `campaigns/una_large_e2e/`. Read its START_HERE.txt and EXECUTION.md when the user invokes `/goal`. `campaigns/REGISTRY.json` is the routing authority. Do not resume the completed CSR campaign.
 
-The active engineering campaign is the CPU throughput campaign in `optimization_una_cpu/`. Treat the current repository checkout as the target source tree. Upstream is the immutable semantic/oracle reference, not the place to write changes.
+The previous packet and all its evidence are archived unchanged under `campaigns/history/una_cpu_2026_09/packet/`. Old benchmark scripts under `benchmarks/una_cpu/` and regression tests remain for provenance; they are not the new qualification harness. Do not run their hard-coded sweep scripts on a new laptop.
 
-When the user invokes `/goal`:
-1. Read `optimization_una_cpu/START_HERE.txt`.
-2. Read the execution prompt, design authority, source audit, plan, task DAG, semantic/numerical contracts, benchmark protocol, promotion policy, branch/CI rules, and relevant dossiers.
-3. Execute the campaign rather than returning another plan.
-4. Preserve the frozen public API, numerical behavior, outputs, errors, state transitions, and fallback behavior.
-5. Work on `perf/una-cpu-throughput` or isolated worktrees. Do not rewrite or force-update `main`.
-6. Use the current `main` as the fork baseline while retaining upstream commit `c15ebda...` as provenance.
-7. GPU work is out of scope for this campaign.
-8. Do not push, merge, release, modify credentials, or change provider settings unless the user explicitly asks.
-9. Keep measured, derived, hypothetical, and unavailable claims distinct.
-10. Finish with an exact reviewed source SHA, raw evidence, installed-wheel proof, accepted/rejected register, selected CPU configuration, limitations, and merge manifest.
+Current numerical baseline: source at commit `361928e4ba38f34622cafe065b0025244db61368`, which already includes ordered CSR. Upstream c15ebda and pre-CSR 98f498e are historical references, not the primary performance comparator.
 
-The supplied CSR candidate is not automatically accepted. Verify its exactness against the immutable baseline, then measure complete installed end-to-end regions under equal resources.
+Execute on `perf/una-large-e2e` and isolated worktrees. Preserve user files. Implementation, review, and performance ownership are separate. No GPU, native backend, relaxed math, broad cache, public RunBatch parallelization, or scientific bug fixing in this campaign.
+
+The user's authorization to publish this packet to main is not standing authorization for future autonomous pushes, merges, releases, force-updates, credential changes, or permission changes. Produce a reviewed local candidate and merge manifest; await separate publication authorization.
+
+A plan is not completion. Missing proof/evidence means not admitted, blocked, or rejected, never passed. Follow the exact task DAG, gate thresholds, benchmark boundaries, failure policy, and finite stop conditions in the active packet.

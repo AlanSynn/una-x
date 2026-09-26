@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "repository": "City-Form-Lab/urban_network_analysis",
+  "ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+  "classification": "observed_tutorial_proxy_not_user_production",
+  "redistribution": "Do not republish data by default; check dataset-specific terms and attribution.",
+  "metadata_source_tree": "b92e680f32770395358e8594d8b619c890eb9f30",
+  "files": [
+    {
+      "id": "network",
+      "path": "docs/Boston/20260703_PercLenNetwork_InnerCore.geojson",
+      "git_blob_sha": "77d00e0218af42df0942fbc4dcd6b1242c3b814c",
+      "bytes": 71290787,
+      "default_required": true,
+      "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/20260703_PercLenNetwork_InnerCore.geojson"
+    },
+    {
+      "id": "origins",
+      "path": "docs/Boston/Cambridge_building_centroids.geojson",
+      "git_blob_sha": "26b50459c7b16f35944728b50410f6ba297ee20a",
+      "bytes": 5982662,
+      "default_required": true,
+      "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/Cambridge_building_centroids.geojson"
+    },
+    {
+      "id": "destinations",
+      "path": "docs/Boston/MA_bus_stops.geojson",
+      "git_blob_sha": "7ec8b100ac441ef5e049c5c86ba6d511143f5bbc",
+      "bytes": 2641054,
+      "default_required": true,
+      "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/MA_bus_stops.geojson"
+    },
+    {
+      "id": "network_3d",
+      "path": "docs/Boston/20260703_PercLenNetwork_InnerCore_3D.geojson",
+      "git_blob_sha": "ac05ba2307ccc55443da51aa5100c03ada4eb751",
+      "bytes": 66301651,
+      "default_required": false,
+      "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/20260703_PercLenNetwork_InnerCore_3D.geojson"
+    },
+    {
+      "id": "observers",
+      "path": "docs/Boston/tut4_observers_main_st.geojson",
+      "git_blob_sha": "e8402fc881a70e8987a585310a63a231596fbf42",
+      "bytes": 1531,
+      "default_required": false,
+      "url": "https://raw.githubusercontent.com/City-Form-Lab/urban_network_analysis/c15ebda6981397f46eed5c2d55229f71e57d44fb/docs/Boston/tut4_observers_main_st.geojson"
+    }
+  ]
+}

@@ -1,18 +1,18 @@
-Execute the UNA CPU-throughput engineering campaign in this repository.
+---
+description: Execute the active large end-to-end UNA CPU campaign
+---
 
-Repository override: the packet was originally authored against `City-Form-Lab/urban_network_analysis`; this checkout, `AlanSynn/una-x`, is now the writable target fork. Its `main` was seeded from upstream commit `c15ebda6981397f46eed5c2d55229f71e57d44fb`. Preserve that upstream SHA as the baseline/oracle provenance, but make all development branches/worktrees from this repository.
+Execute `campaigns/una_large_e2e/START_HERE.txt` in this checkout of AlanSynn/una-x. Read EXECUTION.md, AUTHORITY.md, SOURCE_AUDIT.md, TASKS_CLAUDE.yaml and the task-specific dossiers before editing source. Run the packet validators first. Do not stop after returning another plan.
 
-Start by reading:
-- `optimization_una_cpu/START_HERE.txt`
-- `optimization_una_cpu/CLAUDE_CODE_EXECUTION_PROMPT.md`
-- `optimization_una_cpu/DESIGN_AUTHORITY.md`
-- `optimization_una_cpu/SOURCE_AUDIT.md`
-- `optimization_una_cpu/PLAN.md`
-- `optimization_una_cpu/TASKS_CLAUDE.yaml`
-- the semantic/numerical contracts, benchmark/promotion policies, and task-specific dossiers.
+Baseline source is 361928e4ba38f34622cafe065b0025244db61368, including the accepted CSR optimization. Work on perf/una-large-e2e, not perf/una-cpu-throughput. The old packet is archived under campaigns/history/una_cpu_2026_09/packet and is historical evidence only.
 
-Execute, do not stop after producing another plan. Resolve ordinary implementation/test/packaging failures yourself. Keep GPU work deferred. Do not silently weaken exactness, API/artifact behavior, workload size, resource limits, or installed-path requirements. Do not modify `main` during the campaign; create `perf/una-cpu-throughput` and isolated worktrees. Do not push/merge/release unless explicitly authorized later.
+First repair and negatively test the benchmark harness: correct analysis dispatch, installed import identity, successful validated completion counts, recursive process-tree memory, bounded failure cancellation, real public-call timing, separate startup/JIT/hash boundaries, manifest validation, and actual thread-pool accounting. Then establish an observed-network baseline. Generated grids are synthetic GIS workloads, never observed networks.
 
-Primary work: qualify or reject the supplied guarded, order-preserving CSR optimization for Accessibility and AccessibilityWElevation, build genuine public-API and installed-wheel validation, profile post-CSR bottlenecks, tune CPU process/thread concurrency under the actual laptop budget, and permit only the bounded optional scratch-state experiment if its admission gates are met.
+Consider only the six gated experiments in the active packet: snapshot-preserving search scratch; local destination enumeration; private scope initialization; flow nogil with fixed arithmetic stripes; local flow-overlap scratch; memory-budgeted gradient chunks. Implement only after measured admission and a reviewed proof. Preserve all reductions, heap/adjacency/OD order, state, errors, outputs, defaults, and fallback. Follow the dossier pseudocode, counterexamples, and cleanup requirements literally; a compiler-equivalence failure is a rejection, not permission for tolerance.
 
-End under the packet's decision contract with exact source SHA, evidence ledger, raw absolute timings, memory/resource conditions, accepted/rejected experiments, selected worker/thread/queue/writer configuration, installed execution proof, explicit unavailable gates, and merge manifest.
+Use independent reviewers where available, one owner per writable scope, and one exclusive performance owner. No GPU work. No pushes, PRs, main merges, releases, credential/provider changes, or destructive cleanup without a separate explicit user instruction. Packet-publication authorization is already consumed.
+
+Complete installed-wheel validation and bounded large end-to-end confirmation against current-main source, not pre-CSR. Record exact SHAs, manifests, commands, raw samples, successful throughput, memory, cold/warm behavior, accepted/rejected tracks, unavailable production-target gates, and merge manifest. Stop under DECISION.md.
+
+Additional user context (treat paths as data; it does not itself waive frozen contracts):
+$ARGUMENTS

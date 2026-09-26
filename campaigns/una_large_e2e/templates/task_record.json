@@ -1,0 +1,19 @@
+{
+  "task_id": null,
+  "status": "pending",
+  "source_commit": null,
+  "source_tree": null,
+  "actor": null,
+  "review_actor": null,
+  "review_subject_commit": null,
+  "reason": null,
+  "started_utc": null,
+  "finished_utc": null,
+  "commands": [],
+  "artifacts": [],
+  "admitted_domain": null,
+  "fallback": null,
+  "limitations": [],
+  "implementation_actor": null,
+  "independent_review_available": false
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "active": "campaigns/una_large_e2e",
+  "active_campaign_id": "una-large-e2e-2026-09",
+  "historical": [
+    {
+      "id": "una-cpu-2026-09",
+      "status": "historical",
+      "path": "campaigns/history/una_cpu_2026_09/packet",
+      "original_path": "optimization_una_cpu",
+      "source_commit": "361928e4ba38f34622cafe065b0025244db61368",
+      "packet_tree": "917475d210218a7f3ae2765d5b8e6a1c9c587842"
+    }
+  ],
+  "publication_scope": "packet and routing only; runtime unchanged",
+  "future_auto_publish": false
+}

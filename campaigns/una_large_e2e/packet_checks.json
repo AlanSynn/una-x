@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "status": "pass",
+  "scope": "packet consistency only; no application qualification",
+  "static_checks": 330,
+  "task_count": 26,
+  "tool_tests": {
+    "run": 30,
+    "passed": 30,
+    "failed": 0,
+    "skipped": 0,
+    "command": "python3 -m unittest discover -s campaigns/una_large_e2e/tests -v",
+    "log": "validation/tool_tests.txt"
+  },
+  "validation_command": "python3 campaigns/una_large_e2e/tools/validate_packet.py",
+  "runtime_python": "3.13.5",
+  "full_test_log_sha256": "758eef043efcbbd6ba9d4d6d43a334bb695ce36389926082b0c4f42800b6cc74",
+  "full_validation_log_sha256": "e807ae2bbe9ba11862930e9a4bfd85c2140ec9c7d89bb86af7358f742508643e",
+  "application_benchmarks": "not_run",
+  "independent_application_review": "unavailable",
+  "git_publication_checks": "source and archive tree equality must be verified at remote publication; local tools tested on disposable Git fixtures"
+}
