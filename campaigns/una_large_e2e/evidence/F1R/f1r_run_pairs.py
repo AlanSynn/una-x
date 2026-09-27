@@ -550,8 +550,29 @@ def array_hashes(rec):
             for k, v in (rec.get("flow_arrays") or {}).items()}
 
 
+def _fixture_content(path):
+    """Canonical cross-arm content of an origins fixture: type + crs +
+    features, EXCLUDING the top-level "name". The driver derives each arm's
+    fixture in-run under its own run_id filename (f1r_bare_job.py:209) and
+    the GeoJSON layer name IS the basename, so whole-file shas differ by
+    proven layer-name metadata while the input is identical (proven on the
+    attempt-3 canary fixtures: features byte-equal, only "name" differs).
+    Returns None when the path is absent or unreadable, which fails the
+    binding check closed."""
+    if not path or not os.path.exists(path):
+        return None
+    try:
+        with open(path) as f:
+            d = json.load(f)
+    except (OSError, ValueError):
+        return None
+    return json.dumps({k: d.get(k) for k in ("type", "crs", "features")},
+                      sort_keys=True)
+
+
 def block_checks(rows):
-    """engine_config + byte-identity per block. Returns (findings, track_ok).
+    """engine_config + array/byte/fixture-content identity per block.
+    Returns (findings, track_ok).
 
     Called with the rows of COMPLETED blocks only (the caller decides when a
     block is complete); an empty rows list yields an empty findings list.
@@ -587,9 +608,26 @@ def block_checks(rows):
         fx_c = ((rc.get("origin_selection") or {}).get("fixture") or {})
         fx_sha_b0 = fx_b0.get("sha256") if isinstance(fx_b0, dict) else None
         fx_sha_c = fx_c.get("sha256") if isinstance(fx_c, dict) else None
-        if not (fx_sha_b0 and fx_sha_b0 == fx_sha_c):
-            failures.append({"mode": "fixture_sha_mismatch",
-                             "b0": fx_sha_b0, "cand": fx_sha_c})
+        # REV 5B (h04 pre-matrix blocking find): whole-file sha equality
+        # false-fires on in-run-derived fixtures - each arm's file embeds
+        # its own run_id basename as the GeoJSON layer "name"
+        # (f1r_bare_job.py:209), so every gate block would stop on
+        # fixture_sha_mismatch at block 1. Binding check is CONTENT
+        # equality via _fixture_content; both whole-file shas AND the
+        # content verdict are recorded per block.
+        fx_content_b0 = _fixture_content(fx_b0.get("path")
+                                         if isinstance(fx_b0, dict) else None)
+        fx_content_c = _fixture_content(fx_c.get("path")
+                                        if isinstance(fx_c, dict) else None)
+        fx_content_equal = (fx_content_b0 is not None
+                            and fx_content_b0 == fx_content_c)
+        if not fx_content_equal:
+            failures.append({"mode": "fixture_content_mismatch",
+                             "b0_sha": fx_sha_b0, "cand_sha": fx_sha_c,
+                             "b0_path": fx_b0.get("path")
+                             if isinstance(fx_b0, dict) else None,
+                             "cand_path": fx_c.get("path")
+                             if isinstance(fx_c, dict) else None})
         blk = {
             "block": bnum, "order": rb["order"],
             "engine_config_observed": {"b0": rb.get("engine_config_observed"),
@@ -597,7 +635,8 @@ def block_checks(rows):
             "array_hashes_equal": not arr_delta,
             "array_delta_keys": arr_delta,
             "array_hashes": {"b0": ra_b0, "cand": ra_c},
-            "fixture_sha": fx_sha_b0,
+            "fixture_sha": {"b0": fx_sha_b0, "cand": fx_sha_c},
+            "fixture_content_equal": fx_content_equal,
             "artifact_count_normalized": len(art_b0),
             "byte_identity": "IDENTICAL" if not art_delta else "DELTA",
             "artifact_delta_paths": art_delta[:20],
