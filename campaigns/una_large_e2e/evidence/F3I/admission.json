@@ -1,0 +1,101 @@
+{
+ "schema_version": 1,
+ "task": "F3I",
+ "record": "admission",
+ "role": "implementation-owner",
+ "generated_utc": "2026-09-27T02:51:32Z",
+ "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e",
+ "branch": "perf/una-large-e2e",
+ "spec_receipt": {
+  "committed_spec": "campaigns/una_large_e2e/evidence/F3I/impl_spec.json",
+  "spec_commit": "65a6729d6c42798703cb08e0692c585624aa5528",
+  "spec_blob_sha256": "f6a7f927977deb65f9cb1ba85ac573418d63d6efa625873f37538f3ef18b1dd7",
+  "blob_verified": "git cat-file blob HEAD:...impl_spec.json | shasum -a 256 == f6a7f927 (byte-exact to the filed proposal); checked-out working-tree copy same sha; git status porcelain 0 entries at recheck"
+ },
+ "phase0_receipt": {
+  "statement": "all impl_spec line citations re-verified against the committed pin before any edit; every cited line printed with its number and matched",
+  "citations_verified": {
+   "AggregateFlow.py:622": "self._first_origin_node = n_net + n_dest   # index of first V_o",
+   "AggregateFlow.py:908": "def _precompute_dest_gradients(self, ns): (function span 908-961 as cited)",
+   "AggregateFlow.py:921-925": "n_net / n_dest / n_total = self._csr_indptr.shape[0] - 1 / limit / dest_nodes = np.arange(n_net, n_net + n_dest, dtype=np.int64)",
+   "AggregateFlow.py:927": "# Chunked scipy calls bound the dense intermediate to ~0.8 GB. (the comment the change supersedes)",
+   "AggregateFlow.py:928": "chunk = max(1, int(1e8 // max(n_total, 1))) (verbatim as quoted in spec)",
+   "AggregateFlow.py:934-942": "scipy call through shape handling and finite = np.isfinite(dist); dist/preds rebound here each iteration = the lingering lifetime the dossier names",
+   "AggregateFlow.py:944-948": "cols = np.where(finite[k])[0]; appends with astype int64 / float64 / int32",
+   "AggregateFlow.py:951-953": "three np.concatenate lines",
+   "AggregateFlow.py:961": "return indptr, nodes, dist, pred",
+   "AggregateFlow.py:1234-1274": "turns twin _precompute_dest_gradients_turns; def at 1234, chunk formula at 1243, return at 1274 (C4 zero-byte region)"
+  }
+ },
+ "source_pin": {
+  "head_at_recheck": "65a6729d6c42798703cb08e0692c585624aa5528",
+  "src_tree_hash": "e7fe3ebda089174bf9fedce315fcddfa9e56e2a1",
+  "control_selected_src_tree": "b121ec0b4312f12caa98bc115243652e1564d3ec",
+  "control_selected_commit": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29",
+  "control_source": "evidence/control.json selected_source (accepted_tracks = [A1 screened_in_provisional]; F1 not in accepted_tracks after the F1R disposition not_demonstrated_at_screen)",
+  "trees_equal": false,
+  "delta_vs_selected": {
+   "diffstat": "1 file changed, 1 insertion(+), 1 deletion(-) - src/urban_network_analysis/Engines/AggregateFlow.py ONLY",
+   "hunk": "@nb.njit(cache=True, fastmath=True) -> @nb.njit(cache=True, fastmath=True, nogil=True) on _accumulate_od_flow (context @@ -189,7 +189,7 @@)",
+   "nature": "the reviewed F1 decorator line (verified line-for-line at F1R P3/P4, evidence/F1R/p3_verification.json); AggregateFlow blob 0114ce8f at 7a27866 -> 455e92ad at HEAD, both printed by git rev-parse this recheck",
+   "f3_domain_affected": false,
+   "f3_domain_note": "the hunk sits inside _accumulate_od_flow's decorator (:192); the F3 target _precompute_dest_gradients (:908-961) and its turns twin (:1234-1274) are byte-identical in both trees, so every H05 F3 fact and every Phase-0 citation holds at the selected source unchanged"
+  }
+ },
+ "reverified_facts": {
+  "method": "code inspection at HEAD 65a6729 with line citations (Phase-0 prints); measured values accepted as committed H05 evidence (admissions.json F3_gradient_workspace, verdict ADMITTED). No re-measurement performed in F3I Phase 1; blob identity of the F3 region across selected source and HEAD is the bridge.",
+  "chunk_formula_reproduces_h05": {
+   "citation": "AggregateFlow.py:928",
+   "computed": "int(1e8 // 56844) = 1759 with V' = 49159 network + 6661 destination-virtual + 1024 origin-virtual = 56844 (counts from the F1R raw records; composition grounded at :622/:923/:925)",
+   "h05_fact": "chunk_chosen = 1759",
+   "match": "exact"
+  },
+  "dense_transient_conventions": {
+   "h05_value_bytes": 1199863152,
+   "h05_convention": "chunk * V' * 12 B (dist 8 + pred 4, no mask byte) = 1759*56844*12 = 1199863152 exactly (reproduced True)",
+   "dossier_value": "about 1.3 GB at 1e8 elements = 1e8 * 13 B (adds the full finite bool mask) = 1300000000 B",
+   "at_observed_cell_13B": 1299851748,
+   "note": "both are DERIVED payload estimates under named conventions, neither is measured RSS; the measured anchor is peak_rss_chosen_mib 2489.125 (H05). Both figures recorded so no equality claim crosses conventions."
+  },
+  "sparse_payload": {
+   "h05_sparse_grad_bytes": 9565360,
+   "mib": 9.122238,
+   "implied_finite_entries_at_20B": 478268,
+   "consistency": "the code's v=2 log line prices sparse storage at nodes.shape[0]*20 B (AggregateFlow.py:957), i.e. int64 nodes + float64 dist + int32 pred per entry - the H05 figure is in that convention"
+  },
+  "gather_dtypes": {
+   "citations": ["AggregateFlow.py:946 cols.astype(np.int64)", "AggregateFlow.py:947 dist[k, cols].astype(np.float64)", "AggregateFlow.py:948 preds[k, cols].astype(np.int32)"],
+   "fact": "parts are int64 / float64 / int32 - the int32 pred matches the 4 B used in both dense-transient conventions; selector takes itemsizes from returned dtypes at run time, never hardcodes"
+  },
+  "lingering_lifetime": {
+   "citations": ["AggregateFlow.py:934-939 dist, preds bound per slice iteration", "AggregateFlow.py:942 finite = np.isfinite(dist)"],
+   "fact": "dist/preds/finite stay live across the whole inner per-row loop AND into the next _scipy_dijkstra call (rebound only after it returns) - the dossier's named target; F3I deletes them before the next call"
+  },
+  "concatenate": {
+   "citation": "AggregateFlow.py:951-953",
+   "fact": "final arrays assembled by np.concatenate over the per-row parts in ascending destination order; F3I preserves order and dtypes bit-for-bit"
+  },
+  "turns_twin": {
+   "citations": ["AggregateFlow.py:1234 def _precompute_dest_gradients_turns", "AggregateFlow.py:1243 chunk = max(1, int(1e8 // max(n_states, 1)))", "AggregateFlow.py:1274 return"],
+   "fact": "identical chunking pattern on the line graph; F3I excludes it (spec C4, h04-confirmed) and it keeps the large transient at cells that select turns"
+  },
+  "stage_cost_context": {
+   "h05_facts": "gradient_stage_s_chosen 1.73529525 s, gradient_share_of_window_first_pilot 0.20771849773176707, peak_rss_chosen_mib 2489.125",
+   "reading": "the precompute stage is about one fifth of the B0 window and its dense transient is present in the measured peak; F3I makes no throughput claim - DECISION.md line 11: 'F3 capacity-only improvement is labelled capacity_only, never throughput-qualified'"
+  },
+  "capacity_motive": {
+   "h05_fact": "selall_capacity_refusal: 'sel-all projected peak 2.43 GiB vs 0.9x ceiling 2.30 GiB, or projected origin loop 52s vs remaining heavy budget 14157s'",
+   "reading": "the dense transient is the allocation that caused the sel-all capacity refusal; the byte-budgeted workspace attacks it directly (H05 reasoning verbatim)"
+  }
+ },
+ "drift_check": {
+  "found": false,
+  "detail": "no drift in the F3 domain: the F3 target region is byte-identical from control selected source 7a27866 (blob 0114ce8f) through HEAD 65a6729 (blob 455e92ad); the ONLY src-tree delta is the reviewed F1 decorator line outside the region (tree diffstat 1 file 1+/1-, hunk printed). Every H05 F3 fact re-verified above matches the code at line level."
+ },
+ "open_routing_flag": {
+  "statement": "implementation BASE for Phase 3 is unresolved and is NOT silently assumed: worktree tip carries the F1 decorator (not in control accepted_tracks), control selected source is 7a27866/b121ec0b without it. Options: (a) author the F3I edits against the F1-carrying tip (physical lineage; F3I diff then contains the pre-existing decorator line unless stated otherwise) or (b) author against the selected-source blob 0114ce8f (pure one-change attribution; matches the F1R rev-5 arm rule precedent 'advanced line minus not-screened tracks').",
+  "resolved_by": "reviewer/coordinator ruling BEFORE Phase 3 (in addition to the Phase-2 approval gate); Phase 2 proof authoring is insensitive to the choice because the F3 target region is byte-identical in both trees and the proof cites that region only"
+ },
+ "verdict": "ADMITTED for Phase 2 (proof authoring) - source pin verified with the F1-decorator delta characterized exactly; chunk formula reproduces H05's chunk_chosen 1759 exactly; the 12 B/elem H05 dense-transient figure reproduces exactly under its convention and the dossier's 13 B figure is recorded alongside; lingering lifetime, gather dtypes, concatenate order, turns twin, stage cost and capacity motive all match committed evidence. Phase 3 (implementation) additionally awaits the open_routing_flag ruling.",
+ "next_step": "proof.md for independent preimplementation review, pinning the selector invocation model (proposed: per-chunk re-invocation with actual fixed_live, per my relayed item-5 position) and showing max transient retained_so_far + c*per_source + margin <= cap under the chosen model; hard stop until h04's approval and the routing ruling are relayed by the coordinator."
+}
