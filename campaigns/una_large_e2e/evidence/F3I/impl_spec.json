@@ -1,0 +1,176 @@
+{
+ "schema_version": 1,
+ "task": "F3I",
+ "record": "impl_spec",
+ "role": "implementation-owner (h05-profiler)",
+ "generated_utc": "2026-09-27T02:34:16Z",
+ "status": "DRAFT PROPOSAL - execution-blocked: coordinator commits to evidence/F3I/impl_spec.json after reviewer classification/pin; no implementation byte is written before that commit and the Phase-0 admission recheck",
+ "provenance": {
+  "task_registration": "task #26 'F3I: Byte-budgeted gradient workspace (impl)', role implementation-owner, depends_on [F1R]; F1R closed (h04 packet receipt PASS, #25 completed) immediately before this drafting",
+  "governing_dossier": {
+   "path": "campaigns/una_large_e2e/dossiers/F3_gradient_workspace.md",
+   "sha256": "dccddf12d251c8a558af7201475c882b5f7cdc2edaa66777c6f03d2b4abdd2b6",
+   "rule": "every implementation obligation below quotes the dossier LITERALLY; where this spec paraphrases, the quoted dossier text governs"
+  },
+  "task_gates": {
+   "path": "campaigns/una_large_e2e/TASKS_CLAUDE.yaml",
+   "sha256": "c4f608a02154e1862047e3f5ece83865dd6aa86f155e69832d771589dcccb03c",
+   "F3I_entry_verbatim_fields": {
+    "base_commit": {"selector": "last_reviewed_selected_source", "baseline": "361928e4ba38f34622cafe065b0025244db61368", "resolve_to_full_sha_before_start": true},
+    "owned_files": ["src/urban_network_analysis/Engines/AggregateFlow.py", "src/urban_network_analysis/Engines/_large_flow_*.py", "tests/large_e2e/F3/**", "campaigns/una_large_e2e/evidence/F3I/**"],
+    "validation_tier": "L0/L1",
+    "resource_budget": {"profile": "RESOURCES.md", "heavy_execution": "exclusive"},
+    "outputs": ["evidence/F3I/admission.json", "evidence/F3I/proof.md", "evidence/F3I/result.json"],
+    "proof_obligations": ["Dossier transition/observation proof must match actual compiled code.", "Every precondition/refusal/early exit and scratch lifetime is covered.", "No unreviewed composition changes."],
+    "completion_condition": "Admitted version has immutable source/tests/proof and L0/L1 results; otherwise not_admitted/rejected with source unchanged."
+   }
+  },
+  "decision_anchor": {
+   "path": "campaigns/una_large_e2e/DECISION.md",
+   "sha256": "1f7f1b2df1c8400596706fcee47e88b9cd238a3d9912aa51c113dec4b48496bd",
+   "line11_verbatim": "Screening uses at least three paired A/B complete-job blocks on the frozen selection workload, same resource and numerical policy, outside leaf profilers. A is current selected control for marginal selection; B0 remains final comparator. A screened-in patch is provisional until installed/composition/final gates pass. Reject on any semantic failure, or when the median complete-job time does not improve beyond the measured noise band. F3 capacity-only improvement is labelled capacity_only, never throughput-qualified."
+  },
+  "authored_against": {
+   "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e",
+   "branch": "perf/una-large-e2e",
+   "HEAD": "6794444c24398d99b28de83724da640db2599e4f",
+   "aggregate_flow_git_blob": "455e92adb5f23748903435d3d6340a5d8a9c47d3",
+   "blob_convention_note": "git blob sha1 as printed by `git rev-parse HEAD:<path>`; it equals the candidate blob pinned in evidence/F1R/screen_spec.json (arms_and_sources.candidate.aggregate_flow_blob), i.e. the line at tip already carries the F1 decorator change per the closed F1R disposition (change stays in line). The sha256-of-file convention would print 73ac95b341ed128e77afc69e0789550fadeaadca13446f438ce771f966f48978 for the same bytes; both stated so no equality claim crosses conventions.",
+   "line_numbers": "AggregateFlow.py line numbers cited below are at this blob; re-verified against the committed pin at Phase-0 before any edit"
+  }
+ },
+ "measured_baseline": {
+  "V_prime_composition": "n_total = self._csr_indptr.shape[0] - 1 (AggregateFlow.py:923). CSR node count = network nodes + destination virtual nodes + origin virtual nodes; grounding: dest_nodes = np.arange(n_net, n_net + n_dest) (:925) and self._first_origin_node = n_net + n_dest (:622, index of first V_o).",
+  "observed_cell_derived": {
+   "conventions": "MiB = 1048576 B; GiB = 1073741824 B; all values computed by script from the F1R raw record counts (V_nodes 49159, E_edges 69957, O_rows 1024, D_rows 6661), not typed",
+   "n_total": 56844,
+   "current_chunk_formula_value": "int(1e8 // 56844) = 1759",
+   "per_source_bytes_V'*13": 738972,
+   "per_source_MiB": 0.704739,
+   "current_transient_dense_payload_at_chunk_1759": "1299851748 B = 1.210581 GiB",
+   "dossier_dense_payload_claim_check": "1e8 * (8+4+1) = 1300000000 B = 1.210719 GiB - the dossier's 'about 1.3 GB' derived estimate reproduces under these conventions; it remains a DERIVED payload estimate, not measured RSS or allocator peak (dossier line 7)",
+   "cap_table_fixed_live_zero_upper_bound": [
+    {"cap_MiB": 64,  "cap_B": 67108864,   "c_max": 90,  "transient_B": 66507480,   "transient_GiB": 0.06194},
+    {"cap_MiB": 128, "cap_B": 134217728,  "c_max": 181, "transient_B": 133753932,  "transient_GiB": 0.124568},
+    {"cap_MiB": 256, "cap_B": 268435456,  "c_max": 363, "transient_B": 268246836,  "transient_GiB": 0.249824}
+   ],
+   "cap_table_caveat": "c_max above divides the cap by per_source ALONE (fixed_live = 0); the real selector subtracts fixed_live first, so realized c is smaller. At cap 256 MiB and D=6661 destinations the schedule is ceil(6661/363) = 19 chunks (upper-bound c).",
+   "dtype_assumption": "per_source uses dist float64 (8 B) + pred int32 (4 B) + finite mask bool (1 B); the selector itself takes itemsize as RETURNED by SciPy at run time (dossier line 13: 'returned dtype sizes') and must not hardcode this triple; the observed values are sizing illustrations only"
+  }
+ },
+ "source_target": {
+  "function": "_precompute_dest_gradients",
+  "location": "src/urban_network_analysis/Engines/AggregateFlow.py:908-961 at the pinned blob",
+  "current_chunk_line_verbatim": "        chunk = max(1, int(1e8 // max(n_total, 1)))",
+  "current_live_set": "quoted from dossier line 7: 'A chunk allocates float64 dist, predecessor array (inspect returned dtype), full finite mask, source indices, sparse gathered copies appended to lists, SciPy/native workspace and Python overhead. At loop assignment, previous dist/preds/mask may remain live while next results allocate. At final np.concatenate, sparse parts coexist with final arrays.'",
+  "existing_comment_scope": "the in-code comment at :927 says the chunking bounds the dense intermediate to '~0.8 GB'; dossier line 7 states that comment 'counts distance payload only' - the F3I change supersedes this comment with the byte-budgeted policy; the superseded comment text must not survive the edit"
+ },
+ "change_contract": {
+  "C1_new_private_module": {
+   "what": "new file src/urban_network_analysis/Engines/_large_flow_workspace.py containing ONE private pure chunk-selection helper; AggregateFlow.py imports it module-privately",
+   "rationale": "owned_files pattern src/urban_network_analysis/Engines/_large_flow_*.py anticipates a private flow module; keeps the AggregateFlow.py diff to import + call site + cleanup, which is the reviewable surface"
+  },
+  "C2_selector_contract": {
+   "dossier_pseudocode_verbatim": [
+    "Extract a PRIVATE pure chunk-selection helper taking V', remaining sources, returned dtype sizes and a conservative workspace cap. The cap is internal policy derived from approved resource profile or a fixed validated safe default, not a new required public Settings field. Do not query changing free RAM every row and call it deterministic numerical identity; numerical behavior must be independent of chosen chunk, but record the actual schedule.",
+    "Let fixed_live include graph, retained sparse parts, source/result arrays and reserved native/runtime margin. Let per_source include V'*(8+pred_itemsize+mask_itemsize) plus actual row temporaries/source-index cost and a measured safety margin. Choose c<=remaining such that fixed_live+c*per_source fits workspace budget. If even c=1 cannot fit, the experiment has no admitted memory-safe fast path; preserve original behavior or report benchmark capacity unavailable. Never drop destinations or return partial gradients."
+   ],
+   "binding_terms": [
+    "helper is PURE: no free-RAM, loadavg, cgroup, psutil or any environment query anywhere in its execution path; the cap is a passed-in constant; violation = implementation rejection",
+    "helper inputs: V' (CSR node count), remaining source count, the three itemsizes as RETURNED by SciPy (dist, pred) plus bool mask, fixed_live byte estimate computed by the caller from actual live arrays, workspace cap bytes",
+    "helper output: integer c with 1 <= c <= remaining, or the explicit NO_FIT signal (never 0, never a silent clamp); NO_FIT handling per PD-2",
+    "numerical behavior is independent of c: the same inputs must produce bit-identical outputs for any admitted c"
+   ]
+  },
+  "C3_call_site_rewrite": {
+   "dossier_loop_verbatim": [
+    "For source slices in original ascending order:",
+    "- call the SAME scipy_dijkstra, SAME CSR, directed flag, source indices, limit and return_predecessors=True;",
+    "- preserve shape handling and per-row np.where(finite) order;",
+    "- preserve original gathered dtype conversions and independent copies;",
+    "- append rows in exact destination order;",
+    "- delete all dense arrays, masks and lingering views before the next Dijkstra call;",
+    "- concatenate with identical indptr/nodes/dist/pred order and dtype."
+   ],
+   "cleanup_obligation_literal": "'delete all dense arrays, masks and lingering views before the next Dijkstra call' - implemented as explicit del of dist, preds, finite (and any row temporaries) at the END of each slice iteration, BEFORE the next _scipy_dijkstra call; the current code rebinds them only after the next call returns (AggregateFlow.py:934-942), which is exactly the lingering-lifetime the dossier names",
+   "aliasing_obligation": "dossier line 28: 'Pure copies/deallocation cannot alter already-copied sparse arrays; verify no appended part aliases deleted dense memory.' gathered parts are independent copies (fancy indexing + astype); a test must demonstrate non-aliasing, not assert it"
+  },
+  "C4_turns_variant_excluded": {
+   "statement": "_precompute_dest_gradients_turns (AggregateFlow.py:1234-1274) remains BYTE-IDENTICAL in F3I: same inline chunk formula, same gather loop, no helper import",
+   "grounding": "dossier line 4 scopes the turns equivalent as '(and separately reviewed turns equivalent if selected)' - F3I selects the node-graph path only; routing the turns path through the new helper without its own review would be an unreviewed composition change (TASKS_CLAUDE.yaml F3I proof_obligations, third item)",
+   "verification": "the Phase-2 blob diff must show ZERO changed bytes inside :1234-1274"
+  },
+  "C5_schedule_recording": {
+   "what": "the v=2 'Gradient storage:' log line gains the actual schedule (chosen c, cap bytes, chunk count); numerical output untouched",
+   "grounding": "dossier line 13: 'numerical behavior must be independent of chosen chunk, but record the actual schedule'",
+   "scope_note": "log-string extension only; artifacts (Results.csv/geojson/feather) carry no log text, so byte-for-byte artifact comparison across arms is unaffected"
+  },
+  "C6_identity_independent_of_chunk": {
+   "statement": "gradient arrays must be bit-identical across c in {1, 2, 3, whole-source-set, original formula} on every fixture; a difference rejects the domain outright",
+   "grounding": "dossier line 13 ('numerical behavior must be independent of chosen chunk') and line 27 ('The operation per source must be the same native search regardless of how sources are grouped into calls')"
+  }
+ },
+ "caps_policy": {
+  "dossier_line36_verbatim": "At most three preselected workspace caps (policy choices 64/128/256 MiB) within this task's bounded screening budget; do not run an unbounded sweep or change caps after final freeze.",
+  "preselected_caps_MiB": [64, 128, 256],
+  "no_other_cap_is_admitted": "any cap outside this set, or a cap changed after freeze, is out of policy",
+  "PD1_default_cap": {
+   "proposal": "default cap = 256 MiB",
+   "rationale": "largest dossier cap = smallest behavioral delta from the current formula (observed-cell transient drops 1.210581 GiB -> <= 0.249824 GiB) while still a hard bound; the F3R screen can then compare 128/64 as policy arms without re-implementation",
+   "status": "POLICY DECISION - reviewer/coordinator rule before implementation"
+  },
+  "PD2_no_fit_semantics": {
+   "proposal": "NO_FIT -> caller preserves original behavior: fall back to the unchanged original chunk formula, record the refusal in the run record; the capacity-unavailable report path is exercised at test level only (tiny cap)",
+   "rationale": "dossier offers 'preserve original behavior or report benchmark capacity unavailable'; preservation keeps every workload runnable and confines the refusal signal to observable, tested behavior",
+   "status": "POLICY DECISION - reviewer/coordinator rule before implementation"
+  },
+  "fixed_live_composition": "per dossier line 15: graph (CSR data/indices/indptr bytes, both directions as actually live), retained sparse parts accumulated so far, source/result arrays, reserved native/runtime margin; the caller computes it from actual array nbytes, never from a model of them",
+  "per_source_composition": "per dossier line 15: V'*(8+pred_itemsize+mask_itemsize) plus actual row temporaries/source-index cost and a measured safety margin; the margin is fixed at selection time, not adapted at run time"
+ },
+ "admission_and_warnings": {
+  "dossier_lines9_10_verbatim": "Changed chunk count can change warning/exception multiplicity. Admit only validated CSR and normal finite nonnegative cost profiles for which the original SciPy calls are warning-free; unsupported negative/nonfinite costs, invalid sources/indices, unusual sparse subclasses or warning-producing conversions keep original chunking and error behavior. Count warnings in B0/candidate tests. Do not classify warnings as harmless timing metadata.",
+  "implementation_consequence": "the call site preserves original chunking AND original error/warning behavior on any non-admitted profile; warning/exception counts are recorded per test, never swallowed"
+ },
+ "equivalence_obligation": {
+  "dossier_lines27_28_verbatim": "The operation per source must be the same native search regardless of how sources are grouped into calls. Inspect the pinned SciPy implementation or official semantics and test actual predecessor tie behavior, not distances alone. If native vectorized batching chooses different ties or arithmetic under changed chunk size, reject that domain. Pure copies/deallocation cannot alter already-copied sparse arrays; verify no appended part aliases deleted dense memory.",
+  "implementation_consequence": "tie-behavior fixtures compare pred arrays bit-for-bit, not dist alone; if ties differ under any c, F3I records not_admitted for that domain and leaves source unchanged"
+ },
+ "tests_plan": {
+  "dossier_lines31_33_verbatim": [
+   "Chunk sizes 1,2,3,entire-source-set and uneven final tail; zero destinations; one destination; disconnected states/+inf; tied shortest paths; duplicated source nodes if baseline allows; custom/elevation/obstacle costs; sorted input/parallel arcs from actual flow CSR; empty finite rows. Compare all indptr/nodes/dist/pred arrays bit-for-bit, forward/reverse CSR unchanged and full flow/cap/artifacts. Force tiny cap and refusal at single-source capacity without running OOM in main process.",
+   "Measure simultaneous process-tree/native memory and explicit per-stage payload counts, not tracemalloc alone. Verify old chunk reference release via allocation/lifetime instrumentation outside final timing. Compare complete RunFlow and total gradients, cold and warm. A lower-memory but slower implementation can be capacity_only under DECISION; never label it throughput-qualified without full-path win."
+  ],
+  "file_layout": "tests/large_e2e/F3/ mirroring the F1 convention: fixtures_f3.py, harness_f3.py, test_f3_selector.py (purity + contract + NO_FIT), test_f3_chunk_equivalence.py (bit-for-bit across c incl. tie fixtures), test_f3_refusal.py (tiny cap, no OOM), test_f3_cleanup.py (release/lifetime instrumentation), test_f3_observed.py (small observed-derived complete-RunFlow comparison)",
+  "tier_boundary": "F3I executes L0/L1 only: synthetic fixtures and small observed-derived complete-RunFlow comparisons; NO gate-eligible, lease-window or heavy execution - the 3-block complete-job screen at the frozen selection workload is F3R's instrument (DECISION.md line 11 governs there; the dossier 'cold and warm' full-scale comparison is consumed by F3R)",
+  "refusal_test_safety": "the tiny-cap refusal is forced through the SELECTOR directly with a small fixture, never by driving the main process toward OOM",
+  "csr_fixtures": "'sorted input/parallel arcs from actual flow CSR' - fixtures derive from the pinned observed inputs (campaign_data/inputs, sha-pinned in the F1R records), sliced small; fixture shas recorded in the test artifacts"
+ },
+ "stop_conditions": {
+  "dossier_line36_verbatim": "If sparse parts/final outputs dominate persistent memory, chunk reduction cannot solve the capacity limit. Record the remaining lower bound rather than adding out-of-scope spill/checkpoint formats. If B0 fails at a large input, report censored baseline and unavailable speedup. Keep exactness evidence at a common feasible cell.",
+  "consequence": "if F3I measurement shows sparse/retained parts dominate, the honest terminal is the recorded lower bound and likely not_admitted/capacity-unavailable - not a pivot to spill formats"
+ },
+ "non_goals": {
+  "dossier_line25_verbatim": "Initially keep mask formation unchanged. Per-row finite masks are a second subchange only if lifetime measurements justify it and exactness is independently checked. No min_only, batched-nearest-source substitution, sparse Dijkstra rewrite, concurrent chunks, changed limit, compression or new file cache.",
+  "additional": ["no public Settings field for the cap (dossier line 13)", "no source edits outside owned_files", "no GPU, native backend, relaxed math, broad cache, public RunBatch parallelization, or scientific bug fixing (campaign constraints)", "no free-RAM-adaptive chunking presented as determinism (dossier line 13)"]
+ },
+ "manifest_plan": {
+  "standing_convention_from_F1R": "h04's binding forward rule, SHARPENED at F1R closeout and carried into drafting per coordinator relay: it is NOT enough for the F3R spec to carry the campaign_data_manifest deliverable as a line item - the manifest update (v3 or successor, listing the paths it adds and stating sanctioned-exclusion classes in-file) must be FILED before any F3R matrix fires; a PRE-MATRIX deliverable, not post-hoc reconciliation; h04 verifies the manifest at fire time before clearance (same as the F1R v2 verification). Ground: F1R-N1's actual defect was filing order, not missing prose.",
+  "F3I_own_obligation": "at F3I close, a campaign_data manifest for F3I artifacts (campaign_data/f3i_* files: this spec's committed copy lineage, build/diff records, L0/L1 artifacts) is filed per the F1R manifest v2 recipe (13-entry template, indent=1, sha256+bytes per file, utc, sanctioned_exclusions stated) alongside evidence/F3I/result.json; the lease log is re-hashed at manifest write time with quiescence stated",
+  "lease_log": "any F3I execution consuming lease (none planned under L0/L1; if any window opens, the supervisor lease_append path with charged_s at append is the sole charging mechanism, rev5c convention) "
+ },
+ "execution_order": [
+  "Phase 0: coordinator commits this spec (post reviewer classification/pin) to evidence/F3I/impl_spec.json; re-verify AggregateFlow.py line cites against the committed pin",
+  "Phase 1: admission recheck - recheck measured admission against last selected source; resolve base_commit selector to full sha; record evidence/F3I/admission.json; if not admitted, record reason and leave source unchanged (terminal)",
+  "Phase 2: proof.md - dossier transition/observation proof matched to actual compiled code, every precondition/refusal/early exit and scratch lifetime covered; INDEPENDENT preimplementation proof approval obtained before any implementation byte",
+  "Phase 3: implementation per C1-C6 and the ruled PD1/PD2 (and any reviewer amendments); turns function byte-identical",
+  "Phase 4: L0/L1 tests per tests_plan; retain failed evidence; no filename-only reuse",
+  "Phase 5: evidence/F3I/result.json + the F3I manifest per manifest_plan; reviewer receipt closes #26 and opens F3R"
+ ],
+ "open_policy_decisions_for_reviewer": [
+  "PD1: default cap 256 MiB (of the dossier set {64,128,256}) - rule or amend",
+  "PD2: NO_FIT semantics = preserve original chunk formula + recorded refusal (dossier alternative: report benchmark capacity unavailable) - rule or amend",
+  "PD3: helper placement in new _large_flow_workspace.py vs inline in AggregateFlow.py - proposed: new module",
+  "PD4: turns variant byte-identical exclusion (C4) - confirm scope",
+  "PD5: v=2 log line gains schedule fields (C5) - confirm log-string change is acceptable to review"
+ ]
+}
