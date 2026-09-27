@@ -25,7 +25,9 @@ lines), stated per the P3 requirement:
     f2r (pre-existing, chained — REFUSES to auto-create; opening chain
     verified against the spec constants); launcher pin: b0 runs get
     --launcher-path/--launcher-sha256, supervisor refuses on launcher-byte
-    drift from LAUNCHER_SHA256; run ids f2r_b<N>_<ORDER>_<arm>; 100x
+    drift from LAUNCHER_SHA256; run ids <RUN_PREFIX>_b<N>_<ORDER>_<arm>
+    via --run-id-prefix (default "f2r" = attempt-1 ids; a fresh attempt
+    passes a fresh prefix so landed records are never rewritten); 100x
     worst-case-with-one-restart headroom check at matrix entry.
   ADDED (F2R obligations absent from the skeleton):
     - REV-9 quiet-window gate EVERY admission: available >= 5,368,709,120 B
@@ -69,6 +71,7 @@ import threading
 import time
 
 CAMPAIGN = "/Users/alansynn/orca/workspaces/una-x"
+CAMPAIGN_VENV_PYTHON = f"{CAMPAIGN}/venvs/campaign/bin/python"
 REPO = f"{CAMPAIGN}/wt-large-e2e"
 EV = f"{REPO}/evidence/F2R"
 DATA = f"{CAMPAIGN}/campaign_data"
@@ -114,6 +117,10 @@ ARMS = {
 SCHEDULE = [(1, "AB", "b0"), (1, "AB", "cand"),
             (2, "BA", "cand"), (2, "BA", "b0"),
             (3, "AB", "b0"), (3, "AB", "cand")]
+
+# Run-id root; --run-id-prefix retargets a fresh attempt (restart-whole,
+# h04 ruling (c)) so landed attempt-1 records are never rewritten.
+RUN_PREFIX = "f2r"
 
 
 def wheel_record():
@@ -273,7 +280,7 @@ def rename_aside(path):
 def run_slot(block, order, arm):
     import psutil
     a = ARMS[arm]
-    run_id = f"f2r_b{block}_{order}_{arm}"
+    run_id = f"{RUN_PREFIX}_b{block}_{order}_{arm}"
     out_json = f"{RAW}/{run_id}.json"
     cache_fresh = "wiped_fresh" if block == 1 else "reused"
     if block == 1 and arm == "b0":  # wipe BOTH roots once, at block-1 start
@@ -598,7 +605,7 @@ def load_rec(run_id):
 def summary(refusal=None, stop_reason=None):
     rows = []
     for block, order, arm in SCHEDULE:
-        run_id = f"f2r_b{block}_{order}_{arm}"
+        run_id = f"{RUN_PREFIX}_b{block}_{order}_{arm}"
         r = load_rec(run_id)
         if r is None:
             rows.append({"run_id": run_id, "missing": True, "block": block,
@@ -757,8 +764,8 @@ def summary(refusal=None, stop_reason=None):
                                f"({LEASE_LOG})", "budget_s": HEAVY_WALL_BUDGET_S}
     out = {
         "task": "F2R", "record": "screen_summary", "role": "screen-executor",
-        "spec_source": "evidence/F2R/screen_spec.json (P1 bytes 085684ec, "
-                       "commit b3f8a15)",
+        "spec_source": "evidence/F2R/screen_spec.json (REV 6 bytes b954cf8c, "
+                       "commit ec97f34)",
         "descriptive_only": "h04-reviewer owns disposition/verdicts; this "
                             "summary computes quantities and records data "
                             "points only",
@@ -795,6 +802,15 @@ def summary(refusal=None, stop_reason=None):
         "console_transcripts_dir": CONSOLE_DIR,
         "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
+    if os.path.exists(SUMMARY):
+        prev_bytes = open(SUMMARY, "rb").read()
+        prev_sha = hashlib.sha256(prev_bytes).hexdigest()
+        interim = f"{DATA}/interim_{prev_sha[:8]}_summary.json"
+        if not os.path.exists(interim):
+            with open(interim, "wb") as g:
+                g.write(prev_bytes)
+        print(f"[f2r-pairs] R2 custody: prior summary "
+              f"{prev_sha[:8]} -> {interim}")
     with open(SUMMARY, "w") as f:
         json.dump(out, f, indent=1)
     print(f"[f2r-pairs] summary -> {SUMMARY}")
@@ -804,7 +820,22 @@ def summary(refusal=None, stop_reason=None):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", choices=["run", "summary"], default="run")
+    ap.add_argument("--run-id-prefix", default="f2r")
     a = ap.parse_args()
+    global RUN_PREFIX
+    RUN_PREFIX = a.run_id_prefix
+    if os.path.realpath(sys.executable) != os.path.realpath(
+            CAMPAIGN_VENV_PYTHON):
+        print(f"[f2r-pairs] REFUSED: supervisor interpreter "
+              f"{sys.executable} != pinned {CAMPAIGN_VENV_PYTHON} "
+              "(spec env; campaign venv per attempt-1 precedent - the "
+              "window[8]-class deviation refuses)")
+        return 2
+    if a.stage == "run" and a.run_id_prefix == "f2r":
+        print("[f2r-pairs] REFUSED: --stage run requires an explicit fresh "
+              "--run-id-prefix (attempt-1 prefix 'f2r' is landed+committed; "
+              "a default-prefix run would overwrite landed records)")
+        return 2
     if a.stage == "summary":
         summary()
         return 0
@@ -829,7 +860,7 @@ def main():
     os.makedirs(RAW, exist_ok=True)
     os.makedirs(CONSOLE_DIR, exist_ok=True)
     stop_reason = None
-    run_ids = [f"f2r_b{b}_{o}_{a}" for b, o, a in SCHEDULE]
+    run_ids = [f"{RUN_PREFIX}_b{b}_{o}_{a}" for b, o, a in SCHEDULE]
     present = [rid for rid in run_ids if os.path.exists(f"{RAW}/{rid}.json")]
     if len(present) == 6:
         print("[f2r-pairs] all 6 raw records present; no execution — use "
@@ -884,13 +915,13 @@ def main():
                     stop_reason=stop_reason)
             return 3 if rc == 3 else rc
         peer = "b0" if arm == "cand" else "cand"
-        if load_rec(f"f2r_b{block}_{order}_{peer}") is not None:
+        if load_rec(f"{RUN_PREFIX}_b{block}_{order}_{peer}") is not None:
             rows_now = []
             for a2 in ("b0", "cand"):
-                r2 = load_rec(f"f2r_b{block}_{order}_{a2}")
+                r2 = load_rec(f"{RUN_PREFIX}_b{block}_{order}_{a2}")
                 rows_now.append({**r2, "block": block, "order": order,
                                  "arm": a2,
-                                 "run_id": f"f2r_b{block}_{order}_{a2}"})
+                                 "run_id": f"{RUN_PREFIX}_b{block}_{order}_{a2}"})
             findings, track_ok = block_checks(rows_now)
             # per-arm warm-cache monotonicity + cross-arm family check
             census_now = {a2: cache_walk(ARMS[a2]["cache_root"])
