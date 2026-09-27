@@ -1,0 +1,479 @@
+{
+ "task": "F2I",
+ "suite": "tests/large_e2e/F2",
+ "opened_utc": "2026-09-27T17:58:18Z",
+ "records": [
+  {
+   "label": "driver/route_toggle",
+   "ref": {
+    "local_route_ok": true,
+    "local_slice_max": 2,
+    "fast_calls": 0,
+    "overflow_events": 0,
+    "fallback_calls": 0
+   },
+   "fast": {
+    "local_route_ok": true,
+    "local_slice_max": 2,
+    "fast_calls": 10,
+    "overflow_events": 0,
+    "fallback_calls": 0
+   },
+   "default": {
+    "local_route_ok": true,
+    "local_slice_max": 2,
+    "fast_calls": 0,
+    "overflow_events": 0,
+    "fallback_calls": 0
+   },
+   "big_default": {
+    "local_route_ok": true,
+    "local_slice_max": 15,
+    "fast_calls": 2,
+    "overflow_events": 0,
+    "fallback_calls": 0
+   },
+   "big_fast": {
+    "local_route_ok": true,
+    "local_slice_max": 15,
+    "fast_calls": 2,
+    "overflow_events": 0,
+    "fallback_calls": 0
+   }
+  },
+  {
+   "label": "driver/precondition_disabled",
+   "stats": {
+    "local_route_ok": false,
+    "local_slice_max": 2,
+    "fast_calls": 0,
+    "overflow_events": 0,
+    "fallback_calls": 0
+   }
+  },
+  {
+   "label": "driver/exception_safety",
+   "stats": {
+    "local_route_ok": true,
+    "local_slice_max": 15,
+    "fast_calls": 1,
+    "overflow_events": 0,
+    "fallback_calls": 1
+   },
+   "injected_calls": 2
+  },
+  {
+   "label": "driver/multithread",
+   "stats": {
+    "local_route_ok": true,
+    "local_slice_max": 2,
+    "fast_calls": 10,
+    "overflow_events": 0,
+    "fallback_calls": 0
+   }
+  },
+  {
+   "label": "m_base",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_base_nonode",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_unreach_dest",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_qsum_zero",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_uturn_leaf",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_same_edge",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_contam",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_decay_equal",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_decay_exponential",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_decay_logistic",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_zero_trip",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_budget_tight",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_sparse_slice",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "m_ties",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "qsum_zero_then_base_reuse",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "overflow_then_reuse",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 1
+  },
+  {
+   "label": "reuse_a_first",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "reuse_b_second",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "reuse_a_again",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_0",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_1",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_3",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_4",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_5",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_6",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_7",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_8",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_9",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_10",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_11",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_12",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_13",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_15",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_16",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_17",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_18",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_19",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_20",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_21",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_22",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/r_case_23",
+   "out_AB_equal": true,
+   "out_BA_equal": true,
+   "out_node_equal": true,
+   "delivered_equal": true,
+   "of": 0
+  },
+  {
+   "label": "fuzz/summary",
+   "cases": 24,
+   "exact": 22
+  },
+  {
+   "label": "precondition/all_ascending",
+   "got": true,
+   "want": true
+  },
+  {
+   "label": "precondition/within_slice_descending",
+   "got": false,
+   "want": false
+  },
+  {
+   "label": "precondition/within_slice_duplicate",
+   "got": false,
+   "want": false
+  },
+  {
+   "label": "precondition/cross_boundary_unordered_ok",
+   "got": true,
+   "want": true
+  },
+  {
+   "label": "precondition/cross_boundary_duplicate_ok",
+   "got": true,
+   "want": true
+  },
+  {
+   "label": "precondition/empty_slice_middle",
+   "got": true,
+   "want": true
+  },
+  {
+   "label": "precondition/empty_slice_legal_cross",
+   "got": true,
+   "want": true
+  },
+  {
+   "label": "precondition/violation_before_empty_slice",
+   "got": false,
+   "want": false
+  },
+  {
+   "label": "precondition/violation_after_empty_slice",
+   "got": false,
+   "want": false
+  },
+  {
+   "label": "precondition/single_slice",
+   "got": false,
+   "want": false
+  },
+  {
+   "label": "precondition/empty_all",
+   "got": true,
+   "want": true
+  },
+  {
+   "label": "precondition/no_slices",
+   "got": true,
+   "want": true
+  },
+  {
+   "label": "precondition/random_trials",
+   "trials": 200
+  },
+  {
+   "label": "route/crossover",
+   "frac": 8
+  }
+ ],
+ "aggregate_flow_sha256_at_flush": "1f3cf4d2725320569c1b19bf339a39d0bf013d1cb7b6f8e5d72526a77531797c",
+ "flushed_utc": "2026-09-27T17:58:18Z"
+}

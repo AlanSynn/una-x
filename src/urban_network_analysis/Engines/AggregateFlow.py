@@ -388,6 +388,355 @@ def _accumulate_od_flow(
 
 
 # ======================================================================
+# F2 local-overlap fast route (scratch reuse + integer reset).
+#
+# The baseline kernel above allocates and zeroes five n_nodes scratch
+# arrays and performs two full-node reach scans on EVERY OD call. When
+# the OD envelope is sparse (the destination's finite gradient slice is
+# small relative to the CSR), the identical arithmetic can be computed
+# on preallocated per-stripe scratch from the slice columns alone, with
+# the scratch restored to pristine after each OD via integer touched
+# lists. Sections 2-7 of the kernel body below are statement-identical
+# to _accumulate_od_flow; only the reach build differs (slice columns
+# instead of all nodes) and an epilogue was added.
+#
+# Gating (deterministic, per-run constants):
+#   * precondition — every destination's gradient slice must be
+#     strictly ascending (ascending global ids, no duplicates);
+#     otherwise the WHOLE run uses the unchanged baseline kernel;
+#   * dense-overlap crossover — a destination whose slice exceeds
+#     n_total // _F2_LOCAL_SLICE_FRAC nodes uses the baseline kernel
+#     for that OD (the slice scan plus touched-list bookkeeping can
+#     cost more than the full-node scan it replaces).
+# ======================================================================
+
+_F2_LOCAL_SLICE_FRAC = 8
+
+
+def _gradient_slices_strictly_ascending(g_indptr, g_nodes):
+    """F2 dossier step-1 precondition: within EVERY destination slice,
+    g_nodes must be strictly ascending (=> unique global ids). One
+    vectorized pass. The adjacency pair that straddles each slice
+    boundary is exempt — cross-slice ordering is irrelevant because the
+    kernel iterates one slice at a time; a pair ending at an interior
+    start position straddles a boundary regardless of whether the
+    neighboring slices are empty (empty slices only make starts
+    coincide), so the exemption is unconditional. A start at 0 has no
+    left pair; a start at len(g_nodes) is an empty final slice whose
+    "left pair" lies entirely inside the previous slice, so neither is
+    exempted. Any within-slice violation disables the F2 fast route for
+    the whole run (unchanged fallback).
+    """
+    n_dest = g_indptr.shape[0] - 1
+    if n_dest <= 0 or g_nodes.shape[0] <= 1:
+        return True
+    ok = np.diff(g_nodes) > 0
+    starts = g_indptr[1:-1]
+    starts = starts[(starts > 0) & (starts < g_nodes.shape[0])]
+    ok[starts - 1] = True
+    return bool(ok.all())
+
+
+def _use_local_route(local_ok, slice_len, n_total):
+    """Deterministic F2 route selection for one OD (dense-overlap
+    crossover): fast route iff the run-level precondition holds and the
+    destination's slice is at most 1/_F2_LOCAL_SLICE_FRAC of the CSR."""
+    return (local_ok
+            and slice_len <= max(1, n_total // _F2_LOCAL_SLICE_FRAC))
+
+
+@nb.njit(cache=True, fastmath=True, nogil=True)
+def _accumulate_od_flow_local(
+    indptr, indices, weights, edge_id_of_arc, dir_of_arc,
+    d_o, d_d, pred_o, pred_d,
+    origin_virtual_node, dest_virtual_node,
+    o_edge_id, d_edge_id,
+    d_shortest, budget,
+    decay_curve_id, decay_beta, decay_midpoint,
+    trip_volume,
+    n_net,
+    out_AB, out_BA, out_node_flow,
+    cols,
+    reach, cont_o, cont_d, acc_o, acc_d,
+    reach_nodes,
+    t_reach, t_cont_o, t_cont_d, t_acc_o, t_acc_d,
+):
+    """Via-arc flow accumulator on preallocated scratch, restricted to
+    the destination's finite gradient slice (F2 fast route).
+
+    Numerically IDENTICAL to _accumulate_od_flow (sections 2-7 below
+    are statement-for-statement the same code; the reach set is the
+    same because every finite d_d entry lives on `cols` — the driver
+    scatters exactly these columns into d_d). Differences:
+
+    * reach is built from `cols` (ascending global ids, precondition
+      verified by _gradient_slices_strictly_ascending) into scratch;
+    * every scratch write records its index in an integer touched
+      list; after EVERY exit the touched indices are restored to
+      pristine (False / +0.0), so the caller's scratch is reusable;
+    * if any touched list overflows its capacity (of = 1), the lists
+      are truncated and can NOT drive the reset — the epilogue then
+      re-zeros the full arrays instead. A partial reset never happens.
+
+    Scratch contract: caller-owned arrays, pristine on entry (all
+    False / all +0.0) and pristine on exit. reach_nodes[0:n_r] holds
+    the reached nodes in ascending global order; it is overwritten on
+    the next call and needs no reset.
+    """
+    n_nodes = d_o.shape[0]
+    cap_reach = t_reach.shape[0]
+    cap_cont_o = t_cont_o.shape[0]
+    cap_cont_d = t_cont_d.shape[0]
+    cap_acc_o = t_acc_o.shape[0]
+    cap_acc_d = t_acc_d.shape[0]
+    of = 0
+
+    # ── 1-2. cols-restricted reach build (ascending global order) ────
+    n_r = 0
+    n_tr = 0
+    for i in range(cols.shape[0]):
+        v = cols[i]
+        dov = d_o[v]
+        ddv = d_d[v]
+        if dov < np.inf and ddv < np.inf and dov + ddv <= budget:
+            reach[v] = True
+            if n_tr < cap_reach:
+                t_reach[n_tr] = v
+                n_tr += 1
+            else:
+                of = 1
+            reach_nodes[n_r] = v
+            n_r += 1
+
+    if not reach[dest_virtual_node] or not reach[origin_virtual_node]:
+        # Only `reach` was written; restore pristine and exit.
+        if of:
+            for v in range(n_nodes):
+                reach[v] = False
+        else:
+            for i in range(n_tr):
+                reach[t_reach[i]] = False
+        return 0.0, of
+
+    order_o = reach_nodes[:n_r][np.argsort(d_o[reach_nodes[:n_r]])]
+    order_d = reach_nodes[:n_r][np.argsort(d_d[reach_nodes[:n_r]])]
+
+    # ── 2. Leg contamination marking (statement-identical) ───────────
+    n_tco = 0
+    n_tcd = 0
+    for i in range(n_r):
+        v = order_o[i]
+        pv = pred_o[v]
+        if pv < 0:
+            continue
+        if cont_o[pv]:
+            cont_o[v] = True
+            if n_tco < cap_cont_o:
+                t_cont_o[n_tco] = v
+                n_tco += 1
+            else:
+                of = 1
+        elif v < n_net and pv < n_net:
+            ai = _find_arc(indptr, indices, pv, v)
+            if ai >= 0 and edge_id_of_arc[ai] == d_edge_id:
+                cont_o[v] = True
+                if n_tco < cap_cont_o:
+                    t_cont_o[n_tco] = v
+                    n_tco += 1
+                else:
+                    of = 1
+    for i in range(n_r):
+        v = order_d[i]
+        pv = pred_d[v]
+        if pv < 0:
+            continue
+        if cont_d[pv]:
+            cont_d[v] = True
+            if n_tcd < cap_cont_d:
+                t_cont_d[n_tcd] = v
+                n_tcd += 1
+            else:
+                of = 1
+        elif v < n_net and pv < n_net:
+            ai = _find_arc(indptr, indices, v, pv)
+            if ai >= 0 and edge_id_of_arc[ai] == o_edge_id:
+                cont_d[v] = True
+                if n_tcd < cap_cont_d:
+                    t_cont_d[n_tcd] = v
+                    n_tcd += 1
+                else:
+                    of = 1
+
+    # ── 3. Pass 1 — total decay weight (statement-identical) ─────────
+    q_sum = 0.0
+    for i in range(n_r):
+        u = reach_nodes[i]
+        if cont_o[u]:
+            continue
+        for ai in range(indptr[u], indptr[u + 1]):
+            x = indices[ai]
+            if not reach[x] or cont_d[x]:
+                continue
+            arc_w = weights[ai]
+            if d_o[u] + arc_w + d_d[x] > budget:
+                continue
+            eid = edge_id_of_arc[ai]
+            if u < n_net and x < n_net and (eid == o_edge_id or eid == d_edge_id):
+                continue
+            if pred_d[x] == u or pred_o[u] == x:
+                continue
+            excess = d_o[u] + arc_w + d_d[x] - d_shortest
+            if excess < 0.0:
+                excess = 0.0
+            q_sum += _decay(decay_curve_id, decay_beta, decay_midpoint, excess)
+
+    if q_sum <= 0.0:
+        # reach + cont arrays were written; restore pristine and exit.
+        if of:
+            for v in range(n_nodes):
+                reach[v] = False
+                cont_o[v] = False
+                cont_d[v] = False
+                acc_o[v] = 0.0
+                acc_d[v] = 0.0
+        else:
+            for i in range(n_tr):
+                reach[t_reach[i]] = False
+            for i in range(n_tco):
+                cont_o[t_cont_o[i]] = False
+            for i in range(n_tcd):
+                cont_d[t_cont_d[i]] = False
+        return 0.0, of
+    scale = trip_volume / q_sum
+
+    # ── 4. Pass 2 — seed via-arc shares (statement-identical + records)
+    n_tao = 0
+    n_tad = 0
+    for i in range(n_r):
+        u = reach_nodes[i]
+        if cont_o[u]:
+            continue
+        for ai in range(indptr[u], indptr[u + 1]):
+            x = indices[ai]
+            if not reach[x] or cont_d[x]:
+                continue
+            arc_w = weights[ai]
+            if d_o[u] + arc_w + d_d[x] > budget:
+                continue
+            eid = edge_id_of_arc[ai]
+            if u < n_net and x < n_net and (eid == o_edge_id or eid == d_edge_id):
+                continue
+            if pred_d[x] == u or pred_o[u] == x:
+                continue
+            excess = d_o[u] + arc_w + d_d[x] - d_shortest
+            if excess < 0.0:
+                excess = 0.0
+            q = scale * _decay(decay_curve_id, decay_beta, decay_midpoint, excess)
+
+            if eid >= 0:
+                if dir_of_arc[ai] == 0:
+                    out_AB[eid] += q
+                else:
+                    out_BA[eid] += q
+            acc_o[u] += q
+            acc_d[x] += q
+            if n_tao < cap_acc_o:
+                t_acc_o[n_tao] = u
+                n_tao += 1
+            else:
+                of = 1
+            if n_tad < cap_acc_d:
+                t_acc_d[n_tad] = x
+                n_tad += 1
+            else:
+                of = 1
+
+    # ── 5. Origin legs (statement-identical + records) ───────────────
+    for i in range(n_r - 1, -1, -1):
+        v = order_o[i]
+        f = acc_o[v]
+        if f <= 0.0:
+            continue
+        pv = pred_o[v]
+        if pv < 0:
+            continue
+        ai = _find_arc(indptr, indices, pv, v)
+        if ai >= 0:
+            eid = edge_id_of_arc[ai]
+            if eid >= 0:
+                if dir_of_arc[ai] == 0:
+                    out_AB[eid] += f
+                else:
+                    out_BA[eid] += f
+        acc_o[pv] += f
+        if n_tao < cap_acc_o:
+            t_acc_o[n_tao] = pv
+            n_tao += 1
+        else:
+            of = 1
+
+    # ── 6. Destination legs (statement-identical + records) ──────────
+    for i in range(n_r - 1, -1, -1):
+        v = order_d[i]
+        f = acc_d[v]
+        if f <= 0.0:
+            continue
+        pv = pred_d[v]
+        if pv < 0:
+            continue
+        ai = _find_arc(indptr, indices, v, pv)
+        if ai >= 0:
+            eid = edge_id_of_arc[ai]
+            if eid >= 0:
+                if dir_of_arc[ai] == 0:
+                    out_AB[eid] += f
+                else:
+                    out_BA[eid] += f
+        acc_d[pv] += f
+        if n_tad < cap_acc_d:
+            t_acc_d[n_tad] = pv
+            n_tad += 1
+        else:
+            of = 1
+
+    # ── 7. Node flow (statement-identical) ────────────────────────────
+    if out_node_flow.shape[0] > 0:
+        for i in range(n_r):
+            v = reach_nodes[i]
+            if v < n_net:
+                out_node_flow[v] += acc_o[v] + acc_d[v]
+
+    # Delivered flow MUST be read before the epilogue — the reset below
+    # restores acc_d to pristine, and the baseline's return value is the
+    # pre-reset accumulator at the destination virtual node.
+    delivered = acc_d[dest_virtual_node]
+
+    # ── 8. Reset epilogue: touched lists restore pristine scratch ────
+    if of:
+        # Truncated touched lists cannot drive the reset — full re-zero
+        # (never a partial reset).
+        for v in range(n_nodes):
+            reach[v] = False
+            cont_o[v] = False
+            cont_d[v] = False
+            acc_o[v] = 0.0
+            acc_d[v] = 0.0
+    else:
+        for i in range(n_tr):
+            reach[t_reach[i]] = False
+        for i in range(n_tco):
+            cont_o[t_cont_o[i]] = False
+        for i in range(n_tcd):
+            cont_d[t_cont_d[i]] = False
+        for i in range(n_tao):
+            acc_o[t_acc_o[i]] = 0.0
+        for i in range(n_tad):
+            acc_d[t_acc_d[i]] = 0.0
+
+    return delivered, of
+
+
+# ======================================================================
 # AggregateFlow — standalone engine, no dependency on Flow.
 # ======================================================================
 
@@ -1108,6 +1457,15 @@ class AggregateFlow(Base):
         buffer = float(ns["buffer"])
         grad_limit = self._gradient_limit(ns)
 
+        # F2 local-overlap route gating: dossier step-1 precondition
+        # (every gradient slice strictly ascending; else the whole run
+        # uses the unchanged baseline kernel) + per-OD dense-overlap
+        # crossover via _use_local_route. Per-run constants; selection
+        # is deterministic.
+        local_route_ok = _gradient_slices_strictly_ascending(g_indptr,
+                                                             g_nodes)
+        local_slice_max = max(1, n_total_nodes // _F2_LOCAL_SLICE_FRAC)
+
         # Threading configuration.  self.num_threads is inherited from
         # Base and initialised from topology.num_threads (defaults to
         # cpu_count-1 there).  No Settings field needed — parallelism
@@ -1130,6 +1488,9 @@ class AggregateFlow(Base):
             local_node  = [_empty_node] * n_threads
         local_n_gap    = [0]   * n_threads
         local_worst    = [0.0] * n_threads
+        local_n_fast     = [0] * n_threads   # F2 local-route OD calls
+        local_n_overflow = [0] * n_threads   # F2 calls with of=1
+        local_n_fallback = [0] * n_threads   # F2 calls reverted to baseline
 
         # Progress tracking (~100 log lines over the run, thread-safe).
         progress_lock = threading.Lock()
@@ -1147,6 +1508,23 @@ class AggregateFlow(Base):
             # per-destination storage.
             dd_buf = np.full(n_total_nodes, np.inf, dtype=np.float64)
             pd_buf = np.full(n_total_nodes, -9999, dtype=np.int32)
+            # F2 per-stripe persistent scratch (O(V') per stripe owner):
+            # consumed and restored-to-pristine by the local kernel on
+            # every one of this stripe's OD calls.
+            sc_reach = np.zeros(n_total_nodes, dtype=np.bool_)
+            sc_cont_o = np.zeros(n_total_nodes, dtype=np.bool_)
+            sc_cont_d = np.zeros(n_total_nodes, dtype=np.bool_)
+            sc_acc_o = np.zeros(n_total_nodes, dtype=np.float64)
+            sc_acc_d = np.zeros(n_total_nodes, dtype=np.float64)
+            sc_reach_nodes = np.empty(n_total_nodes, dtype=np.int64)
+            sc_t_reach = np.empty(n_total_nodes, dtype=np.int64)
+            sc_t_cont_o = np.empty(n_total_nodes, dtype=np.int64)
+            sc_t_cont_d = np.empty(n_total_nodes, dtype=np.int64)
+            # acc touched lists: pass 2 appends once per admissible arc
+            # (<= n_edges) and each tree pass up to n_r more, so the
+            # capacity bound is n_edges + n_total_nodes.
+            sc_t_acc_o = np.empty(n_edges + n_total_nodes, dtype=np.int64)
+            sc_t_acc_d = np.empty(n_edges + n_total_nodes, dtype=np.int64)
 
             for o_pos in range(slot, n_origins, n_threads):
                 o_weight = float(origins.node_weight[o_pos])
@@ -1202,18 +1580,79 @@ class AggregateFlow(Base):
                         dd_buf[cols] = g_dist[s0:s1]
                         pd_buf[cols] = g_pred[s0:s1]
 
-                        delivered = _accumulate_od_flow(
-                            self._csr_indptr, self._csr_indices, self._csr_weights,
-                            self._csr_edge_id, self._csr_direction,
-                            d_o, dd_buf, pred_o, pd_buf,
-                            origin_virtual, int(dest_node_ids[d_idx]),
-                            o_edge_id, int(dest_edge_ids[d_idx]),
-                            d_shortest, budget,
-                            decay_curve_id, decay_beta, decay_midpoint,
-                            trip_vol,
-                            n_net,
-                            buf_AB, buf_BA, buf_node,
-                        )
+                        if _use_local_route(local_route_ok, s1 - s0,
+                                            n_total_nodes):
+                            # F2 local-overlap route: preallocated
+                            # per-stripe scratch + integer reset. The
+                            # kernel returns of=1 if any touched list
+                            # overflowed; it then re-zeroed the scratch
+                            # itself (never a partial reset), so the OD
+                            # output is still exact and the scratch
+                            # pristine — we only count it.
+                            try:
+                                delivered, of_flag = _accumulate_od_flow_local(
+                                    self._csr_indptr, self._csr_indices,
+                                    self._csr_weights,
+                                    self._csr_edge_id, self._csr_direction,
+                                    d_o, dd_buf, pred_o, pd_buf,
+                                    origin_virtual, int(dest_node_ids[d_idx]),
+                                    o_edge_id, int(dest_edge_ids[d_idx]),
+                                    d_shortest, budget,
+                                    decay_curve_id, decay_beta, decay_midpoint,
+                                    trip_vol,
+                                    n_net,
+                                    buf_AB, buf_BA, buf_node,
+                                    cols,
+                                    sc_reach, sc_cont_o, sc_cont_d,
+                                    sc_acc_o, sc_acc_d,
+                                    sc_reach_nodes,
+                                    sc_t_reach, sc_t_cont_o, sc_t_cont_d,
+                                    sc_t_acc_o, sc_t_acc_d,
+                                )
+                            except Exception:
+                                # Wrapper exception-safety obligation: a
+                                # failed kernel call can leave the stripe
+                                # scratch contaminated mid-OD. Re-zero it
+                                # fully and serve this OD on the unchanged
+                                # baseline kernel so the worker and its
+                                # scratch continue correctly.
+                                sc_reach.fill(False)
+                                sc_cont_o.fill(False)
+                                sc_cont_d.fill(False)
+                                sc_acc_o.fill(0.0)
+                                sc_acc_d.fill(0.0)
+                                delivered = _accumulate_od_flow(
+                                    self._csr_indptr, self._csr_indices,
+                                    self._csr_weights,
+                                    self._csr_edge_id, self._csr_direction,
+                                    d_o, dd_buf, pred_o, pd_buf,
+                                    origin_virtual, int(dest_node_ids[d_idx]),
+                                    o_edge_id, int(dest_edge_ids[d_idx]),
+                                    d_shortest, budget,
+                                    decay_curve_id, decay_beta, decay_midpoint,
+                                    trip_vol,
+                                    n_net,
+                                    buf_AB, buf_BA, buf_node,
+                                )
+                                local_n_fallback[slot] += 1
+                            else:
+                                local_n_fast[slot] += 1
+                                if of_flag:
+                                    local_n_overflow[slot] += 1
+                        else:
+                            delivered = _accumulate_od_flow(
+                                self._csr_indptr, self._csr_indices,
+                                self._csr_weights,
+                                self._csr_edge_id, self._csr_direction,
+                                d_o, dd_buf, pred_o, pd_buf,
+                                origin_virtual, int(dest_node_ids[d_idx]),
+                                o_edge_id, int(dest_edge_ids[d_idx]),
+                                d_shortest, budget,
+                                decay_curve_id, decay_beta, decay_midpoint,
+                                trip_vol,
+                                n_net,
+                                buf_AB, buf_BA, buf_node,
+                            )
 
                         # Reset only the touched entries.
                         dd_buf[cols] = np.inf
@@ -1269,10 +1708,30 @@ class AggregateFlow(Base):
         n_gap     = sum(local_n_gap)
         worst_gap = max(local_worst) if local_worst else 0.0
 
+        # F2 route bookkeeping (observability for tests + review; the
+        # numbers never affect the arithmetic).
+        f2_stats = {
+            "local_route_ok": bool(local_route_ok),
+            "local_slice_max": int(local_slice_max),
+            "fast_calls": int(sum(local_n_fast)),
+            "overflow_events": int(sum(local_n_overflow)),
+            "fallback_calls": int(sum(local_n_fallback)),
+        }
+        self._f2_stats = f2_stats
+
         self.logger.log(
             "AggregateFlow",
             f"Origin loop: {n_origins:,} origins in "
             f"{time.perf_counter()-t_loop:.2f}s ({n_threads} thread(s)).",
+            v=1,
+        )
+        self.logger.log(
+            "AggregateFlow",
+            f"[F2] local-overlap route: ok={f2_stats['local_route_ok']} "
+            f"slice_max={f2_stats['local_slice_max']} "
+            f"fast={f2_stats['fast_calls']} "
+            f"overflow={f2_stats['overflow_events']} "
+            f"fallback={f2_stats['fallback_calls']}",
             v=1,
         )
         if n_gap > 0:
