@@ -106,25 +106,39 @@ def cache_files(root):
 
 
 def lease_cumulative():
+    """Read-only cumulative (REV 5C): ledger-field recomputes happen ONLY in
+    lease_append, in the same write that appends the entry - never as
+    standalone in-place edits. The former write-back branch (which rewrote
+    the log when a stored cumulative disagreed) is removed; mid-matrix
+    budget checks read the live charged sum computed from the entries."""
     with open(LEASE_LOG) as f:
         log = json.load(f)
     charged = sum(w.get("charged_s", 0.0) for w in log["windows"])
-    cum = round(log["opening_balance_s"] + charged, 1)
-    if log.get("cumulative_charged_s") != cum:
-        log["cumulative_charged_s"] = cum
-        log["remaining_s"] = round(HEAVY_WALL_BUDGET_S - cum, 1)
-        with open(LEASE_LOG, "w") as f:
-            json.dump(log, f, indent=1)
-    return cum
+    return round(log["opening_balance_s"] + charged, 1)
 
 
 def lease_append(entry):
+    # REV 5C (h04 charge-vehicle ruling): the supervisor's lease_append is
+    # the SOLE charging mechanism for supervisor-run windows - charged_s is
+    # written AT APPEND TIME, defaulting to the completed window's wall_s
+    # (the charge basis already in use: breach 15.5 / rc=1 16.6 / clean
+    # 13.3, all wall_s). Refusal / no-window entries ("refused" present, or
+    # no wall_s - including the matrix-entry bar check, which opens no
+    # window on either of its paths) write NO charged_s; the refusal
+    # convention is preserved. Ledger-field recomputes (cumulative_charged_s,
+    # remaining_s, updated_utc) happen ONLY here, in the same write that
+    # appends the entry - never as standalone in-place edits
+    # (lease_cumulative is read-only). Post-hoc executor-pass charging is
+    # RETIRED as a vehicle.
+    if "refused" not in entry and entry.get("wall_s") is not None:
+        entry["charged_s"] = entry["wall_s"]
     with open(LEASE_LOG) as f:
         log = json.load(f)
     log["windows"].append(entry)
     charged = sum(w.get("charged_s", 0.0) for w in log["windows"])
     log["cumulative_charged_s"] = round(log["opening_balance_s"] + charged, 1)
     log["remaining_s"] = round(HEAVY_WALL_BUDGET_S - log["cumulative_charged_s"], 1)
+    log["updated_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     with open(LEASE_LOG, "w") as f:
         json.dump(log, f, indent=1)
     return log["cumulative_charged_s"]
