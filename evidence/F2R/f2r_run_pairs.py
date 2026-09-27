@@ -71,7 +71,7 @@ import threading
 import time
 
 CAMPAIGN = "/Users/alansynn/orca/workspaces/una-x"
-CAMPAIGN_VENV_PYTHON = f"{CAMPAIGN}/venvs/campaign/bin/python"
+CAMPAIGN_VENV = f"{CAMPAIGN}/venvs/campaign"
 REPO = f"{CAMPAIGN}/wt-large-e2e"
 EV = f"{REPO}/evidence/F2R"
 DATA = f"{CAMPAIGN}/campaign_data"
@@ -824,10 +824,10 @@ def main():
     a = ap.parse_args()
     global RUN_PREFIX
     RUN_PREFIX = a.run_id_prefix
-    if os.path.realpath(sys.executable) != os.path.realpath(
-            CAMPAIGN_VENV_PYTHON):
-        print(f"[f2r-pairs] REFUSED: supervisor interpreter "
-              f"{sys.executable} != pinned {CAMPAIGN_VENV_PYTHON} "
+    if os.path.realpath(sys.prefix) != os.path.realpath(CAMPAIGN_VENV):
+        print(f"[f2r-pairs] REFUSED: supervisor interpreter is not "
+              f"the campaign venv: sys.executable {sys.executable}, "
+              f"sys.prefix {sys.prefix} != pinned {CAMPAIGN_VENV} "
               "(spec env; campaign venv per attempt-1 precedent - the "
               "window[8]-class deviation refuses)")
         return 2
