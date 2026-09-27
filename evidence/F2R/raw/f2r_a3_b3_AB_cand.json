@@ -1,0 +1,1306 @@
+{
+ "schema_version": 1,
+ "task": "F2R",
+ "record": "bare_complete_job_flow",
+ "role": "screen-executor",
+ "cell": "O3_FLOW",
+ "arm": "cand",
+ "run_id": "f2r_a3_b3_AB_cand",
+ "block": 3,
+ "order": "AB",
+ "gate_eligible": true,
+ "cold_warm": "warm (reused cache)",
+ "timing_class": "bare_complete_job_no_leaf_profiler",
+ "frozen_triple": {
+  "W": 1,
+  "K": 8,
+  "H": 1
+ },
+ "os_file_cache_control": "UNCONTROLLED (ambient page cache; declared per cold_definition.layers.os_file_cache)",
+ "started_utc": "2026-09-27T23:29:56Z",
+ "env": {
+  "NUMBA_NUM_THREADS": "1",
+  "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_f2r_cand",
+  "PYTHONPATH": "<unset>"
+ },
+ "import": {
+  "urban_network_analysis_file": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/f2r_wheel/lib/python3.11/site-packages/urban_network_analysis",
+  "expected_site_packages": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/f2r_wheel/lib/python3.11/site-packages",
+  "identity_assertion": "ok (realpath under expected site-packages)",
+  "package_version": "2.6.0",
+  "wheel_sha256": "1176ad8fc895697b432f4a4402a7147a4f02597c87340929884533347783e1e3",
+  "single_binary_note": "ONE wheel from git archive of 61f3db6 in ONE venv; both arms same install (central ruling)"
+ },
+ "module_pin": {
+  "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/f2r_wheel/lib/python3.11/site-packages/urban_network_analysis/Engines/AggregateFlow.py",
+  "sha256": "1f3cf4d2725320569c1b19bf339a39d0bf013d1cb7b6f8e5d72526a77531797c",
+  "expected": "1f3cf4d2725320569c1b19bf339a39d0bf013d1cb7b6f8e5d72526a77531797c",
+  "match": true
+ },
+ "process": {
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "numba": "0.67.0",
+  "numba_num_threads_config": 1,
+  "numba_get_num_threads": 1
+ },
+ "numba_cache_census": {
+  "root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_f2r_cand",
+  "pre_window": {
+   "count": 1,
+   "names": [
+    "Engines_a009b2a5441cad360b3b0dae023f603e763da548"
+   ]
+  },
+  "rule": "per-arm roots, never shared; block 1 wiped to 0 files by the SUPERVISOR before pair 1 (declared cold state)",
+  "post_window": {
+   "count": 1,
+   "names": [
+    "Engines_a009b2a5441cad360b3b0dae023f603e763da548"
+   ]
+  }
+ },
+ "input_rehash": {
+  "network": {
+   "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+   "bytes": 71290787,
+   "match": true
+  },
+  "origins": {
+   "sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+   "bytes": 5982662,
+   "match": true
+  },
+  "destinations": {
+   "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+   "bytes": 2641054,
+   "match": true
+  }
+ },
+ "manifest": {
+  "path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_FLOW.manifest.json",
+  "sha256": "c2e6f2669cf334e4060d3930d23d44baf41efa5c54f36908cd2b72b25ec96e2a",
+  "workload_id": "O3_FLOW",
+  "settings_overrides": {
+   "network_weight_column": "Geometric",
+   "origin_weight_column": "Count",
+   "destination_weight_column": "weekly_departures",
+   "search_radius": 500,
+   "turns": false,
+   "elevation": false,
+   "calculate_reach": true,
+   "calculate_exponential_gravity": true,
+   "calculate_logistic_gravity": true,
+   "calculate_knn_access": true,
+   "output_csv": true,
+   "output_geojson": true,
+   "output_feather": true,
+   "flow_engine": "aggregate_flow",
+   "flow_decay": true,
+   "flow_decay_method": "gravity_cap",
+   "flow_gravity_cap": "p95"
+  }
+ },
+ "origin_selection": {
+  "selection_manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_FLOW_sel1024.origin_indices.json",
+  "selection_manifest_sha256": "e03659db8b54b76fdd65904f895403622fee5c315ff1c2a0d545c8113060ad60",
+  "selected_count": 1024,
+  "chosen_variant": "sel1024",
+  "workload_variant": "O3_FLOW_sel1024",
+  "attribute_crosscheck": "not available: sel1024 selection manifest carries no selected_row_attributes; fixture identity anchored by selection manifest sha pin + source_sha256 chain + ordered-index validity",
+  "fixture": {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/f2r_origins_f2r_a3_b3_AB_cand_1024.geojson",
+   "sha256": "a5913e15da8801f13f7e806dad9bcdcd24385ef0a72d18c9d14e9b44d9564c26",
+   "rows": 1024,
+   "note": "derived in-run from pinned selection manifest into settings.data_folder; attributes sliced untouched, row order = ordered_indices"
+  }
+ },
+ "constructor": {
+  "call": "UNA(verbosity=2)",
+  "note": "outside window; [F2]-era log line rides v>=1 and the full log is persisted (driver obligation)"
+ },
+ "settings_effective": {
+  "search_radius": 500,
+  "flow_engine": "aggregate_flow",
+  "flow_decay_method": "gravity_cap",
+  "flow_gravity_cap": "p95"
+ },
+ "pre_window_wiring": {
+  "flow_stripes_requested": 8,
+  "topology_num_threads_after_wiring": 8,
+  "mechanism": "public attribute una.topology.num_threads = K before RunFlow; AggregateFlow inherits it at construction"
+ },
+ "pre_window_input_resolution": {
+  "network": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson",
+  "origins": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/f2r_origins_f2r_a3_b3_AB_cand_1024.geojson",
+  "destinations": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson"
+ },
+ "window": {
+  "application_window_ns": 4607236542,
+  "boundaries": "perf_counter_ns around the single una.RunFlow() call incl. synchronous exports and in-call auto gravity-cap resolution; no instrumentation inside"
+ },
+ "flow_arrays": {
+  "edge_flow": {
+   "dtype": "float64",
+   "dtype_str": "<f8",
+   "shape": [
+    69957
+   ],
+   "first_k": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sha256_bytes": "08bf585b93ddbaf342320c79a273cfb8e513d922ed7de187b169d341abbb148d",
+   "n_nonfinite": 0
+  },
+  "edge_flow_AB": {
+   "dtype": "float64",
+   "dtype_str": "<f8",
+   "shape": [
+    69957
+   ],
+   "first_k": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sha256_bytes": "0be418d0937d0535dd80a77cb2554fa3eb09202f09e79154fa18ec19554ee5b5",
+   "n_nonfinite": 0
+  },
+  "edge_flow_BA": {
+   "dtype": "float64",
+   "dtype_str": "<f8",
+   "shape": [
+    69957
+   ],
+   "first_k": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sha256_bytes": "77ca997b0b3a421bc123b17378611475b66e7ec181cc3657c0bf54553a27a6d1",
+   "n_nonfinite": 0
+  },
+  "node_flow": null
+ },
+ "engine_config_observed": {
+  "flow_stripes_requested": 8,
+  "topology_num_threads": 8,
+  "engine_num_threads": 8,
+  "topology_num_clusters": 9
+ },
+ "resolved_gravity_cap": {
+  "spec": "p95",
+  "used": "p95",
+  "value": 7422.1767,
+  "metric": "gravity_exponential",
+  "n_origins": 1024
+ },
+ "counts": {
+  "V_nodes": 49159,
+  "E_edges": 69957,
+  "O_rows": 1024,
+  "D_rows": 6661
+ },
+ "log_lines": {
+  "count": 172,
+  "entries": [
+   {
+    "seconds_elapsed": 1.917e-06,
+    "cumulative_seconds": 1.917e-06,
+    "event": "initialize",
+    "details": "SIMULATION STARTED"
+   },
+   {
+    "seconds_elapsed": 6.67e-07,
+    "cumulative_seconds": 2.584e-06,
+    "event": "initialize",
+    "details": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]"
+   },
+   {
+    "seconds_elapsed": 2.5208e-05,
+    "cumulative_seconds": 2.7792e-05,
+    "event": "UNA",
+    "details": "UNA instance created. Topology and Settings initialized"
+   },
+   {
+    "seconds_elapsed": 1.617628416,
+    "cumulative_seconds": 1.617656208,
+    "event": "Network added",
+    "details": "CRS set to EPSG:6491."
+   },
+   {
+    "seconds_elapsed": 0.000118583,
+    "cumulative_seconds": 1.617774791,
+    "event": "Network added",
+    "details": "Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges."
+   },
+   {
+    "seconds_elapsed": 0.077132541,
+    "cumulative_seconds": 1.694907332,
+    "event": "BuildTopology",
+    "details": "Topology built with 49159 nodes and 69957 edges."
+   },
+   {
+    "seconds_elapsed": 0.011412041,
+    "cumulative_seconds": 1.706319373,
+    "event": "create topology",
+    "details": "edge_sindex created"
+   },
+   {
+    "seconds_elapsed": 9.875e-06,
+    "cumulative_seconds": 1.706329248,
+    "event": "create topology",
+    "details": "edge_list_dict created"
+   },
+   {
+    "seconds_elapsed": 0.012404083,
+    "cumulative_seconds": 1.718733331,
+    "event": "Build AccessPoints",
+    "details": "Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/f2r_origins_f2r_a3_b3_AB_cand_1024.geojson, with 1024 points."
+   },
+   {
+    "seconds_elapsed": 8.85e-05,
+    "cumulative_seconds": 1.718821831,
+    "event": "Build AccessPoints",
+    "details": "There are 1024 points in 8 chunks"
+   },
+   {
+    "seconds_elapsed": 0.001840708,
+    "cumulative_seconds": 1.720662539,
+    "event": "Build AccessPoints",
+    "details": "Nearest edge is found"
+   },
+   {
+    "seconds_elapsed": 0.004373334,
+    "cumulative_seconds": 1.725035873,
+    "event": "Build AccessPoints",
+    "details": "Done"
+   },
+   {
+    "seconds_elapsed": 4.35e-05,
+    "cumulative_seconds": 1.725079373,
+    "event": "Origins added",
+    "details": "Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/f2r_origins_f2r_a3_b3_AB_cand_1024.geojson, with 1024 points."
+   },
+   {
+    "seconds_elapsed": 0.053313834,
+    "cumulative_seconds": 1.778393207,
+    "event": "Build AccessPoints",
+    "details": "Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points."
+   },
+   {
+    "seconds_elapsed": 0.000117375,
+    "cumulative_seconds": 1.778510582,
+    "event": "Build AccessPoints",
+    "details": "There are 6661 points in 8 chunks"
+   },
+   {
+    "seconds_elapsed": 0.009146667,
+    "cumulative_seconds": 1.787657249,
+    "event": "Build AccessPoints",
+    "details": "Nearest edge is found"
+   },
+   {
+    "seconds_elapsed": 0.006518375,
+    "cumulative_seconds": 1.794175624,
+    "event": "Build AccessPoints",
+    "details": "Done"
+   },
+   {
+    "seconds_elapsed": 7.4042e-05,
+    "cumulative_seconds": 1.794249666,
+    "event": "Destinations added",
+    "details": "Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points."
+   },
+   {
+    "seconds_elapsed": 1.6459e-05,
+    "cumulative_seconds": 1.794266125,
+    "event": "Build clusters",
+    "details": "Building clusters with n_clusters=9 and random_state=42."
+   },
+   {
+    "seconds_elapsed": 0.041211125,
+    "cumulative_seconds": 1.83547725,
+    "event": "Build clusters",
+    "details": "Clusters built successfully."
+   },
+   {
+    "seconds_elapsed": 0.002173375,
+    "cumulative_seconds": 1.837650625,
+    "event": "Build clusters",
+    "details": "Cluster 0: 79 origins."
+   },
+   {
+    "seconds_elapsed": 0.001141542,
+    "cumulative_seconds": 1.838792167,
+    "event": "Build clusters",
+    "details": "Cluster 0: 58 destinations intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000623333,
+    "cumulative_seconds": 1.8394155,
+    "event": "Build clusters",
+    "details": "Cluster 0: 1392 network edges intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000748,
+    "cumulative_seconds": 1.8401635,
+    "event": "Build clusters",
+    "details": "Cluster 1: 146 origins."
+   },
+   {
+    "seconds_elapsed": 3.7333e-05,
+    "cumulative_seconds": 1.840200833,
+    "event": "Build clusters",
+    "details": "Cluster 1: 69 destinations intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000586667,
+    "cumulative_seconds": 1.8407875,
+    "event": "Build clusters",
+    "details": "Cluster 1: 1227 network edges intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000393458,
+    "cumulative_seconds": 1.841180958,
+    "event": "Build clusters",
+    "details": "Cluster 2: 89 origins."
+   },
+   {
+    "seconds_elapsed": 2.9417e-05,
+    "cumulative_seconds": 1.841210375,
+    "event": "Build clusters",
+    "details": "Cluster 2: 58 destinations intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000570167,
+    "cumulative_seconds": 1.841780542,
+    "event": "Build clusters",
+    "details": "Cluster 2: 891 network edges intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.00040375,
+    "cumulative_seconds": 1.842184292,
+    "event": "Build clusters",
+    "details": "Cluster 3: 103 origins."
+   },
+   {
+    "seconds_elapsed": 3.0708e-05,
+    "cumulative_seconds": 1.842215,
+    "event": "Build clusters",
+    "details": "Cluster 3: 60 destinations intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000456625,
+    "cumulative_seconds": 1.842671625,
+    "event": "Build clusters",
+    "details": "Cluster 3: 896 network edges intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000494042,
+    "cumulative_seconds": 1.843165667,
+    "event": "Build clusters",
+    "details": "Cluster 4: 154 origins."
+   },
+   {
+    "seconds_elapsed": 3.1459e-05,
+    "cumulative_seconds": 1.843197126,
+    "event": "Build clusters",
+    "details": "Cluster 4: 75 destinations intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000631125,
+    "cumulative_seconds": 1.843828251,
+    "event": "Build clusters",
+    "details": "Cluster 4: 1402 network edges intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000504917,
+    "cumulative_seconds": 1.844333168,
+    "event": "Build clusters",
+    "details": "Cluster 5: 188 origins."
+   },
+   {
+    "seconds_elapsed": 3.825e-05,
+    "cumulative_seconds": 1.844371418,
+    "event": "Build clusters",
+    "details": "Cluster 5: 109 destinations intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000536542,
+    "cumulative_seconds": 1.84490796,
+    "event": "Build clusters",
+    "details": "Cluster 5: 1856 network edges intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000409416,
+    "cumulative_seconds": 1.845317376,
+    "event": "Build clusters",
+    "details": "Cluster 6: 101 origins."
+   },
+   {
+    "seconds_elapsed": 2.3291e-05,
+    "cumulative_seconds": 1.845340667,
+    "event": "Build clusters",
+    "details": "Cluster 6: 37 destinations intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000267709,
+    "cumulative_seconds": 1.845608376,
+    "event": "Build clusters",
+    "details": "Cluster 6: 683 network edges intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000758916,
+    "cumulative_seconds": 1.846367292,
+    "event": "Build clusters",
+    "details": "Cluster 7: 92 origins."
+   },
+   {
+    "seconds_elapsed": 2.8083e-05,
+    "cumulative_seconds": 1.846395375,
+    "event": "Build clusters",
+    "details": "Cluster 7: 56 destinations intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000289833,
+    "cumulative_seconds": 1.846685208,
+    "event": "Build clusters",
+    "details": "Cluster 7: 926 network edges intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000368625,
+    "cumulative_seconds": 1.847053833,
+    "event": "Build clusters",
+    "details": "Cluster 8: 72 origins."
+   },
+   {
+    "seconds_elapsed": 2.3208e-05,
+    "cumulative_seconds": 1.847077041,
+    "event": "Build clusters",
+    "details": "Cluster 8: 45 destinations intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 0.000398666,
+    "cumulative_seconds": 1.847475707,
+    "event": "Build clusters",
+    "details": "Cluster 8: 1351 network edges intersect cluster mask."
+   },
+   {
+    "seconds_elapsed": 8.125e-06,
+    "cumulative_seconds": 1.847483832,
+    "event": "UNA Flow",
+    "details": "Running Flow with 9 clusters and 9 threads."
+   },
+   {
+    "seconds_elapsed": 1.475e-05,
+    "cumulative_seconds": 1.847498582,
+    "event": "UNA Flow",
+    "details": "flow_gravity_cap='p95': deriving cap from a gravity accessibility pass (turns=False, elevation=False)."
+   },
+   {
+    "seconds_elapsed": 1.8333e-05,
+    "cumulative_seconds": 1.847516915,
+    "event": "AccessibilityWElevation",
+    "details": "Initializing graph engine..."
+   },
+   {
+    "seconds_elapsed": 0.011961375,
+    "cumulative_seconds": 1.85947829,
+    "event": "AccessibilityWElevation",
+    "details": "Graph engine initialized"
+   },
+   {
+    "seconds_elapsed": 3.042e-06,
+    "cumulative_seconds": 1.859481332,
+    "event": "AccessibilityWElevation",
+    "details": "Calculating centrality with radius (weight) 500"
+   },
+   {
+    "seconds_elapsed": 0.159960458,
+    "cumulative_seconds": 2.01944179,
+    "event": "AccessibilityWElevation",
+    "details": "Reach calculated: min=0.00, max=16310.00, mean=4103.55"
+   },
+   {
+    "seconds_elapsed": 1.1167e-05,
+    "cumulative_seconds": 2.019452957,
+    "event": "AccessibilityWElevation",
+    "details": "Gravity (exponential) calculated: min=0.00, max=11356.46, mean=2959.38"
+   },
+   {
+    "seconds_elapsed": 6.209e-06,
+    "cumulative_seconds": 2.019459166,
+    "event": "AccessibilityWElevation",
+    "details": "Gravity (logistic) calculated: min=0.00, max=12263.98, mean=3182.31"
+   },
+   {
+    "seconds_elapsed": 5.416e-06,
+    "cumulative_seconds": 2.019464582,
+    "event": "AccessibilityWElevation",
+    "details": "KNN access calculated: min=0.00, max=4198.45, mean=1099.98"
+   },
+   {
+    "seconds_elapsed": 0.000168083,
+    "cumulative_seconds": 2.019632665,
+    "event": "UNA Flow",
+    "details": "Auto gravity cap resolved: p95 of gravity_exponential over 1,024 origins = 7422.1767."
+   },
+   {
+    "seconds_elapsed": 2.9167e-05,
+    "cumulative_seconds": 2.019661832,
+    "event": "AggregateFlow",
+    "details": "Centrality run (aggregate_flow, via-arc model): search_radius=500.0, detour_mode=ratio, ratio=1.05, buffer=100.0, decay=True (method=gravity_cap, curve=exponential), path_penalty=logistic, turns=False"
+   },
+   {
+    "seconds_elapsed": 0.238936417,
+    "cumulative_seconds": 2.258598249,
+    "event": "AggregateFlow",
+    "details": "DiGraph: 49159 net nodes, 6661 dest nodes, 1024 origin nodes, 167426 arcs."
+   },
+   {
+    "seconds_elapsed": 0.120227791,
+    "cumulative_seconds": 2.37882604,
+    "event": "AggregateFlow",
+    "details": "CSR build: 0.12s (n_arcs=167426)"
+   },
+   {
+    "seconds_elapsed": 0.304920083,
+    "cumulative_seconds": 2.683746123,
+    "event": "AggregateFlow",
+    "details": "Gradient storage: 478,268 finite entries (~10 MB sparse vs ~4.5 GB dense). [F3] cap=268435456B margin=67108864B chunks=42 schedule=[164, 164, 164, 164, 163, 163, 163, 162, 162, 162, 162, 162, 161, 161, 161, 161, 161, 160, 160, 160, 160, 160, 159, 159, 159, 159, 159, 159, 159, 158, 158, 158, 158, 158, 158, 157, 157, 157, 157, 157, 157, 98] fallback=none floor_fired=none"
+   },
+   {
+    "seconds_elapsed": 0.002223291,
+    "cumulative_seconds": 2.685969414,
+    "event": "AggregateFlow",
+    "details": "Backward gradients: 6661 destinations in 0.31s (limit=525)."
+   },
+   {
+    "seconds_elapsed": 0.000898417,
+    "cumulative_seconds": 2.686867831,
+    "event": "AggregateFlow",
+    "details": "Origin loop: 1,024 origins across 8 thread(s) (static striped assignment)."
+   },
+   {
+    "seconds_elapsed": 0.020713125,
+    "cumulative_seconds": 2.707580956,
+    "event": "AggregateFlow",
+    "details": "  origin 10/1,024 (1.0%, 483/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012774167,
+    "cumulative_seconds": 2.720355123,
+    "event": "AggregateFlow",
+    "details": "  origin 20/1,024 (2.0%, 597/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.009380708,
+    "cumulative_seconds": 2.729735831,
+    "event": "AggregateFlow",
+    "details": "  origin 30/1,024 (2.9%, 700/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012271375,
+    "cumulative_seconds": 2.742007206,
+    "event": "AggregateFlow",
+    "details": "  origin 40/1,024 (3.9%, 725/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010455875,
+    "cumulative_seconds": 2.752463081,
+    "event": "AggregateFlow",
+    "details": "  origin 50/1,024 (4.9%, 762/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.009404583,
+    "cumulative_seconds": 2.761867664,
+    "event": "AggregateFlow",
+    "details": "  origin 60/1,024 (5.9%, 800/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010286292,
+    "cumulative_seconds": 2.772153956,
+    "event": "AggregateFlow",
+    "details": "  origin 70/1,024 (6.8%, 821/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.01170175,
+    "cumulative_seconds": 2.783855706,
+    "event": "AggregateFlow",
+    "details": "  origin 80/1,024 (7.8%, 825/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011077792,
+    "cumulative_seconds": 2.794933498,
+    "event": "AggregateFlow",
+    "details": "  origin 90/1,024 (8.8%, 833/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010331042,
+    "cumulative_seconds": 2.80526454,
+    "event": "AggregateFlow",
+    "details": "  origin 100/1,024 (9.8%, 844/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012047542,
+    "cumulative_seconds": 2.817312082,
+    "event": "AggregateFlow",
+    "details": "  origin 110/1,024 (10.7%, 843/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010731708,
+    "cumulative_seconds": 2.82804379,
+    "event": "AggregateFlow",
+    "details": "  origin 120/1,024 (11.7%, 850/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011499875,
+    "cumulative_seconds": 2.839543665,
+    "event": "AggregateFlow",
+    "details": "  origin 130/1,024 (12.7%, 851/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010781958,
+    "cumulative_seconds": 2.850325623,
+    "event": "AggregateFlow",
+    "details": "  origin 140/1,024 (13.7%, 856/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.009766042,
+    "cumulative_seconds": 2.860091665,
+    "event": "AggregateFlow",
+    "details": "  origin 150/1,024 (14.6%, 866/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010936625,
+    "cumulative_seconds": 2.87102829,
+    "event": "AggregateFlow",
+    "details": "  origin 160/1,024 (15.6%, 869/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.009884083,
+    "cumulative_seconds": 2.880912373,
+    "event": "AggregateFlow",
+    "details": "  origin 170/1,024 (16.6%, 876/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.0107505,
+    "cumulative_seconds": 2.891662873,
+    "event": "AggregateFlow",
+    "details": "  origin 180/1,024 (17.6%, 879/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.00971225,
+    "cumulative_seconds": 2.901375123,
+    "event": "AggregateFlow",
+    "details": "  origin 190/1,024 (18.6%, 885/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010699333,
+    "cumulative_seconds": 2.912074456,
+    "event": "AggregateFlow",
+    "details": "  origin 200/1,024 (19.5%, 888/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.009069417,
+    "cumulative_seconds": 2.921143873,
+    "event": "AggregateFlow",
+    "details": "  origin 210/1,024 (20.5%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011478709,
+    "cumulative_seconds": 2.932622582,
+    "event": "AggregateFlow",
+    "details": "  origin 220/1,024 (21.5%, 895/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011441584,
+    "cumulative_seconds": 2.944064166,
+    "event": "AggregateFlow",
+    "details": "  origin 230/1,024 (22.5%, 894/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010675208,
+    "cumulative_seconds": 2.954739374,
+    "event": "AggregateFlow",
+    "details": "  origin 240/1,024 (23.4%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010389209,
+    "cumulative_seconds": 2.965128583,
+    "event": "AggregateFlow",
+    "details": "  origin 250/1,024 (24.4%, 898/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010686416,
+    "cumulative_seconds": 2.975814999,
+    "event": "AggregateFlow",
+    "details": "  origin 260/1,024 (25.4%, 899/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.009949208,
+    "cumulative_seconds": 2.985764207,
+    "event": "AggregateFlow",
+    "details": "  origin 270/1,024 (26.4%, 903/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012455125,
+    "cumulative_seconds": 2.998219332,
+    "event": "AggregateFlow",
+    "details": "  origin 280/1,024 (27.3%, 899/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.009332167,
+    "cumulative_seconds": 3.007551499,
+    "event": "AggregateFlow",
+    "details": "  origin 290/1,024 (28.3%, 904/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010979125,
+    "cumulative_seconds": 3.018530624,
+    "event": "AggregateFlow",
+    "details": "  origin 300/1,024 (29.3%, 904/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012514208,
+    "cumulative_seconds": 3.031044832,
+    "event": "AggregateFlow",
+    "details": "  origin 310/1,024 (30.3%, 900/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011502458,
+    "cumulative_seconds": 3.04254729,
+    "event": "AggregateFlow",
+    "details": "  origin 320/1,024 (31.2%, 899/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.013124,
+    "cumulative_seconds": 3.05567129,
+    "event": "AggregateFlow",
+    "details": "  origin 330/1,024 (32.2%, 894/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010453208,
+    "cumulative_seconds": 3.066124498,
+    "event": "AggregateFlow",
+    "details": "  origin 340/1,024 (33.2%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.01107575,
+    "cumulative_seconds": 3.077200248,
+    "event": "AggregateFlow",
+    "details": "  origin 350/1,024 (34.2%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.009779375,
+    "cumulative_seconds": 3.086979623,
+    "event": "AggregateFlow",
+    "details": "  origin 360/1,024 (35.2%, 899/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010767292,
+    "cumulative_seconds": 3.097746915,
+    "event": "AggregateFlow",
+    "details": "  origin 370/1,024 (36.1%, 900/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011020209,
+    "cumulative_seconds": 3.108767124,
+    "event": "AggregateFlow",
+    "details": "  origin 380/1,024 (37.1%, 900/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.01125925,
+    "cumulative_seconds": 3.120026374,
+    "event": "AggregateFlow",
+    "details": "  origin 390/1,024 (38.1%, 900/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010882041,
+    "cumulative_seconds": 3.130908415,
+    "event": "AggregateFlow",
+    "details": "  origin 400/1,024 (39.1%, 900/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011741625,
+    "cumulative_seconds": 3.14265004,
+    "event": "AggregateFlow",
+    "details": "  origin 410/1,024 (40.0%, 899/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012078,
+    "cumulative_seconds": 3.15472804,
+    "event": "AggregateFlow",
+    "details": "  origin 420/1,024 (41.0%, 897/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.01084875,
+    "cumulative_seconds": 3.16557679,
+    "event": "AggregateFlow",
+    "details": "  origin 430/1,024 (42.0%, 898/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011500667,
+    "cumulative_seconds": 3.177077457,
+    "event": "AggregateFlow",
+    "details": "  origin 440/1,024 (43.0%, 897/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012072459,
+    "cumulative_seconds": 3.189149916,
+    "event": "AggregateFlow",
+    "details": "  origin 450/1,024 (43.9%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010526833,
+    "cumulative_seconds": 3.199676749,
+    "event": "AggregateFlow",
+    "details": "  origin 460/1,024 (44.9%, 897/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012040292,
+    "cumulative_seconds": 3.211717041,
+    "event": "AggregateFlow",
+    "details": "  origin 470/1,024 (45.9%, 895/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012916292,
+    "cumulative_seconds": 3.224633333,
+    "event": "AggregateFlow",
+    "details": "  origin 480/1,024 (46.9%, 892/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.008167083,
+    "cumulative_seconds": 3.232800416,
+    "event": "AggregateFlow",
+    "details": "  origin 490/1,024 (47.9%, 895/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011945959,
+    "cumulative_seconds": 3.244746375,
+    "event": "AggregateFlow",
+    "details": "  origin 500/1,024 (48.8%, 894/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012077875,
+    "cumulative_seconds": 3.25682425,
+    "event": "AggregateFlow",
+    "details": "  origin 510/1,024 (49.8%, 892/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010613583,
+    "cumulative_seconds": 3.267437833,
+    "event": "AggregateFlow",
+    "details": "  origin 520/1,024 (50.8%, 893/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.01137625,
+    "cumulative_seconds": 3.278814083,
+    "event": "AggregateFlow",
+    "details": "  origin 530/1,024 (51.8%, 893/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012534333,
+    "cumulative_seconds": 3.291348416,
+    "event": "AggregateFlow",
+    "details": "  origin 540/1,024 (52.7%, 891/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011772625,
+    "cumulative_seconds": 3.303121041,
+    "event": "AggregateFlow",
+    "details": "  origin 550/1,024 (53.7%, 890/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.009997667,
+    "cumulative_seconds": 3.313118708,
+    "event": "AggregateFlow",
+    "details": "  origin 560/1,024 (54.7%, 892/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012920417,
+    "cumulative_seconds": 3.326039125,
+    "event": "AggregateFlow",
+    "details": "  origin 570/1,024 (55.7%, 889/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011428958,
+    "cumulative_seconds": 3.337468083,
+    "event": "AggregateFlow",
+    "details": "  origin 580/1,024 (56.6%, 889/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010361375,
+    "cumulative_seconds": 3.347829458,
+    "event": "AggregateFlow",
+    "details": "  origin 590/1,024 (57.6%, 890/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011278667,
+    "cumulative_seconds": 3.359108125,
+    "event": "AggregateFlow",
+    "details": "  origin 600/1,024 (58.6%, 890/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011580292,
+    "cumulative_seconds": 3.370688417,
+    "event": "AggregateFlow",
+    "details": "  origin 610/1,024 (59.6%, 890/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011423875,
+    "cumulative_seconds": 3.382112292,
+    "event": "AggregateFlow",
+    "details": "  origin 620/1,024 (60.5%, 890/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011270209,
+    "cumulative_seconds": 3.393382501,
+    "event": "AggregateFlow",
+    "details": "  origin 630/1,024 (61.5%, 890/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010618417,
+    "cumulative_seconds": 3.404000918,
+    "event": "AggregateFlow",
+    "details": "  origin 640/1,024 (62.5%, 890/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010516625,
+    "cumulative_seconds": 3.414517543,
+    "event": "AggregateFlow",
+    "details": "  origin 650/1,024 (63.5%, 891/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010350667,
+    "cumulative_seconds": 3.42486821,
+    "event": "AggregateFlow",
+    "details": "  origin 660/1,024 (64.5%, 892/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011266708,
+    "cumulative_seconds": 3.436134918,
+    "event": "AggregateFlow",
+    "details": "  origin 670/1,024 (65.4%, 892/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.01116225,
+    "cumulative_seconds": 3.447297168,
+    "event": "AggregateFlow",
+    "details": "  origin 680/1,024 (66.4%, 892/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012599333,
+    "cumulative_seconds": 3.459896501,
+    "event": "AggregateFlow",
+    "details": "  origin 690/1,024 (67.4%, 891/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010171167,
+    "cumulative_seconds": 3.470067668,
+    "event": "AggregateFlow",
+    "details": "  origin 700/1,024 (68.4%, 892/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010928833,
+    "cumulative_seconds": 3.480996501,
+    "event": "AggregateFlow",
+    "details": "  origin 710/1,024 (69.3%, 892/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.0109345,
+    "cumulative_seconds": 3.491931001,
+    "event": "AggregateFlow",
+    "details": "  origin 720/1,024 (70.3%, 892/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.009752375,
+    "cumulative_seconds": 3.501683376,
+    "event": "AggregateFlow",
+    "details": "  origin 730/1,024 (71.3%, 894/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011082834,
+    "cumulative_seconds": 3.51276621,
+    "event": "AggregateFlow",
+    "details": "  origin 740/1,024 (72.3%, 894/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.0113175,
+    "cumulative_seconds": 3.52408371,
+    "event": "AggregateFlow",
+    "details": "  origin 750/1,024 (73.2%, 894/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010426167,
+    "cumulative_seconds": 3.534509877,
+    "event": "AggregateFlow",
+    "details": "  origin 760/1,024 (74.2%, 895/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.0107055,
+    "cumulative_seconds": 3.545215377,
+    "event": "AggregateFlow",
+    "details": "  origin 770/1,024 (75.2%, 895/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011058416,
+    "cumulative_seconds": 3.556273793,
+    "event": "AggregateFlow",
+    "details": "  origin 780/1,024 (76.2%, 895/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010628083,
+    "cumulative_seconds": 3.566901876,
+    "event": "AggregateFlow",
+    "details": "  origin 790/1,024 (77.1%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010863042,
+    "cumulative_seconds": 3.577764918,
+    "event": "AggregateFlow",
+    "details": "  origin 800/1,024 (78.1%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011089875,
+    "cumulative_seconds": 3.588854793,
+    "event": "AggregateFlow",
+    "details": "  origin 810/1,024 (79.1%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010642375,
+    "cumulative_seconds": 3.599497168,
+    "event": "AggregateFlow",
+    "details": "  origin 820/1,024 (80.1%, 897/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010736209,
+    "cumulative_seconds": 3.610233377,
+    "event": "AggregateFlow",
+    "details": "  origin 830/1,024 (81.1%, 897/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.013302333,
+    "cumulative_seconds": 3.62353571,
+    "event": "AggregateFlow",
+    "details": "  origin 840/1,024 (82.0%, 895/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.01075775,
+    "cumulative_seconds": 3.63429346,
+    "event": "AggregateFlow",
+    "details": "  origin 850/1,024 (83.0%, 895/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010551667,
+    "cumulative_seconds": 3.644845127,
+    "event": "AggregateFlow",
+    "details": "  origin 860/1,024 (84.0%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010766292,
+    "cumulative_seconds": 3.655611419,
+    "event": "AggregateFlow",
+    "details": "  origin 870/1,024 (85.0%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011272375,
+    "cumulative_seconds": 3.666883794,
+    "event": "AggregateFlow",
+    "details": "  origin 880/1,024 (85.9%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010381542,
+    "cumulative_seconds": 3.677265336,
+    "event": "AggregateFlow",
+    "details": "  origin 890/1,024 (86.9%, 897/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011478625,
+    "cumulative_seconds": 3.688743961,
+    "event": "AggregateFlow",
+    "details": "  origin 900/1,024 (87.9%, 897/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.012795791,
+    "cumulative_seconds": 3.701539752,
+    "event": "AggregateFlow",
+    "details": "  origin 910/1,024 (88.9%, 895/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010606708,
+    "cumulative_seconds": 3.71214646,
+    "event": "AggregateFlow",
+    "details": "  origin 920/1,024 (89.8%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010726875,
+    "cumulative_seconds": 3.722873335,
+    "event": "AggregateFlow",
+    "details": "  origin 930/1,024 (90.8%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010251291,
+    "cumulative_seconds": 3.733124626,
+    "event": "AggregateFlow",
+    "details": "  origin 940/1,024 (91.8%, 897/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011981166,
+    "cumulative_seconds": 3.745105792,
+    "event": "AggregateFlow",
+    "details": "  origin 950/1,024 (92.8%, 896/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010521125,
+    "cumulative_seconds": 3.755626917,
+    "event": "AggregateFlow",
+    "details": "  origin 960/1,024 (93.8%, 897/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011121,
+    "cumulative_seconds": 3.766747917,
+    "event": "AggregateFlow",
+    "details": "  origin 970/1,024 (94.7%, 897/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.009648375,
+    "cumulative_seconds": 3.776396292,
+    "event": "AggregateFlow",
+    "details": "  origin 980/1,024 (95.7%, 898/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011189833,
+    "cumulative_seconds": 3.787586125,
+    "event": "AggregateFlow",
+    "details": "  origin 990/1,024 (96.7%, 898/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.009985125,
+    "cumulative_seconds": 3.79757125,
+    "event": "AggregateFlow",
+    "details": "  origin 1,000/1,024 (97.7%, 899/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.010695417,
+    "cumulative_seconds": 3.808266667,
+    "event": "AggregateFlow",
+    "details": "  origin 1,010/1,024 (98.6%, 899/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.011474583,
+    "cumulative_seconds": 3.81974125,
+    "event": "AggregateFlow",
+    "details": "  origin 1,020/1,024 (99.6%, 899/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.0035685,
+    "cumulative_seconds": 3.82330975,
+    "event": "AggregateFlow",
+    "details": "  origin 1,024/1,024 (100.0%, 900/s, ETA 0.0 min)"
+   },
+   {
+    "seconds_elapsed": 0.000610583,
+    "cumulative_seconds": 3.823920333,
+    "event": "AggregateFlow",
+    "details": "Origin loop: 1,024 origins in 1.14s (8 thread(s))."
+   },
+   {
+    "seconds_elapsed": 2.333e-06,
+    "cumulative_seconds": 3.823922666,
+    "event": "AggregateFlow",
+    "details": "[F2] local-overlap route: ok=True slice_max=7105 fast=8217 overflow=0 fallback=0"
+   },
+   {
+    "seconds_elapsed": 0.000181208,
+    "cumulative_seconds": 3.824103874,
+    "event": "AggregateFlow",
+    "details": "Done \u2014 max=12.0721, mean=0.0338, nonzero=2856"
+   },
+   {
+    "seconds_elapsed": 0.065731584,
+    "cumulative_seconds": 3.889835458,
+    "event": "Flow",
+    "details": "Saved feather \u2192 /Users/alansynn/orca/workspaces/una-x/campaign_data/f2r_out/f2r_a3_b3_AB_cand/flow_2026-09-27_1930/Results.feather"
+   },
+   {
+    "seconds_elapsed": 0.032452709,
+    "cumulative_seconds": 3.922288167,
+    "event": "Flow",
+    "details": "Saved CSV \u2192 /Users/alansynn/orca/workspaces/una-x/campaign_data/f2r_out/f2r_a3_b3_AB_cand/flow_2026-09-27_1930/Results.csv"
+   },
+   {
+    "seconds_elapsed": 0.682928709,
+    "cumulative_seconds": 4.605216876,
+    "event": "Flow",
+    "details": "Saved GeoJSON \u2192 /Users/alansynn/orca/workspaces/una-x/campaign_data/f2r_out/f2r_a3_b3_AB_cand/flow_2026-09-27_1930/Results.geojson"
+   }
+  ]
+ },
+ "f2_log_line": {
+  "present": true,
+  "entries": [
+   {
+    "seconds_elapsed": 2.333e-06,
+    "cumulative_seconds": 3.823922666,
+    "event": "AggregateFlow",
+    "details": "[F2] local-overlap route: ok=True slice_max=7105 fast=8217 overflow=0 fallback=0"
+   }
+  ]
+ },
+ "route_state": {
+  "f2_stats": {
+   "local_route_ok": true,
+   "local_slice_max": 7105,
+   "fast_calls": 8217,
+   "overflow_events": 0,
+   "fallback_calls": 0
+  },
+  "arm": "cand",
+  "expected_regime": "fallback=none expected at this cell (slices far below local_slice_max); nonzero overflow/fallback is NOT auto-reject \u2014 of-policy is output-identical by committed tests; G7 adjudication reads these counters"
+ },
+ "verbatim_warnings": [],
+ "artifacts": {
+  "flow_2026-09-27_1930/Results.feather": {
+   "sha256": "d68dd83856e1bf3c7a7bfc36685b073451bd7e0d48aa130fef427dd4dcf6a7d5",
+   "bytes": 5494442
+  },
+  "flow_2026-09-27_1930/Results.geojson": {
+   "sha256": "a982d2357672af8e280e265473cc39fd377d209a4ce3403473837bf14e80b808",
+   "bytes": 21123132
+  },
+  "flow_2026-09-27_1930/Results.csv": {
+   "sha256": "0e8ca9ca9d01524859212d0c6bba4ce993d4aeccd6a097d80607ffe8cfea13d1",
+   "bytes": 732448
+  }
+ },
+ "peak_rss_ru_maxrss_mib": 745.625,
+ "loadavg_after_window": [
+  3.6640625,
+  3.537109375,
+  3.51513671875
+ ],
+ "numba_threads_after_run": {
+  "config": 1,
+  "get": 1
+ },
+ "finished_utc": "2026-09-27T23:30:02Z"
+}
