@@ -1,0 +1,33 @@
+{
+ "schema": "a2i_result_v1",
+ "task": "A2I",
+ "date_utc": "2026-09-27",
+ "disposition": "not_admitted",
+ "source_unchanged": true,
+ "evidence": {
+  "admission_json": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A2I/admission.json",
+  "admission_json_sha256": "158757562b4cf7c471bf53bc21480069cb0f9bf391dbc342a0ebaf6a37fed833",
+  "probe_script": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A2I/a2i_admission_probe.py",
+  "probe_script_sha256": "84d2d62500d759f21eba711a8373167c1fca7736e14cfe6f841f1bd7d0682145",
+  "records": [
+   {
+    "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_probes/a2i_access_rerun.json",
+    "sha256": "278d3dcf29095a2f00dd08a443741ea30bee619bd514242e72dc8e819ef620dd",
+    "role": "ACCESS r500"
+   },
+   {
+    "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_probes/a2i_holdout_r1200.json",
+    "sha256": "ed7fe863e9f868be5074df575441973b2fc1469326c36fe5beebc8a40d062460",
+    "role": "HOLDOUT r1200"
+   },
+   {
+    "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_probes/a2i_admission_154023.json",
+    "sha256": "2e967816faa01bdcca74e57d21a453534193cfbbea59940cf4c6895e593c390c",
+    "role": "superseded first fire (sign-label defect, disclosed)"
+   }
+  ],
+  "lease_log": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_lease_log.json"
+ },
+ "tests_written": "none required: no production change was made, so no L0/L1 test fixtures enter the tree for A2",
+ "next_step": "relay to team-lead for h04's A2R intake; A2R reviews the not-admitted disposition"
+}

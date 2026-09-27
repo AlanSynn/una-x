@@ -1,0 +1,43 @@
+{
+ "schema_version": "a2r_selection_v1",
+ "task": "A2R",
+ "revision": "r1",
+ "role": "independent-reviewer (h04)",
+ "generated_utc": "2026-09-27T16:20:11Z",
+ "method_note": "no-selection record per the ruled A2R shape: the experiment A2 closed NOT_ADMITTED at the admission phase, so there is no candidate to screen and no screen ran; this file exists because TASKS_CLAUDE.yaml declares it among A2R's outputs, and it records the negative terminal state honestly - selected_source remains the unchanged parent. Review basis: evidence/A2R/review.json (independent disposition review, all figures recomputed from per-origin rows and committed anchors).",
+ "review_ref": {"path": "evidence/A2R/review.json", "sha256": "5eac1aaa3fea152cafc6e34c7f066268dd571275538e8358a82ecd8f90788459", "note": "hash pinned post-write by the coordinator's hash gate; review r1 authored 2026-09-27T16:20:11Z"},
+ "disposition": "not_admitted (carried from A2I and UPHELD by this review - probe statement-for-statement faithful, arithmetic exact, validation green, failure structural: ACCESS cell ceiling-limited at 0.0394 acc-stage share < 0.05 gate; HOLDOUT cell cost-collapsed to 0.0002-0.0005 end-to-end)",
+ "selected_control": {
+  "candidate": "NONE - no A2 implementation exists (source unchanged by A2I, verified: porcelain == '?? evidence/A2I/' only)",
+  "selected_source": "unchanged parent: a1-screened HEAD at commit b075f2432d724772717a253f7fbe95c9ef7846ef (engine files byte-identical to baseline 361928e4ba38f34622cafe065b0025244db61368 plus A1/F1/F3 screened changes already integrated)",
+  "per_TASKS_completion_condition": "'selected_source refers only to screened-in reviewed code or unchanged parent' - the unchanged-parent branch is the operative one"
+ },
+ "arms": [],
+ "matrix_execution": "none - zero windows consumed by A2R; the screen leg is vacuous under the A2R objective's negative-state clause ('Preserve negative terminal states without running unnecessary trials')",
+ "gates_admit_screen": {
+  "admission_gate": "FAILED at the admission phase (both observed access cells below the 0.05 minimum_removable_fraction; capacity route correctly not exercised) - screen gates never reached",
+  "recorded_figures": "ACCESS r500 removable end-to-end 0.03016617578365104 (A1-derived) / 0.012568251839968589 (measured-wall); HOLDOUT r1200 0.00045576636412631826 / 0.00021973479784184787; full adjudication in review.json"
+ },
+ "lease_closure": {
+  "a2i_log": "cc9ff41e8ca73377f6db2e6667edb8165ec79faf754622c19f888d481481c38a - 5 entries, all terminal: 2 crashed child starts (no window, no charge) + 3 diagnostics windows (rev9_admitted true at start AND end, charged_s 0.0, gate_eligible false)",
+  "campaign_lease": "cumulative 1182.3 s / 14,400.0 unchanged from the F3R closing state (opening sourced from f3r_lease_log.json 86621b0b...); remaining 13,217.7 s",
+  "a2r_windows": "zero - this review ran no execution"
+ },
+ "disclosures": [
+  "superseded first-fire record a2i_admission_154023.json kept append-only with a sign-label defect in its printed removable figures (printed -0.03060108528713303/-0.01301523867726788 for true +0.030601/+0.013015); operative figures come from the fresh rerun; disposition robust under both magnitudes",
+  "two crashed child starts recorded honestly in the lease log (guard overload-resolution TypeError; metric_args arity 9 vs 13) - no window, no charge",
+  "three diagnostics windows stamped in-child, REV-9 enforced at full strictness (the REV-10 override was F3R P6-sizing-ONLY and was correctly NOT relied on here)",
+  "the per-origin b<=R dense-fallback branch is design-stage: never fired in the observed domain (b uniformly cutoff+1) and would have been flagged by the b_values validation leg had it fired",
+  "I00 integration set: F1 + F3 cand controls only - no A2 candidate exists"
+ ],
+ "raw_evidence": {
+  "admission_json": "158757562b4cf7c471bf53bc21480069cb0f9bf391dbc342a0ebaf6a37fed833",
+  "result_json": "d85d8c5b24a0be00c28a2b8db2c90e5e6d49a71d886a22e58d79f0c12ce7541f",
+  "probe_script": "84d2d62500d759f21eba711a8373167c1fca7736e14cfe6f841f1bd7d0682145",
+  "access_rerun": "278d3dcf29095a2f00dd08a443741ea30bee619bd514242e72dc8e819ef620dd",
+  "holdout_r1200": "ed7fe863e9f868be5074df575441973b2fc1469326c36fe5beebc8a40d062460",
+  "superseded_154023": "2e967816faa01bdcca74e57d21a453534193cfbbea59940cf4c6895e593c390c",
+  "a2i_lease_log": "cc9ff41e8ca73377f6db2e6667edb8165ec79faf754622c19f888d481481c38a",
+  "make_admission": "c6ad06f68bcae5ddd105d31f646a5fd041783bde578fe1bc6a9949bf9aa15d0f"
+ }
+}

@@ -1,0 +1,142 @@
+{
+ "schema_version": "a2r_review_v1",
+ "task": "A2R",
+ "revision": "r1",
+ "role": "independent-reviewer (h04)",
+ "generated_utc": "2026-09-27T16:20:11Z",
+ "record_under_review": {
+  "task": "A2I",
+  "disposition": "NOT_ADMITTED (implementation-owner closed task #28 with no implementation, source unchanged)",
+  "admission_json": {"path": "campaigns/una_large_e2e/evidence/A2I/admission.json", "sha256": "158757562b4cf7c471bf53bc21480069cb0f9bf391dbc342a0ebaf6a37fed833", "bytes": 10620},
+  "result_json": {"path": "campaigns/una_large_e2e/evidence/A2I/result.json", "sha256": "d85d8c5b24a0be00c28a2b8db2c90e5e6d49a71d886a22e58d79f0c12ce7541f", "bytes": 1624},
+  "probe_script": {"path": "campaigns/una_large_e2e/evidence/A2I/a2i_admission_probe.py", "sha256": "84d2d62500d759f21eba711a8373167c1fca7736e14cfe6f841f1bd7d0682145", "bytes": 39844},
+  "access_rerun_record": {"path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_probes/a2i_access_rerun.json", "sha256": "278d3dcf29095a2f00dd08a443741ea30bee619bd514242e72dc8e819ef620dd", "bytes": 42740},
+  "holdout_record": {"path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_probes/a2i_holdout_r1200.json", "sha256": "ed7fe863e9f868be5074df575441973b2fc1469326c36fe5beebc8a40d062460", "bytes": 37607},
+  "superseded_record": {"path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_probes/a2i_admission_154023.json", "sha256": "2e967816faa01bdcca74e57d21a453534193cfbbea59940cf4c6895e593c390c", "bytes": 43384},
+  "lease_log": {"path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_lease_log.json", "sha256": "cc9ff41e8ca73377f6db2e6667edb8165ec79faf754622c19f888d481481c38a", "bytes": 3098},
+  "driver": {"path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_probes/make_admission.py", "sha256": "c6ad06f68bcae5ddd105d31f646a5fd041783bde578fe1bc6a9949bf9aa15d0f", "bytes": 16383}
+ },
+ "governing_text": {
+  "admission_gate": "DECISION.md Admission: admit when profiling of the CURRENT selected implementation shows at least 5% removable complete-job service, or a demonstrated memory-capacity bottleneck; campaign.json gates.minimum_removable_fraction = 0.05 (read from the live file this session)",
+  "not_admitted_duty": "DECISION.md: a not-admitted experiment records its measured coverage/bound and consumes no production benchmark (discharged by A2I admission.json measured_coverage + measured_cost_and_removable; zero benchmark consumption)",
+  "task_contract": "TASKS_CLAUDE.yaml A2I completion condition: 'If not admitted, record reason and leave source unchanged' (met); A2R outputs declared as evidence/A2R/review.json + evidence/A2R/selection.json (both written)",
+  "dossier": "dossiers/A2_destination_locality.md (statement-for-statement basis of the faithfulness adjudication below)"
+ },
+ "method_note": "independent recomputation, never relay acceptance: every admitted figure below was recomputed this session from per-origin rows, stage-model/A1R anchors, or code reading; the probe script was read in full (844 lines) and mapped statement-for-statement against the dossier; no probe was re-executed (negative terminal state preserved; no unnecessary trials per the A2R objective)",
+ "source_unchanged_proof": {
+  "porcelain": "git status --porcelain == exactly '?? campaigns/una_large_e2e/evidence/A2I/' at review time (zero production diff vs HEAD b075f2432d724772717a253f7fbe95c9ef7846ef)",
+  "admission_json_claim": "engine_files_diff_vs_head '(empty: byte-identical)', source_unchanged_by_A2I true - consistent with the observed porcelain",
+  "capture_immutability": "access_arrays.npz re-hashed NOW with the probe's own sha256_arrays construction (sorted key, shape, dtype, contiguous bytes) == ad443712dfbc9f1b05b489ca417c36bd55e7e1ee27efa5c9d1e833562b7312b6 == the record's before/after stamps; note this is an array-structure digest, NOT the .npz file-byte hash (reviewer's first file-byte comparison mismatched for exactly this reason and was corrected)"
+ },
+ "faithfulness_adjudication": {
+  "method": "dossier statement -> probe mechanism, full probe read",
+  "mappings": [
+   "track every seed + subsequent label assignment incl. degree-one and over-cutoff seeds, pops/settled/final-distance NOT a substitute: _proto_tracked_search appends both seed IDs unconditionally before any cutoff test, then appends on EVERY o_scope_weights label write in the eligible-replay loop, before the push gate (degree-one/over-cutoff assignments tracked); per-write tracking, not per-pop",
+   "append duplicates then integer-sort/dedup, no mutable epoch system: touched_buf append with doubling growth; _proto_enum_candidates np.sort + linear unique, twice (touched then gathered candidate IDs); no sets, no epoch counter",
+   "sentinel proof using actual stored values: b = scope_b[V] read after the identical tracked search; b_finite_gt_cutoff checked per origin (b == b, finite, > cutoff); guard-scan receipt checks D-terminal preconditions (idx in [0,V), weights finite nonneg); measured b_value_set [501.0] (ACCESS) / [1201.0] (HOLDOUT) = exactly ones+cutoff, so the local route's sentinel precondition held at every sampled origin",
+   "reverse index over BOTH terminals to ORIGINAL destination IDs, built once per run, no cross-run cache: nodes2 = concat(dti[:,0], dti[:,1]), fill[i%D] mapping, CSR fill_start via bincount/cumsum, receipt states once-per-run/no-cache",
+   "dataflow U=sorted_unique(touched), candidates=sorted_unique(concat(reverse_index[u])) ascending original ID: implemented in _proto_enum_candidates; the dist[d] recomputation is done by the REAL adjust_destination_distances kernel on gathered rows (stronger than a replica: the original arithmetic itself)",
+   "call ORIGINAL compiled reach_gravity_knn_access on candidate arrays with identical scalar parameters: metric_args positional mapping documented as identical to the engine's integrated_scope_access call; real kernel invoked on (dc, d_weights[cand])",
+   "preserve dtype/layout specialization, record both dispatchers' signature census: _proto_gather_rows_f returns (2,C) C-contiguous buffers as .T F-layout transpose views so the adjust kernel dispatches to the SAME 2-D F-layout signature as dense dti/dtw; signature census before/after with unchanged={adjust: true, metric: true} in BOTH cell records",
+   "retained n_distances/n_weights identical in length/order/dtype/bit pattern: numpy_metrics_replica used ONLY for the retained-sequence leg; retained_seq_mismatches 0 in both cells; the metrics themselves compared on REAL kernel outputs (ULP 0)",
+   "decision-before-mutation with charged decision overhead: allocation gate total >= d_count evaluated BEFORE the raw buffer allocation; on failure returns empty + gate_engaged false and the caller runs the dense tail; the touched sort (decision overhead) sits inside the timed t_enum segment",
+   "no per-origin O(V) clearing, no unproven generation counter: fresh cap-1024 int64 buffer per origin with doubling; no generation state",
+   "report candidate fraction and D scan avoided; reject dense/nearly-global regimes: coverage_summary reports C_over_D and scan_avoided_when_engaged; the HOLDOUT r1200 near-global regime was MEASURED and honestly reported as a collapse (median net -21.5 ns) rather than hidden",
+   "one design/revision budget: declared consumed by this measurement; A2 closed unless the principal reopens scope"
+  ],
+  "design_stage_note": "the dossier's per-origin 'if b<=R use dense' fallback branch is design-stage in the probe: the route-level sentinel precondition is measured (b_values_all_finite_gt_cutoff true, uniform b=cutoff+1), so the branch never fired in the observed domain; had it fired, b_values_all_finite_gt_cutoff would be false and the validation leg would flag it - honest absence, same class as the F3R defect-(4) adjudication"
+ },
+ "gates_adjudicated": {
+  "G_admission_gate": {
+   "verdict": "FAIL BOTH CELLS - NOT_ADMITTED CORRECT",
+   "access_r500": {
+    "removable_kernel_share": 0.3190612618654164,
+    "removable_end_to_end_vs_a1_derived": 0.03016617578365104,
+    "removable_end_to_end_vs_measured_wall": 0.012568251839968589,
+    "ceiling": "whole acc stage at HEAD is only 0.03939134373909051 of the window (measured wall 0.092504708 s of a 2.348 s-scale job), so even PERFECT removal of the stage cannot reach 0.05 in this cell - the cell is ceiling-limited independent of mechanism quality"
+   },
+   "holdout_r1200": {
+    "removable_kernel_share": 0.002594333958716206,
+    "removable_end_to_end_vs_a1_derived": 0.00045576636412631826,
+    "removable_end_to_end_vs_measured_wall": 0.00021973479784184787,
+    "collapse": "tracking cost scales with touched labels (A median 530 at r1200 vs 73 at r500); candidate side barely beats dense side (median net -21.5 ns)"
+   },
+   "capacity_route": "not exercised, correctly: dossier design bounds transients (touched buffer + candidate index, both << scope array); no capacity bottleneck claimed or measurable at this scale"
+  },
+  "G_arithmetic": {
+   "verdict": "PASS - every figure recomputed exactly",
+   "recomputed_from_per_origin_rows": "median net_share signed -0.3190612618654164 (ACCESS) / -0.002594333958716206 (HOLDOUT) -> removable_kernel_share exact; A_median 73.0/530.0, C_max 20/89, A_over_V_median, C_over_D_median, scan_avoided 0.9985737877195616/0.9936946404443777 all exact",
+   "recomputed_products": "removable x share_acc_at_head == removable_end_to_end_vs_measured_wall and removable x share_acc_at_a1_derived == removable_end_to_end_vs_a1_derived, BOTH cells exact",
+   "recomputed_anchors": "share_acc_b0 and share_acc_at_a1_derived recompute exactly from H05 stage_model.json cells + A1R selection.json warm medians (ACCESS window_b0 2.590216958, acc_b0 0.3343705, a1r medians 2.637/2.4914; HOLDOUT 3.736267791/1.534749958, 3.4875/2.6707)",
+   "stat_design_note": "the arithmetic uses the MEDIAN OF PER-ORIGIN SHARES (not the ratio of aggregate medians) - the recorded derivation notes state this; flagged here because median_net (-11021.5) divided by median_dense_side (34625.5) gives 0.31831, a DIFFERENT quantity that must not be confused with the recorded 0.31906"
+  },
+  "G_validation": {
+   "verdict": "PASS - all legs green in both cells",
+   "figures": "scope_bitwise_mismatches 0, dist_bitwise_mismatches_at_included 0, retained_seq_mismatches 0, exclusion_le_cutoff_violations_total 0, ULP dense-vs-cand max 0 (bitwise), signature census unchanged both dispatchers both cells, gate engaged 32/32 origins both cells",
+   "h05_crosscheck": "ACCESS 32/32 in-radius counts match the H05 probe (A2_002536.json), zero mismatches; HOLDOUT leg skipped by flag - correct (the H05 probe captured the r500 cell only), disclosed in admission.json",
+   "identity_and_site": "identity_ok true in-run (engine resolved under the a1r_cand_wheel site), A1 guard admitted the capture arrays in-run both cells"
+   },
+  "G_window_discipline": {
+   "verdict": "PASS - REV-9 intact, zero charge",
+   "a2i_lease_log": "5 entries: 2 crashed_child_start (no window admitted, no charge) + 3 diagnostics_probe windows each stamped rev9_admitted TRUE at start AND end (15:40:24Z->15:40:33Z, 15:50:08Z->15:50:13Z, 15:50:25Z->15:50:28Z), all charged_s 0.0, gate_eligible false",
+   "f3r_lease_untouched": "a2i log opens FROM the F3R log (opening_source_log_sha256_at_creation == 86621b0b..., opening/cumulative 1182.3, remaining 13,217.7 - identical to the F3R closing state); the REV-10 quiet-window override remains scoped to F3R P6 sizing and does NOT extend here: the A2I probe enforced the full REV-9 quiet window in-child (floor 5,368,709,120 AND la[0] < 8.0, correct index) with a refusal branch writing the record and exiting 2",
+   "crashed_starts_chronology": "15:49:55Z/15:49:56Z, between the superseded first fire (15:40) and the reruns (15:50) - consistent with the disclosed sequence (guard overload-resolution TypeError, then metric_args arity 9-vs-13, both fixed before the signfix rerun)"
+  }
+ },
+ "disclosed_items_adjudicated": [
+  {
+   "item": 1,
+   "defect": "superseded record a2i_admission_154023.json printed removable_end_to_end figures as NEGATIVES (-0.03060108528713303 / -0.01301523867726788, verified first-hand at their admission_arithmetic paths): net_share (negative when saving) was multiplied directly instead of negated",
+   "ruling": "ACCEPT SUPERSESSION AS DISCLOSED - this is an honest-label defect, not a vacuous claim: the printed values are exactly the negations of that run's true fractions, the record stays on disk append-only, and its validation legs (sign-independent: bitwise identity, sentinel, exclusions, ULP, signature census, H05 crosscheck) remain corroborating",
+   "note": "the operative rerun is a FRESH measurement, not a sign relabel: implied superseded magnitudes +0.030601/+0.013015 vs rerun +0.030166/+0.012568 (median-of-shares across a new sample); the disposition is robust under BOTH magnitudes - all four < 0.05"
+  },
+  {
+   "item": 2,
+   "defect": "two crashed child starts (overload-resolution TypeError in _a1_scope_admits guard, then metric_args arity 9 vs 13)",
+   "ruling": "ACCEPT AS RECORDED - both verified in the lease log with no window admitted and no charge; the crash-fix sequence explains the rerun labels; honest recording, no evidence destroyed"
+  },
+  {
+   "item": 3,
+   "defect": "three diagnostics windows stamped in-child",
+   "ruling": "ACCEPT - all three verified rev9-admitted at start and end, diagnostics-class uncharged, gate_eligible false; F3R lease arithmetic unchanged (1182.3/13,217.7); in-child stamping with post-hoc reviewability is the same enforcement/evidence separation ruled conforming at the F3R P7 grant"
+  },
+  {
+   "item": 4,
+   "defect": "filing-gate check",
+   "ruling": "DISCHARGED - HEAD was b075f24 at A2I filing time (verified this session at the F3R closeout) and A2R had not started; no newer scope ruling existed"
+  }
+ ],
+ "probe_caveats_record": [
+  "walls are single-session diagnostics on a shared laptop; the probe's own disclaimer applies verbatim (H05 timing_class): this is ADMISSION evidence, not a performance result - the ceiling argument (0.0394 acc-stage share) is what makes the ACCESS-cell conclusion robust to timing noise, since 0.05 > any achievable ceiling",
+  "32 sampled origins (seed 20260925), min-of-reps per origin, median across origins - same protocol as the H05 probe, enabling the 32/32 crosscheck",
+  "the A1-derived end-to-end leg is session-coupled (cand median minus B0 non-acc stages), spread disclosed in A1R raws per the record's derivation notes; the measured-wall leg is independent of it and is the conservative bound"
+ ],
+ "disposition_ruling": {
+  "verdict": "NOT_ADMITTED STANDS - no reopen",
+  "basis": "the probe is statement-for-statement faithful to the dossier, the arithmetic is exact, validation is green in both cells, and the failure is STRUCTURAL: the ACCESS cell cannot clear the gate even at perfect stage removal (ceiling 0.0394 < 0.05) and the HOLDOUT cell's realized saving collapses to 0.0002-0.0005 end-to-end; no measurement defect of any plausible magnitude bridges either figure to the 0.05 gate",
+  "consequences": "source unchanged; no A2 candidate exists for I00 - the integration set is F1 + F3 cand controls only; the dossier's one design/revision budget is consumed; A2 is closed as not-admitted unless the principal reopens scope",
+  "screen_leg": "VACUOUS by the A2R objective's own negative-state clause ('Preserve negative terminal states without running unnecessary trials'): there is no candidate to screen and no diff to review; zero screen windows are consumed"
+ },
+ "outputs_ruling": {
+  "review_json": "this file - the disposition review",
+  "selection_json": "WRITTEN per the TASKS_CLAUDE.yaml A2R outputs list, recording the NO-SELECTION state: with no candidate, selection.json records disposition not_admitted, selected_source = unchanged parent (a1-screened HEAD at b075f24), and no arms/windows - satisfying the declared outputs without fabricating a screen",
+  "commit_tree_ruling": "one hash-gated commit carries evidence/A2I/ (3 files) + evidence/A2R/ (review.json + selection.json), mirroring the F3R deliverable-plus-evidence pattern; the out-of-repo custody items (3 probe records, lease log, make_admission.py) stay listed-never-committed; the campaign_data_manifest amendment listing the new custody set is the coordinator's timing call (v6 when next filed)"
+ },
+ "raw_evidence": {
+  "admission_json": "158757562b4cf7c471bf53bc21480069cb0f9bf391dbc342a0ebaf6a37fed833",
+  "result_json": "d85d8c5b24a0be00c28a2b8db2c90e5e6d49a71d886a22e58d79f0c12ce7541f",
+  "probe_script": "84d2d62500d759f21eba711a8373167c1fca7736e14cfe6f841f1bd7d0682145",
+  "access_rerun": "278d3dcf29095a2f00dd08a443741ea30bee619bd514242e72dc8e819ef620dd",
+  "holdout_r1200": "ed7fe863e9f868be5074df575441973b2fc1469326c36fe5beebc8a40d062460",
+  "superseded_154023": "2e967816faa01bdcca74e57d21a453534193cfbbea59940cf4c6895e593c390c",
+  "a2i_lease_log": "cc9ff41e8ca73377f6db2e6667edb8165ec79faf754622c19f888d481481c38a",
+  "make_admission": "c6ad06f68bcae5ddd105d31f646a5fd041783bde578fe1bc6a9949bf9aa15d0f",
+  "f3r_lease_log": "86621b0b8338f313704740621d669b7b83ddb5d80ae65b389b50b101df18ec84",
+  "capture_arrays_digest": "ad443712dfbc9f1b05b489ca417c36bd55e7e1ee27efa5c9d1e833562b7312b6 (sha256_arrays construction, re-verified this session)"
+ },
+ "outstanding_remediation": [
+  "none blocking; the superseded-record sign-label defect is disclosed and append-only",
+  "for any future admission probe: state beside every aggregate median whether the figure is a median-of-shares or a ratio-of-medians (the two differ materially here: 0.3191 vs 0.3183)",
+  "I00 scoping note carried: integration set is F1 + F3 cand controls only"
+ ]
+}

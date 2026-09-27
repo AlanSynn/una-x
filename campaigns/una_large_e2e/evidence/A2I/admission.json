@@ -1,0 +1,240 @@
+{
+ "schema": "a2i_admission_v1",
+ "task": "A2I",
+ "role": "preimplementation admission recheck (DECISION admission gate)",
+ "date_utc": "2026-09-27",
+ "question": "Does local destination enumeration (A2 dossier) clear the campaign admission gate (>= 5% removable complete-job service, or demonstrated memory-capacity bottleneck) when measured against the CURRENT selected source (A1-screened HEAD)?",
+ "source_pin": {
+  "head_commit": "b075f2432d724772717a253f7fbe95c9ef7846ef",
+  "baseline_source": "361928e4ba38f34622cafe065b0025244db61368",
+  "engine_files_diff_vs_head": "(empty: byte-identical)",
+  "source_unchanged_by_A2I": true,
+  "note": "A2I changed no production source; the only worktree change is this evidence directory (untracked at measurement time)"
+ },
+ "gate": {
+  "definition": "minimum_removable_fraction 0.05 (campaign.json admission_gate policy constant), removable complete-job service measured on the current selected implementation",
+  "minimum_removable_fraction": 0.05,
+  "capacity_route": "not exercised: A2 transients are bounded by the dossier design (touched-ID buffer + candidate index, both << scope array); no memory-capacity bottleneck claimed"
+ },
+ "instrument": {
+  "probe_script": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A2I/a2i_admission_probe.py",
+  "probe_script_sha256": "84d2d62500d759f21eba711a8373167c1fca7736e14cfe6f841f1bd7d0682145",
+  "capture": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_captures/O3_ACCESS/access_arrays.npz",
+  "capture_sha256_r5_before": "ad443712dfbc9f1b05b489ca417c36bd55e7e1ee27efa5c9d1e833562b7312b6",
+  "capture_sha256_r5_after": "ad443712dfbc9f1b05b489ca417c36bd55e7e1ee27efa5c9d1e833562b7312b6",
+  "inputs_immutable_r5": true,
+  "inputs_immutable_r12": true,
+  "site": "venvs/a1r_cand_wheel (site receipt verified in-run by the probe's identity leg)",
+  "identity_ok_r5": true,
+  "identity_ok_r12": true,
+  "a1_admitted_in_run_r5": true,
+  "a1_admitted_in_run_r12": true,
+  "protocol": {
+   "sampled_origins": 32,
+   "seed": 20260925,
+   "reps": 7,
+   "stat": "min-of-reps per origin, median across origins",
+   "ulp_rule": "max_ulp <= 4 (H03)"
+  }
+ },
+ "runs": [
+  {
+   "label": "a2i_access_r500_signfix",
+   "record": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_probes/a2i_access_rerun.json",
+   "record_sha256": "278d3dcf29095a2f00dd08a443741ea30bee619bd514242e72dc8e819ef620dd",
+   "cell": "ACCESS_od",
+   "a1r_stat": "O3_ACCESS",
+   "cutoff": 500.0,
+   "window_at_start": {
+    "utc": "2026-09-27T15:50:08Z",
+    "available_bytes": 5661769728,
+    "loadavg": [
+     3.24,
+     3.22,
+     3.29
+    ],
+    "rev9_quiet_floor_bytes": 5368709120,
+    "rev9_loadavg_max": 8.0,
+    "rev9_admitted": true
+   },
+   "window_at_end": {
+    "utc": "2026-09-27T15:50:13Z",
+    "available_bytes": 5588172800,
+    "loadavg": [
+     3.06,
+     3.18,
+     3.27
+    ],
+    "rev9_quiet_floor_bytes": 5368709120,
+    "rev9_loadavg_max": 8.0,
+    "rev9_admitted": true
+   }
+  },
+  {
+   "label": "a2i_holdout_r1200",
+   "record": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_probes/a2i_holdout_r1200.json",
+   "record_sha256": "ed7fe863e9f868be5074df575441973b2fc1469326c36fe5beebc8a40d062460",
+   "cell": "HOLDOUT_clean",
+   "a1r_stat": "O3_HOLDOUT",
+   "cutoff": 1200.0,
+   "window_at_start": {
+    "utc": "2026-09-27T15:50:25Z",
+    "available_bytes": 5698224128,
+    "loadavg": [
+     3.41,
+     3.24,
+     3.29
+    ],
+    "rev9_quiet_floor_bytes": 5368709120,
+    "rev9_loadavg_max": 8.0,
+    "rev9_admitted": true
+   },
+   "window_at_end": {
+    "utc": "2026-09-27T15:50:28Z",
+    "available_bytes": 5587861504,
+    "loadavg": [
+     3.41,
+     3.24,
+     3.29
+    ],
+    "rev9_quiet_floor_bytes": 5368709120,
+    "rev9_loadavg_max": 8.0,
+    "rev9_admitted": true
+   }
+  }
+ ],
+ "superseded_run_disclosure": {
+  "record": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_probes/a2i_admission_154023.json",
+  "record_sha256": "2e967816faa01bdcca74e57d21a453534193cfbbea59940cf4c6895e593c390c",
+  "defect_superseded_figures_as_printed": {
+   "removable_end_to_end_vs_a1_derived_share": -0.03060108528713303,
+   "removable_end_to_end_vs_measured_wall_share": -0.01301523867726788
+  },
+  "defect": "its printed removable_end_to_end_* figures carry a sign-label defect: net_share (negative when the candidate route saves) was multiplied directly, so the printed values are the negations of the true removable fractions; the corrected values are in a2i_access_rerun.json",
+  "status": "kept on disk append-only; its validation legs (bitwise identity, sentinel, exclusions, ULP, signature census, H05 crosscheck) were all green and remain corroborating, but its removable figures are superseded by a2i_access_rerun.json"
+ },
+ "validation_receipts": {
+  "ACCESS_r500": {
+   "scope_bitwise_mismatches": 0,
+   "dist_bitwise_mismatches_at_included": 0,
+   "retained_seq_mismatches": 0,
+   "exclusion_le_cutoff_violations_total": 0,
+   "b_value_set": [
+    501.0
+   ],
+   "b_values_all_finite_gt_cutoff": true,
+   "ulp_dense_vs_cand_max": 0,
+   "within_ulp4_all_origins_vs_engine": true,
+   "signature_census_unchanged": {
+    "adjust": true,
+    "metric": true
+   },
+   "h05_in_radius_crosscheck": {
+    "h05_probe": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_probes/A2_002536.json",
+    "compared": 32,
+    "mismatched_origins": []
+   }
+  },
+  "HOLDOUT_r1200": {
+   "scope_bitwise_mismatches": 0,
+   "dist_bitwise_mismatches_at_included": 0,
+   "retained_seq_mismatches": 0,
+   "exclusion_le_cutoff_violations_total": 0,
+   "b_value_set": [
+    1201.0
+   ],
+   "b_values_all_finite_gt_cutoff": true,
+   "ulp_dense_vs_cand_max": 0,
+   "signature_census_unchanged": {
+    "adjust": true,
+    "metric": true
+   },
+   "h05_in_radius_crosscheck": "skipped (H05 probe captured the radius-500 cell only)"
+  }
+ },
+ "measured_coverage": {
+  "ACCESS_r500": {
+   "A_touched_min": 17,
+   "A_touched_median": 73.0,
+   "A_touched_max": 313,
+   "A_over_V_median": 0.0014849773184971216,
+   "C_max": 20,
+   "C_over_D_median": 0.0014262122804383727,
+   "C_over_D_max": 0.0030025521693439424,
+   "scan_avoided_when_engaged_median": 0.9985737877195616,
+   "n_in_radius_mean": 7.15625
+  },
+  "HOLDOUT_r1200": {
+   "A_touched_min": 128,
+   "A_touched_median": 530.0,
+   "A_touched_max": 921,
+   "A_over_V_median": 0.010781342175390061,
+   "C_max": 89,
+   "C_over_D_median": 0.006305359555622279,
+   "C_over_D_max": 0.013361357153580543,
+   "scan_avoided_when_engaged_median": 0.9936946404443777,
+   "n_in_radius_mean": 43.25
+  },
+  "note": "sentinel-mechanism coverage is enormous in both cells (>99% of the destination adjust/filter scan avoidable per engaged origin) - the failure is COST, not coverage"
+ },
+ "measured_cost_and_removable": {
+  "ACCESS_r500": {
+   "walls_ns": {
+    "median_t_plain": 17271.0,
+    "median_t_tracked": 17625.0,
+    "median_t_enum": 1875.0,
+    "median_t_dense_tail": 17354.5,
+    "median_t_cand_tail": 4104.5,
+    "median_dense_side": 34625.5,
+    "median_cand_side": 23604.5,
+    "median_net": -11021.5
+   },
+   "net_kernel_share_signed": -0.3190612618654164,
+   "removable_kernel_share": 0.3190612618654164,
+   "share_acc_b0": 0.12908976561491572,
+   "share_acc_at_a1_derived": 0.09454665730111564,
+   "acc_wall_at_head_measured_s": 0.092504708,
+   "share_acc_at_head_from_measured_wall": 0.03939134373909051,
+   "removable_end_to_end_vs_a1_derived_share": 0.03016617578365104,
+   "removable_end_to_end_vs_measured_wall_share": 0.012568251839968589
+  },
+  "HOLDOUT_r1200": {
+   "walls_ns": {
+    "median_t_plain": 33666.5,
+    "median_t_tracked": 38312.5,
+    "median_t_enum": 6417.0,
+    "median_t_dense_tail": 18020.5,
+    "median_t_cand_tail": 4646.0,
+    "median_dense_side": 51687.0,
+    "median_cand_side": 49375.5,
+    "median_net": -21.5
+   },
+   "net_kernel_share_signed": -0.002594333958716206,
+   "removable_kernel_share": 0.002594333958716206,
+   "share_acc_b0": 0.410770866503985,
+   "share_acc_at_a1_derived": 0.1756776002546149,
+   "acc_wall_at_head_measured_s": 0.203718625,
+   "share_acc_at_head_from_measured_wall": 0.08469796153405885,
+   "removable_end_to_end_vs_a1_derived_share": 0.00045576636412631826,
+   "removable_end_to_end_vs_measured_wall_share": 0.00021973479784184787
+  },
+  "derivation_notes": [
+   "net_kernel_share is (candidate_side - dense_side)/dense_side per origin (candidate side = tracked search + enumeration + candidate-tail metric; dense side = plain search + dense-tail adjust), median across the 32 sampled origins; the removable share is its negation",
+   "end-to-end vs measured wall: removable_kernel_share * acc_stage_wall_at_HEAD / (B0 non-access stages + acc wall at HEAD), all in the run's own session",
+   "end-to-end vs A1-derived: removable_kernel_share * (A1R warm cand median - B0 non-access stages) / A1R warm cand median; session-coupled derivation, spread disclosed in A1R raws",
+   "each cell's arithmetic uses ONLY that cell's capture and session; no share is transferred across cells"
+  ]
+ },
+ "verdict": {
+  "admission": "NOT_ADMITTED",
+  "reason": "realized removable complete-job service is below the 0.05 gate in BOTH observed access cells: ACCESS r500 0.030166 (A1-derived leg) / 0.012568 (measured-wall leg); HOLDOUT r1200 0.000456 / 0.000220. The ACCESS cell is additionally ceiling-limited: the whole accessibility stage is only 0.039391 of that window at HEAD (measured wall 0.092505 s), so even perfect removal cannot clear 5% there. In the HOLDOUT cell the mechanism's saving collapses with radius: per-origin tracking cost scales with the touched-label count (median A 530 at r1200 vs 73 at r500), and the candidate side barely beats the dense side (median net -21.5 ns)",
+  "recorded_coverage_and_bound": "measured per DECISION for not-admitted experiments: full coverage and cost tables above, per-origin rows in the two records",
+  "consequence": "source left unchanged; no A2 implementation, no A2 candidate at I00; no production benchmark consumed by this experiment",
+  "design_budget": "the dossier's one design/revision budget is consumed by this measurement; A2 is closed as not-admitted unless the principal reopens scope"
+ },
+ "lease": {
+  "log": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a2i_lease_log.json",
+  "charging": "all A2I probe fires are diagnostics-class: window-stamped and lease-logged, uncharged, gate_eligible false"
+ },
+ "open_routing_flag": "A2R (#29) scope is now h04's call: with no A2 candidate, the review target is this not-admitted disposition (records + unchanged source), and the screen leg has no candidate to screen"
+}
