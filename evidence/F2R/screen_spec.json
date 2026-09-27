@@ -1,0 +1,485 @@
+{
+ "schema_version": 1,
+ "task": "F2R",
+ "record": "screen_spec",
+ "role": "performance-owner (author, screen execution); independent-reviewer (PD rulings + prereg/design review + pre-fire verification); coordinator (committer, relay)",
+ "generated_utc": "2026-09-27T18:58:16Z",
+ "status": "DRAFT REV 4 - h04 ONE-CYCLE re-check verdict: items (a)-(d) ALL FROZEN as written, both figure corrections discharged; the ONE mandatory REV 4 micro-amendment (single section statistics_and_admission: blocks 1-3 proxy/CI vs gates.G3 warm blocks 2-3 government) is implemented. Awaiting coordinator verification -> h04 ONE-PASS FIGURE-ONLY re-check -> P1 commit gates on REV 4 bytes -> P3/P4b vehicle reviews -> probe -> screen LAST. Nothing fires before P4b.",
+ "provenance": {
+  "commit_chain": [
+   "F2I closing commit 61f3db64801018aea0c19d27a27c25506ed64e2d (parent 9a88eabe) on perf/una-large-e2e, LOCAL ONLY - the screened candidate source",
+   "numerical baseline 361928e4ba38f34622cafe065b0025244db61368 (includes ordered CSR; historical references upstream c15ebda / pre-CSR 98f498e are not comparators)"
+  ],
+  "f2i_disposition": "F2I CLOSED (task #30 completed): implementation REVIEW PASSED, commit gate clean, evidence committed at 61f3db6. F2R OPEN (task #31); this executor is screen-execution owner under disposition-grade requirements per the F2R intake relay.",
+  "ruled_same_binary_differential": "h04 ruling relayed verbatim-critical: 'the COMMITTED module (source identity pin: AggregateFlow 1f3cf4d2 @ 61f3db6, verified) with F2 route FORCED-OFF vs default-ON through the production decision path - same-binary differential, not a HEAD comparison'.",
+  "arms_mechanism_ruling": "ARMS-MECHANISM RULE (F2R intake, 2026-09-27): the per-arm-build precedent governs the PRINCIPLE (arms differ only in the screened change; arms independently pinned in-run; no cross-arm state), not the build mechanism. F2's supported production toggle makes single-binary per-process arms disposition-grade admissible and STRONGER - a derived baseline build is an uncommitted source variant, worse provenance than the committed module pin.",
+  "statistic_and_recipe_precedent": "F1R screen recipe (screen_spec structure, statistics conventions, direction discipline), F3R governing-block rule (capacity/wall claims gate on WARM governing blocks, never cold; preregistered minimum delta, never bare strictly-lower), Q00 cold-variance standing obligation (h04, F3R matrix 2026-09-27), disposition-grade recipe (A1R-proven; per-arm cache roots; in-run verification; bare windows).",
+  "env": "campaign interpreter /Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python on record (h04 env check computed-not-accepted rule). Screen wheels/venv identities are established at vehicle-build time and pinned in this spec by amendment before any fire.",
+  "central_ruling": "Relayed by coordinator: screen plan ADMISSIBLE; single-binary per-process arms admissible - A1R governs the PRINCIPLE (arms differ only in the screened change; independent in-run pinning; no cross-arm state), not the per-arm-build mechanism; F2's toggle is exercised by committed driver tests and both disable paths are proven output-identical; a derived-source baseline build would be strictly worse provenance than the committed pin 1f3cf4d2 @ 61f3db6. Binding arm conditions 1-6 and prereg requirements 7-12 are implemented in this revision; mapping in 'ruling_conditions_mapping'."
+ },
+ "source_identity_and_arms": {
+  "module_pin": {
+   "path": "src/urban_network_analysis/Engines/AggregateFlow.py at 61f3db64801018aea0c19d27a27c25506ed64e2d",
+   "sha256": "1f3cf4d2725320569c1b19bf339a39d0bf013d1cb7b6f8e5d72526a77531797c",
+   "verified": "recomputed fresh from the worktree file this session (shasum -a 256, tool output 2026-09-27); identical to the intake-verified pin",
+   "reverification_obligation": "re-hash the INSTALLED copy in-run every run; both arms must log the identical sha"
+  },
+  "arm_b0": {
+   "meaning": "line-minus-F2 route: the COMMITTED module with the F2 fast route FORCED OFF through the production decision path; baseline kernel serves every OD",
+   "engagement_expectation": "fast_calls == 0; overflow/fallback counters 0; disable-path receipt present",
+   "mechanism": "DECLARED ONCE, CONSISTENT ACROSS EVERY BLOCK (condition 2): the disable path is the ROUTE-PATCH - the declared, hash-pinned launcher wraps AggregateFlow._use_local_route at import time with a declared always-False callable RETAINING the production call-site (AggregateFlow.py:1583 executes unmodified with real inputs every OD). The real function is retained in the LAUNCHER'S CLOSURE - no additional module attribute is created or touched (verdict item a condition) - and invoked ONCE pre-window on the engine's live g_indptr/g_nodes to receipt local_route_ok=True, proving the differential is launcher-forced, not data-driven. The production precondition _gradient_slices_strictly_ascending is NOT patched. The launcher file sha is recorded in EVERY run record AND lease-logged as the arm instrument (sha8 in each window entry note). The precondition-false alternative is NOT used and NOT mixed in - one disable path per the ruling.",
+   "disclosure_and_route": "DISCLOSURE-AND-ROUTE (pre-freeze): the alternative mechanism (pinning _gradient_slices_strictly_ascending to return False, exercising the documented whole-run baseline branch) also traverses production code; the reviewer owns the choice. Chosen here: patch the narrowest surface (_use_local_route) so the precondition still computes on real gradients in the b0 arm and the per-OD production decision executes on real inputs in BOTH arms.",
+   "verdict_item_a_conditions": [
+    "the wrapper returns False UNCONDITIONALLY for ALL arguments (no inspection of inputs, no branches)",
+    "NO other module attribute is touched: only AggregateFlow._use_local_route is re-bound; the real function lives in the launcher closure",
+    "the pre-window invocation's arguments AND return are BOTH recorded in-run (launcher-forced differential receipt)"
+   ]
+  },
+  "arm_cand": {
+   "meaning": "the COMMITTED module default-ON: unmodified import, production route decision live",
+   "engagement_expectation": "fast_calls > 0 (orientation, not a frozen count: at the frozen cell local_slice_max = 7105 and gradient slices are far smaller, so the crossover admits the overwhelming majority of calls; the observed count and overflow/fallback counts are recorded per run)",
+   "mechanism": "no launcher pin beyond identity assertions; default import"
+  },
+  "packaging": {
+   "single_binary": "ONE wheel built from `git archive` of 61f3db6 into ONE fresh venv; BOTH arms run the same install - no per-arm build, per the central ruling. INTERPRETER ISOLATION (condition 1): ONE fresh interpreter process PER ARM PER BLOCK - never both arms in one process, never sequential arms warm in one process; the supervisor spawns a separate process per (arm, block) run.",
+   "identity": "in-run realpath-under-site-packages assertion + installed-file sha256 == module_pin.sha256, recorded per run, BOTH arms (condition 4: each arm logs the imported AggregateFlow source sha; both must log 1f3cf4d2...); no alias, no PYTHONPATH src imports"
+  },
+  "launcher_bias_accounting": {
+   "requirement": "verdict item (a) NEW REQUIREMENT: the b0 wrapper executes per-OD INSIDE the window and must have its bias direction NAMED in-spec with an order-of-magnitude bound (per-call ns bound x 8,217 / window)",
+   "direction_rendered": "verdict gloss: the wrapper favors the b0 arm's wall, anti-conservative for G3. Rendered with explicit sign analysis: a wrapper CHEAPER than the real function shifts decision cost out of the b0 arm, biasing the measured cand-vs-b0 advantage DOWNWARD (a G3 pass under this bias is a fortiori valid; the residual risk is a false not_demonstrated); a wrapper MORE EXPENSIVE than the real function biases the opposite way (inflated delta). The bound below is stated SYMMETRICALLY and discharges the requirement under either sign reading.",
+   "bound": "per-call |wrapper - real| bounded by a generous 1,000 ns (the wrapper is one lambda call + constant return; the real function is two integer ops + a comparison; both are far below the bound)",
+   "aggregate_at_bound_ns": 8217000,
+   "share_of_B_window": 0.0012286356820245287,
+   "share_percent": "0.122864 % of the B-anchored window (0.012286 % at a 100 ns bound)",
+   "g3_relation": "the G3 preregistered minimum delta 0.02738813230584978 (2.7388 %) is 22.2915 x the generous bound - the bias cannot manufacture or mask a G3 outcome at the preregistered threshold"
+  }
+ },
+ "frozen_triple": {
+  "value": {
+   "W": 1,
+   "K": 8,
+   "H": 1
+  },
+  "declared": "A PRIORI, inherited unchanged from the F1R/F3R screens at the same frozen selection window",
+  "meaning": "W = --workers = 1; K = --flow-stripes = topology.num_threads = 8 (AggregateFlow stripe executor; BuildClusters pool shares the knob but flow is the only analysis here); H = NUMBA_NUM_THREADS = 1",
+  "rationale": "F2 changes the PER-OD KERNEL ROUTE, not the stripe partition or numba-internal threading - same structural-attribution rationale as F3R. K_s=8 in BOTH arms in every block (never compare K=1 vs K=8). In-run (W,H) pin verified per run: numba.config.NUMBA_NUM_THREADS AND numba.get_num_threads() recorded BEFORE threading_layer() (call order per A1R skeleton)."
+ },
+ "screen_shape": {
+  "workload": "O3_FLOW, frozen variant sel1024",
+  "manifest": {
+   "path": "tests/large_e2e/inputs/O3_FLOW.manifest.json",
+   "sha256": "c2e6f2669cf334e4060d3930d23d44baf41efa5c54f36908cd2b72b25ec96e2a"
+  },
+  "selection": {
+   "path": "tests/large_e2e/inputs/O3_FLOW_sel1024.origin_indices.json",
+   "sha256": "e03659db8b54b76fdd65904f895403622fee5c315ff1c2a0d545c8113060ad60",
+   "selected_count": 1024
+  },
+  "blocks": 3,
+  "order": "AB,BA,AB - preregistered; block 1 cold (both per-arm cache roots wiped fresh at pair 1), blocks 2-3 warm (roots carried)",
+  "cache_roots": {
+   "b0": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_f2r_b0",
+   "cand": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_f2r_cand",
+   "rule": "per-arm roots, never shared (numba cache pickles the loading module name); COLD-ARM CACHE STATE DECLARED (condition 5): block 1 both roots wiped to 0 files before pair 1 and the wipe is recorded; blocks 2-3 roots carried; freshness + before/after file counts + name-set recorded per run; diagnostics/sizing runs use THROWAWAY roots disjoint from these"
+  },
+  "unit": "the PAIR is the sampling unit (DECISION); complete jobs; bare windows; outside leaf profilers; no sampler thread, no span patches, no comparator inside the window; all observation strictly post-window",
+  "window_definition": "perf_counter_ns immediately before the single public analysis call through return (incl. synchronous exports); exactly ONE real public call per job"
+ },
+ "session_discrepancy_design": {
+  "purpose": "intake requirement (2): a COMPLETE-JOB MEASUREMENT DESIGN resolving the flagged 27x session discrepancy (2,139,321.58 vs 77,740.96 ns mean kernel service), naming instrument-artifact vs real, reviewed BEFORE the fire; raw records reviewed AFTER.",
+  "anchors": {
+   "source_records": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_sessions/FLOW_sel1024_od.json (session A, 'measured cell')",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_sessions/FLOW_chosen_od.json (session B, 'chosen cell context')"
+   ],
+   "instrument_named": "both figures are od_kernel_aggregate from benchmarks/large_e2e/h05_profile.py (H05, od_level mode): install_od_kernel_wrapper wraps AggregateFlow._accumulate_od_flow; per call it takes t0 = time.perf_counter_ns(), calls the original, and accumulates dt at exit - an IN-THREAD WALL SPAN around the call, therefore CONCURRENCY-INCLUSIVE LATENCY, not service time (concurrency counter maintained at enter/exit plus a 2 ms monitor thread; observed_max_concurrent = 9 in BOTH sessions; H05 ran the pre-F1 GIL-bound kernel with 9-way OD dispatch). Per-call spans were NOT retained (n_per_call_spans_kept = 0 in both records) - only n/sum/min/max survive.",
+   "figure_A": {
+    "n_calls": 8217,
+    "sum_ns": 17578805432,
+    "mean_ns": 2139321.581112328,
+    "min_ns": 45250,
+    "max_ns": 1929925833,
+    "window_ns": 8861413500,
+    "stage_wall_s": 5.832348958
+   },
+   "figure_B": {
+    "n_calls": 8217,
+    "sum_ns": 638797485,
+    "mean_ns": 77740.96202993793,
+    "min_ns": 45833,
+    "max_ns": 25906416,
+    "window_ns": 6687906041,
+    "stage_wall_s": 3.82067725
+   },
+   "anchor_arithmetic_recomputed": {
+    "note": "all values in this object were recomputed in one tool block from the records (2026-09-27) and match the F2I admission record exactly",
+    "mean_A_recomputed": 2139321.581112328,
+    "mean_B_recomputed": 77740.96202993793,
+    "ratio_A_over_B": 27.518588981295064,
+    "A_spansum_over_stage_wall": 3.014018118358274,
+    "B_spansum_over_stage_wall": 0.16719483044530914
+   },
+   "input_identity": "the two sessions are the SAME workload: identical manifest (sha256 c2e6f2669cf334e4060d3930d23d44baf41efa5c54f36908cd2b72b25ec96e2a), identical settings_overrides (SEVENTEEN keys - MANDATORY FIGURE CORRECTION 1, h04 verdict: previously written \"all 18 keys\"; re-counted key-by-key in the amendment block, 17 == 17, identical=True), identical selection manifest (sha256 e03659db8b54b76fdd65904f895403622fee5c315ff1c2a0d545c8113060ad60, 1024 origins), same wheel/venv (b0_wheel), same call count (8,217), ~2 minutes apart (04:17:57Z vs 04:19:43Z), comparable ambient (loadavg1m 4.98 vs 4.26; available 3.53 vs 3.71 GB). A workload/settings difference (R3) is EXCLUDED at the input level.",
+   "instrument_facts_named": [
+    "session A compiled INSIDE its window: NUMBA_CACHE_DIR nbc_h05 state exists_8_files -> exists_10_files (two cache entries appeared in-window); session B found the warmed cache: exists_10_files -> exists_10_files",
+    "session A max single span 1,929,925,833 ns (1.93 s) vs session B max 25,906,416 ns (25.9 ms) - max_A/max_B = 74.49605661392916",
+    "min spans are nearly equal (45,250 vs 45,833 ns): both sessions measure the SAME kernel floor; the discrepancy lives entirely in the tail"
+   ],
+   "anchor_decomposition": {
+    "session_A": "17,578,805,432 ns 'kernel CPU' = od_kernel_aggregate.sum_ns: the SUM of per-call wrapper spans around _accumulate_od_flow ONLY; denominator = wrapper call count 8,217; mean 2,139,321.581112328 ns/call (recomputed exact)",
+    "session_B": "638,797,485 ns / 8,217 = 77,740.96202993793 ns - the SAME wrapper instrument frame at session B; the F2I admission record's chosen_cell_context carries the identical figure",
+    "not_process_cpu": "NEITHER figure is process CPU time; both are wall-span aggregates and inherit span-frame bias",
+    "other_kernels_excluded": "the wrapper covers _accumulate_od_flow alone; complete-job attribution MUST separate it from the OTHER njit kernels the O3_FLOW job runs (settings_overrides include calculate_reach, exponential/logistic gravity, knn_access) - see leg (vii)"
+   }
+  },
+  "named_hypotheses": {
+   "R1_in_window_compile": "session A's first flow-kernel call compiled in-window (cache +2 files); the 1.93 s max span is the compile",
+   "R2_cascade_and_span_frame": "the spans are concurrency-inclusive latency: with 9-way dispatch and a GIL-bound kernel, a stalled call stalls the spans of every concurrent sibling. Numba's dispatcher serializes first-time compilation across threads (compile lock), so the ~9 calls in flight when the compile began ALL absorb ~the compile duration",
+   "R3_real_workload_difference": "EXCLUDED at input level (identical manifest/settings/selection/wheel/call count, verified above); machine-state difference also disfavored (comparable ambient)",
+   "R1_alone_insufficient": "A sum minus max span = 15,648,879,599 ns (mean excluding max 1,904,683.495496592 ns, still ~24.5x B) - a single compile span does not explain the aggregate; the cascade leg is required"
+  },
+  "cascade_prediction": {
+   "note": "quantitative, preregistered BEFORE the diagnostics fire (orientation with threshold derivation, non-binding per the binding-orientation split); the diagnostics records confirm or refute",
+   "prediction": "if R1+R2: a cold-cache companion run shows a BLOCK of ~9 top spans each ~the compile duration (compile-lock serialization), and span-sum ≈ 9 x compile_span + steady-state sum",
+   "arithmetic": "9 x 1,929,925,833 = 17,369,332,497 ns; + sum_B 638,797,485 = 18,008,129,982 ns vs sum_A 17,578,805,432 ns: closure ratio 1.0244228512375744 (residual -429,324,550 ns, i.e. the cascade over-predicts by 2.4% - within dispatch/queueing slop); sum_A - sum_B = 16,940,007,947 ns",
+   "conclusion_if_confirmed": "session A's kernel-CPU aggregate and mean are COMPILE-EVENT-CONTAMINATED (one compile stall, cascaded through ~9 concurrent spans), NOT steady-state per-call service; session B is the steady-state anchor; neither H05 mean is a valid per-call service estimate and NEITHER enters any gate"
+  },
+  "discriminating_measurement": {
+   "class": "DIAGNOSTICS ONLY - diagnostics_class lease entries, records under campaign_data, run ids OUTSIDE the f2r_b<N> gate pattern; never disposition data",
+   "vehicle": "f2r_diag_kernel_service.py (executor-authored, campaign_data, clone of the h05 span instrument with full retention), reviewed alongside this spec",
+   "legs": [
+    "(i) WARM-ROOT PRECONDITION: run on a pre-warmed cache root; cache file count AND name set printed before/after and asserted EQUAL in-record - zero in-window compile provable per run",
+    "(ii) FULL RETENTION: every per-call span kept (all ~8,217), each with call index and thread id; distribution min/median/p90/p99/p999/max plus the top-10 spans with indices printed in-record",
+    "(iii) RECONCILIATION LEGS: span-sum vs stage wall vs window wall vs process CPU (time.process_time_ns around the stage) printed per run - separates latency-dominated from service-dominated frames explicitly",
+    "(iv) COLD COMPANION: one companion run on a THROWAWAY cold root (disjoint from screen roots) measures the compile-inside-window signature directly; prediction above",
+    "(v) BOTH ROUTE STATES: the probe runs arm b0 (launcher-pinned off) and arm cand (default) so it also measures the F2 effect at per-call frame - a preview quantity only",
+    "(vi) COMMITTED MODULE ONLY: same module pin as the screen; installed-copy sha asserted in-run",
+    "(vii) COMPLETE-JOB ATTRIBUTION: per-dispatcher call counts recorded (numba dispatcher signature counts pre/post window) so _accumulate_od_flow's share of complete-job wall is attributed SEPARATELY from the other njit kernels in the same job - never folded into one aggregate",
+    "(viii) RAW PRESERVATION FOR REVIEWER RECOMPUTE: the probe persists the FULL per-call span array (call_index, thread_id, t0_ns, dt_ns) to campaign_data alongside the aggregate record; summaries never stand alone"
+   ],
+   "resolution_rule": "the 27x is RESOLVED-AS-NAMED when the warm compile-free run reproduces session-B-scale aggregate service (order 1e7.8 ns sum-scale per the B anchor) with a compile-free tail, AND the cold companion reproduces the predicted cascade signature; any other outcome = the discrepancy stays OPEN, blocking no gate (the screen's disposition quantities are complete-job WALLS only), and the raw records route to h04 for adjudication"
+  },
+  "bias_direction": {
+   "statement": "PER-CALL HOOKS BIAS THE MEASURED THING UPWARD (suspected artifact class, named): each span is in-thread call LATENCY - GIL dispatch wait, queueing behind concurrent calls, and in session A the in-window compile stall - so span aggregates are biased HIGH vs true kernel service under contention",
+   "consequence": "warm compile-free legs measure the frame with the bias present-but-steady; the reconciliation legs quantify the bias; no span aggregate is ever treated as service time in a gate"
+  }
+ },
+ "ceiling_framing": {
+  "purpose": "intake requirement (3): removability framing only; the screen measures realized complete-job wall deltas, never a ceiling.",
+  "contamination_statement": "if R1+R2 is confirmed, EVERY session-A-anchored figure inherits compile-event contamination - including the WALLS (A's stage wall 5.832348958 s and window 8.8614135 s contain the ~1.93 s stall). The conservative framing therefore anchors on session B.",
+  "figures": {
+   "assured_wall_bound_A": 0.6581736602179776,
+   "assured_wall_bound_B": 0.5712815381342765,
+   "conservative_removable_ceiling_A_anchored": 0.5928632945308131,
+   "conservative_removable_ceiling_B_anchored_serial_side": 0.054776264611699564,
+   "note": "the only ASSURED strict no-model bounds are stage_wall/window (walls alone): 0.6581736602179776 (A) and 0.5712815381342765 (B, exact rational 3820677250/6687906041). The 0.5928632945308131 figure = removable_kernel_share 0.9007703139236313 x A bound (recomputed this session, matches the F2I admission record) and rests on A's contaminated arithmetic; the B-anchored serial-side ceiling 0.054776264611699564 (legs 0.16719483044530914 x 0.5734814547680944 x 0.5712815381342765 (3820677250/6687906041), recomputed exactly) is the conservative removability estimate",
+   "assured_wall_bound_B_exact_rational": "3820677250/6687906041",
+   "bound_B_correction_note": "MANDATORY FIGURE CORRECTION 2, h04 verdict: the previously relayed 0.5712815381342766 was a 1-ulp double artifact of dividing by 1e9 before dividing; the exact rational 3820677250/6687906041 = 0.57128153813427654881... renders 0.5712815381342765 at 16 digits. bound_A and accounted_B renderings verified correct as written."
+  },
+  "gate_consequence_declared_pre_fire": "the conservative B-anchored expectation sits just above the 5% removability gate (0.0548 vs 0.05) - the screen's own preregistered minimum wall delta (G3) is therefore set from the same B-anchor arithmetic below, NOT from the A-anchored ceiling, and a screen outcome between the gate and the G3 minimum resolves to not_demonstrated_at_screen, not to a gate pass"
+ },
+ "gates": {
+  "granularity": "evaluated on the O3_FLOW sel1024 cell alone; never averaged across cells; this screen says nothing about ACCESS/HOLDOUT",
+  "G1_byte_identity": "G1a cold AND G1b warm: candidate-arm output artifact sha256 == b0-arm output artifact sha256 in EVERY block, all output arrays; first-divergence byte+offset captured on any mismatch; ANY divergence = REJECT of the screen (condition 6), not an investigation item; source unchanged; records preserved. INPUT identity guards compare CONTENT canonically (features/arrays), never whole-file shas of per-arm-named fixtures (F1R item-17 convention; the origins fixture name-field exclusion is stated in the identity block)",
+  "G2_warning_parity": "equal verbatim warning counts per block per arm, none swallowed; ENFORCED in the supervisor comparator (a check with no consumer is not a check - F3R unenforced-check rule)",
+  "G3_primary_performance_warm_governing": "RULED FORM (F3R governing-block rule): preregistered minimum delta on the WARM GOVERNING statistic. Statistic: median complete-job wall over warm blocks 2-3 per arm - NAMED (verdict item b-i): with exactly two warm values the \"median\" is their MIDPOINT (mean of block 2 and block 3 walls); gate: median_cand_warm < median_b0_warm x (1 - minimum_delta) with minimum_delta = 0.02738813230584978 (preregistered constant, derivation below). DIRECTION DISCIPLINE (A1R): candidate-favoring here is cand strictly faster than b0 by at least this fraction.",
+  "G3_minimum_delta_derivation": {
+   "form": "minimum_delta = 0.5 x accounted, accounted = per_call_removed x n_calls / window_wall (B anchor governs - conservative), never a bare strictly-lower claim",
+   "per_call_removed_ns": 44583.0,
+   "per_call_removed_legs": "median scan2 38,125.0 ns + alloc4 6,458.0 ns (F2 probe median attribution at the same V', F2I admission record)",
+   "n_calls": 8217,
+   "aggregate_ns": 366338511.0,
+   "window_B_ns": 6687906041,
+   "accounted_B": 0.05477626461169956,
+   "accounted_A": 0.04134086633018536,
+   "minimum_delta": 0.02738813230584978,
+   "cross_check": "accounted_B reproduces the F2I admission record's chosen-cell removable_wall_share_ceiling 0.054776264611699564 EXACTLY (algebraically the same quantity: the serial-side legs equal per_call_removed x n_calls / window) - the derivation is anchored in the record's own conservative leg",
+   "fraction_rule": "0.5 of the accounted reduction absorbs co-peak masking while staying multiples above run-to-run wall variance (F3R precedent)",
+   "reviewer_owned": "the 0.5 fraction and the B-anchor choice are flagged for the prereg review; constants freeze at review clearance by amendment"
+  },
+  "G4_cold_time_bound": {
+   "form": "ADMITTED (verdict item c): cold_regression = cand_wall_block1 / b0_wall_block1 (paired, same block); kernel-set census in per_run_verification is MANDATORY for cold-time comparability (F3R rule)",
+   "predicted_ratio_leg": {
+    "derivation": "A1R filed cold readings for the TWO-extra-kernel arm: 1.197 (ACCESS), 1.132 (HOLDOUT) -> per-kernel cold shares (1.197-1)/2 = 0.0985 and (1.132-1)/2 = 0.066 -> predicted ONE-kernel ratio band [1.066, 1.0985] for the cand arm's single extra kernel family (_accumulate_od_flow_local)",
+    "band_lo": 1.066,
+    "band_hi": 1.0985,
+    "status": "ORIENTATION, non-binding, printed with derivation per the ruling",
+    "arithmetic_note": "the derivation is EXACT in decimal arithmetic (0.197/2 = 0.0985; 0.132/2 = 0.066); binary-float evaluation of the same expressions yields 0.06599999999999995-class artifacts and is NOT the recording frame - same 1-ulp class as mandatory figure correction 2"
+   },
+   "constant": "1.0985 (DERIVED BOUND; the previously proposed 1.05 does not freeze - the derived bound 1.0985 exceeds it, so per the ruling the constant amends to the derived bound BEFORE fire)",
+   "disposition_split": "G4 breach WITHIN the predicted-extra-compile band plus stated variance = blocked_pending_adjudication (routed with the kernel-set census), because the extra dispatcher compile is PREDICTED cold work and a false G4 failure would wrongly foreclose the cell while cold-block entry is the scarce resource; breach BEYOND the band = not_demonstrated"
+  },
+  "G5_semantics": "no semantic failure of any kind: rc=0 every job, outputs published complete, no swallowed errors, HARNESS.md End conformance per run",
+  "G6_conformity": "preregistered order AB,BA,AB; per-window admission + charge accounting exact; no uncharged gate-eligible window; all per-run verification green; uniform immediate stop on any conformity failure (byte-delta class = track rejection signal; config/fixture class = restart-whole defect, reported separately)",
+  "G7_expected_regime_and_route_receipts": "expected regime: fallback=none on the cand arm (overflow 0, fallback 0 - slices at this cell are far below local_slice_max 7105). A nonzero overflow/fallback count is not auto-rejection (the of-policy is output-identical by committed tests) but triggers mechanism-receipt adjudication against the raw [F2]-era counters before the block is eligible. ROUTE RECEIPTS (arms-mechanism ruling): every record carries the in-run route-state verification - module sha (both arms, identical), arm identity, b0: fast_calls==0 + disable receipt (launcher wrapper flag + pre-window real-function receipt local_route_ok=True), cand: fast_calls>0 + overflow/fallback counts. A missing or contradictory route receipt = stop-and-preserve",
+  "failure_disposition": "vocabulary: screened_in / not_demonstrated_at_screen / blocked_pending_adjudication / rejected - never 'passed' without evidence. A failed screen does not reject a zero-semantic-risk source change by itself; it forecloses claiming the cell",
+  "G3_noise_guard": {
+   "rule": "PREREGISTERED (verdict item b-ii): within-arm warm spread = |wall_block2 - wall_block3| computed PER ARM; the measured midpoint delta must EXCEED max(spread_b0, spread_cand); delta <= spread resolves to not_demonstrated REGARDLESS of the point comparison",
+   "status": "preregistered before any fire; binding"
+  }
+ },
+ "per_run_verification": {
+  "engine_config_observed": "ALL THREE fields equal the frozen values on every run: flow_stripes_requested == 8 AND topology_num_threads == 8 AND engine_num_threads == 8 (worker.py:522-531 chain); single mismatch disqualifies the block",
+  "thread_pin_in_run": "numba.config.NUMBA_NUM_THREADS AND numba.get_num_threads() recorded per run BEFORE threading_layer() (call order per A1R skeleton)",
+  "module_identity_in_run": "installed AggregateFlow.py sha256 == 1f3cf4d2725320569c1b19bf339a39d0bf013d1cb7b6f8e5d72526a77531797c, recorded per run, BOTH arms, plus realpath-under-site-packages assertion",
+  "route_state_in_run": "per G7 route receipts",
+  "byte_identity": "per G1",
+  "completeness": "HARNESS.md End conformance per run; output radii/counts match the frozen workload contract",
+  "records": "per-run JSON under evidence/F2R/raw/ (parent dirs created in the writing branch) including NUMBA_CACHE_DIR path + before/after entry counts, cache NAME-SET census, wheel/venv identity, lease id, ambient load; MANDATORY kernel-set census for the G4 cold-time comparability (F3R rule; verdict item c): the cand arm's warm cache carries entries the b0 arm lacks, filenames encoding the local-route kernel family (_accumulate_od_flow_local); an UNPREDICTED extra entry or size jump on any cached kernel = packaging-confound signature, stop before any gate window"
+ },
+ "cold_expectation_and_q00_prereg": {
+  "purpose": "intake requirement (4): Q00 cold-variance preregistration BEFORE the screen; declared pre-fire, never post-hoc",
+  "band": {
+   "prior_observations": "F3R matrix block-1 b0 cold peak 3,123.203125 MiB vs sizing governing 2,905.265625 MiB = +7.50146555015947 %; F1R finding +7.7%",
+   "preregistered_band_percent_over_basis": "7.5 to 7.7",
+   "rule": "F2R block-1 cold peaks within the band over basis = consistent with the recurring cold-inflation class (absorbed by the 1.10 watchdog); a MATERIALLY higher figure (above 7.7% by more than the band's own spread) is a Q00 BLOCKING NOTE, not a pass-with-comment - adjudicated at Q00 with these records",
+   "basis_source": "F3R sizing governing cold peak at the SAME frozen cell (b0 arm, ru_maxrss authoritative, clean-window characterization): 2,905.265625 MiB = 3,046,391,808 B; F3R matrix realization 3,123.203125 MiB = 3,274,915,840 B"
+  },
+  "envelope_proposal": {
+   "note": "PROPOSAL - the constants freeze at prereg-review clearance by amendment; derivation per the F1R item-11 protocol (budget from measured cold governing at the gate cell)",
+   "basis_mib": 3123.203125,
+   "basis_note": "governing = F3R matrix realized cold (same cell; cand arm adds one kernel family - the delta rides the Q00 band above)",
+   "watchdog_budget_mib": 3436,
+   "watchdog_budget_bytes": 3602907136,
+   "budget_derivation": "1.10 x 3,123.203125 = 3,435.5234375 -> ceil 3,436 MiB",
+   "entry_bar_mib": 4295.0,
+   "entry_bar_bytes": 4503633920.0,
+   "entry_bar_derivation": "budget/0.8 = 4,295.0 MiB",
+   "entry_bar_with_margin_mib": 4345.0,
+   "entry_bar_with_margin_bytes": 4556062720.0,
+   "margin_derivation": "+50 MiB stated margin",
+   "scarcity_statement": "entry bars ~4.3 GiB available on a 16 GiB shared desktop make cold-block entry the scarce resource; wait-vs-rescope implication stated BEFORE constants freeze (F1R item-10/11)",
+   "two_bases_distinction": "TWO BASES, DISTINCT ROLES (verdict item d clarifying clause): the Q00 COLD-VARIANCE BAND uses the F3R SIZING GOVERNING basis 2,905.265625 MiB (= 3,046,391,808 B) as its denominator; the WATCHDOG BUDGET and ENTRY BARS use the F3R REALIZED basis 3,123.203125 MiB (= 3,274,915,840 B). Q00 adjudication must read the right denominator per comparison: band excess is measured over 2,905.265625; budget/entry arithmetic stands on 3,123.203125."
+  },
+  "quiet_window": "REV-9 gate every admission: available_bytes >= 5368709120 AND loadavg[0] < 8.0; recorded IN each monitor record (available_at_start in BYTES); read-only poll while waiting, no lease charge; bounded foreground poll rounds (~3 min per call, 30 s polls) firing in the same call the gate first reads satisfied - ONE firer per run id, no detached waiters (item-14); after any wake, the loadavg half is the fragile half (sync storms)"
+ },
+ "vehicle_and_review_chain": {
+  "preconditions": [
+   "P1: coordinator commits this spec to evidence/F2R/screen_spec.json after reviewer clearance",
+   "P2: reviewer prereg + complete-job design review CLEAR (intake (b): nothing fires before these clear), recorded in review.json or relay receipt pinned to these bytes",
+   "P3: execution driver evidence/F2R/f2r_bare_job.py + supervisor f2r_run_pairs.py + lease-pass f2r_lease_pass.py authored by the executor, committed by the coordinator, and verified line-by-line by the reviewer against driver_obligations BEFORE any gate-eligible window (P4b); submissions carry the CLONE-ROT diff-vs-skeleton statement (f1r_bare_job.py is the binding skeleton)",
+   "P4: the launcher (force-off pin) is part of the reviewed vehicle: hash-pinned, import-time, declared in every record; its wrapper and the retained real-function receipt are reviewer-verified",
+   "P5: wheel/venv identity pinned by amendment to this spec before any fire: wheel built from git archive of 61f3db6, fresh venv, installed-copy sha asserted in-run"
+  ],
+  "driver_obligations": [
+   "import-identity realpath fatal; in-run module-sha assertion BOTH arms",
+   "in-run (W,H) pin (config AND get_num_threads) BEFORE threading_layer(); three-field engine config verification",
+   "frozen manifest/selection sha constants + input rehash outside window; fixture derived INTO settings.data_folder; pre-window isfile resolution of ALL inputs fataling before t0 (Topology path-join lesson)",
+   "route-state receipts per G7; f2_stats counters read post-window from the live engine object",
+   "exactly ONE public call inside perf_counter_ns; observation strictly post-window (outputs walk sha+bytes, ru_maxrss, verbatim warnings, loadavg)",
+   "UNA(verbosity=2): the [F2]-era log line rides v=2; persist full log lines (zero-vs-once adjudicable); a cand record with NO [F2] line = instrument defect, immediate stop",
+   "parent-dir creation in the writing branch; TEMP + ATOMIC RENAME filing everywhere; console transcript persisted to campaign_data in the same call as the fire",
+   "watchdog SIGTERM with stated escalation; admission refusal (0.80*available < budget) propagates to matrix_voided; refuse-on-partial-resume (restart-whole); stage guard checks/renames-aside RAW evidence of a failed run before any re-fire"
+  ]
+ },
+ "lease_and_diagnostics_class": {
+  "log": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f2r_lease_log.json (fresh)",
+  "opening": {
+   "opening_balance_s": 1182.3,
+   "opening_source_log": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f2i_lease_log.json",
+   "rule": "opening_balance = the f2i log's cumulative (1,182.3 s of 14,400 s budget; f2i's 15 windows all charged 0.0 - verified this session: remaining 13,217.7); opening_source_log_sha256 recorded at creation",
+   "parent_log_sha256_at_creation": "4ff95097663fd11f7469a9921ed9dd0bdca201d7531560402fefef512c8cfe9d",
+   "parent_log_sha256_note": "re-verified fresh this session (shasum -a 256 tool output)",
+   "source_commit": "61f3db64801018aea0c19d27a27c25506ed64e2d",
+   "chain_rule": "LEASE CHAIN TIED TO COMMIT CHAIN (req 12): the log records BOTH the parent log sha (f2i final bytes) and the screened source commit at creation"
+  },
+  "entry_schema_forward": {
+   "green": "class diagnostics_probe, keys complete (window_at_end_utc + rev9_admitted_end present with real stamps), gate_eligible false, charged_s per the supervisor-side rule",
+   "crashed": "class crashed_child_start with EXPLICIT NULL PAIR: window_at_end_utc = null AND rev9_admitted_end = null, keys PRESENT - never absent keys, never fabricated stamps (h04 null-end adjudication, adopted as forward schema)",
+   "charge_rule": "supervisor stamps charged_s in the SAME write that appends the window (default wall_s; refused/no-window paths write none); ledger recomputes ONLY inside that append write; executor never rebuilds the log; corrections land as NEW appended entries; append-only, existing entries stand as history",
+   "diagnostics_uncharged": "diagnostics-class probes uncharged (charged_s 0.0), gate_eligible false; the sense-split sentence (charge-class vs entry-class) accompanies any 'all X' prose claim"
+  }
+ },
+ "terminal_dispositions": {
+  "screened_in": "G1-G7 pass under the ruled gates: F2 advances toward integration; integrator advised accordingly",
+  "not_demonstrated_at_screen": "G3 fails (warm governing delta below the preregistered minimum) or G4 fails: data PRESERVED and routed; the track forecloses claiming this cell; removability framing updated with the realized figures",
+  "blocked_pending_adjudication": "G7 route-receipt or regime anomaly, or diagnostics resolution outcome 'OPEN': execution stopped-and-preserved, routed to h04",
+  "rejected": "any G1/G2/G5 failure: exactness/semantic rejection, source unchanged"
+ },
+ "deliverables": [
+  "raw per-run JSON records under evidence/F2R/raw/ (gate-eligible) and campaign_data (diagnostics)",
+  "one descriptive summary in campaign_data (f2r_screen_summary.json - no verdicts; h04 owns disposition/selection/review)",
+  "f2r_lease_log.json with the forward entry schema",
+  "the diagnostics records resolving (or holding open) the 27x, reviewed raw by h04 AFTER the fire (intake (b))",
+  "closeout successor-manifest census rows (below)"
+ ],
+ "closeout_census_obligations": {
+  "purpose": "intake requirement (5): the F2I-era pin obligations transfer to the successor manifest as STRUCTURED rows (path + sha256 + bytes + role), enumerated here at prereg so none are absorbed silently",
+  "rows": [
+   "a2i five-item set - verify 5/5 present at closeout",
+   "smoke instrument row: /Users/alansynn/orca/workspaces/una-x/campaign_data/f2i_probes/smoke_f2i.py (6,342 B, sha256 010da3d5..., ruled role string per the F2I admission artifacts row)",
+   "nbc_f2i_probe/ cache root census",
+   "interim regression custody copies: interim_f1I_test_artifacts_a7fdd636.json + interim_f3I_test_artifacts_fe038582.json",
+   "interim_proof_60d4cbe1.md WITH structured pin (superseded-in-intent bytes; post-amendment proof sha e3340067... is the committed bytes)",
+   "generator supersession 27bac4c6 -> 435f4320 keep-or-disclose row",
+   "supersedes narrative naming the v6 deferral",
+   "F2I between-gate-extension process note",
+   "third custody row (deviation disposition ACCEPTED-AS-LANDED) transferring the pin obligation here"
+  ],
+  "census_rule": "at closeout, ls + hash every supporting dir against the declared set; undeclared files become NAMED census items routed for ruling - never absorbed, never presumed absent"
+ },
+ "executor_assignment": "h05-profiler (implementation/performance owner) executes; h04-reviewer owns prereg/design review, pre-fire vehicle verification, post-fire raw-record review, and disposition; coordinator relays and commits (hash-gated); NO git writes by the executor",
+ "out_of_scope": [
+  "no GPU, no native backend, no relaxed math, no broad cache, no public RunBatch parallelization, no scientific bug fixing (campaign constraints)",
+  "this screen produces REMOVABILITY evidence only; it does not re-open the F2I exactness proof or re-baseline F1/F3",
+  "any F1/F3 regression firing first re-verifies evidence/F1I/test_artifacts.json and evidence/F3I/test_artifacts.json HEAD-exactness before any filing gate (binding forward note)"
+ ],
+ "amendment_log": [
+  {
+   "rev": 2,
+   "recorded_utc": "2026-09-27T19:09:23Z",
+   "basis": "team-lead relay of h04 central ruling: screen plan ADMISSIBLE; single-binary per-process arms admissible; binding arm conditions 1-6; prereg requirements 7-12 before first REV-9 fire",
+   "supersedes": "campaign_data/f2r_spec_superseded_rev1_e0a752ef.json (sha256 e0a752ef96d38b6144fe6d3a7783049df91e72c7b24495339942c3c73ebd37e8, byte-verified after copy)",
+   "changes": [
+    "status -> REV 2; central_ruling provenance added",
+    "condition 1: interpreter isolation declared (one fresh process per arm per block)",
+    "condition 2: disable path DECLARED ONCE (route-patch on _use_local_route); precondition alternative withdrawn; launcher lease-logged as arm instrument (sha8 in window notes)",
+    "condition 4 wording: both arms log imported module sha == 1f3cf4d2...",
+    "condition 5: cold-arm cache state declaration in cache_roots.rule",
+    "condition 6: G1 divergence = REJECT of the screen",
+    "NEW block_matrix_and_budget (req 7: enumerated matrix, expected walls orientation, budget arithmetic vs remaining 13,217.7 s)",
+    "NEW cold_definition (req 8: F1R convention verbatim, three layers, band basis)",
+    "NEW statistics_and_admission (req 9: conventions, predicted direction/magnitude BEFORE measuring, admit rule, CI discipline)",
+    "NEW failure_policy (req 10: restart granularity, not-admitted scope, stop rules)",
+    "req 11: anchor_decomposition + bias_direction + attribution legs (vii)/(viii) (other-njit-kernel separation; raw span preservation)",
+    "req 12: lease opening records parent log sha 4ff95097... and source commit 61f3db6",
+    "NEW ruling_conditions_mapping (conditions 1-6 + reqs 7-12 -> spec locations)"
+   ]
+  },
+  {
+   "rev": 3,
+   "recorded_utc": "2026-09-27T19:18:51Z",
+   "basis": "h04 prereg verdict relayed by coordinator: CLEAR WITH AMENDMENTS - one revision cycle then P1 commit; all four reviewer-owned items ruled; two mandatory figure corrections (filing-time-false class)",
+   "supersedes": "campaign_data/f2r_spec_superseded_rev2_d4a54251.json (sha256 d4a54251eec8b1bff29d7b6b8a1102adb8e3a74273e686e98459ac838ae9fabe, byte-verified after copy)",
+   "label_mapping": "the verdict names its cycle 'REV 2'; that label was already consumed by the central-ruling bytes d4a54251 (routed with team-lead's explicit review-target language), so these amended bytes file as REV 3",
+   "changes": [
+    "MANDATORY FIGURE CORRECTION 1: settings_overrides count 18 -> SEVENTEEN (re-counted key-by-key at amendment: 17 == 17, identical=True; identity conclusion unaffected)",
+    "MANDATORY FIGURE CORRECTION 2: assured_wall_bound_B pinned to exact rational 3820677250/6687906041 rendering 0.5712815381342765; prior ...766 rendering identified as 1-ulp double artifact (divide-by-1e9-first); all 3 rendering sites fixed; bound_A and accounted_B verified correct as written",
+    "verdict (a): launcher conditions recorded (unconditional False for ALL arguments; no other module attribute touched - real function in launcher closure; pre-window arguments AND return recorded in-run); NEW launcher_bias_accounting with direction + symmetric 1,000 ns/call bound = 8,217,000 ns = 0.122864 % of window = 1/22.2915 of the G3 minimum",
+    "verdict (b): G3 midpoint naming + preregistered NOISE GUARD (delta must exceed max within-arm warm spread; else not_demonstrated regardless of point comparison)",
+    "verdict (c): G4 amended - predicted-ratio leg from A1R 1.197/1.132 (per-kernel shares 0.0985/0.066; one-kernel band [1.066, 1.0985]); constant amends 1.05 -> 1.0985 (derived bound exceeds 1.05); disposition split (within band+variance = blocked_pending_adjudication with census; beyond = not_demonstrated); kernel-set census worded MANDATORY",
+    "verdict (d): two-bases distinction recorded (Q00 band basis 2,905.265625 MiB vs watchdog basis 3,123.203125 MiB)",
+    "ruling_conditions_mapping extended with verdict rows"
+   ]
+  },
+  {
+   "rev": 4,
+   "recorded_utc": "2026-09-27T19:38:28Z",
+   "basis": "h04 ONE-CYCLE re-check verdict relayed by coordinator: items (a)-(d) ALL FROZEN as written; both REV 3 figure corrections discharged (SEVENTEEN keys; exact-rational bound_B); sole-delta verified zero out-of-scope edits; budget arithmetic re-verified. ONE MANDATORY AMENDMENT held P1 (REV 4 micro): statistics_and_admission internally contradictory - a blocks 1-3 median proxy and 3-pair CI alongside gates.G3's warm blocks 2-3 midpoint government and 2-3 noise guard, with the section's own admission_threshold naming the warm governing median; two same-named medians over different block sets, the 1-3 set including the compile-dominated cold pair (cand block 1 carries the extra dispatcher compile).",
+   "supersedes": "campaign_data/f2r_spec_superseded_rev3_85740a37.json (sha256 85740a370d8fbe329f2720aa2e140d077511e635e9e5eb808bb9b540705dc047, byte-verified after copy at the same beat as this amendment)",
+   "scope": "single section statistics_and_admission per the verdict's verbatim scope, plus status and this amendment_log row",
+   "granular_structural_delta": {
+    "counting_rule": "leaf keys and list elements counted individually (forward requirement R1); scope = the section statistics_and_admission ONLY - the /status change and this amendment_log row append are custody bookkeeping, counted separately in custody_bookkeeping_delta",
+    "added_scalar_leaves": 10,
+    "added_container_nodes": 3,
+    "changed_leaves_in_section": 5,
+    "removed_leaves": 1,
+    "key_type_rewrites": 0,
+    "removed_leaf_disposition": "forward requirement R2: the ONE removed leaf statistics/proxy is SUPERSEDED, not dropped - the cross-track figure is relocated to statistics/proxy_descriptive_only (rewritten to carry its descriptive-only status) and the new statistics/proxy_prohibition names what may no longer be done with it; no key or content leaves the document"
+   },
+   "custody_bookkeeping_delta": {
+    "status_leaf_changed": 1,
+    "amendment_log_append": "1 list element (this row); diffing the custody REV 3 bytes against these bytes shows this row's own nodes in the added set beyond the section-scoped counts above"
+   },
+   "changes": [
+    "statistics.block_set_ledger ADDED (dict: purpose, block_1_role + 2 lists x 3 elements): every statistic assigned ONE block set. Includes-block-1: cold_regression (block 1 only, G4-governed); proxy (blocks 1-3, DESCRIPTIVE ONLY); 3-pair all-blocks CI (DESCRIPTIVE ONLY). Governs admission: G3 warm blocks 2-3 MIDPOINT; G3 noise guard on blocks 2-3 spreads; admission CI on the MATCHING warm pair (2 paired log-ratio differences, 1 dof).",
+    "statistics/proxy -> statistics/proxy_descriptive_only: blocks 1-3 cross-track figure RETAINED as an explicitly DESCRIPTIVE figure; it never enters admission. paired_ci REWRITTEN: warm-pair interval (blocks 2-3, 1 dof) is the ADMISSION CI; 3-pair interval demoted to labeled descriptive companion. per_block_ratio / cold_regression wording aligned (r_1 recorded, blocks 2-3 governing).",
+    "admission_threshold + admit_screen_rule re-pointed to the warm blocks 2-3 midpoint, the noise guard, and the reported warm CI - removes the 'warm governing median' double-naming that coexisted with the 1-3 proxy.",
+    "statistics/proxy_prohibition ADDED: comparing the blocks 1-3 proxy (or the 3-pair CI) against the G3 preregistered minimum or under the G3 noise guard is FORBIDDEN; rationale named per the verdict (cold pair downward-biases a blocks 1-3 delta - cand block 1 carries the predicted extra dispatcher compile) plus the basis mismatch (compile-dominated-plus-warm mix vs warm-steady-state-derived threshold), so the comparison is structurally invalid regardless of realized sign."
+   ]
+  }
+ ],
+ "block_matrix_and_budget": {
+  "matrix": "3 paired blocks, 6 runs total: b1 AB (A=b0, B=cand), b2 BA, b3 AB; each block = one b0 run + one cand run, adjacent in time; ONE fresh interpreter process per run (condition 1)",
+  "ceiling": "HARD: 3 paired blocks per revision, no additional gate-eligible blocks past the first conformant matrix (A1R control-addendum discipline); instrumented pilots never substitute for blocks nor extend the matrix",
+  "expected_wall_orientation": {
+   "note": "ORIENTATION ONLY, non-binding (binding-orientation split); basis: F1R/F3R raw block windows at the SAME frozen cell (f1r_b1_AB_b0 12.220189417 s cold ... f3r_b3_AB_cand 4.748050417 s warm), read from evidence/F1R/raw/ and evidence/F3R/raw/ this session",
+   "precedent_warm_max_s": 5.674872209,
+   "precedent_cold_max_s": 12.220189417,
+   "expected_block1_s": 12.220189417,
+   "expected_warm_block_s": 5.674872209
+  },
+  "budget_arithmetic": {
+   "expected_gate_matrix_total_s": 47.13986767,
+   "derivation": "2 x cold 12.220189417 + 4 x warm 5.674872209",
+   "expected_diagnostics_legs_s": 23.569933835,
+   "derivation_diag": "warm b0 + warm cand + cold companion (12.220189417 + 5.674872209 + 5.674872209)",
+   "expected_total_s": 70.709801505,
+   "remaining_budget_at_open_s": 13217.7,
+   "headroom_s": 13146.990198495001,
+   "expected_fraction_of_remaining": 0.005349629777117048,
+   "worst_case_charged_s": 47.13986767,
+   "worst_case_with_one_restart_s": 94.27973534,
+   "worst_case_fraction_of_remaining": 0.00713283970282273,
+   "charge_model": "gate windows charged wall_s supervisor-side; diagnostics legs uncharged (diagnostics_class)",
+   "rule": "screen proceeds only while worst-case-with-one-restart arithmetic keeps >=100x headroom against remaining; a materially-over-budget landing = STOP and report, never keep firing"
+  }
+ },
+ "cold_definition": {
+  "pinned_convention": "F1R/A1R convention VERBATIM (req 8): block 1 = cold (fresh per-arm cache roots, first compile recorded); blocks 2-3 = warm (roots carried)",
+  "layers": {
+   "process": "every run in this screen is a fresh OS interpreter process; the process layer never differs between warm blocks",
+   "numba_cache": "block 1: both per-arm roots wiped to 0 files BEFORE pair 1 (symmetric cold; first compile in-window, recorded); blocks 2-3: roots carried untouched",
+   "os_file_cache": "NOT controlled by the convention (ambient page cache); declared UNCONTROLLED in every record"
+  },
+  "band_basis": "the preregistered 7.5-7.7% band compares block-1 cold peaks over the F3R sizing governing basis (2,905.265625 MiB = 3,046,391,808 B; matrix realization 3,123.203125 MiB = 3,274,915,840 B), both measured under THIS convention; any F2R band comparison names this basis, else it is void"
+ },
+ "statistics_and_admission": {
+  "convention": "ratios b0_wall/cand_wall for speedup (>1 favors candidate); unit = the PAIR (block), never the job (F1R discipline)",
+  "predicted_direction_and_magnitude_stated_BEFORE_measuring": {
+   "direction": "cand FASTER than b0: F2 removes per-call fixed work (full-V' columns scan and per-call temporaries) from the baseline kernel",
+   "magnitude_prediction": "complete-job wall delta bounded above by the accounted fraction 0.05477626461169956 of window (B anchor, session_discrepancy_design); realized expected MATERIALLY SMALLER (co-peak masking; the window also contains other njit kernels - see the attribution leg); A-anchored figures excluded as compile-contaminated",
+   "admission_threshold": "G3 preregistered minimum delta 0.02738813230584978 on the warm blocks 2-3 midpoint (the governing statistic; see statistics.block_set_ledger); a realized delta between 0 and the minimum resolves to not_demonstrated_at_screen, never to a pass"
+  },
+  "statistics": {
+   "block_set_ledger": {
+    "purpose": "h04 REV 4 mandatory amendment: this section previously carried a blocks 1-3 median proxy and a 3-pair CI alongside gates.G3's warm blocks 2-3 midpoint government and 2-3 noise guard - two same-named medians over different block sets. Every quantity below is now assigned ONE block set; admission reads ONLY from the warm blocks 2-3 set.",
+    "block_1_role": "COLD pair per cold_definition: fresh per-arm cache roots, first compile recorded. cand block 1 carries the extra dispatcher compile - mechanism-predicted, arm-asymmetric, compile-dominated.",
+    "quantities_that_include_block_1": [
+     "cold_regression: block 1 ONLY, by definition; governed by G4",
+     "proxy_descriptive_only: blocks 1-3 medians - DESCRIPTIVE figure, never an admission input",
+     "3-pair all-blocks t-interval (2 dof), if reported: DESCRIPTIVE ONLY, always labeled descriptive-includes-cold"
+    ],
+    "quantities_that_govern_admission": [
+     "G3 point test: warm blocks 2-3 MIDPOINT per arm vs the preregistered minimum delta (gates.G3)",
+     "G3 noise guard: within-arm warm spread, blocks 2-3 ONLY (gates.G3_noise_guard)",
+     "admission CI: t-interval on the TWO paired warm log-ratio differences (blocks 2-3; 1 dof), reported with its very limited small-sample precision; the 5-pair CI shape is the Q00/Q10 protocol, not the screen's"
+    ]
+   },
+   "per_block_ratio": "r_i = b0_wall_i / cand_wall_i, computed for EVERY block (F1R discipline: unit = the pair); r_1 is recorded for the cold record and cold_regression; blocks 2-3 feed every governing statistic",
+   "proxy_descriptive_only": "median(b0 wall, blocks 1-3) / median(cand wall, blocks 1-3), replicated from the a1r/f1r/f3r summary statistic for cross-track comparability - RETAINED as an explicitly DESCRIPTIVE figure ONLY",
+   "paired_ci": "ADMISSION CI: t-interval on the 2 paired warm log-ratio differences (blocks 2-3, 1 dof), reported with its very limited small-sample precision. DESCRIPTIVE companion: the 3-pair all-blocks t-interval (2 dof) may also be reported, always labeled descriptive-includes-cold.",
+   "cold_regression": "cand_wall_block1 / b0_wall_block1 (>1 = candidate slower on first process) - includes block 1 BY DEFINITION; the ONLY admission-relevant block-1 quantity, governed by G4",
+   "proxy_prohibition": "FORBIDDEN: comparing the blocks 1-3 proxy (or the 3-pair CI) against the G3 preregistered minimum delta, evaluating either under the G3 noise guard, or citing either as admission evidence in any disposition. Per the re-check verdict, the cold pair downward-biases a blocks 1-3 delta against the G3 threshold (cand block 1 carries the predicted extra dispatcher compile); independently, a figure over a compile-dominated-plus-warm mix has a different basis than a threshold derived from the warm steady-state window, so the comparison is structurally invalid regardless of realized sign."
+  },
+  "admit_screen_rule": "G1, G2, G5, G6, G7 all green AND G3 warm blocks 2-3 midpoint meets the preregistered minimum AND the G3 noise guard passes (warm blocks 2-3 spreads) AND the warm-pair admission CI (2 paired differences, 1 dof) is reported AND G4 cold_regression <= its frozen bound; otherwise not_demonstrated_at_screen / blocked_pending_adjudication / rejected per gates.failure_disposition - never 'passed' without evidence"
+ },
+ "failure_policy": {
+  "crashed_block": "any crashed/killed job: crashed_child_start lease entry (explicit null pair, keys present); the PARTIAL MATRIX IS VOID - restart-whole as a fresh conformant 3-block matrix, never a partial-matrix disposition; the failed run's out_root and cache state renamed aside (_incident suffix) before any re-fire",
+  "watchdog_breach": "stop-and-preserve, one window; variance-vs-defect adjudicated from the breach sample curve; re-fire only on reviewer approval",
+  "admission_refusal": "uncharged; record persists; matrix not started (or voided if mid-matrix); entry bar re-checked at any re-entry",
+  "byte_divergence": "REJECT of the screen (condition 6); source unchanged; all records preserved",
+  "not_admitted_on_failure": "the O3_FLOW sel1024 cell claim ONLY (cell-scoped consequence); a failed screen does not reject a zero-semantic-risk source change by itself - it forecloses claiming the cell",
+  "stop_rules": "uniform immediate stop on any conformity failure (byte-delta class = rejection signal; config/fixture class = restart-whole defect, reported separately); a second materially-anomalous landing (quiet-window miss, budget anomaly) = systematic machine change - STOP and report, never keep firing"
+ },
+ "ruling_conditions_mapping": {
+  "condition_1_fresh_interpreter_per_arm_per_block": "source_identity_and_arms.packaging.single_binary; block_matrix_and_budget.matrix",
+  "condition_2_import_time_launcher_one_disable_path_lease_logged": "source_identity_and_arms.arm_b0.mechanism (route-patch DECLARED ONCE); lease entry note carries launcher sha8",
+  "condition_3_in_run_route_state_verification_alongside_thread_pins": "gates.G7_expected_regime_and_route_receipts; per_run_verification.route_state_in_run + thread_pin_in_run",
+  "condition_4_in_run_module_sha_both_arms_1f3cf4d2": "per_run_verification.module_identity_in_run",
+  "condition_5_per_arm_roots_cold_state_declared": "screen_shape.cache_roots.rule; cold_definition.layers.numba_cache",
+  "condition_6_byte_identity_first_divergence_reject": "gates.G1_byte_identity; failure_policy.byte_divergence",
+  "req_7_matrix_and_budget": "block_matrix_and_budget",
+  "req_8_cold_definition_and_band_basis": "cold_definition; cold_expectation_and_q00_prereg",
+  "req_9_admission_rule_ci_predicted_direction": "statistics_and_admission; gates.G3",
+  "req_10_failure_policy": "failure_policy",
+  "req_11_27x_attribution_design": "session_discrepancy_design (anchor_decomposition, bias_direction, legs i-viii)",
+  "req_12_lease_chain_anchor": "lease_and_diagnostics_class.opening",
+  "verdict_fig1_settings_keys_17": "session_discrepancy_design.anchors.input_identity (MANDATORY FIGURE CORRECTION 1)",
+  "verdict_fig2_bound_B_rational": "ceiling_framing.figures (assured_wall_bound_B_exact_rational + bound_B_correction_note; all three rendering sites fixed)",
+  "verdict_a_launcher_conditions_and_bias": "source_identity_and_arms.arm_b0.verdict_item_a_conditions + launcher_bias_accounting",
+  "verdict_b_g3_midpoint_and_noise_guard": "gates.G3_primary_performance_warm_governing (midpoint naming) + gates.G3_noise_guard",
+  "verdict_c_g4_predicted_ratio_and_split": "gates.G4_cold_time_bound (derived bound 1.0985; disposition split) + per_run_verification.records (mandatory census)",
+  "verdict_d_two_bases": "cold_expectation_and_q00_prereg.envelope_proposal.two_bases_distinction"
+ }
+}
