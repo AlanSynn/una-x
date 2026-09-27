@@ -1,0 +1,80 @@
+{
+ "schema_version": 1,
+ "task": "F1R",
+ "record": "independent_review",
+ "role": "independent-reviewer",
+ "generated_utc": "2026-09-27T02:05:51Z",
+ "verdict": {
+  "screen_execution": "CONFORMANT - 6/6 slots rc=0, 3/3 blocks conformant (arrays, byte identity, fixture content, three-field config, in-run threads), zero warnings, zero watchdog trips, matrix_complete true, voided false",
+  "admission": "NOT ADMITTED at screen - admit_screen fails 2 of 3 conjuncts (proxy 1.0841281 < 1.1; paired-CI lower 0.933892 <= 1.0; cold_regression 0.917502 <= 1.05 passed)",
+  "disposition": "not_demonstrated_at_screen (O3_FLOW cell; per-workload granularity per C1)",
+  "track_source_change": "NOT rejected - zero-semantic-risk nogil decorator, byte-identical outputs at screen; stays in the candidate line per spec failure_disposition; later cell claims owned by I00/Q00",
+  "cold_route": "C2 anomaly machinery does NOT engage: block-1 cand/b0 = 0.9175 is cand-FASTER, below the reading-rule [0.95,1.05] band in the favorable direction; no miss to investigate"
+ },
+ "execution_compliance": {
+  "control_chain": "spec rev 5 (d145f924 @ 2f91140) / addendum v5 (cd2b31b) / supervisor rev5c (195baaa4 @ bb89e18, pre-fire byte-verified in the fire script, re-verified from git by reviewer) / driver P4b-verified",
+  "envelope": "entry bar 4632084480 B met (7408680960 B available, load1 7.543 < 8); per-window refusals none; watchdog 3304 MiB never tripped (max peak 3233.34375 MiB, margin 70.65625)",
+  "lease": "closure holds at the log's storage precision per lease_append's own formula: opening 750.7 + exact sum(charged_s) 364.705 = 1115.405 -> round(...,1) = 1115.4 == stored cumulative; the 0.005-class sub-decimal tail comes from 3-decimal charged entries and pre-dates rev5c (prior state 750.7 + 296.905 = 1047.605 -> 1047.6, identical convention); remaining 13284.6; 14400 budget; all 6 gate windows charged_s == wall_s and unrefused (sole charged!=wall pair in the log is the pre-existing idx-0 preflight abort, charged 0.0 with honesty note, not a supervisor lease_append product); matrix_entry_check pass-path uncharged (rev5c exercised in production); gwo field stale-by-construction with correct appended annotation (computed 6)",
+  "cache_discipline": "block 1 fresh per-arm roots 0 -> 12 files (symmetric compiled sets), blocks 2-3 warm 12/12 carried; screen_roots_prefire null in gate record",
+  "rev5b_in_production": "fixture_content_equal TRUE in all 3 blocks while whole-file fixture shas differ per-arm; the rev5b predecessor (3fcbf18) would have dead-stopped at block 1 - the delta was necessary, not cosmetic"
+ },
+ "findings": [
+  {
+   "id": "F1R-N1",
+   "severity": "remediation-required",
+   "finding": "executor deliverable campaign_data_manifest.json (out-of-repo residency manifest, spec deliverables line 133) was never filed for F1R. DATE-ACCURATE RECORD (final, after two inverted orderings - coordinator then reviewer acceptance thereof - both corrected by direct git inspection): evidence/A1R/campaign_data_manifest.json was committed at 25aef2d = 2026-09-26T07:07:18Z; the F1R spec P1 commit e95de8e = 2026-09-26T07:44:11Z; 25aef2d IS an ancestor of e95de8e and of the rev-5 freeze 2f91140. The A1R template instance PREDATES the spec citation by 37 minutes - the citation was RETROSPECTIVE/live, not prospective; this supersedes both this file's original 'no A1R-era instance exists' and its first correction's 'postdates the spec commit'. Reviewer error disclosed twice over: (a) the existence search covered campaign_data/ only and missed the tracked evidence/A1R/ instance; (b) the first correction accepted a relayed ordering claim without comparing two timestamps already in the reviewer's own tool output. Net finding: an executor deliverable unmet against a live, committed convention template - an omission, not a spec divergence",
+   "disposition": "STILL remediation-required; disposition unaffected. h05 filed evidence/F1R/campaign_data_manifest.json v1 (8 entries; reviewer-verified 8/8 sha+bytes from file bytes, self-sha 3ee7e46c6bd370267ed23e15fcd542b072092f864f309ff6b71c0eb6520240c1, real utc 2026-09-27T02:09:13Z, lease-log liveness declared). MANIFEST V2 REQUIRED before the packet commit: add (1) f1r_diag_coldpeak_b0p2.json + (2) its monitor record - the P5 envelope governing basis 3003.25 MiB cited by this file's N4 and the spec; (3) f1r_wheel_and_venv.json + (4) f1r_b0p_wheel_and_venv.json - arm build provenance (A1R's own manifest included its wheel record); (5) f1r_b0p_wheel_and_venv_blocked_1.json - cited verbatim by the committed spec's b0 lineage_note. Sanctioned exclusions to be STATED in the manifest notes: superseded/rejected sizing diagnostics (b0/b0p/cand coldpeak, compilepeak, monitors, consoles - superseded by b0p2), delta-cycle proposals/diffs (superseded by committed blobs; hashes pinned in commits/addendum), retired f1r_lease_pass.py (byte-untouched, retirement recorded in log annotations), f1r_watchdog_breach file (superseded by the incident-preservation record), run output directories (per-artifact shas in run records). Reviewer re-verifies v2 (recompute all entries) then it JOINS THE SAME PACKET COMMIT. V2 VERIFIED (h04, closed): 13/13 entries recomputed sha+bytes PASS from named paths; self-sha 9d6c3f98f1ec5d5ca3095c37e012ecb0548f6e0c2bbcf103b45a109c57857aea (4333 B, utc 2026-09-27T02:16:36Z); supersedes v1 3ee7e46c (8/8 previously verified); sanctioned_exclusions stated per this ruling and accepted (the rejected b0p sizing record stays excluded with its pressure-suppression rejection frozen in spec prose; the governing b0p2 basis IS included); lease-log quiescence holds (current bytes still 1b729c95.../75825 B). Three-way record-sha coherence runs file + spec (2 occurrences of 6dd34735...) + addendum (1) — the supervisor ARMS entry pins the build record by PATH ONLY (f1r_run_pairs.py:81/:85); h05's message mislabeled the ARMS leg, artifact exact, relays non-evidence"
+  },
+  {
+   "id": "F1R-N2",
+   "severity": "accepted-note",
+   "finding": "summary statistics block computed from its own 4-decimal wall list, not the raw ns (paired-ln mean 0.054842 vs 0.05483820; identical decision outcome); selection.json carries the full-precision values"
+  },
+  {
+   "id": "F1R-N3",
+   "severity": "accepted-note",
+   "finding": "executor relay label errors (fifth typed-number instance): fire-gate '7065.5' (rounding of exact 7065.46875), matrix-entry '7056.2' (exact 7057.125), and a genuine conversion error '3110.4' for 3181856 KB (exact 3107.28125 MiB); all records carry correct byte/KB values - relays are non-evidence; pattern recorded in the standing recipe"
+  },
+  {
+   "id": "F1R-N4",
+   "severity": "observation",
+   "finding": "cand block-1 cold peak 3233.34375 MiB exceeded the 3003.25 MiB clean-window characterization basis by 7.7% - within the watchdog budget 3304 (margin 70.65625 MiB) but beyond the ~\u00b1130 MiB variance band stated for the canary; the 1.10x envelope absorbed it; no protocol violation; Q00 confirmation protocol should expect cold-peak variance of this scale",
+   "corroboration": "b0 block-1 cold peak 2929.5 MiB sat under its 2885.969 basis-era band; compile variance is arm-asymmetric at a single draw - no envelope change warranted post hoc (that would be schedule-to-schedule tuning)"
+  },
+  {
+   "id": "F1R-N5",
+   "severity": "observation",
+   "finding": "supervisor wall 68.1 s vs window sum 67.8 s: 0.3 s supervisor overhead across 6 subprocess spawns - consistent; per-run wall-vs-window gaps (3.3-5.0 s) are driver fixed cost (constructor, input load, fixture derivation) outside the one-public-call window, uniform in shape with the a1rp precedent"
+  }
+ ],
+ "artifact_commit_manifest": {
+  "commit_to_evidence": [
+   "evidence/F1R/raw/f1r_b1_AB_b0.json",
+   "evidence/F1R/raw/f1r_b1_AB_cand.json",
+   "evidence/F1R/raw/f1r_b2_BA_b0.json",
+   "evidence/F1R/raw/f1r_b2_BA_cand.json",
+   "evidence/F1R/raw/f1r_b3_AB_b0.json",
+   "evidence/F1R/raw/f1r_b3_AB_cand.json",
+   "evidence/F1R/selection.json",
+   "evidence/F1R/campaign_data_manifest.json (joins same commit once filed by h05 and reviewer-verified per F1R-N1)",
+   "evidence/F1R/review.json"
+  ],
+  "stays_out_of_repo": [
+   "campaign_data/f1r_screen_summary.json",
+   "campaign_data/f1r_matrix_gate.json",
+   "campaign_data/f1r_matrix_console.log",
+   "campaign_data/f1r_lease_log.json",
+   "campaign_data/f1r_canary_record.json",
+   "canary/diagnostic records and lease/driver deltas"
+  ],
+  "rule": "campaign_data residency bridged by selection.json raw_evidence sha table + the F1R-N1 manifest once filed"
+ },
+ "verification_method": "all hashes, counts, statistics, closures and verdicts in this file were computed by the reviewer this session from file bytes and git blobs - no relayed number was frozen unverified; probe errors against the lease log (guessed key names, narrow prefix filter) were caught by closure identities and corrected before any ruling",
+ "reviewer_phases_covered": [
+  "P3 exactness anchor verification (F1I artifacts, hashes re-verified)",
+  "P4/P4b driver+supervisor lineage (rev-5 through rev5c, each delta reconstructed and pinned)",
+  "P5 envelope arithmetic (fraction-exact)",
+  "canary chain (3 attempts incl. rev5a defect + rev5b DOA catch)",
+  "matrix gate-record + landing verification (this file)"
+ ]
+}

@@ -1,0 +1,81 @@
+{
+ "task": "F1R",
+ "record": "campaign_data_manifest",
+ "role": "screen-executor",
+ "purpose": "self-containment support for the F1R packet (spec rev 5 line 133 deliverable): these F1R records live outside the repo in campaign_data; manifest records sha256 + absolute path + bytes. v2 per h04 scoping ruling: v1's 8 entries plus the 5 disposition-central additions (b0p2 governing basis + its monitor; both arm build records incl. the spec-cited blocked_1). f1r_lease_log.json is LIVE - hashed at this manifest's write time; any append after the utc below supersedes this manifest's lease entry.",
+ "files": [
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_screen_summary.json",
+   "sha256": "577afcb72b6b002b003f25e9dacf79d41de7bb018e77bde26f8fb9774d921d4b",
+   "bytes": 21902
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_lease_log.json",
+   "sha256": "1b729c95d8f9e765d7e485f3c118bac244cb7949778b24cfd7af3de551749bdd",
+   "bytes": 75825
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_matrix_gate.json",
+   "sha256": "292246ef317397337d5d4ded421cd9331c6b4232ffca4c1919814b6932cc1c1d",
+   "bytes": 1005
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_matrix_console.log",
+   "sha256": "9575b8ba580700eca7374547daba53c17dade09c6911a4566718eae6882726af",
+   "bytes": 724
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_canary_record.json",
+   "sha256": "abbf83eda624caf48c157fc190ba05a1ee491bbe1c88b0b94947d27b4b8ea907",
+   "bytes": 2935
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_canary2_quietgate.json",
+   "sha256": "9f1abc93858a2c5426c9877478daf0ef4fbbce1808b3f84720a8f20fbb8cd330",
+   "bytes": 912
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_canary3_console.log",
+   "sha256": "4748a84c65106295d9a81ffb2692e161497e734c06f18f5fafd6b68417cc855d",
+   "bytes": 222
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_rev5a_incident_preservation.json",
+   "sha256": "4b3b261ac794f878187a26ba4c928cf655c2e956c051efd4743668d6d922245b",
+   "bytes": 2895
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_diag_coldpeak_b0p2.json",
+   "sha256": "bb126fff5d271475b38932b79b212bbda24f6214bc6a80f7940dbc6e33d5bf03",
+   "bytes": 6752
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_diag_coldpeak_b0p2_monitor.json",
+   "sha256": "ca55ba2df26d6e4dfbe433cf7ffec35266ccc898477e8800929a38ad79694876",
+   "bytes": 5890
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_wheel_and_venv.json",
+   "sha256": "be5220909206708087269997005438e38c4f393123053c019d9a3311e4d1dbcd",
+   "bytes": 8409
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_b0p_wheel_and_venv.json",
+   "sha256": "6dd347350b1510d3ec2635fdd58e796582bb9ea0e5bd2410f555f2eb89ccb870",
+   "bytes": 14134
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_b0p_wheel_and_venv_blocked_1.json",
+   "sha256": "5c989ca4ad34fe3ab5664c386abde448052f104391e1004d3333819fbff2a4c8",
+   "bytes": 8411
+  }
+ ],
+ "utc": "2026-09-27T02:16:36Z",
+ "lease_log_quiescent_at_write": true,
+ "supersedes": {
+  "v1_sha256": "3ee7e46c6bd370267ed23e15fcd542b072092f864f309ff6b71c0eb6520240c1",
+  "v1_utc": "2026-09-27T02:09:13Z",
+  "v1_verified_by": "h04 independent recompute 8/8 PASS"
+ },
+ "sanctioned_exclusions": "per h04 scoping ruling, stated here: (a) superseded/rejected sizing diagnostics - f1r_diag_compilepeak_{b0,cand}, f1r_diag_coldpeak_{b0,cand,b0p} and their monitor/console records - superseded by the b0p2 governing basis (rejected b0p peak retained in records for the pressure-suppression finding); (b) delta-cycle proposal/diff files (rev5/rev5a/v2/rev5b/rev5c) - superseded by committed blobs, hashes pinned in commit messages and the addendum; (c) retired f1r_lease_pass.py - byte-untouched on disk, retirement recorded in lease-log annotations; (d) f1r_watchdog_breach_f1r_canary_b0.json - superseded by the incident-preservation record; (e) run output directories (f1r_canary_out/ trees incl. the renamed-aside _rev5a_incident copies) - per-artifact shas live in the run records and the incident-preservation record."
+}
