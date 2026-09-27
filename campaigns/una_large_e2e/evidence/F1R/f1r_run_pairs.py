@@ -1,4 +1,4 @@
-"""F1R paired-screen supervisor — screen_spec rev 4 executed.
+"""F1R paired-screen supervisor — screen_spec rev 5 executed.
 
 Schedule: 3 paired complete-job blocks, arm order AB, BA, AB (A = B0 control).
 Block 1 runs on FRESH per-arm NUMBA_CACHE_DIRs (created at block 1 -> symmetric
@@ -6,12 +6,16 @@ cold first-compile); blocks 2-3 reuse them (warm). Frozen triple (W,K,H) =
 (1,8,1): W=1 (one job per invocation), K=8 (--flow-stripes -> una.topology.
 num_threads, wired by the driver pre-window), H=1 (NUMBA_NUM_THREADS).
 
-Rev-4 additions vs the a1r_run_pairs.py pattern:
-  - per-window memory admission REFUSES when 0.80*available < 2620 MiB (P5);
+Rev-4 additions vs the a1r_run_pairs.py pattern (envelope numbers REV 5):
+  - MATRIX-ENTRY bar: refuse to enter when available < 4632084480 B
+    (0.80*available < 3534 MiB) — binds at initial fire and any post-void
+    re-entry; within a matrix the per-window guard below is the sole binding
+    mid-matrix protection
+  - per-window memory admission REFUSES when 0.80*available < 3354 MiB (P5);
     a mid-matrix refusal VOIDS the partial matrix (no disposition from it; a
     conformant matrix restarts as a whole, still 3 blocks, fresh roots)
   - supervisor-side live watchdog on the child process tree: 0.25 s ps-sample,
-    budget 2600 MiB, breach file + SIGTERM->SIGKILL (the driver's ru_maxrss is
+    budget 3304 MiB, breach file + SIGTERM->SIGKILL (the driver's ru_maxrss is
     corroborating, not the trip mechanism)
   - per-block byte-identity: candidate output artifact map == b0's, with the
     timestamped export dir flow_<YYYY-MM-DD_HHMM>/ normalized; ANY delta is a
@@ -54,8 +58,9 @@ CANARY_RECORD = f"{DATA}/f1r_canary_record.json"
 LEASE_LOG = f"{DATA}/f1r_lease_log.json"
 PHYS_BYTES = 17179869184
 PRESSURE_STOP = max(1 << 30, int(0.10 * PHYS_BYTES))  # 1717986918
-WATCHDOG_MIB = 2600
-ADMISSION_MIN_AVAIL_BYTES = 2620 * (1 << 20)  # refuse when 0.80*avail < this
+WATCHDOG_MIB = 3304   # 1.10 x governing cold peak 3003.25 = 3303.575 -> ceil (P5 rev 5)
+ADMISSION_MIN_AVAIL_BYTES = 3354 * (1 << 20)  # refuse when 0.80*avail < this
+MATRIX_ENTRY_MIN_AVAIL_BYTES = 4632084480  # 0.80*avail >= 3534 MiB = avail >= 4417.5 MiB (P5 rev 5)
 HEAVY_WALL_BUDGET_S = 14400.0
 RUN_TIMEOUT_S = 1200
 LEASE_ID = "F1R"
@@ -70,10 +75,10 @@ BOOTSTRAP_SEED = 20260926
 BOOTSTRAP_B = 10000
 
 ARMS = {
-    "b0": {"python": f"{DATA}/venvs/b0_wheel/bin/python",
-           "site_packages": f"{DATA}/venvs/b0_wheel/lib/python3.11/site-packages",
+    "b0": {"python": f"{DATA}/venvs/b0p_wheel/bin/python",
+           "site_packages": f"{DATA}/venvs/b0p_wheel/lib/python3.11/site-packages",
            "cache_root": f"{DATA}/nbc_f1r_b0",
-           "wheel_record": f"{DATA}/h05_wheel_and_venv.json"},
+           "wheel_record": f"{DATA}/f1r_b0p_wheel_and_venv.json"},
     "cand": {"python": f"{DATA}/venvs/f1r_cand_wheel/bin/python",
              "site_packages": f"{DATA}/venvs/f1r_cand_wheel/lib/python3.11/site-packages",
              "cache_root": f"{DATA}/nbc_f1r_cand",
@@ -87,7 +92,10 @@ SCHEDULE = [(1, "AB", "b0"), (1, "AB", "cand"),
 
 def wheel_sha(arm):
     with open(ARMS[arm]["wheel_record"]) as f:
-        return json.load(f)["wheel"]["sha256"]
+        rec = json.load(f)
+    if "wheel" in rec:  # h05_wheel_and_venv / f1r_wheel_and_venv schema
+        return rec["wheel"]["sha256"]
+    return rec["b0p_arm"]["wheel_sha256"]  # f1r_b0p_wheel_and_venv schema (rev 5 b0 re-point)
 
 
 def cache_files(root):
@@ -189,7 +197,7 @@ def run_slot(block, order, arm):
              "cache_file_count_before": cache_pre,
              "start_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
              "available_at_admission_bytes": avail,
-             "admission_rule": "refuse when 0.80*available < 2620 MiB (spec P5)",
+             "admission_rule": "refuse when 0.80*available < 3354 MiB (spec P5 rev 5)",
              "admission_080avail_bytes": int(0.80 * avail),
              "ceiling_bytes": ceiling, "pressure_stop_bytes": PRESSURE_STOP,
              "watchdog_budget_mib": WATCHDOG_MIB,
@@ -201,8 +209,8 @@ def run_slot(block, order, arm):
              "child_NUMBA_DISABLE_JIT_set": "NUMBA_DISABLE_JIT" in child_env}
     cum = lease_cumulative()
     if int(0.80 * avail) < ADMISSION_MIN_AVAIL_BYTES:
-        entry["refused"] = ("0.80*available < 2620 MiB at admission (spec P5); "
-                            "mid-matrix refusal voids the partial matrix")
+        entry["refused"] = ("0.80*available < 3354 MiB at admission (spec P5 "
+                            "rev 5); mid-matrix refusal voids the partial matrix")
         lease_append(entry)
         return 2, run_id, "REFUSED: P5 memory admission guard"
     if avail < PRESSURE_STOP:
@@ -284,7 +292,7 @@ def run_slot(block, order, arm):
             json.dump({"run_id": run_id, "rc": rc, "tail": tail, "env": env,
                        "cmd": cmd, "watchdog": breach}, f, indent=1)
     if breach.get("breached"):
-        return 3, run_id, ("WATCHDOG BREACH (2600 MiB) — screen STOPPED, logs "
+        return 3, run_id, ("WATCHDOG BREACH (3304 MiB) — screen STOPPED, logs "
                            "preserved, no retry")
     return rc, run_id, ("ok" if rc == 0 else f"FAILED rc={rc} (screen STOPPED, "
                                             "logs preserved, no retry)")
@@ -342,7 +350,7 @@ def canary_slot(arm):
              "cmd": cmd, "env_overrides": env}
     cum = lease_cumulative()
     if int(0.80 * avail) < ADMISSION_MIN_AVAIL_BYTES:
-        entry["refused"] = "0.80*available < 2620 MiB at admission (canary)"
+        entry["refused"] = "0.80*available < 3354 MiB at admission (canary)"
         lease_append(entry)
         return 2, run_id, "REFUSED: P5 memory admission guard (canary)"
     if cum >= HEAVY_WALL_BUDGET_S:
@@ -478,8 +486,9 @@ def canary():
             "This canary validates the capture mechanisms (ru_maxrss, live "
             "watchdog tree sampling, admission rule, K/H wiring, fixture path) "
             "at sel256 (~1/4 of sel1024 origins, expected peak well under the "
-            "2600 MiB budget). It CANNOT exercise the 2600 MiB trip point; "
-            "H05's sel1024 peak ~2489 MiB bounds the real runs. A FALSE trip "
+            "3304 MiB budget). It CANNOT exercise the 3304 MiB trip point; "
+            "the rev-5 cold sel1024 sizing (b0p 2885.97 / cand 3003.25 MiB "
+            "ru_maxrss, P5 rev 5) bounds the real runs. A FALSE trip "
             "at canary scale is still a stop-and-fix signal."),
         "variant": CANARY_VARIANT,
         "frozen_triple": {"W": 1, "K": K_STRIPES, "H": H_THREADS},
@@ -669,7 +678,7 @@ def summary(refusal=None, stop_reason=None):
         lease = json.load(f)
     out = {
         "task": "F1R", "record": "screen_summary", "role": "screen-executor",
-        "spec_source": "evidence/F1R/screen_spec.json rev 4 (P4b bare-driver "
+        "spec_source": "evidence/F1R/screen_spec.json rev 5 (P4b bare-driver "
                        "vehicle; coordinator-committed before execution)",
         "descriptive_only": "h04-reviewer owns disposition/verdicts",
         "schedule": "3 blocks AB/BA/AB (A=b0); block 1 cold on fresh per-arm "
@@ -742,6 +751,28 @@ def main():
               f"{present}) — a voided matrix is not dispositional and never "
               "resumes; restart-whole requires h04 approval and fresh run ids")
         return 2
+    # P5 rev 5 MATRIX-ENTRY bar: binds at initial fire and any post-void
+    # re-entry (a re-entry is a fresh invocation; the all-6-present summary
+    # regeneration above opens no window and is not an entry)
+    import psutil
+    avail_entry = psutil.virtual_memory().available
+    entry_rec = {"what": "matrix_entry_check", "lease_id": LEASE_ID,
+                 "start_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                 "available_at_admission_bytes": avail_entry,
+                 "admission_080avail_bytes": int(0.80 * avail_entry),
+                 "entry_bar_bytes": MATRIX_ENTRY_MIN_AVAIL_BYTES,
+                 "entry_rule": ("0.80*available >= 3534 MiB at matrix entry "
+                                "and any post-void re-entry (spec P5 rev 5)")}
+    if avail_entry < MATRIX_ENTRY_MIN_AVAIL_BYTES:
+        entry_rec["refused"] = ("matrix ENTRY bar not met: available < "
+                                "4632084480 B (0.80*available < 3534 MiB); "
+                                "no window opened, uncharged")
+        lease_append(entry_rec)
+        print(f"[f1r-pairs] REFUSED: matrix ENTRY bar (P5 rev 5): available "
+              f"{avail_entry} B < {MATRIX_ENTRY_MIN_AVAIL_BYTES} B; no window "
+              "opened, uncharged; re-invoke when the bar is met")
+        return 2
+    lease_append(entry_rec)
     for block, order, arm in SCHEDULE:
         rc, run_id, msg = run_slot(block, order, arm)
         print(f"[f1r-pairs] slot {run_id}: {msg}", flush=True)
