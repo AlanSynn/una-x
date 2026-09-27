@@ -1,0 +1,124 @@
+{
+ "task": "F3R",
+ "record": "campaign_data_manifest",
+ "version": "v3",
+ "role": "screen-executor",
+ "purpose": "PRE-MATRIX deliverable per spec P5 (F1R-N1 lesson: filed before any matrix fires, never post-hoc) on the F1R v2 recipe structure (sha256 + absolute path + bytes per file; lease log re-hashed AT THIS WRITE with quiescence stated, PD-D). Lists: the complete F3I campaign_data set carried forward (4 files), the COMPLETE F3R spec lineage as it exists at filing - live REV 9 (e9fedee8, committed at 6f67fc0) plus ALL NINE superseded copies through rev8_53777456b (the ruled minimum named draft + its superseded copy + this revision; filing-time reality is the full 9-copy chain, every one filed byte-exact before its successor) - the two vehicle custody copies (f3r_bare_job_superseded_14b7072c.py, f3r_run_pairs_superseded_baa0018f.py, the diff-grade basis for the committed vehicles at a170d22), f3r_wheel_and_venv.json with the two arm wheels it pins, and the constraints file that record cites. f1r_lease_log.json is LIVE - hashed at this manifest's write time; any append after the utc below supersedes this manifest's lease entry. No F3R lease window has been opened (P7 ungranted; matrix not fired); no F3R run-output records exist yet - raw matrix records reconcile in the F3R closeout manifest (v4+) per spec P5.",
+ "files": [
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_spec_proposed.json",
+   "sha256": "f6a7f927977deb65f9cb1ba85ac573418d63d6efa625873f37538f3ef18b1dd7",
+   "bytes": 21286
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_proof_superseded_rev1_eb399d3d.md",
+   "sha256": "eb399d3dc9cfe7df29febf873970d31583c1f76ba78ee721859e79a0bc549724",
+   "bytes": 19065
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_proof_superseded_rev2_01047258.md",
+   "sha256": "0104725829460eb2712ded8f5ad1deff2341f37d4b622df6c0c42d49c82b684d",
+   "bytes": 20861
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_proof_superseded_rev3_db738026.md",
+   "sha256": "db738026e4a82360a5f23a61ebcfb948a8f27e7a7aedd76f6b8090ec94b0264e",
+   "bytes": 25509
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_proposed.json",
+   "sha256": "e9fedee898747bdc8568294b5c1887f3eeb68be882d4127e20d818d91f56bf58",
+   "bytes": 51988
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_draft_4b78c85a.json",
+   "sha256": "4b78c85a039ed0653145e255b0843bc6e27d726de89aa4b4f39990ce1ba9dd5a",
+   "bytes": 15599
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev2_449f9976.json",
+   "sha256": "449f99760d4f9bcadff898df73e133bd8b7c56e3770c263daab391b33ed12176",
+   "bytes": 25176
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev3_c474a439.json",
+   "sha256": "c474a439f25a3de7681f990c981dd4fba1a4b47baa879f687bd9dcda69b45315",
+   "bytes": 30055
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev4_54de7532.json",
+   "sha256": "54de753286e844450d413e11ff74ed5ecd313275cf68290014126c14c55aa1fc",
+   "bytes": 33550
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev5_013f22cd.json",
+   "sha256": "013f22cdb39a710be9d695f293d203322331ced3c1a43136218363d385170ed9",
+   "bytes": 38036
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev6_5a84c9fa.json",
+   "sha256": "5a84c9fa080fa6c213914b5a4d51ce5c3fd6663e4c2ebf8863ec53168c457a04",
+   "bytes": 46569
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev7_20092bba.json",
+   "sha256": "20092bba0bb603057d3ec0693e2b515558d91c372204eb4d0b99672cc8f1410c",
+   "bytes": 49205
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev7_244439291.json",
+   "sha256": "244439291ddd3332b6c9937003e437818b4b1313a495b18885bedaca335ca8b2",
+   "bytes": 49098
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev8_53777456b.json",
+   "sha256": "53777456bd5ea18fde81cb079738a511dfbdbfa410111f1f8e0b23ae734eefb1",
+   "bytes": 49581
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_bare_job_superseded_14b7072c.py",
+   "sha256": "14b7072ca22d58f96fdc734b6573c42ebabcb37015386ea1bd841901583b5fa5",
+   "bytes": 38570
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_run_pairs_superseded_baa0018f.py",
+   "sha256": "baa0018f21539e3a322cdbf6820e8e119e2d7e1e4c778bcf4754ea1d5058e286",
+   "bytes": 48351
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_wheel_and_venv.json",
+   "sha256": "6e111bb19ad4e0fc4e66388cb7d7c7535200faefbee859f1c5b546fd9034e86e",
+   "bytes": 9466
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/wheels_f3r/b0/urban_network_analysis-2.6.0-py3-none-any.whl",
+   "sha256": "f9d7a86240ee846ed7a8ebe958b4321496474adb9002c73a19b10500dec5a00f",
+   "bytes": 129692
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/wheels_f3r/cand/urban_network_analysis-2.6.0-py3-none-any.whl",
+   "sha256": "04ce733a6f1ddf7aa97231be00744fb4c1707750e958e69364a68a7736cc84cf",
+   "bytes": 133334
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_build/constraints.txt",
+   "sha256": "8c501f870861286d6cd819738ffaf5714f36dd4624cba85242d3750007552c09",
+   "bytes": 409
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_lease_log.json",
+   "sha256": "1b729c95d8f9e765d7e485f3c118bac244cb7949778b24cfd7af3de551749bdd",
+   "bytes": 75825
+  }
+ ],
+ "utc": "2026-09-27T07:15:34Z",
+ "lease_log_quiescent_at_write": true,
+ "lease_log_note": "re-hashed at this write: sha256 1b729c95d8f9e765d7e485f3c118bac244cb7949778b24cfd7af3de551749bdd, 75825 B - byte-identical to the state recorded by the F1R v2 manifest and the F3I manifest: quiescent across F3I and the entire F3R authoring round; no F3R window opened (P7 ungranted).",
+ "supersedes": {
+  "predecessor": "F3I-cycle campaign_data_manifest (evidence/F3I/campaign_data_manifest.json)",
+  "predecessor_sha256": "48cde58bd61f08e69f004a42d82eb8f3e9a11702d0d6758fc29091a4726d1f0f",
+  "predecessor_utc": "2026-09-27T04:08:30Z"
+ },
+ "build_arms_commit_plan": "evidence/F3R/f3r_build_arms.py (sha256 268c24214b9dd996bbdcfa4d9b2b161ad4b098d4c7162d41a96ecdbfcb7cd4d4) commits ALONGSIDE this manifest in the coordinator's hash-gated commit batch - committed path evidence/F3R/f3r_build_arms.py, gate = exact sha above, filed here so the manifest-carrying commit is self-describing. The driver (26a34c15) and supervisor (80bd5309) are already committed at a170d22; the spec (e9fedee8) at 6f67fc0.",
+ "sanctioned_exclusions": "stated per the F1R v2 recipe: (a) BUILD STAGING TREES f3r_build/b0_src and f3r_build/cand_src (git-archive extractions of the pinned arm commits used as pip-wheel build roots) and the wheel-extract inspection dirs (b0_wheel_extract, cand_wheel_extract, cand_wheel_extract_lfws) used to verify wheel_packaged blob identity - reproducible byte-exactly from the pinned commits; their evidentiary content is carried by the wheel shas and the wheel_packaged/installed blob identities in f3r_wheel_and_venv.json (F1R class-(e) precedent: trees excluded, records listed); (b) VENVS venvs/f3r_build (builder), venvs/f3r_b0_wheel, venvs/f3r_cand_wheel - reproducible installed artifacts whose identity f3r_wheel_and_venv.json carries (installed blob probes + pinned-version tables); (c) NUMBA CACHE ROOTS nbc_f3r_b0 / nbc_f3r_cand - designated in f3r_wheel_and_venv.json, created fresh by the supervisor per arm (sizing uses the disjoint nbc_f3r_<arm>_sizing roots per the P6 recipe); cache CONTENTS are regenerated per run and never evidence - kernel-set identity is carried by the per-block cache-entry census in the run records per the spec; (d) ALL non-F3R/F3I campaign_data content (a1r_*, f1r_* records, h0* records, O2/O3 workload artifacts, inputs/, other tasks' wheels and nbc_* roots) - owned by those tasks' own records; the shared f1r_lease_log.json is the one cross-task file listed here; (e) __pycache__ anywhere - never listed, never evidence."
+}
