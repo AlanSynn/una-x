@@ -2,8 +2,30 @@
  "task": "F3R",
  "record": "campaign_data_manifest",
  "version": "v3",
+ "revision": "r4 (in-place pre-commit; supersedes r3, custody copy listed above)",
  "role": "screen-executor",
- "purpose": "PRE-MATRIX deliverable per spec P5 (F1R-N1 lesson: filed before any matrix fires, never post-hoc) on the F1R v2 recipe structure (sha256 + absolute path + bytes per file; lease log re-hashed AT THIS WRITE with quiescence stated, PD-D). Lists: the complete F3I campaign_data set carried forward (4 files), the COMPLETE F3R spec lineage as it exists at filing - live REV 9 (e9fedee8, committed at 6f67fc0) plus ALL NINE superseded copies through rev8_53777456b (the ruled minimum named draft + its superseded copy + this revision; filing-time reality is the full 9-copy chain, every one filed byte-exact before its successor) - the two vehicle custody copies (f3r_bare_job_superseded_14b7072c.py, f3r_run_pairs_superseded_baa0018f.py, the diff-grade basis for the committed vehicles at a170d22), f3r_wheel_and_venv.json with the two arm wheels it pins, and the constraints file that record cites. f1r_lease_log.json is LIVE - hashed at this manifest's write time; any append after the utc below supersedes this manifest's lease entry. No F3R lease window has been opened (P7 ungranted; matrix not fired); no F3R run-output records exist yet - raw matrix records reconcile in the F3R closeout manifest (v4+) per spec P5.",
+ "purpose": "PRE-MATRIX deliverable per spec P5 (F1R-N1 lesson: filed before any matrix fires, never post-hoc) on the F1R v2 recipe structure (sha256 + absolute path + bytes per file; lease state stated at write, PD-D). Lists: the complete F3I campaign_data set carried forward (4 files), the COMPLETE F3R spec lineage - live REV 9 plus ALL NINE superseded copies through rev8_53777456b, every one filed byte-exact before its successor - the two vehicle custody copies (the diff-grade basis for the committed vehicles at a170d22), this manifest's own superseded revisions r1, r2, and r3, f3r_wheel_and_venv.json with the two arm wheels it pins, the constraints file that record cites, and the shared prior lease log re-hashed AT THIS WRITE. Files that DO NOT EXIST at filing are declared in pending_records, not silently omitted. No F3R lease window has been opened (P7 ungranted); no F3R run-output records exist yet. r2 revision reason (history): h04's five pre-pin review expectations - adds spec_of_record (commit + git object + content sha), pending_records, the explicit f3r_lease_log not-yet-created statement grounded in the committed supervisor source, and explicit f3r_build coverage. r3 revision reason: two r2 statements were FALSE at commit time and h04 approved holding r2 uncommitted on them (no commit may carry filing-time-false claims): r1 had already been committed at e73b7e3 before r2 was authored (the coordinator had not relayed that commit - coordinator-owned relay gap), and build_arms was already committed in that same commit. See that revision's supersedes.revision_reason for the full correction; its full text is preserved in the r3 custody copy. r4 revision reason (h04-mandated precision fix): the r3 commit-content sentences - purpose and supersedes.revision_reason, plus the same form in build_arms_commit_plan (third site, executor-disclosed, fixed under the same fix requirements) - asserted an upcoming-commit content of this manifest plus the newly listed r2 custody copy, asserted-false because a git commit cannot contain an out-of-repo file. Corrected form at all three sites: the upcoming commit carries the manifest as its SOLE tree content, and the r2 custody copy's disposition is OUT-OF-REPO campaign_data state, LISTED in files[], never carried in the commit (r1-admitted convention: custody copies are never committed).",
+ "spec_of_record": {
+  "commit": "6f67fc0 (message names e9fedee8; supersedes the rev-7 copy at 2786bdf)",
+  "committed_path": "campaigns/una_large_e2e/evidence/F3R/screen_spec.json",
+  "git_object": "3b7ccd19dddab32e5120dfef6cbc1bf97ded90b3",
+  "content_sha256": "e9fedee898747bdc8568294b5c1887f3eeb68be882d4127e20d818d91f56bf58",
+  "bytes": 51988,
+  "verification": "git cat-file blob 3b7ccd19 | sha256 == e9fedee8, computed first-hand this session; two hash algebras stated separately: the git SHA-1 object name and the campaign's sha256 file hash are both pinned here so no future reader confuses them",
+  "vehicles": {
+   "commit": "a170d22",
+   "f3r_bare_job.py": {
+    "git_object": "5aeb0ce6a986c6ea0f10cd775b7c81749e4a4ed1",
+    "content_sha256": "26a34c15d0f0494573539efc496f890037056270c47a31891ba03a9aee663fde"
+   },
+   "f3r_run_pairs.py": {
+    "git_object": "abfdc6bfba8509cc4c8e2e1a0bf875f554101199",
+    "content_sha256": "80bd530973f45994087553c41170c0b0ee457e19cac46b6cfc311cfbc647e968"
+   },
+   "verification": "same cat-file chain, both computed first-hand this session"
+  }
+ },
+ "pending_records": "DECLARED NOT-YET-EXISTING at this filing (verified absent, not omitted): (1) f3r_lease_log.json - created on first need by the supervisor's ensure_lease_log() at P6 sizing, opening_balance_s read from f1r_lease_log.json's cumulative_charged_s AT CREATION (never inherited blind); source: committed supervisor 80bd5309 at a170d22, doc lines 39-43, LEASE_LOG/PRIOR_LEASE_LOG paths lines 96-97, ensure_lease_log lines 179+; from its creation it is a listed file in the next manifest revision. (2) P6 sizing raw + derived records (per-arm cold sel1024 peaks + monitor records, disjoint nbc_f3r_<arm>_sizing roots per the P6 recipe) and (3) the P6 envelope record - each lands during P6 and is LISTED in the manifest revision that files BEFORE the matrix fires (spec P5 is a pre-matrix, pre-fire binding). (4) Matrix raw records reconcile in the F3R closeout manifest (v4+) per spec P5.",
  "files": [
   {
    "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_spec_proposed.json",
@@ -86,6 +108,21 @@
    "bytes": 48351
   },
   {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_manifest_superseded_v3r1_3f9f8072.json",
+   "sha256": "3f9f8072eb69f2a93cb29cc3e672f5ab43a16fe50bc968ef67e0f0f8200f124e",
+   "bytes": 8351
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_manifest_superseded_v3r2_c08f3a80.json",
+   "sha256": "c08f3a8091ae8ed142afc797754b414f55b318efd4c2c4a0227598c72f555215",
+   "bytes": 11507
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_manifest_superseded_v3r3_9472cc6c.json",
+   "sha256": "9472cc6c6536a0316b475a804c795a6aed8ad9546e242a049bf110e092274cad",
+   "bytes": 13188
+  },
+  {
    "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_wheel_and_venv.json",
    "sha256": "6e111bb19ad4e0fc4e66388cb7d7c7535200faefbee859f1c5b546fd9034e86e",
    "bytes": 9466
@@ -111,14 +148,15 @@
    "bytes": 75825
   }
  ],
- "utc": "2026-09-27T07:15:34Z",
+ "utc": "2026-09-27T08:05:23Z",
  "lease_log_quiescent_at_write": true,
- "lease_log_note": "re-hashed at this write: sha256 1b729c95d8f9e765d7e485f3c118bac244cb7949778b24cfd7af3de551749bdd, 75825 B - byte-identical to the state recorded by the F1R v2 manifest and the F3I manifest: quiescent across F3I and the entire F3R authoring round; no F3R window opened (P7 ungranted).",
+ "lease_log_note": "TWO lease logs, stated separately: (A) PRIOR shared log f1r_lease_log.json (LISTED above) - re-hashed at this write: sha256 1b729c95d8f9e765d7e485f3c118bac244cb7949778b24cfd7af3de551749bdd, 75825 B, byte-identical to the state recorded by the F1R v2 manifest and the F3I manifest: quiescent across F3I and the entire F3R authoring round; F3R NEVER appends to it - the committed supervisor reads it once at f3r lease creation. (B) F3R log f3r_lease_log.json - DOES NOT EXIST at this filing (verified); no F3R lease window exists (P7 ungranted); ensure_lease_log() creates it on first need at P6 sizing, per pending_records.",
  "supersedes": {
-  "predecessor": "F3I-cycle campaign_data_manifest (evidence/F3I/campaign_data_manifest.json)",
-  "predecessor_sha256": "48cde58bd61f08e69f004a42d82eb8f3e9a11702d0d6758fc29091a4726d1f0f",
-  "predecessor_utc": "2026-09-27T04:08:30Z"
+  "predecessor": "F3R manifest v3 r3 (same live path, superseded PRE-COMMIT - r3 was never committed, held for h04's commit-content ruling; custody copy f3r_manifest_superseded_v3r3_9472cc6c.json filed FIRST, byte-exact, listed above)",
+  "predecessor_sha256": "9472cc6c6536a0316b475a804c795a6aed8ad9546e242a049bf110e092274cad",
+  "predecessor_utc": "2026-09-27T07:54:54Z",
+  "revision_reason": "Two r3 sentences named in h04's ruling - purpose ('...the upcoming commit carries ONLY this manifest and the newly listed r2 custody copy.') and supersedes.revision_reason ('...The upcoming commit contains ONLY this manifest and the newly listed r2 custody copy.') - were asserted-TRUE custody claims in the record's own voice and FALSE under the only reading 'carries'/'contains' supports: a git commit cannot contain an out-of-repo file (h04 falsifies via git show --stat on the very commit the sentence describes: the tree must be exactly one file). h04 ruled them the same falsity class as r2's claims - quoted-false passes, asserted-false does not - and mandated this sole-delta precision fix at both sites. Executor disclosure: a THIRD instance of the identical asserted-false form existed in build_arms_commit_plan ('...the upcoming manifest commit contains ONLY campaign_data_manifest.json plus the newly listed r2 custody copy.') - not in the ruling's two-site list; fixed here under the same fix requirements and disclosed in the declaration. Corrected form at all three sites per the binding fix requirements: (a) the commit-content claim names the manifest as the SOLE tree content; (b) the r2 custody copy's disposition is stated - in campaign_data, OUT-OF-REPO, listed-not-carried, per the r1-admitted convention that custody copies are never committed. r3's own correction recital (r2's two filing-time-false claims; e73b7e3 timeline - committed 2026-09-27T07:17:36Z with manifest content 3f9f8072eb69f2a93cb29cc3e672f5ab43a16fe50bc968ef67e0f0f8200f124e, before r2's authoring at 07:19:30Z; coordinator-owned relay gap) carries forward as h04-verified; its full text is preserved in the r3 custody copy."
  },
- "build_arms_commit_plan": "evidence/F3R/f3r_build_arms.py (sha256 268c24214b9dd996bbdcfa4d9b2b161ad4b098d4c7162d41a96ecdbfcb7cd4d4) commits ALONGSIDE this manifest in the coordinator's hash-gated commit batch - committed path evidence/F3R/f3r_build_arms.py, gate = exact sha above, filed here so the manifest-carrying commit is self-describing. The driver (26a34c15) and supervisor (80bd5309) are already committed at a170d22; the spec (e9fedee8) at 6f67fc0.",
- "sanctioned_exclusions": "stated per the F1R v2 recipe: (a) BUILD STAGING TREES f3r_build/b0_src and f3r_build/cand_src (git-archive extractions of the pinned arm commits used as pip-wheel build roots) and the wheel-extract inspection dirs (b0_wheel_extract, cand_wheel_extract, cand_wheel_extract_lfws) used to verify wheel_packaged blob identity - reproducible byte-exactly from the pinned commits; their evidentiary content is carried by the wheel shas and the wheel_packaged/installed blob identities in f3r_wheel_and_venv.json (F1R class-(e) precedent: trees excluded, records listed); (b) VENVS venvs/f3r_build (builder), venvs/f3r_b0_wheel, venvs/f3r_cand_wheel - reproducible installed artifacts whose identity f3r_wheel_and_venv.json carries (installed blob probes + pinned-version tables); (c) NUMBA CACHE ROOTS nbc_f3r_b0 / nbc_f3r_cand - designated in f3r_wheel_and_venv.json, created fresh by the supervisor per arm (sizing uses the disjoint nbc_f3r_<arm>_sizing roots per the P6 recipe); cache CONTENTS are regenerated per run and never evidence - kernel-set identity is carried by the per-block cache-entry census in the run records per the spec; (d) ALL non-F3R/F3I campaign_data content (a1r_*, f1r_* records, h0* records, O2/O3 workload artifacts, inputs/, other tasks' wheels and nbc_* roots) - owned by those tasks' own records; the shared f1r_lease_log.json is the one cross-task file listed here; (e) __pycache__ anywhere - never listed, never evidence."
+ "build_arms_commit_plan": "evidence/F3R/f3r_build_arms.py is ALREADY COMMITTED at e73b7e3 (git object 82dc7bded105ab9845473d5c0552aa5d0e2d8205; content sha256 268c24214b9dd996bbdcfa4d9b2b161ad4b098d4c7162d41a96ecdbfcb7cd4d4, 18,165 B; verified first-hand from the committed blob) - nothing pending for build_arms. Driver (26a34c15) and supervisor (80bd5309) already committed at a170d22; spec (e9fedee8) at 6f67fc0; the upcoming manifest commit contains campaign_data_manifest.json as its SOLE git-tree content - the r2 and r3 custody copies are OUT-OF-REPO campaign_data state, listed in files[], never carried (r1-admitted convention: custody copies are never committed).",
+ "sanctioned_exclusions": "stated per the F1R v2 recipe: (a) BUILD STAGING AND VERIFICATION TREES - EVERYTHING under f3r_build/ EXCEPT constraints.txt (which IS listed): b0_src/ and cand_src/ are git-archive extractions of the pinned arm commits used as pip-wheel build roots; b0_wheel_extract/, cand_wheel_extract/, cand_wheel_extract_lfws/ are unpacked-wheel inspection copies used to verify wheel_packaged blob identity - all reproducible byte-exactly from the pinned commits; their evidentiary content is carried by the wheel shas and the wheel_packaged/installed blob identities in f3r_wheel_and_venv.json (F1R class-(e) precedent: trees excluded, records listed); (b) VENVS venvs/f3r_build (builder), venvs/f3r_b0_wheel, venvs/f3r_cand_wheel - reproducible installed artifacts whose identity f3r_wheel_and_venv.json carries (installed blob probes + pinned-version tables); (c) NUMBA CACHE ROOTS nbc_f3r_b0 / nbc_f3r_cand - designated in f3r_wheel_and_venv.json, created fresh by the supervisor per arm (sizing uses the disjoint nbc_f3r_<arm>_sizing roots per the P6 recipe); cache CONTENTS are regenerated per run and never evidence - kernel-set identity is carried by the per-block cache-entry census in the run records per the spec; (d) ALL non-F3R/F3I campaign_data content (a1r_*, f1r_* records, h0* records, O2/O3 workload artifacts, inputs/, other tasks' wheels and nbc_* roots) - owned by those tasks' own records; the shared f1r_lease_log.json is the one cross-task file listed here; (e) __pycache__ anywhere - never listed, never evidence."
 }
