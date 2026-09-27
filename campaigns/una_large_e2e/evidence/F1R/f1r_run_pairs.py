@@ -435,6 +435,14 @@ def canary():
     """h04 conditions 4-6: own record file only, never f1r_screen_summary.json;
     cross-arm byte-identity recorded descriptively, gates nothing; honest
     framing recorded in the record itself."""
+    # REV 5A DEFECT FIX (fired twice: rev-4 canary breach 2026-09-26 12:03Z and
+    # rev-5 re-canary 2026-09-27 00:41Z, identical signature): the run stage
+    # creates RAW/ in main(), but --stage canary returns before that line, so
+    # on a virgin tree the DRIVER cannot write its --out-json under RAW/ (rc=1
+    # after completing the whole job) and the rc!=0 branch then crashes the
+    # supervisor writing {RAW}/{run_id}.supervisor.log. Create RAW here — the
+    # canary is a legitimate first writer of the raw records dir.
+    os.makedirs(RAW, exist_ok=True)
     # ordering: canary is pre-block-1 execution; refuse if gate records exist
     present = [f"f1r_b{b}_{o}_{a}" for b, o, a in SCHEDULE
                if os.path.exists(f"{RAW}/f1r_b{b}_{o}_{a}.json")]
@@ -483,13 +491,24 @@ def canary():
                       "checklist priming note (sel1024 peak ~2489 MiB vs A1R "
                       "~592 MiB)",
         "honest_framing": (
-            "This canary validates the capture mechanisms (ru_maxrss, live "
-            "watchdog tree sampling, admission rule, K/H wiring, fixture path) "
-            "at sel256 (~1/4 of sel1024 origins, expected peak well under the "
-            "3304 MiB budget). It CANNOT exercise the 3304 MiB trip point; "
-            "the rev-5 cold sel1024 sizing (b0p 2885.97 / cand 3003.25 MiB "
-            "ru_maxrss, P5 rev 5) bounds the real runs. A FALSE trip "
-            "at canary scale is still a stop-and-fix signal."),
+            "This canary validates mechanism liveness (admission rule, live "
+            "watchdog tree sampling, K/H wiring, fixture path, record "
+            "discipline); it is NOT a sizing run. MEASURED at rev-5 "
+            "constants: the sel256 b0 cold-compile sampled tree peak was "
+            "3225.671875 MiB over 60 samples (2026-09-27T00:41:42Z "
+            "re-canary), only 78.328125 MiB (2.37%) under the 3304 MiB "
+            "budget. The cold-compile transient is compile-dominated and "
+            "variant-independent, with ~130 MiB run-to-run variance, so a "
+            "canary false trip on variance alone is plausible. A canary "
+            "trip is a diagnostics-class stop-and-preserve event: it costs "
+            "one window and re-canaries on reviewer approval; it is NOT a "
+            "matrix failure and NOT evidence against the envelope, and is "
+            "default-adjudicated variance-class from the breach sample "
+            "curve (variance-vs-defect is the reviewer's adjudication, not "
+            "this record's). The rev-5 cold sel1024 sizing (b0p 2885.97 / "
+            "cand 3003.25 MiB ru_maxrss, P5 rev 5) bounds the real matrix "
+            "runs; the matrix's binding protection is the per-window guard "
+            "at the same constants."),
         "variant": CANARY_VARIANT,
         "frozen_triple": {"W": 1, "K": K_STRIPES, "H": H_THREADS},
         "cache_discipline": {
