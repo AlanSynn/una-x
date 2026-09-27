@@ -119,6 +119,7 @@ from ..Settings import Settings
 from ..Topology import Topology
 from .Base import Base
 from . import _betweenness_numba as _bnumba
+from . import _large_flow_workspace as _lfws
 
 
 _VALID_METHODS = ("none", "exponential", "logistic")
@@ -917,6 +918,17 @@ class AggregateFlow(Base):
         only touches the nodes within the gradient limit (typically a
         few hundred to a few thousand).  The origin loop scatters each
         gradient into a reusable dense buffer per OD evaluation.
+
+        Slice widths are chosen per slice from MEASURED bytes by the
+        private pure selector in _large_flow_workspace against the
+        frozen internal workspace cap (256 MiB default of the frozen
+        {64, 128, 256} MiB set — not a Settings field), reserving the
+        fixed 64 MiB safety margin.  If even one source cannot fit
+        (NO_FIT, entry or mid-schedule), the partial schedule is freed
+        and the unchanged element-count fallback formula below runs as
+        the single result-producing pass; the v=2 log marks the
+        fallback and where it fired.  Numerical output is independent
+        of the schedule either way.
         """
         n_net    = self._n_network_nodes
         n_dest   = self._n_destinations
@@ -924,12 +936,71 @@ class AggregateFlow(Base):
         limit    = self._gradient_limit(ns)
         dest_nodes = np.arange(n_net, n_net + n_dest, dtype=np.int64)
 
-        # Chunked scipy calls bound the dense intermediate to ~0.8 GB.
-        chunk = max(1, int(1e8 // max(n_total, 1)))
+        # F3 byte-budget policy: slice widths come from the private pure
+        # selector against MEASURED live bytes (both CSR directions,
+        # source/result arrays, retained sparse parts) minus the fixed
+        # margin — never from an environment query.  The previous fixed
+        # element-count rule is retained ONLY as the NO_FIT fallback.
+        cap_bytes = _lfws.DEFAULT_CAP_BYTES
+        margin_bytes = _lfws.MARGIN_BYTES
+        # Sizing contract for the pinned float64 call: scipy returns
+        # float64 distances, int32 predecessors; the finite mask is
+        # bool.  Verified against the returned arrays after every call;
+        # any deviation is a non-admitted profile (spec
+        # admission_and_warnings) and reverts to the fallback formula.
+        dist_itemsize = np.dtype(np.float64).itemsize
+        pred_itemsize = np.dtype(np.int32).itemsize
+        mask_itemsize = np.dtype(np.bool_).itemsize
         idx_parts, dist_parts, pred_parts = [], [], []
         counts = np.zeros(n_dest, dtype=np.int64)
-        for s in range(0, n_dest, chunk):
+        fixed_live_base = (
+            self._csr_fwd.data.nbytes + self._csr_fwd.indices.nbytes
+            + self._csr_fwd.indptr.nbytes
+            + self._csr_rev.data.nbytes + self._csr_rev.indices.nbytes
+            + self._csr_rev.indptr.nbytes
+            + dest_nodes.nbytes + counts.nbytes
+        )
+        row_temporaries = 8 * n_total   # persistent int64 row index (cols)
+        source_index_cost = dest_nodes.dtype.itemsize
+
+        fallback_formula = max(1, int(1e8 // max(n_total, 1)))
+        retained = 0           # sum of appended part nbytes (selector m_k)
+        schedule = []          # actual slice widths, in execution order
+        fallback = False       # a fallback pass produced the output
+        trigger = "none"       # entry | midrun | dtype
+        floor_fired = None     # (slice index, chunks completed) mid-run
+        budgeted = True
+        s = 0
+        while s < n_dest:
+            if budgeted:
+                chunk = _lfws.select_chunk(
+                    n_total, n_dest - s, dist_itemsize, pred_itemsize,
+                    mask_itemsize, fixed_live_base, retained,
+                    row_temporaries, source_index_cost,
+                    margin_bytes, cap_bytes,
+                )
+                if chunk == _lfws.NO_FIT:
+                    # PD2 semantics (ruling e0827fc0): preserve original
+                    # behavior — free any partial schedule and restart
+                    # the ORIGINAL formula loop from scratch as the
+                    # single result-producing pass.
+                    fallback = True
+                    trigger = "entry" if s == 0 else "midrun"
+                    budgeted = False
+                    if s > 0:
+                        floor_fired = (s, len(schedule))
+                        idx_parts.clear()
+                        dist_parts.clear()
+                        pred_parts.clear()
+                        counts[:] = 0
+                        retained = 0
+                        schedule = []
+                        s = 0
+                    continue
+            else:
+                chunk = fallback_formula
             e = min(s + chunk, n_dest)
+            schedule.append(e - s)
             # self._build_csr stashes the reverse CSR at self._csr_rev.
             dist, preds = _scipy_dijkstra(
                 self._csr_rev, directed=True,
@@ -939,23 +1010,59 @@ class AggregateFlow(Base):
             )
             if dist.ndim == 1:
                 dist, preds = dist[None, :], preds[None, :]
+            if (budgeted and (dist.itemsize != dist_itemsize
+                              or preds.itemsize != pred_itemsize)):
+                # Returned dtypes deviate from the sizing contract —
+                # non-admitted profile: revert to the fallback formula
+                # via the same ruled restart, then re-enter the loop.
+                del dist, preds
+                fallback = True
+                trigger = "dtype"
+                budgeted = False
+                if s > 0:
+                    floor_fired = (s, len(schedule) - 1)
+                    idx_parts.clear()
+                    dist_parts.clear()
+                    pred_parts.clear()
+                    counts[:] = 0
+                    retained = 0
+                    schedule = []
+                    s = 0
+                continue
             finite = np.isfinite(dist)
             for k in range(e - s):
                 cols = np.where(finite[k])[0]
                 counts[s + k] = cols.shape[0]
-                idx_parts.append(cols.astype(np.int64))
-                dist_parts.append(dist[k, cols].astype(np.float64))
-                pred_parts.append(preds[k, cols].astype(np.int32))
+                idx_part = cols.astype(np.int64)
+                dist_part = dist[k, cols].astype(np.float64)
+                pred_part = preds[k, cols].astype(np.int32)
+                idx_parts.append(idx_part)
+                dist_parts.append(dist_part)
+                pred_parts.append(pred_part)
+                retained += (idx_part.nbytes + dist_part.nbytes
+                             + pred_part.nbytes)
+            # F3 cleanup obligation (dossier line 22): no dense slice
+            # arrays survive into the next Dijkstra call.
+            del dist, preds, finite
+            s = e
         indptr = np.zeros(n_dest + 1, dtype=np.int64)
         np.cumsum(counts, out=indptr[1:])
         nodes = np.concatenate(idx_parts) if idx_parts else np.zeros(0, np.int64)
         dist  = np.concatenate(dist_parts) if dist_parts else np.zeros(0, np.float64)
         pred  = np.concatenate(pred_parts) if pred_parts else np.zeros(0, np.int32)
+        if floor_fired is None:
+            floor_note = "none"
+        else:
+            floor_note = (f"slice={floor_fired[0]}"
+                          f"+chunks_done={floor_fired[1]}")
         self.logger.log(
             "AggregateFlow",
             f"Gradient storage: {nodes.shape[0]:,} finite entries "
             f"(~{nodes.shape[0]*20/1e6:.0f} MB sparse vs "
-            f"~{n_dest*n_total*12/1e9:.1f} GB dense).",
+            f"~{n_dest*n_total*12/1e9:.1f} GB dense)."
+            f" [F3] cap={cap_bytes}B margin={margin_bytes}B"
+            f" chunks={len(schedule)} schedule={schedule}"
+            f" fallback={trigger} floor_fired={floor_note}",
             v=2,
         )
         return indptr, nodes, dist, pred

@@ -1,0 +1,112 @@
+{
+ "task": "F3I: byte-budgeted gradient workspace (implementation)",
+ "status": "PHASE-3-COMPLETE — self-verified against the six binding gates; awaits independent re-run, implementation-diff review by h04, and hash-gated commit by team-lead. A review verdict, not this record, admits the change.",
+ "date": "2026-09-27",
+ "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e (branch perf/una-large-e2e)",
+ "python": "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python (3.11.16, scipy 1.17.1, numpy 2.4.6, pytest 9.1.1) — the F1I test convention venv",
+ "implemented_at": {
+  "commit": "c37cf224afe678e0500749531a43c6be181dabef",
+  "commit_short": "c37cf22",
+  "subject": "F3I: proof rev4 (405152b8) - N1 scipy inspection leg + N2 negative-budget NO_FIT + N3 prose fix; approved-with-additions discharged",
+  "parent_src_blob": "455e92adb5f23748903435d3d6340a5d8a9c47d3 (AggregateFlow.py at c37cf22, verified via ls-tree at result time)",
+  "note": "gate 6: the implementation is authored ON TOP of the proof-rev4 tip; at result time it is uncommitted working-tree state (git status: M AggregateFlow.py, ?? _large_flow_workspace.py, ?? tests/large_e2e/F3/, ?? evidence/F3I/{test_artifacts.json, campaign_data_manifest.json, result.json}). Team-lead commits hash-gated against the blobs below. Blobs stated at result time, not assumed: candidate AggregateFlow 423efe332db06ca94d8832eb14e500810b6da13d; new module 6c3748838bc5f626a7b7e733e74d9a8e1c9e1aff (git hash-object, worktree bytes)."
+ },
+ "source_change": {
+  "files": [
+   {
+    "path": "src/urban_network_analysis/Engines/AggregateFlow.py",
+    "change": "modified",
+    "blob_after": "423efe332db06ca94d8832eb14e500810b6da13d",
+    "blob_at_c37cf22": "455e92adb5f23748903435d3d6340a5d8a9c47d3",
+    "numstat": "114 added / 7 deleted"
+   },
+   {
+    "path": "src/urban_network_analysis/Engines/_large_flow_workspace.py",
+    "change": "new",
+    "blob": "6c3748838bc5f626a7b7e733e74d9a8e1c9e1aff",
+    "purity": "zero imports; constants only (NO_FIT=-1, MARGIN_BYTES=67108864, CAP_64/CAP_128/CAP_256=67108864/134217728/268435456, DEFAULT_CAP_BYTES=CAP_256) + select_chunk; no I/O, no environment query (AST audit + interposition tests pass)"
+   }
+  ],
+  "diff_hunk_statement": "gate 2: git diff -U0 c37cf22 -- AggregateFlow.py yields 9 hunks whose old-line footprint is exactly {121 (private import _lfws), 919 (function docstring byte-budget sentences), 927-928 (comment/rule replacement), 931, 932, 941, 946-948, 953, 958} — i.e. the :908-961 body rewrite region plus the one import line, nothing else. ZERO changed bytes at :1234-1274 (turns twin; its chunk line int(1e8 // max(n_states, 1)) now sits at :1350, byte-untouched). numstat 114/7; the 7 deleted old lines are 927, 928, 931, 946, 947, 948, 958.",
+  "selector_implementation": "select_chunk per proof §3: budget_k = cap - fixed_live_base - retained_parts_bytes - margin_bytes (signed); NO_FIT (-1) returned when remaining < 1 OR budget_k < per_source — NO_FIT dominates, negative budgets included, never 0, never a negative floor result; else c = min(remaining, budget_k // per_source). Max-transient theorem retained + c*per_source + margin <= cap holds by integer-floor construction (500-case property test, seed 31415926).",
+  "caller_measured_inputs": "fixed_live_base = fwd+rev CSR (data+indices+indptr nbytes) + dest_nodes.nbytes + counts.nbytes (counts allocated BEFORE fixed_live is computed); row_temporaries = 8*n_total (persistent int64 cols); source_index_cost = dest_nodes.dtype.itemsize; itemsizes taken from RETURNED dtypes per spec C2 (see h04_flag_notes.dist_itemsize).",
+  "log_extension": "v=2 line is append-only prefix-stable (PD5): B0 prefix 'Gradient storage: … GB dense).' then ' [F3] cap=NB margin=NB chunks=N schedule=[widths] fallback={none|entry|midrun|dtype} floor_fired={none|slice=S+chunks_done=M}', emitted exactly once at function end (ruling 3(c)); B0 line verified a literal string prefix of the candidate line on every fixture x schedule.",
+  "fallback_semantics": "mid-run NO_FIT: free retained parts and temporaries, restart the ORIGINAL formula (max(1, int(1e8 // max(n_total, 1)))) from scratch as the SINGLE result-producing loop — hybrid excluded, proven by call-sequence discrimination, not byte-identity alone. dtype-guard trigger: returned itemsize deviating from the sizing contract (float64 dist 8 / int32 pred 4 / bool mask 1, verified post-call) is a non-admitted profile -> ruled restart, grounded in proof §6 ('the fallback is not merely a memory policy but the domain guard') and spec admission_and_warnings."
+ },
+ "binding_gates": {
+  "gate1_author_at_tip": "PASS — implemented-at state is c37cf22 (the proof-rev4 tip at Phase-3 open); parent blob 455e92ad verified by ls-tree at result time; all hashes in this record taken at result time 2026-09-27T04:07-04:12Z, none assumed from earlier prints.",
+  "gate2_exact_hunks": "PASS — see source_change.diff_hunk_statement; turns twin zero changed bytes at :1234-1274.",
+  "gate3_selector_per_section3": "PASS — NO_FIT dominance incl. negative budgets driven two ways (cap < fixed+margin at m_k=0; retained overrun), floor semantics (budget=3ps-1 -> c=2), never-0 (budget=ps-1 -> NO_FIT), remaining<1 -> NO_FIT, determinism over 200 seeded inputs x 5 reps, purity source audit + interposition. See test_f3_selector.py.",
+  "gate4_del_before_next_call": "PASS — del dist/preds (and finite) at each slice end before the next dijkstra call; CallRecorder weakref finalizers verify at CPython refcount granularity that BOTH prior-call arrays are finalized before any subsequent call allocates; base-array non-aliasing asserted (parts are copies, not views). See test_f3_cleanup.py.",
+  "gate5_L0_L1_evidence": "PASS — restart-vs-hybrid CALL-SEQUENCE discriminator: forced mid-run NO_FIT records bounds [[0,2] prefix] + restart segment EQUAL to the original formula's bounds (a hybrid would keep the prefix and cover only the remainder); entry-NO_FIT records bounds exactly equal to formula bounds. Margin gap <= margin/2 gate measured via child-process ru_maxrss (NOT tracemalloc): see margin_gate below — violation would have mandated stop-and-re-derive with h04 approval before any commit; no violation occurred, caps never changed. Dtype-guard path exercised by simulated float32 first call; output produced by contract-conformant real calls, byte-identical to B0.",
+  "gate6_implemented_at_stated": "PASS — implemented_at.commit above states c37cf22 explicitly."
+ },
+ "suites_final_state": {
+  "f3": {
+   "command": "python -m pytest F3 -q  (from tests/large_e2e)",
+   "passed": 22,
+   "failed": 0,
+   "note": "three consecutive full-suite runs this close-out: 4.62s / 6.94s / 4.66s, 22/22 each; the artifacts file of record is the FINAL run's sessionfinish output"
+  },
+  "tier_boundary_statement": "F3I executed L0/L1 only (impl_spec tier_boundary): synthetic fixtures + small observed-derived complete-RunFlow; no gate-eligible, lease-window, or heavy execution; the 3-block complete-job screen at the frozen selection workload is F3R's instrument. The standing oracle/regression suites were not re-run under F3I (no spec requirement; complete-RunFlow byte-equality in test_f3_observed.py is the L1 regression-equivalent); h04 may request them in review."
+ },
+ "margin_gate": {
+  "method": "subprocess (tests/large_e2e/F3/f3_mem_child.py) on the real-scale margin probe: v_prime 20300, schedule [300], accounted payload 79170000 B, retained parts 584408 B; child ru_maxrss delta (darwin bytes / linux KiB*1024); gap = rss_delta - payload - retained; gate: gap <= margin/2 = 33554432 B",
+  "runs": [
+   {"gap_bytes": -4076712, "rss_delta": 75677696, "utc": "2026-09-27T04:00:37Z close-out print"},
+   {"gap_bytes": -4207784, "rss_delta": 75874304},
+   {"gap_bytes": -3880104, "rss_delta": 75546624, "utc": "final-state run (filed artifacts)"}
+  ],
+  "verdict": "PASS — all three runs negative (measured transient BELOW accounted payload+retained); worst-case slack to the 32 MiB half-margin > 28 MB every run; no stop-and-re-derive condition fired",
+  "honesty_note": "ru_maxrss is page-granular OS accounting and varies ~300 kB run-to-run; this is the ONLY field in test_artifacts.json that varies between runs (verified by two-run diff); everything else is deterministic"
+ },
+ "binding_review_items": {
+  "selector_module": "done — new private module _large_flow_workspace.py, blob 6c374883; purity proven AST-level + interposition; caps frozen {64,128,256} MiB, default 256 (PD1); margin 64 MiB constant; caps govern PAYLOAD NBYTES, not RSS",
+  "tests_plan_lines31_33": "done — coverage map in test suite docstrings + artifacts: chunk sizes c={1,2,3,whole-set} + uneven tail (uneven_tail fixture); zero/one destinations; disconnected/+inf; tied shortest paths (pred compared bit-for-bit, tie fixture proven non-vacuous); duplicated sources NOT APPLICABLE recorded as a note (dest_nodes = arange, unique by construction — the dossier's conditional 'if baseline allows' does not hold); custom nonneg costs + zero-weight arc + parallel arcs + sorted rows (parallel_arcs/custom_costs fixtures) AND observed-derived complete-RunFlow through the engine's own _build_csr (test_f3_observed.py); empty finite rows (limit=0 + partial_empty); all indptr/nodes/dist/pred bit-for-bit vs B0 plus full engine outputs byte-equal across arms and across caps 64/128/default; tiny-cap refusal forced via SELECTOR ARITHMETIC on small fixtures, never main-process OOM (refusal_safety note recorded)",
+  "dossier_line32_csr_fixtures": "done — 'sorted input/parallel arcs from actual flow CSR' satisfied both ways: synthetic parallel-arcs fixture, and the observed battery builds REAL engines from the oracle's adversarial flow spec whose CSR construction is the engine's own _build_csr path; fixture shas recorded in artifacts",
+  "refusal_no_oom": "done — selector-level forcing only; main process memory pressure none (recorded note); margin probe runs in a bounded-timeout subprocess",
+  "cleanup_instrumentation": "done — weakref finalizers outside any timing path; del-before-next-call at refcount granularity; see gate 4",
+  "memory_measurement_not_tracemalloc": "done — margin gate via child ru_maxrss + explicit per-stage payload counts (see margin_gate)",
+  "complete_runflow_cold_and_warm": "F3R's instrument per tier_boundary — deferred, not skipped; F3I supplies complete-RunFlow byte-equality at L1-lite scale",
+  "one_revision_budget": "unspent — no review-driven source revision so far in F3I"
+ },
+ "h04_flag_notes": {
+  "dist_itemsize_vs_literal_8": "FLAGGED for ruling: the selector charges the RETURNED dist dtype's itemsize (dist_itemsize) rather than the dossier's literal 8. At every admitted profile this equals 8 (pinned float64 call, verified post-call), so no admitted-path number changes; the reading follows spec C2 ('three itemsizes as RETURNED, never hardcoded') and is the conservative direction (a deviating itemsize shrinks budget_k and can only trigger NO_FIT/restart, never overshoot the cap). The dtype guard converts any residual deviation into the ruled restart.",
+  "dtype_guard_is_domain_guard": "the dtype-guard trigger is recorded as fallback=dtype with floor_fired=slice=S+chunks_done=M; it is the domain guard per proof §6 / spec admission_and_warnings (non-admitted profile), not a silent correction; the final output is always produced by contract-conformant real calls (test proves byte-identity to B0 through a simulated float32 first call)",
+  "per_source_terms": "row_temporaries = 8*n_total (persistent int64 cols array is live across the slice loop and charged once per source row); source_index_cost = dest_nodes.dtype.itemsize = 8; these mirror the implementation's actual allocations, and the test fixtures recompute them independently (fixtures_f3.selector_inputs) so a drift breaks the forcing tests loudly",
+  "thin_slack_cap_forcing": "tests force schedules by setting cap = fixed_live + margin + c*per_source EXACTLY (zero slack), so on small fixtures a positive retained sum legitimately fires midrun NO_FIT on the second slice; the artifacts record the ACTUAL schedules per fixture x arm honestly rather than the nominal forced widths; empty_rows (retained always 0) exercised the multi-slice all-budgeted path",
+  "artifacts_regeneration": "test_artifacts.json is rewritten by every suite run at sessionfinish; run-to-run byte variance is confined to margin_gate ru_maxrss fields (see margin_gate.honesty_note); the filed sha is the final-state run's output at result time",
+  "scipy_tie": "mechanical tie recorded in artifacts env_record: runtime scipy 1.17.1, module scipy.sparse.csgraph._shortest_path, compiled .so — identical version identity to the §4a inspection anchor; any drift is a stop-and-report alarm (h04's Phase-2-close ruling)"
+ },
+ "evidence_files_sha256": {
+  "test_artifacts.json": "ebfc94a87d8bdcfc49f8214f0fc6afe989cfcefc10309e1f123d56658560791e",
+  "campaign_data_manifest.json": "48cde58bd61f08e69f004a42d82eb8f3e9a11702d0d6758fc29091a4726d1f0f",
+  "proof.md_at_c37cf22": "405152b8225d63af95fa4a50ef5d7f92a7e9e567e37230f1dde3efb05f4b1cec (committed, unchanged by Phase 3)",
+  "impl_spec.json": "see committed spec blob f6a7f927977deb65f9cb1ba85ac573418d63d6efa625873f37538f3ef18b1dd7 at 65a6729"
+ },
+ "test_files_sha256": {
+  "conftest.py": "32e4df61c53008c443965e7e6a09f217919175eae25cc25dc22e0d6496a72dad",
+  "cand_load.py": "54e4b3e0d2edaf3eaa0c559ee51bb09ddcd6f70992ddc09c43ae2024481cfc1b",
+  "harness_f3.py": "5581d12ce4131f7719e24480521f16c6ba5d5844510c24f73e5bca4d8023490d",
+  "fixtures_f3.py": "4203d7a2762ae82255bcc2bf727c3f6a475c9f05aba06f833745a277bd995bd7",
+  "f3_mem_child.py": "41e6f3859d1b94b51edc57e056e4ce93a3ba35ce4a7c9008ff9cf94d85db5e08",
+  "test_f3_selector.py": "1080141e140b6b49fc756a53e0131ae19a74415263197d92ff63d3edf03ec013",
+  "test_f3_chunk_equivalence.py": "18d7bebe6e0e59d3e47d4cafb15bf0f64e5f44fe3817f81beb1f2345bfbc7cc5",
+  "test_f3_refusal.py": "99542946c8fc37ecfb95cac4bc986763a1f7d42acf4021eae52e30a50d74c234",
+  "test_f3_cleanup.py": "5ee5fc7d9455df733b8ed04e0ccb31bd89a0c80d065fe4c6379e896f14e64c5c",
+  "test_f3_observed.py": "a7e1607a901010200df63282ae179bae24b6d424813bf98ec8ecd3c448713758"
+ },
+ "campaign_data_manifest": {
+  "path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/F3I/campaign_data_manifest.json",
+  "sha256": "48cde58bd61f08e69f004a42d82eb8f3e9a11702d0d6758fc29091a4726d1f0f",
+  "entries": 5,
+  "lease_log_quiescent_at_write": true,
+  "note": "filed per impl_spec manifest_plan.F3I_own_obligation alongside this result.json; F1R v2 recipe structure, 4 f3i_* campaign_data files + re-hashed lease log; no lease window opened under F3I"
+ },
+ "f3r_handoff": "the F3R spec MUST carry the FILED campaign_data manifest (v3 or successor, listing the paths it adds and stating sanctioned-exclusion classes in-file) BEFORE any matrix fires — pre-matrix deliverable per manifest_plan.standing_convention_from_F1R; arm pairing b0 = line-minus-F3 vs cand = line-plus-F3; F3R consumes the dossier's 'complete RunFlow and total gradients, cold and warm' comparison at the frozen selection workload",
+ "caveats": [
+  "the implementation is NOT committed: team-lead verifies and commits hash-gated; h04 reviews the implementation diff and test evidence; this record is the author's self-verification, not an admission",
+  "hashes in this record are working-tree states at result time; if any byte changes before commit, this record is superseded by a sole-delta revision (superseded copy filed to campaign_data first, then revised in place and re-filed with new sha/size/delta-note)",
+  "no throughput or performance claim of any kind is made here (DECISION.md line 11); F3I is a memory-policy change with byte-identity proof; qualification belongs to F3R/Q00 instruments"
+ ]
+}

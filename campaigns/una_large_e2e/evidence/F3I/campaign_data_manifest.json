@@ -1,0 +1,41 @@
+{
+ "task": "F3I",
+ "record": "campaign_data_manifest",
+ "role": "screen-executor",
+ "purpose": "self-containment support for the F3I packet (impl_spec.json manifest_plan.F3I_own_obligation): these F3I records live outside the repo in campaign_data; manifest records sha256 + absolute path + bytes. Filed per the F1R manifest v2 recipe (structure: indent=1, sha256+bytes per file, utc, sanctioned_exclusions stated, lease-log quiescence at write); the v2 entry COUNT (13) was F1R-specific - this manifest lists every campaign_data/f3i_* file that exists (glob enumerated 4) plus the campaign lease log, re-hashed at this write. First F3I manifest, no predecessor. The lease log is LIVE - hashed at this manifest's write time; any append after the utc below supersedes this manifest's lease entry. No lease window was opened under F3I (impl_spec tier_boundary: L0/L1 only, no gate-eligible or lease execution); the log is byte-identical to the state recorded by the F1R v2 manifest (1b729c95..., 75825 B), i.e. quiescent across the whole F3I cycle rev1-rev4 through implementation.",
+ "files": [
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_spec_proposed.json",
+   "sha256": "f6a7f927977deb65f9cb1ba85ac573418d63d6efa625873f37538f3ef18b1dd7",
+   "bytes": 21286
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_proof_superseded_rev1_eb399d3d.md",
+   "sha256": "eb399d3dc9cfe7df29febf873970d31583c1f76ba78ee721859e79a0bc549724",
+   "bytes": 19065
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_proof_superseded_rev2_01047258.md",
+   "sha256": "0104725829460eb2712ded8f5ad1deff2341f37d4b622df6c0c42d49c82b684d",
+   "bytes": 20861
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_proof_superseded_rev3_db738026.md",
+   "sha256": "db738026e4a82360a5f23a61ebcfb948a8f27e7a7aedd76f6b8090ec94b0264e",
+   "bytes": 25509
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_lease_log.json",
+   "sha256": "1b729c95d8f9e765d7e485f3c118bac244cb7949778b24cfd7af3de551749bdd",
+   "bytes": 75825
+  }
+ ],
+ "utc": "2026-09-27T04:08:30Z",
+ "lease_log_quiescent_at_write": true,
+ "file_lineage_notes": {
+  "f3i_spec_proposed.json": "byte-identical to the committed spec blob f6a7f927... at commit 65a6729 (Phase 1 admission routed authoring to this copy); campaign_data copy is the lineage origin, not a stale divergent duplicate",
+  "f3i_proof_superseded_revN_*.md": "sole-delta revision cycle rev1->rev2->rev3->rev4; each superseded copy filed BEFORE its successor was authored in place (sha embedded in filename, verified against content); rev4 survives in the repo at evidence/F3I/proof.md, blob 405152b8..., committed at c37cf22 with h04 receipt PASS",
+  "f1r_lease_log.json": "shared campaign lease log; no F3I entry appended (no window opened); hash equal to the F1R v2 manifest's recorded lease entry"
+ },
+ "sanctioned_exclusions": "none claimed. The campaign_data f3i_* set is exactly the four files listed (glob f3i_* enumerates 4; nothing else F3I-prefixed exists in campaign_data). No F3I build/diff records exist outside the repo: implementation is L0/L1 in-process from worktree src (no wheel build, no venv construction - impl_spec tier_boundary); the repo-side F3I evidence set (evidence/F3I/{impl_spec.json, admission.json, proof.md, test_artifacts.json, campaign_data_manifest.json, result.json} and tests/large_e2e/F3/) is hash-pinned in evidence/F3I/result.json, not duplicated here."
+}

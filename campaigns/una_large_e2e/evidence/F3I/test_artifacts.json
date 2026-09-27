@@ -1,0 +1,1386 @@
+{
+  "call_sequences": {
+    "dtype_guard": {
+      "calls": 2,
+      "parsed": {
+        "cap": 268435456,
+        "chunks": 2,
+        "fallback": "dtype",
+        "floor_chunks_done": null,
+        "floor_fired": "none",
+        "floor_slice": null,
+        "margin": 67108864,
+        "schedule": [
+          7,
+          7
+        ]
+      }
+    },
+    "entry_no_fit": {
+      "bounds": [
+        [
+          0,
+          7
+        ]
+      ],
+      "parsed": {
+        "cap": 67110122,
+        "chunks": 1,
+        "fallback": "entry",
+        "floor_chunks_done": null,
+        "floor_fired": "none",
+        "floor_slice": null,
+        "margin": 67108864,
+        "schedule": [
+          7
+        ]
+      }
+    },
+    "midrun_no_fit": {
+      "bounds": [
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          6
+        ]
+      ],
+      "formula_bounds": [
+        [
+          0,
+          6
+        ]
+      ],
+      "parsed": {
+        "cap": 67114780,
+        "chunks": 1,
+        "fallback": "midrun",
+        "floor_chunks_done": 1,
+        "floor_fired": "slice=2+chunks_done=1",
+        "floor_slice": 2,
+        "margin": 67108864,
+        "schedule": [
+          6
+        ]
+      }
+    }
+  },
+  "env": {
+    "candidate_module_files": {
+      "Engines.AggregateFlow": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src/urban_network_analysis/Engines/AggregateFlow.py",
+      "Engines._large_flow_workspace": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src/urban_network_analysis/Engines/_large_flow_workspace.py",
+      "Logger": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src/urban_network_analysis/Logger.py",
+      "Settings": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src/urban_network_analysis/Settings.py"
+    },
+    "candidate_root": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src",
+    "dijkstra_module": "scipy.sparse.csgraph._shortest_path",
+    "dijkstra_module_file": "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/lib/python3.11/site-packages/scipy/sparse/csgraph/_shortest_path.cpython-311-darwin.so",
+    "numpy_version": "2.4.6",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.16",
+    "scipy_version": "1.17.1"
+  },
+  "fixture_shas": {
+    "base": {
+      "arcs": [
+        [
+          0,
+          1,
+          1.0
+        ],
+        [
+          1,
+          2,
+          2.0
+        ],
+        [
+          0,
+          2,
+          5.0
+        ],
+        [
+          2,
+          3,
+          1.0
+        ],
+        [
+          3,
+          4,
+          1.0
+        ],
+        [
+          4,
+          5,
+          1.0
+        ],
+        [
+          1,
+          3,
+          7.0
+        ],
+        [
+          5,
+          2,
+          2.5
+        ],
+        [
+          1,
+          6,
+          1.0
+        ],
+        [
+          3,
+          6,
+          1.0
+        ],
+        [
+          2,
+          7,
+          1.0
+        ],
+        [
+          4,
+          7,
+          1.0
+        ],
+        [
+          3,
+          8,
+          1.0
+        ],
+        [
+          5,
+          8,
+          1.0
+        ],
+        [
+          4,
+          9,
+          1.0
+        ],
+        [
+          0,
+          9,
+          1.0
+        ],
+        [
+          5,
+          10,
+          1.0
+        ],
+        [
+          1,
+          10,
+          1.0
+        ]
+      ],
+      "limit": "inf",
+      "n_dest": 5,
+      "n_net": 6
+    },
+    "custom_costs": {
+      "arcs": [
+        [
+          0,
+          1,
+          0.37
+        ],
+        [
+          1,
+          2,
+          11.2
+        ],
+        [
+          0,
+          2,
+          5.05
+        ],
+        [
+          2,
+          3,
+          0.01
+        ],
+        [
+          3,
+          1,
+          7.7
+        ],
+        [
+          1,
+          4,
+          2.25
+        ],
+        [
+          4,
+          5,
+          3.5
+        ],
+        [
+          5,
+          3,
+          1.1
+        ],
+        [
+          0,
+          6,
+          1.0
+        ],
+        [
+          2,
+          6,
+          1.0
+        ],
+        [
+          4,
+          6,
+          1.0
+        ],
+        [
+          1,
+          7,
+          1.0
+        ],
+        [
+          3,
+          7,
+          1.0
+        ],
+        [
+          5,
+          7,
+          1.0
+        ],
+        [
+          2,
+          8,
+          1.0
+        ]
+      ],
+      "limit": "inf",
+      "n_dest": 3,
+      "n_net": 6
+    },
+    "disconnected": {
+      "arcs": [
+        [
+          0,
+          1,
+          1.0
+        ],
+        [
+          1,
+          2,
+          1.0
+        ],
+        [
+          0,
+          3,
+          1.0
+        ],
+        [
+          1,
+          3,
+          1.0
+        ],
+        [
+          2,
+          3,
+          1.0
+        ],
+        [
+          4,
+          4,
+          1.0
+        ]
+      ],
+      "limit": "inf",
+      "n_dest": 2,
+      "n_net": 5
+    },
+    "empty_rows": {
+      "arcs": [
+        [
+          0,
+          1,
+          1.0
+        ],
+        [
+          1,
+          2,
+          1.0
+        ],
+        [
+          0,
+          3,
+          1.0
+        ],
+        [
+          1,
+          3,
+          1.0
+        ],
+        [
+          2,
+          3,
+          1.0
+        ],
+        [
+          1,
+          4,
+          1.0
+        ]
+      ],
+      "limit": "0.0",
+      "n_dest": 2,
+      "n_net": 3
+    },
+    "one_dest": {
+      "arcs": [
+        [
+          0,
+          1,
+          1.0
+        ],
+        [
+          1,
+          2,
+          2.0
+        ],
+        [
+          2,
+          0,
+          1.5
+        ],
+        [
+          0,
+          3,
+          1.0
+        ],
+        [
+          1,
+          3,
+          1.0
+        ],
+        [
+          2,
+          3,
+          1.0
+        ]
+      ],
+      "limit": "inf",
+      "n_dest": 1,
+      "n_net": 3
+    },
+    "parallel_arcs": {
+      "arcs": [
+        [
+          0,
+          1,
+          2.0
+        ],
+        [
+          0,
+          1,
+          5.0
+        ],
+        [
+          0,
+          2,
+          0.0
+        ],
+        [
+          1,
+          2,
+          1.0
+        ],
+        [
+          2,
+          3,
+          3.0
+        ],
+        [
+          0,
+          3,
+          9.0
+        ],
+        [
+          1,
+          4,
+          1.0
+        ],
+        [
+          2,
+          4,
+          1.0
+        ],
+        [
+          3,
+          4,
+          1.0
+        ],
+        [
+          3,
+          5,
+          1.0
+        ]
+      ],
+      "limit": "inf",
+      "n_dest": 2,
+      "n_net": 4
+    },
+    "partial_empty": {
+      "arcs": [
+        [
+          0,
+          1,
+          1.0
+        ],
+        [
+          1,
+          2,
+          50.0
+        ],
+        [
+          0,
+          3,
+          1.0
+        ],
+        [
+          2,
+          4,
+          1.0
+        ]
+      ],
+      "limit": "10.0",
+      "n_dest": 2,
+      "n_net": 3
+    },
+    "tied": {
+      "arcs": [
+        [
+          0,
+          1,
+          1.0
+        ],
+        [
+          0,
+          2,
+          1.0
+        ],
+        [
+          1,
+          3,
+          1.0
+        ],
+        [
+          2,
+          3,
+          1.0
+        ],
+        [
+          3,
+          4,
+          2.0
+        ],
+        [
+          3,
+          5,
+          1.0
+        ],
+        [
+          4,
+          5,
+          1.0
+        ],
+        [
+          4,
+          6,
+          1.0
+        ]
+      ],
+      "limit": "inf",
+      "n_dest": 2,
+      "n_net": 5
+    },
+    "uneven_tail": {
+      "arcs": [
+        [
+          0,
+          1,
+          1.0
+        ],
+        [
+          1,
+          2,
+          1.1
+        ],
+        [
+          2,
+          3,
+          1.2
+        ],
+        [
+          3,
+          4,
+          1.3
+        ],
+        [
+          4,
+          5,
+          1.4
+        ],
+        [
+          5,
+          6,
+          1.5
+        ],
+        [
+          6,
+          7,
+          1.6
+        ],
+        [
+          7,
+          0,
+          1.7000000000000002
+        ],
+        [
+          0,
+          8,
+          1.0
+        ],
+        [
+          2,
+          8,
+          1.0
+        ],
+        [
+          5,
+          8,
+          1.0
+        ],
+        [
+          1,
+          9,
+          1.0
+        ],
+        [
+          3,
+          9,
+          1.0
+        ],
+        [
+          6,
+          9,
+          1.0
+        ],
+        [
+          2,
+          10,
+          1.0
+        ],
+        [
+          4,
+          10,
+          1.0
+        ],
+        [
+          7,
+          10,
+          1.0
+        ],
+        [
+          3,
+          11,
+          1.0
+        ],
+        [
+          5,
+          11,
+          1.0
+        ],
+        [
+          0,
+          11,
+          1.0
+        ],
+        [
+          4,
+          12,
+          1.0
+        ],
+        [
+          6,
+          12,
+          1.0
+        ],
+        [
+          1,
+          12,
+          1.0
+        ],
+        [
+          5,
+          13,
+          1.0
+        ],
+        [
+          7,
+          13,
+          1.0
+        ],
+        [
+          2,
+          13,
+          1.0
+        ],
+        [
+          6,
+          14,
+          1.0
+        ],
+        [
+          0,
+          14,
+          1.0
+        ],
+        [
+          3,
+          14,
+          1.0
+        ]
+      ],
+      "limit": "inf",
+      "n_dest": 7,
+      "n_net": 8
+    },
+    "zero_dest": {
+      "arcs": [
+        [
+          0,
+          1,
+          1.0
+        ],
+        [
+          1,
+          2,
+          2.0
+        ]
+      ],
+      "limit": "inf",
+      "n_dest": 0,
+      "n_net": 3
+    }
+  },
+  "notes": {
+    "del_before_next_call": {
+      "calls": 2,
+      "entry_checks_all_true": true,
+      "instrument": "weakref.finalize on each call's dist+preds; checked at next-call entry (refcount granularity)"
+    },
+    "duplicated_sources": {
+      "ground": "dest_nodes = np.arange(n_net, n_net + n_dest) is unique by construction in BOTH arms; the baseline does not allow duplicated sources",
+      "status": "not_applicable"
+    },
+    "max_transient_property": {
+      "returns_checked": 415
+    },
+    "negative_budget": {
+      "per_source": 239,
+      "verdict": "NO_FIT both ways",
+      "way1_cap": 67109950,
+      "way2_retained": 717
+    },
+    "non_aliasing": {
+      "base_is_none": [
+        "indptr",
+        "nodes",
+        "dist",
+        "pred"
+      ],
+      "plus": "byte-equality to B0; parts are fancy-index + astype copies (both arms), never views of the dense slices"
+    },
+    "refusal_safety": {
+      "forced_by": "selector-level cap arithmetic on tiny fixtures",
+      "main_process_memory_pressure": "none",
+      "spec_refusal_test_safety": "honored"
+    },
+    "runflow_outputs": {
+      "edge_flow": {
+        "dtype": "float64",
+        "shape": [
+          12
+        ]
+      },
+      "edge_flow_AB": {
+        "dtype": "float64",
+        "shape": [
+          12
+        ]
+      },
+      "edge_flow_BA": {
+        "dtype": "float64",
+        "shape": [
+          12
+        ]
+      },
+      "node_flow": {
+        "dtype": "float64",
+        "shape": [
+          9
+        ]
+      }
+    }
+  },
+  "schedules": {
+    "base/c1": {
+      "cap": 67109711,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 1,
+      "floor_fired": "slice=1+chunks_done=1",
+      "floor_slice": 1,
+      "margin": 67108864,
+      "schedule": [
+        5
+      ]
+    },
+    "base/c2": {
+      "cap": 67109950,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 1,
+      "floor_fired": "slice=2+chunks_done=1",
+      "floor_slice": 2,
+      "margin": 67108864,
+      "schedule": [
+        5
+      ]
+    },
+    "base/c3": {
+      "cap": 67110189,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 2,
+      "floor_fired": "slice=4+chunks_done=2",
+      "floor_slice": 4,
+      "margin": 67108864,
+      "schedule": [
+        5
+      ]
+    },
+    "base/default": {
+      "cap": 67110667,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        5
+      ]
+    },
+    "base/whole": {
+      "cap": 67110667,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        5
+      ]
+    },
+    "custom_costs/c1": {
+      "cap": 67109549,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 1,
+      "floor_fired": "slice=1+chunks_done=1",
+      "floor_slice": 1,
+      "margin": 67108864,
+      "schedule": [
+        3
+      ]
+    },
+    "custom_costs/c2": {
+      "cap": 67109746,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 1,
+      "floor_fired": "slice=2+chunks_done=1",
+      "floor_slice": 2,
+      "margin": 67108864,
+      "schedule": [
+        3
+      ]
+    },
+    "custom_costs/c3": {
+      "cap": 67109943,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        3
+      ]
+    },
+    "custom_costs/default": {
+      "cap": 67109943,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        3
+      ]
+    },
+    "custom_costs/whole": {
+      "cap": 67109943,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        3
+      ]
+    },
+    "disconnected/c1": {
+      "cap": 67109259,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 1,
+      "floor_fired": "slice=1+chunks_done=1",
+      "floor_slice": 1,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "disconnected/c2": {
+      "cap": 67109414,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "disconnected/c3": {
+      "cap": 67109569,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "disconnected/default": {
+      "cap": 67109414,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "disconnected/whole": {
+      "cap": 67109414,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "empty_rows/c1": {
+      "cap": 67109201,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 1,
+      "floor_fired": "slice=1+chunks_done=1",
+      "floor_slice": 1,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "empty_rows/c2": {
+      "cap": 67109314,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "empty_rows/c3": {
+      "cap": 67109427,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "empty_rows/default": {
+      "cap": 67109314,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "empty_rows/whole": {
+      "cap": 67109314,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "engine_gradient": {
+      "cap": 268435456,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        3
+      ]
+    },
+    "margin_gap_child": {
+      "gap_bytes": -4207784,
+      "gate_pass": true,
+      "log_line": "Gradient storage: 29,100 finite entries (~1 MB sparse vs ~0.1 GB dense). [F3] cap=268435456B margin=67108864B chunks=1 schedule=[300] fallback=none floor_fired=none",
+      "margin_half": 33554432,
+      "n_dest": 300,
+      "payload_bytes": 79170000,
+      "retained_bytes": 584408,
+      "rss_after": 344096768,
+      "rss_before": 268550144,
+      "rss_delta": 75546624,
+      "ru_maxrss_units": "bytes (darwin) / KiB*1024 (linux)",
+      "schedule": [
+        300
+      ],
+      "v_prime": 20300
+    },
+    "one_dest/c1": {
+      "cap": 67109156,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        1
+      ]
+    },
+    "one_dest/c2": {
+      "cap": 67109248,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        1
+      ]
+    },
+    "one_dest/c3": {
+      "cap": 67109340,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        1
+      ]
+    },
+    "one_dest/default": {
+      "cap": 67109156,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        1
+      ]
+    },
+    "one_dest/whole": {
+      "cap": 67109156,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        1
+      ]
+    },
+    "parallel_arcs/c1": {
+      "cap": 67109326,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 1,
+      "floor_fired": "slice=1+chunks_done=1",
+      "floor_slice": 1,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "parallel_arcs/c2": {
+      "cap": 67109460,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "parallel_arcs/c3": {
+      "cap": 67109594,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "parallel_arcs/default": {
+      "cap": 67109460,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "parallel_arcs/whole": {
+      "cap": 67109460,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "partial_empty/c1": {
+      "cap": 67109153,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 1,
+      "floor_fired": "slice=1+chunks_done=1",
+      "floor_slice": 1,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "partial_empty/c2": {
+      "cap": 67109266,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "partial_empty/c3": {
+      "cap": 67109379,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "partial_empty/default": {
+      "cap": 67109266,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "partial_empty/whole": {
+      "cap": 67109266,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "tied/c1": {
+      "cap": 67109307,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 1,
+      "floor_fired": "slice=1+chunks_done=1",
+      "floor_slice": 1,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "tied/c2": {
+      "cap": 67109462,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "tied/c3": {
+      "cap": 67109617,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "tied/default": {
+      "cap": 67109462,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "tied/whole": {
+      "cap": 67109462,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        2
+      ]
+    },
+    "uneven_tail/c1": {
+      "cap": 67110123,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 1,
+      "floor_fired": "slice=1+chunks_done=1",
+      "floor_slice": 1,
+      "margin": 67108864,
+      "schedule": [
+        7
+      ]
+    },
+    "uneven_tail/c2": {
+      "cap": 67110446,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 1,
+      "floor_fired": "slice=2+chunks_done=1",
+      "floor_slice": 2,
+      "margin": 67108864,
+      "schedule": [
+        7
+      ]
+    },
+    "uneven_tail/c3": {
+      "cap": 67110769,
+      "chunks": 1,
+      "fallback": "midrun",
+      "floor_chunks_done": 2,
+      "floor_fired": "slice=4+chunks_done=2",
+      "floor_slice": 4,
+      "margin": 67108864,
+      "schedule": [
+        7
+      ]
+    },
+    "uneven_tail/default": {
+      "cap": 67112061,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        7
+      ]
+    },
+    "uneven_tail/whole": {
+      "cap": 67112061,
+      "chunks": 1,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": [
+        7
+      ]
+    },
+    "zero_dest": {
+      "cap": 268435456,
+      "chunks": 0,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": []
+    },
+    "zero_dest/c1": {
+      "cap": 67109015,
+      "chunks": 0,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": []
+    },
+    "zero_dest/c2": {
+      "cap": 67109086,
+      "chunks": 0,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": []
+    },
+    "zero_dest/c3": {
+      "cap": 67109157,
+      "chunks": 0,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": []
+    },
+    "zero_dest/default": {
+      "cap": 67108944,
+      "chunks": 0,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": []
+    },
+    "zero_dest/whole": {
+      "cap": 67108944,
+      "chunks": 0,
+      "fallback": "none",
+      "floor_chunks_done": null,
+      "floor_fired": "none",
+      "floor_slice": null,
+      "margin": 67108864,
+      "schedule": []
+    }
+  },
+  "warnings": {
+    "complete_runflow": {
+      "b0_default": 0,
+      "cand_cap128": 0,
+      "cand_cap64": 0,
+      "cand_default": 0
+    },
+    "parity_check": {
+      "b0": {
+        "count": 0,
+        "messages": []
+      },
+      "cand": {
+        "count": 0,
+        "messages": []
+      }
+    }
+  }
+}
