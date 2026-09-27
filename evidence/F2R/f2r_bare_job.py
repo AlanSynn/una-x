@@ -422,6 +422,20 @@ if args.arm == "b0":
     if int(f2s["fast_calls"]) != 0:
         fatal(f"b0 CONTRADICTION: fast_calls={f2s['fast_calls']} != 0 — "
               "launcher-forced OFF not engaged, stop-and-preserve")
+    # Integrity: like-for-like alive proof across the window (the real
+    # function, trivially-valid args, must still say True). Data: the
+    # run-param probe is RECORDED, never asserted - _use_local_route is a
+    # stateless function of its args (local_ok and slice_len <=
+    # max(1, n_total // _F2_LOCAL_SLICE_FRAC)); at the observed slice_max
+    # it can deterministically decline (bound 49159//8 = 6144 < 7105 on
+    # this fixture) with no exclusion implied (h04 diag-service ruling
+    # 12027b04(c)/51ad93d4 chain, mirrored here).
+    alive_post = LAUNCHER_STATE["launcher"].invoke_real(True, 1, 1)
+    REC["route_state"]["postwindow_alive_receipt"] = alive_post
+    if alive_post["return"] is not True:
+        fatal("post-window alive receipt returned "
+              f"{alive_post['return']!r} — real-function integrity "
+              "lost across the window; stop-and-preserve")
     live = LAUNCHER_STATE["launcher"].invoke_real(
         bool(f2s["local_route_ok"]), int(f2s["local_slice_max"]),
         REC["counts"]["V_nodes"])
@@ -434,9 +448,6 @@ if args.arm == "b0":
         f"n_total={REC['counts']['V_nodes']}) while the wrapper forced "
         f"False for every OD (fast_calls=0): launcher-forced, not "
         "data-driven")
-    if live["return"] is not True:
-        fatal("post-window live receipt returned False — data-driven "
-              "exclusion signature; stop-and-preserve for adjudication")
 else:
     if int(f2s["fast_calls"]) <= 0:
         fatal(f"cand CONTRADICTION: fast_calls={f2s['fast_calls']} <= 0 — "

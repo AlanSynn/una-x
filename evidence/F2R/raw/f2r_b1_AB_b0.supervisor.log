@@ -1,0 +1,251 @@
+{
+ "run_id": "f2r_b1_AB_b0",
+ "rc": 2,
+ "tail": "4 (89.8%, 461/s, ETA 0.0 min)\n    9.8280 |        0.011725 | AggregateFlow |   origin 930/1,024 (90.8%, 463/s, ETA 0.0 min)\n    9.8394 |        0.011412 | AggregateFlow |   origin 940/1,024 (91.8%, 466/s, ETA 0.0 min)\n    9.8521 |        0.012708 | AggregateFlow |   origin 950/1,024 (92.8%, 468/s, ETA 0.0 min)\n    9.8634 |        0.011310 | AggregateFlow |   origin 960/1,024 (93.8%, 470/s, ETA 0.0 min)\n    9.8757 |        0.012359 | AggregateFlow |   origin 970/1,024 (94.7%, 472/s, ETA 0.0 min)\n    9.8871 |        0.011360 | AggregateFlow |   origin 980/1,024 (95.7%, 474/s, ETA 0.0 min)\n    9.8990 |        0.011937 | AggregateFlow |   origin 990/1,024 (96.7%, 476/s, ETA 0.0 min)\n    9.9102 |        0.011142 | AggregateFlow |   origin 1,000/1,024 (97.7%, 479/s, ETA 0.0 min)\n    9.9202 |        0.009967 | AggregateFlow |   origin 1,010/1,024 (98.6%, 481/s, ETA 0.0 min)\n    9.9315 |        0.011320 | AggregateFlow |   origin 1,020/1,024 (99.6%, 483/s, ETA 0.0 min)\n    9.9362 |        0.004720 | AggregateFlow |   origin 1,024/1,024 (100.0%, 484/s, ETA 0.0 min)\n    9.9370 |        0.000821 | AggregateFlow | Origin loop: 1,024 origins in 2.12s (8 thread(s)).\n    9.9370 |        0.000002 | AggregateFlow | [F2] local-overlap route: ok=True slice_max=7105 fast=0 overflow=0 fallback=0\n    9.9372 |        0.000169 | AggregateFlow | Done \u2014 max=12.0721, mean=0.0338, nonzero=2856\n   10.0061 |        0.068946 | Flow | Saved feather \u2192 /Users/alansynn/orca/workspaces/una-x/campaign_data/f2r_out/f2r_b1_AB_b0/flow_2026-09-27_1750/Results.feather\n   10.0400 |        0.033866 | Flow | Saved CSV \u2192 /Users/alansynn/orca/workspaces/una-x/campaign_data/f2r_out/f2r_b1_AB_b0/flow_2026-09-27_1750/Results.csv\n   10.7364 |        0.696358 | Flow | Saved GeoJSON \u2192 /Users/alansynn/orca/workspaces/una-x/campaign_data/f2r_out/f2r_b1_AB_b0/flow_2026-09-27_1750/Results.geojson\n[f2r-job] FATAL: post-window live receipt returned False \u2014 data-driven exclusion signature; stop-and-preserve for adjudication\n",
+ "env": {
+  "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_f2r_b0",
+  "NUMBA_NUM_THREADS": "1"
+ },
+ "cmd": [
+  "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/f2r_wheel/bin/python",
+  "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/evidence/F2R/f2r_bare_job.py",
+  "--manifest",
+  "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_FLOW.manifest.json",
+  "--cell",
+  "O3_FLOW",
+  "--variant-id",
+  "sel1024",
+  "--arm",
+  "b0",
+  "--expected-site-packages",
+  "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/f2r_wheel/lib/python3.11/site-packages",
+  "--out-json",
+  "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/evidence/F2R/raw/f2r_b1_AB_b0.json",
+  "--output-root",
+  "/Users/alansynn/orca/workspaces/una-x/campaign_data/f2r_out/f2r_b1_AB_b0",
+  "--run-id",
+  "f2r_b1_AB_b0",
+  "--flow-stripes",
+  "8",
+  "--wheel-sha256",
+  "1176ad8fc895697b432f4a4402a7147a4f02597c87340929884533347783e1e3",
+  "--numba-threads",
+  "1",
+  "--block",
+  "1",
+  "--order",
+  "AB",
+  "--launcher-path",
+  "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/evidence/F2R/f2r_route_launcher.py",
+  "--launcher-sha256",
+  "b65867cc731ac6b79025a065d3c95c36f46c35377243b4d68b6217a0e89707b3"
+ ],
+ "watchdog": {
+  "run_id": "f2r_b1_AB_b0",
+  "budget_mib": 3436,
+  "samples": [
+   {
+    "t_s": 0.02,
+    "tree_rss_kb": 4336
+   },
+   {
+    "t_s": 0.31,
+    "tree_rss_kb": 59008
+   },
+   {
+    "t_s": 0.59,
+    "tree_rss_kb": 94416
+   },
+   {
+    "t_s": 0.87,
+    "tree_rss_kb": 126768
+   },
+   {
+    "t_s": 1.16,
+    "tree_rss_kb": 147408
+   },
+   {
+    "t_s": 1.44,
+    "tree_rss_kb": 168384
+   },
+   {
+    "t_s": 1.72,
+    "tree_rss_kb": 185184
+   },
+   {
+    "t_s": 2.0,
+    "tree_rss_kb": 201920
+   },
+   {
+    "t_s": 2.28,
+    "tree_rss_kb": 246336
+   },
+   {
+    "t_s": 2.56,
+    "tree_rss_kb": 276368
+   },
+   {
+    "t_s": 2.83,
+    "tree_rss_kb": 291728
+   },
+   {
+    "t_s": 3.12,
+    "tree_rss_kb": 291824
+   },
+   {
+    "t_s": 3.39,
+    "tree_rss_kb": 291824
+   },
+   {
+    "t_s": 3.68,
+    "tree_rss_kb": 313552
+   },
+   {
+    "t_s": 3.95,
+    "tree_rss_kb": 335824
+   },
+   {
+    "t_s": 4.24,
+    "tree_rss_kb": 416608
+   },
+   {
+    "t_s": 4.52,
+    "tree_rss_kb": 471072
+   },
+   {
+    "t_s": 4.8,
+    "tree_rss_kb": 507616
+   },
+   {
+    "t_s": 5.12,
+    "tree_rss_kb": 518720
+   },
+   {
+    "t_s": 5.4,
+    "tree_rss_kb": 523440
+   },
+   {
+    "t_s": 5.68,
+    "tree_rss_kb": 534016
+   },
+   {
+    "t_s": 5.96,
+    "tree_rss_kb": 542608
+   },
+   {
+    "t_s": 6.24,
+    "tree_rss_kb": 548032
+   },
+   {
+    "t_s": 6.52,
+    "tree_rss_kb": 557280
+   },
+   {
+    "t_s": 6.8,
+    "tree_rss_kb": 560928
+   },
+   {
+    "t_s": 7.08,
+    "tree_rss_kb": 564816
+   },
+   {
+    "t_s": 7.37,
+    "tree_rss_kb": 572672
+   },
+   {
+    "t_s": 7.65,
+    "tree_rss_kb": 580064
+   },
+   {
+    "t_s": 7.93,
+    "tree_rss_kb": 588432
+   },
+   {
+    "t_s": 8.21,
+    "tree_rss_kb": 594864
+   },
+   {
+    "t_s": 8.5,
+    "tree_rss_kb": 599200
+   },
+   {
+    "t_s": 8.78,
+    "tree_rss_kb": 600560
+   },
+   {
+    "t_s": 9.06,
+    "tree_rss_kb": 604096
+   },
+   {
+    "t_s": 9.35,
+    "tree_rss_kb": 607840
+   },
+   {
+    "t_s": 9.62,
+    "tree_rss_kb": 612448
+   },
+   {
+    "t_s": 9.9,
+    "tree_rss_kb": 667072
+   },
+   {
+    "t_s": 10.18,
+    "tree_rss_kb": 793184
+   },
+   {
+    "t_s": 10.47,
+    "tree_rss_kb": 810400
+   },
+   {
+    "t_s": 10.75,
+    "tree_rss_kb": 835984
+   },
+   {
+    "t_s": 11.03,
+    "tree_rss_kb": 841216
+   },
+   {
+    "t_s": 11.31,
+    "tree_rss_kb": 856880
+   },
+   {
+    "t_s": 11.6,
+    "tree_rss_kb": 858672
+   },
+   {
+    "t_s": 11.88,
+    "tree_rss_kb": 859776
+   },
+   {
+    "t_s": 12.17,
+    "tree_rss_kb": 861424
+   },
+   {
+    "t_s": 12.45,
+    "tree_rss_kb": 861424
+   },
+   {
+    "t_s": 12.73,
+    "tree_rss_kb": 884064
+   },
+   {
+    "t_s": 13.01,
+    "tree_rss_kb": 884096
+   },
+   {
+    "t_s": 13.29,
+    "tree_rss_kb": 884096
+   },
+   {
+    "t_s": 13.58,
+    "tree_rss_kb": 877664
+   }
+  ]
+ }
+}{
+ "renamed_aside": {
+  "out_root": "f2r_b1_AB_b0_incident",
+  "cache_root": "nbc_f2r_b0_incident",
+  "note": "stage guard: failed run's state renamed aside before any re-fire"
+ }
+}
