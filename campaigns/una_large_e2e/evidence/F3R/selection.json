@@ -1,0 +1,64 @@
+{
+ "schema_version": "1.0",
+ "task": "F3R",
+ "record": "selection",
+ "revision": "r2 (sole-delta: review reference moves to review r2 3c78b9de... and the fourth disclosure is added; supersedes r1 96f79af8..., custody copy f3r_selection_superseded_r1_96f79af8.json filed byte-exact BEFORE revision)",
+ "role": "independent-reviewer (h04)",
+ "generated_utc": "2026-09-27T14:21:36Z",
+ "method_note": "Programmatic computation per the F1R selection.json recipe: every figure is a tool output computed by h04 from artifact bytes (hash recomputation, JSON field reads, arithmetic re-derivation) - no relayed figure accepted on authority, no hand arithmetic in any gate comparison. Gate verdicts bind on the figures recorded in review.json (3c78b9dec7b1c58d0cdd6b13a2ba5482313e69750021801106639d533d9f75c8, 13,923 B, r2), which carries the full per-gate adjudication and defect rulings.",
+ "control_chain": {
+  "spec_of_record": "17405a2 / 08c9e21959c84ab88f6246635773266cc239f1b8054242dee74341863bdf9688 (59,195 B)",
+  "manifest_commit": "e8cc9f4 (manifest v4 r3, content 93f440f1)",
+  "vehicles_commit": "a170d22 (driver 26a34c15, supervisor 80bd5309)",
+  "matrix_firer": "29dc64744b062dfb50d84a9a4e1a473f7b90400bb19d985235068b574d626de3",
+  "envelope": "720457b3bd668bbb42e5fcfb6ae4cb6c399a2e821c7c2530583371cde5644aba (watchdog 3196 MiB, entry bar 4,490,526,720 B)",
+  "wheels": {"b0": "f9d7a86240ee846ed7a8ebe958b4321496474adb9002c73a19b10500dec5a00f", "cand": "04ce733a6f1ddf7aa97231be00744fb4c1707750e958e69364a68a7736cc84cf"}
+ },
+ "arms": {
+  "b0": "baseline gradient workspace (comparator)",
+  "cand": "byte-budgeted gradient workspace (screened candidate; advances to integration if screened in)"
+ },
+ "matrix_execution": {
+  "fired_utc": "2026-09-27T14:02:13Z",
+  "shape": "3 paired blocks AB/BA/AB, block 1 cold, blocks 2-3 warm; order/cold_warm verified from record fields",
+  "slots_and_walls_s": {"f3r_b1_AB_b0": 17.6, "f3r_b1_AB_cand": 16.9, "f3r_b2_BA_cand": 7.6, "f3r_b2_BA_b0": 8.6, "f3r_b3_AB_b0": 7.9, "f3r_b3_AB_cand": 8.3},
+  "rc": "0 on all six; zero refusals, zero watchdog breaches, zero G7 stops",
+  "quiet_proof": "all six gate_run admission stamps >= 5,368,709,120 B and loadavg[0] < 8.0 (REV-9 window, blocking per P7 grant)",
+  "charged": "66.9 s gate_run walls; lease cumulative 1115.4 -> 1182.3; remaining 13,217.7"
+ },
+ "gates_admit_screen": {
+  "G1_exactness": "PASS (byte-identity G1a cold + G1b warm, all blocks, normalized-key comparison, zero deltas; flow arrays 4/4 zero deltas; cross-block cold-vs-warm identical both arms)",
+  "G2_warning_parity": "PASS (verbatim_warnings [] == [] all three blocks; enforcement gap disclosed - substance computed into review.json)",
+  "G3_capacity_claim_warm_governing": "PASS (warm governing b0 3107.3125 / cand 738.5625 MiB; measured delta 2,483,814,400 B >= preregistered minimum 549,262,578 B, ratio 4.522089251090396; exceeds full accounted transient reduction 1,098,525,156 B by 2.261044625545198)",
+  "G4_cold_time_bound": "PASS (cold single pair 11.836623917 / 11.369880834 s, ratio cand/b0 0.9605678877462979 <= 1.05; warm pairs descriptive only per PD-C)",
+  "G5_semantics": "PASS (rc=0 all jobs, outputs complete, no silent partial gradients)",
+  "G6_conformity": "PASS (preregistered order; charge accounting step-verified; no uncharged gate-eligible execution)",
+  "G7_fallback_and_model_reality": "NOT TRIGGERED (fallback \"none\" in cand records; expected regime held)"
+ },
+ "disposition": {
+  "verdict": "SCREENED_IN",
+  "basis": "G1-G6 pass under the ruled gates; G7 not triggered; spec terminal_dispositions screened_in branch: F3 advances toward integration; integrator advances selected control only for reviewed screened-in source",
+  "selected_control": "cand arm (byte-budgeted gradient workspace), wheels f9d7a862 (b0) / 04ce733a (cand) as pinned in f3r_wheel_and_venv.json",
+  "capacity_reading": "warm governing peak-footprint reduction 2,483,814,400 B at cold time 0.96 of baseline; capacity_only labeling (DECISION line 11) verbatim in every record - walls are capacity evidence, not promotion claims"
+ },
+ "raw_evidence": {
+  "in_repo": ["evidence/F3R/raw/f3r_b1_AB_b0.json 55231525b200d3a986158ab6296e2e7a0d1c8a97d87bdd647bf8577bc5c21082", "evidence/F3R/raw/f3r_b1_AB_cand.json d58c496a1ab542c1da14b47855d2fe8bac72a5714bdde87273e00c1d179dd8e6", "evidence/F3R/raw/f3r_b2_BA_b0.json 08a950e739caf18344127f509182e6f8771f7cd074c4f7b2b17dc7578e9cc669", "evidence/F3R/raw/f3r_b2_BA_cand.json 7406e2106ac82462cc313d7ec3467f9c17f6199e0b42c6b67459075e97fd4ab0", "evidence/F3R/raw/f3r_b3_AB_b0.json e1044e08c39db47c2c89066e7f927982061c4301d863618c3630edc9ebda8676", "evidence/F3R/raw/f3r_b3_AB_cand.json 31c24ba1cbfc744cb882bc3d8acd4ea3f8538a9fef1a3e22ed7933a5f7f49e0a"],
+  "campaign_data": ["f3r_screen_summary.json 0007d4af5604d0055de92f1c822bb6e06c26e6320fb4de115e8b8f15b3ced964 (findings VACUOUS-DISCLOSED, superseded by review.json)", "f3r_lease_log.json 86621b0b8338f313704740621d669b7b83ddb5d80ae65b389b50b101df18ec84", "f3r_matrix_fire_receipt.json 70e7673ecbc666e0b02e4d1fecd921fbb340571fc5c7cc99c9bf6ea940728a9f (post-hoc reconstruction, disclosed)", "f3r_matrix_fire_console_20260927T140213Z.log 34422d6f0c292fe7c4a1777fcb9aae6160cbf12333affc3dafb01c0a12a4d949"]
+ },
+ "lease_closure": {
+  "windows": 10,
+  "all_terminal": true,
+  "burns": "none (no run-id burn events; REV-9 consequence intact but never triggered)",
+  "cumulative_charged_s": 1182.3,
+  "remaining_s": 13217.7,
+  "budget_s": 14400.0,
+  "classes": "3 sizing-era diagnostics (uncharged, one admission-refused hostile + two benign) + 1 capacity-only entry probe + 6 charged gate_run"
+ },
+ "disclosures": [
+  "summary block_findings vacuous (compared 0 artifacts / 0 keys) - real findings computed into review.json; no vehicle change; v5 carries disclosure",
+  "G2 parity unenforced in supervisor block_checks - parity real ([] == [] x3), gap disclosed in v5",
+  "matrix firer receipt-tail crash post-fire - receipt reconstructed post-hoc with in-receipt disclosure, cross-verified by h04, accepted as-ran",
+  "f3_analysis null descriptive pair (third committed-supervisor defect, lines 767-769 mis-parenthesized margin lookup) - reproduced by h04 from the committed statements; corrected value 196,742,588 B = 187.62835311889648 MiB <= 192.0 MiB TRUE, headroom 4,584,004 B = recorded slack_bytes exactly, mathematically redundant with binding leg (e); zero gate impact; summary stands as-written (honest absence), review r2 carries the full adjudication",
+  "cold-inflation observation: block-1 cold b0 peak +7.5015% over sizing-derived governing (F1R-consistent 7.5-7.7% band), watchdog absorbed with 72.796875 MiB margin - carried to Q00 across-caps preregistration"
+ ]
+}

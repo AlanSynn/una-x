@@ -1,0 +1,490 @@
+{
+ "schema_version": 1,
+ "task": "F3R",
+ "record": "bare_complete_job_flow_f3r",
+ "role": "screen-executor",
+ "cell": "O3_FLOW",
+ "arm": "cand",
+ "run_id": "f3r_b3_AB_cand",
+ "block": 3,
+ "order": "AB",
+ "gate_eligible": true,
+ "diagnostics_class": null,
+ "cold_warm": "warm (reused cache)",
+ "timing_class": "bare_complete_job_no_leaf_profiler",
+ "capacity_only": "DECISION.md line 11: wall time recorded as capacity_only; no throughput or performance claim made or admissible from this record",
+ "frozen_triple": {
+  "W": 1,
+  "K": 8,
+  "H": 1
+ },
+ "started_utc": "2026-09-27T14:03:12Z",
+ "env": {
+  "NUMBA_NUM_THREADS": "1",
+  "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_f3r_cand",
+  "L1_REUSE_DIR": "<unset>",
+  "PYTHONPATH": "<unset>"
+ },
+ "import": {
+  "urban_network_analysis_file": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/f3r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis",
+  "expected_site_packages": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/f3r_cand_wheel/lib/python3.11/site-packages",
+  "identity_assertion": "ok (realpath under expected site-packages)",
+  "package_version": "2.6.0",
+  "wheel_sha256": "04ce733a6f1ddf7aa97231be00744fb4c1707750e958e69364a68a7736cc84cf"
+ },
+ "process": {
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "numba": "0.67.0",
+  "numba_num_threads_config": 1,
+  "numba_get_num_threads": 1,
+  "numba_threading_layer": "workqueue"
+ },
+ "f3_module_identity": {
+  "module": "urban_network_analysis.Engines._large_flow_workspace",
+  "file": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/f3r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis/Engines/_large_flow_workspace.py",
+  "identity_assertion": "ok (realpath under expected site-packages)",
+  "default_cap_bytes": 268435456,
+  "margin_bytes": 67108864,
+  "cap_matches_ruled": true,
+  "margin_matches_ruled": true
+ },
+ "input_rehash": {
+  "network": {
+   "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+   "bytes": 71290787,
+   "match": true
+  },
+  "origins": {
+   "sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+   "bytes": 5982662,
+   "match": true
+  },
+  "destinations": {
+   "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+   "bytes": 2641054,
+   "match": true
+  }
+ },
+ "manifest": {
+  "path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_FLOW.manifest.json",
+  "sha256": "c2e6f2669cf334e4060d3930d23d44baf41efa5c54f36908cd2b72b25ec96e2a",
+  "workload_id": "O3_FLOW",
+  "settings_overrides": {
+   "network_weight_column": "Geometric",
+   "origin_weight_column": "Count",
+   "destination_weight_column": "weekly_departures",
+   "search_radius": 500,
+   "turns": false,
+   "elevation": false,
+   "calculate_reach": true,
+   "calculate_exponential_gravity": true,
+   "calculate_logistic_gravity": true,
+   "calculate_knn_access": true,
+   "output_csv": true,
+   "output_geojson": true,
+   "output_feather": true,
+   "flow_engine": "aggregate_flow",
+   "flow_decay": true,
+   "flow_decay_method": "gravity_cap",
+   "flow_gravity_cap": "p95"
+  }
+ },
+ "origin_selection": {
+  "selection_manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_FLOW_sel1024.origin_indices.json",
+  "selection_manifest_sha256": "e03659db8b54b76fdd65904f895403622fee5c315ff1c2a0d545c8113060ad60",
+  "selected_count": 1024,
+  "chosen_variant": "sel1024",
+  "workload_variant": "O3_FLOW_sel1024",
+  "note": "sel1024 selects ORIGINS; the gradient row count is the DESTINATION count (manifest inputs.destinations.feature_count) \u2014 recorded post-window as n_dest_measured",
+  "attribute_crosscheck": "not available: sel1024 selection manifest carries no selected_row_attributes; fixture identity anchored by selection manifest sha pin + source_sha256 chain + ordered-index validity",
+  "fixture": {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/f3r_origins_f3r_b3_AB_cand_1024.geojson",
+   "sha256": "f728c742fe1e5c16a6e43e19446e57253e8ab71efaa802b62df3c22d3a24e4e3",
+   "rows": 1024,
+   "note": "derived in-run from pinned selection manifest into settings.data_folder (campaign_data/inputs, h05 precedent); attributes sliced untouched, row order = ordered_indices"
+  }
+ },
+ "constructor": {
+  "call": "UNA(verbosity=2)",
+  "note": "ruled F3R driver obligation (v=2 [F3] capture); outside window; counted once; Logger appends every entry to log_list regardless of verbosity, so capture does not depend on this \u2014 verbosity gates console printing only"
+ },
+ "settings_effective": {
+  "search_radius": 500,
+  "flow_engine": "aggregate_flow",
+  "flow_decay_method": "gravity_cap",
+  "flow_gravity_cap": "p95"
+ },
+ "pre_window_wiring": {
+  "flow_stripes_requested": 8,
+  "topology_num_threads_after_wiring": 8,
+  "mechanism": "public attribute una.topology.num_threads = K before RunFlow; AggregateFlow inherits it at construction (worker.py:498-500 equivalent; not a source change)"
+ },
+ "pre_window_input_resolution": {
+  "network": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson",
+  "origins": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/f3r_origins_f3r_b3_AB_cand_1024.geojson",
+  "destinations": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson"
+ },
+ "gradient_publication_stash": {
+  "installed": true,
+  "when": "pre-window, class-level",
+  "target": "AggregateFlow._precompute_dest_gradients (identical on both arms; method exists at both pins, returns (indptr, nodes, dist, pred) at c37cf22:961 and b387f90:1068)",
+  "mechanism": "return-REFERENCE stash; pass-through wrapper",
+  "disclosure": "in-window footprint = one call indirection + one reference store per gradient-precompute execution; zero per-slice capture; every receipt computation is post-window; flagged for h04 P4b ruling (spec rev 6 legs read nbytes/itemsize off the returned arrays, which die with the RunFlow frame without this stash); RULED at P4b: admitted with five conditions (h04 ruling 2026-09-27); the gradient_publication_stash is not consulted by any in-window code path; all receipt computation is post-window. within-window unchanged: RunFlow's local already holds the reference through the window, the stash extends only post-window lifetime, and ru_maxrss is a high-water mark read before the stash is consumed (this sentence resolves condition (iv))"
+ },
+ "window": {
+  "application_window_ns": 4748050417,
+  "boundaries": "perf_counter_ns around the single una.RunFlow() call incl. synchronous exports and in-call auto gravity-cap resolution; no instrumentation inside except the disclosed gradient_publication_stash pass-through wrapper (see its record field)"
+ },
+ "f3_tail_capture": {
+  "n_f3_lines": 1,
+  "source": "una.topology.logger.log_list (engine logger == topology logger)",
+  "expected": "exactly 1 (cand arm)",
+  "verdict": "ok",
+  "parsed": {
+   "verbatim_details": "Gradient storage: 478,268 finite entries (~10 MB sparse vs ~4.5 GB dense). [F3] cap=268435456B margin=67108864B chunks=42 schedule=[164, 164, 164, 164, 163, 163, 163, 162, 162, 162, 162, 162, 161, 161, 161, 161, 161, 160, 160, 160, 160, 160, 159, 159, 159, 159, 159, 159, 159, 158, 158, 158, 158, 158, 158, 157, 157, 157, 157, 157, 157, 98] fallback=none floor_fired=none",
+   "finite_entries": 478268,
+   "cap_bytes": 268435456,
+   "margin_bytes": 67108864,
+   "chunks": 42,
+   "schedule": [
+    164,
+    164,
+    164,
+    164,
+    163,
+    163,
+    163,
+    162,
+    162,
+    162,
+    162,
+    162,
+    161,
+    161,
+    161,
+    161,
+    161,
+    160,
+    160,
+    160,
+    160,
+    160,
+    159,
+    159,
+    159,
+    159,
+    159,
+    159,
+    159,
+    158,
+    158,
+    158,
+    158,
+    158,
+    158,
+    157,
+    157,
+    157,
+    157,
+    157,
+    157,
+    98
+   ],
+   "fallback": "none",
+   "floor_fired": "none"
+  }
+ },
+ "engine_shape_measured": {
+  "v_prime_row_width_n_total": 56844,
+  "n_network_nodes": 49159,
+  "n_dest_measured": 6661,
+  "note": "V' is the CSR row width (n_network_nodes + n_destinations + n_origins); gradient rows are DESTINATIONS, not the origin selection count",
+  "csr_nnz_fwd": 167426,
+  "csr_nnz_rev": 167426,
+  "csr_data_dtype": "float64",
+  "csr_indices_dtype": "int32",
+  "csr_indptr_dtype": "int32"
+ },
+ "mechanism_receipt_inputs_measured": {
+  "fixed_live_bytes": 4579560,
+  "row_temporaries_bytes": 454752,
+  "source_index_cost_bytes": 8,
+  "per_source_bytes": 1193732,
+  "dtypes": {
+   "dist": "float64/8",
+   "pred": "int32/4",
+   "mask": "bool/1"
+  }
+ },
+ "flow_arrays": {
+  "edge_flow": {
+   "dtype": "float64",
+   "dtype_str": "<f8",
+   "shape": [
+    69957
+   ],
+   "first_k": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sha256_bytes": "08bf585b93ddbaf342320c79a273cfb8e513d922ed7de187b169d341abbb148d",
+   "n_nonfinite": 0
+  },
+  "edge_flow_AB": {
+   "dtype": "float64",
+   "dtype_str": "<f8",
+   "shape": [
+    69957
+   ],
+   "first_k": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sha256_bytes": "0be418d0937d0535dd80a77cb2554fa3eb09202f09e79154fa18ec19554ee5b5",
+   "n_nonfinite": 0
+  },
+  "edge_flow_BA": {
+   "dtype": "float64",
+   "dtype_str": "<f8",
+   "shape": [
+    69957
+   ],
+   "first_k": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sha256_bytes": "77ca997b0b3a421bc123b17378611475b66e7ec181cc3657c0bf54553a27a6d1",
+   "n_nonfinite": 0
+  },
+  "node_flow": null
+ },
+ "engine_config_observed": {
+  "flow_stripes_requested": 8,
+  "topology_num_threads": 8,
+  "engine_num_threads": 8,
+  "topology_num_clusters": 9
+ },
+ "resolved_gravity_cap": {
+  "spec": "p95",
+  "used": "p95",
+  "value": 7422.1767,
+  "metric": "gravity_exponential",
+  "n_origins": 1024
+ },
+ "counts": {
+  "V_nodes": 49159,
+  "E_edges": 69957,
+  "O_rows": 1024,
+  "D_rows": 6661
+ },
+ "verbatim_warnings": [],
+ "artifacts": {
+  "flow_2026-09-27_1003/Results.feather": {
+   "sha256": "d68dd83856e1bf3c7a7bfc36685b073451bd7e0d48aa130fef427dd4dcf6a7d5",
+   "bytes": 5494442
+  },
+  "flow_2026-09-27_1003/Results.geojson": {
+   "sha256": "a982d2357672af8e280e265473cc39fd377d209a4ce3403473837bf14e80b808",
+   "bytes": 21123132
+  },
+  "flow_2026-09-27_1003/Results.csv": {
+   "sha256": "0e8ca9ca9d01524859212d0c6bba4ce993d4aeccd6a097d80607ffe8cfea13d1",
+   "bytes": 732448
+  }
+ },
+ "peak_rss_ru_maxrss_mib": 735.03125,
+ "loadavg_after_window": [
+  7.04541015625,
+  5.2275390625,
+  4.04296875
+ ],
+ "numba_threads_after_run": {
+  "config": 1,
+  "get": 1
+ },
+ "mechanism_receipt": {
+  "form": "resim_perinstance_v1",
+  "binding_legs": {
+   "a_cap_margin_exact": {
+    "cap_observed": 268435456,
+    "margin_observed": 67108864,
+    "cap_expected": 268435456,
+    "margin_expected": 67108864,
+    "pass": true
+   },
+   "b_fallback_none": {
+    "fallback": "none",
+    "floor_fired": "none",
+    "pass": true
+   },
+   "c_resim_elementwise": {
+    "resim_inputs": {
+     "v_prime_row_width": 56844,
+     "n_dest": 6661,
+     "fixed_live_bytes": 4579560,
+     "per_source_bytes": 1193732,
+     "per_entry_bytes": 20,
+     "row_temporaries_bytes": 454752,
+     "source_index_cost_bytes": 8,
+     "cap_bytes": 268435456,
+     "margin_bytes": 67108864,
+     "retained_source": "published indptr x per_entry at each observed slice start",
+     "selector": "_lfws.select_chunk imported from the installed venv"
+    },
+    "resim_schedule": [
+     164,
+     164,
+     164,
+     164,
+     163,
+     163,
+     163,
+     162,
+     162,
+     162,
+     162,
+     162,
+     161,
+     161,
+     161,
+     161,
+     161,
+     160,
+     160,
+     160,
+     160,
+     160,
+     159,
+     159,
+     159,
+     159,
+     159,
+     159,
+     159,
+     158,
+     158,
+     158,
+     158,
+     158,
+     158,
+     157,
+     157,
+     157,
+     157,
+     157,
+     157,
+     98
+    ],
+    "observed_schedule": [
+     164,
+     164,
+     164,
+     164,
+     163,
+     163,
+     163,
+     162,
+     162,
+     162,
+     162,
+     162,
+     161,
+     161,
+     161,
+     161,
+     161,
+     160,
+     160,
+     160,
+     160,
+     160,
+     159,
+     159,
+     159,
+     159,
+     159,
+     159,
+     159,
+     158,
+     158,
+     158,
+     158,
+     158,
+     158,
+     157,
+     157,
+     157,
+     157,
+     157,
+     157,
+     98
+    ],
+    "elementwise_equal": true,
+    "chunks_equal": true,
+    "sim_nofit_at_row": null,
+    "pass": true
+   },
+   "d_subsumed": {
+    "pass": true,
+    "note": "subsumed by leg (c): no independent check - element-wise simulated==observed equality implies the tail property for whatever shape retention produces (spec rev 6) (h04 ruling 2026-09-27)"
+   },
+   "e_perinstance_reconstruction": {
+    "form": "indptr[s_k] x per_entry + schedule[k] x per_source + margin <= cap, every observed slice",
+    "n_slices_checked": 42,
+    "pass_count": 42,
+    "all_instances_pass": true,
+    "worst_instance": {
+     "slice": 28,
+     "start_row": 4514,
+     "retained_bytes": 6939200,
+     "lhs_bytes": 263851452,
+     "slack_bytes": 4584004,
+     "pass": true
+    },
+    "pass": true
+   }
+  },
+  "all_binding_legs_pass": true,
+  "byte_identity": {
+   "lhs_published_bytes": 9565360,
+   "rhs_indptr_last_x_per_entry": 9565360,
+   "per_entry_bytes": 20,
+   "per_entry_note": "read from the PUBLISHED arrays; pinned by the caller's astype calls (cols int64, dist float64, preds int32) regardless of scipy's returns",
+   "pass": true
+  },
+  "q2_retained_total_bytes": 9565360,
+  "q2_checked_identity": {
+   "finite_entries_from_f3_line": 478268,
+   "finite_entries_x_per_entry": 9565360,
+   "equal_to_published_bytes": true
+  },
+  "aggregate_form_rejected": {
+   "note": "aggregate form (total retained + widest slice x per_source + margin) REJECTED at spec rev 6: the two maxima are anti-correlated (widest slice at smallest retained), so the aggregate passes only if retained_total <= 3167080 B and its FAIL carries zero per-instance information"
+  },
+  "self_validation_note": "observed schedule IS the real selector ground truth; receipt divergence surfaces as mismatch = the correct alarm",
+  "orientation_nonbinding": {
+   "c_first_slice": 164,
+   "note": "first-slice width from the full formula, printed for orientation only, explicitly NON-binding and never the G7 referent (spec ORIENTATION at rev 6); the binding check is the re-simulation equality above"
+  }
+ },
+ "finished_utc": "2026-09-27T14:03:20Z"
+}
