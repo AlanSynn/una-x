@@ -4,7 +4,7 @@
  "record": "screen_spec",
  "role": "performance-owner (author, screen execution); independent-reviewer (PD rulings + prereg/design review + pre-fire verification); coordinator (committer, relay)",
  "generated_utc": "2026-09-27T18:58:16Z",
- "status": "DRAFT REV 4 - h04 ONE-CYCLE re-check verdict: items (a)-(d) ALL FROZEN as written, both figure corrections discharged; the ONE mandatory REV 4 micro-amendment (single section statistics_and_admission: blocks 1-3 proxy/CI vs gates.G3 warm blocks 2-3 government) is implemented. Awaiting coordinator verification -> h04 ONE-PASS FIGURE-ONLY re-check -> P1 commit gates on REV 4 bytes -> P3/P4b vehicle reviews -> probe -> screen LAST. Nothing fires before P4b.",
+ "status": "REV 6 (sole-delta filing correction folded: pre_route_patch names all four patch_history[0].sole_delta keys incl. build_notes[4]; nothing else touched). P5 discharged and h04-ACKED; lease initialized (opening 1182.3 s, remaining 13217.7 s, source_commit 61f3db6). Fire-diag proceeding per ruled order; screen LAST. In-repo screen_spec.json successor commit gates on these post-amendment bytes after h04 one-line confirm.",
  "provenance": {
   "commit_chain": [
    "F2I closing commit 61f3db64801018aea0c19d27a27c25506ed64e2d (parent 9a88eabe) on perf/una-large-e2e, LOCAL ONLY - the screened candidate source",
@@ -140,7 +140,7 @@
   },
   "cascade_prediction": {
    "note": "quantitative, preregistered BEFORE the diagnostics fire (orientation with threshold derivation, non-binding per the binding-orientation split); the diagnostics records confirm or refute",
-   "prediction": "if R1+R2: a cold-cache companion run shows a BLOCK of ~9 top spans each ~the compile duration (compile-lock serialization), and span-sum ≈ 9 x compile_span + steady-state sum",
+   "prediction": "if R1+R2: a cold-cache companion run shows a BLOCK of ~9 top spans each ~the compile duration (compile-lock serialization), and span-sum \u2248 9 x compile_span + steady-state sum",
    "arithmetic": "9 x 1,929,925,833 = 17,369,332,497 ns; + sum_B 638,797,485 = 18,008,129,982 ns vs sum_A 17,578,805,432 ns: closure ratio 1.0244228512375744 (residual -429,324,550 ns, i.e. the cascade over-predicts by 2.4% - within dispatch/queueing slop); sum_A - sum_B = 16,940,007,947 ns",
    "conclusion_if_confirmed": "session A's kernel-CPU aggregate and mean are COMPILE-EVENT-CONTAMINATED (one compile stall, cascaded through ~9 concurrent spans), NOT steady-state per-call service; session B is the steady-state anchor; neither H05 mean is a valid per-call service estimate and NEITHER enters any gate"
   },
@@ -259,7 +259,7 @@
    "P2: reviewer prereg + complete-job design review CLEAR (intake (b): nothing fires before these clear), recorded in review.json or relay receipt pinned to these bytes",
    "P3: execution driver evidence/F2R/f2r_bare_job.py + supervisor f2r_run_pairs.py + lease-pass f2r_lease_pass.py authored by the executor, committed by the coordinator, and verified line-by-line by the reviewer against driver_obligations BEFORE any gate-eligible window (P4b); submissions carry the CLONE-ROT diff-vs-skeleton statement (f1r_bare_job.py is the binding skeleton)",
    "P4: the launcher (force-off pin) is part of the reviewed vehicle: hash-pinned, import-time, declared in every record; its wrapper and the retained real-function receipt are reviewer-verified",
-   "P5: wheel/venv identity pinned by amendment to this spec before any fire: wheel built from git archive of 61f3db6, fresh venv, installed-copy sha asserted in-run"
+   "P5: wheel/venv identity pinned by amendment to this spec before any fire: wheel built from git archive of 61f3db6, fresh venv, installed-copy sha asserted in-run - DISCHARGED BY THIS AMENDMENT (rev 5): the built artifact is pinned in wheel_and_venv_identity; every lease window stamps git_archive_ref and both lease-writing vehicles refuse a wheel record whose ref != 61f3db6"
   ],
   "driver_obligations": [
    "import-identity realpath fatal; in-run module-sha assertion BOTH arms",
@@ -387,6 +387,31 @@
     "admission_threshold + admit_screen_rule re-pointed to the warm blocks 2-3 midpoint, the noise guard, and the reported warm CI - removes the 'warm governing median' double-naming that coexisted with the 1-3 proxy.",
     "statistics/proxy_prohibition ADDED: comparing the blocks 1-3 proxy (or the 3-pair CI) against the G3 preregistered minimum or under the G3 noise guard is FORBIDDEN; rationale named per the verdict (cold pair downward-biases a blocks 1-3 delta - cand block 1 carries the predicted extra dispatcher compile) plus the basis mismatch (compile-dominated-plus-warm mix vs warm-steady-state-derived threshold), so the comparison is structurally invalid regardless of realized sign."
    ]
+  },
+  {
+   "rev": 5,
+   "recorded_utc": "2026-09-27T20:59:02Z",
+   "basis": "P5 precondition (this spec, vehicle_and_review_chain.preconditions[4]) + coordinator order at P2 landing (commit b77e782): pin wheel/venv identity by amendment BEFORE any fire; wheel built per F3R build precedent (campaign_data/f3r_wheel_and_venv.json), single-wheel variant",
+   "supersedes": "campaign_data/f2r_spec_superseded_rev4_085684ec.json (sha256 085684ece51b5cd9c69057f0b6ee36e26e72b1d2efac9a90553e5a3b4c13a836, byte-verified after copy; same bytes as the committed evidence/F2R/screen_spec.json at P1)",
+   "changes": [
+    "NEW section wheel_and_venv_identity: build driver (f5380356...), git_archive_ref 61f3db6 (HEAD b77e782 NOT archived), wheel path/sha256 1176ad8f.../bytes 137046, venv python 3.11.16 + site-packages path, dependency pins (numba 0.67.0 / numpy 2.4.6 / geopandas 1.1.4 / pyogrio 0.13.0 / shapely 2.1.2), constraints provenance, installed AggregateFlow sha == module pin 1f3cf4d2... with in-run reassertion wiring, build record pointer 0d7d3e62...",
+    "vehicle_and_review_chain.preconditions[4] (P5): discharge note appended (original text retained verbatim)",
+    "status: updated to REV 5 (P5 discharged)",
+    "amendment_log: this rev 5 entry",
+    "NO key removed; NO existing leaf value rewritten except the two declared appends/replacements above (sole-delta)"
+   ]
+  },
+  {
+   "rev": 6,
+   "recorded_utc": "2026-09-27T21:10:24Z",
+   "basis": "h04 mandatory filing correction at the P5 ack (relayed by coordinator, coordinator-verified against bytes): record patch_history[0].sole_delta carries FOUR keys (versions.python, versions.implementation, build_notes[4], patch_history) but REV 5 pre_route_patch prose named only three - build_notes[4] missing (filing-time-false class, non-blocking for fires, blocking for the spec successor commit)",
+   "supersedes": "campaign_data/f2r_spec_superseded_rev5_181e031a.json (sha256 181e031a377cc2f9a33d79aa0141db47654b0600187d40a327876b85b6f45257, byte-verified after copy)",
+   "changes": [
+    "wheel_and_venv_identity.build_record.pre_route_patch: prose now names all four patch_history[0].sole_delta keys including build_notes[4]",
+    "amendment_log: this rev 6 entry",
+    "status: REV 6 note",
+    "NOTHING ELSE - no frozen section, no gate constant, no identity figure touched (h04 scope verbatim)"
+   ]
   }
  ],
  "block_matrix_and_budget": {
@@ -481,5 +506,51 @@
   "verdict_b_g3_midpoint_and_noise_guard": "gates.G3_primary_performance_warm_governing (midpoint naming) + gates.G3_noise_guard",
   "verdict_c_g4_predicted_ratio_and_split": "gates.G4_cold_time_bound (derived bound 1.0985; disposition split) + per_run_verification.records (mandatory census)",
   "verdict_d_two_bases": "cold_expectation_and_q00_prereg.envelope_proposal.two_bases_distinction"
+ },
+ "wheel_and_venv_identity": {
+  "spec_condition": "P5 (vehicle_and_review_chain.preconditions[4]): wheel/venv identity pinned by amendment to this spec before any fire: wheel built from git archive of 61f3db6, fresh venv, installed-copy sha asserted in-run",
+  "built_utc": "2026-09-27T20:56:08Z",
+  "build_driver": {
+   "path": "campaign_data/f2r_p5_build.py",
+   "sha256": "f5380356fa78f5a29a1cdb0c1a3b917db185da4cc7f37235f45ab332b66c06ce",
+   "one_shot_refuse_if_exists": true,
+   "steps_journaled": 13,
+   "all_steps_rc_zero": true
+  },
+  "git_archive_ref": "61f3db64801018aea0c19d27a27c25506ed64e2d",
+  "archive_never_head": "wheel archived from the PINNED commit explicitly; HEAD at build was b77e78254b2d916cb3939eb0743fd9c6d19fe45d (past the pin since P1/P2 landed) and was NOT archived; recorded as wt_head_at_build in the build record",
+  "single_install": "ONE wheel, ONE fresh venv, BOTH arms run the same install (central ruling); per-arm differences are cache root + launcher pin ONLY",
+  "wheel": {
+   "path": "campaign_data/wheels_f2r/urban_network_analysis-2.6.0-py3-none-any.whl",
+   "sha256": "1176ad8fc895697b432f4a4402a7147a4f02597c87340929884533347783e1e3",
+   "bytes": 137046
+  },
+  "venv": {
+   "python_path": "campaign_data/venvs/f2r_wheel/bin/python",
+   "site_packages": "campaign_data/venvs/f2r_wheel/lib/python3.11/site-packages",
+   "python_version": "3.11.16",
+   "implementation": "cpython"
+  },
+  "dependency_pins": {
+   "numba": "0.67.0",
+   "numpy": "2.4.6",
+   "geopandas": "1.1.4",
+   "pyogrio": "0.13.0",
+   "shapely": "2.1.2"
+  },
+  "constraints_source": "campaign freeze (venvs/campaign pip freeze) captured to campaign_data/f2r_build/constraints.txt at build time",
+  "installed_module_pin": {
+   "module": "urban_network_analysis/Engines/AggregateFlow.py",
+   "sha256": "1f3cf4d2725320569c1b19bf339a39d0bf013d1cb7b6f8e5d72526a77531797c",
+   "match": true,
+   "agg_sha_at_archived_commit": "1f3cf4d2725320569c1b19bf339a39d0bf013d1cb7b6f8e5d72526a77531797c",
+   "in_run_reassertion": "per packaging.identity: BOTH arms assert in-run realpath-under-site-packages + installed-file sha == 1f3cf4d2...; supervisor reads wheel/git_archive_ref and refuses mismatch, stamps the ref into every lease window"
+  },
+  "build_record": {
+   "path": "campaign_data/f2r_wheel_and_venv.json",
+   "sha256": "0d7d3e62883b6eb01868d709d607a7edc82ab0ac0877f9ef2c8b5040ce6afed5",
+   "note": "receipts carrier (13-step journal, identity smoke, patch_history); sha documents the routed bytes at amendment time - the pinned identity facts above govern",
+   "pre_route_patch": "versions.python + versions.implementation + build_notes[4] + patch_history added pre-route (all four patch_history[0].sole_delta keys); prior record sha 075a2da318aaea5831f8d2318d2092e5fff2ef7e5e32d72dc2c3f920b89655b5 declared in the P5 relay"
+  }
  }
 }
