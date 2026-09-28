@@ -557,14 +557,34 @@ def kernel_census_check(prev_census, census, arm, block):
 
 
 def cross_arm_census_check(census_b0, census_cand, block):
+    # [A3R-B8 fold, h04] raw keys embed the per-arm module-dir hash and the
+    # def-line number; across different-commit wheels (b0 9b1340e vs cand
+    # f17184b) the same shared kernels NEVER compare equal, so the raw-set
+    # intersection was empty by construction and every non-marker cand
+    # entry fataled (a3r_m1 void). Normalize to FUNCTION identity before
+    # comparing: basename (strips Engines_<hash>/), strip -<line>.py311
+    # [.n].nbc/.nbi, collapse .nbc/.nbi to one logical entry. Symmetric
+    # gate: cand_only must be ALL A3-family markers; b0_only must be EMPTY
+    # (MISSING_base_kernel) — the per-block b0_only discard ends.
+    def _norm(raw):
+        out = set()
+        for k in raw:
+            base = os.path.basename(k)
+            m = re.match(r"^(.*)-\d+\.py311(?:\.\d+)?\.(?:nbc|nbi)$", base)
+            out.add(m.group(1) if m else base)
+        return out
+    nb0, ncand = _norm(census_b0), _norm(census_cand)
     fails = []
-    cand_only = sorted(set(census_cand) - set(census_b0))
-    b0_only = sorted(set(census_b0) - set(census_cand))
+    cand_only = sorted(ncand - nb0)
+    b0_only = sorted(nb0 - ncand)
     unexpected = [n for n in cand_only
                   if not any(m in n for m in LOCAL_FAMILY_MARKERS)]
     if unexpected:
         fails.append({"mode": "UNPREDICTED_extra_cache_entry", "block": block,
                       "unexpected_cand_only_entries": unexpected[:20]})
+    if b0_only:
+        fails.append({"mode": "MISSING_base_kernel", "block": block,
+                      "b0_only_normalized_entries": b0_only[:20]})
     return fails, cand_only, b0_only
 
 
@@ -1107,7 +1127,7 @@ def main():
             for a2 in ("b0", "cand"):
                 cfails += kernel_census_check(prev_census[a2], census_now[a2],
                                               a2, block)
-            xfails, _cand_only, _b0_only = cross_arm_census_check(
+            xfails, cand_only_norm, b0_only_norm = cross_arm_census_check(
                 census_now["b0"], census_now["cand"], block)
             cfails += xfails
             prev_census = census_now
