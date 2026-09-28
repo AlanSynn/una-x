@@ -1,0 +1,41 @@
+{
+ "schema_version": "a3r_review_consolidation_v1",
+ "record_type": "consolidation_pointer",
+ "task": "A3R",
+ "revision": "r1",
+ "role": "coordinator/integrator (team-lead), authored under h04-reviewer's I00 consolidation ruling",
+ "generated_utc": "2026-09-28T12:44:45Z",
+ "method_note": "CONSOLIDATION POINTER per TASKS_CLAUDE.yaml output obligation evidence/A3R/review.json. No contemporaneous review file exists at this path: the A3R round ran gate-approved instruments (screen_spec.json + supervisor + raw records committed in-repo) with dispositions ruled in-message by the independent reviewer and the screen record maintained as a campaign_data summary under R2 custody. This file is an honest pointer record assembled at the I00 opening (h04 ruling: option (a) consolidation approved; TASKS_CLAUDE.yaml unmodified). Every sha in this file was computed from bytes at assembly time.",
+ "disposition": "SCREENED_IN - affirmed by the independent reviewer on the CORRECTED record (post B9-fold summary regeneration): P6 realized 0.007858400741 < pinned ceiling 0.010638766512560852 (margin 0.002780365772011117, NOT exceeding); M_E 0.078394652096 >= 0.05; noise guard realized > max warm spread 0.005333616279 (margin 0.002524784461124085); frame anchor 0.086253052836 in H8 [0.078675895, 0.090888226]; G4 block-1 cold regression 1.14113 in ruled REV-2 band [1.0296296296296297, 1.25]; census two layers held; REV-9 admitted x6; matrix complete 6/6",
+ "reviewer": "independent-reviewer (h04)",
+ "review_basis": {
+  "record_of_record": {
+   "path": "campaign_data/a3r_screen_summary.json (outside repo; custody root)",
+   "sha256": "1fe5df2a8c6d1558d319a0a540b20c067e346d1575e272f5e5fa6c6a7e7e1164",
+   "bytes": 42770,
+   "note": "regenerated summary under the ruled two-key mini-fire; 20 granular deltas from custody vs prior all inside h04's declared set, zero outside; P6 statistics byte-identical"
+  },
+  "instrument_chain": {
+   "screen_spec": {
+    "path": "evidence/A3R/screen_spec.json",
+    "sha256": "e01a735bfa0baaa0c7dc4facbabf67480f29e6b8cfa3e845c9b4ddc5a5dbe01f",
+    "note": "REV 2 band [139/135, 5/4]; seven-edit state chain d4095d3e->e0631646->e5ba8253->e01a735b proven via transcript patch reconstruction (sha dispute resolved)"
+   },
+   "supervisor_commits": [
+    "b05e636266e4c006212283fc6a65812ab150d0a6 (REV 2: spec G4 band + envelope arithmetic + supervisor F2 fold)",
+    "f18eeb5ceb88c2678cbd49726ab76d8224f6382a (B8 fold: census normalization + symmetric gate; m1 void raws ride)",
+    "48deaa9d232a0a6c9f787d04f93676a67577e5ca (B9 fold: summary projection carries process; m2 raws ride)"
+   ]
+  },
+  "defect_register": "B1-B9 adjudicated. B8 CONFIRMED (raw cache keys embed per-arm module-dir hash + per-commit line numbers -> key sets disjoint BY CONSTRUCTION) + B8b (per-block caller discarded b0_only) - folded f18eeb5. B9 CONFIRMED spurious-instrument, class consumed-contract projection drop (summary rows omitted 'process'; block_checks consumed r.get('process') or {} -> guaranteed null H_pin_mismatch; in-flight gate on FULL records PASSED; track_conformant=false in the pre-regen summary VOID as a gate signal) - folded 48deaa9 + regen. B6 + selection-sha defect ride the skeleton-generation fix list. m1 void: census-gate false stop under B8 raw frame; void evidence retained (raws in f18eeb5; void summary custody 58bbfcf93ff3796c6d2c6d74210e68b3e6af31dc18480de50ed126a14dd92a08, doubly held).",
+  "summary_custody": {
+   "pre_regen_sha256": "c473c2a071ae96f93c2dc71c7ca24b1a84903ee905422c24bae8417725c55658",
+   "copies": [
+    "campaign_data/interim_c473c2a0_a3r_screen_summary.json (h05 R2 pre-run copy)",
+    "campaign_data/interim_c473c2a0_summary.json (supervisor self-custody)"
+   ],
+   "note": "both copies verified byte-equal at c473c2a0 by h04, h05, and team-lead"
+  }
+ },
+ "verification": "h04-reviewer verified this pointer record against bytes pre-commit; blobs re-verified post-commit per the I00 consolidation ruling condition (iv)."
+}

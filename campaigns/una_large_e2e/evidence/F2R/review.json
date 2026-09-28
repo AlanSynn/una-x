@@ -1,0 +1,32 @@
+{
+ "schema_version": "f2r_review_consolidation_v1",
+ "record_type": "consolidation_pointer",
+ "task": "F2R",
+ "revision": "r1",
+ "role": "coordinator/integrator (team-lead), authored under h04-reviewer's I00 consolidation ruling",
+ "generated_utc": "2026-09-28T12:44:45Z",
+ "method_note": "CONSOLIDATION POINTER per TASKS_CLAUDE.yaml output obligation evidence/F2R/review.json. No contemporaneous review file exists at this path: the F2R round ran under the custody paradigm - dispositions were ruled in-message by the independent reviewer and the round's evidence lives as raw-record custody commits plus a campaign_data screen summary. This file is an honest pointer record assembled at the I00 opening (h04 ruling: option (a) consolidation approved; TASKS_CLAUDE.yaml unmodified). Every sha in this file was computed from bytes at assembly time.",
+ "disposition": "SCREENED_IN (ruled by independent reviewer on the a3 screen attempt f2r_a3; disposition basis verified from f2r_screen_summary.json bytes at assembly: warm governing blocks 2-3 midpoint delta frac 0.03083822 >= minimum_delta_preregistered 0.02738813230584978; noise guard midpoint delta 0.146831 s vs max spread 0.08378 s, ratio 1.7525781809501075, delta_exceeds_max_spread true; block-1 cold regression 0.999058 vs ruled band [1.066, 1.0985] - missed LOW, carried as Q00 note)",
+ "reviewer": "independent-reviewer (h04)",
+ "review_basis": {
+  "note": "review was executed as in-message adversarial rulings across F2R P1-P8/a1-a3 rounds (spec REV 1-6, instrument defect fixes, incident adjudication) with all figures recomputed by the reviewer from record bytes; the SCREENED_IN disposition was affirmed on commit 9b1340e raw records",
+  "screen_summary": {
+   "path": "campaign_data/f2r_screen_summary.json (outside repo; custody root)",
+   "sha256": "6ad0fbd3c3a7b059baec84c2600bb952e4701fb7f26898d5dbbffd992ef52e64",
+   "bytes": 39745,
+   "key_figures_from_bytes": {
+    "track_conformant": true,
+    "warm_governing_blocks_2_3_midpoint_delta_frac": 0.03083822,
+    "block1_cold_regression_cand_over_b0": 0.999058,
+    "g4_band": [1.066, 1.0985],
+    "q00_block1_cold_peaks_band_basis_mib": 2905.265625
+   }
+  },
+  "raw_records_commit": {
+   "commit": "9b1340eb008accdff45fbdf57c6009dd5a6b5146",
+   "subject": "F2R a3 custody: screen attempt f2r_a3 raw records - SCREENED_IN"
+  }
+ },
+ "defect_register_note": "F2R incident records (a2 unauthorized fire) retained under a2f153b; instrument defect fixes committed as ruled sole-deltas (P7 0748e386, P8 6e8a2dc).",
+ "verification": "h04-reviewer verified this pointer record against bytes pre-commit; blobs re-verified post-commit per the I00 consolidation ruling condition (iv)."
+}
