@@ -923,12 +923,12 @@ def main():
         # self-enveloped: records completes its own window with the
         # explicit verdict (class-8)
         return stage_records(args.lease_id)
-    fns = {"build": (stage_build, (args.arm,)),
-           "venvs": (stage_venvs, (args.arm,)),
-           "identities": (stage_identities, (args.arm,)),
-           "engagement": (stage_engagement, (args.arm,)),
-           "smoke": (stage_smoke, (args.arm,)),
-           "tamper": (stage_tamper, ()),
+    fns = {"build": (stage_build, (args.arm, args.lease_id)),
+           "venvs": (stage_venvs, (args.arm, args.lease_id)),
+           "identities": (stage_identities, (args.arm, args.lease_id)),
+           "engagement": (stage_engagement, (args.arm, args.lease_id)),
+           "smoke": (stage_smoke, (args.arm, args.lease_id)),
+           "tamper": (stage_tamper, (args.lease_id,)),
            "status": (stage_status, ())}
     fn, fargs = fns[args.stage]
     what = f"stage:{args.stage}" + (f":{args.arm}" if args.arm else "")
