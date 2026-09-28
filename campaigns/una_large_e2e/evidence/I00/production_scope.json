@@ -1,0 +1,82 @@
+{
+ "schema_version": "i00_production_scope_v1",
+ "task": "I00",
+ "role": "coordinator/integrator (team-lead), authored under h04-reviewer's I00 rulings",
+ "generated_utc": "2026-09-28T13:54:32Z",
+ "integration_line": {
+  "baseline_comparator": "B0 = 361928e4ba38f34622cafe065b0025244db61368 (includes ordered CSR; pre-CSR 98f498e and upstream c15ebda are provenance only)",
+  "composed_source": "this worktree's src at commit chain head 14d82455e9cda9212e2e06ed5bc18a2e4b47fd1e plus the untracked composition suite (tests/large_e2e/composition/, 9 files at h04-pinned shas recorded in composition.json)",
+  "source_closure": {
+   "modified_vs_b0": ["Engines/Accessibility.py", "Engines/AccessibilityWElevation.py", "Engines/AggregateFlow.py"],
+   "new_vs_b0": ["Engines/_large_access_scratch.py", "Engines/_large_flow_workspace.py"],
+   "byte_identical_vs_b0_count": 11,
+   "contract_frozen": "CONTRACT.md sha256 3283a12e70ec72163556c94f65269bc422cb621f860900000e672a7ef80adad1 (pinned in-suite, verified pre-run)"
+  },
+  "tracks": [
+   {
+    "track": "A1",
+    "disposition": "screened_in_provisional",
+    "in_line": true,
+    "surface": "per-origin two-phase scratch route in both Accessibility families, dispatched first",
+    "conditions_carried": "provisional until I00/W00/S01/Q00/Q10 per DECISION.md; C1 ACCESS-cell proxy marginal; C2 cold median ratio vs frozen gate - warm-only qualification clause, governing reading in evidence/control_addendum_A1R.json"
+   },
+   {
+    "track": "F1",
+    "disposition": "not_demonstrated_at_screen",
+    "in_line": true,
+    "surface": "flow nogil fixed-stripes execution in AggregateFlow",
+    "conditions_carried": "stays in line per the ruled F1R decision (no demonstrated harm; gain not demonstrated at screen); Q00 cold-band transfer note recorded in F2R records"
+   },
+   {
+    "track": "F2",
+    "disposition": "SCREENED_IN",
+    "in_line": true,
+    "surface": "local flow overlap + scratch reset behind _use_local_route with _f2_stats observability",
+    "selection_pointer": "evidence/F2R/selection.json (F2I 61f3db64801018aea0c19d27a27c25506ed64e2d)"
+   },
+   {
+    "track": "F3",
+    "disposition": "SCREENED_IN (candidate)",
+    "in_line": true,
+    "surface": "byte-budgeted gradient chunks via _lfws.select_chunk with NO_FIT fallback",
+    "selection_pointer": "evidence/F3R/selection.json (verdict SCREENED_IN; sha256 06410f29b99fa2e703978fc785fe05101d076f51ecc18c8316e9dce9425077e8; F3I chain head b387f901caa1b529138452b084d016b9b1bead50 as supplementary provenance)"
+   },
+   {
+    "track": "A3",
+    "disposition": "SCREENED_IN",
+    "in_line": true,
+    "surface": "tail-free private scope route nested inside the A1-admitted branch, both Accessibility families",
+    "selection_pointer": "evidence/A3R/selection.json (chain head d9fff4c9d4596e120290fa1b3fce07781ad4bda9)"
+   },
+   {
+    "track": "A2",
+    "disposition": "NOT_ADMITTED",
+    "in_line": false,
+    "surface": "none - never integrated on any line",
+    "absence_assertion": "I00 asserts absence rather than removal: zero _a2_ tokens in 14 B0 / 16 candidate source files; zero _a2 attributes across 16 imported alias modules (composition.json results_from_artifacts_bytes.a2_absence_records)"
+   }
+  ]
+ },
+ "control_state_consolidation": {
+  "current_control_json": "campaigns/una_large_e2e/evidence/control.json is stale at the A1R state: selected_source 7a27866670ae2b7f9ed6a4d61e01d95c18e17f29 (src_tree b121ec0b4312f12caa98bc115243652e1564d3ec), accepted_tracks [A1 screened_in_provisional], advanced once at commit 76680a4",
+  "advance_rule": "only the integrator advances selected_source, after review/screening proof (control.json equivalence_note; OPERATIONS.md)",
+  "intended_post_advance_state": "selected_source advances to the composed integration line (A1+F1+F2+F3+A3, source closure above) at I00 close, gated on: h04 verification of the I00 records, h05's leased reprofile of the composed line, and the hash-gated round commit - in that order; the advance commit records the composition and reprofile evidence pointers",
+  "stale_between": "until that advance commit, evidence/control.json intentionally continues to name the A1R state; this record is the consolidation narrative that bridges it"
+ },
+ "ablation_preservation": {
+  "mechanism": "each per-track suite (tests/large_e2e/A1, A3, F1, F2, F3) retains its own conftest pins, fixtures, harnesses and mutants; their candidate roots default to THIS worktree's src, so each suite re-runs against the composed tree as the per-track ablation vehicle",
+  "requalification": "per-track suite re-runs on the composed line are write-capable executions owned by h05 under the heavy-execution lease (several write evidence tails under campaigns/); they ride the reprofile fire, not the integrator's composition run",
+  "composition_suite_role": "tests/large_e2e/composition is the integration-level differential (composed tree vs B0); it does not replace per-track ablations"
+ },
+ "runtime_import_closure": {
+  "proof": "grep of every import line under src/urban_network_analysis for campaign|benchmark|tests|large_e2e: no matches (exit 1)",
+  "new_module_imports": "_large_access_scratch imported by the two Accessibility families; _large_flow_workspace imported by AggregateFlow - both as Engines siblings under the package's real name; no path out of the package"
+ },
+ "composition_result_pointer": "evidence/I00/composition.json (81/81 passed 2026-09-28, h04-reviewed suite, declared-write run, hygiene census clean)",
+ "pending_for_task_close": [
+  "h05 leased L1/L2 reprofile of the composed line under two-key (declaration then fire)",
+  "h04 verification of both I00 evidence records",
+  "integrator control.json advance commit",
+  "hash-gated round commit (suite + evidence/I00)"
+ ]
+}
