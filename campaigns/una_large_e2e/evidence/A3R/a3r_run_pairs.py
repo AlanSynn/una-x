@@ -699,6 +699,7 @@ def summary(refusal=None, stop_reason=None):
             "W_H": [1, H_THREADS],
             "window_s": (round(win_ns / 1e9, 6) if win_ns else None),
             "numba_num_threads": (r.get("process") or {}).get("numba_get_num_threads"),
+            "process": r.get("process"),
             "module_pins": r.get("module_pins"),
             "route_receipts": r.get("route_receipts"),
             "a3_legc": {"full": legc.get("full_nd_init"),
