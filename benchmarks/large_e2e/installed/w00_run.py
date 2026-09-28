@@ -65,6 +65,12 @@ NBC_PROBE = {a: f"{DATA}/nbc_w00_probe_{a}" for a in ("b0", "selected")}
 NBC_SMOKE = {a: f"{DATA}/nbc_w00_smoke_{a}" for a in ("b0", "selected")}
 TAMPER_VENV = f"{DATA}/w00_tamper_venv"
 NBC_TAMPER = f"{DATA}/nbc_w00_tamper"
+# C4a (W00 resume-fire adjudication): tamper_identity and tamper_run must
+# not share one numba cache root — run.py's fresh-root guard refuses a
+# --cache-root a prior window already populated (path_collision).  The
+# identity window keeps NBC_TAMPER; the run window gets its own root,
+# left NONEXISTENT so run.py's "new (or empty)" admission accepts it.
+NBC_TAMPER_RUN = f"{DATA}/nbc_w00_tamper_run"
 ENGAGEMENT_OUT = {a: f"{DATA}/w00_engagement_{a}.json" for a in ("b0", "selected")}
 EVIDENCE = f"{REPO}/campaigns/una_large_e2e/evidence/W00"
 
@@ -88,7 +94,7 @@ W00_MANIFEST_SHA256 = (
 RUN_PY = f"{REPO}/benchmarks/large_e2e/run.py"
 PROBE = f"{REPO}/tests/large_e2e/installed/engagement_probe.py"
 PROBE_SHA256 = (
-    "a2d0ab60c7084ee49ab8f44a64ac9d20e13613a442f6a492e2e7437b0d6ce5ee")
+    "4d5cb80629f61b91b3203a48dd494f211acc182f12c75b2ffaabaf42ab11ddcc")
 # one observed job, one worker, fresh per-arm cache root: the smallest
 # honest installed-mode exercise of the real harness (H04-N2)
 SMOKE_ARGS = ["--manifest", W00_MANIFEST, "--mode", "single",
@@ -119,6 +125,59 @@ def load_lease_log():
 def save_lease_log(log):
     with open(LEASE_LOG, "w") as f:
         json.dump(log, f, indent=1)
+
+
+# --- class-8 (h04 disposition): chain-integrity window schema -----------
+# Every window entry lands at START classed "crashed_child_start" with an
+# explicit null end, and is completed on exit (real class, end, wall, rc).
+# A mid-stage crash can therefore never leave the lease log silent, and
+# the fire chain is run fail-fast (&&) so no rc is ever laundered.
+
+def _complete_refused(entry, window_class):
+    """A refusal is a decided window: complete it (rc 2), never leave a
+    null end that would read as a crash."""
+    entry["class"] = window_class
+    entry["end_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    entry["wall_s"] = 0.0
+    entry["rc"] = 2
+
+
+def _open_window(what, lease_id):
+    log = load_lease_log()
+    if log is None:
+        return None
+    log["windows"].append({
+        "what": what, "class": "crashed_child_start", "lease_id": lease_id,
+        "start_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "end_utc": None, "wall_s": None, "rc": None})
+    save_lease_log(log)
+    return len(log["windows"]) - 1
+
+
+def _close_window(index, cls, rc, extra=None):
+    if index is None:
+        return
+    log = load_lease_log()
+    entry = log["windows"][index]
+    entry["class"] = cls
+    entry["end_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    entry["wall_s"] = 0.0   # envelopes are wall-0: child windows carry wall
+    entry["rc"] = rc
+    if extra:
+        entry.update(extra)
+    log["updated_utc"] = entry["end_utc"]
+    save_lease_log(log)
+
+
+def _run_stage(what, fn, lease_id, *args):
+    """Stage envelope: open at start, complete with the stage rc.  An
+    exception propagates and leaves the persisted crashed_child_start +
+    null-end entry — the failure is visible in the log, and the fail-fast
+    chain stops on the nonzero exit."""
+    idx = _open_window(what, lease_id)
+    rc = fn(*args)
+    _close_window(idx, "stage", rc)
+    return rc
 
 
 def child_env(extra):
@@ -188,9 +247,13 @@ def guard_and_launch(cmd, env, lease_id, what, timeout_s,
         return 2
     avail = psutil.virtual_memory().available
     ceiling = min(10650 * (1 << 20), int(0.80 * avail))
+    # class-8: lands at START crashed_child_start + null end; completed
+    # on exit with the real window class
     entry = {
-        "what": what, "class": window_class, "lease_id": lease_id,
+        "what": what, "class": "crashed_child_start",
+        "window_class": window_class, "lease_id": lease_id,
         "start_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "end_utc": None, "wall_s": None, "rc": None,
         "available_at_admission_bytes": avail, "ceiling_bytes": ceiling,
         "pressure_stop_bytes": PRESSURE_STOP,
         "loadavg_at_admission": os.getloadavg(),
@@ -200,12 +263,14 @@ def guard_and_launch(cmd, env, lease_id, what, timeout_s,
     }
     if avail < PRESSURE_STOP:
         entry["refused"] = "available < pressure stop before launch (RESOURCES.md)"
+        _complete_refused(entry, window_class)
         log["windows"].append(entry)
         save_lease_log(log)
         print(f"[w00-run] REFUSED: available {avail} < pressure stop")
         return 2
     if log["cumulative_charged_s"] >= HEAVY_WALL_BUDGET_S:
         entry["refused"] = "heavy wall budget exhausted"
+        _complete_refused(entry, window_class)
         log["windows"].append(entry)
         save_lease_log(log)
         print("[w00-run] REFUSED: heavy wall exhausted")
@@ -224,7 +289,8 @@ def guard_and_launch(cmd, env, lease_id, what, timeout_s,
 
     log = load_lease_log()
     entry = log["windows"][-1]
-    entry.update({"end_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    entry.update({"class": window_class,
+                  "end_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                   "wall_s": round(wall, 1), "rc": rc, "tail": tail[-2000:],
                   "loadavg_at_completion": os.getloadavg()})
     log["cumulative_charged_s"] = round(
@@ -569,35 +635,66 @@ def stage_tamper(lease_id):
     target = f"{tamper_site}/urban_network_analysis/Settings.py"
     with open(target, "a") as f:
         f.write("\n# W00 TAMPER PROBE — appended byte, guard must refuse\n")
-    os.makedirs(NBC_TAMPER, exist_ok=True)
+    # C4a: dispose any stale run-window cache root from a prior fire; it
+    # is left nonexistent for run.py's fresh-root admission (see the
+    # NBC_TAMPER_RUN constant note)
+    if os.path.exists(NBC_TAMPER_RUN):
+        shutil.rmtree(NBC_TAMPER_RUN)
     out = f"{RUNROOT}/tamper_smoke"
     rc = guard_and_launch(
         [f"{TAMPER_VENV}/bin/python", RUN_PY, *SMOKE_ARGS,
          "--arm", "w00_tamper", "--identity", IDENT["tamper"],
-         "--cache-root", NBC_TAMPER, "--out", out],
-        child_env({"NUMBA_CACHE_DIR": NBC_TAMPER,
+         "--cache-root", NBC_TAMPER_RUN, "--out", out],
+        child_env({"NUMBA_CACHE_DIR": NBC_TAMPER_RUN,
                    "PYTHONDONTWRITEBYTECODE": "1"}),
         lease_id, "tamper_run", timeout_s=TIMEOUTS["tamper"],
         cwd=RUNROOT, window_class="tamper")
-    outcome = {"expected": "refusal (rc != 0)", "observed_rc": rc,
+    outcome = {"expected": ("refusal (rc != 0) sourced from the worker "
+                            "startup whole-tree hash comparison"),
+               "observed_rc": rc,
                "tampered_file": target, "verdict": None}
     session = f"{out}/session.json"
     if os.path.exists(session):
         with open(session) as f:
             outcome["session"] = json.load(f)
+    # C4b (W00 resume-fire adjudication): rc != 0 alone is not "refused
+    # as designed" — the verdict must verify the refusal's SOURCE.  The
+    # designed refusal is the worker startup whole-tree hash comparison:
+    # PoolFailure reason 'worker_startup_failed' carrying the
+    # 'package tree does not match identity module hashes' message.
+    failure = (outcome.get("session") or {}).get("failure") or {}
+    detail_str = json.dumps(failure.get("detail") or {}, default=str)
+    designed = (rc != 0
+                and failure.get("reason") == "worker_startup_failed"
+                and "does not match identity module hashes" in detail_str)
+    outcome["designed_signature"] = {
+        "rc_nonzero": rc != 0,
+        "failure_reason": failure.get("reason"),
+        "tree_hash_message": ("does not match identity module hashes"
+                              in detail_str),
+    }
     if rc == 0:
-        outcome["verdict"] = "GUARD_FAILURE — installed mode accepted a tampered wheel"
+        outcome["verdict"] = ("GUARD_FAILURE — installed mode accepted a "
+                              "tampered wheel")
         print(f"[w00-run] TAMPER PROBE GUARD FAILURE: {outcome}")
+    elif designed:
+        outcome["verdict"] = ("ok — installed mode refused the tampered "
+                              "wheel at the designed tree-hash comparison")
+        print(f"[w00-run] tamper probe: refused as designed "
+              f"(rc={rc}, worker_startup_failed tree-hash mismatch)")
     else:
-        outcome["verdict"] = "ok — installed mode refused the tampered wheel"
-        print(f"[w00-run] tamper probe: refused as expected (rc={rc})")
+        outcome["verdict"] = (
+            "MISROUTED_REFUSAL reason="
+            f"{failure.get('reason') or 'no-session-failure'}")
+        print(f"[w00-run] TAMPER PROBE MISROUTED REFUSAL: {outcome}")
     with open(f"{DATA}/w00_tamper_outcome.json", "w") as f:
-        json.dump(outcome, f, indent=1)
+        json.dump(outcome, f, indent=1, default=str)
     # dispose the tampered copy either way (evidence retained in the JSON)
-    shutil.rmtree(TAMPER_VENV, exist_ok=True)
-    if rc == 0:
-        return 1
-    return 0
+    if os.path.exists(TAMPER_VENV):
+        shutil.rmtree(TAMPER_VENV)
+    # stage rc: 0 only on the designed refusal; any other outcome is a
+    # stage failure (rc 1) the fire chain must stop on (h04 C4b ruling)
+    return 0 if designed else 1
 
 
 def _same(x, y):
@@ -606,7 +703,20 @@ def _same(x, y):
 
 def stage_records(lease_id):
     """Aggregate evidence/W00/{wheels,installed_tests,path_engagement}.json.
-    Logged as a wall-0 window: write-capable, rides the same fire."""
+    Self-enveloped (class-8): the window opens at START in the
+    crashed_child_start schema and is completed on every decided exit; a
+    crash leaves the explicit null end persisted.  Missing engagement
+    receipts are an explicit failed-records verdict BEFORE any write —
+    never a raw FileNotFoundError after side effects."""
+    idx = _open_window("records:evidence_W00", lease_id)
+    missing = [a for a in ("b0", "selected")
+               if not os.path.exists(ENGAGEMENT_OUT[a])]
+    if missing:
+        verdict = (f"failed_records: engagement receipts missing for "
+                   f"{missing}; no aggregation performed")
+        _close_window(idx, "records", 1, {"verdict": verdict})
+        print(f"[w00-run] {verdict}")
+        return 1
     os.makedirs(EVIDENCE, exist_ok=True)
     wheels = {"task": "W00", "record": "wheels",
               "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -760,16 +870,10 @@ def stage_records(lease_id):
           and all(b["identity_sha256_match"] and b["package_tree_sha256_match"]
                   and b["session_notes_carries_wheel_sha"]
                   for b in bindings.values()))
-    log = load_lease_log()
-    if log is not None:
-        log["windows"].append({
-            "what": "records:evidence_W00", "class": "records",
-            "lease_id": lease_id,
-            "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "wrote": [wheels_path, installed_path, path_engagement_path],
-            "verdict_ok": ok, "wall_s": 0.0, "rc": 0 if ok else 1})
-        log["updated_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-        save_lease_log(log)
+    _close_window(idx, "records", 0 if ok else 1,
+                  {"wrote": [wheels_path, installed_path,
+                             path_engagement_path],
+                   "verdict": f"all_equal={installed['all_equal']} ok={ok}"})
     print(f"[w00-run] records: wheels/installed_tests/path_engagement "
           f"written; all_equal={installed['all_equal']} ok={ok}")
     return 0 if ok else 1
@@ -812,22 +916,23 @@ def main():
             return 2
 
     if args.stage == "init":
+        # init runs before the lease log exists — no envelope possible;
+        # the log it writes IS the init record
         return stage_init(args.lease_id)
-    if args.stage == "build":
-        return stage_build(args.arm, args.lease_id)
-    if args.stage == "venvs":
-        return stage_venvs(args.arm, args.lease_id)
-    if args.stage == "identities":
-        return stage_identities(args.arm, args.lease_id)
-    if args.stage == "engagement":
-        return stage_engagement(args.arm, args.lease_id)
-    if args.stage == "smoke":
-        return stage_smoke(args.arm, args.lease_id)
-    if args.stage == "tamper":
-        return stage_tamper(args.lease_id)
     if args.stage == "records":
+        # self-enveloped: records completes its own window with the
+        # explicit verdict (class-8)
         return stage_records(args.lease_id)
-    return stage_status()
+    fns = {"build": (stage_build, (args.arm,)),
+           "venvs": (stage_venvs, (args.arm,)),
+           "identities": (stage_identities, (args.arm,)),
+           "engagement": (stage_engagement, (args.arm,)),
+           "smoke": (stage_smoke, (args.arm,)),
+           "tamper": (stage_tamper, ()),
+           "status": (stage_status, ())}
+    fn, fargs = fns[args.stage]
+    what = f"stage:{args.stage}" + (f":{args.arm}" if args.arm else "")
+    return _run_stage(what, fn, args.lease_id, *fargs)
 
 
 if __name__ == "__main__":

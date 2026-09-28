@@ -55,7 +55,15 @@ from harness.spec import (  # noqa: E402
 )
 from harness.spec import RunSpec, ValidationError, parse_and_validate  # noqa: E402
 
-REPO_ROOT = HERE.parents[2]   # .../benchmarks/large_e2e/run.py -> repo root
+# C3 (W00 resume-fire adjudication): parents[2] resolved one level ABOVE
+# the repo (the workspace root), so campaign_data venvs read as "inside
+# the repository" to guard_repository_shadow.  parents[1] is the repo
+# root; the fail-closed assertion proves the resolution before any window.
+REPO_ROOT = HERE.parents[1]   # .../benchmarks/large_e2e/run.py -> repo root
+if not (REPO_ROOT / "benchmarks" / "large_e2e" / "run.py").is_file():
+    raise RuntimeError(
+        "run.py repo-root resolution failed: "
+        f"{REPO_ROOT} does not contain benchmarks/large_e2e/run.py")
 RAW_DIR_NAME = "raw"
 
 

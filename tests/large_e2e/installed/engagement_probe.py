@@ -58,7 +58,7 @@ def fail(msg):
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w") as fh:
-        json.dump(RESULT, fh, indent=1)
+        json.dump(RESULT, fh, indent=1, default=str)
     print(f"[w00-probe] FAIL: {msg}")
     sys.exit(2)
 
@@ -97,22 +97,35 @@ def identity_leg(idmod, identity_path: Path):
 # ======================================================================
 # Stage 2: A-side — dispatch guards + cross-arm kernel bytes
 # ======================================================================
-def a_side_leg(ns, kind, arm):
+def a_side_leg(kind, arm):
     import fixtures_composition as fc
+    # C1 (W00 resume-fire adjudication): the package __init__ re-exports
+    # only UNA/Settings/Topology — the Engines surfaces are NOT namespace
+    # attributes.  Bind every surface explicitly from its own module as a
+    # LOCAL name; never attribute-probe the package namespace.
+    from urban_network_analysis.Engines.Accessibility import (
+        integrated_scope_access,
+        od_compact_vector_node_view_scope,
+    )
+    try:
+        from urban_network_analysis.Engines import \
+            _large_access_scratch as scratch
+        scratch_error = None
+    except ImportError as exc:  # b0 negative: this module must be absent
+        scratch = None
+        scratch_error = f"{type(exc).__name__}: {exc}"
+    rec("scratch_import", present=scratch is not None, error=scratch_error)
 
-    has_guards = hasattr(ns, "_a1_scope_admits") and \
-        hasattr(ns, "_a3_tail_admits")
-    rec("a_side_symbols", a1_scope_admits=hasattr(ns, "_a1_scope_admits"),
-        a3_tail_admits=hasattr(ns, "_a3_tail_admits"))
     if kind == "selected":
-        if not has_guards:
-            fail("selected arm lacks A1/A3 dispatch symbols")
+        if scratch is None:
+            fail(f"selected arm lacks the A1/A3 dispatch module: "
+                 f"{scratch_error}")
 
         # closure-captured guards: the @overload guards resolve ONLY under
         # nopython, and attribute calls are resolved at compile time —
         # mirror the proven composition-suite probe idiom exactly
-        a1_admits = ns._a1_scope_admits
-        a3_admits = ns._a3_tail_admits
+        a1_admits = scratch._a1_scope_admits
+        a3_admits = scratch._a3_tail_admits
 
         @nb.njit(cache=False)
         def probe(adjacency_pointer, adjacency_vector,
@@ -145,21 +158,21 @@ def a_side_leg(ns, kind, arm):
                                    "a3_admitted": got[1]}
         rec("guard_matrix", cells=guard_rows)
 
-    elif has_guards:
-        fail("b0 arm unexpectedly carries A1/A3 dispatch symbols")
+    elif scratch is not None:
+        fail("b0 arm unexpectedly imports Engines._large_access_scratch")
 
     # cross-arm kernel bytes (both arms run the SAME public kernels)
     byte_rows = {}
     for variant in ("both_admit", "a3_refuse_oob", "a1_refusal"):
         arr = getattr(fc, variant)()
-        od_plain = np.asarray(ns.od_compact_vector_node_view_scope(
+        od_plain = np.asarray(od_compact_vector_node_view_scope(
             arr["o_terminal_idxs"], arr["o_terminal_weights"],
             arr["adjacency_pointer"], arr["adjacency_vector"],
             arr["adjacency_vector_weights"],
             arr["adjacynct_vector_network_node"], arr["cutoff"],
             arr["d_count"], arr["d_terminal_idxs"],
             arr["d_terminal_weights"]))
-        outs = ns.integrated_scope_access(
+        outs = integrated_scope_access(
             arr["o_terminal_idxs"], arr["o_terminal_weights"],
             arr["adjacency_pointer"], arr["adjacency_vector"],
             arr["adjacency_vector_weights"],
@@ -180,18 +193,20 @@ def a_side_leg(ns, kind, arm):
 # ======================================================================
 # Stage 3: F-side — flow engines, F2 route observability
 # ======================================================================
-def f_side_leg(ns, kind, arm):
+def f_side_leg(kind, arm):
     import fixtures as oracle_fixtures
     import stub_topology
     import fixtures_composition as fc
+    from urban_network_analysis.Settings import Settings
+    from urban_network_analysis.Engines.AggregateFlow import AggregateFlow
 
     def run_spec(spec):
         overrides = oracle_fixtures.flow_settings_overrides(node_flow=True)
         topo = stub_topology.StubFlowTopology(spec)
-        settings = stub_topology.make_settings(ns.Settings,
+        settings = stub_topology.make_settings(Settings,
                                                accessibility=False,
                                                **overrides)
-        eng = ns.AggregateFlow(topo)
+        eng = AggregateFlow(topo)
         eng.num_threads = 2
         eng.Centrality(settings)
         outs = {"edge_flow_AB": eng.edge_flow_AB,
@@ -228,8 +243,9 @@ def f_side_leg(ns, kind, arm):
 # ======================================================================
 # Stage 4: F3-side — gradient precompute, chunk schedules
 # ======================================================================
-def f3_side_leg(ns, kind, arm):
+def f3_side_leg(kind, arm):
     import fixtures_composition as fc
+    from urban_network_analysis.Engines.AggregateFlow import AggregateFlow
 
     stub = fc.make_gradient_stub(fc.grad_arcs_chain(), n_net=8, n_dest=2,
                                  n_extra=1)
@@ -237,13 +253,13 @@ def f3_side_leg(ns, kind, arm):
     for label, limit in (("production_cap", np.inf),
                          ("forced_chunks", 6.0)):
         stub._gradient_limit = lambda ns_arg, _lim=limit: _lim
-        out = ns.AggregateFlow._precompute_dest_gradients(stub, {})
+        out = AggregateFlow._precompute_dest_gradients(stub, {})
         rows[label] = [sha(np.asarray(o)) for o in out]
         stub.logger.calls.clear()
     nofit = None
     if kind == "selected":
         stub._gradient_limit = lambda ns_arg: 2.0   # forced NO_FIT
-        ns.AggregateFlow._precompute_dest_gradients(stub, {})
+        AggregateFlow._precompute_dest_gradients(stub, {})
         lines = stub.logger.v2_lines()
         nofit = {"v2_line_count": len(lines),
                  "has_nofit_token": any(
@@ -281,15 +297,16 @@ def main(argv=None):
 
     from harness import identity as idmod
     identity, imported = identity_leg(idmod, args.identity)
-    RESULT["identity"] = {"package_root": identity.package_root,
+    # C2 (W00 resume-fire adjudication): package_root is a PosixPath —
+    # stringify at the record site; the dump sites below also pass
+    # default=str so no Path-typed value can crash a receipt write again.
+    RESULT["identity"] = {"package_root": str(identity.package_root),
                           "tree_sha256": identity.package_tree_sha256,
                           "verified_modules": imported["verified_modules"]}
 
-    package = sys.modules["urban_network_analysis"]
-    ns = package
-    a_rows = a_side_leg(ns, args.kind, args.arm)
-    f_rows = f_side_leg(ns, args.kind, args.arm)
-    f3_rows = f3_side_leg(ns, args.kind, args.arm)
+    a_rows = a_side_leg(args.kind, args.arm)
+    f_rows = f_side_leg(args.kind, args.arm)
+    f3_rows = f3_side_leg(args.kind, args.arm)
     RESULT["byte_hashes"] = {"a_side": a_rows, "f_side": f_rows,
                              "f3_side": f3_rows}
     RESULT["status"] = "ok"
@@ -297,7 +314,7 @@ def main(argv=None):
     out = args.out
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w") as fh:
-        json.dump(RESULT, fh, indent=1)
+        json.dump(RESULT, fh, indent=1, default=str)
     print(f"[w00-probe] OK arm={args.arm} records={len(RESULT['records'])}")
     return 0
 
