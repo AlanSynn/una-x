@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workload_id": "w00_O2_installed_smoke",
+  "analysis": "accessibility",
+  "input_files": [
+    {
+      "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson",
+      "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+      "bytes": 71290787
+    },
+    {
+      "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/h05_origins_fixture_O2_warm_16.geojson",
+      "sha256": "4e8b73b3149d767c92e32efa0b2a71c95feddbdd468aabb406ddbe2c0257b14e",
+      "bytes": 6676
+    },
+    {
+      "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson",
+      "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+      "bytes": 2641054
+    }
+  ],
+  "settings": {
+    "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+    "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+    "origins_file": "h05_origins_fixture_O2_warm_16.geojson",
+    "destinations_file": "MA_bus_stops.geojson",
+    "network_weight_column": "Geometric",
+    "origin_weight_column": "Count",
+    "destination_weight_column": "weekly_departures",
+    "search_radius": 500,
+    "turns": false,
+    "elevation": false,
+    "calculate_reach": true,
+    "calculate_exponential_gravity": true,
+    "calculate_logistic_gravity": true,
+    "calculate_knn_access": true,
+    "output_csv": true,
+    "output_geojson": true,
+    "output_feather": true
+  },
+  "required_output_patterns": [
+    "*.feather",
+    "*.geojson",
+    "*.csv"
+  ],
+  "notes": "W00 installed-mode smoke workload. Derived from the frozen H01 acquisition manifest tests/large_e2e/inputs/O2.manifest.json (workload O2, observed_tutorial_proxy, EPSG:6491): same network and destinations bytes as the acquisition pins, same settings_overrides lifted verbatim into settings, and the O2 16-origin deterministic selection (seed 20260925) consumed via the H05-era selection fixture h05_origins_fixture_O2_warm_16.geojson (arm-neutral original; the composed_/b0_-suffixed siblings are per-arm I00 copies of the same 16-row selection, byte-different container, same features). Origins fixture bytes were never pinned by the acquisition manifest; its sha256 above is a fresh in-session hash at W00 authoring time. Purpose: run.py installed-mode qualification smoke on observed data (H04-N2 closure) for both W00 arms; NOT a performance record and never qualification evidence beyond installed-execution proof. Input files are read-only; all outputs land in per-job roots assigned by the harness outside the inputs tree and outside both source trees."
+}
