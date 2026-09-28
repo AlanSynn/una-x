@@ -883,6 +883,12 @@ def sizing_stage():
     import psutil
     if lease_guard() is None:
         return 2
+    # [A3R-B7 fold, h04] attempt-1 crash fix (rc=1, FileNotFoundError at the
+    # console open below): main() creates CONSOLE_DIR only in the run branch
+    # (:1031-1032), after this stage's early return at :1005-1006. Ruled
+    # single-site additive fold — dispatch-level refusal paths are untouched
+    # and still write nothing.
+    os.makedirs(CONSOLE_DIR, exist_ok=True)
     for arm in ("b0", "cand"):
         run_id = f"a3r_sizing_{arm}"
         rec_path = f"{DATA}/a3r_sizing_{arm}.json"
