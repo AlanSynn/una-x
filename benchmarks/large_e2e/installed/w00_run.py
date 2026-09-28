@@ -94,7 +94,7 @@ W00_MANIFEST_SHA256 = (
 RUN_PY = f"{REPO}/benchmarks/large_e2e/run.py"
 PROBE = f"{REPO}/tests/large_e2e/installed/engagement_probe.py"
 PROBE_SHA256 = (
-    "4d5cb80629f61b91b3203a48dd494f211acc182f12c75b2ffaabaf42ab11ddcc")
+    "1f996f2e75e5b78c3ad4c8ec287e272c4172ef12af21c9fa17a2dda4e5b54e66")
 # one observed job, one worker, fresh per-arm cache root: the smallest
 # honest installed-mode exercise of the real harness (H04-N2)
 SMOKE_ARGS = ["--manifest", W00_MANIFEST, "--mode", "single",

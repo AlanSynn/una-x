@@ -127,11 +127,30 @@ def a_side_leg(kind, arm):
         a1_admits = scratch._a1_scope_admits
         a3_admits = scratch._a3_tail_admits
 
+        # h04 stop-ruling fix (b) — MIRROR THE NESTED DISPATCH: in the
+        # composed dispatch the A3 guard sits inside the A1-admitted
+        # branch, so on an A1-refused fixture A3 is dispatch-UNREACHABLE
+        # (fixture None), never unspecified.  Two closures selected at
+        # Python level from the variant's expectation: a1+a3 where the
+        # fixture pins a3, a1-only where it does not (a single closure
+        # returning (bool, int, None) on one branch would not unify).
+        # No forced a3 evaluation: an unpinned observation inside an
+        # enforcement instrument is future false evidence (h04).
         @nb.njit(cache=False)
-        def probe(adjacency_pointer, adjacency_vector,
-                  adjacency_vector_weights, adjacynct_vector_network_node,
-                  o_terminal_idxs, o_terminal_weights, cutoff,
-                  d_terminal_idxs, d_count, node_count):
+        def probe_a1(adjacency_pointer, adjacency_vector,
+                     adjacency_vector_weights, adjacynct_vector_network_node,
+                     o_terminal_idxs, o_terminal_weights, cutoff):
+            a1_ok, a1_max = a1_admits(
+                adjacency_pointer, adjacency_vector,
+                adjacency_vector_weights, adjacynct_vector_network_node,
+                o_terminal_idxs, o_terminal_weights, cutoff)
+            return a1_ok, a1_max
+
+        @nb.njit(cache=False)
+        def probe_a1_a3(adjacency_pointer, adjacency_vector,
+                        adjacency_vector_weights, adjacynct_vector_network_node,
+                        o_terminal_idxs, o_terminal_weights, cutoff,
+                        d_terminal_idxs, d_count, node_count):
             a1_ok, a1_max = a1_admits(
                 adjacency_pointer, adjacency_vector,
                 adjacency_vector_weights, adjacynct_vector_network_node,
@@ -142,20 +161,39 @@ def a_side_leg(kind, arm):
         guard_rows = {}
         for variant in fc.VARIANTS:
             arr = getattr(fc, variant)()
-            a1_ok, a1_max, a3_ok = probe(
-                arr["adjacency_pointer"], arr["adjacency_vector"],
-                arr["adjacency_vector_weights"],
-                arr["adjacynct_vector_network_node"],
-                arr["o_terminal_idxs"], arr["o_terminal_weights"],
-                arr["cutoff"], arr["d_terminal_idxs"], arr["d_count"],
-                arr["adjacency_pointer"].shape[0] - 1)
-            got = (bool(a1_ok), bool(a3_ok))
             exp = fc.GUARD_EXPECTATIONS[variant]
-            if got != (exp[0], exp[1]):
-                fail(f"guard cell {variant}: got {got} expected {exp}")
-            guard_rows[variant] = {"a1_admitted": got[0],
+            if exp[1] is None:
+                # a3 dispatch-unreachable on this variant: a1-only path,
+                # recorded as an explicit null pair (never a bare null)
+                a1_ok, a1_max = probe_a1(
+                    arr["adjacency_pointer"], arr["adjacency_vector"],
+                    arr["adjacency_vector_weights"],
+                    arr["adjacynct_vector_network_node"],
+                    arr["o_terminal_idxs"], arr["o_terminal_weights"],
+                    arr["cutoff"])
+                a3_ok, a3_evaluated = None, False
+            else:
+                a1_ok, a1_max, a3_ok = probe_a1_a3(
+                    arr["adjacency_pointer"], arr["adjacency_vector"],
+                    arr["adjacency_vector_weights"],
+                    arr["adjacynct_vector_network_node"],
+                    arr["o_terminal_idxs"], arr["o_terminal_weights"],
+                    arr["cutoff"], arr["d_terminal_idxs"], arr["d_count"],
+                    arr["adjacency_pointer"].shape[0] - 1)
+                a3_evaluated = True
+            # a1 asserted always; a3 asserted iff pinned — under (b) that
+            # coincides exactly with "was evaluated"
+            if bool(a1_ok) is not exp[0]:
+                fail(f"guard cell {variant}: a1_admitted {bool(a1_ok)} "
+                     f"expected {exp[0]}")
+            if exp[1] is not None and bool(a3_ok) is not exp[1]:
+                fail(f"guard cell {variant}: a3_admitted {bool(a3_ok)} "
+                     f"expected {exp[1]}")
+            guard_rows[variant] = {"a1_admitted": bool(a1_ok),
                                    "a1_max_degree": int(a1_max),
-                                   "a3_admitted": got[1]}
+                                   "a3_admitted": (None if a3_ok is None
+                                                   else bool(a3_ok)),
+                                   "a3_evaluated": a3_evaluated}
         rec("guard_matrix", cells=guard_rows)
 
     elif scratch is not None:
@@ -200,8 +238,10 @@ def f_side_leg(kind, arm):
     from urban_network_analysis.Settings import Settings
     from urban_network_analysis.Engines.AggregateFlow import AggregateFlow
 
-    def run_spec(spec):
+    def run_spec(spec, extra_overrides=None):
         overrides = oracle_fixtures.flow_settings_overrides(node_flow=True)
+        if extra_overrides:
+            overrides.update(extra_overrides)
         topo = stub_topology.StubFlowTopology(spec)
         settings = stub_topology.make_settings(Settings,
                                                accessibility=False,
@@ -217,9 +257,21 @@ def f_side_leg(kind, arm):
                      for k, v in outs.items()}
 
     rows = {}
-    for label, spec in (("long_admitting", fc.flow_spec_long()),
-                        ("oracle_refusing", fc.flow_spec_oracle())):
-        eng, hashes = run_spec(spec)
+    # h04 flow-leg ruling (classification (a) — probe settings
+    # mis-calibration, wheel exonerated): flow_spec_long ADMITS at search
+    # radius 4.0 (its own docstring), but the shared overrides carry 6.0,
+    # so the long leg's arming radius was never supplied and the
+    # fast_calls>=1 gate was unpassable by calibration.  Arm the long
+    # leg ONLY, mirroring the F2 suite's extra_overrides idiom
+    # (fixtures_f2.build_engine).  oracle_refusing stays on the shared
+    # settings and must remain refusing (refusing per the gate below:
+    # fast_calls 0 — inline on refusal; radius-insensitive per the
+    # 9-node stub).
+    for label, spec, extra in (
+            ("long_admitting", fc.flow_spec_long(),
+             {"search_radius": 4.0}),
+            ("oracle_refusing", fc.flow_spec_oracle(), None)):
+        eng, hashes = run_spec(spec, extra)
         stats = getattr(eng, "_f2_stats", None)
         rows[label] = {"hashes": hashes,
                        "f2_stats": None if stats is None else {
@@ -231,9 +283,27 @@ def f_side_leg(kind, arm):
             if label == "long_admitting" and not (
                     stats["local_route_ok"] and stats["fast_calls"] >= 1):
                 fail(f"selected {label}: F2 local route did not engage: {stats}")
+            # h04 gate ruling (amendment #3): the refusing state mirrors
+            # the suite's own refusing-leg asserts — fast_calls == 0 AND
+            # fallback_calls == 0 (test_f2_driver.py:75/:78: baseline
+            # runs INLINE on refusal; fallback_calls is error-recovery
+            # bookkeeping, >=1 only under an injected kernel fault :157),
+            # overflow_events == 0 (suite :74/:101 pattern), and
+            # local_route_ok is True (health pin: False only under
+            # injected disablement :117 — without it a wheel with a
+            # broken slice-ascending precondition would pass for the
+            # wrong reason).  Producer: AggregateFlow.py:1465 (health
+            # precondition) / :1583 (per-OD crossover) / :1714-1720
+            # (counters never affect the arithmetic).  No
+            # local_slice_max pin: crossover threshold constant, suite
+            # comment only — comments aren't gates.
             if label == "oracle_refusing" and not (
-                    stats["local_route_ok"] and stats["fallback_calls"] >= 1):
-                fail(f"selected {label}: F2 fallback did not engage: {stats}")
+                    stats["fast_calls"] == 0
+                    and stats["fallback_calls"] == 0
+                    and stats["overflow_events"] == 0
+                    and stats["local_route_ok"] is True):
+                fail(f"selected {label}: F2 refusing state not as "
+                     f"designed: {stats}")
         elif stats is not None:
             fail(f"b0 arm flow leg {label}: unexpected _f2_stats {stats}")
     rec("f_side", legs=rows)
