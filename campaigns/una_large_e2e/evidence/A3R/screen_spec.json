@@ -1,6 +1,6 @@
 {
  "spec_id": "A3R_SCREEN_SPEC",
- "revision": "REV 1 (h04 gate review APPROVED 2026-09-28 on the pre-fold bytes f3daee05; F1 folded pre-commit per that verdict; F2/F3 deferred to the pre-authorized envelope amendment; vehicles hash-pinned at commit)",
+ "revision": "REV 2 (h04 gate review APPROVED 2026-09-28 on the pre-fold bytes f3daee05; F1 folded pre-commit per that verdict; REV 2 is the pre-authorized envelope amendment as extended by h04's sizing WITNESS PASS: F2/F3 folded per the deferred terms + the five realized envelope constants pinned with derivations + proposal copy delivered + the G4 binding band fixed from the sizing cold walls; vehicles hash-pinned at commit)",
  "authored_utc": "2026-09-28T03:58:59Z",
  "author": "h05-profiler (implementation/performance owner)",
  "task": "#33 A3R: Private scope review + screen",
@@ -132,7 +132,7 @@
   "G1_byte_identity": "the FOUR in-memory accessibility arrays (reach, gravity_exponential, gravity_logistic, knn_access) sha256_bytes cross-arm equal on EVERY matched pair; first-divergence capture; divergence = REJECT (track rejection signal). Exported artifacts recorded + cross-compared DESCRIPTIVE with run-id normalization (disclosure D3)",
   "G2_warning_parity": "verbatim_warnings counts equal per block per arm \u2014 ENFORCED in the block comparator (the comparator READS the field; un-enforced-check rule)",
   "G3_saving_gate": "leg-C share differential (see estimand.readings): ceiling rule + noise guard |realized_saving| > max(within-arm warm leg-C share spread) for screened_in; else not_demonstrated_at_screen (disclosure D2)",
-  "G4_cold_regression": "cold window ratio cand/b0 (block 1) within the band fixed at prereg review from sizing-stage cold walls; a-priori illustration [1.05, 1.25] from the A1R ACCESS realization 8.040295125/6.641840208 = 1.2105523278496795 for A1's +2 kernels (cand adds A3's +2); beyond the band high = blocked_pending_adjudication (compile-cost anomaly); below 1.0 = blocked_pending_adjudication (arm-identity suspicion)",
+  "G4_cold_regression": "cold window ratio cand/b0 (block 1) within the FIXED band [1.0296296296296297, 1.25] (REV 2; the spec-predeclared act 'band fixed at prereg review from sizing-stage cold walls' executes here). ANCHOR: sizing attempt-2 cold walls as charged, b0 13.5 s / cand 14.3 s, exact ratio 143/135 = 1.0592592592592593; the legc add-on is negligible, stated in-record: n x mean_s sums 0.054225992 s (b0) / 0.056573565 s (cand), add-on-adjusted ratio 1.0593236526603385 vs raw 1.0592592592592593 — indistinguishable, raw-wall anchor acknowledged. LOW EDGE 139/135 = 1.0296296296296297 = 1 + (143/135 - 1)/2: the band tolerates cold-ratio run-to-run variance up to exactly HALF the measured compile inflation (0.0296296296296296) before the low edge; strictly > 1.0. HIGH EDGE 1.25 carried UNCHANGED from the a-priori illustration (A1R ACCESS realization 8.040295125/6.641840208 = 1.2105523278496795 for A1's +2 kernels — the same compile-inflation mechanism cand's A3 +2 kernels engage). The a-priori illustration [1.05, 1.25] is REPLACED by this band; the anchor r sits inside both (consistency check passes). Dispositions: beyond the band high = blocked_pending_adjudication (compile-cost anomaly); below the band low edge = blocked_pending_adjudication (cold-regression route); below 1.0 = blocked_pending_adjudication (arm-identity suspicion, independent clause)",
   "G5_route_receipts": "cand engagement: (i) symbol PRESENCE hasattr receipts (never executed from the driver): _a3_tail_admits + _a3_scope_search_tailless present in cand, absent in b0; (ii) post-window numpy replay of the guard's admission conditions on inputs reconstructed from the same topology tables the engine uses (Engines/Accessibility.py :648-649 cand blob), labeled replay_on_reconstructed_inputs, corroborative-only; (iii) cache census delta cross-arm = entries matching ONLY the two A3 family markers (compiled = called; item 12(c) mechanism). b0 runs record the negative signature; comparator enforces both",
   "G6_memory_parity": "warm-governing ru_maxrss cross-arm recorded; A3 REMOVES 53,288 B per live search allocation (proof section 6) \u2014 expected indistinguishable within variance; capacity claims gate on the WARM governing block only (governing-block rule); cold block keeps admission/watchdog role only",
   "dossier_bar_mapping": "dossier A3_private_scope.md bar: branch/indirection + final materialization + rollover overhead are covered by G1 (bit-identical outputs) + proof section 6 (replacement work NONE) + G5 (route receipts); per-owner memory by G6"
@@ -155,10 +155,26 @@
    "warm_plus_legC_s": 8.5
   },
   "one_pass_s": 57.5,
+  "one_pass_derivation": "11.0 + 12.5 + 4 x 8.5 = 57.5 \u2014 the cold pair (block 1) plus four warm legs (blocks 2-3) at the frozen allowances; exact rational 115/2",
   "worst_case_one_restart_s": 115.0,
-  "headroom_rule": "worst_case_one_restart x 100 <= remaining at matrix entry (F2R form)",
-  "remaining_orientation_s": 12923.9,
-  "note": "remaining = 14,400 - a3r opening (f2r closing cumulative read fresh at init) - sizing charges; the a3r lease log is created by --stage init ONLY, chained to the F2R log (opening = F2R cumulative, parent_log_sha256 = F2R log bytes at init, source_commit = f17184b); f2r stored-vs-recomputed divergence checked at init (current stored 1316.1 = recomputed 1316.1); constants re-derived at sizing and frozen by amendment; if the honest worst case ever exceeds remaining/100, STOP and route \u2014 allowances are never shaved to fit"
+  "worst_case_derivation": "2 x 57.5 = 115.0 (F2-folded per the gate verdict: the supervisor's design-time orientation 118.0 was un-derived; the derived value is pinned in both vehicles \u2014 either value passes headroom, so nothing is shaved to fit a gate)",
+  "headroom_rule": "worst_case_one_restart x 100 <= remaining at matrix entry (F2R form); at amendment time 115.0 x 100 = 11,500.0 <= 13,056.1 remaining (verified against lease bytes)",
+  "remaining_orientation_s": 13056.1,
+  "remaining_derivation": "14,400.0 - 1,316.1 a3r opening - 13.5 - 14.3 sizing charges (attempt-2 lease windows, rc=0), read from the lease log bytes",
+  "realized_envelope": {
+   "governing_mib": 627.125,
+   "governing_derivation": "max of the attempt-2 sizing peaks (b0 610.515625, cand 627.125 MiB); exact rational 5017/8",
+   "budget_mib": 690,
+   "budget_derivation": "ceil-to-whole-MiB of max(1.10 x 627.125, 627.125 x 1.077): the 1.10 branch 689.8375 (exact 55187/80) governs over the 1.077 branch 675.413625 (exact 5403309/8000); 689.8375 -> 690 (ceiling step explicit per the Q00 sizing rule)",
+   "budget_bytes": 723517440,
+   "admission_min_avail_bytes": 904396800,
+   "admission_derivation": "723,517,440 / 0.8 = 904,396,800 B exact",
+   "matrix_entry_min_avail_bytes": 956825600,
+   "entry_derivation": "904,396,800 + 50 MiB (52,428,800) = 956,825,600 B exact",
+   "envelope_record": "campaign_data/a3r_envelope.json delivered with this amendment (proposal copy + derivations); supervisor constants pinned to these values in the same amendment",
+   "sizing_source": "sizing attempt 2, 2026-09-28T10:43:06Z, committed supervisor 5393779a, records a36af2bd (b0) / d05c2209 (cand)"
+  },
+  "note": "remaining = 14,400 - a3r opening (f2r closing cumulative read fresh at init) - sizing charges; the a3r lease log is created by --stage init ONLY, chained to the F2R log (opening = F2R cumulative, parent_log_sha256 = F2R log bytes at init, source_commit = f17184b); f2r stored-vs-recomputed divergence checked at init (stored 1316.1 = recomputed 1316.1 at init); if the honest worst case ever exceeds remaining/100, STOP and route \u2014 allowances are never shaved to fit"
  },
  "vehicle_and_review_chain": {
   "P1": "this spec REV 1 + disclosures D1-D5 reviewed by h04; the review pins the spec bytes",
@@ -191,7 +207,7 @@
   },
   {
    "id": "D2",
-   "item": "G3-form deviation: F2R gated the WALL delta; here the accounted wall-level saving is ~0.0011 of the window (~1.3 ms on ~2.5 s walls), far below A1R's run-to-run warm wall spread (2.4270-2.8037 s), so a wall minimum-delta gate is structurally unpassable at this cell. Proposed form: the saving gate reads the leg-C share differential (2000-rep means) with the within-arm share spread as the noise guard; wall deltas recorded descriptive. QUESTION FOR H04: rule the gate form + the noise-guard definition."
+   "item": "G3-form deviation: F2R gated the WALL delta; here the accounted wall-level saving is ~0.0011 of the window (2.6596916281402128 ms on ~2.5 s walls; exact rational 10638766512560851/4000000000000000 = wall_honest_share_H10 0.0010638766512560851 x 2.5 s — F3-folded per the gate verdict: no defensible frame yields 1.3 ms), far below A1R's run-to-run warm wall spread (2.4270-2.8037 s), so a wall minimum-delta gate is structurally unpassable at this cell. Proposed form: the saving gate reads the leg-C share differential (2000-rep means) with the within-arm share spread as the noise guard; wall deltas recorded descriptive. QUESTION FOR H04: rule the gate form + the noise-guard definition."
   },
   {
    "id": "D3",
@@ -217,6 +233,13 @@
    "ruling_anchor": "h04 hashed the pre-fold spec bytes f3daee058acff959a89c29c4e859c30722f31cf9c15c6da6c20038472d298e74 at verdict time and mandated the F1 fold; F2/F3 folds are deferred to the pre-authorized envelope amendment (five constants + proposal copy + F2/F3 only)",
    "change": "D5 persistence premise corrected: d_terminal_idxs IS persisted post-window (cand Accessibility.py :728 assignment inside _build_compact_graph_from_topology, :742-745 retention as self.graph_engine, :560/:573 consumption by o_scope/o_access); replay design, label replay_on_reconstructed_inputs, and corroborative-only status unchanged; optional persisted-array hash receipt DECLINED to keep reviewed driver bytes 061d46ce stable",
    "delta_scope": "D5 item text, revision marker, this log entry; no other byte changed from the verdict-hashed state; pre-fold bytes in custody at campaign_data/interim_f3daee05_screen_spec.json (sha f3daee05 verified before edit)"
+  },
+  {
+   "seq": 2,
+   "when": "post-sizing, 2026-09-28, under the pre-authorized envelope-amendment shape (gate verdict deferred terms + h04 sizing witness terms; team-lead authorization to author)",
+   "ruling_anchor": "h04 gate verdict F2/F3 findings (ruled text): F2 \"supervisor WORST_CASE_ONE_RESTART_S = 118.0 vs spec 115.0 (= 2 x 57.5); conservative direction, but un-derived in the vehicle — reconcile with a derivation; either value passes headroom\"; F3 \"no defensible frame yields 1.3 ms — fix the gloss\"; plus h04 sizing WITNESS PASS (2026-09-28) ruling the G4 band fix into this amendment with five derivation requirements (anchor = cold walls as charged; exact ratio; legc negligibility stated in-record; band contains r with an explicit margin rule, low edge > 1.0; a-priori illustration replaced, consistency noted); scope = five constants + proposal copy + F2/F3 + G4 band, nothing else",
+   "change": "F2 folded: worst_case_one_restart stays at the DERIVED 115.0 = 2 x 57.5 with the component derivation (11.0 + 12.5 + 4 x 8.5) now stated; supervisor constant folded 118.0 -> 115.0 to match; headroom re-verified 11,500.0 <= 13,056.1 (remaining updated 12,923.9 -> 13,056.1 = 14,400 - 1,316.1 opening - 27.8 sizing charges, lease bytes). F3 folded: D2 gloss '~1.3 ms' -> 2.6596916281402128 ms (exact 10638766512560851/4000000000000000 = 0.0010638766512560851 x 2.5 s). Five realized envelope constants pinned with in-record derivations incl. the explicit ceil-to-whole-MiB step (689.8375 -> 690); proposal copy delivered as campaign_data/a3r_envelope.json; supervisor memory constants folded to the realized envelope. G4 band FIXED: [1.0296296296296297, 1.25] = [139/135, 1.25]; anchor r = 143/135 = 1.0592592592592593 from the charged sizing walls (legc add-on negligibility in-record: n x mean_s sums 0.054225992 s b0 / 0.056573565 s cand, adjusted ratio 1.0593236526603385 indistinguishable from raw); low edge = 1 + (r-1)/2 tolerates ratio variance up to exactly half the measured compile inflation, strictly > 1.0; high edge 1.25 carried from the a-priori illustration's A1R compile-inflation precedent; illustration REPLACED; r sits inside both (consistency passes)",
+   "delta_scope": "revision marker, D2 item text, budget_arithmetic block (derivation keys + realized_envelope + remaining update), gates.G4_cold_regression value text, this log entry in the spec; the constants block (lines 102-108 region) in a3r_run_pairs.py; campaign_data/a3r_envelope.json delivered; nothing else — pre-amendment bytes in custody at interim_d4095d3e_screen_spec.json and interim_5393779a_a3r_run_pairs.py (both sha-verified before edit)"
   }
  ],
  "f2r_lease_chain_orientation": {

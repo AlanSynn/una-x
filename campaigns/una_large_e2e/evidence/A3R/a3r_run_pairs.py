@@ -99,13 +99,14 @@ ENVELOPE = f"{DATA}/a3r_envelope.json"
 ENVELOPE_PROPOSAL = f"{DATA}/a3r_envelope_proposal.json"
 PHYS_BYTES = 17179869184
 PRESSURE_STOP = max(1 << 30, int(0.10 * PHYS_BYTES))
-# ---- memory/wall constants: PLACEHOLDER until sizing; --stage run REFUSES
-# unless ENVELOPE exists and matches these values (see header ADDED gate).
-WATCHDOG_MIB = 3436
-WATCHDOG_BUDGET_BYTES = 3602907136
-ADMISSION_MIN_AVAIL_BYTES = 4503633920
-MATRIX_ENTRY_MIN_AVAIL_BYTES = 4556062720
-WORST_CASE_ONE_RESTART_S = 118.0        # spec budget_arithmetic orientation
+# ---- memory/wall constants: pinned by spec amendment REV 2 (realized
+# envelope from sizing attempt 2, 2026-09-28); --stage run REFUSES unless
+# ENVELOPE exists and matches these values (see header ADDED gate).
+WATCHDOG_MIB = 690
+WATCHDOG_BUDGET_BYTES = 723517440
+ADMISSION_MIN_AVAIL_BYTES = 904396800
+MATRIX_ENTRY_MIN_AVAIL_BYTES = 956825600
+WORST_CASE_ONE_RESTART_S = 115.0        # 2 x 57.5 one-pass; F2-folded REV 2
 REV9_MIN_AVAIL_BYTES = 5368709120
 REV9_MAX_LOADAVG = 8.0
 REV9_ROUNDS, REV9_POLL_S = 6, 30
