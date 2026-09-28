@@ -203,6 +203,17 @@ def guard_repository_shadow(package_root: Path, repo_root: Path,
             f"({repo}); source shadowing is forbidden in installed mode")
 
 
+# H04 W00 stop adjudication (2026-09-28): the stock setuptools
+# distutils-precedence shim ships in every venv with setuptools intact and
+# is not an editable/source shadowing vector.  The exemption in
+# scan_pth_files is name+content pinned to this exact byte sequence; the
+# same file name with any other content, or any other .pth content,
+# refuses exactly as before (fail-closed — a setuptools update
+# re-triggers refusal and re-adjudication).
+BENIGN_DISTUTILS_PTH_SHA256 = (
+    "2638ce9e2500e572a5e0de7faed6661eb569d1b696fcba07b0dd223da5f5d224")
+
+
 def scan_pth_files(site_packages: list[Path]) -> list[str]:
     """Find .pth editable/source hooks in declared site-packages.
 
@@ -210,7 +221,9 @@ def scan_pth_files(site_packages: list[Path]) -> list[str]:
     finders); a plain path line is added to sys.path.  Any .pth at all whose
     lines point at or import a source tree is a shadowing vector; in
     installed qualification mode ALL non-comment .pth content is refused so
-    the arm cannot quietly extend sys.path.
+    the arm cannot quietly extend sys.path.  Sole exempt file: the stock
+    setuptools distutils-precedence shim, pinned by name AND sha256
+    (BENIGN_DISTUTILS_PTH_SHA256); the exemption prints to stdout.
     """
     findings: list[str] = []
     for sp in site_packages:
@@ -218,6 +231,12 @@ def scan_pth_files(site_packages: list[Path]) -> list[str]:
         if not sp.is_dir():
             continue
         for pth in sorted(sp.glob("*.pth")):
+            if (pth.name == "distutils-precedence.pth"
+                    and sha256_file(pth) == BENIGN_DISTUTILS_PTH_SHA256):
+                print(f"[identity] exempted {pth}: stock setuptools "
+                      "distutils-precedence shim, sha256 match "
+                      "(h04 W00 stop adjudication)")
+                continue
             try:
                 lines = pth.read_text(encoding="utf-8", errors="replace").splitlines()
             except OSError as exc:
