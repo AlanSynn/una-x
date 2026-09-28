@@ -3,9 +3,9 @@
   "campaign_id": "una-large-e2e-2026-09",
   "initialized_utc": "2026-09-26T00:00:00Z",
   "selected_source": {
-    "commit": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29",
-    "src_tree": "b121ec0b4312f12caa98bc115243652e1564d3ec",
-    "equivalence_note": "SELECTED_SOURCE_SHA initialized to B0-equivalent source per EXECUTION.md; src tree identical at packet publication commit ea08947. Only the integrator advances it, after review/screening proof. Advanced at A1R disposition (integrator commit ec28ac9 records the disposition; control advance commit follows).",
+    "commit": "5cae07a184bf0c3909f50e4390c17095ddda8596",
+    "src_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+    "equivalence_note": "Advanced at I00 (integrator): composed integration line A1+F1+F2+F3+A3. src_tree 3c59bb0d is byte-unchanged from the A3R close commit d9fff4c9 (empty git diff d9fff4c9..5cae07a -- src/). Advance sequence per h04's authorized green light after the records one-pass PASS: I00 round commit 5cae07a (composition suite + evidence records, run-2 qualification 81/81 passed, adjudicated expected-delta) -> this control advance -> h05 leased reprofile of the composed line (handoff follows the advance; reprofile evidence pointers land at reprofile close). Only the integrator advances selected_source, after review/screening proof. Prior state: A1R advance (selected 7a278666, src_tree b121ec0b, advanced at commit 76680a4).",
     "accepted_tracks": [
       {
         "track": "A1",
@@ -19,9 +19,61 @@
           "C1: ACCESS-cell proxy marginal (~1.06-1.09 < 1.1 bar at r=500); HOLDOUT decisive (1.31-1.39)",
           "C2: cold median ratio 1.13-1.21 vs frozen 1.05 gate - warm-invisible JIT of 2 added kernels; DECISION.md permits explicitly bounded warm-only qualification at the price of no blanket-default promotion claim; governing reading recorded in evidence/control_addendum_A1R.json"
         ]
+      },
+      {
+        "track": "F1",
+        "status": "not_demonstrated_at_screen",
+        "source_commit": "c1d7edc5",
+        "review": "campaigns/una_large_e2e/evidence/F1R/review.json",
+        "selection": "campaigns/una_large_e2e/evidence/F1R/selection.json",
+        "conditions": [
+          "stays in line per the ruled F1R decision (no demonstrated harm; gain not demonstrated at screen); figures and gate adjudication live in the F1R records",
+          "Q00 cold-band transfer note carried (recorded in the F2R records)"
+        ]
+      },
+      {
+        "track": "F2",
+        "status": "screened_in",
+        "source_commit": "61f3db64",
+        "review": "campaigns/una_large_e2e/evidence/F2R/review.json",
+        "selection": "campaigns/una_large_e2e/evidence/F2R/selection.json",
+        "conditions": [
+          "SCREENED_IN at F2R; carried conditions and gate adjudication live in the F2R records",
+          "Q00 cold-band note carried: flow memory sized from flow realizations, F3R basis does not transfer"
+        ]
+      },
+      {
+        "track": "F3",
+        "status": "screened_in",
+        "source_commit": "b387f901",
+        "review": "campaigns/una_large_e2e/evidence/F3R/review.json",
+        "selection": "campaigns/una_large_e2e/evidence/F3R/selection.json",
+        "conditions": [
+          "SCREENED_IN per evidence/F3R/selection.json (sha256 06410f29b99fa2e703978fc785fe05101d076f51ecc18c8316e9dce9425077e8); F3I chain head b387f901 as supplementary provenance",
+          "capacity_only labeling governs every F3 record (DECISION line 11): walls are capacity evidence, not promotion claims"
+        ]
+      },
+      {
+        "track": "A3",
+        "status": "screened_in",
+        "source_commit": "d9fff4c9",
+        "review": "campaigns/una_large_e2e/evidence/A3R/review.json",
+        "selection": "campaigns/una_large_e2e/evidence/A3R/selection.json",
+        "conditions": [
+          "SCREENED_IN at the A3I admission chain head d9fff4c9 (src-identity note in the A3R selection record); admission and chain verification live in the A3I/A3R records",
+          "Q00 cold-peak note carried to Q00"
+        ]
       }
     ],
-    "rejected_or_not_admitted": []
+    "rejected_or_not_admitted": [
+      {
+        "track": "A2",
+        "status": "not_admitted",
+        "note": "never integrated on any line; I00 asserts absence rather than removal: zero _a2_ tokens in 14 B0 / 16 candidate source files and zero _a2 attributes across 16 imported alias modules (evidence/I00/composition.json results_from_artifacts_bytes.a2_absence_records)",
+        "review": "campaigns/una_large_e2e/evidence/A2R/review.json",
+        "selection": "campaigns/una_large_e2e/evidence/A2R/selection.json"
+      }
+    ]
   },
   "comparator": {
     "final_comparator": "B0 (361928e, includes ordered CSR)",
