@@ -3,9 +3,9 @@
   "campaign_id": "una-large-e2e-2026-09",
   "initialized_utc": "2026-09-26T00:00:00Z",
   "selected_source": {
-    "commit": "5cae07a184bf0c3909f50e4390c17095ddda8596",
+    "commit": "6b53a274e8a8d3e7360ab5e1b38f741107ce3358",
     "src_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
-    "equivalence_note": "Advanced at I00 (integrator): composed integration line A1+F1+F2+F3+A3. src_tree 3c59bb0d is byte-unchanged from the A3R close commit d9fff4c9 (empty git diff d9fff4c9..5cae07a -- src/). Advance sequence per h04's authorized green light after the records one-pass PASS: I00 round commit 5cae07a (composition suite + evidence records, run-2 qualification 81/81 passed, adjudicated expected-delta) -> this control advance -> h05 leased reprofile of the composed line (handoff follows the advance; reprofile evidence pointers land at reprofile close). Only the integrator advances selected_source, after review/screening proof. Prior state: A1R advance (selected 7a278666, src_tree b121ec0b, advanced at commit 76680a4).",
+    "equivalence_note": "Advanced at W00 close (integrator): selected wheel provenance per evidence/W00/wheels.json selected binding (source_commit 6b53a274, package_tree 64471ec9). src_tree 3c59bb0d byte-unchanged from 5cae07a (empty git diff 5cae07a..6b53a274 -- src/; subtree id identical both sides). Advance sequence: I00 round commit 5cae07a (advanced at fc1c3be) -> I00 close 6b53a274 (reprofile record + instrument, no src change) -> W00 evidence intake (4e21b44) -> this control advance -> S01 leases against installed arms of 6b53a274 provenance. Review proof: h04 W00 standing verification PASS. Prior state: I00 advance (selected 5cae07a, src_tree 3c59bb0d, advanced at fc1c3be).",
     "accepted_tracks": [
       {
         "track": "A1",
