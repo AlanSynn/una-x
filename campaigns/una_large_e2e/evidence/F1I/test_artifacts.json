@@ -255,11 +255,11 @@
     }
   },
   "warmup_s": {
-    "engine_warmup/b0/base_k1": 0.000459,
-    "engine_warmup/cand/base_k1": 0.00039,
-    "kernel_warmup/b0/m_base": 9e-06,
+    "engine_warmup/b0/base_k1": 0.000378,
+    "engine_warmup/cand/base_k1": 0.00043,
+    "kernel_warmup/b0/m_base": 1.5e-05,
     "kernel_warmup/cand/m_base": 5e-06,
-    "specialization_warmup/b0/_accumulate_od_flow": 0.210261,
-    "specialization_warmup/cand/_accumulate_od_flow": 0.004116
+    "specialization_warmup/b0/_accumulate_od_flow": 0.115773,
+    "specialization_warmup/cand/_accumulate_od_flow": 0.004657
   }
 }

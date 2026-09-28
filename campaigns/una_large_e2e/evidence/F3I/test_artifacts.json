@@ -988,16 +988,16 @@
       ]
     },
     "margin_gap_child": {
-      "gap_bytes": -4207784,
+      "gap_bytes": -3765416,
       "gate_pass": true,
       "log_line": "Gradient storage: 29,100 finite entries (~1 MB sparse vs ~0.1 GB dense). [F3] cap=268435456B margin=67108864B chunks=1 schedule=[300] fallback=none floor_fired=none",
       "margin_half": 33554432,
       "n_dest": 300,
       "payload_bytes": 79170000,
       "retained_bytes": 584408,
-      "rss_after": 344096768,
-      "rss_before": 268550144,
-      "rss_delta": 75546624,
+      "rss_after": 344932352,
+      "rss_before": 268943360,
+      "rss_delta": 75988992,
       "ru_maxrss_units": "bytes (darwin) / KiB*1024 (linux)",
       "schedule": [
         300

@@ -1,0 +1,96 @@
+{
+ "schema_version": "i00_reprofile_v1",
+ "task": "I00",
+ "role": "coordinator/integrator (team-lead), authored under h04-reviewer's I00 reprofile rulings; h05-profiler sole firer",
+ "generated_utc": "2026-09-28T16:44:38Z (initial generation; amended same day after h04's one-pass: two precision folds into R1_declared_writes ONLY — byte-derived fire-window arithmetic + h05 scan-domain provenance (non-governing); pre-amendment sha256 7b3c6d7b0a3a7e5922d746c7b9862983534a69cef08cbaae4b8ae1da5e703015 passed one-pass, was superseded by this amendment, and was never committed; authorization re-bound to the current sha)",
+ "fire_trigger": {
+  "authorization": "h04's green light after the records one-pass PASS and the control advance: I00 round commit 5cae07a -> control advance -> h05 leased reprofile of the composed line",
+  "two_key": {
+   "declaration": "h05-profiler declared the instrument and exact command set before any execution",
+   "second_key": "h04-reviewer verified the declaration and issued PASS/second-key; the fire ran only after both",
+   "instrument_sha256": "a236a03906fbdaad498da7bcd1cfb54bc3304d8bb04fc55489d03687d176c0df",
+   "instrument_path": "campaigns/una_large_e2e/evidence/I00/i00_run_reprofile.py (402 lines, 16,505 B; untracked until the I00 close commit per the ruled close shape)"
+  },
+  "lease_opening": {
+   "lease_id": "I00",
+   "opening_balance_s": 1416.0,
+   "opening_balance_source": "cumulative_charged_s of campaign_data/a3r_lease_log.json read fresh at init (refuse-on-mismatch)",
+   "parent_log_sha256": "30190534ba307f63ab6ba30c2db68684c2010d5a6f3cc6f79fda47adf5fd433b",
+   "budget_s": 14400.0
+  }
+ },
+ "arms": {
+  "composed": "campaign venv (/Users/alansynn/orca/workspaces/una-x/venvs/campaign) with --diagnostic-source-root /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src; records measurement_class diagnostic_profile_source — NEVER qualification; W00 remains the installed-execution proof obligation",
+  "b0": "campaign_data/venvs/b0_wheel (CPython 3.11.16) with --expected-site-packages; B0 = 361928e4ba38f34622cafe065b0025244db61368 (ordered CSR included)",
+  "cache_roots": "fresh NUMBA_CACHE_DIR roots campaign_data/nbc_i00_composed and campaign_data/nbc_i00_b0, disjoint from the composition suite root campaign_data/nbc_composition (58 files at fire time)"
+ },
+ "command_sequence": {
+  "instrument_stages": ["init (lease opening)", "reprofile (16 paired pilots: 8 cells x {composed, b0})", "custody (f_suite_tails)", "ablations (5 per-track suites on the composed tree)", "status"],
+  "execution_shape": "per the banked chaining lesson, the ablations+status tail ran as ONE background invocation after two between-turn stalls earlier in the fire; no further stalls",
+  "lease_log": "campaign_data/i00_lease_log.json sha256 6617dbb7ff6d57c86006a9123546f4a60f189d9627712ac2be65cc483da8c4ea (62,700 B; created 2026-09-28T14:44:09Z, updated 2026-09-28T16:17:17Z; window fields use the 'what' key)"
+ },
+ "r1_r2_r3_adjudication": {
+  "verdict": "h04 verification PASS with ONE ledger correction, folded here per the ruling",
+  "R1_declared_writes": "every fire write landed in the declared set (i00_sessions/, i00_out/, i00_captures/, the two fresh nbc roots, the three evidence tails). LEDGER CORRECTION (h04, recorded exactly as ruled): h05's hygiene line '0 .pytest_cache' is false as worded — wt-large-e2e/.pytest_cache EXISTS (directory mtime 2026-09-25 21:37 local EDT = 2026-09-26T01:37Z, i.e. 2 days 13 h before the fire's first window; the fire lease log was created 2026-09-28T14:44:09Z), is gitignored (matched by the user-level global excludes file, hence absent from porcelain), and is historical residue from pre-fire suite runs — NOT a fire write and NOT in the declared write-set. SCAN-DOMAIN PROVENANCE (h05, folded verbatim from their post-ruling message, non-governing): h05's census that reported 0 was domain-scoped to tests/large_e2e (maxdepth 2), where the count is genuinely 0; the residue sits at the repo root, outside that declared scan domain — so the root-level directory was never contradicted by h05's in-domain count; the whole-worktree hygiene claim is what was false as worded. Related scan-frame note (non-defect): h04's own first venv nbc/nbi scan ran with relative paths from a reset cwd and produced bogus zeros; re-run with absolute paths still returned 0.",
+  "R2_custody_before_overwrite": "the custody stage (window 'custody:f_suite_tails', rc 0, wall 0.0) ran BEFORE the ablation stage launched any suite that writes evidence tails; all three custody copies were byte-exact at their pins pre-copy (pins = the committed blobs at 5cae07a, see dual_pins) — byte-proven ordering",
+  "R3_results_integrity": "22 windows with per-window rc recorded (16 pilots rc 0, custody rc 0, 4 ablations rc 0, F1 ablation rc 1); zero pressure breaches and zero refusals per h04's verification; the single rc=1 is adjudicated in f1_ablation_ruling below, not silently absorbed"
+ },
+ "dual_pins": {
+  "note": "item-G condition (i): both the pre-fire committed tails and the post-fire live tails are pinned; old legs = committed blobs at 5cae07a, verified identical (full 64-hex) to the custody copies",
+  "old_committed_and_custody": {
+   "F1I": {"sha256": "00a5264d6962389159557ba2f50c165ee21b1b19705139986a08c960fb8001ed", "bytes": 6150, "custody_copy": "campaign_data/interim_00a5264d_i00_F1I_test_artifacts.json"},
+   "F2I": {"sha256": "3753642dfcd1fcdb4b60c46a2e2d3ca906c30b139613d7c0089607825faa4aa1", "bytes": 9240, "custody_copy": "campaign_data/interim_3753642d_i00_F2I_test_artifacts.json"},
+   "F3I": {"sha256": "ebfc94a87d8bdcfc49f8214f0fc6afe989cfcefc10309e1f123d56658560791e", "bytes": 25385, "custody_copy": "campaign_data/interim_ebfc94a8_i00_F3I_test_artifacts.json"}
+  },
+  "new_live_post_fire": {
+   "F1I": {"sha256": "ba4720be54e5308c936b4f380fbfba7c7f7e33bcd1d444d1bac7f6e3c87a9d20", "bytes": 6152},
+   "F2I": {"sha256": "3a2dfc66accc3d6aa0bcbef471325d94880ef79621c8f527730b6419f32ecc37", "bytes": 9240},
+   "F3I": {"sha256": "6edfa3470e385850dbf5bc31bb3a87ccba87041954fa60371d87cea014edf1f9", "bytes": 25385}
+  }
+ },
+ "write_set_census": {
+  "counts": {"campaign_data/i00_sessions": "16 session files", "campaign_data/i00_out": "16 dirs, 48 files", "campaign_data/i00_captures": "4 dirs, 6 files", "campaign_data/nbc_i00_composed": 14, "campaign_data/nbc_i00_b0": 10},
+  "counting_semantics_note": "h05's census counted files recursively; h04's first verification pass counted top-level entries — the figures reconciled once the semantics were named (both correct on their own domain). Recorded here so the discrepancy never reads as a census defect.",
+  "outside_declared_set": "nothing (post-correction statement per R1; the pre-existing gitignored wt-large-e2e/.pytest_cache predates the fire and is excluded by the ruled wording above)"
+ },
+ "f1_ablation_ruling": {
+  "author": "h04-reviewer (independent verification authority)",
+  "class": "census-domain obsolescence — SUITE-SIDE, NOT a composed-tree defect; h05's labeled inference CONFIRMED with full byte-level attribution",
+  "symptoms": "F1 ablation rc 1: '2 failed, 28 passed in 17.72s' — failed: test_t7_targetoptions_census (tests/large_e2e/F1/test_f1_compiler.py:30-61) and test_t8_source_diff_single_decorator_line (tests/large_e2e/F1/test_f1_turns.py:54-78)",
+  "T8_attribution": "T8 diffs the candidate AggregateFlow against B0's file asserting the diff is exactly 2 lines (the nogil decorator swap). The composed tree legitimately carries the F1+F2+F3 union, so the same diff now measures 606 matching lines. h04 statically reproduced the suite's difflib call: 606, with the attribution partition B0->F1 = 2, F1->F3 = 121, F3->F2 = 483, F2->current = 0 (sum 606) — every differing line is a screened track's own delta, zero unexplained. AggregateFlow at 61f3db64801018aea0c19d27a27c25506ed64e2d is byte-identical to the current tree (blob sha == live sha256 1f3cf4d2725320569c1b19bf339a39d0bf013d1cb7b6f8e5d72526a77531797c, re-verified by the integrator in-session).",
+  "T7_attribution": "T7 is a module-level njit name-set census: B0 = 5 names vs composed = 6, symmetric difference exactly {'_accumulate_od_flow_local'} — F2's screened local-route kernel. No unexpected symbols.",
+  "disposition": "NO byte edits to the closed F1 suite; the ruling rides this record. The F1 ablation is graded PASS with 2 obsolete-in-domain source-census tests; the 28 passing tests carry the behavioral verdict.",
+  "downstream_note_for_Q00": "future F1-suite runs on the composed line will fail these same 2 tests for this ruled reason — expectation, not regression (carried to #37 verbatim)"
+ },
+ "item_G_disposition": {
+  "ruling": "KEEP — the composed-tree tails stay in place as I00 ablation evidence, departing from the A3I-era restore precedent because F1R and F3R are closed (no live per-track gates remain that those tails would disturb)",
+  "conditions": [
+   "(i) dual sha pins in the fire report — satisfied: dual_pins above carries all six shas",
+   "(ii) the I00 close commit records the tails with ablation provenance in its message",
+   "(iii) future gates cite commit-pinned shas only, never live-path reads of these tails"
+  ]
+ },
+ "f1i_live_tail_provenance_note": "the live F1I tail (ba4720be, 6152 B) was WRITTEN BY the ablation run that exited rc 1; that rc=1 is fully attributed above to the two obsolete-in-domain census tests, and the tail's own behavioral fields are clean (first_divergences {} — zero output divergences vs B0). The +2 B delta vs the committed 6150 B tail is run-frame provenance, not a behavioral change; the close-commit message carries the census-obsolescence ruling so this tail can never be misread as a composed-line regression (item-G condition (ii)).",
+ "ablation_results": {
+  "A1": "118 passed (rc 0)",
+  "A3": "57 passed (rc 0)",
+  "F1": "2 failed, 28 passed (rc 1) — adjudicated: census-domain obsolescence, see f1_ablation_ruling",
+  "F2": "15 passed (rc 0)",
+  "F3": "22 passed (rc 0)"
+ },
+ "lease_charge": {
+  "opening_balance_s": 1416.0,
+  "fire_charge_s": 245.6,
+  "cumulative_charged_s": 1661.6,
+  "remaining_s": 12738.4,
+  "budget_s": 14400.0,
+  "windows": 22,
+  "window_breakdown": "16 paired pilots (8 cells x {composed, b0}, all rc 0) + 1 custody window (wall 0.0) + 5 ablations; figures read from i00_lease_log.json fields (opening_balance_s, cumulative_charged_s, remaining_s) — no hand arithmetic",
+  "post_fire_stance": "no further fires are needed for #34 (h04 terminal-loop declaration); h05 holds until the W00 fire plan routes"
+ },
+ "pending_for_task_close": [
+  "h04 one-pass verification of THIS record against the ruling message and live bytes",
+  "I00 close commit: instrument i00_run_reprofile.py + the three modified tails + reprofile.json, with ablation provenance in the message per item-G condition (ii)",
+  "then #34 closes; cron f1bcc738 retires; #35 W00 opens"
+ ]
+}
