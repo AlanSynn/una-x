@@ -43,6 +43,9 @@ DATA = f"{CAMPAIGN}/campaign_data"
 WT_B0 = f"{CAMPAIGN}/wt-b0"
 B0_COMMIT = "361928e4ba38f34622cafe065b0025244db61368"
 B0_SRC_TREE = "a5883dddcef3afb8debdb4438a6338da886add6f"
+# W00-G1 (h04): selected arm build pin — verified by ancestry + pin
+# src-tree integrity in _verify_tree, NOT by HEAD equality; the archive
+# window archives this commit directly
 SEL_HEAD = "6b53a274e8a8d3e7360ab5e1b38f741107ce3358"
 SEL_SRC_TREE = "3c59bb0d3f9bc1fba7547be47ec63add88dd3031"
 BASE_PY = "/opt/homebrew/opt/python@3.11/bin/python3.11"
@@ -237,22 +240,45 @@ def guard_and_launch(cmd, env, lease_id, what, timeout_s,
 
 
 def _verify_tree(repo, head, src_tree, label):
-    p = subprocess.run(["git", "-C", repo, "rev-parse", "HEAD"],
-                       capture_output=True, text=True)
-    if p.returncode != 0 or p.stdout.strip() != head:
-        print(f"[w00-run] REFUSED: {label} HEAD {p.stdout.strip()!r} != {head}")
-        return False
+    # W00-G1 (h04 ruling): HEAD equality is non-convergent for the selected
+    # arm under commit-before-init (the amendment commit moves HEAD past any
+    # constant the committed bytes can name), and a HEAD-containment gate
+    # would leave pyproject/hatch_build unpinned across descendants.  The
+    # build is archive-by-pin (stage_build archives `head` itself), so the
+    # selected arm verifies pin ancestry + pin integrity; b0 keeps the
+    # HEAD-equality checks.
+    if label == "selected":
+        p = subprocess.run(["git", "-C", repo, "merge-base", "--is-ancestor",
+                            head, "HEAD"], capture_output=True, text=True)
+        if p.returncode != 0:
+            print(f"[w00-run] REFUSED: {label} pin {head} is not an ancestor "
+                  f"of HEAD (git rc={p.returncode})")
+            return False
+        p = subprocess.run(["git", "-C", repo, "rev-parse", f"{head}:src"],
+                           capture_output=True, text=True)
+        if p.returncode != 0 or p.stdout.strip() != src_tree:
+            print(f"[w00-run] REFUSED: {label} pin src tree "
+                  f"{p.stdout.strip()!r} != {src_tree}")
+            return False
+    else:
+        p = subprocess.run(["git", "-C", repo, "rev-parse", "HEAD"],
+                           capture_output=True, text=True)
+        if p.returncode != 0 or p.stdout.strip() != head:
+            print(f"[w00-run] REFUSED: {label} HEAD {p.stdout.strip()!r} "
+                  f"!= {head}")
+            return False
     p = subprocess.run(["git", "-C", repo, "status", "--porcelain"],
                        capture_output=True, text=True)
     if p.returncode != 0 or p.stdout.strip():
         print(f"[w00-run] REFUSED: {label} worktree not clean:\n{p.stdout}")
         return False
-    p = subprocess.run(["git", "-C", repo, "rev-parse", "HEAD:src"],
-                       capture_output=True, text=True)
-    if p.returncode != 0 or p.stdout.strip() != src_tree:
-        print(f"[w00-run] REFUSED: {label} src tree {p.stdout.strip()!r} "
-              f"!= {src_tree}")
-        return False
+    if label != "selected":
+        p = subprocess.run(["git", "-C", repo, "rev-parse", "HEAD:src"],
+                           capture_output=True, text=True)
+        if p.returncode != 0 or p.stdout.strip() != src_tree:
+            print(f"[w00-run] REFUSED: {label} src tree {p.stdout.strip()!r} "
+                  f"!= {src_tree}")
+            return False
     return True
 
 
