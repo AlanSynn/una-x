@@ -396,7 +396,9 @@ def cross_arm():
         "ok": off == [],
     }
     # 12(d): wheel member content compare
-    wmaps = {arm: wheel_member_map(ARMS[arm]["wheel"]["path"])
+    # [A3R-B5 fold, h04] attempt-1 crash fix: ARMS has no "wheel" key —
+    # the path lives on the per-arm record built in build_arm
+    wmaps = {arm: wheel_member_map(arm_records[arm]["wheel"]["path"])
              for arm in ("b0", "cand")}
     wnames = sorted(set(wmaps["b0"]) | set(wmaps["cand"]))
     wdiff = [q for q in wnames
