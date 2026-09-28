@@ -36,7 +36,12 @@ from ..Logger import Logger
 from ..Topology import Topology, Network, AccessPoints
 from .Base import Base
 from ._ordered_csr import _try_build_ordered_csr
-from ._large_access_scratch import _a1_scope_admits, _a1_scope_search
+from ._large_access_scratch import (
+    _a1_scope_admits,
+    _a1_scope_search,
+    _a3_scope_search_tailless,
+    _a3_tail_admits,
+)
 
 # ============================================================================
 # AccessibilityWElevation Graph Engine Constants
@@ -232,6 +237,33 @@ def od_compact_vector_node_view_scope(
         cutoff,
     )
     if a1_admitted:
+        # A3 tail-free private scope route (campaign una_large_e2e):
+        # destination terminals validated into the network-node domain
+        # run the per-origin search on a tail-free label vector; a
+        # refusal keeps the A1 scratch route below, byte-identical.
+        if _a3_tail_admits(d_terminal_idxs, d_count, n_count):
+            for i in nb.prange(o_count):
+                eligible_offset = np.empty(a1_max_degree, dtype=np.int64)
+                eligible_weight = np.empty(a1_max_degree, dtype=np.float64)
+                scope_weights = _a3_scope_search_tailless(
+                    o_terminal_idxs[i],
+                    o_terminal_weights[i],
+                    adjacency_pointer,
+                    adjacency_vector,
+                    adjacency_vector_weights,
+                    adjacynct_vector_network_node,
+                    cutoff,
+                    eligible_offset,
+                    eligible_weight,
+                )[0]
+                # Adjust for destination positions on edges
+                od_distances[i] = adjust_destination_distances(
+                    scope_weights,
+                    d_terminal_idxs,
+                    d_terminal_weights,
+                    d_count,
+                )
+            return od_distances
         for i in nb.prange(o_count):
             eligible_offset = np.empty(a1_max_degree, dtype=np.int64)
             eligible_weight = np.empty(a1_max_degree, dtype=np.float64)
@@ -326,6 +358,50 @@ def integrated_scope_access(
         cutoff,
     )
     if a1_admitted:
+        # A3 tail-free private scope route (campaign una_large_e2e):
+        # destination terminals validated into the network-node domain
+        # run the per-origin search on a tail-free label vector; a
+        # refusal keeps the A1 scratch route below, byte-identical.
+        if _a3_tail_admits(d_terminal_idxs, d_count, n_count):
+            for o_pos in nb.prange(o_count):
+                eligible_offset = np.empty(a1_max_degree, dtype=np.int64)
+                eligible_weight = np.empty(a1_max_degree, dtype=np.float64)
+                scope_weights = _a3_scope_search_tailless(
+                    o_terminal_idxs[o_pos],
+                    o_terminal_weights[o_pos],
+                    adjacency_pointer,
+                    adjacency_vector,
+                    adjacency_vector_weights,
+                    adjacynct_vector_network_node,
+                    cutoff,
+                    eligible_offset,
+                    eligible_weight,
+                )[0]
+
+                # Adjust for destination positions on edges
+                d_distance = adjust_destination_distances(
+                    scope_weights,
+                    d_terminal_idxs,
+                    d_terminal_weights,
+                    d_count,
+                )
+
+                reach[o_pos], gravity_exponential[o_pos], gravity_logistic[o_pos], knn_access[o_pos] = reach_gravity_knn_access(
+                    d_distance=d_distance,
+                    d_weights=d_weights,
+                    cutoff=cutoff,
+                    gravity_beta=gravity_beta,
+                    gravity_plateau=gravity_plateau,
+                    gravity_logistic_midpoint=gravity_logistic_midpoint,
+                    gravity_growth_rate=gravity_growth_rate,
+                    knn_gravity_plateau=gravity_plateau,
+                    knn_weights=knn_weights,
+                    knn_gravity_beta=gravity_beta,
+                    knn_decay=knn_decay,
+                    knn_gravity_logistic_midpoint=gravity_logistic_midpoint,
+                    knn_gravity_growth_rate=gravity_growth_rate,
+                )
+            return reach, gravity_exponential, gravity_logistic, knn_access
         for o_pos in nb.prange(o_count):
             eligible_offset = np.empty(a1_max_degree, dtype=np.int64)
             eligible_weight = np.empty(a1_max_degree, dtype=np.float64)

@@ -19,6 +19,14 @@ call and returns (admitted, max_degree).
 and returns the same (o_scope_weights, o_scope_pred) pair. Scratch
 buffers are allocated by the caller inside each prange iteration and
 shared with no other search (proof.md section 4, decision D3).
+
+`_a3_scope_search_tailless` (task A3I) is the tail-free private
+variant: the per-origin label vector covers only the network-node
+domain, dropping the destination tail [V, nd) that no admitted firing
+reads or writes (campaigns/una_large_e2e/evidence/A3I/proof.md
+sections 2-5). `_a3_tail_admits` is its typed guard: it validates the
+destination terminal shape and value domain once per driver call, and
+every refusal keeps the driver's A1 route byte-identical.
 """
 from heapq import heappush, heappop
 
@@ -202,6 +210,119 @@ def _a1_scope_search(
     o_idx_end_weight = o_terminal_weights[1]
 
     o_scope_weights = np.ones(nd_node_count, dtype=o_terminal_weights.dtype) + cutoff
+    o_scope_pred = np.empty(0, dtype=o_terminal_idxs.dtype)
+
+    # Add start node segment terminals to seen with their weights
+    o_scope_weights[o_idx_start] = o_idx_start_weight
+    o_scope_weights[o_idx_end] = o_idx_end_weight
+
+    queue = [(o_idx_start_weight, o_idx_start)]
+    weight, node = heappop(queue)
+
+    if o_idx_end_weight < cutoff:
+        heappush(queue, (o_idx_end_weight, o_idx_end))
+
+    if o_idx_start_weight < cutoff:
+        heappush(queue, (o_idx_start_weight, o_idx_start))
+
+    while queue:
+        weight, node = heappop(queue)
+
+        node_start_pointer = adjacency_pointer[node]
+        node_end_pointer = adjacency_pointer[node + 1]
+
+        # Phase one: eligibility against the pre-row label snapshot;
+        # no label writes in this pass.
+        n_eligible = 0
+        for i in range(node_end_pointer - node_start_pointer):
+            neighbor_weight = adjacency_vector_weights[node_start_pointer + i] + weight
+            neighbor_node = adjacency_vector[node_start_pointer + i]
+            if neighbor_weight <= cutoff and neighbor_weight < o_scope_weights[neighbor_node]:
+                eligible_offset[n_eligible] = node_start_pointer + i
+                eligible_weight[n_eligible] = neighbor_weight
+                n_eligible += 1
+
+        # Phase two: assignments and pushes from the stored pairs, in
+        # ascending row order, with no eligibility recomputation.
+        for j in range(n_eligible):
+            offset = eligible_offset[j]
+            neighbor_weight = eligible_weight[j]
+            neighbor_node = adjacency_vector[offset]
+            o_scope_weights[neighbor_node] = neighbor_weight
+            if adjacynct_vector_network_node[offset]:
+                if adjacency_pointer[neighbor_node + 1] - adjacency_pointer[neighbor_node] > 1:
+                    heappush(queue, (neighbor_weight, neighbor_node))
+
+    return o_scope_weights, o_scope_pred
+
+
+@nb.njit
+def _a3_tail_admits(d_terminal_idxs, d_count, node_count):
+    """A3 tail-free route admission check (proof.md section 3.1).
+
+    Returns True only when `d_terminal_idxs` has shape (d_count, 2) and
+    every value lies in [0, node_count): the read domain that the
+    shared adjust_destination_distances exercises on a tail-free label
+    vector. Allocates nothing, writes nothing, raises nothing; runs
+    once per driver call. A refusal sends the driver to its unchanged
+    A1 route.
+    """
+    if d_terminal_idxs.ndim != 2:
+        return False
+    if d_terminal_idxs.shape[0] != d_count or d_terminal_idxs.shape[1] != 2:
+        return False
+    for i in range(d_count):
+        for j in range(2):
+            terminal_node = d_terminal_idxs[i, j]
+            if terminal_node < 0 or terminal_node >= node_count:
+                return False
+    return True
+
+
+@nb.njit(
+    parallel=NUMBA_PARALLEL,
+    cache=NUMBA_CACHE,
+    nogil=NUMBA_NOGIL,
+    fastmath=NUMBA_FASTMATH,
+)
+def _a3_scope_search_tailless(
+    o_terminal_idxs,
+    o_terminal_weights,
+    adjacency_pointer,
+    adjacency_vector,
+    adjacency_vector_weights,
+    adjacynct_vector_network_node,
+    cutoff,
+    eligible_offset,
+    eligible_weight,
+):
+    """Tail-free two-phase scope search (task A3I, proof.md section 5).
+
+    Line-for-line copy of `_a1_scope_search` with a single delta: the
+    label vector is sized to the network-node domain
+    `adjacency_pointer.shape[0] - 1` instead of
+    `d_count + adjacency_pointer.shape[0] - 1`, dropping the
+    destination tail [V, nd) that no admitted firing reads or writes
+    (proof.md section 2). No other line differs: same prologue, heap
+    sequence, two-phase eligibility/assignment passes, and the same
+    (o_scope_weights, o_scope_pred) return shape.
+
+    Delta inventory vs `_a1_scope_search` (review pin P3):
+    - the `d_count` parameter is removed from the signature;
+    - the init is `np.ones(adjacency_pointer.shape[0] - 1, ...) +
+      cutoff` and the `nd_node_count` local is gone;
+    - names `_a1_*` -> `_a3_*` and this docstring.
+
+    Callers must first admit via `_a3_tail_admits` (proof.md section
+    3.1); scratch buffers are caller-owned per prange iteration, as in
+    A1.
+    """
+    o_idx_start = o_terminal_idxs[0]
+    o_idx_end = o_terminal_idxs[1]
+    o_idx_start_weight = o_terminal_weights[0]
+    o_idx_end_weight = o_terminal_weights[1]
+
+    o_scope_weights = np.ones(adjacency_pointer.shape[0] - 1, dtype=o_terminal_weights.dtype) + cutoff
     o_scope_pred = np.empty(0, dtype=o_terminal_idxs.dtype)
 
     # Add start node segment terminals to seen with their weights
