@@ -51,6 +51,30 @@ POOL_PY = f"{REPO}/benchmarks/large_e2e/harness/pool.py"
 
 BUDGET_S = matrix.LEDGER["budget_total_s"]
 PRESSURE_STOP = matrix.PRESSURE_STOP_BYTES
+# D9 (fire #3 halt, lease r3, log 6c65934d): sizing guard band subtracted
+# from the fraction ceiling before MiB flooring, so the child's independent
+# re-measurement tolerates ordinary availability drift (2**26 / 0.80 =
+# 80 MiB) instead of the 1.09 MiB the pre-band sizing left.
+SIZING_GUARD_BAND_BYTES = 2 ** 26
+# D9 addendum 2 clamp: below this budget the machine cannot hold even the
+# MEASURED floor plus minimal working headroom, so an admitted child would
+# be breach-destined -- sizing REFUSES instead ("may be refused or
+# downsized", control.json memory_policy).  Anchor: campaigns/una_large_e2e/
+# evidence/H05/memory_lifetimes.json sha256
+# 50dce831911f35a7c7bcbcd7896791786dfa93249e44623707cbc311e405d26a, max
+# per-cell ru_maxrss = FLOW_chosen_od 2577.515625 MiB (B0 in-repo anchor;
+# no S01-scale peak has been measured -- h04's fire-4 intake compares the
+# first true peaks against this anchor).  2750 = 2577.515625 + ~6.7%.
+# Clamp bites below avail ~= 3.44 GiB ((2750<<20 + 2**26) / 0.80).
+MIN_VIABLE_BUDGET_MIB = 2750
+
+
+class SizingRefused(Exception):
+    """D9 low-avail clamp: the band-constrained ceiling is below the
+    minimum viable budget -- refuse sizing rather than admit a
+    breach-destined child (or clamp to a zero/tiny budget, which would
+    PASS the child's budget gate and fail open)."""
+
 
 # Instrument pins verified live at init (fresh tool outputs, 2026-09-28).
 # run.py is the unchanged W00 triad member; pool.py carries the S01
@@ -159,10 +183,29 @@ def child_env(extra):
 
 
 def memory_ceiling_mib():
+    """Child memory budget in whole MiB: the fraction ceiling minus the
+    64 MiB sizing guard band, floored to MiB.  D9 (fire #3 halt, log
+    6c65934d): the pre-band sizing floor(0.80*avail/2**20) sat only
+    1,146,880 B above the child's acceptance floor, so 13,451,264 B of
+    intra-second drift between this observation and the child's own
+    admission preflight forced admission_refused before any work.  The
+    band tolerates 2**26/0.80 = 80 MiB of drift; the child's structured
+    refusal stays terminal.  D9 addendum 2: a band-subtracted ceiling
+    below MIN_VIABLE_BUDGET_MIB refuses sizing (SizingRefused) -- never a
+    zero/negative/tiny budget, which would pass the child's budget gate."""
     import psutil
     avail = psutil.virtual_memory().available
-    return int(min(matrix.CEILING_MIB_CAP << 20,
-                   matrix.CEILING_FRACTION * avail) / (1 << 20)), avail
+    capped = min(matrix.CEILING_MIB_CAP << 20,
+                 matrix.CEILING_FRACTION * avail)
+    ceiling_mib = int((capped - SIZING_GUARD_BAND_BYTES) / (1 << 20))
+    if ceiling_mib < MIN_VIABLE_BUDGET_MIB:
+        raise SizingRefused(
+            f"band-constrained ceiling {ceiling_mib} MiB < minimum viable "
+            f"budget {MIN_VIABLE_BUDGET_MIB} MiB (anchor: H05/"
+            f"memory_lifetimes.json sha256 50dce831, max per-cell ru_maxrss "
+            f"2577.515625 MiB); refuse sizing (memory_policy: may be "
+            f"refused or downsized)")
+    return ceiling_mib, avail
 
 
 def guard_and_launch(cmd, env, lease_id, what, timeout_s,
@@ -401,7 +444,11 @@ def stage_p0(lease_id, arm):
     if log is None:
         print("[s01-run] REFUSED: lease not initialized (run --stage init)")
         return 2
-    ceiling_mib, _avail = memory_ceiling_mib()
+    try:
+        ceiling_mib, _avail = memory_ceiling_mib()
+    except SizingRefused as exc:
+        print(f"[s01-run] REFUSED: {exc}")
+        return 2
     pilot_records = []
     for cell in matrix.PILOT_CELLS:
         ref_w, ref_h = matrix.PILOT_REFERENCE_CONFIG[
@@ -619,7 +666,11 @@ def stage_p1(lease_id, arm):
               f"the binding {floor}s reserve floor")
         return 2
 
-    ceiling_mib, _avail = memory_ceiling_mib()
+    try:
+        ceiling_mib, _avail = memory_ceiling_mib()
+    except SizingRefused as exc:
+        print(f"[s01-run] REFUSED: {exc}")
+        return 2
     for row in remaining:
         if not _refuse_existing(row["out_dir"], row["cache_root"]):
             return 2
@@ -722,7 +773,11 @@ def stage_confirm(lease_id, arm):
     with open(f"{EVIDENCE}/configurations.json") as f:
         configurations = json.load(f)
     k_jobs = configurations["p0"]["k_jobs"]
-    ceiling_mib, _avail = memory_ceiling_mib()
+    try:
+        ceiling_mib, _avail = memory_ceiling_mib()
+    except SizingRefused as exc:
+        print(f"[s01-run] REFUSED: {exc}")
+        return 2
     launched = 0
     for family, cell in matrix.SWEEP_WORKLOADS.items():
         strongest = selections[family]["strongest_feasible_b0"]

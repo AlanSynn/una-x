@@ -327,6 +327,10 @@ def test_p1_budget_gates_refuse(sandbox, monkeypatch):
 
 def test_p1_all_done_is_noop(sandbox, monkeypatch):
     _primed_sandbox(sandbox, monkeypatch)
+    # sizing env pinned (T-C idiom): this test exercises noop semantics,
+    # not sizing; the D9 clamp is live-avail-conditional.
+    monkeypatch.setattr(s01_run, "memory_ceiling_mib",
+                        lambda: (8000, 8 * 2**30))
     for row in s01_run._expected_batch_dirs("b0"):
         _write_json(f"{row['out_dir']}/session.json",
                     {"status": "valid", "counts": {"validated": 9}})
@@ -338,6 +342,11 @@ def test_p1_all_done_is_noop(sandbox, monkeypatch):
 
 def test_p1_count_deviation_refusal(sandbox, monkeypatch):
     _primed_sandbox(sandbox, monkeypatch)
+    # sizing env pinned (T-C idiom): the asserted refusal is the COUNT
+    # deviation, not sizing -- unpinned, the D9 clamp could refuse first
+    # on a low-avail machine and the test would pass via the wrong refusal.
+    monkeypatch.setattr(s01_run, "memory_ceiling_mib",
+                        lambda: (8000, 8 * 2**30))
     saved = matrix.TOTAL_BATCHES
     try:
         matrix.TOTAL_BATCHES = 26
@@ -734,17 +743,35 @@ def test_p0_refuses_non_b0_arm(sandbox):
 
 def test_memory_ceiling_live_self_consistency():
     """T1: at live avail, the real function equals the intended formula over
-    the avail it returned, and is at least 1 MiB."""
+    the avail it returned.  D9 (2026-09-29): the formula carries the 64 MiB
+    guard band (fire #3 halt, log 6c65934d); addendum 2 adds the low-avail
+    clamp -- sizing REFUSES below MIN_VIABLE_BUDGET_MIB, so both arms are
+    deterministic and the refusal arm re-derives the sub-floor ceiling from
+    the same bytes."""
+    import psutil
+    live = psutil.virtual_memory().available
+    capped = min(matrix.CEILING_MIB_CAP << 20,
+                 matrix.CEILING_FRACTION * live)
+    banded = int((capped - s01_run.SIZING_GUARD_BAND_BYTES) / (1 << 20))
+    if banded < s01_run.MIN_VIABLE_BUDGET_MIB:
+        with pytest.raises(s01_run.SizingRefused, match="minimum viable"):
+            s01_run.memory_ceiling_mib()
+        return
     mib, avail = s01_run.memory_ceiling_mib()
-    assert mib == min(matrix.CEILING_MIB_CAP << 20,
-                      int(matrix.CEILING_FRACTION * avail)) // (1 << 20)
-    assert mib >= 1
+    assert avail == live
+    assert mib == banded
+    assert mib >= s01_run.MIN_VIABLE_BUDGET_MIB
 
 
 def test_memory_ceiling_agrees_with_guard_expression(monkeypatch):
     """T2: the supervisor ceiling and the guard_and_launch ceiling
     (s01_run.py :169-170) must agree BY TEST at every avail, including the
-    cap/fraction crossover, so the two expressions cannot drift apart."""
+    cap/fraction crossover, so the two expressions cannot drift apart.
+    D9 (2026-09-29): the raw fraction ceiling stays the guard_and_launch /
+    audit expression; the CHILD BUDGET returned by memory_ceiling_mib is
+    that ceiling minus the 64 MiB guard band, floored to MiB (fire #3
+    halt, log 6c65934d); addendum 2: grid members whose banded ceiling
+    falls below MIN_VIABLE_BUDGET_MIB must REFUSE sizing."""
     import psutil
     cross = (matrix.CEILING_MIB_CAP << 20) / matrix.CEILING_FRACTION
     avail_list = sorted({10 ** e for e in range(3, 13)}
@@ -753,27 +780,48 @@ def test_memory_ceiling_agrees_with_guard_expression(monkeypatch):
                         | {0, 1 << 20, matrix.PRESSURE_STOP_BYTES,
                            32 * 2 ** 30, 1 << 40})
     assert {int(cross) - 1, int(cross), int(cross) + 1} <= set(avail_list)
+    n_refused = 0
     for avail in avail_list:
         monkeypatch.setattr(psutil, "virtual_memory",
                             lambda a=avail: _FakeVM(a))
+        capped = min(matrix.CEILING_MIB_CAP << 20,
+                     matrix.CEILING_FRACTION * avail)
+        banded = int((capped - s01_run.SIZING_GUARD_BAND_BYTES) / (1 << 20))
+        if banded < s01_run.MIN_VIABLE_BUDGET_MIB:
+            with pytest.raises(s01_run.SizingRefused, match="minimum viable"):
+                s01_run.memory_ceiling_mib()
+            n_refused += 1
+            continue
         mib, got = s01_run.memory_ceiling_mib()
         guard = min(matrix.CEILING_MIB_CAP << 20,
                     int(matrix.CEILING_FRACTION * got))
         assert got == avail, (avail, got)
-        assert mib == guard >> 20, (avail, mib, guard)
+        assert mib == banded, (avail, mib)
+        # ruled bytes invariant: the budget sits at least one full band
+        # below the raw audit ceiling
+        assert mib * (1 << 20) <= guard - s01_run.SIZING_GUARD_BAND_BYTES, \
+            (avail, mib, guard)
+    # the clamp must actually bite inside the grid (sub-3.69-GiB members:
+    # 10^3..10^9, 1 MiB, 0, and the pressure-stop level all refuse)
+    assert n_refused >= 10, n_refused
 
 
 def test_memory_ceiling_cap_branch_returns_cap(monkeypatch):
     """T3: exact-bug signature -- at a LARGE avail the function must return
-    the converted cap branch EXACTLY (the bug returned 0 precisely there;
-    T1's live avail exercises only the fraction branch)."""
+    the converted cap branch EXACTLY (the D4 bug returned 0 precisely
+    there; T1's live avail exercises only the fraction branch).  D9
+    (2026-09-29): the cap branch now returns the BANDED cap exactly --
+    cap MiB minus the 64 MiB guard band, an exact whole-MiB value."""
     import psutil
     monkeypatch.setattr(psutil, "virtual_memory",
                         lambda: _FakeVM(32 * 2 ** 30))
     mib, avail = s01_run.memory_ceiling_mib()
     assert avail == 32 * 2 ** 30
-    assert mib == matrix.CEILING_MIB_CAP
-    assert mib == 10650
+    assert mib == int(((matrix.CEILING_MIB_CAP << 20)
+                       - s01_run.SIZING_GUARD_BAND_BYTES) / (1 << 20))
+    assert mib == matrix.CEILING_MIB_CAP \
+        - (s01_run.SIZING_GUARD_BAND_BYTES >> 20)
+    assert mib == 10586
 
 
 # ---------------------------------------------------------------------------
@@ -797,8 +845,12 @@ def test_dispatch_traverses_to_handler_and_closes_envelope(
         sandbox, monkeypatch, capsys):
     # (a) healthy log: wrapper opens the envelope, the handler's own refusal
     # closes it rc 2 -- and the refusal is the HANDLER's (path collision),
-    # proving traversal, not the wrapper's.
+    # proving traversal, not the wrapper's.  Sizing env pinned (T-C idiom):
+    # the D9 clamp is live-avail-conditional and must not pre-empt the
+    # handler's refusal this test exists to observe.
     _primed_sandbox(sandbox, monkeypatch)
+    monkeypatch.setattr(s01_run, "memory_ceiling_mib",
+                        lambda: (8000, 8 * 2**30))
     _precreate_o2_pilot_out(sandbox)
     assert s01_run.main(["--stage", "p0", "--arm", "b0"]) == 2
     out = capsys.readouterr().out
@@ -945,7 +997,7 @@ class _RealDiskSystem:
         return psutil.disk_usage(path)
 
 
-def _runspec(out_dir, cache_root):
+def _runspec(out_dir, cache_root, memory_budget_mib=3108):
     """A real frozen RunSpec over the supervisor-derived layout (constructor
     reads argparse attributes only; no path-existence checks)."""
     ns = argparse.Namespace(
@@ -958,7 +1010,8 @@ def _runspec(out_dir, cache_root):
         mode="batch",
         jobs=9, workers=3, numba_threads=3, flow_stripes=None,
         queue_depth=3, writer_limit=64,
-        cpu_budget=matrix.C_SLOTS, memory_budget_mib=3108, timeout_s=3600,
+        cpu_budget=matrix.C_SLOTS,
+        memory_budget_mib=memory_budget_mib, timeout_s=3600,
         test_fault=None,
     )
     return spec.RunSpec(ns)
@@ -1025,3 +1078,104 @@ def test_refusal_creates_no_parent_launch_leaves_parent(sandbox, monkeypatch):
     assert sorted(c["what"] for c in calls) == sorted(_PILOT_WALLS)
     assert os.path.isdir(os.path.dirname(pilot_out))
     assert all(c["parent_existed"] for c in calls)
+
+
+# ---------------------------------------------------------------------------
+# D9 (fire #3 halt, lease r3, log 6c65934d): the supervisor's floor()-to-MiB
+# sizing left only 1,146,880 B (1.09 MiB) between its own admission
+# observation (3,823,206,400 B) and the frozen child's acceptance floor
+# (3,822,059,520 B), so 13,451,264 B (12.83 MiB) of ordinary intra-second
+# availability drift (loadavg ~4.75; child avail 2.22x pressure stop) forced
+# the child's structured admission_refused (receipt interim_73099abf).
+# Ruled fix, supervisor only: size the budget a 2**26-byte (64 MiB) guard
+# band BELOW the fraction line; the frozen child's own admission guard stays
+# terminal (no retry, no CLI override, no wait-for-quiet).  Addendum 2:
+# a band-subtracted ceiling below MIN_VIABLE_BUDGET_MIB (2750, anchored on
+# the measured max per-cell ru_maxrss 2577.515625 MiB) REFUSES sizing
+# instead of admitting a breach-destined budget.
+# ---------------------------------------------------------------------------
+HALT3_AVAIL_BYTES = 3_823_206_400          # supervisor admission observation
+HALT3_DRIFT_BYTES = 13_451_264             # observed sup->child drift
+D9_DRIFT_BOUND_BYTES = 80 * (1 << 20)      # ruled: 2**26 / 0.80
+
+
+def test_d9_sizing_carries_guard_band(monkeypatch):
+    # Ruled T-D (sizing unit): the budget is floor((0.80*avail - 2**26)
+    # / 2**20) in the uncapped regime and keeps the band in the capped
+    # regime (band subtracts AFTER the cap floor, so the margin survives
+    # wherever the cap binds).  Addendum 2: an avail whose banded ceiling
+    # falls below MIN_VIABLE_BUDGET_MIB (2750; anchor H05
+    # memory_lifetimes.json, max per-cell ru_maxrss 2577.515625 MiB)
+    # REFUSES sizing -- never a zero/negative/tiny budget.
+    import psutil
+    assert s01_run.SIZING_GUARD_BAND_BYTES == 2 ** 26
+    assert s01_run.MIN_VIABLE_BUDGET_MIB == 2750
+    monkeypatch.setattr(psutil, "virtual_memory",
+                        lambda: types.SimpleNamespace(
+                            available=HALT3_AVAIL_BYTES, total=16 * 2**30))
+    budget_mib, avail = s01_run.memory_ceiling_mib()
+    assert avail == HALT3_AVAIL_BYTES
+    assert budget_mib == int(
+        (matrix.CEILING_FRACTION * HALT3_AVAIL_BYTES - 2 ** 26) / (1 << 20))
+    assert budget_mib * (1 << 20) <= (
+        matrix.CEILING_FRACTION * HALT3_AVAIL_BYTES - 2 ** 26)
+    # the pre-band sizing is the halt signature: floor(0.80*A/2**20) = 2916
+    # MiB is exactly the budget the child refused at the halt-3 drift.
+    assert budget_mib != int(
+        matrix.CEILING_FRACTION * HALT3_AVAIL_BYTES / (1 << 20))
+
+    big = 64 * 2 ** 30
+    monkeypatch.setattr(psutil, "virtual_memory",
+                        lambda: types.SimpleNamespace(
+                            available=big, total=64 * 2 ** 30))
+    capped_mib, _ = s01_run.memory_ceiling_mib()
+    assert capped_mib == int(
+        ((matrix.CEILING_MIB_CAP << 20) - 2 ** 26) / (1 << 20))
+
+    low = 2 * 2 ** 30                    # banded ceiling 1574 MiB < 2750
+    monkeypatch.setattr(psutil, "virtual_memory",
+                        lambda: types.SimpleNamespace(
+                            available=low, total=16 * 2 ** 30))
+    with pytest.raises(s01_run.SizingRefused, match="minimum viable"):
+        s01_run.memory_ceiling_mib()
+
+
+def test_d9_band_survives_child_remeasurement(sandbox, monkeypatch):
+    # Ruled T-E (interface-margin integration): the supervisor-sized budget
+    # must survive the FROZEN child's independent re-measurement for drift
+    # up to the ruled bound (64 MiB band / 0.80 = 80 MiB), including the
+    # exact halt-3 drift, and the child's own guard must refuse beyond it.
+    # Real-callee pattern (T-B's _RealDiskSystem): no stubbed boundary.
+    import psutil
+    _primed_sandbox(sandbox, monkeypatch)
+    monkeypatch.setattr(psutil, "virtual_memory",
+                        lambda: types.SimpleNamespace(
+                            available=HALT3_AVAIL_BYTES, total=16 * 2**30))
+    budget_mib, _ = s01_run.memory_ceiling_mib()
+    out_dir = f"{s01_run.RUNROOT}/pilots/O2_pilot_1"
+    cache_root = f"{s01_run.NBCROOT}/nbc_s01_pilot_O2_1"
+    os.makedirs(os.path.dirname(out_dir), exist_ok=True)
+    os.makedirs(s01_run.NBCROOT, exist_ok=True)
+
+    def child_admission_at(avail):
+        monkeypatch.setattr(psutil, "virtual_memory",
+                            lambda: types.SimpleNamespace(
+                                available=avail, total=16 * 2 ** 30))
+        return _runspec(
+            out_dir, cache_root,
+            memory_budget_mib=budget_mib).validate_admission(
+                _RealDiskSystem(), analysis=None)
+
+    for label, d_bytes in (("zero", 0),
+                           ("one-mib", 1 << 20),
+                           ("halt3-observed", HALT3_DRIFT_BYTES),
+                           ("ruled-bound-80mib", D9_DRIFT_BOUND_BYTES)):
+        admission = child_admission_at(HALT3_AVAIL_BYTES - d_bytes)
+        assert admission["within_budget"] is True, (
+            f"supervisor budget refused at drift {label} ({d_bytes} B)")
+
+    # Beyond the bound the child's own refusal is terminal.  82 MiB is
+    # deterministic: the MiB floor slack (< 1 MiB) cannot close the
+    # 0.8-MiB-plus deficit the extra 2 MiB of drift opens.
+    with pytest.raises(spec.ValidationError, match="exceeds"):
+        child_admission_at(HALT3_AVAIL_BYTES - 82 * (1 << 20))
