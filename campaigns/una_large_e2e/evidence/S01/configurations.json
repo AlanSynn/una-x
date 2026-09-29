@@ -1,0 +1,904 @@
+{
+ "schema_version": 1,
+ "task": "S01",
+ "record": "configurations_final",
+ "stage": "records",
+ "base_commit": "6b53a274e8a8d3e7360ab5e1b38f741107ce3358",
+ "frozen_matrix": {
+  "accessibility_configs": [
+   [
+    1,
+    1
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    3,
+    3
+   ],
+   [
+    4,
+    2
+   ],
+   [
+    2,
+    4
+   ],
+   [
+    9,
+    1
+   ]
+  ],
+  "flow_configs": [
+   [
+    1,
+    5
+   ]
+  ],
+  "batches_per_cell": 2,
+  "arms": [
+   "b0",
+   "selected"
+  ],
+  "total_batches": 28,
+  "sweep_workloads": {
+   "accessibility": "O3_ACCESS",
+   "flow": "O3_FLOW"
+  },
+  "k_fit": {
+   "branch": "labelled_explicit_profile",
+   "labelled_profile_used": true,
+   "explicit_k": 4,
+   "default_k": 9,
+   "c_slots": 9,
+   "default_profile_qualification": "UNAVAILABLE for the flow family on this frame: default K=9 with the minimum feasible numba pool H=1 gives H+K = 10 > C=9 -- the production default profile cannot be admitted; RESOURCES.md :11 remedy taken",
+   "criterion": "H_numba + K <= C_SLOTS and W*(H_numba+K) <= C_SLOTS (child gate spec.py:294-313; posture H >= K preserved from the observed 10:9 topology)",
+   "numerical_profile": "explicit K=4 is a DISTINCT numerical profile from default-K=9 runs: stripe membership range(slot, n_origins, n_threads) depends on K, so float sum order differs; cross-profile output comparison is never regression/improvement evidence; the S01 arm comparison is strictly within-profile",
+   "static_source": "Topology.py:79 num_threads = mp.cpu_count()-1 (also :1143, :2060); constructor override only when not None",
+   "runtime_probe": {
+    "utc": "2026-09-28",
+    "frame": "w00_selected wheel venv",
+    "mp_cpu_count": 10,
+    "instance_num_threads": 9
+   },
+   "flow_stripes_cli": "4"
+  }
+ },
+ "access_origins": {
+  "selection": "bounded fixture, 1,024 origins (h04 Ruling 2, 2026-09-29: bounded fixture ordered; the former sel_all identity-selection block is SUPERSEDED and must not survive to the declaration freeze)",
+  "origins_fixture": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/s01_O3_ACCESS_origins_sel1024.geojson",
+  "origins_fixture_sha256": "70a1083f937a01bb6694606d5bd804a53bbfec24daf6a35298936cd71ee5bafa",
+  "provenance": {
+   "parent_manifest": "tests/large_e2e/inputs/O3_ACCESS_sel_all.origin_indices.json",
+   "parent_manifest_sha256": "2e535cbc45531d86b15a748e96888fe8bb007be7a05afee79683b718ce3586cd",
+   "extraction_rule": "sorted(raw_draw_order[:1024]) of the parent manifest; rows written in sorted-index order; seed-permutation reproduction cross-check exact",
+   "source_file": "campaign_data/inputs/Cambridge_building_centroids.geojson",
+   "source_file_sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+   "derivation_record": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_O3_ACCESS_fixture_derivation.json",
+   "derivation_record_sha256": "d22243ab7481d7bdb09e002101323919d7c8d620f5826dc7bf8680a2097f6a04",
+   "custody_pin": "campaign_data/custody/interim_70a1083f_s01_O3_ACCESS_origins_sel1024.geojson",
+   "authorization": "h04 Ruling 2 (order side) + team-lead GO on pre-write declaration sha 9f7be44e",
+   "identity": "single fixture file consumed IDENTICALLY by both arms and all accessibility configs",
+   "q10_transfer_note": "config ranked on the bounded fixture; Q10 confirms the selected config on the mandatory full workload (h04 Ruling 2 transfer-risk bound)"
+  }
+ },
+ "p0": {
+  "pilots": [
+   {
+    "cell": "O2",
+    "pilot": 1,
+    "ref_config": [
+     1,
+     1
+    ],
+    "warm_batch_application_wall_s": 1.8630530419759452,
+    "producer_wait_share": 8.802701603496133e-05,
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/pilots/O2_pilot_1"
+   },
+   {
+    "cell": "O2",
+    "pilot": 2,
+    "ref_config": [
+     1,
+     1
+    ],
+    "warm_batch_application_wall_s": 1.8679023750592023,
+    "producer_wait_share": 8.704095148165705e-05,
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/pilots/O2_pilot_2"
+   },
+   {
+    "cell": "O3_ACCESS",
+    "pilot": 1,
+    "ref_config": [
+     1,
+     1
+    ],
+    "warm_batch_application_wall_s": 1.9369368329644203,
+    "producer_wait_share": 7.17405945486259e-05,
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/pilots/O3_ACCESS_pilot_1"
+   },
+   {
+    "cell": "O3_ACCESS",
+    "pilot": 2,
+    "ref_config": [
+     1,
+     1
+    ],
+    "warm_batch_application_wall_s": 1.9478685830254108,
+    "producer_wait_share": 6.875001792574885e-05,
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/pilots/O3_ACCESS_pilot_2"
+   },
+   {
+    "cell": "O3_FLOW",
+    "pilot": 1,
+    "ref_config": [
+     1,
+     5
+    ],
+    "warm_batch_application_wall_s": 5.065483124926686,
+    "producer_wait_share": 8.378588765037939e-05,
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/pilots/O3_FLOW_pilot_1"
+   },
+   {
+    "cell": "O3_FLOW",
+    "pilot": 2,
+    "ref_config": [
+     1,
+     5
+    ],
+    "warm_batch_application_wall_s": 5.068248874973506,
+    "producer_wait_share": 3.222690993067183e-05,
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/pilots/O3_FLOW_pilot_2"
+   }
+  ],
+  "k_jobs": {
+   "accessibility": {
+    "k_jobs": 36,
+    "basis_cell": "O3_ACCESS",
+    "warm_job_wall_s_basis": 1.9478685830254108,
+    "largest_w": 9
+   },
+   "flow": {
+    "k_jobs": 12,
+    "basis_cell": "O3_FLOW",
+    "warm_job_wall_s_basis": 5.068248874973506,
+    "largest_w": 1
+   }
+  },
+  "queue_2w_criterion": {
+   "accessibility": {
+    "producer_wait_shares": [
+     7.17405945486259e-05,
+     6.875001792574885e-05
+    ],
+    "live_memory_frac_of_ceiling": 0.7092600123401391,
+    "triggered": false,
+    "thresholds": {
+     "producer_wait_share_max": 0.1,
+     "live_memory_frac_of_ceiling_max": 0.5
+    }
+   },
+   "flow": {
+    "producer_wait_shares": [
+     8.378588765037939e-05,
+     3.222690993067183e-05
+    ],
+    "live_memory_frac_of_ceiling": 0.7092600123401391,
+    "triggered": false,
+    "thresholds": {
+     "producer_wait_share_max": 0.1,
+     "live_memory_frac_of_ceiling_max": 0.5
+    }
+   }
+  },
+  "writer_policy": "writer limit = W everywhere; no lowering proposed (no implemented ownership-preserving mechanism exists)"
+ },
+ "p1_batches": [
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W1H1",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W1H1/b0/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.45681772232902806,
+   "warm_batch_application_wall_s": 78.21760216611437,
+   "validated_batch_wall_s": 78.80604941607453,
+   "producer_wait_total_ns": 1827944,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 722796544,
+    "tree_uss_bytes_sum": 19382272,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 3,
+    "peak_rss_at_utc": 1790691863.323099
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W1H1",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W1H1/b0/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.4577439485689739,
+   "warm_batch_application_wall_s": 78.07317695906386,
+   "validated_batch_wall_s": 78.64658858417533,
+   "producer_wait_total_ns": 1542065,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 719994880,
+    "tree_uss_bytes_sum": 19595264,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 3,
+    "peak_rss_at_utc": 1790691956.781476
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W2H2",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W2H2/b0/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.8405915879210912,
+   "warm_batch_application_wall_s": 42.20761925005354,
+   "validated_batch_wall_s": 42.8269810420461,
+   "producer_wait_total_ns": 1049982,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 1401356288,
+    "tree_uss_bytes_sum": 19578880,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 4,
+    "peak_rss_at_utc": 1790692018.8403032
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W2H2",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W2H2/b0/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.8345804837900664,
+   "warm_batch_application_wall_s": 42.509043666068465,
+   "validated_batch_wall_s": 43.13544433307834,
+   "producer_wait_total_ns": 1212234,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 1404649472,
+    "tree_uss_bytes_sum": 19513344,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 4,
+    "peak_rss_at_utc": 1790692067.2795892
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W3H3",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W3H3/b0/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 1.2472468955379592,
+   "warm_batch_application_wall_s": 28.215317083057016,
+   "validated_batch_wall_s": 28.863571542082354,
+   "producer_wait_total_ns": 1181027,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 2074984448,
+    "tree_uss_bytes_sum": 22577152,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 5,
+    "peak_rss_at_utc": 1790692106.698535
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W3H3",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W3H3/b0/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 1.3115037043005136,
+   "warm_batch_application_wall_s": 26.821228084154427,
+   "validated_batch_wall_s": 27.44940779195167,
+   "producer_wait_total_ns": 1028688,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 2087108608,
+    "tree_uss_bytes_sum": 19513344,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 5,
+    "peak_rss_at_utc": 1790692143.3939998
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W4H2",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W4H2/b0/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 1.6031256170001464,
+   "warm_batch_application_wall_s": 21.79096983303316,
+   "validated_batch_wall_s": 22.45613170810975,
+   "producer_wait_total_ns": 921613,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 2735652864,
+    "tree_uss_bytes_sum": 22806528,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 6,
+    "peak_rss_at_utc": 1790692174.503534
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W4H2",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W4H2/b0/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 1.6648388669004708,
+   "warm_batch_application_wall_s": 20.948436042061076,
+   "validated_batch_wall_s": 21.623714291956276,
+   "producer_wait_total_ns": 1072026,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 2755231744,
+    "tree_uss_bytes_sum": 24346624,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 6,
+    "peak_rss_at_utc": 1790692205.116181
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W2H4",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W2H4/b0/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.8635337737829768,
+   "warm_batch_application_wall_s": 41.09136420907453,
+   "validated_batch_wall_s": 41.68916270905174,
+   "producer_wait_total_ns": 1392278,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 1418117120,
+    "tree_uss_bytes_sum": 19709952,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 4,
+    "peak_rss_at_utc": 1790692243.344706
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W2H4",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W2H4/b0/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.8640218182801304,
+   "warm_batch_application_wall_s": 41.07903274986893,
+   "validated_batch_wall_s": 41.66561449994333,
+   "producer_wait_total_ns": 1074268,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 1398636544,
+    "tree_uss_bytes_sum": 19628032,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 4,
+    "peak_rss_at_utc": 1790692304.862103
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W9H1",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W9H1/b0/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 2.6774429282228973,
+   "warm_batch_application_wall_s": 12.53917720890604,
+   "validated_batch_wall_s": 13.445664749946445,
+   "producer_wait_total_ns": 1685857,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 5175738368,
+    "tree_uss_bytes_sum": 9584640,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 11,
+    "peak_rss_at_utc": 1790692320.368513
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W9H1",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W9H1/b0/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 2.654471296457446,
+   "warm_batch_application_wall_s": 12.734891957836226,
+   "validated_batch_wall_s": 13.56202270789072,
+   "producer_wait_total_ns": 1795269,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 4696276992,
+    "tree_uss_bytes_sum": 20889600,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 11,
+    "peak_rss_at_utc": 1790692335.618932
+   }
+  },
+  {
+   "family": "flow",
+   "cell": "O3_FLOW",
+   "arm": "b0",
+   "cfgkey": "W1H5",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_FLOW/W1H5/b0/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.19342546248522574,
+   "warm_batch_application_wall_s": 61.13574616704136,
+   "validated_batch_wall_s": 62.03940187511034,
+   "producer_wait_total_ns": 703202,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 3448651776,
+    "tree_uss_bytes_sum": 23642112,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 3,
+    "peak_rss_at_utc": 1790692404.316563
+   }
+  },
+  {
+   "family": "flow",
+   "cell": "O3_FLOW",
+   "arm": "b0",
+   "cfgkey": "W1H5",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_FLOW/W1H5/b0/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.194203196290892,
+   "warm_batch_application_wall_s": 60.949739208910614,
+   "validated_batch_wall_s": 61.79095004196279,
+   "producer_wait_total_ns": 500118,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 3444932608,
+    "tree_uss_bytes_sum": 23658496,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 3,
+    "peak_rss_at_utc": 1790692499.190965
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W1H1",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W1H1/selected/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.46550890210065127,
+   "warm_batch_application_wall_s": 76.76679829205386,
+   "validated_batch_wall_s": 77.33471870794892,
+   "producer_wait_total_ns": 1850771,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 755204096,
+    "tree_uss_bytes_sum": 19841024,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 3,
+    "peak_rss_at_utc": 1790692586.02717
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W1H1",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W1H1/selected/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.46107509412090475,
+   "warm_batch_application_wall_s": 77.48982137511484,
+   "validated_batch_wall_s": 78.07838779198937,
+   "producer_wait_total_ns": 2217279,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 758038528,
+    "tree_uss_bytes_sum": 19775488,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 3,
+    "peak_rss_at_utc": 1790692678.8337972
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W2H2",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W2H2/selected/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.8195079092654685,
+   "warm_batch_application_wall_s": 43.287477790843695,
+   "validated_batch_wall_s": 43.928801165893674,
+   "producer_wait_total_ns": 1427109,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 1476476928,
+    "tree_uss_bytes_sum": 19628032,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 4,
+    "peak_rss_at_utc": 1790692733.26849
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W2H2",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W2H2/selected/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.8286211682200559,
+   "warm_batch_application_wall_s": 42.821883708937094,
+   "validated_batch_wall_s": 43.445667792111635,
+   "producer_wait_total_ns": 14977571,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 1461796864,
+    "tree_uss_bytes_sum": 19333120,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 4,
+    "peak_rss_at_utc": 1790692775.183896
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W3H3",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W3H3/selected/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 1.1807491301349216,
+   "warm_batch_application_wall_s": 29.817314625019208,
+   "validated_batch_wall_s": 30.48911837511696,
+   "producer_wait_total_ns": 1259899,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 2170077184,
+    "tree_uss_bytes_sum": 19595264,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 5,
+    "peak_rss_at_utc": 1790692828.851634
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W3H3",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W3H3/selected/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 1.3256037623398802,
+   "warm_batch_application_wall_s": 26.491447542095557,
+   "validated_batch_wall_s": 27.157436500070617,
+   "producer_wait_total_ns": 746778,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 2180546560,
+    "tree_uss_bytes_sum": 19562496,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 5,
+    "peak_rss_at_utc": 1790692866.2728572
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W4H2",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W4H2/selected/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 1.5719077982397638,
+   "warm_batch_application_wall_s": 22.221443583024666,
+   "validated_batch_wall_s": 22.902106625027955,
+   "producer_wait_total_ns": 969734,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 2889662464,
+    "tree_uss_bytes_sum": 22167552,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 6,
+    "peak_rss_at_utc": 1790692900.8654258
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W4H2",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W4H2/selected/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 1.6132592040868976,
+   "warm_batch_application_wall_s": 21.622781792189926,
+   "validated_batch_wall_s": 22.315074917161837,
+   "producer_wait_total_ns": 1091982,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 2876637184,
+    "tree_uss_bytes_sum": 22134784,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 6,
+    "peak_rss_at_utc": 1790692934.351424
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W2H4",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W2H4/selected/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.8791992189268358,
+   "warm_batch_application_wall_s": 40.28021908295341,
+   "validated_batch_wall_s": 40.94635120802559,
+   "producer_wait_total_ns": 1280270,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 1469857792,
+    "tree_uss_bytes_sum": 19628032,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 4,
+    "peak_rss_at_utc": 1790692986.192648
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W2H4",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W2H4/selected/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.8493689204507403,
+   "warm_batch_application_wall_s": 41.73853312502615,
+   "validated_batch_wall_s": 42.3844093340449,
+   "producer_wait_total_ns": 2247142,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 1469218816,
+    "tree_uss_bytes_sum": 19546112,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 4,
+    "peak_rss_at_utc": 1790693033.747242
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W9H1",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W9H1/selected/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 2.727697827844853,
+   "warm_batch_application_wall_s": 12.260976749937981,
+   "validated_batch_wall_s": 13.197942833881825,
+   "producer_wait_total_ns": 1689398,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 4652498944,
+    "tree_uss_bytes_sum": 7536640,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 11,
+    "peak_rss_at_utc": 1790693051.699392
+   }
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W9H1",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/W9H1/selected/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 2.660169350844283,
+   "warm_batch_application_wall_s": 12.540952707873657,
+   "validated_batch_wall_s": 13.532972999848425,
+   "producer_wait_total_ns": 1807483,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 5478105088,
+    "tree_uss_bytes_sum": 21233664,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 11,
+    "peak_rss_at_utc": 1790693075.567708
+   }
+  },
+  {
+   "family": "flow",
+   "cell": "O3_FLOW",
+   "arm": "selected",
+   "cfgkey": "W1H5",
+   "batch": 1,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_FLOW/W1H5/selected/batch_1",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.2091011206121522,
+   "warm_batch_application_wall_s": 56.60335983289406,
+   "validated_batch_wall_s": 57.38850162480958,
+   "producer_wait_total_ns": 851577,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 1017577472,
+    "tree_uss_bytes_sum": 19021824,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 3,
+    "peak_rss_at_utc": 1790693158.658209
+   }
+  },
+  {
+   "family": "flow",
+   "cell": "O3_FLOW",
+   "arm": "selected",
+   "cfgkey": "W1H5",
+   "batch": 2,
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_FLOW/W1H5/selected/batch_2",
+   "status": "valid",
+   "throughput_primary_jobs_per_s": 0.2118783462124701,
+   "warm_batch_application_wall_s": 55.8158872500062,
+   "validated_batch_wall_s": 56.63627366605215,
+   "producer_wait_total_ns": 1111410,
+   "peak_process_tree": {
+    "tree_rss_bytes_sum": 1021181952,
+    "tree_uss_bytes_sum": 19120128,
+    "tree_pss_bytes_sum": null,
+    "n_processes": 3,
+    "peak_rss_at_utc": 1790693203.919511
+   }
+  }
+ ],
+ "confirmation_batches": [
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "b0",
+   "cfgkey": "W9H1",
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/confirm_W9H1/b0",
+   "throughput_primary_jobs_per_s": 3.0150561011890806
+  },
+  {
+   "family": "flow",
+   "cell": "O3_FLOW",
+   "arm": "b0",
+   "cfgkey": "W1H5",
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_FLOW/confirm_W1H5/b0",
+   "throughput_primary_jobs_per_s": 0.19534076914446638
+  },
+  {
+   "family": "accessibility",
+   "cell": "O3_ACCESS",
+   "arm": "selected",
+   "cfgkey": "W9H1",
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_ACCESS/confirm_W9H1/selected",
+   "throughput_primary_jobs_per_s": 2.6287315952589627
+  },
+  {
+   "family": "flow",
+   "cell": "O3_FLOW",
+   "arm": "selected",
+   "cfgkey": "W1H5",
+   "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_run/O3_FLOW/confirm_W1H5/selected",
+   "throughput_primary_jobs_per_s": 0.20923901146953264
+  }
+ ],
+ "selections": {
+  "accessibility": {
+   "strongest_feasible_b0": {
+    "arm": "b0",
+    "cfgkey": "W9H1",
+    "median_primary_jobs_per_s": 2.6659571123401715,
+    "feasible": true
+   },
+   "b0_ranking": [
+    {
+     "arm": "b0",
+     "cfgkey": "W9H1",
+     "median_primary_jobs_per_s": 2.6659571123401715,
+     "feasible": true
+    },
+    {
+     "arm": "b0",
+     "cfgkey": "W4H2",
+     "median_primary_jobs_per_s": 1.6339822419503087,
+     "feasible": true
+    },
+    {
+     "arm": "b0",
+     "cfgkey": "W3H3",
+     "median_primary_jobs_per_s": 1.2793752999192365,
+     "feasible": true
+    },
+    {
+     "arm": "b0",
+     "cfgkey": "W2H4",
+     "median_primary_jobs_per_s": 0.8637777960315536,
+     "feasible": true
+    },
+    {
+     "arm": "b0",
+     "cfgkey": "W2H2",
+     "median_primary_jobs_per_s": 0.8375860358555789,
+     "feasible": true
+    },
+    {
+     "arm": "b0",
+     "cfgkey": "W1H1",
+     "median_primary_jobs_per_s": 0.457280835449001,
+     "feasible": true
+    }
+   ],
+   "selected_ranking": [
+    {
+     "arm": "selected",
+     "cfgkey": "W9H1",
+     "median_primary_jobs_per_s": 2.693933589344568,
+     "feasible": true
+    },
+    {
+     "arm": "selected",
+     "cfgkey": "W4H2",
+     "median_primary_jobs_per_s": 1.5925835011633307,
+     "feasible": true
+    },
+    {
+     "arm": "selected",
+     "cfgkey": "W3H3",
+     "median_primary_jobs_per_s": 1.2531764462374009,
+     "feasible": true
+    },
+    {
+     "arm": "selected",
+     "cfgkey": "W2H4",
+     "median_primary_jobs_per_s": 0.8642840696887881,
+     "feasible": true
+    },
+    {
+     "arm": "selected",
+     "cfgkey": "W2H2",
+     "median_primary_jobs_per_s": 0.8240645387427622,
+     "feasible": true
+    },
+    {
+     "arm": "selected",
+     "cfgkey": "W1H1",
+     "median_primary_jobs_per_s": 0.46329199811077804,
+     "feasible": true
+    }
+   ]
+  },
+  "flow": {
+   "strongest_feasible_b0": {
+    "arm": "b0",
+    "cfgkey": "W1H5",
+    "median_primary_jobs_per_s": 0.19381432938805887,
+    "feasible": true
+   },
+   "b0_ranking": [
+    {
+     "arm": "b0",
+     "cfgkey": "W1H5",
+     "median_primary_jobs_per_s": 0.19381432938805887,
+     "feasible": true
+    }
+   ],
+   "selected_ranking": [
+    {
+     "arm": "selected",
+     "cfgkey": "W1H5",
+     "median_primary_jobs_per_s": 0.21048973341231114,
+     "feasible": true
+    }
+   ]
+  }
+ }
+}
