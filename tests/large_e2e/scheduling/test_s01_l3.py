@@ -1253,3 +1253,222 @@ def test_d10_validate_paths_accepts_production_composition_flow(tmp_path):
     envelope = _runspec(str(out), str(tmp_path / "nbc_d10_probe_flow"))
     checks = envelope.validate_paths(m.input_dirs())
     assert checks["input_dirs"] == [D10_INPUTS_DIR]
+
+
+# ---------------------------------------------------------------------------
+# Amendment #6 (task #47, VOID-7 ruling): per-window child memory re-sizing.
+# Fire #6/#7 evidence: ONE stage-start sizing read (:454/:676/:783) armed
+# every window of a multi-window stage with a stale budget; cumulative
+# cross-pilot consumption then exceeded the 64 MiB band at the child's own
+# admission preflight (fire-7 w4: budget 3303 MiB vs child-measured
+# 4,218,454,016 B, exceeded by 88,683,315.2 B) DESPITE two certified
+# quiet+high launch gates.  Ruled fix: each window sizes from a FRESH
+# memory_ceiling_mib() read at its own launch, restoring the
+# sizing-read ~= admission-read coincidence the band was designed around.
+# A mid-loop SizingRefused must STOP the stage fail-fast, never skip the
+# window.  Frozen, out of scope: the child admission rule, the band, the
+# clamp, SizingRefused semantics.
+# ---------------------------------------------------------------------------
+
+_AMD6_PILOT_SEQ = [
+    # (budget_mib, simulated fresh avail B) -- first pair is the fire-7
+    # stage-start read; later pairs simulate cross-pilot consumption.
+    (3303, 4_413_194_240), (3154, 4_218_454_016), (3100, 4_170_000_000),
+    (3050, 4_100_000_000), (3000, 4_000_000_000), (2950, 3_900_000_000),
+]
+
+
+def _amd6_sizing_stub(seq):
+    it = iter(seq)
+    calls = []
+
+    def sizing():
+        pair = next(it)
+        calls.append(pair[0])
+        return pair
+    return sizing, calls
+
+
+def _amd6_child_stub(calls, walls_by_what, wall_default=20.0):
+    def stub(args_tail, lease_id, what, timeout_s, env_extra=None):
+        calls.append({"what": what,
+                      "budget": int(args_tail[
+                          args_tail.index("--memory-budget-mib") + 1])})
+        out = args_tail[args_tail.index("--out") + 1]
+        wall = walls_by_what[what] if walls_by_what else wall_default
+        _write_json(f"{out}/session.json", _session(1.0, wall))
+        return 0
+    return stub
+
+
+def test_amd6_p0_sizes_each_window_fresh(sandbox, monkeypatch):
+    # CORE defect signature: on the parent bytes one sizing call arms all
+    # six windows (RED here); the amended stage must consult sizing once
+    # PER WINDOW and launch each child with its OWN read's budget.
+    assert s01_run.stage_init("S01-lease-test") == 0
+    sizing, sizes = _amd6_sizing_stub(_AMD6_PILOT_SEQ)
+    monkeypatch.setattr(s01_run, "memory_ceiling_mib", sizing)
+    children = []
+    monkeypatch.setattr(s01_run, "_run_child",
+                        _amd6_child_stub(children, _PILOT_WALLS))
+    assert s01_run.stage_p0("S01-lease-test", "b0") == 0
+    assert len(sizes) == 6, sizes
+    assert [c["budget"] for c in children] == [p[0] for p in _AMD6_PILOT_SEQ]
+    assert len({c["budget"] for c in children}) == 6
+
+
+def test_amd6_midloop_sizing_refusal_stops_stage(sandbox, monkeypatch,
+                                                 capsys):
+    # SizingRefused raised at window 2 must stop the stage fail-fast with
+    # window 1 completed -- NEVER skip the window.  On the parent bytes
+    # sizing runs once at stage start, so the mid-loop refusal cannot
+    # exist (RED: six children launch, no refusal).
+    assert s01_run.stage_init("S01-lease-test") == 0
+    state = {"n": 0}
+
+    def sizing():
+        state["n"] += 1
+        if state["n"] == 2:
+            raise s01_run.SizingRefused(
+                "band-constrained ceiling 2000 MiB < minimum viable budget "
+                "2750 MiB (anchor: H05/memory_lifetimes.json sha256 "
+                "50dce831, max per-cell ru_maxrss 2577.515625 MiB); refuse "
+                "sizing (memory_policy: may be refused or downsized)")
+        return (3303, 4_413_194_240)
+    monkeypatch.setattr(s01_run, "memory_ceiling_mib", sizing)
+    children = []
+    monkeypatch.setattr(s01_run, "_run_child",
+                        _amd6_child_stub(children, _PILOT_WALLS))
+    assert s01_run.stage_p0("S01-lease-test", "b0") == 2
+    assert state["n"] == 2, state
+    assert [c["what"] for c in children] == ["pilot:O2:1"], children
+    assert "REFUSED" in capsys.readouterr().out
+
+
+def test_amd6_window1_residue_refusal_does_not_consult_sizing(sandbox,
+                                                              monkeypatch):
+    # Within-window ordering: the fresh-path guard runs BEFORE the
+    # window's sizing read, so residue at window 1 refuses without ever
+    # consulting sizing (parent bytes size at stage start, RED on
+    # sizes == []).
+    assert s01_run.stage_init("S01-lease-test") == 0
+    os.makedirs(f"{s01_run.RUNROOT}/pilots/O2_pilot_1")
+    sizing, sizes = _amd6_sizing_stub([(3303, 4_413_194_240)])
+    monkeypatch.setattr(s01_run, "memory_ceiling_mib", sizing)
+    children = []
+    monkeypatch.setattr(s01_run, "_run_child",
+                        _amd6_child_stub(children, _PILOT_WALLS))
+    assert s01_run.stage_p0("S01-lease-test", "b0") == 2
+    assert sizes == [], sizes
+    assert children == [], children
+
+
+def test_amd6_p1_sizes_each_window_fresh(sandbox, monkeypatch):
+    # Same class decision at the p1 stage-start read (:676): one fresh
+    # read per batch window.  RED on parent: all rows carry the single
+    # stage-start budget.
+    _primed_sandbox(sandbox, monkeypatch)
+    rows = s01_run._expected_batch_dirs("b0")
+    seq = [(3303 - 7 * i, 4_400_000_000 - 60_000_000 * i)
+           for i in range(len(rows))]
+    sizing, sizes = _amd6_sizing_stub(seq)
+    monkeypatch.setattr(s01_run, "memory_ceiling_mib", sizing)
+    children = []
+    monkeypatch.setattr(s01_run, "_run_child",
+                        _amd6_child_stub(children, None))
+    assert s01_run.stage_p1("S01-lease-test", "b0") == 0
+    assert len(sizes) == len(rows), (len(sizes), len(rows))
+    assert [c["budget"] for c in children] == [p[0] for p in seq]
+    assert len({c["budget"] for c in children}) == len(rows)
+
+
+def test_amd6_confirm_sizes_each_window_fresh(sandbox, monkeypatch):
+    # Same class decision at the confirm stage-start read (:783): one
+    # fresh read per confirm window.  RED on parent: both windows carry
+    # the single stage-start budget.
+    _primed_sandbox(sandbox, monkeypatch)
+    monkeypatch.setattr(s01_run, "memory_ceiling_mib",
+                        lambda: (8000, 8 * 2 ** 30))
+    children_p1 = []
+    monkeypatch.setattr(s01_run, "_run_child",
+                        _amd6_child_stub(children_p1, None))
+    assert s01_run.stage_p1("S01-lease-test", "b0") == 0
+    _populate_p1(sandbox)
+    seq = [(3154, 4_218_454_016), (3100, 4_170_000_000)]
+    sizing, sizes = _amd6_sizing_stub(seq)
+    monkeypatch.setattr(s01_run, "memory_ceiling_mib", sizing)
+    children = []
+    monkeypatch.setattr(s01_run, "_run_child",
+                        _amd6_child_stub(children, None))
+    assert s01_run.stage_confirm("S01-lease-test", "b0") == 0
+    assert len(sizes) == 2, sizes
+    assert [c["budget"] for c in children] == [p[0] for p in seq]
+    assert children[0]["budget"] != children[1]["budget"]
+
+
+def test_amd6_band_covers_instant_drop_between_sizing_and_admission(monkeypatch):
+    # Degenerate regime (real function, env-only patch): per-window sizing
+    # closes the gap between the sizing read and the SAME window's
+    # admission read; the band still covers an instant crash between the
+    # two.  Construction identity: at admission read == sizing read the
+    # margin is exactly band <= margin < band + 1 MiB, and a window is
+    # admitted iff its instant drop <= that margin.
+    import psutil
+    cross = (matrix.CEILING_MIB_CAP << 20) / matrix.CEILING_FRACTION
+    for A in (4_413_194_240, 4_300_000_000, 5_000_000_000, 8 * 2 ** 30,
+              10 * 2 ** 30, 12 * 2 ** 30, 16 * 2 ** 30):
+        monkeypatch.setattr(psutil, "virtual_memory",
+                            lambda a=A: _FakeVM(a))
+        budget, avail = s01_run.memory_ceiling_mib()
+        assert avail == A
+        assert s01_run.MIN_VIABLE_BUDGET_MIB <= budget
+        assert budget <= matrix.CEILING_MIB_CAP \
+            - (s01_run.SIZING_GUARD_BAND_BYTES >> 20)
+        margin = matrix.CEILING_FRACTION * A - budget * (1 << 20)
+        if A < cross:
+            # fraction branch: sizing coincident with admission leaves
+            # exactly the band (floored to MiB keeps the remainder)
+            assert (s01_run.SIZING_GUARD_BAND_BYTES <= margin
+                    < s01_run.SIZING_GUARD_BAND_BYTES + (1 << 20)), \
+                (A, margin)
+        else:
+            # cap branch: the budget is pinned at the banded cap, so the
+            # drop tolerance only grows with avail above the crossover
+            assert margin >= s01_run.SIZING_GUARD_BAND_BYTES, (A, margin)
+        # refusal boundary per the committed child comparison
+        # (spec.py: budget_bytes > AVAILABLE_FRACTION_CAP * available):
+        # an instant drop D between this window's sizing read and its
+        # admission read is admitted iff D < margin / 0.80 (the band in
+        # drop terms -- 80 MiB when margin == 2**26).
+        budget_bytes = budget * (1 << 20)
+        drop_admit = margin / 0.80 - 0.5
+        drop_refuse = margin / 0.80 + 1.0
+        assert not budget_bytes > matrix.CEILING_FRACTION * (A - drop_admit)
+        assert budget_bytes > matrix.CEILING_FRACTION * (A - drop_refuse)
+
+
+def test_amd6_plausibility_floor_across_avail_grid(monkeypatch):
+    # Real-function plausibility floor (monkeypatch blind-spot doctrine):
+    # the sizing path stays inside [MIN_VIABLE, banded cap] over a wide
+    # avail grid and refuses below the clamp; monotone nondecreasing in
+    # avail up to the cap crossover.
+    import psutil
+    cross = (matrix.CEILING_MIB_CAP << 20) / matrix.CEILING_FRACTION
+    grid = sorted({4 * 2 ** 30 + d for d in range(0, 1 << 28, 1 << 24)}
+                  | {5 * 2 ** 30, 6 * 2 ** 30, 8 * 2 ** 30, 12 * 2 ** 30,
+                     16 * 2 ** 30, 24 * 2 ** 30, 32 * 2 ** 30,
+                     int(cross) - 1, int(cross), int(cross) + 1})
+    prev = None
+    for A in grid:
+        monkeypatch.setattr(psutil, "virtual_memory",
+                            lambda a=A: _FakeVM(a))
+        budget, _ = s01_run.memory_ceiling_mib()
+        assert s01_run.MIN_VIABLE_BUDGET_MIB <= budget <= 10586, (A, budget)
+        if prev is not None:
+            assert budget >= prev, (A, prev, budget)
+        prev = budget
+    for low in (3 * 2 ** 30, int(3.4 * 2 ** 30)):
+        monkeypatch.setattr(psutil, "virtual_memory",
+                            lambda a=low: _FakeVM(a))
+        with pytest.raises(s01_run.SizingRefused, match="minimum viable"):
+            s01_run.memory_ceiling_mib()

@@ -450,11 +450,6 @@ def stage_p0(lease_id, arm):
     if log is None:
         print("[s01-run] REFUSED: lease not initialized (run --stage init)")
         return 2
-    try:
-        ceiling_mib, _avail = memory_ceiling_mib()
-    except SizingRefused as exc:
-        print(f"[s01-run] REFUSED: {exc}")
-        return 2
     pilot_records = []
     for cell in matrix.PILOT_CELLS:
         ref_w, ref_h = matrix.PILOT_REFERENCE_CONFIG[
@@ -463,6 +458,17 @@ def stage_p0(lease_id, arm):
             out_dir = f"{RUNROOT}/pilots/{cell}_pilot_{n}"
             cache_root = f"{NBCROOT}/nbc_s01_pilot_{cell}_{n}"
             if not _refuse_existing(out_dir, cache_root):
+                return 2
+            # amendment #6 (VOID-7): size THIS window from a fresh read.
+            # One stage-start read armed every window with a stale budget;
+            # cross-pilot consumption (fire-6 300.375 MiB, fire-7
+            # 185.72-186.97 MiB) exceeded the 64 MiB band at the child's
+            # own admission preflight.  A mid-loop SizingRefused stops the
+            # stage fail-fast -- never skip the window.
+            try:
+                ceiling_mib, _avail = memory_ceiling_mib()
+            except SizingRefused as exc:
+                print(f"[s01-run] REFUSED: {exc}")
                 return 2
             tail = _common_run_args(
                 _pilot_cell_manifest(cell), "b0", ref_w, ref_h, jobs=1,
@@ -672,13 +678,15 @@ def stage_p1(lease_id, arm):
               f"the binding {floor}s reserve floor")
         return 2
 
-    try:
-        ceiling_mib, _avail = memory_ceiling_mib()
-    except SizingRefused as exc:
-        print(f"[s01-run] REFUSED: {exc}")
-        return 2
     for row in remaining:
         if not _refuse_existing(row["out_dir"], row["cache_root"]):
+            return 2
+        # amendment #6 (VOID-7): per-window sizing, same class decision as
+        # stage_p0 -- fresh read at each batch launch, fail-fast on refusal.
+        try:
+            ceiling_mib, _avail = memory_ceiling_mib()
+        except SizingRefused as exc:
+            print(f"[s01-run] REFUSED: {exc}")
             return 2
         tail = _common_run_args(
             matrix.RUN_MANIFESTS[row["cell"]], arm, row["w"], row["h"],
@@ -779,11 +787,6 @@ def stage_confirm(lease_id, arm):
     with open(f"{EVIDENCE}/configurations.json") as f:
         configurations = json.load(f)
     k_jobs = configurations["p0"]["k_jobs"]
-    try:
-        ceiling_mib, _avail = memory_ceiling_mib()
-    except SizingRefused as exc:
-        print(f"[s01-run] REFUSED: {exc}")
-        return 2
     launched = 0
     for family, cell in matrix.SWEEP_WORKLOADS.items():
         strongest = selections[family]["strongest_feasible_b0"]
@@ -794,6 +797,13 @@ def stage_confirm(lease_id, arm):
         out_dir = f"{RUNROOT}/{cell}/confirm_{strongest['cfgkey']}/{arm}"
         cache_root = f"{NBCROOT}/nbc_s01_confirm_{arm}_{cell}"
         if not _refuse_existing(out_dir, cache_root):
+            return 2
+        # amendment #6 (VOID-7): per-window sizing, same class decision as
+        # stage_p0 -- fresh read at each confirm launch, fail-fast on refusal.
+        try:
+            ceiling_mib, _avail = memory_ceiling_mib()
+        except SizingRefused as exc:
+            print(f"[s01-run] REFUSED: {exc}")
             return 2
         tail = _common_run_args(
             matrix.RUN_MANIFESTS[cell], arm, w, h,
