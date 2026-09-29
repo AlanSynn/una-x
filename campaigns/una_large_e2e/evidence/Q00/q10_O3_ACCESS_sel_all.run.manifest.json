@@ -1,0 +1,47 @@
+{
+ "schema_version": 1,
+ "workload_id": "q10_O3_ACCESS_sel_all_confirm",
+ "analysis": "accessibility",
+ "input_files": [
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson",
+   "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+   "bytes": 71290787
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson",
+   "sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+   "bytes": 5982662
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson",
+   "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+   "bytes": 2641054
+  }
+ ],
+ "settings": {
+  "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+  "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+  "origins_file": "Cambridge_building_centroids.geojson",
+  "destinations_file": "MA_bus_stops.geojson",
+  "network_weight_column": "Geometric",
+  "origin_weight_column": "Count",
+  "destination_weight_column": "weekly_departures",
+  "search_radius": 500,
+  "turns": false,
+  "elevation": false,
+  "calculate_reach": true,
+  "calculate_exponential_gravity": true,
+  "calculate_logistic_gravity": true,
+  "calculate_knn_access": true,
+  "output_csv": true,
+  "output_geojson": true,
+  "output_feather": true
+ },
+ "required_output_patterns": [
+  "*.feather",
+  "*.geojson",
+  "*.csv"
+ ],
+ "notes": "Q10 mandatory-full-workload accessibility manifest (h04 Ruling 2 transfer-risk bound). Cloned from the admitted precedent tests/large_e2e/scheduling/s01_O3_ACCESS.run.manifest.json (2014118f4d046d5b61acee4109bf96132aa4f61d5804177eaca705177a9a88ab, 14/14 windows fire #9). Origins = the FULL sel_all set: campaign_data/inputs/Cambridge_building_centroids.geojson re-hashed at compose == the sel_all derivation records' source_sha256 (14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc); 14751 features live-counted == selected_count == source_feature_count in all three *_sel_all.origin_indices.json. Schema parity: S01 sel1024 fixtures ran 38/38 clean with the IDENTICAL properties schema (no 'Count' key); consumption src/urban_network_analysis/Topology.py:199, default Settings.py:56; tolerance re-verified by gate (d). All input_files anchor at absolute campaign_data/inputs/ paths FROM BIRTH (AMD5 D10 ruling; fire #4 class). data_folder points at campaign_data/inputs/ so the engine joins the bare file names (W00 smoke-manifest pattern). Runs ONLY through run.py installed mode with W00 arm identities (--manifest/--arm/--identity)."
+}

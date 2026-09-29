@@ -1,0 +1,429 @@
+{
+ "task": "Q00",
+ "author": "h05-profiler",
+ "frozen_utc": "20260929T163954Z",
+ "proposal_basis": {
+  "v3": "c1c9f24add4f39f3e390dacbad0066e66e5fc5ac33c35b36f2c9dad19100b515",
+  "amendments": [
+   "f900a3842aa853b31bb945414bd0586c8a78897c3d074b2cba256015293958a9",
+   "1223b9a39157aef4d0952b83b5fadf6c32bf155105603336534a3e42198f98aa",
+   "b12a23ce4902e589c2c9557eb50abd29a7b683fbb06031731e9be6e4dffa2158",
+   "e12991d08d7681b7bb76966680419fcaa24df97d9363193638edcd4303258fc5"
+  ],
+  "approval": "h04 APPROVED with binding composition correction (carried-k direct-computation form; implemented)"
+ },
+ "composer_corrections": [
+  "h04 freeze-review CORRECTION 1 (figure fidelity): small-input cell charge now counts BOTH arms (3 paired windows per family); selected-only figure superseded \u2014 see charge.small_input_cell_decomposition",
+  "h04 freeze-review CORRECTION 2 (custody model): raw Q10 outputs root at campaign_data/q10_run/ (s01_run/ mirror), curated mirrors into evidence/Q10/ at commit; argv_templates.out_pattern + blocks.records + q10_staging_carry updated; repo-tree out-root class retired"
+ ],
+ "source_frame": {
+  "head": "ec16d3f79631e8145de04b453e69eeb0186569da",
+  "selected_source": {
+   "commit": "6b53a274e8a8d3e7360ab5e1b38f741107ce3358",
+   "src_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+   "equivalence_note": "Advanced at W00 close (integrator): selected wheel provenance per evidence/W00/wheels.json selected binding (source_commit 6b53a274, package_tree 64471ec9). src_tree 3c59bb0d byte-unchanged from 5cae07a (empty git diff 5cae07a..6b53a274 -- src/; subtree id identical both sides). Advance sequence: I00 round commit 5cae07a (advanced at fc1c3be) -> I00 close 6b53a274 (reprofile record + instrument, no src change) -> W00 evidence intake (4e21b44) -> this control advance -> S01 leases against installed arms of 6b53a274 provenance. Review proof: h04 W00 standing verification PASS. Prior state: I00 advance (selected 5cae07a, src_tree 3c59bb0d, advanced at fc1c3be).",
+   "accepted_tracks": [
+    {
+     "track": "A1",
+     "status": "screened_in_provisional",
+     "source_commit": "7a27866",
+     "src_tree": "b121ec0b4312f12caa98bc115243652e1564d3ec",
+     "review": "campaigns/una_large_e2e/evidence/A1R/review.json",
+     "selection": "campaigns/una_large_e2e/evidence/A1R/selection.json",
+     "conditions": [
+      "provisional until I00/W00/S01/Q00/Q10 per DECISION.md",
+      "C1: ACCESS-cell proxy marginal (~1.06-1.09 < 1.1 bar at r=500); HOLDOUT decisive (1.31-1.39)",
+      "C2: cold median ratio 1.13-1.21 vs frozen 1.05 gate - warm-invisible JIT of 2 added kernels; DECISION.md permits explicitly bounded warm-only qualification at the price of no blanket-default promotion claim; governing reading recorded in evidence/control_addendum_A1R.json"
+     ]
+    },
+    {
+     "track": "F1",
+     "status": "not_demonstrated_at_screen",
+     "source_commit": "c1d7edc5",
+     "review": "campaigns/una_large_e2e/evidence/F1R/review.json",
+     "selection": "campaigns/una_large_e2e/evidence/F1R/selection.json",
+     "conditions": [
+      "stays in line per the ruled F1R decision (no demonstrated harm; gain not demonstrated at screen); figures and gate adjudication live in the F1R records",
+      "Q00 cold-band transfer note carried (recorded in the F2R records)"
+     ]
+    },
+    {
+     "track": "F2",
+     "status": "screened_in",
+     "source_commit": "61f3db64",
+     "review": "campaigns/una_large_e2e/evidence/F2R/review.json",
+     "selection": "campaigns/una_large_e2e/evidence/F2R/selection.json",
+     "conditions": [
+      "SCREENED_IN at F2R; carried conditions and gate adjudication live in the F2R records",
+      "Q00 cold-band note carried: flow memory sized from flow realizations, F3R basis does not transfer"
+     ]
+    },
+    {
+     "track": "F3",
+     "status": "screened_in",
+     "source_commit": "b387f901",
+     "review": "campaigns/una_large_e2e/evidence/F3R/review.json",
+     "selection": "campaigns/una_large_e2e/evidence/F3R/selection.json",
+     "conditions": [
+      "SCREENED_IN per evidence/F3R/selection.json (sha256 06410f29b99fa2e703978fc785fe05101d076f51ecc18c8316e9dce9425077e8); F3I chain head b387f901 as supplementary provenance",
+      "capacity_only labeling governs every F3 record (DECISION line 11): walls are capacity evidence, not promotion claims"
+     ]
+    },
+    {
+     "track": "A3",
+     "status": "screened_in",
+     "source_commit": "d9fff4c9",
+     "review": "campaigns/una_large_e2e/evidence/A3R/review.json",
+     "selection": "campaigns/una_large_e2e/evidence/A3R/selection.json",
+     "conditions": [
+      "SCREENED_IN at the A3I admission chain head d9fff4c9 (src-identity note in the A3R selection record); admission and chain verification live in the A3I/A3R records",
+      "Q00 cold-peak note carried to Q00"
+     ]
+    }
+   ],
+   "rejected_or_not_admitted": [
+    {
+     "track": "A2",
+     "status": "not_admitted",
+     "note": "never integrated on any line; I00 asserts absence rather than removal: zero _a2_ tokens in 14 B0 / 16 candidate source files and zero _a2 attributes across 16 imported alias modules (evidence/I00/composition.json results_from_artifacts_bytes.a2_absence_records)",
+     "review": "campaigns/una_large_e2e/evidence/A2R/review.json",
+     "selection": "campaigns/una_large_e2e/evidence/A2R/selection.json"
+    }
+   ]
+  },
+  "control_json_sha256": "a5277aa13e8bdb2645047c78d472a98f340e9f517f29bfe2d13a71ba723128b7",
+  "contract_frozen": true,
+  "source_edits_stop_at_freeze": true
+ },
+ "wheel_identities": {
+  "wheels_json_sha256": "c443bca9e8fac8904d978a801b09bf08f3213496037351380e028099c3659c9a",
+  "wheels": {
+   "task": "W00",
+   "record": "wheels",
+   "utc": "2026-09-28T21:30:42Z",
+   "build_route": {
+    "method": "git archive of the verified tree -> pip wheel in a fresh build venv",
+    "source_worktrees_written": false,
+    "commit_date_note": "hatch_build.py bakes commit_date='unknown' on the archive route; source identity is carried by the pinned commit/src-tree shas",
+    "install_time_precompile": "none \u2014 a precompile/warm step is a Q00 decision under the ruled W00_precompile_reading",
+    "diagnostic_frame_cells": "none \u2014 every W00 evidence cell runs installed (identity kind installed_wheel); no diagnostic_profile_source cell exists in W00",
+    "rebuild_comparability": "cross-time comparability rides the commit+policy pins (source_commit / src_tree_sha256 / constraints_sha256 per arm), NOT wheel byte equality (h04 W00 ruling); the git-archive route keeps per-route wheel bytes reproducible"
+   },
+   "arms": {
+    "b0": {
+     "source_commit": "361928e4ba38f34622cafe065b0025244db61368",
+     "src_tree_sha256": "a5883dddcef3afb8debdb4438a6338da886add6f",
+     "wheel": {
+      "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/wheels/w00_b0/urban_network_analysis-2.6.0-py3-none-any.whl",
+      "filename": "urban_network_analysis-2.6.0-py3-none-any.whl",
+      "sha256": "71fd5615b5683f3c798938a2762824da9ba3fada801aaa840343e7378d4fc979",
+      "bytes": 125943
+     },
+     "identity": {
+      "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/b0.json",
+      "sha256": "3737eb7e0623fa14b1e095e7581352f57c46fe742ee224a35fbfbf1fbfc5a0a3",
+      "package_tree_sha256": "d1e34ba92e7b5f33a6a9e4651a6e106ec1b78251ea2adc63c1a380e87b6cbb89",
+      "module_count": 15,
+      "package_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_b0/lib/python3.11/site-packages/urban_network_analysis"
+     },
+     "constraints_sha256": "8c501f870861286d6cd819738ffaf5714f36dd4624cba85242d3750007552c09",
+     "runtime_venv": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_b0",
+     "runtime_venv_freeze": [
+      "certifi==2026.7.22",
+      "cloudpickle==3.1.2",
+      "geopandas==1.1.4",
+      "joblib==1.6.0",
+      "llvmlite==0.49.0",
+      "narwhals==2.26.0",
+      "networkx==3.6.1",
+      "numba==0.67.0",
+      "numpy==2.4.6",
+      "packaging==26.3",
+      "pandas==3.0.6",
+      "psutil==7.2.2",
+      "pyarrow==25.0.1",
+      "pyogrio==0.13.0",
+      "pyproj==3.7.2",
+      "python-dateutil==2.9.0.post0",
+      "scikit-learn==1.9.1",
+      "scipy==1.17.1",
+      "shapely==2.1.2",
+      "six==1.17.0",
+      "threadpoolctl==3.7.0",
+      "urban-network-analysis @ file:///Users/alansynn/orca/workspaces/una-x/campaign_data/wheels/w00_b0/urban_network_analysis-2.6.0-py3-none-any.whl#sha256=71fd5615b5683f3c798938a2762824da9ba3fada801aaa840343e7378d4fc979"
+     ]
+    },
+    "selected": {
+     "source_commit": "6b53a274e8a8d3e7360ab5e1b38f741107ce3358",
+     "src_tree_sha256": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+     "wheel": {
+      "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/wheels/w00_selected/urban_network_analysis-2.6.0-py3-none-any.whl",
+      "filename": "urban_network_analysis-2.6.0-py3-none-any.whl",
+      "sha256": "323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4",
+      "bytes": 138442
+     },
+     "identity": {
+      "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/selected.json",
+      "sha256": "b98915102d53d714dba2df9b71b42df97f8da90369b1fb1de5020ac6456458e1",
+      "package_tree_sha256": "64471ec98511aaed5cf8814aea0556907b18e74737e2ec4da6022207cfb153f0",
+      "module_count": 17,
+      "package_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_selected/lib/python3.11/site-packages/urban_network_analysis"
+     },
+     "constraints_sha256": "8c501f870861286d6cd819738ffaf5714f36dd4624cba85242d3750007552c09",
+     "runtime_venv": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_selected",
+     "runtime_venv_freeze": [
+      "certifi==2026.7.22",
+      "cloudpickle==3.1.2",
+      "geopandas==1.1.4",
+      "joblib==1.6.0",
+      "llvmlite==0.49.0",
+      "narwhals==2.26.0",
+      "networkx==3.6.1",
+      "numba==0.67.0",
+      "numpy==2.4.6",
+      "packaging==26.3",
+      "pandas==3.0.6",
+      "psutil==7.2.2",
+      "pyarrow==25.0.1",
+      "pyogrio==0.13.0",
+      "pyproj==3.7.2",
+      "python-dateutil==2.9.0.post0",
+      "scikit-learn==1.9.1",
+      "scipy==1.17.1",
+      "shapely==2.1.2",
+      "six==1.17.0",
+      "threadpoolctl==3.7.0",
+      "urban-network-analysis @ file:///Users/alansynn/orca/workspaces/una-x/campaign_data/wheels/w00_selected/urban_network_analysis-2.6.0-py3-none-any.whl#sha256=323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4"
+     ]
+    }
+   }
+  }
+ },
+ "k_derivation_record": {
+  "rule": "k = max(largest_w, ceil(60*W_sel/job_wall/largest_w)*largest_w) on confirm-leg effective per-job wall x 14.4052734375; memory-capacity per RESOURCES.md:13 W-downsizes-first; SAME k both arms; dry-run validates, never resizes",
+  "basis_provenance": "Q10 rule basis = confirm-leg walls (session.json re-read live). PINNED p0 k_jobs (36/12) provenance: basis = MAX p0 pilot wall per family (s01_run.py:517 'wall = max(walls)'); 1.9478685830254108 is pilots[3], max of the O3_ACCESS pair",
+  "basis": {
+   "access_confirm_wall_s": 12.761077624978498,
+   "access_effective_job_s": 3.1902694062446244,
+   "flow_confirm_wall_s": 56.501781082944945,
+   "flow_effective_job_s": 4.708481756912079
+  },
+  "sel_all_job_s": {
+   "accessibility": 45.956703136244585,
+   "flow": 67.8269671837989
+  },
+  "derived_k": {
+   "accessibility": 18,
+   "flow": 1
+  },
+  "derived_run_s": {
+   "accessibility": 91.91340627248917,
+   "flow": 67.8269671837989
+  },
+  "tightening_disclosure": "The rule TIGHTENS s01_run.py:519 (work-total semantics, literal :519 gives k=9 access, span 45.956703136244585 s < 60); the v3 rule uses SPAN semantics: k=18, span 91.91340627248917 s, total work 827.2206564524025 s \u2014 passes BOTH readings of BENCHMARKS.md:23. Flow k=1 identical under both readings.",
+  "q10_pre_flight": "measure one complete sel_all job per family within the Q10 lease before spawning W>1 (RESOURCES.md:13); reconcile to h04 BEFORE paired blocks if measured wall implies different k"
+ },
+ "block_structure": {
+  "blocks": 5,
+  "order": [
+   "AB",
+   "BA",
+   "AB",
+   "BA",
+   "AB"
+  ],
+  "per_block": "access pair (W9H1) + flow pair (W1H5) in arm order (A=b0, B=selected); block 1 + holdout pair + small-input cell (>=3 paired windows per family)",
+  "holdout_cell": "one dedicated b0-vs-selected pair on q10_O3_HOLDOUT_sel_all, W9H1 roster (protected confirmation cell; U4 separate, recorded not-supplied)"
+ },
+ "argv_templates": {
+  "shape": "run.py --manifest <q10_*_sel_all.run.manifest.json> --arm <label> --identity <w00_identities/{b0,selected}.json> --mode batch --jobs <k> --workers <W> --numba-threads <H> --flow-stripes <FS> --queue-depth <W> --writer-limit <W> --cpu-budget 9 --memory-budget-mib <per-window> --timeout-s 3600 --cache-root <fresh> --out <root>",
+  "jobs": {
+   "accessibility": 18,
+   "flow": 1
+  },
+  "workers": {
+   "accessibility": 9,
+   "flow": 1
+  },
+  "numba_threads": {
+   "accessibility": 1,
+   "flow": 5
+  },
+  "flow_stripes": {
+   "accessibility": "default (inert)",
+   "flow": 4,
+   "prohibition": "'default' on flow refuses: spec.py:87-92->None; :285-289 estimate 9; :297-307 gate 14>C=9; explicit 4 per matrix.py:86 FLOW_K, AMD7"
+  },
+  "queue_depth": "starts at W (BENCHMARKS.md:21)",
+  "writer_limit": "W",
+  "cache_root": "fresh declared per-run NUMBA_CACHE_DIR (never under campaign_data)",
+  "out_pattern": "campaign_data/q10_run/blocks/<n>/<arm>/ (RAW outputs, campaign_data-resident per the S01 s01_run/ model \u2014 NEVER the repo tree; curated artifacts mirrored into evidence/Q10/ only at commit)",
+  "timeout_s": 3600,
+  "timeout_multiples_per_family": {
+   "accessibility": 39.1673004624302,
+   "flow": 53.07623426895451
+  }
+ },
+ "workloads": {
+  "sel_all_records": {
+   "O3_ACCESS": {
+    "sha256": "2e535cbc45531d86b15a748e96888fe8bb007be7a05afee79683b718ce3586cd",
+    "bytes": 302908
+   },
+   "O3_FLOW": {
+    "sha256": "b060d28d303fd00c4599a52adcf0acd0ca2e8b1d75c31832c17611a1e02a8046",
+    "bytes": 302906
+   },
+   "O3_HOLDOUT": {
+    "sha256": "73415976c0cfac456e49d7bd24bd80d4f0dc8f8b408ff820043beed1207f3990",
+    "bytes": 302909
+   }
+  },
+  "run_manifests": {
+   "q10_O3_ACCESS_sel_all.run.manifest.json": {
+    "sha256": "8836d5829710cc61c2de15500804b49e67d0519f9e03801e3f5fb74cf7281fd1",
+    "bytes": 2684
+   },
+   "q10_O3_FLOW_sel_all.run.manifest.json": {
+    "sha256": "9f57f3d4f53ce80659ee33ff2e53f787560dfb457ed12c71b90e71bfdf4d7b14",
+    "bytes": 3390
+   },
+   "q10_O3_HOLDOUT_sel_all.run.manifest.json": {
+    "sha256": "e30035843c546cb53382697e34fbce9ef6187a63d83779fff84ce1bb6d043a58",
+    "bytes": 2700
+   }
+  },
+  "small_input_cell": {
+   "fixtures": {
+    "access": {
+     "sha256": "70a1083f937a01bb6694606d5bd804a53bbfec24daf6a35298936cd71ee5bafa",
+     "bytes": 415307
+    },
+    "flow": {
+     "sha256": "75fc10b37fbf0cfd09490979a8619d30f3b270cef6048cfb36de0dbd86cdaa80",
+     "bytes": 415162
+    }
+   },
+   "manifests": "admitted S01 run manifests 2014118f.../484ff2c1... reused installed-mode",
+   "configuration": "S01 confirm config pinned for poolability: k=36/12, W9H1/W1H5, flow-stripes 4 (section 1.5 derivation applies to sel_all workloads, NOT this cell)",
+   "windows": ">=3 paired windows per family in block 1; MEDIAN <= 1.05 is the gate (DECISION.md:17(c))",
+   "s01_disclosed_evidence": {
+    "access_warm_ratio": 1.1503544030455606,
+    "flow_warm_ratio": 0.9319876899914838,
+    "note": "single-window figures; access EXCEEDS 1.05 \u2014 disclosed breach, adjudicated by this cell's median"
+   },
+   "adjudication": "median > 1.05 => cell FAILS => recorded + routed; never hidden",
+   "risk_observation": "candidate ~15% slower on small input is a primary-gate risk signal"
+  }
+ },
+ "instrument_pin_set": {
+  "s01_run_py": {
+   "sha256": "2cea2afec39b104bd88dafc166899aa73c2a6353c050cb30c0a8c0b7b68a967e"
+  },
+  "run_py": {
+   "sha256": "c041c33f4ece70e381fb970d67793425221a694d9ed257c512ddb6a9d57f0f22"
+  },
+  "spec_py": {
+   "sha256": "e786fd9f9eaeb5ddd0450ba8b2e99c4bc51248c0a461440636d68304a804d314"
+  },
+  "pool_py_DECISION_REUSE": {
+   "sha256": "25e43bb707019a437be347731bda87bb4dcaf3f5b34a77b52d8716992167e5e1",
+   "decision": "Q10 supervisor REUSES pool.py for producer-wait telemetry"
+  },
+  "arm_identities": {
+   "b0": {
+    "sha256": "3737eb7e0623fa14b1e095e7581352f57c46fe742ee224a35fbfbf1fbfc5a0a3",
+    "bytes": 4648
+   },
+   "selected": {
+    "sha256": "b98915102d53d714dba2df9b71b42df97f8da90369b1fb1de5020ac6456458e1",
+    "bytes": 4888
+   }
+  },
+  "h03_oracles": {
+   "oracle_manifest": "e296e8ac7b64818d454937f7cda11f002cb90c7155a74abdc4c1b7e54491a254",
+   "l1_observed_kernels": "82d0b9f558390b9ecdbd44cb176f6c6c9074aa6057a5e814a430d01bf7034766",
+   "test_results": "48947e6dd2a00f2f21f495e34940d2ffe28e8f5e1c5e6df6d71b8b26a63590c6"
+  },
+  "completion_rule": "final pin set enumerated FROM the q10 stage script's imports + argv once written at Q10 staging"
+ },
+ "admission_gate": {
+  "primary_per_family": ">=1.10x successful-job throughput AND paired 95% CI lower bound > 1.00 (DECISION.md:15)",
+  "form_rule": "throughput form k>1; reciprocal complete-job latency form when k=1 (flow derived k=1)",
+  "bootstrap_seed_PINNED": 20260929,
+  "sampling_unit": "the pair",
+  "outliers": "BENCHMARKS.md:28: cancellation predeclared external-only with retained evidence; job failure invalidates the BLOCK; one bounded diagnostic repeat, initial preserved; no slow-valid-sample removal after seeing its arm"
+ },
+ "warm_window_projection": {
+  "guarantee_form": "under the v3 k rule, window_s = k x job_wall / W >= 60 by ceil construction (unconditional, incl. W-downsize paths)",
+  "carried_k_form": "under the alternative screen-fixture-carried k (36/12): access 36/9 x 45.956703136244585 = 183.82681254497834 s; flow 12 x 67.8269671837989 = 813.9236062055868 s \u2014 both >= 60 by the SCALED job wall, NOT by inheritance from the screen window (false 'window >= screen window >= 60 s' premise withdrawn per h04; measured windows 11.09317058394663/12.761077624978498/56.501781082944945/60.62502937507816)",
+  "projected_window_s": {
+   "accessibility": 91.91340627248917,
+   "flow": 67.8269671837989
+  },
+  "timeout_s": 3600
+ },
+ "resource_policy": {
+  "machine_bound": "observed-L2 laptop ONLY",
+  "go_gate": "A1 fall-bound; QUIET = >=3 samples/>=30 s + ALL >= T1 + max consecutive-sample FALL <= 80 MiB; T1 = 3688366080 B level-invariant",
+  "unavailable_platforms": [
+   "cluster frame not qualified \u2014 DUAL GROUND: (1) machine-bound comparability (equal-policy B0, same libraries, frame-derived C=9/macOS topology); (2) node atl1-1-02-003-4-2 ALLOCATED 24/24 CPUs (20 third-party, 6d+; scots holds 4 CPU/64G) \u2014 exclusive lease uncertifiable independent of comparability"
+  ],
+  "per_window_sizing": "AMD6; MIN_VIABLE_BUDGET_MIB=2750 clamp; SizingRefused = designed stop, never retried in-block",
+  "u4_actual_target": "not supplied (START_HERE.txt:9); recorded, never invented"
+ },
+ "d11_constraint": {
+  "rule": "no qualification instrument may compose --diagnostic, --diagnostic-source-root, or NUMBA_DISABLE_JIT into child argv or env",
+  "argv_plane": "gate (c): tokens confined to d11/prohibition keys of the composed artifacts",
+  "env_plane": "child env filtered dict validated; strip list s01_run.py:183-186 (filter :186)"
+ },
+ "d10_gate": {
+  "rule": "all THREE composed manifests anchor ALL input_files at absolute campaign_data/inputs/ paths FROM BIRTH; gate (d) dry-runs validate anchoring + admission on the real chain"
+ },
+ "charge": {
+  "s01_arc_total_s": 3846.8,
+  "s01_arc_pct_of_14400": 26.7139,
+  "components": "ledgered 3709.7 + attached 137.1 at key retirement (h04 intake verdict)",
+  "remaining_at_intake_s": 10690.3,
+  "q10_projection_s": {
+   "primary_pairs": 1597.4037345628808,
+   "holdout_pair": 183.82681254497834,
+   "small_input_cell": 422.9431760008447,
+   "small_input_cell_decomposition": {
+    "access_paired_windows": 71.56274462677538,
+    "flow_paired_windows": 351.3804313740693,
+    "b0_component": 215.15459987707436,
+    "selected_component": 207.78857612377033,
+    "basis": "3 PAIRED (b0+selected) windows per family, BOTH arms counted \u2014 h04 freeze-review correction 1; the selected-only x1 figure 207.78857612377033 is superseded"
+   },
+   "grand": 2204.1737231087036
+  },
+  "checkpoint": "BEFORE block 3: if measured walls project past the remaining lease, route to team-lead for time-based extension BEFORE the overrun"
+ },
+ "self_check": {
+  "gates": [
+   "(a) ancestor+tree",
+   "(b) pins re-hashed live in this block",
+   "(c) D11 both planes",
+   "(d) 10 faithful admission dry-runs (sandbox roots)",
+   "(e) dry-run determinism + both arc figures",
+   "(f) outputs only under evidence/Q00/",
+   "(g) U4 recorded not-supplied",
+   "(h) roster-predicate discrimination with negative case"
+  ],
+  "results": {
+   "a": "PASS",
+   "b": "PASS all proposal pins re-hashed live, byte-exact (computed in this process)",
+   "c": "PASS",
+   "d": "PASS 10/10 ADMIT",
+   "e": "PASS identical verdicts; arc 3709.7 + 137.1 = 3846.8 s = 26.7139%",
+   "f": "PASS",
+   "g": "PASS (u4_actual_target recorded not-supplied)",
+   "h": "PASS roster=34 superset=18 negative case rejected",
+   "dry_run_budget_mib": 3760,
+   "avail_bytes": 5013061632,
+   "sandbox_roots": "/tmp/q00_gate_d",
+   "failures": []
+  }
+ }
+}
