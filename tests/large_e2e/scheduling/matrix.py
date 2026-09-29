@@ -106,7 +106,8 @@ FLOW_VARIANT = {
              "h05_flow_decision.json: chosen_variant=sel1024; sel-all "
              "capacity-refused)",
     "origins_fixture": ("/Users/alansynn/orca/workspaces/una-x/"
-                        "campaign_data/O3_FLOW_origins_sel1024.geojson"),
+                        "campaign_data/inputs/"
+                        "O3_FLOW_origins_sel1024.geojson"),
     "origins_fixture_sha256": (
         "75fc10b37fbf0cfd09490979a8619d30f3b270cef6048cfb36de0dbd86cdaa80"),
 }
@@ -116,7 +117,7 @@ ACCESS_ORIGINS = {
                   "identity-selection block is SUPERSEDED and must not "
                   "survive to the declaration freeze)"),
     "origins_fixture": ("/Users/alansynn/orca/workspaces/una-x/"
-                        "campaign_data/"
+                        "campaign_data/inputs/"
                         "s01_O3_ACCESS_origins_sel1024.geojson"),
     "origins_fixture_sha256": (
         "70a1083f937a01bb6694606d5bd804a53bbfec24daf6a35298936cd71ee5bafa"),

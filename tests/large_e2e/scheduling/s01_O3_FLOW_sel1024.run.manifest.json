@@ -9,7 +9,7 @@
    "bytes": 71290787
   },
   {
-   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/O3_FLOW_origins_sel1024.geojson",
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/O3_FLOW_origins_sel1024.geojson",
    "sha256": "75fc10b37fbf0cfd09490979a8619d30f3b270cef6048cfb36de0dbd86cdaa80",
    "bytes": 415162
   },
@@ -20,10 +20,10 @@
   }
  ],
  "settings": {
-  "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data",
-  "network_file": "inputs/20260703_PercLenNetwork_InnerCore.geojson",
+  "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+  "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
   "origins_file": "O3_FLOW_origins_sel1024.geojson",
-  "destinations_file": "inputs/MA_bus_stops.geojson",
+  "destinations_file": "MA_bus_stops.geojson",
   "network_weight_column": "Geometric",
   "origin_weight_column": "Count",
   "destination_weight_column": "weekly_departures",
@@ -43,5 +43,5 @@
   "flow_gravity_cap": "p95"
  },
  "required_output_patterns": ["*.feather", "*.geojson", "*.csv"],
- "notes": "S01 flow-family sweep workload: the H05-chosen sel1024 variant (campaign_data/h05_flow_decision.json chosen_variant=sel1024; sel-all capacity-refused), derived per the W00 smoke-manifest pattern from the frozen H01 acquisition manifest tests/large_e2e/inputs/O3_FLOW.manifest.json. Origins fixture is the H05-derived arm-neutral selection (campaign_data/O3_FLOW_origins_sel1024.geojson) whose sha256/bytes match the h05_origin_fixture_derivation.json pin byte-for-byte (re-verified fresh in-session 2026-09-28). data_folder points at campaign_data/ so the engine joins the prefixed inputs/ subpaths and the campaign_data-root fixture. Flow logical K is NOT set here: --flow-stripes default (production default K=9 per Topology.py:79) is supplied on the run.py command line and frozen in tests/large_e2e/scheduling/matrix.py. Runs ONLY through run.py installed mode with W00 arm identities; O3_HOLDOUT is never swept."
+ "notes": "S01 flow-family sweep workload: the H05-chosen sel1024 variant (campaign_data/h05_flow_decision.json chosen_variant=sel1024; sel-all capacity-refused), derived per the W00 smoke-manifest pattern from the frozen H01 acquisition manifest tests/large_e2e/inputs/O3_FLOW.manifest.json. Origins fixture is the H05-derived arm-neutral selection (campaign_data/inputs/O3_FLOW_origins_sel1024.geojson) whose sha256/bytes match the h05_origin_fixture_derivation.json pin byte-for-byte (re-verified fresh in-session 2026-09-28). data_folder points at campaign_data/inputs/ so the engine joins the bare file names (the W00 smoke-manifest pattern). Amendment #5 (h04 D10 ruling, 2026-09-29): the fixture moved from the campaign_data root to campaign_data/inputs/ — the root-anchored composition made input_dirs() contain campaign_data itself, so every S01 child refused [path_collision] before work (fire #4, O3_ACCESS pilot 1; this manifest was the mandatory sibling, same class). Flow logical K is NOT set here: --flow-stripes default (production default K=9 per Topology.py:79) is supplied on the run.py command line and frozen in tests/large_e2e/scheduling/matrix.py. Runs ONLY through run.py installed mode with W00 arm identities; O3_HOLDOUT is never swept."
 }

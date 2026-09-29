@@ -124,7 +124,9 @@ def test_access_fixture_identity():
     prov = matrix.ACCESS_ORIGINS["provenance"]
     assert _sha(prov["parent_manifest"]) == prov["parent_manifest_sha256"]
     assert _sha(prov["derivation_record"]) == prov["derivation_record_sha256"]
-    custody_pin = os.path.join(os.path.dirname(fixture), "custody",
+    # D10 sibling: custody pins live at the campaign_data root, not beside
+    # the fixture (amendment #5 moves the fixture under inputs/).
+    custody_pin = os.path.join(s01_run.DATA, "custody",
                                "interim_70a1083f_s01_O3_ACCESS_origins_"
                                "sel1024.geojson")
     assert os.path.exists(custody_pin), custody_pin
@@ -1179,3 +1181,75 @@ def test_d9_band_survives_child_remeasurement(sandbox, monkeypatch):
     # 0.8-MiB-plus deficit the extra 2 MiB of drift opens.
     with pytest.raises(spec.ValidationError, match="exceeds"):
         child_admission_at(HALT3_AVAIL_BYTES - 82 * (1 << 20))
+
+
+# ---------------------------------------------------------------------------
+# D10 (fire #4 halt, lease r4, O3_ACCESS:1 receipt interim_fe695217): both
+# S01 run manifests anchored their sel1024 origins fixtures at the
+# campaign_data ROOT, so Manifest.input_dirs() contained campaign_data
+# itself and the production composition out = RUNROOT/pilots/<cell>_pilot_N
+# sat INSIDE an input directory -- the frozen child's spec.validate_paths
+# refused the pilot before work ([path_collision], verbatim "outputs must
+# never mix with inputs"); O3_FLOW:1 would have refused identically
+# (mandatory sibling, same class).  Ruled fix (amendment #5), data layer
+# only: both fixtures move under campaign_data/inputs/ and the manifests
+# anchor data_folder there (the W00 smoke-manifest join pattern, all
+# settings file names bare), so every input file resolves under
+# campaign_data/inputs/ and no input dir is an ancestor of RUNROOT.
+# ---------------------------------------------------------------------------
+D10_INPUTS_DIR = os.path.join(s01_run.DATA, "inputs")
+
+
+def _committed_manifest(cell):
+    # REAL frozen manifest bytes at their committed path -- no sandbox
+    # redirect (the D6 lesson: a masked fixture would make these tests
+    # green on the defective composition).
+    import manifest as manifest_mod
+    path = matrix.RUN_MANIFESTS[cell]
+    return manifest_mod.Manifest(json.load(open(path)), Path(path))
+
+
+def test_d10_manifest_inputs_resolve_under_inputs_dir():
+    # Every input_file of BOTH committed run manifests resolves under
+    # campaign_data/inputs/, hence input_dirs() holds exactly that one dir
+    # and no input dir is an ancestor of RUNROOT (= campaign_data/s01_run)
+    # -- the negation of the D10 collision.  RED on the root-anchored
+    # fixtures, GREEN on amendment #5.
+    runroot = Path(s01_run.RUNROOT)
+    inputs_dir = Path(D10_INPUTS_DIR)
+    for cell in ("O3_ACCESS", "O3_FLOW"):
+        m = _committed_manifest(cell)
+        for entry in m.input_files:
+            assert inputs_dir in entry.resolved.parents, (
+                cell, entry.resolved)
+        dirs = m.input_dirs()
+        assert dirs == [inputs_dir], (cell, dirs)
+        for d in dirs:
+            assert d != runroot
+            assert (d not in runroot.parents) and (runroot not in d.parents)
+
+
+def test_d10_validate_paths_accepts_production_composition_access(tmp_path):
+    # Real-callee exercise through the FROZEN spec.py: the production
+    # composition (out beneath the real RUNROOT pilots tree, input_dirs
+    # from the committed manifest) must pass the path preflight.  The out
+    # leaf is a never-created probe name (the harness only creates
+    # <cell>_pilot_N), so the frozen new-or-empty guard cannot trip on
+    # retained fire residue while the containment arithmetic stays
+    # identical to production's.  RED on current manifests with the
+    # verbatim production refusal; GREEN on amendment #5.
+    m = _committed_manifest("O3_ACCESS")
+    out = Path(s01_run.RUNROOT) / "pilots" / "O3_ACCESS_pilot_1_d10_probe"
+    envelope = _runspec(str(out), str(tmp_path / "nbc_d10_probe_access"))
+    checks = envelope.validate_paths(m.input_dirs())
+    assert checks["input_dirs"] == [D10_INPUTS_DIR]
+
+
+def test_d10_validate_paths_accepts_production_composition_flow(tmp_path):
+    # Mandatory-sibling leg: the FLOW manifest must clear the same frozen
+    # guard over the same production composition.
+    m = _committed_manifest("O3_FLOW")
+    out = Path(s01_run.RUNROOT) / "pilots" / "O3_FLOW_pilot_1_d10_probe"
+    envelope = _runspec(str(out), str(tmp_path / "nbc_d10_probe_flow"))
+    checks = envelope.validate_paths(m.input_dirs())
+    assert checks["input_dirs"] == [D10_INPUTS_DIR]

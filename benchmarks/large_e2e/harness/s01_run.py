@@ -82,10 +82,16 @@ class SizingRefused(Exception):
 PINS = {
     RUN_PY: "c041c33f4ece70e381fb970d67793425221a694d9ed257c512ddb6a9d57f0f22",
     POOL_PY: "25e43bb707019a437be347731bda87bb4dcaf3f5b34a77b52d8716992167e5e1",
+    # Amendment #5 (h04 D10 ruling, 2026-09-29) superseded both run-manifest
+    # bytes (fixture moved under campaign_data/inputs/), so these two pins
+    # move to the post-amendment bytes -- a stale pin here would refuse
+    # every init (unpassable-by-construction gate).  SCOPE RIDER, disclosed
+    # in the REV 8 declaration: pre-amendment pins were a946658d (ACCESS)
+    # and a02d5f6b (FLOW), both verified live before the amendment.
     matrix.RUN_MANIFESTS["O3_ACCESS"]:
-        "a946658d7ebdeba8c07ae56f92abe586c607e7ad92aa3b58d1a55b4a1ecd5c25",
+        "2014118f4d046d5b61acee4109bf96132aa4f61d5804177eaca705177a9a88ab",
     matrix.RUN_MANIFESTS["O3_FLOW"]:
-        "a02d5f6b3d1357640a55bbed9347920efcc86f599ac74912f729e6f736b966d5",
+        "484ff2c1b85b787b2cf523a94db9a9ac569acf061e727a76b4f2e65ccd7b7c9e",
 }
 # O2 pilots reuse the W00 smoke manifest (frozen, sha-pinned by w00_run.py).
 O2_MANIFEST = f"{REPO}/tests/large_e2e/installed/w00_O2_smoke.manifest.json"
