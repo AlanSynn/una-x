@@ -55,27 +55,70 @@ ACCESSIBILITY_CONFIGS = [
     (2, 4),  # W2H4 (=8)
     (9, 1),  # W9H1 (=9) -- largest compared W of the accessibility family
 ]
+# --- flow family (AMD7: D10, VOID-8 fire #8, key r8, log 4b35ea9b) ---------
+# The freeze-era flow family (1, 9) + production-default stripes is
+# statically infeasible on this frame: the child gate (spec.py:294-313,
+# frozen, correct) demands H_numba+K <= C with K = max(1, cpu_count-1) = 9
+# under --flow-stripes default, so H >= 9 AND H+9 <= 9 is unsatisfiable.
+# Fire #8 refused the pilot verbatim ("H_numba+K = 9+9 = 18 exceeds C=9",
+# receipt 725ac8f2); the p1 and confirm flow windows are covered
+# identically (confirm chains strongest_feasible_b0 cfgkey).  Observed/B0
+# topology on frozen records: NUMBA_NUM_THREADS=10 (L2 call2_flow process
+# record; H05 memory_lifetimes pools get_num_threads=10) with engine
+# default stripes K=9 (Topology.py:79; L2 logger DIRECT: "Running Flow
+# with 9 clusters and 9 threads.") -- over-subscribed 19 threads on 10
+# cores, which the equal-resource frame cannot run by construction.
+# Per RESOURCES.md :11 ("If default K does not fit the budget, report
+# default-profile qualification unavailable or use a separately labelled
+# explicit thread profile equally in both arms.  Never lower K silently.")
+# the family runs the LABELLED EXPLICIT PROFILE projected from the
+# observed posture (H >= K, near-parity 10:9) under the designed gate:
+# H=5, K=4 -- H+K = 9 = C exactly (boundary pass; the child comparison is
+# strict >), W*(H+K) = 9 <= 9, posture 5 >= 4, charge W*H = 5 <= 9.
+# Criterion is SELECTION-VALIDITY, not observational fidelity: both arms
+# run the SAME maximal feasible topology, and the deviation from
+# observation is recorded (K_FIT).  Explicit-K results are a DISTINCT
+# NUMERICAL PROFILE from default-K runs (stripe membership
+# range(slot, n_origins, n_threads) depends on K; float sum order
+# differs) -- cross-profile output comparison is never
+# regression/improvement evidence; the S01 arm comparison is strictly
+# within-profile.
+FLOW_K = 4
 FLOW_CONFIGS = [
-    (1, 9),  # W1H9: the exactly-one flow config (H >= K at C=9 forces W=1)
+    (1, 5),  # W1H5 + explicit K=FLOW_K: the exactly-one flow config
 ]
 ARMS = ["b0", "selected"]
 BATCHES_PER_CELL = 2
 
-# --- K-fit branch (check recorded at matrix freeze -- NOT a matrix change) --
-# h04 amendment-#2 premise ("default K=10 observed > C=9 forces the labelled
-# K'=9 branch") is FALSIFIED IN PREMISE, IDENTICAL IN OUTCOME: control.json's
-# numba_default_threads_observed=10 is Numba's pool, not topology K.  The
-# engine default is Topology.py:79 num_threads = mp.cpu_count()-1 -> 9 on
-# this machine, and the arm-venv wheel-frame probe observed instance
-# num_threads = 9 (2026-09-28, w00_selected venv, sandboxed import).  Default
-# K=9 FITS C=9 exactly, so the labelled-K' branch is NOT taken: the flow
-# config runs the production default K (--flow-stripes default).  Flagged to
-# h04 for the record; the frozen matrix is byte-identical either way.
+# --- K-fit record (AMD7 correction of the freeze-era check; h04 D10) --------
+# Freeze-era record (intake 5eb7227) ruled "production_default_fits" on
+# K <= C alone; the child's actual contract is the CONJUNCTION
+# H_numba+K <= C (RESOURCES.md :9 "W*H_numba<=C is insufficient for flow
+# ... conservative sum of each job's worst admitted concurrency";
+# spec.py:294-313), which makes the default profile infeasible for flow
+# on this frame.  Correction authorized by h04's AMD7 design PASS (Set A,
+# H=5, K=4); the labelled explicit profile is taken per RESOURCES.md :11.
 K_FIT = {
-    "branch": "production_default_fits",
-    "labelled_profile_used": False,
+    "branch": "labelled_explicit_profile",
+    "labelled_profile_used": True,
+    "explicit_k": FLOW_K,
     "default_k": 9,
     "c_slots": C_SLOTS,
+    "default_profile_qualification": (
+        "UNAVAILABLE for the flow family on this frame: default K=9 with "
+        "the minimum feasible numba pool H=1 gives H+K = 10 > C=9 -- the "
+        "production default profile cannot be admitted; RESOURCES.md :11 "
+        "remedy taken"),
+    "criterion": (
+        "H_numba + K <= C_SLOTS and W*(H_numba+K) <= C_SLOTS (child gate "
+        "spec.py:294-313; posture H >= K preserved from the observed "
+        "10:9 topology)"),
+    "numerical_profile": (
+        "explicit K=4 is a DISTINCT numerical profile from default-K=9 "
+        "runs: stripe membership range(slot, n_origins, n_threads) "
+        "depends on K, so float sum order differs; cross-profile output "
+        "comparison is never regression/improvement evidence; the S01 "
+        "arm comparison is strictly within-profile"),
     "static_source": "Topology.py:79 num_threads = mp.cpu_count()-1 (also "
                      ":1143, :2060); constructor override only when not None",
     "runtime_probe": {
@@ -84,7 +127,7 @@ K_FIT = {
         "mp_cpu_count": 10,
         "instance_num_threads": 9,
     },
-    "flow_stripes_cli": "default",
+    "flow_stripes_cli": "4",
 }
 
 # --- workloads (families x cells; O3_HOLDOUT protected, never swept) -------
@@ -171,7 +214,9 @@ ARM_IDENTITIES = {
                  "w00_identities/selected.json"),
 }
 # Reference configs for the P0 baseline-only pilots (per-job wall source).
-PILOT_REFERENCE_CONFIG = {"accessibility": (1, 1), "flow": (1, 9)}
+# flow: the AMD7 labelled explicit profile (W1, H5, explicit K=FLOW_K) --
+# the feasible projection of the observed posture; see FLOW_CONFIGS.
+PILOT_REFERENCE_CONFIG = {"accessibility": (1, 1), "flow": (1, 5)}
 
 # --- SS6.3 frozen thresholds (freeze at matrix freeze; no mid-sweep change) -
 QUEUE_POLICY = {
@@ -235,7 +280,11 @@ def matrix_valid() -> bool:
         if not config_within_c(w, h):
             return False
     for w, h in FLOW_CONFIGS:
-        if h < K_FIT["default_k"]:   # H >= K (no schedule proof pursued)
+        if h < FLOW_K:                     # H >= K posture (observed 10:9)
+            return False
+        if h + FLOW_K > C_SLOTS:           # child gate term 1 (spec.py:298)
+            return False
+        if w * (h + FLOW_K) > C_SLOTS:     # child gate term 2 (spec.py:306)
             return False
     if not HOLDOUT_NEVER_SWEPT:
         return False

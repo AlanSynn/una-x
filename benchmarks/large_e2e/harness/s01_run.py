@@ -289,8 +289,21 @@ def guard_and_launch(cmd, env, lease_id, what, timeout_s,
 
 # --- child argv builders ----------------------------------------------------
 
+_FLOW_MANIFEST_NAME = os.path.basename(matrix.RUN_MANIFESTS["O3_FLOW"])
+
+
 def _common_run_args(manifest, arm, w, h, jobs, queue_depth, cache_root,
                      out_dir, ceiling_mib):
+    # AMD7 (D10): flow manifests compose the labelled explicit stripe
+    # profile (matrix.FLOW_K) -- "default" would estimate K = cpu_count-1
+    # = 9 on this frame and refuse every flow window against the frozen
+    # child gate (H_numba+K <= C; fire #8 receipt 725ac8f2).  Accessibility
+    # and ODM keep the production default: the AggregateFlow executor does
+    # not exist there (spec.py validate_admission docstring), and charging
+    # them for K would refuse ordinary runs.  Arm-independent by
+    # construction: flow-ness resolves from the manifest, never the arm
+    # (RESOURCES.md :11 "equally in both arms").
+    flow = os.path.basename(manifest) == _FLOW_MANIFEST_NAME
     return [
         "--manifest", manifest,
         "--arm", f"s01_{arm}",
@@ -299,7 +312,7 @@ def _common_run_args(manifest, arm, w, h, jobs, queue_depth, cache_root,
         "--jobs", str(jobs),
         "--workers", str(w),
         "--numba-threads", str(h),
-        "--flow-stripes", "default",
+        "--flow-stripes", str(matrix.FLOW_K) if flow else "default",
         "--queue-depth", str(queue_depth),
         "--writer-limit", str(w),          # writer limit = W everywhere
         "--cpu-budget", str(matrix.C_SLOTS),

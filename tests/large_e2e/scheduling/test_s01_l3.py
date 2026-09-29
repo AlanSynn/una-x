@@ -62,12 +62,18 @@ def test_matrix_invariants():
     for w, h in matrix.ACCESSIBILITY_CONFIGS + matrix.FLOW_CONFIGS:
         assert matrix.config_within_c(w, h), (w, h)
     for w, h in matrix.FLOW_CONFIGS:
-        assert h >= matrix.K_FIT["default_k"]      # H >= K, no schedule proof
+        # AMD7 corrected predicate: the full child-gate conjunction, not
+        # the posture alone.
+        assert h >= matrix.FLOW_K                        # observed 10:9
+        assert h + matrix.FLOW_K <= matrix.C_SLOTS       # gate term 1
+        assert w * (h + matrix.FLOW_K) <= matrix.C_SLOTS  # gate term 2
     assert matrix.HOLDOUT_NEVER_SWEPT is True
     assert "O3_HOLDOUT" not in matrix.SWEEP_WORKLOADS.values()
-    assert matrix.K_FIT["branch"] == "production_default_fits"
-    assert matrix.K_FIT["labelled_profile_used"] is False
-    assert matrix.K_FIT["flow_stripes_cli"] == "default"
+    assert matrix.K_FIT["branch"] == "labelled_explicit_profile"
+    assert matrix.K_FIT["labelled_profile_used"] is True
+    assert matrix.K_FIT["explicit_k"] == matrix.FLOW_K
+    assert "UNAVAILABLE" in matrix.K_FIT["default_profile_qualification"]
+    assert matrix.K_FIT["flow_stripes_cli"] == "4"
 
 
 def test_matrix_pins_shapes():
@@ -469,7 +475,11 @@ def test_child_flags_parse_against_spec_parser():
             assert args.queue_depth == row["w"]          # queue starts W
             assert args.writer_limit == row["w"]         # writer limit = W
             assert args.cpu_budget == matrix.C_SLOTS
-            assert args.flow_stripes is None             # production default
+            if row["cell"] == matrix.SWEEP_WORKLOADS["flow"]:
+                # AMD7: the labelled explicit profile, both arms.
+                assert args.flow_stripes == matrix.FLOW_K
+            else:
+                assert args.flow_stripes is None   # production default
             assert args.mode == "batch"
             assert args.arm == f"s01_{arm}"
 
@@ -512,10 +522,10 @@ def _session(tp, wall, wait_ns=10**7, valid=True, validated=9):
 
 TP_B0 = {"W1H1": [10.0, 12.0], "W2H2": [20.0, 24.0], "W3H3": [30.0, 33.0],
          "W4H2": [5.0, 5.0], "W2H4": [3.0, 3.0], "W9H1": [1.0, 1.0],
-         "W1H9": [7.0, 9.0]}
+         "W1H5": [7.0, 9.0]}
 TP_SEL = {"W1H1": [11.0, 13.0], "W2H2": [21.0, 25.0], "W3H3": [31.0, 34.0],
           "W4H2": [6.0, 6.0], "W2H4": [4.0, 4.0], "W9H1": [2.0, 2.0],
-          "W1H9": [8.0, 10.0]}
+          "W1H5": [8.0, 10.0]}
 
 
 def _populate_p1(sandbox, tp_b0=TP_B0, tp_sel=TP_SEL, invalid=()):
@@ -552,13 +562,13 @@ def test_family_selections_median_and_feasibility(sandbox):
     ranks = [t["median_primary_jobs_per_s"]
              for t in sel["accessibility"]["b0_ranking"]]
     assert ranks == sorted(ranks, reverse=True)
-    assert sel["flow"]["strongest_feasible_b0"]["cfgkey"] == "W1H9"
+    assert sel["flow"]["strongest_feasible_b0"]["cfgkey"] == "W1H5"
 
 
 def test_records_success_with_confirm_dirs(sandbox, monkeypatch):
     _primed_sandbox(sandbox, monkeypatch)
     _populate_p1(sandbox)
-    _seed_confirm_dirs(sandbox, {"O3_ACCESS": "W3H3", "O3_FLOW": "W1H9"})
+    _seed_confirm_dirs(sandbox, {"O3_ACCESS": "W3H3", "O3_FLOW": "W1H5"})
     prior_sha = _sha(f"{s01_run.EVIDENCE}/configurations.json")
     assert s01_run.stage_records("S01-lease-test") == 0
     cfg = json.load(open(f"{s01_run.EVIDENCE}/configurations.json"))
@@ -567,7 +577,7 @@ def test_records_success_with_confirm_dirs(sandbox, monkeypatch):
     assert len(cfg["p1_batches"]) == 28
     assert len(cfg["confirmation_batches"]) == 4
     assert {b["cfgkey"] for b in cfg["confirmation_batches"]} == \
-        {"W3H3", "W1H9"}
+        {"W3H3", "W1H5"}
     assert {b["arm"] for b in cfg["confirmation_batches"]} == set(matrix.ARMS)
     assert "selections" in cfg
     mem = json.load(open(f"{s01_run.EVIDENCE}/memory.json"))
@@ -583,7 +593,7 @@ def test_records_success_with_confirm_dirs(sandbox, monkeypatch):
 def test_records_refuses_missing_confirm_session(sandbox, monkeypatch):
     _primed_sandbox(sandbox, monkeypatch)
     _populate_p1(sandbox)
-    _seed_confirm_dirs(sandbox, {"O3_ACCESS": "W3H3", "O3_FLOW": "W1H9"},
+    _seed_confirm_dirs(sandbox, {"O3_ACCESS": "W3H3", "O3_FLOW": "W1H5"},
                        drop={("selected", "O3_FLOW")})
     before = open(f"{s01_run.EVIDENCE}/configurations.json", "rb").read()
     assert s01_run.stage_records("S01-lease-test") == 2
@@ -595,8 +605,8 @@ def test_records_refuses_missing_confirm_session(sandbox, monkeypatch):
 def test_records_refuses_invalid_confirm_session(sandbox, monkeypatch):
     _primed_sandbox(sandbox, monkeypatch)
     _populate_p1(sandbox)
-    _seed_confirm_dirs(sandbox, {"O3_ACCESS": "W3H3", "O3_FLOW": "W1H9"})
-    bad = (f"{s01_run.RUNROOT}/O3_FLOW/confirm_W1H9/selected/session.json")
+    _seed_confirm_dirs(sandbox, {"O3_ACCESS": "W3H3", "O3_FLOW": "W1H5"})
+    bad = (f"{s01_run.RUNROOT}/O3_FLOW/confirm_W1H5/selected/session.json")
     _write_json(bad, _session(40.0, 20.0, valid=False))
     assert s01_run.stage_records("S01-lease-test") == 2
 
@@ -608,7 +618,7 @@ def test_records_refuses_pending_crash(sandbox, monkeypatch):
     # (halt1, log bd0255ab).
     _primed_sandbox(sandbox, monkeypatch)
     _populate_p1(sandbox)
-    _seed_confirm_dirs(sandbox, {"O3_ACCESS": "W3H3", "O3_FLOW": "W1H9"})
+    _seed_confirm_dirs(sandbox, {"O3_ACCESS": "W3H3", "O3_FLOW": "W1H5"})
     path = sandbox / "s01_lease_log.json"
     log = json.load(open(path))
     log["windows"].append({"what": "p1:b0:O3_ACCESS:W1H1:b1",
@@ -637,7 +647,7 @@ def test_confirm_selects_strongest_b0_and_names_dirs(sandbox, monkeypatch):
                         lambda: (8000, 8 * 2**30))
     assert s01_run.stage_confirm("S01-lease-test", "b0") == 0
     assert [c["what"] for c in calls] == [
-        "confirm:b0:O3_ACCESS:W3H3", "confirm:b0:O3_FLOW:W1H9"]
+        "confirm:b0:O3_ACCESS:W3H3", "confirm:b0:O3_FLOW:W1H5"]
     for c in calls:
         cell = c["what"].split(":")[2]
         t = c["tail"]
@@ -652,8 +662,14 @@ def test_confirm_selects_strongest_b0_and_names_dirs(sandbox, monkeypatch):
     assert acc[acc.index("--queue-depth") + 1] == "3"
     flow = [c for c in calls if "O3_FLOW" in c["what"]][0]["tail"]
     assert flow[flow.index("--workers") + 1] == "1"
-    assert flow[flow.index("--numba-threads") + 1] == "9"
+    assert flow[flow.index("--numba-threads") + 1] == "5"
     assert flow[flow.index("--queue-depth") + 1] == "1"
+    # AMD7: the confirm boundary composes the labelled explicit stripe
+    # profile for flow (call site s01_run.py --stage confirm); the
+    # accessibility confirm keeps the production default profile (raw argv
+    # "default" -- spec's parser maps that to flow_stripes=None).
+    assert flow[flow.index("--flow-stripes") + 1] == str(matrix.FLOW_K)
+    assert acc[acc.index("--flow-stripes") + 1] == "default"
 
 
 def test_confirm_requires_all_p1_valid(sandbox, monkeypatch):
@@ -1472,3 +1488,190 @@ def test_amd6_plausibility_floor_across_avail_grid(monkeypatch):
                             lambda a=low: _FakeVM(a))
         with pytest.raises(s01_run.SizingRefused, match="minimum viable"):
             s01_run.memory_ceiling_mib()
+
+
+# ---------------------------------------------------------------------------
+# AMD7 (VOID-8, fire #8, key r8, log 4b35ea9b): STATIC CONFIGURATION
+# INFEASIBILITY -- supervisor/matrix-side authoring defect.  The frozen child
+# gate (spec.py:294-313) is CORRECT: flow+batch demands H_numba+K <= C, with
+# K = max(1, cpu_count-1) under --flow-stripes default.  The freeze authored
+# the flow family as (W=1, H=9) with production-default stripes: on this
+# frame (cpu_count=10 -> K_default=9, C=9) H+K = 18 > 9, so the pilot ref,
+# the sweep row and the confirm flow window ALL refuse identically (fire #8
+# O3_FLOW:1, receipt 725ac8f2..., console interim_47fdbbbb).  matrix_valid()
+# encoded H >= K without the H+K term (suite-green over a dead stage); the
+# K_FIT record ruled "production_default_fits" on K <= C alone.
+#
+# DESIGN ANCHOR (h04: derive the topology from the observed workload, never
+# invent it).  Frozen records give the observed/B0 flow topology:
+#   - H01 manifest O3_FLOW.manifest.json: stripe_thread_profile=null --
+#     "numerical stripe/thread profile null until frozen (H05/S01)".
+#   - H05 B0 flow records (h05 evidence memory_lifetimes.json /
+#     stage_model.json): config_NUMBA_NUM_THREADS = 10 (full pool).
+#   - Engine default stripes K=9 (Topology.py:79 cpu_count-1; wheel-venv
+#     instance probe recorded in matrix.K_FIT runtime_probe).
+# Posture: H_numba=10 >= K=9, near-parity 10:9 (the observed run
+# oversubscribes 19 threads on 10 cores -- exactly what the S01
+# equal-resource gate forbids by design).  Feasible projection under the
+# designed gate preserving that posture (H >= K, near-parity, saturate C):
+# H=5, K=4 -- h04's feasible set A (W=1, K <= 4).  Set B (H=1, serial
+# numba) contradicts the observed full-width pool (the numba origin loop is
+# ~40.6% of the B0 flow window, h05_flow_decision.json); H=4/K=4 leaves a
+# core idle (8 < 9) and drops the observed H > K direction.  FLOW_K=4 is
+# the labelled explicit profile (RESOURCES.md :11 "flow K freeze / labelled
+# explicit profile"); the production default K=9 stays in the record as
+# the OBSERVED default and is never composed into S01 argv.
+# ---------------------------------------------------------------------------
+AMD7_FLOW_K = 4
+AMD7_FLOW_CONFIG = (1, 5)
+
+
+def _admission_from_argv(argv_tail):
+    """Real frozen parser + real RunSpec: the child admission exactly as
+    run.py constructs it from the composed supervisor argv."""
+    args = spec.build_parser().parse_args(argv_tail)
+    return spec.RunSpec(args)
+
+
+def _vm_admissible():
+    # Memory admission runs AFTER the CPU/flow gates; pin it to ample
+    # bytes so the test exercises exactly the concurrency gate (the same
+    # inline-shim pattern as the D8 admission tests above).
+    return types.SimpleNamespace(available=8 * 2 ** 30, total=16 * 2 ** 30)
+
+
+def test_amd7_flow_rows_admitted_by_frozen_child_gate(sandbox, monkeypatch):
+    # Real-function red (the fire-8 signature in miniature): every flow
+    # sweep row, composed through the supervisor's own argv builder, must
+    # pass the frozen child admission with analysis="flow".  On the
+    # committed bytes this raises the exact fire-8 refusal:
+    # "flow admission mismatch: per-job worst concurrency
+    #  H_numba+K = 9+9 = 18 exceeds C=9".
+    # The disk preflight (spec.py:339-346) stats BOTH parents, so the rows
+    # are materialized under the SANDBOX (RUNROOT/NBCROOT -> tmp_path) with
+    # out-parent + NBCROOT pre-created -- never the real campaign paths
+    # (same frame as the D8 present-parent branch above).
+    import psutil
+    monkeypatch.setattr(psutil, "virtual_memory", lambda: _vm_admissible())
+    os.makedirs(s01_run.NBCROOT, exist_ok=True)
+    flow_cell = matrix.SWEEP_WORKLOADS["flow"]
+    system = _RealDiskSystem()
+    for arm in matrix.ARMS:
+        for row in s01_run._expected_batch_dirs(arm):
+            if row["cell"] != flow_cell:
+                continue
+            os.makedirs(os.path.dirname(row["out_dir"]), exist_ok=True)
+            argv = s01_run._common_run_args(
+                matrix.RUN_MANIFESTS[row["cell"]], arm, row["w"], row["h"],
+                jobs=9, queue_depth=row["w"],
+                cache_root=row["cache_root"], out_dir=row["out_dir"],
+                ceiling_mib=6000)
+            admission = _admission_from_argv(argv).validate_admission(
+                system, analysis="flow")
+            assert admission["within_budget"] is True
+
+
+def test_amd7_flow_pilot_reference_admitted(sandbox, monkeypatch):
+    # Same gate, P0 argv shape: the flow pilot reference config (jobs=1,
+    # queue_depth=1) must admit.  Fire #8 refused exactly this argv
+    # (O3_FLOW:1, wall 0.1s, rejected_before_work).  Sandbox + pre-created
+    # parents as in the sweep-row test above (disk preflight stats both).
+    import psutil
+    monkeypatch.setattr(psutil, "virtual_memory", lambda: _vm_admissible())
+    os.makedirs(s01_run.NBCROOT, exist_ok=True)
+    os.makedirs(f"{s01_run.RUNROOT}/pilots", exist_ok=True)
+    ref_w, ref_h = matrix.PILOT_REFERENCE_CONFIG["flow"]
+    argv = s01_run._common_run_args(
+        matrix.RUN_MANIFESTS["O3_FLOW"], "b0", ref_w, ref_h,
+        jobs=1, queue_depth=1,
+        cache_root=f"{s01_run.NBCROOT}/nbc_s01_pilot_O3_FLOW_1",
+        out_dir=f"{s01_run.RUNROOT}/pilots/O3_FLOW_pilot_1",
+        ceiling_mib=6000)
+    admission = _admission_from_argv(argv).validate_admission(
+        _RealDiskSystem(), analysis="flow")
+    assert admission["within_budget"] is True
+
+
+def test_amd7_matrix_valid_refuses_infeasible_flow_rows(monkeypatch):
+    # The matrix invariant must encode the CHILD gate, not the posture
+    # alone.  (1, 9) is the committed row itself: it PASSES the old
+    # H >= K predicate while violating the frozen child gate under the
+    # production-default K=9 estimate (H+K = 18 > 9).  (2, 4) is refused
+    # by BOTH predicates (old: posture 4 < 9; new: W*(H+K) = 2*(4+4) =
+    # 16 > 9) and covers the W-scaled conjunct.
+    for rows in ([(1, 9)], [(2, 4)]):
+        monkeypatch.setattr(matrix, "FLOW_CONFIGS", rows)
+        assert matrix.matrix_valid() is False, rows
+
+
+def test_amd7_matrix_valid_accepts_anchor_config(monkeypatch):
+    # The anchor-derived feasible config (W=1, H=5, explicit K=4) must
+    # validate: posture 5 >= 4; H+K = 9 <= C=9 (boundary-exact pass -- the
+    # child comparison is strict >); W*(H+K) = 9 <= 9; charge W*H = 5 <= 9.
+    # On the committed bytes the OLD predicate rejects it (5 < 9): the
+    # matrix could not even EXPRESS the feasible design.
+    monkeypatch.setattr(matrix, "FLOW_CONFIGS", [AMD7_FLOW_CONFIG])
+    assert matrix.matrix_valid() is True
+
+
+def test_amd7_matrix_valid_enforces_posture_and_terms(monkeypatch):
+    # Branch coverage of the corrected flow predicate: posture refusal
+    # (H < K) and boundary refusals one step past each gate term.
+    for rows, why in (
+        ([(1, 3)], "posture: H=3 < K=4"),
+        ([(1, 6)], "H+K = 10 > 9"),
+        ([(2, 4)], "W*(H+K) = 16 > 9"),
+    ):
+        monkeypatch.setattr(matrix, "FLOW_CONFIGS", rows)
+        assert matrix.matrix_valid() is False, (rows, why)
+
+
+def test_amd7_flow_composition_explicit_stripes():
+    # The supervisor composes the labelled profile into the child argv for
+    # flow manifests -- never "default" (which estimates K=9 on this frame
+    # and refuses).  Accessibility manifests keep the production default:
+    # the AggregateFlow executor does not exist there, and charging them
+    # for K would refuse ordinary runs (spec.py validate_admission
+    # docstring).  Flow-ness is resolved inside the argv builder from the
+    # manifest, so every call site (p0/p1/confirm) is covered by one
+    # corrected surface.
+    flow_cell = matrix.SWEEP_WORKLOADS["flow"]
+    assert getattr(matrix, "FLOW_K", None) == AMD7_FLOW_K
+    for arm in matrix.ARMS:
+        for row in s01_run._expected_batch_dirs(arm):
+            argv = s01_run._common_run_args(
+                matrix.RUN_MANIFESTS[row["cell"]], arm, row["w"], row["h"],
+                jobs=9, queue_depth=row["w"],
+                cache_root=row["cache_root"], out_dir=row["out_dir"],
+                ceiling_mib=6000)
+            args = spec.build_parser().parse_args(argv)
+            if row["cell"] == flow_cell:
+                assert argv[argv.index("--flow-stripes") + 1] == "4"
+                assert args.flow_stripes == AMD7_FLOW_K
+            else:
+                assert args.flow_stripes is None   # production default
+
+
+def test_amd7_k_fit_record_labelled_profile():
+    # K_FIT record correction (h04 surface): the criterion gains the
+    # missing H term; the labelled explicit profile is TAKEN (K=4); the
+    # production default K=9 is retained as the observed-default record
+    # and is never composed into argv.
+    assert matrix.K_FIT["branch"] == "labelled_explicit_profile"
+    assert matrix.K_FIT["labelled_profile_used"] is True
+    assert matrix.K_FIT["explicit_k"] == AMD7_FLOW_K
+    assert matrix.K_FIT["default_k"] == 9
+    assert "H" in matrix.K_FIT["criterion"] \
+        and "+ K" in matrix.K_FIT["criterion"]
+
+
+def test_amd7_frozen_flow_design_budget_neutral():
+    # The amendment corrects feasibility WITHOUT touching the run budget:
+    # one flow config, 4 flow batches, 28 total; the largest compared flow
+    # W stays 1 (k_jobs divisibility unchanged).
+    assert matrix.FLOW_CONFIGS == [AMD7_FLOW_CONFIG]
+    assert matrix.PILOT_REFERENCE_CONFIG["flow"] == AMD7_FLOW_CONFIG
+    assert matrix.flow_batches() == 4
+    assert matrix.total_batches() == 28
+    assert matrix.largest_w("flow") == 1
+    assert matrix.k_jobs_divisible(9, "flow") is True
