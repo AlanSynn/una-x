@@ -279,6 +279,16 @@ def _refuse_existing(*paths):
     return True
 
 
+def _ensure_parent(path):
+    """D8 (fire #2 halt, log 2c9b7880): the frozen child's admission
+    preflight stats the out_dir PARENT (spec.py:339-340), so a missing
+    parent reached the child as a raw FileNotFoundError (rc 1) and
+    bypassed the structured reject path.  Created in the launch path only,
+    AFTER the fresh-path guard, so a [path_collision] refusal leaves no
+    freshly-created empty parent.  exist_ok: idempotent across relaunches."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+
+
 def _read_session(path):
     if not os.path.exists(path):
         return None
@@ -405,6 +415,7 @@ def stage_p0(lease_id, arm):
                 _pilot_cell_manifest(cell), "b0", ref_w, ref_h, jobs=1,
                 queue_depth=1, cache_root=cache_root, out_dir=out_dir,
                 ceiling_mib=ceiling_mib)
+            _ensure_parent(out_dir)
             rc = _run_child(tail, lease_id, f"pilot:{cell}:{n}",
                             PILOT_TIMEOUT_S)
             if rc != 0:
@@ -617,6 +628,7 @@ def stage_p1(lease_id, arm):
             jobs=k_jobs[row["family"]]["k_jobs"],
             queue_depth=row["w"], cache_root=row["cache_root"],
             out_dir=row["out_dir"], ceiling_mib=ceiling_mib)
+        _ensure_parent(row["out_dir"])
         rc = _run_child(
             tail, lease_id,
             f"p1:{arm}:{row['cell']}:{row['cfgkey']}:b{row['batch']}",
@@ -726,6 +738,7 @@ def stage_confirm(lease_id, arm):
             matrix.RUN_MANIFESTS[cell], arm, w, h,
             jobs=k_jobs[family]["k_jobs"], queue_depth=w,
             cache_root=cache_root, out_dir=out_dir, ceiling_mib=ceiling_mib)
+        _ensure_parent(out_dir)
         rc = _run_child(tail, lease_id,
                         f"confirm:{arm}:{cell}:{strongest['cfgkey']}",
                         CFGKEY_TIMEOUT_S)

@@ -8,6 +8,7 @@ review.json independence guarantee (amendment #2 SS4.4).
 """
 from __future__ import annotations
 
+import argparse
 import ast
 import hashlib
 import json
@@ -15,6 +16,8 @@ import os
 import sys
 import threading
 import time
+import types
+from pathlib import Path
 
 import pytest
 
@@ -27,6 +30,7 @@ for p in (SCHED, HARNESS, f"{REPO}/benchmarks/large_e2e"):
 
 import matrix  # noqa: E402
 import s01_run  # noqa: E402
+import spec  # noqa: E402
 
 
 def _sha(path):
@@ -842,3 +846,182 @@ def test_dispatch_stamps_log_lease_id_not_arg(sandbox, monkeypatch):
     assert s01_run.main(["--stage", "p0", "--arm", "b0"]) == 2
     log = json.load(open(sandbox / "s01_lease_log.json"))
     assert log["windows"][-1]["lease_id"] == "S01-lease-test"
+
+
+# ----------------------------------------------------------------------
+# D8 amendment (fire #2 halt, log 2c9b7880): launch-boundary parent
+# creation.  The frozen child's admission preflight stats the out_dir
+# PARENT (spec.py:339 disk_usage on out_dir.parent); a missing parent
+# surfaced as a raw FileNotFoundError (child rc 1 in 0.1 s), bypassing
+# the structured reject path.  The supervisor must create every out_dir
+# parent in the launch path -- AFTER the fresh-path guard, so a
+# [path_collision] refusal leaves no fresh empty residue.
+# ----------------------------------------------------------------------
+
+_PILOT_WALLS = {"pilot:O3_ACCESS:1": 3.0, "pilot:O3_ACCESS:2": 3.6,
+                "pilot:O3_FLOW:1": 5.0, "pilot:O3_FLOW:2": 5.0,
+                "pilot:O2:1": 30.0, "pilot:O2:2": 30.0}
+
+
+def _boundary_stub(calls, decorate):
+    """T-A/T-C stub: _run_child is stubbed ONLY to record whether out_dir's
+    parent existed AT CALL TIME (the launch boundary) and to write a
+    session payload; no other behavior is patched."""
+    def stub(args_tail, lease_id, what, timeout_s, env_extra=None):
+        out = args_tail[args_tail.index("--out") + 1]
+        calls.append({"what": what,
+                      "parent_existed": os.path.isdir(os.path.dirname(out))})
+        decorate(out, what)
+        return 0
+    return stub
+
+
+def test_launch_boundary_parent_exists_for_every_child(sandbox, monkeypatch):
+    # Ruled T-A: through main(), all three launch stages; the stub must
+    # never observe a missing parent for ANY child.
+    _primed_sandbox(sandbox, monkeypatch)
+    calls = []
+
+    def decorate_pilot(out, what):
+        _write_json(f"{out}/session.json",
+                    _session(1.0, _PILOT_WALLS[what], wait_ns=10**7))
+
+    def decorate_batch(out, what):
+        _write_json(f"{out}/session.json", _session(1.0, 20.0))
+
+    def decorate_confirm(out, what):
+        _write_json(f"{out}/session.json", _session(40.0, 20.0))
+
+    monkeypatch.setattr(s01_run, "memory_ceiling_mib",
+                        lambda: (8000, 8 * 2**30))
+    monkeypatch.setattr(s01_run, "_run_child",
+                        _boundary_stub(calls, decorate_pilot))
+    assert s01_run.main(["--stage", "p0", "--arm", "b0"]) == 0
+    assert sorted(c["what"] for c in calls) == sorted(_PILOT_WALLS)
+
+    monkeypatch.setattr(s01_run, "_run_child",
+                        _boundary_stub(calls, decorate_batch))
+    before = len(calls)
+    assert s01_run.main(["--stage", "p1", "--arm", "b0"]) == 0
+    p1_whats = [c["what"] for c in calls[before:]]
+    assert len(p1_whats) == len(s01_run._expected_batch_dirs("b0"))
+    assert all(w.startswith("p1:b0:") for w in p1_whats)
+
+    monkeypatch.setattr(s01_run, "_run_child",
+                        _boundary_stub(calls, decorate_confirm))
+    # confirm's gate requires all 28 P1 batches valid across BOTH arms;
+    # the p1 leg above launched only b0's 14.  Populate both arms (the b0
+    # rewrites stay valid); this does not touch the boundary contract.
+    _populate_p1(sandbox)
+    before = len(calls)
+    assert s01_run.main(["--stage", "confirm", "--arm", "b0"]) == 0
+    confirm_whats = [c["what"] for c in calls[before:]]
+    assert len(confirm_whats) == 2
+    assert all(w.startswith("confirm:b0:") for w in confirm_whats)
+
+    missing = [c for c in calls if not c["parent_existed"]]
+    assert missing == [], (
+        "launch reached _run_child with a missing out_dir parent "
+        "(the fire #2 halt signature): " + repr(missing))
+
+
+class _RealDiskSystem:
+    """T-B system shim: REAL psutil.disk_usage (the D8 defect IS a statvfs
+    on a missing parent) and REAL cpu_count; virtual_memory delegates to
+    psutil at call time so the env-only monkeypatch flows through."""
+
+    @staticmethod
+    def cpu_count():
+        return os.cpu_count()
+
+    @staticmethod
+    def virtual_memory():
+        import psutil
+        return psutil.virtual_memory()
+
+    @staticmethod
+    def disk_usage(path):
+        import psutil
+        return psutil.disk_usage(path)
+
+
+def _runspec(out_dir, cache_root):
+    """A real frozen RunSpec over the supervisor-derived layout (constructor
+    reads argparse attributes only; no path-existence checks)."""
+    ns = argparse.Namespace(
+        arm="b0",
+        manifest=Path(f"{SCHED}/s01_O3_ACCESS.run.manifest.json"),
+        identity=Path(f"{SCHED}/s01_identity.json"),
+        out=Path(out_dir),
+        cache_root=Path(cache_root),
+        diagnostic_source_root=None,
+        mode="batch",
+        jobs=9, workers=3, numba_threads=3, flow_stripes=None,
+        queue_depth=3, writer_limit=64,
+        cpu_budget=matrix.C_SLOTS, memory_budget_mib=3108, timeout_s=3600,
+        test_fault=None,
+    )
+    return spec.RunSpec(ns)
+
+
+def test_frozen_child_admission_parent_absent_and_present(
+        sandbox, monkeypatch):
+    # Ruled T-B: both signs of the D8 signature against the FROZEN spec.py
+    # bytes.  Parent ABSENT -> exactly FileNotFoundError (what fire #2's
+    # child surfaced); parent PRESENT -> the same real admission passes the
+    # disk preflight.
+    import psutil
+    _primed_sandbox(sandbox, monkeypatch)
+    monkeypatch.setattr(psutil, "virtual_memory",
+                        lambda: types.SimpleNamespace(
+                            available=8 * 2**30, total=16 * 2**30))
+    pilot_out = f"{s01_run.RUNROOT}/pilots/O2_pilot_1"
+    cache_root = f"{s01_run.NBCROOT}/nbc_s01_pilot_O2_1"
+
+    assert not os.path.isdir(os.path.dirname(pilot_out))
+    with pytest.raises(FileNotFoundError):
+        _runspec(pilot_out, cache_root).validate_admission(
+            _RealDiskSystem(), analysis=None)
+
+    os.makedirs(os.path.dirname(pilot_out), exist_ok=True)
+    # The preflight stats BOTH parents (spec.py:339-340); the cache parent
+    # (NBCROOT = campaign_data in production) is structurally present there,
+    # so the sandbox mirrors that here.  The supervisor's D8 duty is the
+    # out_dir parent -- the one no supervisor write site created.
+    os.makedirs(s01_run.NBCROOT, exist_ok=True)
+    admission = _runspec(pilot_out, cache_root).validate_admission(
+        _RealDiskSystem(), analysis=None)
+    assert admission["within_budget"] is True
+    assert admission["disk_free_out_parent_bytes"] >= spec.DISK_MIN_FREE_BYTES
+    assert admission["disk_free_cache_parent_bytes"] >= \
+        spec.DISK_MIN_FREE_BYTES
+
+
+def test_refusal_creates_no_parent_launch_leaves_parent(sandbox, monkeypatch):
+    # Ruled T-C: ordering contract at the p0 launch boundary.  A
+    # [path_collision] refusal must fire BEFORE any parent creation (no
+    # fresh empty residue); a passing-guard launch leaves the parent
+    # existing, and every child observed it at the boundary.
+    import shutil
+    _primed_sandbox(sandbox, monkeypatch)
+    cache_root = f"{s01_run.NBCROOT}/nbc_s01_pilot_O2_1"
+    pilot_out = f"{s01_run.RUNROOT}/pilots/O2_pilot_1"
+    os.makedirs(cache_root, exist_ok=True)      # collision on the cache side
+    calls = []
+
+    def decorate(out, what):
+        _write_json(f"{out}/session.json",
+                    _session(1.0, _PILOT_WALLS[what]))
+
+    monkeypatch.setattr(s01_run, "memory_ceiling_mib",
+                        lambda: (8000, 8 * 2**30))
+    monkeypatch.setattr(s01_run, "_run_child", _boundary_stub(calls, decorate))
+    assert s01_run.main(["--stage", "p0", "--arm", "b0"]) == 2
+    assert calls == []                       # refusal precedes any launch
+    assert not os.path.exists(os.path.dirname(pilot_out))   # no residue
+
+    shutil.rmtree(cache_root)                # clear the collision; relaunch
+    assert s01_run.main(["--stage", "p0", "--arm", "b0"]) == 0
+    assert sorted(c["what"] for c in calls) == sorted(_PILOT_WALLS)
+    assert os.path.isdir(os.path.dirname(pilot_out))
+    assert all(c["parent_existed"] for c in calls)
