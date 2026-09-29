@@ -151,7 +151,7 @@ def child_env(extra):
 def memory_ceiling_mib():
     import psutil
     avail = psutil.virtual_memory().available
-    return int(min(matrix.CEILING_MIB_CAP,
+    return int(min(matrix.CEILING_MIB_CAP << 20,
                    matrix.CEILING_FRACTION * avail) / (1 << 20)), avail
 
 

@@ -704,3 +704,57 @@ def test_p0_queue_trigger_records_then_stops(sandbox, monkeypatch):
 def test_p0_refuses_non_b0_arm(sandbox):
     assert s01_run.stage_init("S01-lease-test") == 0
     assert s01_run.stage_p0("S01-lease-test", "selected") == 2
+
+
+# ---------------------------------------------------------------------------
+# D4 regression: memory_ceiling_mib unit collision (review D4, 2026-09-29).
+# The bug shipped int(min(CAP_MiB, FRAC * avail_bytes) / 2^20): the MiB
+# constant always won the min() against a bytes-scale fraction, so the real
+# function returned 0 MiB at every realistic avail and the SS6.3 queue-2W
+# memory criterion ran fail-open (_max_live_memory_frac skips falsy
+# ceilings).  All three tests invoke the REAL function -- only its
+# environment (psutil.virtual_memory) is patched, never the function.
+# ---------------------------------------------------------------------------
+
+def test_memory_ceiling_live_self_consistency():
+    """T1: at live avail, the real function equals the intended formula over
+    the avail it returned, and is at least 1 MiB."""
+    mib, avail = s01_run.memory_ceiling_mib()
+    assert mib == min(matrix.CEILING_MIB_CAP << 20,
+                      int(matrix.CEILING_FRACTION * avail)) // (1 << 20)
+    assert mib >= 1
+
+
+def test_memory_ceiling_agrees_with_guard_expression(monkeypatch):
+    """T2: the supervisor ceiling and the guard_and_launch ceiling
+    (s01_run.py :169-170) must agree BY TEST at every avail, including the
+    cap/fraction crossover, so the two expressions cannot drift apart."""
+    import psutil
+    cross = (matrix.CEILING_MIB_CAP << 20) / matrix.CEILING_FRACTION
+    avail_list = sorted({10 ** e for e in range(3, 13)}
+                        | {int(cross) + d for d in range(-50, 51, 7)}
+                        | {int(cross) - 1, int(cross), int(cross) + 1}
+                        | {0, 1 << 20, matrix.PRESSURE_STOP_BYTES,
+                           32 * 2 ** 30, 1 << 40})
+    assert {int(cross) - 1, int(cross), int(cross) + 1} <= set(avail_list)
+    for avail in avail_list:
+        monkeypatch.setattr(psutil, "virtual_memory",
+                            lambda a=avail: _FakeVM(a))
+        mib, got = s01_run.memory_ceiling_mib()
+        guard = min(matrix.CEILING_MIB_CAP << 20,
+                    int(matrix.CEILING_FRACTION * got))
+        assert got == avail, (avail, got)
+        assert mib == guard >> 20, (avail, mib, guard)
+
+
+def test_memory_ceiling_cap_branch_returns_cap(monkeypatch):
+    """T3: exact-bug signature -- at a LARGE avail the function must return
+    the converted cap branch EXACTLY (the bug returned 0 precisely there;
+    T1's live avail exercises only the fraction branch)."""
+    import psutil
+    monkeypatch.setattr(psutil, "virtual_memory",
+                        lambda: _FakeVM(32 * 2 ** 30))
+    mib, avail = s01_run.memory_ceiling_mib()
+    assert avail == 32 * 2 ** 30
+    assert mib == matrix.CEILING_MIB_CAP
+    assert mib == 10650
