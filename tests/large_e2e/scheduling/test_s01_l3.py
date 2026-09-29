@@ -168,11 +168,15 @@ def sandbox(tmp_path, monkeypatch):
     (tmp_path / "custody").mkdir(exist_ok=True)   # pin target, W00 parity
     monkeypatch.setattr(s01_run, "CONTROL", str(control))
     monkeypatch.setattr(s01_run, "PINS", {})
-    monkeypatch.setattr(s01_run, "O2_MANIFEST", str(parent))
-    # the sandboxed parent IS a byte-copy of the real W00 log, so the O2
-    # pilot-manifest pin must follow the copy's true sha
-    monkeypatch.setattr(s01_run, "O2_MANIFEST_SHA256",
-                        _sha(str(parent)))
+    # D6 un-masking (halt1 log bd0255ab): O2_MANIFEST must be a DISTINCT
+    # file, NOT the parent byte-copy.  The pre-fix init recorded the pins
+    # loop's last `got` (the O2 manifest sha) as parent_log_sha256; with
+    # O2 pointing at the W00 copy those two shas were EQUAL in this frame,
+    # so the init happy-path assert could not see the defect.
+    o2 = tmp_path / "o2_pilot_manifest.json"
+    o2.write_text("{}")
+    monkeypatch.setattr(s01_run, "O2_MANIFEST", str(o2))
+    monkeypatch.setattr(s01_run, "O2_MANIFEST_SHA256", _sha(str(o2)))
     return tmp_path
 
 
@@ -358,12 +362,13 @@ def test_pressure_guard_refuses_before_launch(sandbox, monkeypatch):
     monkeypatch.setattr(psutil, "virtual_memory",
                         lambda: _FakeVM(matrix.PRESSURE_STOP_BYTES - 1))
     rc = s01_run.guard_and_launch(
-        ["true"], {}, "S01-lease-test", "probe", 5)
+        ["true"], {}, "deliberately-mismatched-id", "probe", 5)
     assert rc == 2
     stored = json.load(open(sandbox / "s01_lease_log.json"))
     entry = stored["windows"][-1]
     assert entry["rc"] == 2 and entry["end_utc"] is not None
     assert "pressure stop" in entry["refused"]
+    assert entry["lease_id"] == "S01-lease-test"   # identity from the LOG
 
 
 def test_budget_guard_refuses_when_exhausted(sandbox, monkeypatch):
@@ -582,6 +587,10 @@ def test_records_refuses_invalid_confirm_session(sandbox, monkeypatch):
 
 
 def test_records_refuses_pending_crash(sandbox, monkeypatch):
+    # ruled D5 regression (d): the pending-crash refusal must come from the
+    # WRAPPER before it opens an envelope -- exercised through main()'s
+    # dispatch, not the handler, or the guard sees its own envelope
+    # (halt1, log bd0255ab).
     _primed_sandbox(sandbox, monkeypatch)
     _populate_p1(sandbox)
     _seed_confirm_dirs(sandbox, {"O3_ACCESS": "W3H3", "O3_FLOW": "W1H9"})
@@ -591,7 +600,10 @@ def test_records_refuses_pending_crash(sandbox, monkeypatch):
                            "class": "crashed_child_start",
                            "end_utc": None, "wall_s": None, "rc": None})
     _write_json(str(path), log)
-    assert s01_run.stage_records("S01-lease-test") == 2
+    assert s01_run.main(["--stage", "records"]) == 2
+    stored = json.load(open(path))
+    assert stored["windows"] == log["windows"]   # no new envelope opened
+    assert stored["windows"][-1]["end_utc"] is None   # crash left untouched
 
 
 def test_confirm_selects_strongest_b0_and_names_dirs(sandbox, monkeypatch):
@@ -758,3 +770,75 @@ def test_memory_ceiling_cap_branch_returns_cap(monkeypatch):
     assert avail == 32 * 2 ** 30
     assert mib == matrix.CEILING_MIB_CAP
     assert mib == 10650
+
+
+# ---------------------------------------------------------------------------
+# D5 regression: dispatch-path guard self-collision (fire #1 halt, log
+# bd0255ab, 2026-09-29).  _run_stage opens a crashed_child_start envelope
+# BEFORE calling the stage handler, so any handler whose first act is
+# _log_has_pending_crash sees its OWN envelope and refuses -- structurally
+# unpassable on the real dispatch path.  Every pre-halt test called the
+# stage_* handlers directly and never traversed main() -> _run_stage ->
+# handler, which is why 41 green tests shipped the defect.  These tests go
+# through main() -- the wrapper is the surface under test.
+# ---------------------------------------------------------------------------
+
+def _precreate_o2_pilot_out(sandbox):
+    # stage_p0's first _refuse_existing target: pre-create it so the handler
+    # traverses to the [path_collision] refusal (rc 2) with no child launch.
+    (sandbox / "s01_run" / "pilots" / "O2_pilot_1").mkdir(parents=True)
+
+
+def test_dispatch_traverses_to_handler_and_closes_envelope(
+        sandbox, monkeypatch, capsys):
+    # (a) healthy log: wrapper opens the envelope, the handler's own refusal
+    # closes it rc 2 -- and the refusal is the HANDLER's (path collision),
+    # proving traversal, not the wrapper's.
+    _primed_sandbox(sandbox, monkeypatch)
+    _precreate_o2_pilot_out(sandbox)
+    assert s01_run.main(["--stage", "p0", "--arm", "b0"]) == 2
+    out = capsys.readouterr().out
+    assert "path exists (fresh-path guard)" in out
+    log = json.load(open(sandbox / "s01_lease_log.json"))
+    assert [w["what"] for w in log["windows"]] == ["stage:init", "stage:p0"]
+    env = log["windows"][-1]
+    assert env["class"] == "stage"
+    assert env["end_utc"] is not None and env["rc"] == 2
+
+    # (a-cont) pending crash pre-seeded: the WRAPPER refuses BEFORE opening
+    # an envelope; the crashed envelope is untouched; the message is
+    # distinguishable from the handlers' not-initialized refusal.
+    log["windows"].append({"what": "pilot:O2:1",
+                           "class": "crashed_child_start",
+                           "end_utc": None, "wall_s": None, "rc": None})
+    _write_json(str(sandbox / "s01_lease_log.json"), log)
+    assert s01_run.main(["--stage", "p0", "--arm", "b0"]) == 2
+    out = capsys.readouterr().out
+    assert "pending crashed window(s)" in out
+    assert "not initialized" not in out
+    stored = json.load(open(sandbox / "s01_lease_log.json"))
+    assert len(stored["windows"]) == 3   # refusal opened nothing
+    assert stored["windows"][-1]["end_utc"] is None
+
+
+def test_init_records_parent_sha_not_last_pin_sha(sandbox):
+    # (b) ruled D6 regression: parent_log_sha256 must be the sha verified
+    # against W00_CHAIN_PIN, not the pins loop's last `got` (halt1 recorded
+    # the O2 pilot-manifest sha).  The sandbox fixture points O2_MANIFEST at
+    # a DISTINCT file, so the two shas differ here and the defect is
+    # observable; the old fixture (O2 == the W00 byte-copy) masked it.
+    assert s01_run.O2_MANIFEST_SHA256 != matrix.W00_CHAIN_PIN
+    assert s01_run.stage_init("S01-lease-test") == 0
+    log = json.load(open(sandbox / "s01_lease_log.json"))
+    assert log["parent_log_sha256"] == matrix.W00_CHAIN_PIN
+
+
+def test_dispatch_stamps_log_lease_id_not_arg(sandbox, monkeypatch):
+    # (c) ruled lease-identity regression: with no --lease-id the envelope
+    # must stamp the LOG's lease_id (halt1 opened a stage:p0 envelope
+    # stamped S01-lease-20260928 inside a log leased S01-lease-20260929).
+    _primed_sandbox(sandbox, monkeypatch)
+    _precreate_o2_pilot_out(sandbox)
+    assert s01_run.main(["--stage", "p0", "--arm", "b0"]) == 2
+    log = json.load(open(sandbox / "s01_lease_log.json"))
+    assert log["windows"][-1]["lease_id"] == "S01-lease-test"

@@ -101,12 +101,13 @@ def _complete_refused(entry, window_class):
     entry["rc"] = 2
 
 
-def _open_window(what, lease_id):
+def _open_window(what):
     log = load_lease_log()
     if log is None:
         return None
     log["windows"].append({
-        "what": what, "class": "crashed_child_start", "lease_id": lease_id,
+        "what": what, "class": "crashed_child_start",
+        "lease_id": log["lease_id"],
         "start_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "end_utc": None, "wall_s": None, "rc": None})
     save_lease_log(log)
@@ -128,8 +129,17 @@ def _close_window(index, cls, rc, extra=None):
     save_lease_log(log)
 
 
-def _run_stage(what, fn, lease_id, *args):
-    idx = _open_window(what, lease_id)
+def _run_stage(what, fn, *args):
+    # D5 (fire #1 halt, log bd0255ab): the pending-crash refusal lives HERE,
+    # before the envelope is opened -- a handler checking after _open_window
+    # sees its own crashed_child_start envelope and can never pass.  The
+    # crashed envelope itself is never altered from this side.
+    log = load_lease_log()
+    if log is not None and _log_has_pending_crash(log):
+        print("[s01-run] REFUSED: lease log has pending crashed window(s); "
+              "triage before further stages")
+        return 2
+    idx = _open_window(what)
     rc = fn(*args)
     _close_window(idx, "stage", rc)
     return rc
@@ -170,7 +180,9 @@ def guard_and_launch(cmd, env, lease_id, what, timeout_s,
                   int(matrix.CEILING_FRACTION * avail))
     entry = {
         "what": what, "class": "crashed_child_start",
-        "window_class": window_class, "lease_id": lease_id,
+        # lease identity is the LOG's, never the caller's arg (halt1: a
+        # S01-lease-20260928 envelope inside a S01-lease-20260929 log)
+        "window_class": window_class, "lease_id": log["lease_id"],
         "start_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "end_utc": None, "wall_s": None, "rc": None,
         "available_at_admission_bytes": avail, "ceiling_bytes": ceiling,
@@ -304,9 +316,9 @@ def stage_init(lease_id):
     if not os.path.exists(parent_log):
         print("[s01-run] REFUSED: W00 final lease log missing")
         return 2
-    got = sha256_file(parent_log)
-    if got != matrix.W00_CHAIN_PIN:
-        print(f"[s01-run] REFUSED: W00 log sha {got} != pinned")
+    parent_sha = sha256_file(parent_log)
+    if parent_sha != matrix.W00_CHAIN_PIN:
+        print(f"[s01-run] REFUSED: W00 log sha {parent_sha} != pinned")
         return 2
     with open(parent_log) as f:
         parent = json.load(f)
@@ -338,7 +350,7 @@ def stage_init(lease_id):
         "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "task": "S01",
         "parent_log": parent_log,
-        "parent_log_sha256": got,
+        "parent_log_sha256": parent_sha,
         "base_commit": matrix.BASE_COMMIT,
         "base_src_tree": matrix.BASE_SRC_TREE,
         "matrix_module": ("tests/large_e2e/scheduling/matrix.py sha256 "
@@ -376,9 +388,8 @@ def stage_p0(lease_id, arm):
         print("[s01-run] REFUSED: P0 pilots are baseline-only (--arm b0)")
         return 2
     log = load_lease_log()
-    if log is None or _log_has_pending_crash(log):
-        print("[s01-run] REFUSED: lease not initialized or has pending "
-              "crashed windows")
+    if log is None:
+        print("[s01-run] REFUSED: lease not initialized (run --stage init)")
         return 2
     ceiling_mib, _avail = memory_ceiling_mib()
     pilot_records = []
@@ -537,9 +548,8 @@ def _expected_batch_dirs(arm):
 
 def stage_p1(lease_id, arm):
     log = load_lease_log()
-    if log is None or _log_has_pending_crash(log):
-        print("[s01-run] REFUSED: lease not initialized or has pending "
-              "crashed windows")
+    if log is None:
+        print("[s01-run] REFUSED: lease not initialized (run --stage init)")
         return 2
     if not os.path.exists(f"{EVIDENCE}/configurations.json"):
         print("[s01-run] REFUSED: no P0 record (run --stage p0 first)")
@@ -686,9 +696,8 @@ def _family_selections():
 
 def stage_confirm(lease_id, arm):
     log = load_lease_log()
-    if log is None or _log_has_pending_crash(log):
-        print("[s01-run] REFUSED: lease not initialized or has pending "
-              "crashed windows")
+    if log is None:
+        print("[s01-run] REFUSED: lease not initialized (run --stage init)")
         return 2
     results = _collect_results()
     valid_p1 = [r for r in results if _session_valid(r["session"])]
@@ -752,9 +761,8 @@ def _confirm_matches(selections):
 
 def stage_records(lease_id):
     log = load_lease_log()
-    if log is None or _log_has_pending_crash(log):
-        print("[s01-run] REFUSED: lease not initialized or has pending "
-              "crashed windows")
+    if log is None:
+        print("[s01-run] REFUSED: lease not initialized (run --stage init)")
         return 2
     results = _collect_results()
     valid = [r for r in results if _session_valid(r["session"])]
@@ -864,7 +872,8 @@ def main(argv=None):
     parser.add_argument("--lease-id", default=None)
     args = parser.parse_args(argv)
 
-    lease_id = args.lease_id or f"S01-lease-{time.strftime('%Y%m%d')}"
+    lease_id = args.lease_id or (f"S01-lease-"
+                                 f"{time.strftime('%Y%m%d', time.gmtime())}")
     if args.stage in ("p0", "p1", "confirm") and args.arm not in (
             "b0", "selected"):
         print("[s01-run] REFUSED: --arm b0|selected is required for armed "
@@ -872,14 +881,13 @@ def main(argv=None):
         return 2
 
     if args.stage == "init":
-        return _run_stage("stage:init", stage_init, lease_id, lease_id)
+        return _run_stage("stage:init", stage_init, lease_id)
     if args.stage == "p0":
-        return _run_stage("stage:p0", stage_p0, lease_id, lease_id, args.arm)
+        return _run_stage("stage:p0", stage_p0, lease_id, args.arm)
     if args.stage == "p1":
-        return _run_stage("stage:p1", stage_p1, lease_id, lease_id, args.arm)
+        return _run_stage("stage:p1", stage_p1, lease_id, args.arm)
     if args.stage == "confirm":
-        return _run_stage("stage:confirm", stage_confirm, lease_id,
-                          lease_id, args.arm)
+        return _run_stage("stage:confirm", stage_confirm, lease_id, args.arm)
     if args.stage == "records":
         return _run_stage("stage:records", stage_records, lease_id)
     return stage_status()
