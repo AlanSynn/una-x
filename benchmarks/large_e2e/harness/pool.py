@@ -139,6 +139,10 @@ class WorkerPool:
         outstanding: set[int] = set()
         last_application_event_monotonic: float | None = None
         duplicate_ids: dict[int, int] = {}
+        # S01 producer-wait instrumentation (recorded spans, never wall
+        # deltas): per-job coordinator-side span around the blocking
+        # bounded-queue put, from dispatch attempt to put success.
+        producer_waits: dict[int, int] = {}
 
         while next_job < len(job_specs) or outstanding:
             self._check_deadline(deadline, "dispatch_drain")
@@ -149,6 +153,7 @@ class WorkerPool:
             if next_job < len(job_specs) and len(outstanding) < self.spec.queue_depth:
                 job_spec = job_specs[next_job]
                 job_spec["dispatched_utc"] = time.time()
+                t_put_attempt = time.monotonic()
                 while True:
                     self._check_liveness()
                     try:
@@ -156,6 +161,8 @@ class WorkerPool:
                         break
                     except queue_module.Full:
                         self._check_deadline(deadline, "dispatch_put")
+                producer_waits[job_spec["job_id"]] = int(
+                    (time.monotonic() - t_put_attempt) * 1e9)
                 outstanding.add(job_spec["job_id"])
                 self.peak_in_flight = max(self.peak_in_flight, len(outstanding))
                 next_job += 1
@@ -192,6 +199,15 @@ class WorkerPool:
             "all_received_monotonic": t_all_received,
             "duplicate_job_id_counts": {k: v for k, v in duplicate_ids.items() if v > 1},
             "peak_in_flight": self.peak_in_flight,
+            "producer_wait_ns_by_job": producer_waits,
+            "producer_wait_total_ns": sum(producer_waits.values()),
+            "producer_wait_nonzero_jobs": sum(
+                1 for v in producer_waits.values() if v > 0),
+            "producer_wait_semantics": (
+                "coordinator-side recorded span per job around the blocking "
+                "bounded-queue put (dispatch attempt to put success), "
+                "including put-retry polling; S01 queue-2W criterion consumes "
+                "ONLY these spans, never wall deltas"),
         }
 
     # ------------------------------------------------------------------

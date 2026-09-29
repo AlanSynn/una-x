@@ -1,0 +1,43 @@
+{
+ "schema_version": 1,
+ "workload_id": "s01_O3_ACCESS_sweep",
+ "analysis": "accessibility",
+ "input_files": [
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson",
+   "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+   "bytes": 71290787
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/s01_O3_ACCESS_origins_sel1024.geojson",
+   "sha256": "70a1083f937a01bb6694606d5bd804a53bbfec24daf6a35298936cd71ee5bafa",
+   "bytes": 415307
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson",
+   "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+   "bytes": 2641054
+  }
+ ],
+ "settings": {
+  "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data",
+  "network_file": "inputs/20260703_PercLenNetwork_InnerCore.geojson",
+  "origins_file": "s01_O3_ACCESS_origins_sel1024.geojson",
+  "destinations_file": "inputs/MA_bus_stops.geojson",
+  "network_weight_column": "Geometric",
+  "origin_weight_column": "Count",
+  "destination_weight_column": "weekly_departures",
+  "search_radius": 500,
+  "turns": false,
+  "elevation": false,
+  "calculate_reach": true,
+  "calculate_exponential_gravity": true,
+  "calculate_logistic_gravity": true,
+  "calculate_knn_access": true,
+  "output_csv": true,
+  "output_geojson": true,
+  "output_feather": true
+ },
+ "required_output_patterns": ["*.feather", "*.geojson", "*.csv"],
+ "notes": "S01 accessibility-family sweep workload. Derived per the W00 smoke-manifest pattern from the frozen H01 acquisition manifest tests/large_e2e/inputs/O3_ACCESS.manifest.json (observed_tutorial_proxy, EPSG:6491): network and destination bytes identical to the acquisition pins. Origins are the BOUNDED FIXTURE s01_O3_ACCESS_origins_sel1024.geojson (1,024 rows, h04 Ruling 2, 2026-09-29: full sel_all at ~100 s/job cannot close the S01 cap; bounded fixture ordered; the former identity/sel_all block is SUPERSEDED). Fixture provenance: extracted as sorted(raw_draw_order[:1024]) from the frozen selection manifest tests/large_e2e/inputs/O3_ACCESS_sel_all.origin_indices.json (sha256 2e535cbc45531d86b15a748e96888fe8bb007be7a05afee79683b718ce3586cd, == the acquisition-manifest origin_selection.selection_manifest_sha256 pin) applied to the frozen source centroids campaign_data/inputs/Cambridge_building_centroids.geojson (sha256 14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc); derivation record campaign_data/s01_O3_ACCESS_fixture_derivation.json; custody pin campaign_data/custody/interim_70a1083f_s01_O3_ACCESS_origins_sel1024.geojson; the single fixture is consumed IDENTICALLY by both arms. data_folder points at campaign_data/ so the engine joins the prefixed inputs/ subpaths and the campaign_data-root fixture. Config ranking happens on this fixture; Q10 confirms the selected config on the mandatory full workload (transfer-risk bound). All sha256/bytes figures are fresh in-session tool outputs (fixture 2026-09-29, others re-verified 2026-09-29). Runs ONLY through run.py installed mode with W00 arm identities; O3_HOLDOUT is never swept."
+}

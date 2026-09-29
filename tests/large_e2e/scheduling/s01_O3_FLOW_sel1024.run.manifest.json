@@ -1,0 +1,47 @@
+{
+ "schema_version": 1,
+ "workload_id": "s01_O3_FLOW_sel1024_sweep",
+ "analysis": "flow",
+ "input_files": [
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson",
+   "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+   "bytes": 71290787
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/O3_FLOW_origins_sel1024.geojson",
+   "sha256": "75fc10b37fbf0cfd09490979a8619d30f3b270cef6048cfb36de0dbd86cdaa80",
+   "bytes": 415162
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson",
+   "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+   "bytes": 2641054
+  }
+ ],
+ "settings": {
+  "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data",
+  "network_file": "inputs/20260703_PercLenNetwork_InnerCore.geojson",
+  "origins_file": "O3_FLOW_origins_sel1024.geojson",
+  "destinations_file": "inputs/MA_bus_stops.geojson",
+  "network_weight_column": "Geometric",
+  "origin_weight_column": "Count",
+  "destination_weight_column": "weekly_departures",
+  "search_radius": 500,
+  "turns": false,
+  "elevation": false,
+  "calculate_reach": true,
+  "calculate_exponential_gravity": true,
+  "calculate_logistic_gravity": true,
+  "calculate_knn_access": true,
+  "output_csv": true,
+  "output_geojson": true,
+  "output_feather": true,
+  "flow_engine": "aggregate_flow",
+  "flow_decay": true,
+  "flow_decay_method": "gravity_cap",
+  "flow_gravity_cap": "p95"
+ },
+ "required_output_patterns": ["*.feather", "*.geojson", "*.csv"],
+ "notes": "S01 flow-family sweep workload: the H05-chosen sel1024 variant (campaign_data/h05_flow_decision.json chosen_variant=sel1024; sel-all capacity-refused), derived per the W00 smoke-manifest pattern from the frozen H01 acquisition manifest tests/large_e2e/inputs/O3_FLOW.manifest.json. Origins fixture is the H05-derived arm-neutral selection (campaign_data/O3_FLOW_origins_sel1024.geojson) whose sha256/bytes match the h05_origin_fixture_derivation.json pin byte-for-byte (re-verified fresh in-session 2026-09-28). data_folder points at campaign_data/ so the engine joins the prefixed inputs/ subpaths and the campaign_data-root fixture. Flow logical K is NOT set here: --flow-stripes default (production default K=9 per Topology.py:79) is supplied on the run.py command line and frozen in tests/large_e2e/scheduling/matrix.py. Runs ONLY through run.py installed mode with W00 arm identities; O3_HOLDOUT is never swept."
+}
