@@ -52,7 +52,7 @@
   "constraints": {"file": "w00_build/selected/constraints.txt", "sha256": "8c501f870861286d6cd819738ffaf5714f36dd4624cba85242d3750007552c09"},
   "identity_manifest": "campaign_data/w00_identities/selected.json — 17 module sha256 (install-probe comparison basis); M00 fresh-venv install 17/17 MATCH",
   "comparability_basis": "commit + package-tree pins (comparability rides provenance, not wheel bytes; the M00 rebuild was byte-identical anyway)",
-  "manifests": "campaign_data/wheels.json (freeze-pinned c443bca9…), SOURCE_AUDIT.md (source manifests), evidence/H01/workloads.json (workload manifests), evidence/Q00/q10_O3_{ACCESS,FLOW,HOLDOUT}_sel_all.run.manifest.json (confirmation manifests)"
+  "manifests": "campaigns/una_large_e2e/evidence/W00/wheels.json (freeze-pinned c443bca9…), SOURCE_AUDIT.md (source manifests), evidence/H01/workloads.json (workload manifests), evidence/Q00/q10_O3_{ACCESS,FLOW,HOLDOUT}_sel_all.run.manifest.json (confirmation manifests)"
  },
 
  "r00_f2_filename_deltas": {

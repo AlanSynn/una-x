@@ -54,7 +54,7 @@
   },
   {
    "wheel": "b0 baseline wheel",
-   "role": "comparator arm (B0 361928e4…, the frozen performance comparator) — full manifest at campaign_data/wheels.json (out-of-repo custody, hash-pinned by freeze.json wheels_json_sha256 c443bca9…, re-verified at R00)"
+   "role": "comparator arm (B0 361928e4…, the frozen performance comparator) — full manifest at campaigns/una_large_e2e/evidence/W00/wheels.json (in-repo, hash-pinned by freeze.json wheels_json_sha256 c443bca9…, re-verified at R00; the wheel FILES themselves remain out-of-repo under campaign_data/wheels/w00_b0/)"
   }
  ],
  "installed_tests": {

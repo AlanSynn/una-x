@@ -99,9 +99,9 @@ Per-window lifetime detail (admission bytes, budget, child exit) lives in the st
 | configuration.json | `evidence/final/configuration.json` |
 | commands.jsonl | `evidence/final/commands.jsonl` |
 | raw run index with hashes | `evidence/Q10/raw_index.json` (`25ec966e…`) + stage raw records |
-| environment manifest | `configuration.json` §environment (+ campaign_data/wheels.json, freeze-pinned) |
+| environment manifest | `configuration.json` §environment (+ `evidence/W00/wheels.json`, freeze-pinned) |
 | workload manifests | `evidence/H01/workloads.json` + `evidence/Q00/q10_O3_*.run.manifest.json` |
-| wheel manifest | `campaign_data/wheels.json` (freeze pin `c443bca9…`, R00 re-verified) + merge_manifest wheel_hashes |
+| wheel manifest | `evidence/W00/wheels.json` (freeze pin `c443bca9…`, R00 re-verified; wheel FILES out-of-repo under `campaign_data/wheels/`) + merge_manifest wheel_hashes |
 | source manifest | SOURCE_AUDIT.md (audit anchor `361928e`, root tree `089d2920…`, src tree `a5883ddd…`) |
 | memory-lifetime table | this file §8 + stage records |
 | review report | `evidence/R00/review.json` + `claim_audit.json` (+ all stage reviews; h04-authored, independence verified) |

@@ -9,7 +9,7 @@
  "baseline": {
   "commit": "361928e4ba38f34622cafe065b0025244db61368",
   "role": "B0 comparator — the ONLY performance comparator; includes ordered CSR",
-  "wheel_sha256": "recorded in campaign_data/wheels.json arms.b0 (R00 pin-verified; b0 identity used by A-arms in all Q10 argv)"
+  "wheel_sha256": "recorded in campaigns/una_large_e2e/evidence/W00/wheels.json arms.b0 (R00 pin-verified; b0 identity used by A-arms in all Q10 argv)"
  },
  "provenance_only_refs": {
   "pre_csr": "98f498e5b0ac97b05271d03812fa883b5e4afaba (also current main tip — historical reference, never the primary comparator)",
