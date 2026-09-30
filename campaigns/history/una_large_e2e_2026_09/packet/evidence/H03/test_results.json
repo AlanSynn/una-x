@@ -1,0 +1,171 @@
+{
+  "task": "H03",
+  "campaign": "una_large_e2e",
+  "role": "oracle-owner",
+  "date": "2026-09-25",
+  "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e",
+  "branch": "perf/una-large-e2e",
+  "python": "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python (3.11.16)",
+  "b0_baseline": {
+    "import_root": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src",
+    "commit": "361928e4ba38f34622cafe065b0025244db61368",
+    "access": "PYTHONPATH only; B0 tree untouched (read-only detached worktree)"
+  },
+  "environment_pins": {
+    "numba": "0.67.0",
+    "llvmlite": "0.49.0",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "arch": "arm64",
+    "threading_layer": "workqueue",
+    "NUMBA_NUM_THREADS_default": 2,
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_oracle",
+    "L1_REUSE_DIR": "unset"
+  },
+  "canonical_command": {
+    "cwd": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/oracle",
+    "command": "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python -m pytest -v",
+    "exit_code": 0,
+    "summary_line": "53 passed in 33.19s",
+    "unmodified_output_copy": "campaigns/una_large_e2e/evidence/H03/pytest_final_verbose.txt"
+  },
+  "totals": {
+    "collected": 53,
+    "passed": 53,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "xfails": 0
+  },
+  "per_test_results": [
+    {"test": "test_l0_golden.py::test_golden_assets_intact", "outcome": "PASSED"},
+    {"test": "test_l0_golden.py::test_battery_covers_expected_keys", "outcome": "PASSED"},
+    {"test": "test_l0_golden.py::test_current_run_matches_golden_bytes", "outcome": "PASSED"},
+    {"test": "test_l0_golden.py::test_engine_row_order_replica_matches_live", "outcome": "PASSED"},
+    {"test": "test_l0_golden.py::test_input_immutability_and_output_ownership", "outcome": "PASSED"},
+    {"test": "test_l0_golden.py::test_refusal_domains_raise_and_are_recorded", "outcome": "PASSED"},
+    {"test": "test_l0_golden.py::test_kernel_scope_battery_bytes", "outcome": "PASSED"},
+    {"test": "test_l0_golden.py::test_signed_zero_bytes_exact", "outcome": "PASSED"},
+    {"test": "test_l0_golden.py::test_specialization_inventory", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_a1_trace_equals_compiled_on_all_engine_cases", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_a1_trace_equals_compiled_on_kernel_cases", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_a1_duplicate_overwrite_is_staged_not_immediate", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_a1_stale_entry_processed_and_harmless", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_a1_degree_one_never_enqueued", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_a2_adjust_and_retained_sequences_byte_equal", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_a2_tied_distances_unequal_weights_retain_original_order", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_a2_sentinel_two_pow_53_hazard_recorded", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_a3_initialization_state_and_integrated_pipeline", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_a3_epoch_rollover_projection_equals_fresh_searches", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_f1_stripe_partials_and_fold_equal_compiled[1]", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_f1_stripe_partials_and_fold_equal_compiled[2]", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_f1_stripe_partials_and_fold_equal_compiled[3]", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_f2_per_od_trace_equals_compiled_kernel[1]", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_f2_per_od_trace_equals_compiled_kernel[2]", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_f2_per_od_trace_equals_compiled_kernel[3]", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_f2_zero_weight_origin_and_unreachable_destination_skipped", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_f2_overlapping_host_edge_od_has_live_envelope", "outcome": "PASSED"},
+    {"test": "test_l0_traces.py::test_f3_chunk_sizes_identical_and_equal_compiled", "outcome": "PASSED"},
+    {"test": "test_l1_determinism.py::test_compiler_profile_frozen_facts", "outcome": "PASSED"},
+    {"test": "test_l1_determinism.py::test_profile_environment_matches_golden_record", "outcome": "PASSED"},
+    {"test": "test_l1_determinism.py::test_in_process_double_run_bit_identical", "outcome": "PASSED"},
+    {"test": "test_l1_determinism.py::test_flow_engine_repeat_run_bit_identical", "outcome": "PASSED"},
+    {"test": "test_l1_determinism.py::test_parallel_kernel_identical_across_numba_thread_counts", "outcome": "PASSED"},
+    {"test": "test_l1_determinism.py::test_subprocess_b0_vs_b0_bit_identical", "outcome": "PASSED"},
+    {"test": "test_l1_determinism.py::test_hazard_negative_weight_nontermination_is_bounded", "outcome": "PASSED"},
+    {"test": "test_l1_determinism.py::test_hazard_probe_domains_recorded[nan_edge]", "outcome": "PASSED"},
+    {"test": "test_l1_determinism.py::test_hazard_probe_domains_recorded[nan_origin]", "outcome": "PASSED"},
+    {"test": "test_l1_determinism.py::test_hazard_probe_domains_recorded[inf_cutoff]", "outcome": "PASSED"},
+    {"test": "test_negative_mutations.py::test_negative_a1_immediate_update_caught_on_downstream_duplicate", "outcome": "PASSED"},
+    {"test": "test_negative_mutations.py::test_negative_terminal_assignment_order_caught", "outcome": "PASSED"},
+    {"test": "test_negative_mutations.py::test_negative_a2_python_min_semantics_caught_on_signed_zero", "outcome": "PASSED"},
+    {"test": "test_negative_mutations.py::test_negative_a2_reversed_retained_order_caught", "outcome": "PASSED"},
+    {"test": "test_negative_mutations.py::test_negative_f1_shifted_stripe_assignment_caught", "outcome": "PASSED"},
+    {"test": "test_negative_mutations.py::test_negative_f1_descending_final_sum_caught", "outcome": "PASSED"},
+    {"test": "test_negative_mutations.py::test_f2_stale_scratch_is_inert_on_corpus_documented", "outcome": "PASSED"},
+    {"test": "test_negative_mutations.py::test_negative_f3_reversed_where_caught", "outcome": "PASSED"},
+    {"test": "test_negative_mutations.py::test_negative_a3_dropped_seed_writes_caught", "outcome": "PASSED"},
+    {"test": "test_sentinel_probe.py::test_probe_admits_on_normal_cutoff", "outcome": "PASSED"},
+    {"test": "test_sentinel_probe.py::test_probe_refuses_on_two_pow_53_rounding_hazard", "outcome": "PASSED"},
+    {"test": "test_sentinel_probe.py::test_probe_refuses_on_maxfloat_cutoff", "outcome": "PASSED"},
+    {"test": "test_sentinel_probe.py::test_probe_documents_d_zero_scope", "outcome": "PASSED"},
+    {"test": "test_sentinel_probe.py::test_probe_refuses_infinite_sentinel_from_bounded_child", "outcome": "PASSED"},
+    {"test": "test_sentinel_probe.py::test_probe_condition_matches_compiled_filter", "outcome": "PASSED"}
+  ],
+  "determinism_gate_L1": {
+    "status": "PASS",
+    "evidence": [
+      "In-process double run of the full 1031-array battery: bit-identical (test_in_process_double_run_bit_identical)",
+      "Flow-engine repeat run: bit-identical (test_flow_engine_repeat_run_bit_identical)",
+      "parallel-scope kernel identical across NUMBA_NUM_THREADS 1 vs 4 (test_parallel_kernel_identical_across_numba_thread_counts)",
+      "Subprocess B0-vs-B0 two-import-root run via benchmarks/large_e2e/oracle/compare_arms.py with both arms = B0: verdict BIT_IDENTICAL (test_subprocess_b0_vs_b0_bit_identical)",
+      "Compiler profile (versions, threading layer, per-kernel target options, signature inventory) frozen in golden and asserted live (test_compiler_profile_frozen_facts, test_profile_environment_matches_golden_record)"
+    ]
+  },
+  "golden_corpus": {
+    "generator": "tests/large_e2e/oracle/golden/build_golden.py",
+    "fixture_seed": 20260925,
+    "array_count": 1031,
+    "in_process_double_run": "2 identical runs (generator output: RUNNER OK)",
+    "assets_sha256": {
+      "golden_b0.npz": "ea61d7309faf95628cd62db117c3a8c77371e9b11cc0d9da6f438bce9b4dcae8",
+      "golden_b0.json": "d0226dd31bd5ce519f302968a8205460a1f2af67f03f978bfd411bc34677975b",
+      "golden_b0.hashes.json": "f93fdd641fbb1eb97dda1d4e3dd8662c71029c783dc0b215e4a4134b328f8913"
+    },
+    "content_rule": "B0's ACTUAL observed behavior (including double-seed re-scan, staged duplicate overwrite, fastmath reassociation, NaN-mask semantics), never the intended/speculative behavior"
+  },
+  "negative_mutation_proof_summary": {
+    "caught_count": 7,
+    "caught": [
+      "A1 immediate-update on downstream duplicate incidence: compiled keeps staged LAST-eligible 6.0, mutant yields 4.0 -> OracleMismatch (origin-row duplicates converge via the double-seed re-scan, so the observable was moved to a downstream row; origin-row bytes pinned in golden)",
+      "A1/A3 terminal assignment order (end-before-start): k_same_terminal_overwrite compiled[0]=0.5 -> mismatch",
+      "A2 Python-min semantics on (+0.0,-0.0) tie: numba min gives -0.0, python-first-arg gives +0.0 -> byte mismatch",
+      "A2 reversed retained sequence: dist and weight arrays both mismatch",
+      "F1 shifted stripe assignment (K=2): per-stripe partials move -> mismatch",
+      "F1 descending final fold (K=3, five active origins so all three stripes nonzero): BA and node arrays differ byte-wise",
+      "F3 reversed np.where gradient assembly: nodes/dist/pred arrays mismatch (indptr excluded, unaffected)",
+      "A3 epoch workspace dropping seed writes: projected labels diverge from fresh searches (all_projected_equal_fresh == False)"
+    ],
+    "note_on_count": "8 mutations exercised; 7 produce comparator failures, the 8th (F2 stale scratch) is PROVEN INERT and recorded as a negative result, not a catch. The 'caught_count' above counts distinct mutation families with a raised OracleMismatch; the list has 8 entries because A3 dropped-seed-writes is caught by projection divergence rather than the byte comparator.",
+    "proven_inert": {
+      "mutation": "F2 stale scratch (no dd_buf/pd_buf reset between ODs)",
+      "reason": "budget <= 1.5*search_radius + buffer == gradient limit makes contamination geometrically impossible at corpus scale: every within-limit reverse gradient covers the same finite node set and the next destination's scatter overwrites all finite columns. Outputs AND journaled dd_buf state are byte-identical to the faithful run.",
+      "consequence": "The reset obligation is enforced by the F2 journal (per-OD deltas + dd_buf_before_reset capture) plus code review, NOT by output bytes at this graph scale. Recorded in oracle_manifest.json limitations."
+    }
+  },
+  "hazard_and_refusal_outcomes": {
+    "negative_cycle": {"mode": "child_hazard.py negative_cycle (true 2-cycle, -2.0 return edge)", "outcome": "timeout_kill (SIGKILL rc 9) inside bounded subprocess"},
+    "nan_edge": {"outcome": "completed; vectorized mask ADMITS the NaN incidence, NaN label assigned (recorded bytes); fastmath asymmetry finding"},
+    "nan_origin": {"outcome": "completed; scalar seed guard REJECTS NaN origin (recorded); asymmetry with vectorized mask documented"},
+    "inf_cutoff": {"outcome": "completed; destination tail b = +inf recorded"},
+    "refusal_probes": {
+      "scope_cutoff_str": "TypingError",
+      "scope_cutoff_none": "TypingError",
+      "scope_object_weights": "TypingError",
+      "engine_mismatched_origin_weights": "ValueError"
+    },
+    "sentinel_2pow53": "typed init b = 1 + 2^53 rounds back to 2^53; probe REFUSES while the compiled <= cutoff filter RETAINS the destination (documented asymmetry/hazard)"
+  },
+  "comparison_scope": {
+    "default": "dtype+shape+bytes (bit-exact) for ALL golden, cross-arm, double-run, and mutant comparisons",
+    "single_documented_exception": "Python-trace-vs-compiled float64 SUM comparisons (F1 finals, F2 per-OD deltas and delivered) use max_ulp=4 because B0 compiles with fastmath and reassociates multi-term sums; NaN/inf placement still exact. Candidate-vs-baseline comparisons NEVER use ULP."
+  },
+  "gaps_and_limitations": [
+    "L2 chronology/turns path (AccumulateFlow _accumulate_od_flow_turns) is NOT covered: corpus runs turns=False; no turns fixture was built",
+    "Experimental paths verified via compiled B0 callables, not a full Python replica of those paths",
+    "argsort tie order is pinned by probe-matched cases only; no fixture forces a numpy-version-dependent argsort tie break on the flow engine itself",
+    "ULP=4 allowance applies only to trace-vs-compiled float sums as described in comparison_scope",
+    "F2 stale-scratch mutation is inert at corpus scale (documented above); reset obligation enforced via journal + review",
+    "Corpus restricted to well-formed graphs <=~200 nodes (CSR/flow <=~50 nodes + few virtual) per the <3 GiB RAM budget; malformed-fixture OOB reads (numba has no boundscheck) were observed and recorded as a finding but are not part of the frozen golden",
+    "numba JIT cache lives at NUMBA_CACHE_DIR=/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_oracle, outside both the B0 and campaign trees"
+  ],
+  "files": {
+    "oracle_sources": "19 files under tests/large_e2e/oracle/ and benchmarks/large_e2e/oracle/ (sha256 inventory in oracle_manifest.json file_inventory_sha256)",
+    "evidence": [
+      "campaigns/una_large_e2e/evidence/H03/oracle_manifest.json",
+      "campaigns/una_large_e2e/evidence/H03/test_results.json",
+      "campaigns/una_large_e2e/evidence/H03/pytest_final_verbose.txt"
+    ]
+  },
+  "git_writes": "none performed; all artifacts are untracked working-tree files for the coordinator to commit"
+}

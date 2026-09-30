@@ -1,0 +1,36 @@
+test_empty_pins (test_tools.AuditTests.test_empty_pins) ... ok
+test_git_blob_known (test_tools.AuditTests.test_git_blob_known) ... ok
+test_match_and_drift (test_tools.AuditTests.test_match_and_drift) ... ok
+test_missing (test_tools.AuditTests.test_missing) ... ok
+test_traversal (test_tools.AuditTests.test_traversal) ... ok
+test_dtype (test_tools.BitTests.test_dtype) ... ok
+test_empty_rejected (test_tools.BitTests.test_empty_rejected) ... ok
+test_endian (test_tools.BitTests.test_endian) ... ok
+test_identical (test_tools.BitTests.test_identical) ... ok
+test_missing_field (test_tools.BitTests.test_missing_field) ... ok
+test_nan_payload (test_tools.BitTests.test_nan_payload) ... ok
+test_no_pickle (test_tools.BitTests.test_no_pickle) ... ok
+test_npz (test_tools.BitTests.test_npz) ... ok
+test_object_rejected (test_tools.BitTests.test_object_rejected) ... ok
+test_one_ulp (test_tools.BitTests.test_one_ulp) ... ok
+test_shape (test_tools.BitTests.test_shape) ... ok
+test_signed_zero (test_tools.BitTests.test_signed_zero) ... ok
+test_fake_gpu_rejected (test_tools.CompletionTests.test_fake_gpu_rejected) ... ok
+test_false_qualified_rejected (test_tools.CompletionTests.test_false_qualified_rejected) ... ok
+test_honest_complete_fixture_and_corruption (test_tools.CompletionTests.test_honest_complete_fixture_and_corruption) ... ok
+test_partial_allowed (test_tools.CompletionTests.test_partial_allowed) ... ok
+test_unknown_state (test_tools.CompletionTests.test_unknown_state) ... ok
+test_vacuous_parity_rejected (test_tools.CompletionTests.test_vacuous_parity_rejected) ... ok
+test_empty_source (test_tools.InventoryTests.test_empty_source) ... ok
+test_exports (test_tools.InventoryTests.test_exports) ... ok
+test_signature_no_execution (test_tools.InventoryTests.test_signature_no_execution) ... ok
+test_current_packet (test_tools.PacketTests.test_current_packet) ... ok
+test_cycle (test_tools.PacketTests.test_cycle) ... ok
+test_digest_tamper (test_tools.PacketTests.test_digest_tamper) ... ok
+test_missing_capability (test_tools.PacketTests.test_missing_capability) ... ok
+test_missing_file (test_tools.PacketTests.test_missing_file) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 0.056s
+
+OK

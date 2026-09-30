@@ -1,0 +1,68 @@
+{
+ "schema_version": 1,
+ "task": "Z00",
+ "record": "candidate_register",
+ "utc": "2026-09-30T03:30:00Z",
+ "role": "coordinator/integrator (team-lead)",
+ "purpose": "Complete register of candidate source states, integration line commits, and the review/rehearsal closure chain, with every figure from control.json (frozen), ruled review records, or live re-derivation (2026-09-30, in-session compute).",
+
+ "baseline": {
+  "commit": "361928e4ba38f34622cafe065b0025244db61368",
+  "role": "B0 comparator — the ONLY performance comparator; includes ordered CSR",
+  "wheel_sha256": "recorded in campaigns/una_large_e2e/evidence/W00/wheels.json arms.b0 (R00 pin-verified; b0 identity used by A-arms in all Q10 argv)"
+ },
+ "provenance_only_refs": {
+  "pre_csr": "98f498e5b0ac97b05271d03812fa883b5e4afaba (also current main tip — historical reference, never the primary comparator)",
+  "upstream": "c15ebda (upstream tutorial-era reference)"
+ },
+
+ "screened_track_source_commits": [
+  {"track": "A1", "commit": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29", "src_tree": "b121ec0b4312f12caa98bc115243652e1564d3ec", "screen": "approve/screened_in provisional (A1R + control_addendum_A1R; holdout decisive 1.2954, access not demonstrated at screen 1.0351)", "terminal": "accepted as preregistered improvement_only (radius-scoped)"},
+  {"track": "F1", "commit": "c1d7edc5", "screen": "not_demonstrated at screen — no demonstrated harm; stays in line (F1R records)", "terminal": "carried within qualified flow family"},
+  {"track": "F3", "commit": "b387f901", "screen": "SCREENED_IN (F3R selection sha256 06410f29…)", "terminal": "carried within qualified flow family; capacity_only labeling governs"},
+  {"track": "A3", "commit": "d9fff4c9", "screen": "SCREENED_IN at A3I admission chain head (A3R; ADMITTED 8.92%)", "terminal": "carried within qualified flow family"},
+  {"track": "F2", "commit": "61f3db64", "screen": "SCREENED_IN (F2R; warm 0.0308, cold penalties sized into Q00)", "terminal": "carried within qualified flow family"}
+ ],
+ "not_admitted_tracks": [
+  {"track": "A2", "status": "not_admitted — never integrated; absence-verified at I00 (zero _a2_ tokens, zero _a2 attributes; evidence/I00/composition.json)"}
+ ],
+
+ "selected_source": {
+  "commit": "6b53a274e8a8d3e7360ab5e1b38f741107ce3358",
+  "src_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+  "package_tree": "64471ec98511…",
+  "wheel_sha256": "323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4",
+  "wheel_bytes": 138442,
+  "identity_kind": "installed_wheel",
+  "identity_manifest": "campaign_data/w00_identities/selected.json (17 module hashes — the install-probe comparison basis)",
+  "note": "src/ byte-unchanged from selection through tip: diff selected..HEAD src/ EMPTY at both R00 audit-time HEADs (6c3bee7, 53d70e1) and at tip 992f4e5 (tree re-derived live)"
+ },
+
+ "integration_line": {
+  "branch": "perf/una-large-e2e",
+  "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e",
+  "commits_main_to_tip": 107,
+  "files_main_to_tip": 1078,
+  "q10_close": "53d70e1f2eed4c7e37c078e99006bf095bed563e (Q10 evidence mirror; R00 intake pins 438bc69f/25ec966e/47b8f6d3 verified against its content)",
+  "r00_close": "07fb3cc621281402ed7cb2b25807d70047bb2fa3 (R00 record commit + S01 review remediation; REHEARSED CLOSURE)",
+  "m00_v1": "10dca115dae700ac2e417e12ec86965b539f217f (M00 rehearsal v1 + ci.json — h04 ADMITTED)",
+  "tip": "advances with Z00 record commits (52c3550 Z00 v1 + this amendment — evidence-only; the self-reference rule bars this register from pinning the amendment's own commit, so the final tip generation is named by the reviewer's Z00 verdict); src tree 3c59bb0d verified unchanged at 52c3550 (live) — runtime content pinned by selected source 6b53a274 + rehearsed closure 07fb3cc",
+  "m00f1_corrected_range": "main..07fb3cc = 105 commits, 1,076 files, +720,115/−158 (supersedes the v1 erratum '104/1,073/+719,973' which described main..53d70e1)"
+ },
+
+ "closure_chain_verdicts": [
+  {"stage": "R00", "verdict": "APPROVED QUALIFIED SCOPE", "evidence": "evidence/R00/review.json fbf30368b21470c6… + claim_audit.json f57c1a6f…", "commit": "07fb3cc"},
+  {"stage": "M00", "verdict": "APPROVED + SUPPLEMENTAL ACK — admitted M00 generation = rehearsal.json d5d2c7fa at 992f4e5 (supersedes v1 6e981422 at 10dca11; v1 suite/full-repo legs withdrawn as frame-invalid, frame-free legs carried)", "evidence": "evidence/M00/rehearsal.json d5d2c7fa37d74c1b… + ci.json b962e632…", "commit": "10dca11 (v1) / 992f4e5 (v2)"},
+  {"stage": "S01", "verdict": "CLEAN EXIT, key r9 retired (38/38 windows)", "evidence": "evidence/S01/review.json a347f6d3…", "commit": "ec16d3f (ruled verdict body)"},
+  {"stage": "Q10", "verdict": "flow PASS / access median FAIL CI-pass; 40/40 valid", "evidence": "evidence/Q10/summary.json 438bc69f…", "commit": "53d70e1"}
+ ],
+
+ "merge_geometry": {
+  "main": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+  "main_tree": "e999840020ccca916387a937cedca7bbde22a56c",
+  "merge_base": "98f498e5b0ac97b05271d03812fa883b5e4afaba (== main; strict ancestor; FF possible)",
+  "rehearsal": "FF 98f498e→07fb3cc 0 conflicts; no-ff probe merge afa3c8eed5cce178075894bb6314c4da24b997c5 tree-diff vs candidate EMPTY",
+  "tip_probes_readonly_2026_09_30": "merge-tree main←07fb3cc → e2b6fda9… (== closure tree); merge-tree main←992f4e5 → 2c960120… (== tip tree); both rc=0, zero conflicts",
+  "sim_branch_retired": "m00_rehearsal_main_sim (afa3c8ee) + worktree wt-m00-rehearsal removed after h04 verdict ack"
+ }
+}

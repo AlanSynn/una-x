@@ -1,0 +1,904 @@
+{
+ "schema_version": 1,
+ "task": "H05",
+ "record": "memory_lifetimes",
+ "role": "performance-owner",
+ "generated_utc": "2026-09-26T04:36:26Z",
+ "policy": {
+  "ceiling_rule": "min(10650 MiB = 0.65xphys, 0.80xavailable_at_admission)",
+  "pressure_stop_bytes": 1717986918,
+  "pressure_stop_rule": "max(1 GiB, 0.10xphys)",
+  "enforcement": "campaign-owned sampler watchdog; breach writes a record then SIGTERMs the child. Sampling cannot guarantee a hard cap \u2014 no hard-cap claim is made",
+  "phys_bytes": 17179869184
+ },
+ "lease_windows": [
+  {
+   "what": "build",
+   "start": "2026-09-26T03:57:52Z",
+   "end": "2026-09-26T03:57:52Z",
+   "wall_s": 0.5,
+   "rc": 1,
+   "available_at_admission_bytes": 3908190208,
+   "ceiling_bytes": 3126552166,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "build",
+   "start": "2026-09-26T03:58:58Z",
+   "end": "2026-09-26T03:59:59Z",
+   "wall_s": 61.8,
+   "rc": 2,
+   "available_at_admission_bytes": 3867410432,
+   "ceiling_bytes": 3093928345,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "build",
+   "start": "2026-09-26T04:00:59Z",
+   "end": "2026-09-26T04:01:52Z",
+   "wall_s": 53.2,
+   "rc": 2,
+   "available_at_admission_bytes": 3650371584,
+   "ceiling_bytes": 2920297267,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "build",
+   "start": "2026-09-26T04:03:33Z",
+   "end": "2026-09-26T04:04:40Z",
+   "wall_s": 67.0,
+   "rc": 0,
+   "available_at_admission_bytes": 3565273088,
+   "ceiling_bytes": 2852218470,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:O2_cold",
+   "start": "2026-09-26T04:05:37Z",
+   "end": "2026-09-26T04:05:38Z",
+   "wall_s": 0.9,
+   "rc": 1,
+   "available_at_admission_bytes": 3623698432,
+   "ceiling_bytes": 2898958745,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:O2_cold",
+   "start": "2026-09-26T04:09:24Z",
+   "end": "2026-09-26T04:09:28Z",
+   "wall_s": 4.1,
+   "rc": 1,
+   "available_at_admission_bytes": 3531407360,
+   "ceiling_bytes": 2825125888,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:O2_cold",
+   "start": "2026-09-26T04:10:38Z",
+   "end": "2026-09-26T04:10:42Z",
+   "wall_s": 3.3,
+   "rc": 1,
+   "available_at_admission_bytes": 3359571968,
+   "ceiling_bytes": 2687657574,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:O2_cold",
+   "start": "2026-09-26T04:11:37Z",
+   "end": "2026-09-26T04:11:40Z",
+   "wall_s": 3.2,
+   "rc": 1,
+   "available_at_admission_bytes": 3475734528,
+   "ceiling_bytes": 2780587622,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:O2_cold",
+   "start": "2026-09-26T04:12:00Z",
+   "end": "2026-09-26T04:12:10Z",
+   "wall_s": 10.1,
+   "rc": 0,
+   "available_at_admission_bytes": 3438903296,
+   "ceiling_bytes": 2751122636,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:O2_cold",
+   "start": "2026-09-26T04:16:05Z",
+   "end": "2026-09-26T04:16:14Z",
+   "wall_s": 9.5,
+   "rc": 0,
+   "available_at_admission_bytes": 3506225152,
+   "ceiling_bytes": 2804980121,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:O2_warm",
+   "start": "2026-09-26T04:16:31Z",
+   "end": "2026-09-26T04:16:37Z",
+   "wall_s": 5.3,
+   "rc": 0,
+   "available_at_admission_bytes": 3447488512,
+   "ceiling_bytes": 2757990809,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:ACCESS_od",
+   "start": "2026-09-26T04:16:45Z",
+   "end": "2026-09-26T04:16:50Z",
+   "wall_s": 5.5,
+   "rc": 0,
+   "available_at_admission_bytes": 3416539136,
+   "ceiling_bytes": 2733231308,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:ACCESS_clean",
+   "start": "2026-09-26T04:17:31Z",
+   "end": "2026-09-26T04:17:37Z",
+   "wall_s": 5.5,
+   "rc": 0,
+   "available_at_admission_bytes": 3515875328,
+   "ceiling_bytes": 2812700262,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:FLOW_sel1024_od",
+   "start": "2026-09-26T04:17:57Z",
+   "end": "2026-09-26T04:18:09Z",
+   "wall_s": 12.8,
+   "rc": 0,
+   "available_at_admission_bytes": 3436478464,
+   "ceiling_bytes": 2749182771,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:FLOW_chosen_od",
+   "start": "2026-09-26T04:19:43Z",
+   "end": "2026-09-26T04:19:54Z",
+   "wall_s": 10.3,
+   "rc": 0,
+   "available_at_admission_bytes": 3779919872,
+   "ceiling_bytes": 3023935897,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:HOLDOUT_clean",
+   "start": "2026-09-26T04:20:15Z",
+   "end": "2026-09-26T04:20:22Z",
+   "wall_s": 6.4,
+   "rc": 0,
+   "available_at_admission_bytes": 4164435968,
+   "ceiling_bytes": 3331548774,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "pilot:HOLDOUT_elev",
+   "start": "2026-09-26T04:20:25Z",
+   "end": "2026-09-26T04:20:31Z",
+   "wall_s": 5.4,
+   "rc": 0,
+   "available_at_admission_bytes": 4066213888,
+   "ceiling_bytes": 3252971110,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "probe:A1",
+   "start": "2026-09-26T04:21:03Z",
+   "end": "2026-09-26T04:21:05Z",
+   "wall_s": 2.1,
+   "rc": 1,
+   "available_at_admission_bytes": 3788455936,
+   "ceiling_bytes": 3030764748,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "probe:A1",
+   "start": "2026-09-26T04:21:40Z",
+   "end": "2026-09-26T04:23:17Z",
+   "wall_s": 97.8,
+   "rc": 0,
+   "available_at_admission_bytes": 3690364928,
+   "ceiling_bytes": 2952291942,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "probe:A2",
+   "start": "2026-09-26T04:23:40Z",
+   "end": "2026-09-26T04:23:43Z",
+   "wall_s": 3.3,
+   "rc": 0,
+   "available_at_admission_bytes": 3815096320,
+   "ceiling_bytes": 3052077056,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "probe:A2",
+   "start": "2026-09-26T04:25:36Z",
+   "end": "2026-09-26T04:25:39Z",
+   "wall_s": 3.1,
+   "rc": 0,
+   "available_at_admission_bytes": 3857629184,
+   "ceiling_bytes": 3086103347,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "probe:A3",
+   "start": "2026-09-26T04:25:46Z",
+   "end": "2026-09-26T04:25:49Z",
+   "wall_s": 2.8,
+   "rc": 0,
+   "available_at_admission_bytes": 3782295552,
+   "ceiling_bytes": 3025836441,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "probe:F1",
+   "start": "2026-09-26T04:25:57Z",
+   "end": "2026-09-26T04:26:38Z",
+   "wall_s": 40.7,
+   "rc": 0,
+   "available_at_admission_bytes": 3809853440,
+   "ceiling_bytes": 3047882752,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "probe:F1",
+   "start": "2026-09-26T04:28:00Z",
+   "end": "2026-09-26T04:28:04Z",
+   "wall_s": 3.2,
+   "rc": 0,
+   "available_at_admission_bytes": 3937222656,
+   "ceiling_bytes": 3149778124,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "probe:F2",
+   "start": "2026-09-26T04:28:34Z",
+   "end": "2026-09-26T04:28:39Z",
+   "wall_s": 5.0,
+   "rc": 1,
+   "available_at_admission_bytes": 3874127872,
+   "ceiling_bytes": 3099302297,
+   "refused": null,
+   "pressure_breach_file": null
+  },
+  {
+   "what": "probe:F2",
+   "start": "2026-09-26T04:30:32Z",
+   "end": "2026-09-26T04:30:36Z",
+   "wall_s": 3.6,
+   "rc": 0,
+   "available_at_admission_bytes": 3920756736,
+   "ceiling_bytes": 3136605388,
+   "refused": null,
+   "pressure_breach_file": null
+  }
+ ],
+ "heavy_wall": {
+  "used_s": 426.4,
+  "budget_s": 14400.0,
+  "remaining_s": 13973.6
+ },
+ "per_cell_rss": {
+  "O2_cold": {
+   "peak_sampled_mib": 541.671875,
+   "ru_maxrss_mib": 545.9375,
+   "after_window_mib": 542.328125,
+   "breach": null
+  },
+  "O2_warm": {
+   "peak_sampled_mib": 478.109375,
+   "ru_maxrss_mib": 502.140625,
+   "after_window_mib": 498.34375,
+   "breach": null
+  },
+  "ACCESS_od": {
+   "peak_sampled_mib": 496.40625,
+   "ru_maxrss_mib": 505.625,
+   "after_window_mib": 501.828125,
+   "breach": null
+  },
+  "ACCESS_clean": {
+   "peak_sampled_mib": 472.84375,
+   "ru_maxrss_mib": 481.9375,
+   "after_window_mib": 478.140625,
+   "breach": null
+  },
+  "FLOW_sel1024_od": {
+   "peak_sampled_mib": 2489.5,
+   "ru_maxrss_mib": 2532.984375,
+   "after_window_mib": 1301.609375,
+   "breach": null
+  },
+  "FLOW_chosen_od": {
+   "peak_sampled_mib": 2489.125,
+   "ru_maxrss_mib": 2577.515625,
+   "after_window_mib": 1955.109375,
+   "breach": null
+  },
+  "HOLDOUT_clean": {
+   "peak_sampled_mib": 504.703125,
+   "ru_maxrss_mib": 513.78125,
+   "after_window_mib": 509.984375,
+   "breach": null
+  },
+  "HOLDOUT_elev": {
+   "peak_sampled_mib": 503.515625,
+   "ru_maxrss_mib": 507.296875,
+   "after_window_mib": 503.5,
+   "breach": null
+  }
+ },
+ "single_call_lifetimes": {
+  "note": "H05 sessions are one public call per process (fresh venv, one UNA object); the H04 sequential-reuse double-load is NOT part of the frozen workloads, so retention windows are: process import -> window -> process exit",
+  "topology": "loaded inside window (AddNetwork), retained to exit",
+  "accessibility_engine": "constructed inside window; retained to exit",
+  "flow_engine": "constructed inside window; retained to exit",
+  "exports": "inside window (synchronous writers)"
+ },
+ "gradient_precompute": {
+  "v_prime_chosen": 56844,
+  "chunk_rule": "chunk = 1e8 // v_prime",
+  "chunk_chosen": 1759,
+  "dense_transient_bytes": 1199863152,
+  "dense_transient_gib": 1.1174596399068832,
+  "sparse_grad_bytes": 9565360,
+  "sparse_over_dense": 0.007972042465056048,
+  "envelope_len_mean": 71.80123104638943,
+  "envelope_len_max": 426,
+  "note": "dense transient is ~125x the sparse payload it exists to fill; it is origin-count independent (destination-side precompute) and is INSIDE the measured per-cell peaks"
+ },
+ "per_stripe_origin_scratch": {
+  "bytes_per_stripe_per_od": 1080036,
+  "composition": [
+   {
+    "name": "reach",
+    "dtype": "bool",
+    "bytes_per_od": 56844
+   },
+   {
+    "name": "cont_o",
+    "dtype": "bool",
+    "bytes_per_od": 56844
+   },
+   {
+    "name": "cont_d",
+    "dtype": "bool",
+    "bytes_per_od": 56844
+   },
+   {
+    "name": "acc_o",
+    "dtype": "float64",
+    "bytes_per_od": 454752
+   },
+   {
+    "name": "acc_d",
+    "dtype": "float64",
+    "bytes_per_od": 454752
+   }
+  ],
+  "at_max_observed_concurrency": 10800360,
+  "note": "_accumulate_od_flow allocates its own temporaries per call (NRT: 48 allocs/call, alloc==free); nothing is retained between calls"
+ },
+ "runtime_nrt_evidence": {
+  "integrated_scope_access": {
+   "alloc_per_call_min": 9563127,
+   "alloc_per_call_median": 9563127.0,
+   "alloc_per_call_max": 9563127,
+   "free_per_call_median": 9563127.0,
+   "interpretation": "~9.56M NRT allocations per single-origin call, all freed in-call: per-call churn, not retention"
+  },
+  "accumulate_od_flow": {
+   "enabled": true,
+   "n_calls": 50,
+   "task": {
+    "origin_virtual": 55820,
+    "dest_virtual": 49739,
+    "envelope_nodes": 15
+   },
+   "alloc_per_call_min": 48,
+   "alloc_per_call_median": 48.0,
+   "alloc_per_call_max": 48,
+   "free_per_call_median": 48.0,
+   "note": "measured on real captured CSR/gradients at V'=56844; alloc==free per call confirms temporaries are per-call allocations, not retained state"
+  }
+ },
+ "pools": {
+  "per_cell_post_window": {
+   "O2_cold": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84413770
+     ]
+    },
+    "process_num_threads": 22,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:16:10Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:16:10Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "O2_warm": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84416733
+     ]
+    },
+    "process_num_threads": 23,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:16:36Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:16:36Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "ACCESS_od": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84418287
+     ]
+    },
+    "process_num_threads": 23,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:16:49Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:16:49Z"
+     },
+     {
+      "executor_id": 3,
+      "max_workers": 10,
+      "created_under_stage": "export_accessibility_results",
+      "created_utc": "2026-09-26T04:16:50Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "ACCESS_clean": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84424497
+     ]
+    },
+    "process_num_threads": 22,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:17:36Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:17:36Z"
+     },
+     {
+      "executor_id": 3,
+      "max_workers": 10,
+      "created_under_stage": "export_accessibility_results",
+      "created_utc": "2026-09-26T04:17:37Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "FLOW_sel1024_od": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84427610
+     ]
+    },
+    "process_num_threads": 31,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:18:01Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:18:01Z"
+     },
+     {
+      "executor_id": 3,
+      "max_workers": 9,
+      "created_under_stage": "flow_origin_loop",
+      "created_utc": "2026-09-26T04:18:04Z"
+     },
+     {
+      "executor_id": 4,
+      "max_workers": 10,
+      "created_under_stage": "export_flow_result",
+      "created_utc": "2026-09-26T04:18:08Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "FLOW_chosen_od": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84434163
+     ]
+    },
+    "process_num_threads": 31,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:19:48Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:19:48Z"
+     },
+     {
+      "executor_id": 3,
+      "max_workers": 9,
+      "created_under_stage": "flow_origin_loop",
+      "created_utc": "2026-09-26T04:19:50Z"
+     },
+     {
+      "executor_id": 4,
+      "max_workers": 10,
+      "created_under_stage": "export_flow_result",
+      "created_utc": "2026-09-26T04:19:52Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "HOLDOUT_clean": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84436353
+     ]
+    },
+    "process_num_threads": 22,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:20:20Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:20:20Z"
+     },
+     {
+      "executor_id": 3,
+      "max_workers": 10,
+      "created_under_stage": "export_accessibility_results",
+      "created_utc": "2026-09-26T04:20:21Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   },
+   "HOLDOUT_elev": {
+    "threadpoolctl": [
+     {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 10,
+      "prefix": "libomp",
+      "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+      "version": null
+     }
+    ],
+    "numba": {
+     "version": "0.67.0",
+     "get_num_threads": 10,
+     "config_NUMBA_NUM_THREADS": 10,
+     "threading_layer_config": "default",
+     "threading_layer_initialized": true,
+     "threading_layer": "workqueue"
+    },
+    "pyarrow": {
+     "version": "25.0.1",
+     "cpu_count": 10,
+     "io_thread_count": 8
+    },
+    "python_threads": {
+     "count": 1,
+     "names": [
+      "MainThread"
+     ],
+     "native_ids": [
+      84436793
+     ]
+    },
+    "process_num_threads": 23,
+    "explicit_executors": [
+     {
+      "executor_id": 1,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:20:29Z"
+     },
+     {
+      "executor_id": 2,
+      "max_workers": 9,
+      "created_under_stage": "topology_build_access_points",
+      "created_utc": "2026-09-26T04:20:29Z"
+     },
+     {
+      "executor_id": 3,
+      "max_workers": 10,
+      "created_under_stage": "export_accessibility_results",
+      "created_utc": "2026-09-26T04:20:30Z"
+     }
+    ],
+    "os_cpu_count": 10,
+    "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+   }
+  },
+  "note": "identical function captured at pre-window/post-patch/post-window"
+ },
+ "capacity_decision": {
+  "chosen_variant": "sel1024",
+  "feasible_all": false,
+  "projected_peak_bytes_sel_all": 2611912468,
+  "ceiling_bytes_at_decision": 2749182771,
+  "capacity_refusal": "sel-all projected peak 2.43 GiB vs 0.9x ceiling 2.30 GiB, or projected origin loop 52s vs remaining heavy budget 14157s",
+  "projection_note": "projection = measured sel1024 peak + 12B x delta_V' x n_threads (per-stripe scratch); the binding constraint is the current available-RAM ceiling, not the delta"
+ },
+ "watchdog": {
+  "breach_files_written": [],
+  "verdict": "no pressure breach in any H05 window"
+ }
+}

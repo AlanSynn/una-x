@@ -1,0 +1,290 @@
+{
+ "task": "W00",
+ "record": "installed_tests",
+ "utc": "2026-09-28T21:30:42Z",
+ "cross_arm_byte_verdicts": {
+  "a_side.both_admit": true,
+  "a_side.a3_refuse_oob": true,
+  "a_side.a1_refusal": true,
+  "f_side.long_admitting": true,
+  "f_side.oracle_refusing": true,
+  "f3_side.production_cap": true,
+  "f3_side.forced_chunks": true
+ },
+ "arms": {
+  "b0": {
+   "probe": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_engagement_b0.json",
+   "probe_sha256": "75f6768a95c766cf0eae881d5872916145bd6ae6d98487977f9a54c759ca08a8",
+   "status": "ok",
+   "records": [
+    {
+     "label": "identity_guards",
+     "arm": "w00_b0",
+     "kind": "installed_wheel",
+     "package_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_b0/lib/python3.11/site-packages/urban_network_analysis",
+     "site_packages": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_b0/lib/python3.11/site-packages",
+     "dist_info": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_b0/lib/python3.11/site-packages/urban_network_analysis-2.6.0.dist-info",
+     "pth_findings": [],
+     "editable_findings": [],
+     "verified_files": 15,
+     "tree_sha256": "d1e34ba92e7b5f33a6a9e4651a6e106ec1b78251ea2adc63c1a380e87b6cbb89",
+     "identity_file_sha256": "3737eb7e0623fa14b1e095e7581352f57c46fe742ee224a35fbfbf1fbfc5a0a3"
+    },
+    {
+     "label": "scratch_import",
+     "present": false,
+     "error": "ImportError: cannot import name '_large_access_scratch' from 'urban_network_analysis.Engines' (/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_b0/lib/python3.11/site-packages/urban_network_analysis/Engines/__init__.py)"
+    },
+    {
+     "label": "a_side_bytes",
+     "variants": {
+      "both_admit": {
+       "od_scope": "69d21a77e16beedca211812a54e3c9a690f8bce584c5c4400dc426372b702490",
+       "integrated": [
+        "134de9152ab199353e9c9c6fa990c28927b45a98cffdb674124f6ac6606a577d",
+        "d9440ae5d6533c6db271553cd61c8e8868ddaa44c8656be6b549216e42874263",
+        "399d2f5e979441351c44b8355fc89b767f9f38afdf460004cde53f3215538219",
+        "966a80d5afbdb994851fdd624b9d3de3daca02935eabfa97fc72e0330ac43508"
+       ]
+      },
+      "a3_refuse_oob": {
+       "od_scope": "8b8a7a6d0a1688a9d35d4c3147a210420184d9657eceb3ceb53512970eae13f9",
+       "integrated": [
+        "69f32158752d425925bee8c781b73c22069776944de39b0671e069d3d43075d2",
+        "1d77ba7408189cc0a1f0fb8ba3948cce0bf68e0561f62301a518e2a56e32fc10",
+        "66ef1ba1bfbcc662a0436f606c2c8d8280c3981610576d64d65861e60e057c99",
+        "db3e00d9ee13c4038d2f42f1f1c9da87e626353231265568ed6b74b876277eb4"
+       ]
+      },
+      "a1_refusal": {
+       "od_scope": "69d21a77e16beedca211812a54e3c9a690f8bce584c5c4400dc426372b702490",
+       "integrated": [
+        "134de9152ab199353e9c9c6fa990c28927b45a98cffdb674124f6ac6606a577d",
+        "d9440ae5d6533c6db271553cd61c8e8868ddaa44c8656be6b549216e42874263",
+        "399d2f5e979441351c44b8355fc89b767f9f38afdf460004cde53f3215538219",
+        "966a80d5afbdb994851fdd624b9d3de3daca02935eabfa97fc72e0330ac43508"
+       ]
+      }
+     }
+    },
+    {
+     "label": "f_side",
+     "legs": {
+      "long_admitting": {
+       "hashes": {
+        "edge_flow_AB": "09c6803b1bd8d88194e3c1459eea48e5b4c5489295604f7b9ea6ef6eedeb2586",
+        "edge_flow_BA": "11e6e0e149e92575f4ed3277446cc3f737abef9c8cf1f57fe8d19b9b7b6cedaf",
+        "edge_flow": "ee4f09dcdae3fcf01116681728d246bb7e5fa2b3abc080fae82e00bfbf6dd19a",
+        "node_flow": "9c49a5739648db43a8372832a4347507071cb50729e38a8a77c4c9f3ad216b33"
+       },
+       "f2_stats": null
+      },
+      "oracle_refusing": {
+       "hashes": {
+        "edge_flow_AB": "9873627d2722f1487f97dc7760acff678777f0a20b595c219c994c2090859ea1",
+        "edge_flow_BA": "59cdd06e9c1aca54091254bc61adba89e61935a8d6536c837acc846a59adb158",
+        "edge_flow": "4c89af5b2e655b982e627df26ca8b405d272842379bec0c04a55e91a1bd74125",
+        "node_flow": "3c9c8bddcf3699a2f31d77c0f64db5e41af95090af2cc767812d5d708bfe2e93"
+       },
+       "f2_stats": null
+      }
+     }
+    },
+    {
+     "label": "f3_side",
+     "schedules": {
+      "production_cap": [
+       "61e41c87e505bdab3fa91851a76e28774f04e241ed4089de927f2c2bb3d41193",
+       "8c024b805b19d92e08da129bba9096b71fee1d2160252c0bf3bd15f1da7ea8fe",
+       "c944533189d0855ecb829aacdb9ef4ff2d6bc99838beef63c9411c0ccdadf40c",
+       "2db726bf3d1266e85db1c5d75ce39018bcc9cf356782888ca5b203b38063a534"
+      ],
+      "forced_chunks": [
+       "61e41c87e505bdab3fa91851a76e28774f04e241ed4089de927f2c2bb3d41193",
+       "8c024b805b19d92e08da129bba9096b71fee1d2160252c0bf3bd15f1da7ea8fe",
+       "c944533189d0855ecb829aacdb9ef4ff2d6bc99838beef63c9411c0ccdadf40c",
+       "2db726bf3d1266e85db1c5d75ce39018bcc9cf356782888ca5b203b38063a534"
+      ]
+     },
+     "no_fit": null
+    }
+   ]
+  },
+  "selected": {
+   "probe": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_engagement_selected.json",
+   "probe_sha256": "9f3f9703db5e918ecf75c4010b2af8a7d062dced64b9fdce15244f1695c82273",
+   "status": "ok",
+   "records": [
+    {
+     "label": "identity_guards",
+     "arm": "w00_selected",
+     "kind": "installed_wheel",
+     "package_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_selected/lib/python3.11/site-packages/urban_network_analysis",
+     "site_packages": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_selected/lib/python3.11/site-packages",
+     "dist_info": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_selected/lib/python3.11/site-packages/urban_network_analysis-2.6.0.dist-info",
+     "pth_findings": [],
+     "editable_findings": [],
+     "verified_files": 17,
+     "tree_sha256": "64471ec98511aaed5cf8814aea0556907b18e74737e2ec4da6022207cfb153f0",
+     "identity_file_sha256": "b98915102d53d714dba2df9b71b42df97f8da90369b1fb1de5020ac6456458e1"
+    },
+    {
+     "label": "scratch_import",
+     "present": true,
+     "error": null
+    },
+    {
+     "label": "guard_matrix",
+     "cells": {
+      "both_admit": {
+       "a1_admitted": true,
+       "a1_max_degree": 3,
+       "a3_admitted": true,
+       "a3_evaluated": true
+      },
+      "boundary_values": {
+       "a1_admitted": true,
+       "a1_max_degree": 3,
+       "a3_admitted": true,
+       "a3_evaluated": true
+      },
+      "zero_destinations": {
+       "a1_admitted": true,
+       "a1_max_degree": 3,
+       "a3_admitted": true,
+       "a3_evaluated": true
+      },
+      "shared_terminals": {
+       "a1_admitted": true,
+       "a1_max_degree": 3,
+       "a3_admitted": true,
+       "a3_evaluated": true
+      },
+      "a3_refuse_oob": {
+       "a1_admitted": true,
+       "a1_max_degree": 3,
+       "a3_admitted": false,
+       "a3_evaluated": true
+      },
+      "a3_refuse_negative": {
+       "a1_admitted": true,
+       "a1_max_degree": 3,
+       "a3_admitted": false,
+       "a3_evaluated": true
+      },
+      "a3_refuse_shape": {
+       "a1_admitted": true,
+       "a1_max_degree": 3,
+       "a3_admitted": false,
+       "a3_evaluated": true
+      },
+      "a1_refusal": {
+       "a1_admitted": false,
+       "a1_max_degree": 0,
+       "a3_admitted": null,
+       "a3_evaluated": false
+      }
+     }
+    },
+    {
+     "label": "a_side_bytes",
+     "variants": {
+      "both_admit": {
+       "od_scope": "69d21a77e16beedca211812a54e3c9a690f8bce584c5c4400dc426372b702490",
+       "integrated": [
+        "134de9152ab199353e9c9c6fa990c28927b45a98cffdb674124f6ac6606a577d",
+        "d9440ae5d6533c6db271553cd61c8e8868ddaa44c8656be6b549216e42874263",
+        "399d2f5e979441351c44b8355fc89b767f9f38afdf460004cde53f3215538219",
+        "966a80d5afbdb994851fdd624b9d3de3daca02935eabfa97fc72e0330ac43508"
+       ]
+      },
+      "a3_refuse_oob": {
+       "od_scope": "8b8a7a6d0a1688a9d35d4c3147a210420184d9657eceb3ceb53512970eae13f9",
+       "integrated": [
+        "69f32158752d425925bee8c781b73c22069776944de39b0671e069d3d43075d2",
+        "1d77ba7408189cc0a1f0fb8ba3948cce0bf68e0561f62301a518e2a56e32fc10",
+        "66ef1ba1bfbcc662a0436f606c2c8d8280c3981610576d64d65861e60e057c99",
+        "db3e00d9ee13c4038d2f42f1f1c9da87e626353231265568ed6b74b876277eb4"
+       ]
+      },
+      "a1_refusal": {
+       "od_scope": "69d21a77e16beedca211812a54e3c9a690f8bce584c5c4400dc426372b702490",
+       "integrated": [
+        "134de9152ab199353e9c9c6fa990c28927b45a98cffdb674124f6ac6606a577d",
+        "d9440ae5d6533c6db271553cd61c8e8868ddaa44c8656be6b549216e42874263",
+        "399d2f5e979441351c44b8355fc89b767f9f38afdf460004cde53f3215538219",
+        "966a80d5afbdb994851fdd624b9d3de3daca02935eabfa97fc72e0330ac43508"
+       ]
+      }
+     }
+    },
+    {
+     "label": "f_side",
+     "legs": {
+      "long_admitting": {
+       "hashes": {
+        "edge_flow_AB": "09c6803b1bd8d88194e3c1459eea48e5b4c5489295604f7b9ea6ef6eedeb2586",
+        "edge_flow_BA": "11e6e0e149e92575f4ed3277446cc3f737abef9c8cf1f57fe8d19b9b7b6cedaf",
+        "edge_flow": "ee4f09dcdae3fcf01116681728d246bb7e5fa2b3abc080fae82e00bfbf6dd19a",
+        "node_flow": "9c49a5739648db43a8372832a4347507071cb50729e38a8a77c4c9f3ad216b33"
+       },
+       "f2_stats": {
+        "local_route_ok": true,
+        "local_slice_max": 15,
+        "fast_calls": 2,
+        "overflow_events": 0,
+        "fallback_calls": 0
+       }
+      },
+      "oracle_refusing": {
+       "hashes": {
+        "edge_flow_AB": "9873627d2722f1487f97dc7760acff678777f0a20b595c219c994c2090859ea1",
+        "edge_flow_BA": "59cdd06e9c1aca54091254bc61adba89e61935a8d6536c837acc846a59adb158",
+        "edge_flow": "4c89af5b2e655b982e627df26ca8b405d272842379bec0c04a55e91a1bd74125",
+        "node_flow": "3c9c8bddcf3699a2f31d77c0f64db5e41af95090af2cc767812d5d708bfe2e93"
+       },
+       "f2_stats": {
+        "local_route_ok": true,
+        "local_slice_max": 2,
+        "fast_calls": 0,
+        "overflow_events": 0,
+        "fallback_calls": 0
+       }
+      }
+     }
+    },
+    {
+     "label": "f3_side",
+     "schedules": {
+      "production_cap": [
+       "61e41c87e505bdab3fa91851a76e28774f04e241ed4089de927f2c2bb3d41193",
+       "8c024b805b19d92e08da129bba9096b71fee1d2160252c0bf3bd15f1da7ea8fe",
+       "c944533189d0855ecb829aacdb9ef4ff2d6bc99838beef63c9411c0ccdadf40c",
+       "2db726bf3d1266e85db1c5d75ce39018bcc9cf356782888ca5b203b38063a534"
+      ],
+      "forced_chunks": [
+       "61e41c87e505bdab3fa91851a76e28774f04e241ed4089de927f2c2bb3d41193",
+       "8c024b805b19d92e08da129bba9096b71fee1d2160252c0bf3bd15f1da7ea8fe",
+       "c944533189d0855ecb829aacdb9ef4ff2d6bc99838beef63c9411c0ccdadf40c",
+       "2db726bf3d1266e85db1c5d75ce39018bcc9cf356782888ca5b203b38063a534"
+      ]
+     },
+     "no_fit": {
+      "v2_line_count": 1,
+      "has_nofit_token": true,
+      "lines": [
+       "Gradient storage: 9 finite entries (~0 MB sparse vs ~0.0 GB dense). [F3] cap=268435456B margin=67108864B chunks=1 schedule=[2] fallback=none floor_fired=none"
+      ]
+     }
+    }
+   ]
+  }
+ },
+ "selected_receipts": {
+  "guard_matrix_cells": 8,
+  "f2_long_fast_calls": 2,
+  "f2_refusing_fallback_calls": 0,
+  "no_fit_recorded": true
+ },
+ "all_equal": true
+}

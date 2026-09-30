@@ -1,0 +1,390 @@
+{
+ "task": "W00",
+ "record": "path_engagement",
+ "utc": "2026-09-28T21:30:42Z",
+ "identity_guards": {
+  "b0": {
+   "label": "identity_guards",
+   "arm": "w00_b0",
+   "kind": "installed_wheel",
+   "package_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_b0/lib/python3.11/site-packages/urban_network_analysis",
+   "site_packages": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_b0/lib/python3.11/site-packages",
+   "dist_info": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_b0/lib/python3.11/site-packages/urban_network_analysis-2.6.0.dist-info",
+   "pth_findings": [],
+   "editable_findings": [],
+   "verified_files": 15,
+   "tree_sha256": "d1e34ba92e7b5f33a6a9e4651a6e106ec1b78251ea2adc63c1a380e87b6cbb89",
+   "identity_file_sha256": "3737eb7e0623fa14b1e095e7581352f57c46fe742ee224a35fbfbf1fbfc5a0a3"
+  },
+  "selected": {
+   "label": "identity_guards",
+   "arm": "w00_selected",
+   "kind": "installed_wheel",
+   "package_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_selected/lib/python3.11/site-packages/urban_network_analysis",
+   "site_packages": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_selected/lib/python3.11/site-packages",
+   "dist_info": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_selected/lib/python3.11/site-packages/urban_network_analysis-2.6.0.dist-info",
+   "pth_findings": [],
+   "editable_findings": [],
+   "verified_files": 17,
+   "tree_sha256": "64471ec98511aaed5cf8814aea0556907b18e74737e2ec4da6022207cfb153f0",
+   "identity_file_sha256": "b98915102d53d714dba2df9b71b42df97f8da90369b1fb1de5020ac6456458e1"
+  }
+ },
+ "smoke_runs": {
+  "b0": {
+   "out": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_run/smoke_b0",
+   "session_file": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_run/smoke_b0/session.json",
+   "status": "valid",
+   "measurement_class": "installed",
+   "installed_qualified": true,
+   "qualification_valid": true,
+   "session_identity": {
+    "identity_kind": "installed_wheel",
+    "identity_sha256": "67f6b89a43c3a24c696363fc214f09cb505bce8669af3ac736c43ee0ca01cd9c",
+    "package_tree_sha256": "d1e34ba92e7b5f33a6a9e4651a6e106ec1b78251ea2adc63c1a380e87b6cbb89",
+    "notes": "W00 installed identity for the b0 arm; wheel_sha256=71fd5615b5683f3c798938a2762824da9ba3fada801aaa840343e7378d4fc979"
+   }
+  },
+  "selected": {
+   "out": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_run/smoke_selected",
+   "session_file": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_run/smoke_selected/session.json",
+   "status": "valid",
+   "measurement_class": "installed",
+   "installed_qualified": true,
+   "qualification_valid": true,
+   "session_identity": {
+    "identity_kind": "installed_wheel",
+    "identity_sha256": "ed4938d68629799465d38178a1ca4887d7dbe14362f56437fc47a314c0e33f0c",
+    "package_tree_sha256": "64471ec98511aaed5cf8814aea0556907b18e74737e2ec4da6022207cfb153f0",
+    "notes": "W00 installed identity for the selected arm; wheel_sha256=323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4"
+   }
+  }
+ },
+ "tamper_probe": {
+  "expected": "refusal (rc != 0) sourced from the worker startup whole-tree hash comparison",
+  "observed_rc": 1,
+  "tampered_file": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_tamper_venv/lib/python3.11/site-packages/urban_network_analysis/Settings.py",
+  "verdict": "ok \u2014 installed mode refused the tampered wheel at the designed tree-hash comparison",
+  "session": {
+   "schema_version": 1,
+   "run_id": "una-e2e-20260928-173036-26f91f5f",
+   "arm": "w00_tamper",
+   "measurement_class": "installed",
+   "qualification_valid": false,
+   "installed_qualified": false,
+   "recorded_utc": "2026-09-28T21:30:36Z",
+   "harness_sha256": "e2d0243ea0c0639c95ffca06e451a8cd8589df02b72d07415e41c85e549d0867",
+   "workload": {
+    "workload_id": "w00_O2_installed_smoke",
+    "analysis": "accessibility",
+    "manifest_path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/installed/w00_O2_smoke.manifest.json",
+    "manifest_sha256": "84350bee33d414826371f38b13a37331d971502b79bbe463c0c7f98d828990c0",
+    "settings": {
+     "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "origins_file": "h05_origins_fixture_O2_warm_16.geojson",
+     "destinations_file": "MA_bus_stops.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "destination_weight_column": "weekly_departures",
+     "search_radius": 500,
+     "turns": false,
+     "elevation": false,
+     "calculate_reach": true,
+     "calculate_exponential_gravity": true,
+     "calculate_logistic_gravity": true,
+     "calculate_knn_access": true,
+     "output_csv": true,
+     "output_geojson": true,
+     "output_feather": true
+    },
+    "required_output_patterns": [
+     "*.feather",
+     "*.geojson",
+     "*.csv"
+    ],
+    "odm_options": {},
+    "input_files": [
+     {
+      "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson",
+      "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+      "bytes": 71290787
+     },
+     {
+      "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/h05_origins_fixture_O2_warm_16.geojson",
+      "sha256": "4e8b73b3149d767c92e32efa0b2a71c95feddbdd468aabb406ddbe2c0257b14e",
+      "bytes": 6676
+     },
+     {
+      "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson",
+      "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+      "bytes": 2641054
+     }
+    ],
+    "total_input_bytes": 73938517,
+    "notes": "W00 installed-mode smoke workload. Derived from the frozen H01 acquisition manifest tests/large_e2e/inputs/O2.manifest.json (workload O2, observed_tutorial_proxy, EPSG:6491): same network and destinations bytes as the acquisition pins, same settings_overrides lifted verbatim into settings, and the O2 16-origin deterministic selection (seed 20260925) consumed via the H05-era selection fixture h05_origins_fixture_O2_warm_16.geojson (arm-neutral original; the composed_/b0_-suffixed siblings are per-arm I00 copies of the same 16-row selection, byte-different container, same features). Origins fixture bytes were never pinned by the acquisition manifest; its sha256 above is a fresh in-session hash at W00 authoring time. Purpose: run.py installed-mode qualification smoke on observed data (H04-N2 closure) for both W00 arms; NOT a performance record and never qualification evidence beyond installed-execution proof. Input files are read-only; all outputs land in per-job roots assigned by the harness outside the inputs tree and outside both source trees."
+   },
+   "input_rehash": {
+    "all_match": true
+   },
+   "identity": {
+    "arm": "w00_tamper",
+    "created_utc": "2026-09-28T21:30:36+00:00",
+    "identity_kind": "installed_wheel",
+    "identity_sha256": "dd5d5c9ff5d1cff8dd5b55e956f12f658cb05996ba711c0e9b015785de99de34",
+    "interpreter": "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/bin/python3.11",
+    "interpreter_version": "3.11.16",
+    "notes": "tamper probe: identity over the copied venv, pre-tamper; wheel_sha256=323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4",
+    "package_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_tamper_venv/lib/python3.11/site-packages/urban_network_analysis",
+    "package_tree_sha256": "64471ec98511aaed5cf8814aea0556907b18e74737e2ec4da6022207cfb153f0",
+    "package_version": "2.6.0",
+    "schema_version": 1,
+    "settings_fields": [
+     "_version",
+     "name",
+     "data_folder",
+     "network_file",
+     "origins_file",
+     "destinations_file",
+     "network_weight_column",
+     "network_weight_default",
+     "network_precision",
+     "network_saved_nodes",
+     "network_load_nodes",
+     "calculate_reach",
+     "calculate_exponential_gravity",
+     "calculate_logistic_gravity",
+     "calculate_knn_access",
+     "origin_weight_column",
+     "destination_weight_column",
+     "origin_uid_column",
+     "origin_destination_id_column",
+     "destination_id_column",
+     "default_cost",
+     "use_nearest_destination",
+     "search_radius",
+     "clasters",
+     "cluster_parallel",
+     "cluster_workers",
+     "gravity_beta",
+     "gravity_logistic_midpoint",
+     "gravity_plateau",
+     "gravity_decay_constant",
+     "knn_weights",
+     "knn_decay",
+     "elevation",
+     "elevation_penalty",
+     "turns",
+     "turn_threshold",
+     "turn_penalty",
+     "output_folder",
+     "output_wStamp",
+     "output_copy_source_data",
+     "output_geojson",
+     "output_feather",
+     "output_csv",
+     "output_shp",
+     "csv_delimiter",
+     "result_prefix",
+     "output_file_name",
+     "flow_engine",
+     "flow_detour_ratio",
+     "flow_detour_buffer",
+     "flow_detour_mode",
+     "flow_decay",
+     "flow_decay_curve",
+     "flow_decay_method",
+     "flow_gravity_cap",
+     "flow_path_detour_penalty",
+     "flow_route_enumeration_beta",
+     "flow_route_enumeration_logistic_midpoint",
+     "flow_origin_weights",
+     "flow_destination_weights",
+     "flow_return_directional",
+     "observer_points_file",
+     "observer_points_uid_column",
+     "observer_points_snap_to",
+     "obstacle_points_file",
+     "obstacle_points_uid_column",
+     "obstacle_points_penalty_column",
+     "obstacle_points_direction_column",
+     "obstacle_points_snap_to",
+     "flow_track_obstacle_points_usage",
+     "flow_k_nearest_destinations",
+     "flow_max_destinations_per_origin",
+     "flow_n_alternatives",
+     "flow_alternative_penalty_factor",
+     "flow_route_id_column",
+     "flow_output_routes",
+     "flow_debug_print_paths",
+     "flow_track_origins_per_destination",
+     "flow_compute_node_flow",
+     "batch_composite_output",
+     "batch_composite_result_column",
+     "batch_composite_column_prefix",
+     "batch_composite_sum_column_name",
+     "progressbar",
+     "logger_verbosity"
+    ],
+    "site_packages": [
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_tamper_venv/lib/python3.11/site-packages"
+    ],
+    "module_hash_count": 17,
+    "identity_file_sha256": "80545f59b6e6d37a915b3bee17553f4b88c1a0f98610e930ff8271a76e4d53f6"
+   },
+   "requested_config": {
+    "arm": "w00_tamper",
+    "mode": "single",
+    "jobs": 1,
+    "workers": 1,
+    "numba_threads": 2,
+    "flow_stripes": "default",
+    "queue_depth": 1,
+    "writer_limit": 1,
+    "cpu_budget": 4,
+    "memory_budget_mib": 2048,
+    "timeout_s": 3600.0,
+    "manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/installed/w00_O2_smoke.manifest.json",
+    "identity": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/tamper.json",
+    "cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_w00_tamper_run",
+    "out": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_run/tamper_smoke",
+    "diagnostic_source_root": null,
+    "test_fault": null,
+    "measurement_class": "installed",
+    "declared_sampler_interval_s": 0.25,
+    "declared_poll_timeout_s": 0.25,
+    "declared_put_timeout_s": 0.5,
+    "declared_ready_timeout_s": 120.0,
+    "declared_shutdown_join_s": 30.0,
+    "result_queue_maxsize": 11,
+    "writer_limit_policy": "explicit CLI value; final no-instrumentation timing policy expects L=W unless a reviewed pipeline preserves writer semantics"
+   },
+   "env_policy": {
+    "mode_policy": "installed",
+    "pythonpath_present": false,
+    "worker_env": {
+     "PATH": "/opt/homebrew/sbin:/opt/homebrew/bin:/Users/alansynn/.bun/bin:/Users/alansynn/.local/bin:/Users/alansynn/.local/share/mamba/condabin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/opt/homebrew/bin:/usr/local/munki:/Applications/Orca.app/Contents/Resources/bin:/Users/alansynn/.deno/bin:/opt/homebrew/sbin:/Users/alansynn/.bun/bin:/Users/alansynn/.local/bin:/Users/alansynn/.local/share/mamba/condabin:/Users/alansynn/.cargo/bin:/Users/alansynn/.docker/bin:/Users/alansynn/.volta/bin:/Users/alansynn/.asdf/shims:/Users/alansynn/.fnm/aliases/default/bin:/Users/alansynn/.local/share/mise/shims:/Users/alansynn/Library/pnpm:/Users/alansynn/.yarn/bin:/usr/local/sbin:/nix/var/nix/profiles/default/bin:/Users/alansynn/bin:/Users/alansynn/.nix-profile/bin:/Users/alansynn/.opencode/bin:/Users/alansynn/.vite-plus/bin:/Users/alansynn/.docker/bin",
+     "HOME": "/Users/alansynn",
+     "TMPDIR": "/var/folders/3d/cclyxf1x3bjf_y3pf071s1r00000gr/T/",
+     "LANG": "en_US.UTF-8",
+     "NUMBA_NUM_THREADS": "2",
+     "OMP_NUM_THREADS": "1",
+     "OPENBLAS_NUM_THREADS": "1",
+     "MKL_NUM_THREADS": "1",
+     "VECLIB_MAXIMUM": "1",
+     "NUMEXPR_NUM_THREADS": "1",
+     "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_w00_tamper_run"
+    }
+   },
+   "limitations": [
+    "run invalid: worker_startup_failed"
+   ],
+   "time_definitions": {
+    "application_ns": "immediately before UNA construction through return from the requested public method (synchronous required exports included)",
+    "cold_process_ns": "before spawning the interpreter through child exit (single mode; import/JIT/outputs included; fresh cache when --cache-root is new)",
+    "warm_batch_application_wall_ns": "timed dispatch through the final application-completion event received",
+    "validated_batch_wall_ns": "timed dispatch through receipt and successful verification of all job results",
+    "whole_session_ns": "process/pool setup, warm-up, work, validation and shutdown"
+   },
+   "hashing_note": "input rehash precedes the session inside whole-session accounting; output hashing by workers blocks worker reuse, so it is reported separately and NOT subtracted from any window",
+   "whole_session_start_monotonic": 1541302.239224333,
+   "times_ns": {
+    "mode": "single",
+    "whole_session_ns": 4267862791,
+    "note": "per-job cold_process_ns values are in dispatch.per_job_cold; each job runs in a fresh spawned process and includes its own import/JIT/output/exit window (fresh cache whenever a new --cache-root is designated for the compile-cold test)"
+   },
+   "counts": {
+    "submitted": 1,
+    "validated": 0,
+    "succeeded_before_validation": 0,
+    "failed": 0,
+    "canceled": 1,
+    "note": "failed jobs never enter successful throughput; validated count is 0 unless the WHOLE run validates end-to-end",
+    "successful": 0
+   },
+   "verification": null,
+   "process_tree_memory": {
+    "label": "run_una-e2e-20260928-173036-26f91f5f",
+    "root_pid": 14493,
+    "interval_s": 0.25,
+    "metric_semantics": "conservative summed resident set of coordinator + all descendants at one instant; shared pages can double-count",
+    "samples_recorded": 17,
+    "samples_total": 17,
+    "decimated": false,
+    "sampler_overhead_seconds": 0.163834,
+    "avg_walk_seconds": 0.009637,
+    "peak": {
+     "tree_rss_bytes_sum": 276627456,
+     "tree_uss_bytes_sum": 21348352,
+     "tree_pss_bytes_sum": null,
+     "n_processes": 3,
+     "peak_rss_at_utc": 1790631040.375381
+    },
+    "trip": null,
+    "guarantee": "sampled peaks only; sampling is not a hard cap"
+   },
+   "shutdown": {
+    "cancelled_outstanding_jobs": 0,
+    "forced_terminations": [
+     0
+    ],
+    "surviving_owned_processes": [],
+    "retained_result_count": 0
+   },
+   "dispatch": null,
+   "failure": {
+    "reason": "worker_startup_failed",
+    "detail": {
+     "worker_id": 0,
+     "error": {
+      "type": "ValidationError",
+      "message": "package tree does not match identity module hashes (changed=['Settings.py'], missing=[], extra=[])"
+     }
+    }
+   },
+   "throughput": {
+    "primary_jobs_per_s": null,
+    "definition": "validated_jobs / validated_batch_wall_seconds",
+    "descriptive_total_jobs_over_application_window_per_s": null,
+    "note": "the descriptive value uses the application-only window and is NOT the primary metric; hashing delays worker reuse and is never subtracted"
+   },
+   "status": "invalid",
+   "whole_session_ns": 4267862791,
+   "return_status": {
+    "session_status": "invalid",
+    "validated_jobs": 0,
+    "failed_jobs": 0,
+    "canceled_jobs": 1
+   }
+  },
+  "designed_signature": {
+   "rc_nonzero": true,
+   "failure_reason": "worker_startup_failed",
+   "tree_hash_message": true
+  }
+ },
+ "session_record_identity_binding": {
+  "b0": {
+   "wheel_sha256": "71fd5615b5683f3c798938a2762824da9ba3fada801aaa840343e7378d4fc979",
+   "source_commit": "361928e4ba38f34622cafe065b0025244db61368",
+   "src_tree_sha256": "a5883dddcef3afb8debdb4438a6338da886add6f",
+   "identity_sha256": "67f6b89a43c3a24c696363fc214f09cb505bce8669af3ac736c43ee0ca01cd9c",
+   "session_identity_sha256": "67f6b89a43c3a24c696363fc214f09cb505bce8669af3ac736c43ee0ca01cd9c",
+   "session_package_tree_sha256": "d1e34ba92e7b5f33a6a9e4651a6e106ec1b78251ea2adc63c1a380e87b6cbb89",
+   "identity_sha256_match": true,
+   "package_tree_sha256_match": true,
+   "session_notes_carries_wheel_sha": true
+  },
+  "selected": {
+   "wheel_sha256": "323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4",
+   "source_commit": "6b53a274e8a8d3e7360ab5e1b38f741107ce3358",
+   "src_tree_sha256": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+   "identity_sha256": "ed4938d68629799465d38178a1ca4887d7dbe14362f56437fc47a314c0e33f0c",
+   "session_identity_sha256": "ed4938d68629799465d38178a1ca4887d7dbe14362f56437fc47a314c0e33f0c",
+   "session_package_tree_sha256": "64471ec98511aaed5cf8814aea0556907b18e74737e2ec4da6022207cfb153f0",
+   "identity_sha256_match": true,
+   "package_tree_sha256_match": true,
+   "session_notes_carries_wheel_sha": true
+  }
+ }
+}

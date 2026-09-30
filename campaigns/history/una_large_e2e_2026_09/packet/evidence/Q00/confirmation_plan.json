@@ -1,0 +1,105 @@
+{
+ "task": "Q00->Q10 confirmation plan",
+ "author": "h05-profiler",
+ "frame": {
+  "machine_bound": "observed-L2 laptop only",
+  "heavy_execution": "exclusive (Q10 lease)",
+  "unavailable_platforms": [
+   "cluster frame not qualified \u2014 DUAL GROUND: (1) machine-bound comparability (equal-policy B0, same libraries, frame-derived C=9/macOS topology); (2) node atl1-1-02-003-4-2 ALLOCATED 24/24 CPUs (20 third-party, 6d+; scots holds 4 CPU/64G) \u2014 exclusive lease uncertifiable independent of comparability"
+  ],
+  "charge": {
+   "s01_arc_total_s": 3846.8,
+   "s01_arc_pct_of_14400": 26.7139,
+   "components": "ledgered 3709.7 + attached 137.1 at key retirement (h04 intake verdict)",
+   "remaining_at_intake_s": 10690.3,
+   "q10_projection_s": {
+    "primary_pairs": 1597.4037345628808,
+    "holdout_pair": 183.82681254497834,
+    "small_input_cell": 422.9431760008447,
+    "small_input_cell_decomposition": {
+     "access_paired_windows": 71.56274462677538,
+     "flow_paired_windows": 351.3804313740693,
+     "b0_component": 215.15459987707436,
+     "selected_component": 207.78857612377033,
+     "basis": "3 PAIRED (b0+selected) windows per family, BOTH arms counted \u2014 h04 freeze-review correction 1; the selected-only x1 figure 207.78857612377033 is superseded"
+    },
+    "grand": 2204.1737231087036
+   },
+   "checkpoint": "BEFORE block 3: if measured walls project past the remaining lease, route to team-lead for time-based extension BEFORE the overrun"
+  }
+ },
+ "blocks": {
+  "count": 5,
+  "order": [
+   "AB",
+   "BA",
+   "AB",
+   "BA",
+   "AB"
+  ],
+  "structure": "each block = access pair + flow pair in arm order; block 1 additionally: holdout pair + small-input cell (>=3 paired windows per family on the sel1024 fixtures, confirm config k=36/12, median gate) + cold profiles (compile-cold per arm, fresh per-arm NUMBA_CACHE_DIR; cold gate = C2 warm-only clause, regression >5% requires explicitly bounded warm-only qualification)",
+  "records": "per-job AND parent-session records; RAW output roots campaign_data/q10_run/blocks/<n>/<arm>/ (campaign_data-resident, s01_run/ naming mirror \u2014 NEVER the repo tree; curated artifacts mirrored into evidence/Q10/ at commit per the S01 model)",
+  "job_ids": "enumerated per block from the freeze k record before Q10"
+ },
+ "admission_gate": {
+  "primary_per_family": ">=1.10x successful-job throughput AND paired 95% CI lower bound > 1.00 (DECISION.md:15)",
+  "form_rule": "throughput form k>1; reciprocal complete-job latency form when k=1 (flow derived k=1)",
+  "bootstrap_seed_PINNED": 20260929,
+  "sampling_unit": "the pair",
+  "outliers": "BENCHMARKS.md:28: cancellation predeclared external-only with retained evidence; job failure invalidates the BLOCK; one bounded diagnostic repeat, initial preserved; no slow-valid-sample removal after seeing its arm"
+ },
+ "warm_window_projection": {
+  "guarantee_form": "under the v3 k rule, window_s = k x job_wall / W >= 60 by ceil construction (unconditional, incl. W-downsize paths)",
+  "carried_k_form": "under the alternative screen-fixture-carried k (36/12): access 36/9 x 45.956703136244585 = 183.82681254497834 s; flow 12 x 67.8269671837989 = 813.9236062055868 s \u2014 both >= 60 by the SCALED job wall, NOT by inheritance from the screen window (false 'window >= screen window >= 60 s' premise withdrawn per h04; measured windows 11.09317058394663/12.761077624978498/56.501781082944945/60.62502937507816)",
+  "projected_window_s": {
+   "accessibility": 91.91340627248917,
+   "flow": 67.8269671837989
+  },
+  "timeout_s": 3600
+ },
+ "statistics": {
+  "ratio_direction": "selected/b0",
+  "median_ratio": true,
+  "raw_distribution": true,
+  "bootstrap": "paired fixed-seed (20260929) bootstrap CI over log ratios",
+  "caveats": "small-sample limitations stated; jobs from one pool window are NOT independent",
+  "per_cell_reporting": "same-configuration and strongest equal-policy arm-specific configurations (BENCHMARKS.md:26)"
+ },
+ "protected_cells": {
+  "a_exact_correctness": "verification receipts vs H03 oracle identities",
+  "b_no_capacity_violation": "memory receipts",
+  "c_small_input_ratio_le_105": {
+   "fixtures": {
+    "access": {
+     "sha256": "70a1083f937a01bb6694606d5bd804a53bbfec24daf6a35298936cd71ee5bafa",
+     "bytes": 415307
+    },
+    "flow": {
+     "sha256": "75fc10b37fbf0cfd09490979a8619d30f3b270cef6048cfb36de0dbd86cdaa80",
+     "bytes": 415162
+    }
+   },
+   "manifests": "admitted S01 run manifests 2014118f.../484ff2c1... reused installed-mode",
+   "configuration": "S01 confirm config pinned for poolability: k=36/12, W9H1/W1H5, flow-stripes 4 (section 1.5 derivation applies to sel_all workloads, NOT this cell)",
+   "windows": ">=3 paired windows per family in block 1; MEDIAN <= 1.05 is the gate (DECISION.md:17(c))",
+   "s01_disclosed_evidence": {
+    "access_warm_ratio": 1.1503544030455606,
+    "flow_warm_ratio": 0.9319876899914838,
+    "note": "single-window figures; access EXCEEDS 1.05 \u2014 disclosed breach, adjudicated by this cell's median"
+   },
+   "adjudication": "median > 1.05 => cell FAILS => recorded + routed; never hidden",
+   "risk_observation": "candidate ~15% slower on small input is a primary-gate risk signal"
+  },
+  "d_cold_gate_c2": "cold median regression >5% requires explicitly bounded warm-only qualification",
+  "e_holdout": "RUN (block_structure)",
+  "f_turns_odm_untouched": "none composed in Q10; recorded not-run with reason"
+ },
+ "retention": "all raw successes/failures/pressure retained incl. slow valid samples; no filename-only reuse",
+ "q10_staging_carry": "Q10 staging proposal MUST publish the fresh-path guard derivation explicitly (invert the consumer's guard): q10_* roots born fresh vs EXPECTED-EXISTING r9 residue; r9 disposal only via ruled contract else documented-and-retained. OUT-ROOT CLASS (h04 freeze-review correction 2): ALL raw Q10 outputs write under campaign_data/q10_run/blocks/<n>/<arm>/ \u2014 campaign_data-resident, never the repo working tree; the repo tree receives ONLY curated mirrors under evidence/Q10/ at commit time, so repo porcelain stays clean during fires and the q10_* guard derivation covers the single write-surface class.",
+ "d11": {
+  "rule": "no qualification instrument may compose --diagnostic, --diagnostic-source-root, or NUMBA_DISABLE_JIT into child argv or env",
+  "argv_plane": "gate (c): tokens confined to d11/prohibition keys of the composed artifacts",
+  "env_plane": "child env filtered dict validated; strip list s01_run.py:183-186 (filter :186)"
+ },
+ "verification": "successful validated completions define throughput; no source/wheel/workload/resource drift; no hidden scientific reduction"
+}

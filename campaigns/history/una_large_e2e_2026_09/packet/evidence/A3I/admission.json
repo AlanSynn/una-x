@@ -1,0 +1,265 @@
+{
+ "schema_version": 1,
+ "task": "A3I",
+ "record": "admission",
+ "role": "implementation-owner (h05)",
+ "generated_utc": "2026-09-28T01:18:51Z",
+ "phase": "phase 1 admission (measurement only; T/E design selection deferred to proof.md prereg per T5)",
+ "head_commit": "9b1340eb008accdff45fbdf57c6009dd5a6b5146",
+ "head_commit_note": "worktree wt-large-e2e branch perf/una-large-e2e; porcelain at authoring = exactly one entry: '?? campaigns/una_large_e2e/evidence/A3I/' (untracked A3I evidence); accessibility bytes byte-identical to the selected base (F2 touched only AggregateFlow)",
+ "resolved_selected_source": {
+  "citation": "unchanged parent: a1-screened HEAD at commit b075f2432d724772717a253f7fbe95c9ef7846ef (engine files byte-identical to baseline 361928e4ba38f34622cafe065b0025244db61368 plus A1/F1/F3 screened changes already integrated)",
+  "source_record": "evidence/A2R/selection.json",
+  "source_record_sha256": "ca947ecb62203a15db9ad0bbe02d0f8b99c35ae218743e62b1cc81b99bdf9787",
+  "selected_commit": "b075f2432d724772717a253f7fbe95c9ef7846ef",
+  "selector_gap_note": "A2R closed NOT_ADMITTED with no candidate, so last_reviewed_selected_source = unchanged parent (a1-screened HEAD b075f243); no F2R selection.json exists (F2 advance pending I00). Selector gap is declared, not silently assumed: h04 phase-1 authorization verified the A2R citation real and the accessibility triple byte-identical from selected base through worktree and wheel, with AggregateFlow the sole Engines delta (F2-screened pin 1f3cf4d2).",
+  "admission_basis": "the measured window and the probe run on the unchanged-parent accessibility code path; the F2R F2-modified AggregateFlow is outside the A3 target (scope search + private init in _large_access_scratch / AccessibilityWElevation)"
+ },
+ "source_pins": {
+  "worktree": {
+   "Accessibility.py": "5fec7ad5bf00b6b033747ae41ae2a7eec57f53748395ee7b5c0836536b805f75",
+   "AccessibilityWElevation.py": "83ed0bfdd0e2b0b7d413dc39a2e84899a1b145f6980ddd9a30243f6e76944a9c",
+   "_large_access_scratch.py": "2d3b77363a5d42050024e335b5e2bedf8c8088a312d6e163666596ce42894e23"
+  },
+  "wheel": {
+   "venv": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel",
+   "Accessibility.py": "5fec7ad5bf00b6b033747ae41ae2a7eec57f53748395ee7b5c0836536b805f75",
+   "AccessibilityWElevation.py": "83ed0bfdd0e2b0b7d413dc39a2e84899a1b145f6980ddd9a30243f6e76944a9c",
+   "_large_access_scratch.py": "2d3b77363a5d42050024e335b5e2bedf8c8088a312d6e163666596ce42894e23",
+   "identity": "wheel == worktree on all three files (fresh shas above, recomputed in the same block that wrote this record)"
+  },
+  "vehicle": "CPython 3.11.16 in venv a1r_cand_wheel; numba 0.67.0; every charged command under NUMBA_CACHE_DIR (fresh roots nbc_a3i_a / nbc_a3i_probe / nbc_a3i_probe_t2)"
+ },
+ "instrument": {
+  "probe": "campaigns/una_large_e2e/evidence/A3I/a3i_probe_scope.py",
+  "probe_sha256": "12aaf91f89b020c119e57c8aa6898549dbde7ac09acfdcd59e01f573b6e8ffc3",
+  "probe_note": "amended instrument (attempt a3i_t2); superseded t1 bytes f964e38c3d044791b16b73c2c65e2ca6233dbf9248df7508b9061f25f4ce81fe in custody at campaign_data/a3i_census/interim_f964e38c_a3i_probe_scope.py; probe source sha also self-declared in-record",
+  "h05_driver": "benchmarks/large_e2e/h05_profile.py",
+  "h05_driver_sha256": "81441587e4b6ac85dc98784815be9dd4c85fbcd983edcbdcf444796c8fa1f55f",
+  "h05_driver_commit": "6205086ef64773440c4f705bee2139a4c40b49a5",
+  "workload_manifest": "tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+  "workload_manifest_sha256": "767de66838a3f968852f235ee83de611294b181d35a088d6bf7f68f8cd928f0c"
+ },
+ "inputs": {
+  "capture_npz": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a3i_captures/O3_ACCESS_t1/access_arrays.npz",
+  "capture_npz_sha256": "f02af3c831fa0d42e69e5e2c1c0f2482265664293cb2e7c6eb927ab312f0873d",
+  "capture_engine_metrics": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a3i_captures/O3_ACCESS_t1/access_engine_metrics.json",
+  "capture_engine_metrics_sha256": "a55ea4dd7f6a78d0cdd2bf04789a9b0abef3b2253048219b834f6df81a94bce7",
+  "note": "frozen at a3i_t1 leg 2 (rng 20260925, 32 sorted origin rows); consumed by both probe attempts; in-record input binding matches (t2 inputs block)"
+ },
+ "runs": [
+  {
+   "attempt": "a3i_t1",
+   "leg": 1,
+   "record": "evidence/A3I/raw/a3i_admit_ctl_cold_t1.json",
+   "record_sha256": "3d653b5807d2ca45ea662ce5a555731cfa1b847bd3ac3ddbce1e348bc5ec45c4",
+   "console_rc": 0,
+   "application_window_ns": 8578748541,
+   "status": "standing"
+  },
+  {
+   "attempt": "a3i_t1",
+   "leg": 2,
+   "record": "evidence/A3I/raw/a3i_admit_ctl_w1_t1.json",
+   "record_sha256": "9b09c55ccb1613853cd706be7cc2dcec6259730a6088a4e1e52b104e67d1aa54",
+   "console_rc": 0,
+   "application_window_ns": 2474174042,
+   "status": "standing (DENOMINATOR leg; partition_ok true)"
+  },
+  {
+   "attempt": "a3i_t1",
+   "leg": 3,
+   "record": "evidence/A3I/raw/a3i_probe_scope_t1.json",
+   "record_sha256": "3d4e6e64877d1e3784aa41a173fce7f52849916cfdce3f2325df1e8d0eabeb1b",
+   "console_rc": 1,
+   "status": "ATTEMPT_FAILED_INSTRUMENT_DEFECT (overload guard called from pure python -> stub None; + window-key null); retained as evidence; superseded by a3i_t2 leg-3-only re-run under h04 amendment (6 terms)"
+  },
+  {
+   "attempt": "a3i_t2",
+   "leg": 3,
+   "record": "evidence/A3I/raw/a3i_probe_scope_t2.json",
+   "record_sha256": "730af07a533ad44ebd792904cfee1c7018a8a438586459a6356d909c937ecd59",
+   "console_rc": 0,
+   "status": "ok (h04 intake verified bit-exact)"
+  }
+ ],
+ "warm_window_s": 2.474174042,
+ "warm_window_provenance": {
+  "record": "evidence/A3I/raw/a3i_admit_ctl_w1_t1.json",
+  "key_path": "window.application_window_ns",
+  "application_window_ns": 2474174042,
+  "boundary": "perf_counter_ns immediately before the public call through return (incl. synchronous exports); exactly ONE real public call; constructor outside; gravity cap never pre-resolved outside RunFlow",
+  "partition_ok": true,
+  "cold_window_ns_for_context": 8578748541
+ },
+ "t_init": {
+  "expression": "np.ones(nd_node_count, dtype=o_terminal_weights.dtype) + cutoff",
+  "init_site": "_large_access_scratch.py:204 (identical init in original kernel AccessibilityWElevation.py:124)",
+  "replica": "_a3i_init_replica = np.ones(nd_node_count, dtype=float64) + cutoff, timed via time.perf_counter_ns, 2000 reps",
+  "stats": {
+   "n": 2000,
+   "mean_s": 1.495376182720065e-05,
+   "median_s": 1.4625024050474167e-05,
+   "p10_s": 1.4541903510689735e-05,
+   "p90_s": 1.600012183189392e-05,
+   "min_s": 1.4457851648330688e-05,
+   "max_s": 2.266606315970421e-05
+  },
+  "reps_requested": 2000,
+  "truncated_by_budget": false,
+  "dtype_observed": "float64",
+  "dtype_match": true
+ },
+ "admitted_domain_observed": {
+  "nd_observed": 55820,
+  "nd_decomposition": "6661 destinations + 49159 network nodes = 55820 (adjacency indptr length 49160 = nodes + 1; dossier form d_count + indptr_len - 1)",
+  "node_count": 49159,
+  "d_count": 6661,
+  "O": 14751,
+  "O_grounding": "triple-grounded: probe shape.o_count == w1 counts.O_rows == w1 origin_selection.selected_count",
+  "cutoff": 500.0,
+  "sample_size": 32,
+  "sample_rows": [
+   152,
+   710,
+   974,
+   1182,
+   1333,
+   2344,
+   2492,
+   2561,
+   2662,
+   2815,
+   2820,
+   2876,
+   3076,
+   3823,
+   4150,
+   4239,
+   4812,
+   5398,
+   6237,
+   6686,
+   6715,
+   6962,
+   7070,
+   7517,
+   9075,
+   9380,
+   11144,
+   11225,
+   13603,
+   13684,
+   14418,
+   14747
+  ],
+  "o_terminal_weights_dtype": "float64",
+  "guard_on_capture": {
+   "admitted": true,
+   "max_degree": 10,
+   "wall_s": 0.19111758400686085
+  }
+ },
+ "pool": {
+  "numba_num_threads": 10,
+  "threading_layer": "workqueue",
+  "numba_version": "0.67.0",
+  "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "provenance_in_record": {
+   "pool_inventory_post_window.numba.get_num_threads": 10,
+   "process.numba_num_threads": 10
+  }
+ },
+ "share_readings": {
+  "decisive_reading": "serial-equivalent (T3, pinned PRE-RUN): t_init_mean x O / warm application window",
+  "share_serial_equiv": 0.08915417305677027,
+  "serial_equivalent_total_s": 0.2205829407130368,
+  "share_serial_equiv_recomputed_from_bytes": 0.08915417305677027,
+  "threshold": 0.05,
+  "margin_x_threshold": 1.7830834611354054,
+  "share_concurrency_honest": 0.008915417305677027,
+  "share_concurrency_honest_note": "wall-spread over recorded threads (O x t_init / (threads x window)); delivered raw, non-governing",
+  "per_origin_marginal_share": 0.0011355824133987941,
+  "per_origin_marginal_note": "t_init_mean / mean per-origin real search wall; outlier-skewed (max_s 0.42045195819810033 vs median 2.8353999368846416e-05); non-governing",
+  "median_vs_median_ratio_context": 0.5158010995282457,
+  "median_ratio_note": "t_init median / per-origin search median; mechanism context only"
+ },
+ "capacity_pressure": {
+  "clause": "OR-clause of the admission rule; preregistered instrument = h05 sampler",
+  "peak_rss_tree_sampled_mib": 502.796875,
+  "pressure_breach": null,
+  "pressure_stop_bytes": 1717986918,
+  "status": "unreached; admission does not rest on this clause"
+ },
+ "decision_inputs": {
+  "threshold": 0.05,
+  "decisive_reading": "serial_equiv",
+  "admission_rule": "admit iff private alloc/init >= 5% of complete-job service (serial-equivalent reading, pinned pre-run per T3) OR measured capacity pressure; not_admitted + measured upper bound is a valid terminal",
+  "ruling": "ADMITTED by h04-reviewer, 2026-09-28, on share_serial_equiv >= threshold (margin_x_threshold as computed above); _t1 leg-C corroboration below; capacity clause unreached; N2 dtype_match gate met; 32/32 origins validated"
+ },
+ "cross_attempt_corroboration": {
+  "t1_leg_c_mean_s": 1.5298465965315698e-05,
+  "t1_serial_equivalent_total_s": 0.22566767145437186,
+  "t1_share_serial_equiv": 0.09120929555624684,
+  "attempt_spread_fraction": 0.022531941365660623,
+  "note": "t1 leg C ran before the guard-call defect ended that attempt; its init measurement is valid standing data; t1 share computed here from its record bytes over the same warm window (t1 in-record window field was null - the amended (b) term fixed that reading for t2)"
+ },
+ "counter_sums_t2": {
+  "heap_pops_total": 2683,
+  "heap_pushes_total": 2651,
+  "neighbor_incidences_total": 8848,
+  "eligible_pairs_total": 2818,
+  "labels_written_total": 2818,
+  "touched_unique_nodes_max": 267,
+  "touched_in_destination_segment_max": 0
+ },
+ "validation": {
+  "origins_probed": 32,
+  "all_array_equal_real_vs_instrumented": true,
+  "all_written_labels_le_cutoff": true,
+  "policy": "instrumented copy vs REAL wheel kernel array-equality per origin; untouched entries == 1 + cutoff exactly; no metric recomputation (engine metric values for the sample are carried from the h05 record)"
+ },
+ "design_relevant_findings_routed_to_T5_prereg": {
+  "destination_segment_never_written": {
+   "touched_in_destination_segment_max": 0,
+   "fraction_of_init_slots": 0.11932998925116446,
+   "status": "EMPIRICAL ONLY (this cell, this cutoff, this 32-origin sample) - h04 T5 routing: the network_node flag gates the push, not the label write; a narrowed-init design requires a STRUCTURAL proof over the admitted domain or keeps the full-vector init; this fraction is the upper bound of what narrowed init could save on this route"
+  },
+  "median_init_over_search": 0.5158010995282457
+ },
+ "disposition": "ADMITTED",
+ "disposition_note": "admission is not design proof; design selection (T preferred, E only if reset dominates, operationalized before measurement) happens in proof.md prereg under h04's hard-gate approval",
+ "lease": {
+  "lease_id": "A3I-lease-20260927",
+  "log": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a3i_lease_log.json",
+  "entries": [
+   {
+    "lease_id": "A3I-lease-20260927",
+    "task": "A3I-phase1",
+    "attempt": "a3i_t1",
+    "owner": "h05-profiler",
+    "budget_ceiling_s": 600,
+    "fire_order": "h04 R3 order, attempt a3i_t1, three commands",
+    "start_utc": "2026-09-28T00:38:23Z",
+    "end_utc": "2026-09-28T00:40:09Z",
+    "legs": [],
+    "outcome": "leg1 rc0 cold window 8.579s; leg2 rc0 warm window 2.474s; leg3 rc1 probe instrument defect (overload guard called from pure python -> None; also w1 window key null) \u2014 STOP-AND-ROUTE per fire order; no retry",
+    "charged_wall_s_note": "legs 1+2+3 wall approx 8.6 + 2.5 + ~1 (probe to failure) + startups"
+   },
+   {
+    "lease_id": "A3I-lease-20260927",
+    "task": "A3I-phase1",
+    "attempt": "a3i_t2",
+    "owner": "h05-profiler",
+    "budget_ceiling_s": 600,
+    "fire_order": "h04 R3 order, attempt a3i_t2, leg 3 ONLY",
+    "start_utc": "2026-09-28T00:57:02Z",
+    "end_utc": "2026-09-28T00:58:05Z",
+    "legs": [],
+    "outcome": "leg3 rc0 probe status=ok, 32 origins, all_array_equal, all_written_labels_le_cutoff, guard_on_capture admitted=True max_degree=10; wheel 0 diffs; intake routed for admission ruling"
+   }
+  ],
+  "charges_note": "both entries explicit-ended; ceilings 600 s each; no F2R transfer"
+ },
+ "authoring_note": "every hash and figure in this record was recomputed from file bytes in the single tool block that wrote this file (including the division-derived figures: share recomputation, margin, t1 share, spread, destination fraction, median ratio); nested asserts bind O-triple and nd decomposition before write"
+}

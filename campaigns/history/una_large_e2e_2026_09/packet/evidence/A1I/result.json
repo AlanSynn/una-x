@@ -1,0 +1,120 @@
+{
+ "schema_version": 1,
+ "task": "A1I",
+ "record": "implementation_result",
+ "role": "implementation-owner",
+ "generated_utc": "2026-09-26T00:00:00Z",
+ "status": "IMPLEMENTED — phase 2 complete per approved proof.md (verdict commit 5854588); ready for A1R",
+ "worktree": {
+  "path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e",
+  "branch": "perf/una-large-e2e",
+  "head_at_record": "5854588 (implementation is UNCOMMITTED working-tree state; coordinator commits)",
+  "pending_diff": "2 engine mirrors modified, 187 insertions 0 deletions (pure insertion); new helper module + tests/large_e2e/A1/ + evidence/A1I/ artifacts untracked"
+ },
+ "implemented": {
+  "summary": "per-origin reusable search scratch: guard (_a1_scope_admits) + private two-phase kernel (_a1_scope_search) in new helper module; both engine mirrors dispatch in integrated_scope_access and od_compact_vector_node_view_scope; original loops textually unchanged as the fallback (proof D1-D4, D6)",
+  "files": {
+   "src/urban_network_analysis/Engines/_large_access_scratch.py": "2d3b77363a5d42050024e335b5e2bedf8c8088a312d6e163666596ce42894e23",
+   "src/urban_network_analysis/Engines/Accessibility.py": "5fec7ad5bf00b6b033747ae41ae2a7eec57f53748395ee7b5c0836536b805f75",
+   "src/urban_network_analysis/Engines/AccessibilityWElevation.py": "83ed0bfdd0e2b0b7d413dc39a2e84899a1b145f6980ddd9a30243f6e76944a9c"
+  },
+  "diff_integrity": "git diff --stat on the mirrors: Accessibility.py +94/-0, AccessibilityWElevation.py +93/-0; no deletions, no modification of existing lines (verified line-by-line during edit)"
+ },
+ "design_revision": {
+  "id": "D5-R1",
+  "record": "evidence/A1I/design_revision_D5.json",
+  "note": "the dossier's ONE allowed design revision (thread-count source for guard condition 12: nb.config.NUMBA_NUM_THREADS via njit callee instead of nb.get_num_threads(), which poisons numba caching and would violate proof 7.4 + section 3); cap value, refusal rule, and over-refusal direction unchanged; no performance revision used"
+ },
+ "deviations_from_proof": [],
+ "test_pins_corrected_during_implementation": [
+  {
+   "pin": "T5 expected values",
+   "correction": "proof-era expectation 'staged keeps 5.0 / mutant keeps 3.0' was hand-derived before the kernel output layout was fully pinned; actual B0 semantics on the downstream_dup fixture: BOTH duplicates are judged against the pre-row snapshot (11.0), so the LAST eligible value 1+5=6.0 survives; the immediate-update mutant keeps 1+3=4.0 (second duplicate fails c<labels[2]); node 2 is degree-0 so no repair. The discriminator property (compiled keeps last-eligible, mutant keeps first) is unchanged and the negative still moves bytes"
+  },
+  {
+   "pin": "T10 expected labels",
+   "correction": "kernel output is d_count + V wide (trailing destination slots stay at the 1+cutoff sentinel), so the expected list is [0,1,3,3.5,2,2,11.0], not the 6 entries the pin assumed; snapshot overwrite semantics (node2=3.0 last-eligible, node3=3.5) as pinned"
+  },
+  {
+   "pin": "T16 observed OD driver records",
+   "correction": "the H04-N4 capture contains ZERO od_compact_vector_node_view_scope records (the observed O2 pass never called the OD driver; ledger key exists with 0 records), so 'replay captured OD driver records' is unsatisfiable as written. Implemented as: (a) both captured integrated_scope_access records replayed through BOTH arms, each output byte-equal to the stored npz (triangle candidate==B0==stored); (b) observed-scale OD driver run from the captured integrated inputs through BOTH arms with candidate==B0 byte equality and a nonzero check. Recorded per the phase-2 authority to correct test pins (not an implementation deviation)"
+  },
+  {
+   "pin": "UB-terminal execution scope",
+   "correction": "running the OOB-origin-terminal refusal input in-process is itself the UB (fallback kernel writes labels[10**9] with bounds checking off; first attempt raised a real SIGBUS in the pytest process). The input now runs ONLY in bounded subprocess children (test_z_ub_terminal.py): both arms die with SIGBUS (exit 138 = 128+10, darwin), never a Python exception — failure identity pinned. In-process T17 keeps value/typing refusal classes only"
+  },
+  {
+   "pin": "T13 int32_ptr driver case reclassified",
+   "correction": "int32 pointer/vector with int64 terminals cannot type the ORIGINAL driver on either arm (numba heappush: queue item (float64,int64) vs pushed (float64,int32) mismatch -> TypingError before any execution), so byte-routing is unsatisfiable for it; pinned instead as identical-exception-type (test_t13_int32_ptr_driver_typing_error_identity). The int32 byte-routing pin stays covered by T3 (fully int32 pointer/vector/terminals compiles and is byte-equal, both arms)"
+  }
+ ],
+ "infrastructure_finding": {
+  "fact": "numba on-disk cache entries pickle the LOADING module name: entries written by the suite's alias-loaded candidate ('una_a1_cand') cannot be read by a real-name import of the same source files (ModuleNotFoundError 'una_a1_cand'), and vice versa in principle",
+  "disposition": "test-infra collision, not an implementation defect: all bounded children (NRT routing, 4-thread, UB) now use fresh per-arm NUMBA_CACHE_DIR directories (compare_arms pattern); campaign qualification runs already pin per-run cache dirs",
+  "relevance_beyond_suite": "any future workflow that imports the candidate tree under two different module names must not share one numba cache dir across those names"
+ },
+ "routing_evidence": {
+  "method": "NUMBA_NRT_STATS=1 subprocess per arm (nrt_child.py), 8 repeated integrated_scope_access_elevation calls on one admitted input and one same-typing value-refusing input (negative cost), per-call NRT allocation deltas",
+  "admitted": {"candidate_allocs_per_call": 167, "b0_allocs_per_call": 16575, "constant_across_calls": true, "relation": "candidate < b0 // 2 (T14 bound met; measured ratio 0.0101)"},
+  "refused": {"candidate_allocs_per_call": 16735, "b0_allocs_per_call": 16735, "relation": "EXACTLY equal — identical fallback signature (T13)"},
+  "raw": "/tmp/a1_evidence_nrt/{cand,b0}.json (workspace session artifacts; numbers recorded here are the evidence)"
+ },
+ "first_divergence_record": {
+  "what": "T5 negative: candidate-shaped immediate-update mutant vs compiled B0 on the downstream duplicate fixture",
+  "comparator_message_verbatim": "t5/negative_mutant: bytes differ; first differing byte 22 (element 2, byte-offset 6, itemsize 8); actual element=np.float64(4.0) (0000000000001040) expected element=np.float64(6.0) (0000000000001840); 1 differing bytes total",
+  "meaning": "the battery's discriminator detects the snapshot-violating mutant at the first stale byte; every candidate-vs-B0 comparison in the suite uses this comparator with zero tolerance"
+ },
+ "test_suites": {
+  "a1_suite": {
+   "command": "pytest tests/large_e2e/A1/ (campaign venv, L1_REUSE_DIR unset; conftest pins NUMBA_CACHE_DIR=campaign_data/nbc_a1, NUMBA_NUM_THREADS=2)",
+   "raw_tail": "118 passed, 1 warning in 58.79s",
+   "warning_note": "the single warning is a numpy RuntimeWarning raised by test_t4's own assertion arithmetic (deliberate in-test overflow demonstration), not by engine code; T17 asserts no warnings from either engine route and passes",
+   "coverage": {
+    "T1_T4_T5_T6_T7_T8_T9_T10_kernel_guard": "test_a1_kernel.py (T1 all K cases; guard decision probe admits base + 19 parametrized refusal classes + cap refusal + PR-N2 int-cutoff admits + terminal-shape typing refusals)",
+    "T2_T3_T11_T15_T13_driver": "test_a1_drivers.py (both mirrors PR-N5, integrated+od byte-equal per engine case; immutability; freshly-owned repeatable outputs; int32 T3; repeats/origin permutation/per-origin rows; refusal routing byte-equal)",
+    "T16_observed": "test_a1_observed.py (2 integrated capture records, both arms vs stored npz; observed-scale OD both arms)",
+    "T17_silence": "test_a1_silence.py",
+    "T12_4thread": "test_z_multithread.py (NUMBA_NUM_THREADS=4 children, per-arm fresh caches, digest equality)",
+    "T13_T14_routing": "test_z_routing.py (NRT children)",
+    "UB_terminal_bounded": "test_z_ub_terminal.py"
+   }
+  },
+  "oracle_suite": {
+   "command": "pytest tests/large_e2e/oracle/ (its conftest pins its own env)",
+   "raw_tail": "64 passed in 36.87s"
+  }
+ },
+ "ir_evidence": {
+  "obligation": "proof section 7.3, blocking at A1R",
+  "files": {
+   "evidence/A1I/ir_b0_compact_vector_node_view_scope.ll": "84917ec46cba2d60b433f63974e233020d16c547683df5478ff11e6012fcbbf7",
+   "evidence/A1I/ir_cand_a1_scope_search.ll": "c630ca35e6b746d49ac0c678a741b4524d5e453e1b71e367ea49574e1cd76083",
+   "evidence/A1I/ir_fp_census.txt": "49c7b630594da8af962b5b36b15c2f42456f633917cdbff38ff84d9a86673917",
+   "evidence/A1I/ir_side_by_side.md": "aeea3c02594067de13f4762d7994757ded27b0744f96cd5c46231b0b5f92f9ba",
+   "evidence/A1I/capture_ir.py": "9f78ece3043e325cfe11a1e61e4fa629417b9b3b93c639b9ff9359acde064a7d"
+  },
+  "headline": "at the observed kernel signature (numba 0.67.0/llvmlite 0.49.0, arm64): 0 fmuladd/llvm.fma sites in EITHER kernel; all FP sites carry identical 'fast' flags; the per-incidence cost is a single fadd of two loaded operands in both (no reassociation site); phase two of the candidate contains no FP ops",
+  "framing": "corroborating only — per the proof review, equivalence rests on the byte-equality battery, NOT on the IR"
+ },
+ "test_file_hashes": {
+  "tests/large_e2e/A1/conftest.py": "de9d95cf4be682708a47c7441f965adc9815e8305ac70bd3361f26966ce0be28",
+  "tests/large_e2e/A1/cand_load.py": "9ae2572dd6b6e9bb16d70565dc2da172417da841923a07e5892cceacbd716d9e",
+  "tests/large_e2e/A1/fixtures_a1.py": "735d4376ec4c5ccd31c0bd9ab5adca162a54aa9a348f67cd0a19318fd6607472",
+  "tests/large_e2e/A1/harness_a1.py": "f6dd9565448e1c29553a4dbf3bad340e5152e6f8659c7b5eccf278d817a21896",
+  "tests/large_e2e/A1/mutant_a1.py": "4981b9f27be0a4c1e054a7c1c19f1df43f208358e964c970ef01565cb3912b3a",
+  "tests/large_e2e/A1/mt_child.py": "f3ed6102604c499a35e28c95bf238b6022931d2902bc3305e349c8ad8aee0180",
+  "tests/large_e2e/A1/nrt_child.py": "ca37d7a9e4c57d846903a6f214ebf25ba648e91b2e94521bba4373e805de5d80",
+  "tests/large_e2e/A1/test_a1_kernel.py": "db82cc0767066cdae8b5c9353f8a870ee0b793baaf0810d732c10b498a9fc1e2",
+  "tests/large_e2e/A1/test_a1_drivers.py": "d64983f58e20399079e79913648e6cbfabe3d6de70741f34ef13d660b08ae898",
+  "tests/large_e2e/A1/test_a1_observed.py": "615dce22e5f6f575fc0934a6fad5ea5a5115bf6a3e7a081a9258a40355cfe35d",
+  "tests/large_e2e/A1/test_a1_silence.py": "a7e0cbcc1b863384cc6963de528033ae39fa4525fbd51026653e29462a95601d",
+  "tests/large_e2e/A1/test_z_multithread.py": "81a0ca2daa11f133a6132f55c09a34afe00ff5e78e5d01c67359a5cd26e8d01a",
+  "tests/large_e2e/A1/test_z_routing.py": "035279f33fcbb26a20623ca091ef3775ac7afb96178050130dc721d2f28aa2cd",
+  "tests/large_e2e/A1/test_z_ub_terminal.py": "4cf9de61997a4a02549eda5e4aa726225b06985d26c0c7c622a265ccfca9ce64"
+ },
+ "bounds_respected": {
+  "light_o2_scale_runs": "in-suite replays only (T16 observed captures, fixed by the approved proof); no additional ad-hoc observed-scale runs; no heavy-scale or lease-scoped runs",
+  "owned_scopes_only": "edits confined to the two mirrors, the new _large_access_* helper, tests/large_e2e/A1/**, evidence/A1I/**; no git writes by this task"
+ },
+ "next": "A1R (task #23) owns review + marginal screen; this record plus design_revision_D5.json and the IR artifacts are the review inputs"
+}

@@ -1,0 +1,102 @@
+{
+ "schema_version": "i00_composition_v1",
+ "task": "I00",
+ "role": "coordinator/integrator (team-lead), authored under h04-reviewer's I00 rulings",
+ "generated_utc": "2026-09-28T14:13:27Z (run-2 rewrite; original generation 2026-09-28T13:54:32Z)",
+ "objective_mapping": {
+  "composition_exactness": "every composed dispatch cell, flow arm, and gradient schedule byte-identical to B0 on the same inputs (test results below); individually-exact-changes-not-assumed-exact-in-composition is the suite's design premise",
+  "fallback_engagement": "A1-refused inputs run the original kernel loop; A3-refused inputs run the A1 scratch route; ascending-precondition-disabled routes serve every OD on the baseline kernel (fast_calls 0); NO_FIT caps fall back to the unchanged element-count formula with fallback=entry tokens observed; forced-baseline route arms byte-equal forced-fast and default",
+  "complete_source_closure": "package census from live bytes: exactly 3 modified (Accessibility.py, AccessibilityWElevation.py, AggregateFlow.py) + 2 new (_large_access_scratch.py, _large_flow_workspace.py) + 11 byte-identical vs B0; A2 absence asserted in both frames; zero campaign/benchmark/tests imports in src (grep exit 1)"
+ },
+ "comparator_frame": {
+  "form": "in-process alias differential per the accepted per-track idiom (h04 I00 code-review R2 PASS): B0 loaded once under the real module name from wt-b0/src at the pinned baseline 361928e4ba38f34622cafe065b0025244db61368 (support.b0 -> b0_import.load_arm); composed candidate loaded once under the fixed alias una_composition_cand from this worktree's src; candidate root never enters sys.path",
+  "baseline_root": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src",
+  "candidate_root": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src"
+ },
+ "suite_review": {
+  "reviewer": "independent-reviewer (h04)",
+  "verdict": "PASS with run-declaration conditions and two ledger notes (both non-governing, carried below, no byte edits per h04)",
+  "reviewed_bytes": "REV 2: conftest ee1335f827457b274b970072e580de225f9340ae643f511dcc6334d883074c67, harness 9e3f610b3bb7accd7e1903087c2a8a75911a1e099e52c8a2c78f9ae27a89b252, test_c_a1_a3_search 24afcb2f9ab429a7a5d1232b0754bedac1a4f6454b968b64968d3e618e616592, test_c_absence_a2 31d94c4a65df5b0fec99a2ac3a6205e40fea586934743a2c0e8555f4477acde4, test_c_unaffected_paths fc65b4fbda101830a90308b6dd856b4f4c6bcfeb8c0430aff38200411f01c196; REV 1 standing: cand_load_composition 2584edd80f38e0fd7bd35a2eac25713f157056f5e9ad6c856464d4868f642690, fixtures_composition e4d290597a77b9bedf26be901e0cba9514bf7e313c8ec5fa514a91b495b25ecd, test_c_buffer_lifetimes 7cfb43ba53a5763a5afc578bc0fa1907645d1c04a509507954d6c3296aa7b98e, test_c_flow_scratch_ownership 2b74a540658c9d376ab79344b98003897f04fc39aae13d4ce37f9a7d1a563ec4. SOLE DELTA REV 2 -> REV 3 (h04-approved sole-delta ruling): harness_composition is now c79c65668429d5d1aaad4d3ebb08c1f2f17044d64e7e9824edb6206d0c9302ed — exactly one hunk inserting the comparator_frame block into flush_artifacts() between the thread-pin line and flushed_utc (diff vs the custody copy shows one hunk, no other line changes); pre-delta bytes preserved at campaign_data/interim_9e3f610b_harness_composition.py (sha 9e3f610b, byte-verified at copy time); the REV 2 pin above stays for run-1 provenance",
+  "r_item_grades": "R1 PASS (declared-write frame, package-wide single-write-site grep), R2 PASS (alias comparator frame; restructure point named in harness docstring), R3 PASS (G5-style cell receipts), R4 PASS AS RE-FRAMED (h04 retired its REV-1 source-symbol framing - the n_full_nd/n_tailfree_V supervisor vocabulary exists nowhere in src - and affirmed the receipt-derived population_tally form), R5 PASS (explicit thread SET), R6 PASS (both absence frames + CONTRACT.md sha pin 3283a12e70ec72163556c94f65269bc422cb621f860900000e672a7ef80adad1)"
+ },
+ "qualification_run": {
+  "governing_run": 2,
+  "run_conditions_from_review": [
+   "PYTHONDONTWRITEBYTECODE=1 in the run command",
+   "UNA_COMPOSITION_ARTIFACTS set to the declared evidence path; declared write roots stated: campaign_data/nbc_composition/** and campaign_data/composition_artifacts.json",
+   "expected test count 81"
+  ],
+  "command": "PYTHONDONTWRITEBYTECODE=1 UNA_COMPOSITION_ARTIFACTS=<custody>/composition_artifacts.json python -m pytest -p no:cacheprovider -q  (campaign venv, cwd tests/large_e2e/composition; identical command for both fires)",
+  "environment": {
+   "python_venv": "/Users/alansynn/orca/workspaces/una-x/venvs/campaign",
+   "pytest": "9.1.1",
+   "numba": "0.67.0",
+   "numpy": "2.4.6",
+   "scipy": "1.17.1",
+   "numba_num_threads_effective": {"env": "2", "numba_config": 2}
+  },
+  "run_2": {
+   "trigger": "h04-approved sole-delta (comparator_frame into the artifacts tail); two-key fire complete (integrator declaration + h04 approval) before the fire",
+   "result": "81 passed in 4.40s (expected 81; rc 0; wall drop vs run 1 is the warm numba cache — zero new compiles)",
+   "pre_run_state": "declared cache root at 58 files (run-1 state, verified immediately pre-fire); run-1 tail copied to campaign_data/interim_9e4229fd_composition_artifacts.json (sha 9e4229fd, byte-verified) BEFORE the run overwrote the live tail path",
+   "post_run_hygiene": {
+    "porcelain": "unchanged: exactly the untracked tests/large_e2e/composition/ and campaigns/una_large_e2e/evidence/I00/ (no repo-content writes)",
+    "site_packages_nbc_nbi_count": 0,
+    "composition_pycache_dirs": 0,
+    "numba_cache_files_in_declared_root": 58,
+    "artifacts_tail": {
+     "path": "campaign_data/composition_artifacts.json (outside repo; custody root — location ruled ACCEPTED by h04)",
+     "sha256": "74a8bd0b7f35caeb5b6dd91c193a14b0f554042c676afcaa80ede1694cdf0527",
+     "bytes": 30201,
+     "flushed_utc": "2026-09-28T14:11:38Z"
+    }
+   }
+  },
+  "run_1_superseded": {
+   "harness": "REV 2 (9e3f610b, custody copy interim_9e3f610b_harness_composition.py)",
+   "result": "81 passed in 33.79s, rc 0; tail sha256 9e4229fdf4ce623d9b450be18eb410e3e59b19147aa052d39bf7df8a542e3344 (28,223 B, flushed 2026-09-28T13:53:32Z, custody copy interim_9e4229fd_composition_artifacts.json)",
+   "supersession_reason": "tail lacked the comparator_frame identities h04's fire condition requires; re-run approved as the honest shape over any post-hoc tail edit"
+   },
+  "expected_delta_adjudication": {
+   "expected_list_issued_by": "h04 (before the fire)",
+   "expected": "exactly opened_utc, flushed_utc, and the new comparator_frame block; everything else byte-identical",
+   "adjudicated_from": "programmatic JSON comparison of run-2 tail vs the custody run-1 copy",
+   "result": "PASS — run-2-only keys: [comparator_frame]; opened_utc/flushed_utc differ as expected; cell_receipts (144, in-order equal), records (48, in-order equal), effective_thread_pin (env 2 / config 2), task, suite all identical; no delta outside the expected set, so run-2 qualification stands per h04's condition"
+  }
+ },
+ "results_from_artifacts_bytes": {
+  "source_tail": "run-2 tail (74a8bd0b); every figure in this section was adjudicated byte-identical across run 1 -> run 2 by the expected-delta comparison, so the run-1-verified figures carry to the governing tail",
+  "comparator_frame_in_tail": {
+   "b0_root": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src",
+   "b0_module_files_keys": 6,
+   "cand_root": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src",
+   "cand_alias": "una_composition_cand",
+   "cand_module_files_keys": 7
+  },
+  "cell_receipts_total": 144,
+  "kernel_populations_receipts": {"tailfree_V": 72, "full_nd": 72},
+  "matrix_population_walk": {"tailfree_V": 12, "full_nd": 12, "cells": 24, "note": "A3I full-nd/tailfree-V partition both exercised (h04 R4 as re-framed)"},
+  "f2_engagement": {
+   "long_admitting_spec": {"local_route_ok": true, "local_slice_max": 15, "fast_calls": 2, "overflow_events": 0, "fallback_calls": 0},
+   "oracle_refusing_spec": {"local_route_ok": true, "local_slice_max": 2, "fast_calls": 0, "overflow_events": 0, "fallback_calls": 0}
+  },
+  "package_census_record": {"modified": ["Engines/Accessibility.py", "Engines/AccessibilityWElevation.py", "Engines/AggregateFlow.py"], "new": ["Engines/_large_access_scratch.py", "Engines/_large_flow_workspace.py"], "identical_count": 11},
+  "a2_absence_records": {"b0_source_files_scanned": 14, "cand_source_files_scanned": 16, "alias_modules_namespace_scanned": 16, "token_hits": 0, "attribute_hits": 0},
+  "gradient_schedules": ["production_cap", "forced_chunks", "forced_nofit"],
+  "determinism_arms": ["sequential_reuse", "interleaved_engines", "interleaved_cells_clean", "gradient_flow_gradient_interleave"]
+ },
+ "ledger_notes": [
+  "h04 note (a): test_c_buffer_lifetimes cites source lines :1317-1321/:1336-1338 without a filename; the lines live in AggregateFlow.py (2400 lines), not _large_flow_workspace.py. Values verified correct by h04; non-governing comment, carried unedited per h04's no-byte-edit ruling.",
+  "h04 note (b): both trees carry historical numba/pycache residue inside src __pycache__; the census excludes it via the .py filter."
+ ],
+ "proof_obligations": {
+  "composition_exactness": "demonstrated: byte-equality across every matrix cell (od + integrated, both families), every flow arm, and every gradient schedule, with 144 per-cell engagement receipts recorded (cell_receipts_total above; the receipts are the route-execution evidence, the byte comparisons number in the thousands across those surfaces)",
+  "no_campaign_benchmark_imports_by_runtime": "demonstrated: grep of all src imports for campaign|benchmark|tests|large_e2e returned no matches (exit 1); the two new private modules are imported only as urban_network_analysis.Engines siblings"
+ },
+ "pending_for_task_close": [
+  "h04 one-pass verification of the run-2 set: run-2 tail vs expected-delta list, both corrected records, REV 3 pin",
+  "h05 leased L1/L2 reprofile of the composed line (two-key fire, exact-commands handoff)",
+  "integrator control.json advance to the composed line (folded with production_scope.json)",
+  "hash-gated commit of the suite + evidence/I00 records"
+ ]
+}

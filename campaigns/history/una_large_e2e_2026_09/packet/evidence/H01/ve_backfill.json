@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "record": "ve_backfill",
+  "task": "H01 amendment (routes H04 finding N10)",
+  "generated_utc": "2026-09-26T03:11:24Z",
+  "source_of_values": {
+    "review": {
+      "path": "campaigns/una_large_e2e/evidence/H04/review.json",
+      "finding_id": "H04-N10",
+      "sha256_at_backfill": "d414d9e847970a4e1815b42a7c7450844da7e6baf5f833a8cdb8a36f363bede9"
+    },
+    "observed_l2": {
+      "path": "campaigns/una_large_e2e/evidence/H04/observed_l2.json",
+      "section": "load_pass",
+      "sha256_at_backfill": "ab4fb11bf7d49bb9fb7b7e8e0225a5888e6a9e6e58924c36c5660e3273ff56f3"
+    },
+    "measured_values": {
+      "V": 49159,
+      "E": 69957
+    },
+    "method_quote": "BuildTopology at network_precision=3 merged coordinates to 49159 unique nodes over 69957 edges (discard_redundant_edges=False, so E == GeoJSON feature count); stable across two fresh processes (observed_l2.json load_pass)",
+    "h01_cross_checks": "observed_l2.json load_pass geometric_weights_sum 7258443.613622238 and destination_weights_sum 2238643.0 equal H01 acquisition.json network geometric_length_stats.sum and weekly_departures sum exactly"
+  },
+  "manifests": {
+    "O2": {
+      "old_sha256": "9edd02abd06c01868c7e1f78154c48300d8d1660527ce8ba23881cc96fec55c5",
+      "new_sha256": "836228013161f1071bd773c1dd1521e73c3068c4e938805d6af9f95cb7c753a8",
+      "applicability": {
+        "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+        "network_precision": 3,
+        "discard_redundant_edges": false,
+        "discard_flag_source": "fixed call site, not a Settings field: src/urban_network_analysis/Topology.py:189 self.network.BuildTopology(discard_redundant_edges=False, precision=settings.network_precision) - the only network-build path in Topology.AddNetwork, shared by all four workloads",
+        "argument": "V/E are network-only quantities: all four manifests load the same network file through the same BuildTopology call with network_precision=3 and discard_redundant_edges=False, so the H04 measured V=49159/E=69957 (E == GeoJSON feature count because discard_redundant_edges=False) applies identically to every workload regardless of origin selection, radius or engine"
+      },
+      "ve_blocker_resolved": true
+    },
+    "O3_ACCESS": {
+      "old_sha256": "271693c33a7a9cfd104ac6bddbc3f771bfce9e9fce9d63d8aec2ed107699d099",
+      "new_sha256": "767de66838a3f968852f235ee83de611294b181d35a088d6bf7f68f8cd928f0c",
+      "applicability": {
+        "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+        "network_precision": 3,
+        "discard_redundant_edges": false,
+        "discard_flag_source": "fixed call site, not a Settings field: src/urban_network_analysis/Topology.py:189 self.network.BuildTopology(discard_redundant_edges=False, precision=settings.network_precision) - the only network-build path in Topology.AddNetwork, shared by all four workloads",
+        "argument": "V/E are network-only quantities: all four manifests load the same network file through the same BuildTopology call with network_precision=3 and discard_redundant_edges=False, so the H04 measured V=49159/E=69957 (E == GeoJSON feature count because discard_redundant_edges=False) applies identically to every workload regardless of origin selection, radius or engine"
+      },
+      "ve_blocker_resolved": true
+    },
+    "O3_FLOW": {
+      "old_sha256": "9d060d3b443c38e22a808994e4ac84bb7e9f21b380bea3860a031bd2082e8f2a",
+      "new_sha256": "c2e6f2669cf334e4060d3930d23d44baf41efa5c54f36908cd2b72b25ec96e2a",
+      "applicability": {
+        "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+        "network_precision": 3,
+        "discard_redundant_edges": false,
+        "discard_flag_source": "fixed call site, not a Settings field: src/urban_network_analysis/Topology.py:189 self.network.BuildTopology(discard_redundant_edges=False, precision=settings.network_precision) - the only network-build path in Topology.AddNetwork, shared by all four workloads",
+        "argument": "V/E are network-only quantities: all four manifests load the same network file through the same BuildTopology call with network_precision=3 and discard_redundant_edges=False, so the H04 measured V=49159/E=69957 (E == GeoJSON feature count because discard_redundant_edges=False) applies identically to every workload regardless of origin selection, radius or engine"
+      },
+      "ve_blocker_resolved": true
+    },
+    "O3_HOLDOUT": {
+      "old_sha256": "ca47a9a31f2f88bd179fe9ace622f466778c018473447aaaf03fcf0de6150b6f",
+      "new_sha256": "915a098f809fa88d517a3572c1a0cb566964b628690d8a3388984514cae88b63",
+      "applicability": {
+        "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+        "network_precision": 3,
+        "discard_redundant_edges": false,
+        "discard_flag_source": "fixed call site, not a Settings field: src/urban_network_analysis/Topology.py:189 self.network.BuildTopology(discard_redundant_edges=False, precision=settings.network_precision) - the only network-build path in Topology.AddNetwork, shared by all four workloads",
+        "argument": "V/E are network-only quantities: all four manifests load the same network file through the same BuildTopology call with network_precision=3 and discard_redundant_edges=False, so the H04 measured V=49159/E=69957 (E == GeoJSON feature count because discard_redundant_edges=False) applies identically to every workload regardless of origin selection, radius or engine"
+      },
+      "variant_caveat": "O3_HOLDOUT manifest-level counts refer to inputs.network (the 2D InnerCore file), consistent with counts.E_geojson_features=69957. The holdout_r1200_3d_elevation variant loads the separate catalog file network_3d; H04 measured V/E on the 2D file only. E=69957 is expected to hold there (identical feature count and aggregate geometry stats recorded in H01) and V is expected to match (aggregate-identical coordinates merged at precision 3), but the 3D file's V/E is NOT independently measured; it is confirmed at that variant's own load pass",
+      "ve_blocker_resolved": true
+    }
+  },
+  "edits_applied": {
+    "counts.V": 49159,
+    "counts.E": 69957,
+    "counts.note": "measured by H04 independent review, observed_l2.json load_pass, stable across two fresh processes",
+    "blocked": "removed exactly the entry 'V/E counts pending a baseline Topology load pass (H05); a null required field means not ready for qualification' from each manifest; remaining blockers untouched (wheel pending W00; stripe/thread profile null until frozen H05/S01)",
+    "ready_for_qualification": "left false in all four manifests",
+    "committed_evidence": "workloads.json / selection.json / acquisition.json NOT rewritten; workloads.json manifest_sha256 values are therefore stale for these four files by design - this record and its validation file are the post-backfill hash authority"
+  },
+  "validation": {
+    "packet_validator": {
+      "tool": "campaigns/una_large_e2e/tools/validate_packet.py",
+      "result": "ok=true, 330 checks passed, errors=[], exit 0",
+      "note": "packet_files.json has no entries under tests/large_e2e/ or evidence/H01/, so manifest edits do not collide with it"
+    },
+    "manifest_validation": "parse + counts present + blocker removed + ready_for_qualification false + remaining 2 blockers per manifest + input sha256/bytes re-verified against disk + selection manifest hashes + embedded O2 indices == selection file + settings hashes unchanged vs committed workloads.json: ALL PASS (exit 0)",
+    "raw_output": "campaigns/una_large_e2e/evidence/H01/ve_backfill_validation.txt"
+  }
+}

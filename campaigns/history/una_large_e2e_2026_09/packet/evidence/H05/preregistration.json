@@ -1,0 +1,205 @@
+{
+ "schema_version": 1,
+ "task": "H05",
+ "record": "preregistration",
+ "role": "performance-owner",
+ "generated_utc": "2026-09-26T04:36:26Z",
+ "status": "frozen_before_candidate_timings",
+ "workloads": {
+  "cells": {
+   "O2": {
+    "sha256": "836228013161f1071bd773c1dd1521e73c3068c4e938805d6af9f95cb7c753a8",
+    "path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O2.manifest.json"
+   },
+   "O3_ACCESS": {
+    "sha256": "767de66838a3f968852f235ee83de611294b181d35a088d6bf7f68f8cd928f0c",
+    "path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json"
+   },
+   "O3_FLOW": {
+    "sha256": "c2e6f2669cf334e4060d3930d23d44baf41efa5c54f36908cd2b72b25ec96e2a",
+    "path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_FLOW.manifest.json"
+   },
+   "O3_HOLDOUT": {
+    "sha256": "915a098f809fa88d517a3572c1a0cb566964b628690d8a3388984514cae88b63",
+    "path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json"
+   }
+  },
+  "manifest_hash_authority": "current file hashes above; counts per evidence/H01/ve_backfill.json (post-backfill authority); workloads.json manifest_sha256 entries are stale by design (H01 amendment note)",
+  "origin_selection": {
+   "O2": "16 pinned rows (O2.origin_indices.json, sha 4204decf.., verified in-run; reach first3 == H04)",
+   "O3_ACCESS": "sel_all 14751 (identity, verified in-run)",
+   "O3_HOLDOUT": "sel_all 14751 on the 2D network; elevation variant swaps ONLY the network file (3D, sha 6f72bcb2..) + elevation settings; V/E observed identical (49159/69957)",
+   "O3_FLOW": {
+    "chosen_variant": "sel1024",
+    "policy_source": "manifest origin_selection.choice_policy (H05 picks largest variant that fits baseline-only resource/time pilots)",
+    "decision_record": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_flow_decision.json",
+    "capacity_refusal_for_selall": "sel-all projected peak 2.43 GiB vs 0.9x ceiling 2.30 GiB, or projected origin loop 52s vs remaining heavy budget 14157s",
+    "note": "sel-all measured numbers: origin loop projects 51.9 s (fits); memory ceiling is the binding constraint at current available RAM"
+   }
+  },
+  "expected_counts": {
+   "V": 49159,
+   "E": 69957,
+   "D": 6661,
+   "O2_origins": 16,
+   "O3_origins": 14751,
+   "O3_FLOW_origins": 1024,
+   "V_prime_O3_FLOW": 56844
+  }
+ },
+ "gates_frozen": {
+  "minimum_removable_fraction": 0.05,
+  "proxy_speedup": 1.1,
+  "paired_ci_lower_exclusive": 1.0,
+  "maximum_protected_median_time_ratio": 1.05,
+  "maximum_cold_median_time_ratio": 1.05,
+  "investigate_single_slowdown_ratio": 1.1
+ },
+ "gate_source": "campaign.json gates (frozen from campaign json at H00)",
+ "screening_rules": {
+  "ulp_rule": "max_ulp <= 4 for trace-vs-compiled float sums (H03)",
+  "paired_protocol": "B0 vs candidate, same session shape, alternating block schedule AB,BA,AB,BA,AB; paired differences per block; CI from the 5 paired differences",
+  "decision_rule": "admit track if paired CI lower bound of speedup > 1.0 AND proxy speedup >= 1.1 AND no protected median time ratio > 1.05 AND no cold median time ratio > 1.05; any single run slower than 1.1x triggers investigation, not automatic rejection",
+  "removable_fraction_gate": "each track's admitted hypothesis must identify >= 5% end-to-end removable time at the frozen workload (A2/A3/F1/F2/F3 coverage numbers + stage weights are the priors; the screen measures)"
+ },
+ "s01_sweep_grid": {
+  "cpu_count": 10,
+  "capacity": "C = 9 worker-equivalents (one guard thread)",
+  "accessibility_cells_O2_O3ACCESS_O3HOLDOUT": {
+   "constraint": "W x H <= C",
+   "candidates_WH": [
+    [
+     1,
+     8
+    ],
+    [
+     2,
+     4
+    ],
+    [
+     3,
+     3
+    ],
+    [
+     4,
+     2
+    ],
+    [
+     6,
+     1
+    ],
+    [
+     9,
+     1
+    ]
+   ]
+  },
+  "flow_cell_O3FLOW": {
+   "constraint": "W x (H + K) <= C; H = 1 (kernel is GIL-bound, measured: F1 max_concurrent=1)",
+   "K_meaning": "flow engine internal thread pool size (BuildClusters workers)",
+   "candidates_WKH": [
+    [
+     1,
+     8,
+     1
+    ],
+    [
+     1,
+     4,
+     1
+    ],
+    [
+     1,
+     2,
+     1
+    ],
+    [
+     2,
+     3,
+     1
+    ],
+    [
+     3,
+     2,
+     1
+    ],
+    [
+     1,
+     1,
+     1
+    ]
+   ]
+  },
+  "selection": "S01 freezes one (W,H[,K]) per cell by measured median on B0 BEFORE candidate timings (equal-resource scheduling selection)",
+  "note": "grid freezes the CANDIDATE SET; S01 owns the choice and records it; no arm may exceed C in any cell"
+ },
+ "environment_freeze": {
+  "runtime": "fresh venv /Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel, wheel 71fd5615b568..",
+  "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_h05 (warm for qualification runs; cold documented at O2_cold)",
+  "L1_REUSE_DIR": "unset for all qualification runs",
+  "no_gpu": true,
+  "math": "baseline fastmath flags unchanged (no relaxed-math arm)"
+ },
+ "experiment_queue": [
+  {
+   "pair": "A1I/A1R",
+   "hypothesis": "A1_snapshot_scratch",
+   "cells": [
+    "O3_ACCESS",
+    "O3_HOLDOUT"
+   ],
+   "admitted": "A1"
+  },
+  {
+   "pair": "F1I/F1R",
+   "hypothesis": "F1_fixed_stripe_nogil",
+   "cells": [
+    "O3_FLOW"
+   ],
+   "admitted": "F1"
+  },
+  {
+   "pair": "F3I/F3R",
+   "hypothesis": "F3_gradient_workspace",
+   "cells": [
+    "O3_FLOW"
+   ],
+   "admitted": "F3"
+  },
+  {
+   "pair": "A2I/A2R",
+   "hypothesis": "A2_destination_locality",
+   "cells": [
+    "O3_ACCESS",
+    "O3_HOLDOUT"
+   ],
+   "admitted": "A2"
+  },
+  {
+   "pair": "F2I/F2R",
+   "hypothesis": "F2_local_overlap",
+   "cells": [
+    "O3_FLOW"
+   ],
+   "admitted": "F2"
+  },
+  {
+   "pair": "A3I/A3R",
+   "hypothesis": "A3_private_scope",
+   "cells": [
+    "O3_ACCESS",
+    "O3_HOLDOUT"
+   ],
+   "admitted": "A3"
+  }
+ ],
+ "heavy_wall": {
+  "budget_s": 14400.0,
+  "h05_consumed_s": 426.4,
+  "note": "qualification heavy budget is separate and owned by the execution protocol"
+ },
+ "stop_conditions": {
+  "finite": "the queue above is the complete experiment set for this campaign; after I00/W00/S01/Q00/Q10/R00/M00 the campaign terminates in Z00 with a publish decision \u2014 no open-ended iteration",
+  "failure_policy": "a track that cannot prove its gate is not admitted, is blocked, or is rejected \u2014 it is never 'passed'; missing evidence = not admitted"
+ }
+}

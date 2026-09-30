@@ -1,13 +1,36 @@
-# UNA-X: active execution authority
+# UNA-X active engineering campaign
 
-The active campaign is `campaigns/una_large_e2e/`. Read its START_HERE.txt and EXECUTION.md when the user invokes `/goal`. `campaigns/REGISTRY.json` is the routing authority. Do not resume the completed CSR campaign.
+The active campaign is `campaigns/una_platform/` (ID `una-platform-2026-09`). Read its
+START_HERE.txt, EXECUTION.md, AUTHORITY.md, CONTRACTS.md, NUMERICS.md and TASKS_CLAUDE.yaml
+before work. `/goal` starts this campaign. Execute the tasks rather than returning another plan.
 
-The previous packet and all its evidence are archived unchanged under `campaigns/history/una_cpu_2026_09/packet/`. Old benchmark scripts under `benchmarks/una_cpu/` and regression tests remain for provenance; they are not the new qualification harness. Do not run their hard-coded sweep scripts on a new laptop.
+Audited baseline: `16bf404d2cc5e776a78dc073c80405f6d186da29`, already containing the two prior
+campaigns' improvements. Madina reference: `City-Form-Lab/madina@8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6`.
+Develop on `perf/una-platform` and isolated reviewed-dependency worktrees. Preserve dirty user files.
 
-Current numerical baseline: source at commit `361928e4ba38f34622cafe065b0025244db61368`, which already includes ordered CSR. Upstream c15ebda and pre-CSR 98f498e are historical references, not the primary performance comparator.
+Required deliverables: complete supported Madina API parity, scientifically justified numerical
+fixes, real AOT native CPU and GPU backends, public parallel RunBatch, safe caches, reliable
+cancellation/recovery, installed multi-city tests and further end-to-end throughput optimization.
+Old campaign bans on GPU/native/public batch/caching/science fixes are superseded. Existing
+runtime functionality must remain intact while the new capability floor is implemented.
 
-Execute on `perf/una-large-e2e` and isolated worktrees. Preserve user files. Implementation, review, and performance ownership are separate. No GPU, native backend, relaxed math, broad cache, public RunBatch parallelization, or scientific bug fixing in this campaign.
+“Bitparty” means bitwise parity. Separate una_legacy, madina_legacy and corrected_v1. Intentional
+bug-fix deltas use a reviewed corrected oracle; do not claim corrected outputs also reproduce
+erroneous legacy bits. Backend/cache/parallel variants match their selected profile exactly.
+No allclose, reduced precision, route truncation, changed reductions, or different model passed
+as an exact optimization. Madina ALL alternatives are not UNA K-alternatives or aggregate flow.
 
-The user's authorization to publish this packet to main is not standing authorization for future autonomous pushes, merges, releases, force-updates, credential changes, or permission changes. Produce a reviewed local candidate and merge manifest; await separate publication authorization.
+GPU/native must execute substantive work. CPU fallback, stubs, simulated GPU runs and detection
+alone do not satisfy those features. Hardware absence is a qualification blocker, not permission
+to mark success. Continue unrelated tasks through explicit blocked receipts. Automatic backend
+selection requires exactness and measured full-region crossover; explicit supported paths may
+remain slower in some domains without being made default.
 
-A plan is not completion. Missing proof/evidence means not admitted, blocked, or rejected, never passed. Follow the exact task DAG, gate thresholds, benchmark boundaries, failure policy, and finite stop conditions in the active packet.
+Use one owner per writable scope, separate independent review, and one exclusive heavy-machine
+lease. Preserve decisive raw evidence, not only hashes. Never overwrite historical evidence or
+load a candidate as its own oracle. The historical large-e2e snapshot is under
+`campaigns/history/una_large_e2e_2026_09/packet/`; its old path remains for legacy links.
+
+This publication authorizes the campaign packet on main only. Future implementation commits
+stay local until separately authorized to push/merge/release. No paid provisioning, credential
+changes, provider reconfiguration, destructive cleanup or historical evidence purge.

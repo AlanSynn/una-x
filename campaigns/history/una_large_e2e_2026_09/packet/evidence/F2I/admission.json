@@ -1,0 +1,240 @@
+{
+ "schema": "f2i_admission_v1",
+ "task": "F2I",
+ "role": "preimplementation admission recheck (DECISION admission gate)",
+ "date_utc": "2026-09-27",
+ "question": "Does local flow overlap with a cols-restricted reach scan + preallocated stripe scratch + complete integer reset (F2 dossier) clear the campaign admission gate (>= 0.05 removable fraction) when measured against the CURRENT selected source (A1-screened, F1+F3-implemented HEAD)?",
+ "source_pin": {
+  "head_commit": "9a88eabe2eb2ab21b7772b8a1a6d1ffe1e8cc6a8",
+  "baseline_source": "361928e4ba38f34622cafe065b0025244db61368",
+  "source_unchanged_by_F2I": true,
+  "note": "the probe changed no production source; the only worktree change at filing time is the untracked F2I evidence directory (asserted via git status porcelain)",
+  "kernel_lineage_note": "the flow kernel region of AggregateFlow.py is untouched since the baseline commit (verified by grep earlier in-session); driver/precompute deltas are F1I+F3I implementations"
+ },
+ "gate": {
+  "definition": "minimum_removable_fraction 0.05 (campaign.json gates), removable fraction measured on the current selected implementation",
+  "minimum_removable_fraction": 0.05,
+  "gate_source": "campaign.json gates.minimum_removable_fraction",
+  "capacity_route": "not exercised: F2 scratch is O(V') per stripe owner exactly as baseline (retained, not called sparse); the candidate adds only n_r-bounded touched lists and two n_r-sized argsort orders"
+ },
+ "instrument": {
+  "probe_script": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/F2I/f2i_admission_probe.py",
+  "probe_script_sha256": "89bad6a6d2599df0f78895e02710fcf0d96f6b2ade44e032697bd9d3ac5048da",
+  "capture": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h05_captures/O3_FLOW/flow_arrays.npz",
+  "capture_sha256_before": "2280bb624291e5e04b1509430579e031b39abe0458ab9c826f59eda6972ac67f",
+  "capture_sha256_after": "2280bb624291e5e04b1509430579e031b39abe0458ab9c826f59eda6972ac67f",
+  "inputs_immutable": true,
+  "site": "venvs/f3r_cand_wheel (byte-identity of AggregateFlow.py and _large_flow_workspace.py vs the HEAD worktree verified in-run by the probe's identity leg)",
+  "identity": {
+   "site": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/f3r_cand_wheel/lib/python3.11/site-packages",
+   "files": {
+    "AggregateFlow.py": {
+     "site_sha256": "423eb11d638b7201bcd266e1206ccc8c1a46085803d9fa1481fd4ebed942aeb6",
+     "worktree_sha256": "423eb11d638b7201bcd266e1206ccc8c1a46085803d9fa1481fd4ebed942aeb6",
+     "match": true
+    },
+    "_large_flow_workspace.py": {
+     "site_sha256": "646cc23da50c5ae3fad1a2fd540c1bda7b797615d1904ad16c0cb17d3a13d390",
+     "worktree_sha256": "646cc23da50c5ae3fad1a2fd540c1bda7b797615d1904ad16c0cb17d3a13d390",
+     "match": true
+    }
+   },
+   "identity_ok": true
+  },
+  "identity_ok": true,
+  "protocol": {
+   "sampled_origins": 32,
+   "max_ods_per_origin": 16,
+   "seed": 20260925,
+   "reps": 7,
+   "stat": "min-of-reps per OD, median across ODs",
+   "wall_budget_s": 600
+  }
+ },
+ "artifacts": [
+  {
+   "path": "campaign_data/f2i_probes/smoke_f2i.py",
+   "sha256": "010da3d50be11bf081909dae2745374bf0dae58c53a1e03890703cc20945f56b",
+   "bytes": 6342,
+   "role": "diagnostics-class one-OD differential smoke (crashed start 1 + clean-pair green run, both lease-logged)"
+  }
+ ],
+ "runs": [
+  {
+   "label": "f2i_admission_125153",
+   "record": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f2i_probes/f2i_admission_125153.json",
+   "record_sha256": "e108e0c56c117ae0ee33c778c820bb70439c4ae18e3f7e83c476606aafde8087",
+   "status": "OPERATIVE",
+   "cell": "FLOW_sel1024_od (measured) + FLOW_chosen_od (context)",
+   "window_at_start": {
+    "utc": "2026-09-27T16:51:54Z",
+    "available_bytes": 5696602112,
+    "loadavg": [
+     3.005859375,
+     3.84033203125,
+     3.90478515625
+    ],
+    "rev9_quiet_floor_bytes": 5368709120,
+    "rev9_loadavg_max": 8.0,
+    "rev9_admitted": true
+   },
+   "window_at_end": {
+    "utc": "2026-09-27T16:51:58Z",
+    "available_bytes": 5523505152,
+    "loadavg": [
+     2.84521484375,
+     3.79296875,
+     3.8876953125
+    ],
+    "rev9_quiet_floor_bytes": 5368709120,
+    "rev9_loadavg_max": 8.0,
+    "rev9_admitted": true
+   },
+   "wall_used_s": 4.557
+  }
+ ],
+ "superseded_run_disclosure": [
+  {
+   "record": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f2i_probes/f2i_admission_124742.json",
+   "record_sha256": "4f26d92fc8906c3ea848d273dfa83168fe795bacfe6aeae22a108d36c5693948",
+   "defect": "187/187 ODs failed the bitwise differential: the reset-timing prep re-ran the tracked kernel into the comparison output buffers without re-zeroing, so the baseline snapshot was compared against ~8x-accumulated contributions; the prototype was never in doubt (the one-OD smoke compared a clean pair True), the defect was comparison plumbing",
+   "status": "kept on disk append-only; its timing structure (min-of-7, identical op-count per rep) and window/identity legs remain corroborating; all differential figures superseded"
+  },
+  {
+   "record": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f2i_probes/f2i_admission_124952.json",
+   "record_sha256": "f83c7bbd303dabf0c6d4ec256f28a3616d143d95c6845f66e97f32f743720d70",
+   "defect": "no defect in its figures: 187/187 bitwise outputs + reach + pristine green; superseded because the baseline's virtual early-return branch was UNSAMPLED (zero_path_ods == 0) and the probe was extended with a synthetic early-return differential leg before filing",
+   "consistency_note": "its removable_kernel_share 0.9013546666666666 vs the operative record's 0.9007703139236313 differ only by measurement noise (min-of-7 medians); figures corroborate",
+   "status": "kept on disk append-only"
+  }
+ ],
+ "dossier_mechanism_proof": {
+  "statement": "the F2 candidate prototype reproduces AggregateFlow._accumulate_od_flow BITWISE on every sampled OD with the cols-restricted scan + preallocated scratch + per-write touched lists + integer reset epilogue",
+  "validation": {
+   "od_compared": 187,
+   "bitwise_output_failures": 0,
+   "reach_mask_or_list_failures": 0,
+   "pristine_epilogue_failures": 0,
+   "overflow_events": 0,
+   "zero_path_ods": 0,
+   "scatter_outside_cols_all_ok": true
+  },
+  "legs": {
+   "bitwise_outputs": "out_AB / out_BA / out_node_flow / delivered, all bytewise-equal vs the real engine kernel on 187/187 ODs",
+   "reach_mask_and_list": "cols-restricted reach mask AND ascending reach_nodes list equal the byte-mirrored baseline full-V' scan (sections 1-2a) on 187/187 ODs",
+   "pristine_epilogue": "all five scratch arrays byte-equal their pristine copies after the reset kernel, 187/187 ODs",
+   "overflow": "zero touched-list overflow events (cap 16*C_d+4096)",
+   "scatter_discipline": "dd_buf/pd_buf outside the destination slice remain exactly +inf/-9999 on all sampled ODs",
+   "synthetic_early_return": {
+    "od_index_used": 0,
+    "budget_e": 131.76051035367283,
+    "budget_e_lt_d_shortest": true,
+    "baseline_delivered": 0.0,
+    "tracked_delivered": 0.0,
+    "tracked_n_r": 0,
+    "outputs_untouched_bitwise": true,
+    "delivered_bitwise_equal": true,
+    "pristine_after_reset": true,
+    "note": "synthetic branch-coverage leg: not part of the sampled distribution or the gate arithmetic"
+   }
+  },
+  "predicate_characterization": {
+   "finite_finite_over_budget": false,
+   "finite_inf": false,
+   "inf_finite": false,
+   "inf_inf": false,
+   "fastmath_predicate_ok": true
+  },
+  "slice_characterization": {
+   "slices_checked": 6661,
+   "strictly_ascending_violations": 0,
+   "len_min": 1,
+   "len_median": 66.0,
+   "len_mean": 71.80123104638943,
+   "len_max": 426,
+   "len_over_V_prime_mean": 0.0012631277011890337,
+   "members_net": 331817,
+   "members_dest_virtual": 137381,
+   "members_origin_virtual": 9070,
+   "note": "origin virtuals DO appear in finite slices, so the baseline early-return path is live and the cols scan must cover virtual nodes - it does, by construction"
+  }
+ },
+ "measured_coverage": {
+  "C_d_median": 147.0,
+  "C_d_max": 336,
+  "n_r_median": 8.0,
+  "n_r_max": 20,
+  "n_r_over_C_d_median": 0.055900621118012424,
+  "appends_total_median": 36.0,
+  "unique_total_median": 8.0,
+  "arc_checks_p1_median": 27.0,
+  "arc_checks_p2_median": 27.0,
+  "note": "the destination finite slice is 0.26% of V' at the median (147 of 56,844) and only ~5.6% of it is reachable; the full-V' fixed work (two scans + five zeroed arrays) is therefore almost entirely removable per OD"
+ },
+ "measured_cost_and_removable": {
+  "walls_ns": {
+   "reps": 7,
+   "stat": "min-of-reps per OD, median across ODs",
+   "median_t_base": 48417.0,
+   "median_t_track": 3958.0,
+   "median_t_reset": 833.0,
+   "median_cand_side": 4791.0,
+   "median_net": -43626.0,
+   "median_net_share": -0.9007703139236313,
+   "median_t_scan2": 38125.0,
+   "median_t_alloc4": 6458.0,
+   "median_t_cols": 625.0,
+   "median_fixed_attr": 44583.0
+  },
+  "removable_kernel_share": 0.9007703139236313,
+  "derivation": "net_share = (t_track + t_reset - t_base)/t_base per OD; removable_kernel_share is the negated median; attribution legs (scan2 replica + alloc4) locate the fixed cost",
+  "attribution_note": "median fixed-cost attribution (scan2 replica 38125.0 ns + alloc4 6458.0 ns = 44583.0 ns) explains 0.9208129376045604 of the median baseline kernel wall; the cols scan costs 625.0 ns",
+  "measured_cell_arithmetic": {
+   "cell": "FLOW_sel1024_od",
+   "session_kernel_cpu_s": 17.578805432,
+   "session_kernel_calls": 8217,
+   "session_kernel_mean_ns": 2139321.581112328,
+   "session_kernel_min_ns": 45250,
+   "stage_wall_s": 5.832348958,
+   "window_wall_s": 8.8614135,
+   "kernel_cpu_over_stage_wall": 3.014018118358274,
+   "concurrency_note": "the session kernel CPU aggregate EXCEEDS the stage wall (see kernel_cpu_over_stage_wall > 1), forcing mean kernel concurrency >= that ratio; therefore the wall saving from removing a kernel-CPU fraction f is bounded by f * stage_wall, giving removable_wall_share_of_window <= f * stage_wall/window - a rigorous ceiling needing no concurrency model",
+   "removable_wall_share_ceiling": 0.5928632945308131,
+   "above_gate_ceiling": true
+  },
+  "chosen_cell_context": {
+   "session": "FLOW_chosen_od",
+   "kernel_mean_ns": 77740.96202993793,
+   "kernel_min_ns": 45833,
+   "kernel_cpu_s": 0.638797485,
+   "stage_wall_s": 3.82067725,
+   "window_wall_s": 6.687906041,
+   "measured_fixed_cost_ns_here": 44583.0,
+   "r_ceiling_from_fixed": 0.5734814547680944,
+   "kernel_cpu_over_stage_wall": 0.16719483044530914,
+   "removable_wall_share_ceiling": 0.054776264611699564,
+   "note": "no per-OD capture exists for this session; the ceiling uses the measured fixed cost at the SAME V' (both sessions share workload sel1024: same V/E/O/D counts and the same 8217 calls) and, since this cell's kernel CPU (0.639 s) is BELOW its stage wall (3.821 s), assumes kernels may be fully serial (serial_share = kernelCPU/stageWall); still a ceiling, not a measurement"
+  },
+  "session_discrepancy_flag": "same frozen workload and the same 8217 calls in both sessions yet mean kernel service differs ~27x (see the two session_kernel_mean_ns figures in this record); this probe's single-thread min-of-7 measurements at HEAD are the primary anchor; the discrepancy is flagged for review"
+ },
+ "od_reconstruction_disclosures": {
+  "gate_superset": "finite d_shortest AND d_shortest <= search_radius (SUPERSET of the driver's gate, which also requires trip_volume > 0; destination node weights are not in the capture, so the true driver OD set cannot be reproduced - disclosed)",
+  "trip_volume": "1.0 (H05 F1-probe convention; timing probe, not a numerical oracle)",
+  "snap_edge_ids": "REAL ids reconstructed from connector CSR rows (uniqueness verified per row), so snap-edge exclusions are LIVE on both routes",
+  "budget_convention": "budget = d_shortest * ratio (frozen mode 'ratio', ratio 1.05), mirroring the driver; grad_limit = radius * ratio per _gradient_limit_for",
+  "origin_sampling": "seeded choice of 32 of 1,024 origins, nearest-first <= 16 destinations each"
+ },
+ "verdict": {
+  "admission": "ADMITTED",
+  "reason": "removable_wall_share_ceiling 0.5928632945308131 >= gate 0.05 in the measured cell (FLOW_sel1024_od): the candidate side (track + reset, 4791.0 ns median) replaces 48417.0 ns of median baseline kernel wall with bitwise-identical outputs, and even under the rigorous no-concurrency-model ceiling (kernel CPU exceeds the stage wall, forcing mean concurrency >= 3.014, so the wall saving is bounded by removable_kernel_share * stage_wall / window) the removable fraction is an order of magnitude above the gate. The chosen-cell CONTEXT ceiling (0.054776264611699564, computed serial-side under that cell's sub-unity CPU/stage ratio) is also above the gate, though it rests on a fixed-cost transfer across same-workload sessions and inherits the flagged 27x session discrepancy",
+  "validation_basis": "bitwise differential proof on 187 sampled ODs + synthetic early-return leg + pristine epilogue + scatter discipline + fastmath predicate characterization (all green)",
+  "consequence": "implementation toward the F2R screen is admissible; per the F2I objective the implementation follows independent preimplemen- tation proof approval (h04 review of this admission) and the dossier's literal cleanup requirements",
+  "design_budget": "not consumed: the probe validated the dossier mechanism as stated; no design revision was needed"
+ },
+ "lease": {
+  "log": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f2i_lease_log.json",
+  "log_sha256": "4ff95097663fd11f7469a9921ed9dd0bdca201d7531560402fefef512c8cfe9d",
+  "charging": "all F2I probe fires are diagnostics-class: window-stamped in-child, lease-logged, uncharged, gate_eligible false; two supersession cycles and one crashed smoke start disclosed in the log"
+ },
+ "open_routing_flag": "F2I admitted branch: probe outcome relayed for routing; h04 preimplementation proof approval is the next DAG step, then implementation of AggregateFlow.py toward F2R (#31) with F1+F3 cand controls advancing at I00 only"
+}

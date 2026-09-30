@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "reference_commit": "8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6",
+  "complete_census": false,
+  "rows": [
+    {
+      "id": "M01",
+      "symbol": "madina.zonal.Zonal",
+      "signature_seed": "Zonal()",
+      "required_behavior": "Owns layers, network and geo_center; indexing delegates to layers.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/zonal/zonal.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M02",
+      "symbol": "Zonal.load_layer",
+      "signature_seed": "(name, source, pos=None, first=False, before=None, after=None)",
+      "required_behavior": "File/GeoDataFrame inputs, copy and ID preparation, CRS, order and random-color state.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/zonal/zonal.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M03",
+      "symbol": "Zonal.create_street_network",
+      "signature_seed": "(source_layer, weight_attribute=None, node_snapping_tolerance=0, redundant_edge_treatment='discard', turn_threshold_degree=45, turn_penalty_amount=30)",
+      "required_behavior": "keep/discard/split topology, source lineage, projected/custom costs, exact actual defaults.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/zonal/zonal.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M04",
+      "symbol": "Zonal.set_turn_parameters",
+      "signature_seed": "(turn_threshold_degree, turn_penalty_amount)",
+      "required_behavior": "Validation and network mutation.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/zonal/zonal.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M05",
+      "symbol": "Zonal.insert_node",
+      "signature_seed": "(layer_name, label, weight_attribute=None)",
+      "required_behavior": "Origin/destination insertion, IDs, partial edge weights, repeated calls.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/zonal/zonal.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M06",
+      "symbol": "Zonal.create_graph",
+      "signature_seed": "(light_graph=True, d_graph=True, od_graph=False)",
+      "required_behavior": "Supported graph variants and mutable topology state.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/zonal/zonal.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M07",
+      "symbol": "Zonal.clear_nodes",
+      "signature_seed": "()",
+      "required_behavior": "Remove access nodes retaining network; characterize graph lifecycle.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/zonal/zonal.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M08",
+      "symbol": "Zonal.create_map",
+      "signature_seed": "(layer_list=None, save_as=None, basemap=False)",
+      "required_behavior": "Actual pydeck.Deck return, HTML/visual layer behavior, optional dependency.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/zonal/zonal.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M09",
+      "symbol": "Zonal.describe",
+      "signature_seed": "()",
+      "required_behavior": "Documented display and observable state.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/zonal/zonal.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M10",
+      "symbol": "Layer/Layers",
+      "signature_seed": "Census constructors, fields, __getitem__/__setitem__/__iter__/__next__/__contains__/__str__, add/insert_at/get_layer_at_pos/pos_at_label/set_style/color_layer",
+      "required_behavior": "Preserve public order, indexing, mutable gdf and error behavior; unsupported/broken paths need registered corrections.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/zonal/layer.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M11",
+      "symbol": "Network",
+      "signature_seed": "Census constructor and set_node_value/create_graph/add_node_to_graph/remove_node_to_graph/update_light_graph; further methods from AST",
+      "required_behavior": "Graph mutation, geometric edge splitting/perturbation, topology IDs. visualize_graph currently unsupported is not working parity requirement.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/zonal/network.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M12",
+      "symbol": "madina.una.tools.accessibility",
+      "signature_seed": "(zonal, search_radius, destination_weight=None, alpha=1, beta=None, save_reach_as=None, save_gravity_as=None, knn_weights=None, knn_plateau=None, save_knn_access_as=None, closest_facility=False, save_closest_facility_as=None, save_closest_facility_distance_as=None, turn_penalty=False, num_cores=1)",
+      "required_behavior": "Alpha-weighted gravity/KNN, destination-to-origin closest facility, named layer joins and None return.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/una/tools.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M13",
+      "symbol": "madina.una.tools.service_area",
+      "signature_seed": "(zonal, search_radius, origin_ids=None, turn_penalty=False)",
+      "required_behavior": "Tuple destinations/network_edges/scope_gdf, convex-hull/intersection geometry semantics, degenerate cases.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/una/tools.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M14",
+      "symbol": "madina.una.tools.alternative_paths",
+      "signature_seed": "(zonal, origin_id, search_radius, detour_ratio=1, turn_penalty=False)",
+      "required_behavior": "ALL admitted alternatives, distance order, destination IDs, GeometryCollection full endpoint edges.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/una/tools.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M15",
+      "symbol": "madina.una.tools.betweenness",
+      "signature_seed": "(zonal, search_radius, detour_ratio=1, decay=False, decay_method='exponent', beta=0.003, num_cores=1, closest_destination=True, elastic_weight=False, knn_weight=None, knn_plateau=0, turn_penalty=False, save_betweenness_as=None, save_reach_as=None, save_gravity_as=None, save_elastic_weight_as=None, keep_diagnostics=False, path_exposure_attribute=None, save_path_exposure_as=None)",
+      "required_behavior": "All-path assignment, exponent/power decay, competition/closest, elastic KNN demand, diagnostics/exposure, network/layer mutations.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/una/tools.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M16",
+      "symbol": "madina.una.workflows.betweenness_flow_simulation",
+      "signature_seed": "(city_name=None, data_folder=None, output_folder=None, pairings_file='pairings.csv', num_cores=8)",
+      "required_behavior": "Pairing CSV schema, network/cost/layer changes, outputs and logger.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/una/workflows.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M17",
+      "symbol": "madina.una.workflows.KNN_accessibility",
+      "signature_seed": "(city_name=None, data_folder=None, output_folder=None, pairings_file='pairing.csv', num_cores=8)",
+      "required_behavior": "Distinct default filename, workflow validation, named accessibility results.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/una/workflows.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    },
+    {
+      "id": "M18",
+      "symbol": "Public helpers and reexports",
+      "signature_seed": "Expand AST/doc/test census before contract freeze",
+      "required_behavior": "paths, betweenness, network_utils, utils, validate_zonal_ready, module exports and directly used supported helpers. No silent omissions.",
+      "source": "https://github.com/City-Form-Lab/madina/blob/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6/src/madina/una/__init__.py",
+      "status": "required_unimplemented_or_unverified",
+      "tests": []
+    }
+  ],
+  "required_checks": [
+    "signature_defaults",
+    "parameter_effects",
+    "return_type",
+    "mutable_state",
+    "IDs_index_order",
+    "numeric_bits",
+    "geometry_CRS",
+    "artifact_schema",
+    "warnings_errors",
+    "installed_facade",
+    "installed_shim"
+  ],
+  "policy": "Expand every grouped seed before claiming API parity; supported parameters cannot be ignored."
+}

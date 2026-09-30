@@ -1,0 +1,207 @@
+{
+ "task": "A1R",
+ "record": "candidate_wheel_and_venv",
+ "role": "screen-executor",
+ "status": "ok",
+ "candidate_commit": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29",
+ "build_copy": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_build/src_copy",
+ "wheel": {
+  "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/wheels_a1r/urban_network_analysis-2.6.0-py3-none-any.whl",
+  "sha256": "9d808304a987af9efe5ccfcbe709ce6b7f9e953098dfc6dd4b5e91c8c141026e",
+  "bytes": 129683
+ },
+ "constraints_file": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_build/constraints.txt",
+ "runtime_venv": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel",
+ "identity_ok": true,
+ "a1_symbols": {
+  "integrated_scope_access": true,
+  "od_compact_vector_node_view_scope": true,
+  "a1_scope_admits": true,
+  "a1_scope_search": true
+ },
+ "a1_symbols_ok": true,
+ "una_installed_path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis",
+ "versions": {
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "numba": "0.67.0",
+  "geopandas": "1.1.4",
+  "pyogrio": "0.13.0",
+  "pyarrow": "25.0.1",
+  "shapely": "2.1.2"
+ },
+ "pinned": {
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "numba": "0.67.0",
+  "geopandas": "1.1.4",
+  "pyogrio": "0.13.0",
+  "shapely": "2.1.2"
+ },
+ "pinned_matches": {
+  "python": true,
+  "numpy": true,
+  "numba": true,
+  "geopandas": true,
+  "pyogrio": true,
+  "shapely": true
+ },
+ "build_notes": [
+  "wheel built from `git archive` of the verified candidate HEAD; hatch_build bakes commit_date='unknown' (no .git in the archive) \u2014 code is byte-identical to the tree; W00 rebuilds from the real tree with git"
+ ],
+ "untracked_files_at_build": [
+  "?? campaigns/una_large_e2e/evidence/A1R/"
+ ],
+ "steps": [
+  {
+   "cmd": [
+    "git",
+    "-C",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e",
+    "rev-parse",
+    "HEAD"
+   ],
+   "cwd": null,
+   "rc": 0,
+   "wall_s": 0.0,
+   "stdout_tail": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29\n",
+   "stderr_tail": ""
+  },
+  {
+   "cmd": [
+    "git",
+    "-C",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e",
+    "status",
+    "--porcelain",
+    "--untracked-files=no"
+   ],
+   "cwd": null,
+   "rc": 0,
+   "wall_s": 0.0,
+   "stdout_tail": "",
+   "stderr_tail": ""
+  },
+  {
+   "cmd": [
+    "git",
+    "-C",
+    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e",
+    "status",
+    "--porcelain"
+   ],
+   "cwd": null,
+   "rc": 0,
+   "wall_s": 0.0,
+   "stdout_tail": "?? campaigns/una_large_e2e/evidence/A1R/\n",
+   "stderr_tail": ""
+  },
+  {
+   "cmd": "git archive HEAD | tar -x -C src_copy",
+   "wall_s": 0.5,
+   "rc": 0,
+   "stderr_tail": ""
+  },
+  {
+   "cmd": [
+    "/opt/homebrew/opt/python@3.11/bin/python3.11",
+    "-m",
+    "venv",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_build"
+   ],
+   "cwd": null,
+   "rc": 0,
+   "wall_s": 1.7,
+   "stdout_tail": "",
+   "stderr_tail": ""
+  },
+  {
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_build/bin/pip",
+    "install",
+    "--quiet",
+    "hatchling"
+   ],
+   "cwd": null,
+   "rc": 0,
+   "wall_s": 0.8,
+   "stdout_tail": "",
+   "stderr_tail": ""
+  },
+  {
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_build/bin/pip",
+    "wheel",
+    ".",
+    "--no-build-isolation",
+    "--no-deps",
+    "-w",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/wheels_a1r"
+   ],
+   "cwd": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_build/src_copy",
+   "rc": 0,
+   "wall_s": 0.6,
+   "stdout_tail": "Processing ./.\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: urban-network-analysis\n  Building wheel for urban-network-analysis (pyproject.toml): started\n  Building wheel for urban-network-analysis (pyproject.toml): finished with status 'done'\n  Created wheel for urban-network-analysis: filename=urban_network_analysis-2.6.0-py3-none-any.whl size=129683 sha256=9d808304a987af9efe5ccfcbe709ce6b7f9e953098dfc6dd4b5e91c8c141026e\n  Stored in directory: /private/var/folders/3d/cclyxf1x3bjf_y3pf071s1r00000gr/T/pip-ephem-wheel-cache-hbnrvxgy/wheels/ff/11/ab/8aafdf2ed6ed50c2f77cc03dc7c66caf554ef21fab9113f939\nSuccessfully built urban-network-analysis\n",
+   "stderr_tail": ""
+  },
+  {
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python",
+    "-m",
+    "pip",
+    "freeze"
+   ],
+   "cwd": null,
+   "rc": 0,
+   "wall_s": 0.2,
+   "stdout_tail": "certifi==2026.7.22\ncloudpickle==3.1.2\ngeopandas==1.1.4\niniconfig==2.3.0\njoblib==1.6.0\nllvmlite==0.49.0\nnarwhals==2.26.0\nnetworkx==3.6.1\nnumba==0.67.0\nnumpy==2.4.6\npackaging==26.3\npandas==3.0.6\npluggy==1.6.0\npsutil==7.2.2\npyarrow==25.0.1\nPygments==2.21.0\npyogrio==0.13.0\npyproj==3.7.2\npytest==9.1.1\npython-dateutil==2.9.0.post0\nscikit-learn==1.9.1\nscipy==1.17.1\nshapely==2.1.2\nsix==1.17.0\nthreadpoolctl==3.7.0\n",
+   "stderr_tail": ""
+  },
+  {
+   "cmd": [
+    "/opt/homebrew/opt/python@3.11/bin/python3.11",
+    "-m",
+    "venv",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel"
+   ],
+   "cwd": null,
+   "rc": 0,
+   "wall_s": 1.6,
+   "stdout_tail": "",
+   "stderr_tail": ""
+  },
+  {
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/pip",
+    "install",
+    "--quiet",
+    "--upgrade",
+    "pip"
+   ],
+   "cwd": null,
+   "rc": 0,
+   "wall_s": 0.5,
+   "stdout_tail": "",
+   "stderr_tail": ""
+  },
+  {
+   "cmd": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/pip",
+    "install",
+    "--quiet",
+    "-c",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_build/constraints.txt",
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/wheels_a1r/urban_network_analysis-2.6.0-py3-none-any.whl",
+    "pyarrow",
+    "pyogrio",
+    "threadpoolctl"
+   ],
+   "cwd": null,
+   "rc": 0,
+   "wall_s": 11.8,
+   "stdout_tail": "",
+   "stderr_tail": ""
+  }
+ ],
+ "utc": "2026-09-26T06:39:10Z"
+}

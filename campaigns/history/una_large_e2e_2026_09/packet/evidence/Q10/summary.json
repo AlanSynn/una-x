@@ -1,0 +1,1331 @@
+{
+ "schema_version": 2,
+ "windows": [
+  {
+   "label": "b1_smi_acc_A_w3",
+   "rc": 0,
+   "wall_s": 26.556620917050168,
+   "extra": {
+    "budget_mib": 4064,
+    "session_status": "valid",
+    "validated": 36,
+    "warm_wall_s": 12.117038332857192,
+    "cold_wall_s": 13.079937832895666,
+    "producer_wait_share": 0.00016329138735450755
+   }
+  },
+  {
+   "label": "b1_smi_acc_B_w3",
+   "rc": 0,
+   "wall_s": 26.635249624960124,
+   "extra": {
+    "budget_mib": 5300,
+    "session_status": "valid",
+    "validated": 36,
+    "warm_wall_s": 12.091634958982468,
+    "cold_wall_s": 13.090396541869268,
+    "producer_wait_share": 0.00023244581973689695
+   }
+  },
+  {
+   "label": "b1_smi_flo_A_w1",
+   "rc": 0,
+   "wall_s": 76.03387387515977,
+   "extra": {
+    "budget_mib": 5364,
+    "session_status": "valid",
+    "validated": 12,
+    "warm_wall_s": 62.486161042004824,
+    "cold_wall_s": 63.4429078749381,
+    "producer_wait_share": 0.00011370514497160156
+   }
+  },
+  {
+   "label": "b1_smi_flo_B_w1",
+   "rc": 0,
+   "wall_s": 71.94721291703172,
+   "extra": {
+    "budget_mib": 5602,
+    "session_status": "valid",
+    "validated": 12,
+    "warm_wall_s": 56.590282999910414,
+    "cold_wall_s": 57.3902786669787,
+    "producer_wait_share": 0.00019204259855030596
+   }
+  },
+  {
+   "label": "b1_smi_flo_A_w2",
+   "rc": 0,
+   "wall_s": 75.85309637500905,
+   "extra": {
+    "budget_mib": 4486,
+    "session_status": "valid",
+    "validated": 12,
+    "warm_wall_s": 62.03956970782019,
+    "cold_wall_s": 62.927017791895196,
+    "producer_wait_share": 1.4560497505935057e-05
+   }
+  },
+  {
+   "label": "b1_smi_flo_B_w2",
+   "rc": 0,
+   "wall_s": 71.32445904100314,
+   "extra": {
+    "budget_mib": 5201,
+    "session_status": "valid",
+    "validated": 12,
+    "warm_wall_s": 56.055150791071355,
+    "cold_wall_s": 56.86088837496936,
+    "producer_wait_share": 1.2767800815799414e-05
+   }
+  },
+  {
+   "label": "b1_smi_flo_A_w3",
+   "rc": 0,
+   "wall_s": 75.50001600012183,
+   "extra": {
+    "budget_mib": 4401,
+    "session_status": "valid",
+    "validated": 12,
+    "warm_wall_s": 61.69978512497619,
+    "cold_wall_s": 62.58566416683607,
+    "producer_wait_share": 1.1224350272812514e-05
+   }
+  },
+  {
+   "label": "b1_smi_flo_B_w3",
+   "rc": 0,
+   "wall_s": 71.31508866604418,
+   "extra": {
+    "budget_mib": 3344,
+    "session_status": "valid",
+    "validated": 12,
+    "warm_wall_s": 56.116343959001824,
+    "cold_wall_s": 56.89837641711347,
+    "producer_wait_share": 1.1148659300703459e-05
+   }
+  },
+  {
+   "label": "b2_pair_access_B",
+   "rc": 0,
+   "wall_s": 100.80511508416384,
+   "extra": {
+    "budget_mib": 4034,
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 83.8550096671097,
+    "cold_wall_s": 85.77413970790803,
+    "producer_wait_share": 0.00012412192236717858
+   }
+  },
+  {
+   "label": "b2_pair_access_A",
+   "rc": 0,
+   "wall_s": 101.30118829198182,
+   "extra": {
+    "budget_mib": 5088,
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 86.73751404206268,
+    "cold_wall_s": 88.62169312499464,
+    "producer_wait_share": 8.907550654787322e-05
+   }
+  },
+  {
+   "label": "b2_pair_flow_B",
+   "rc": 0,
+   "wall_s": 89.7954360828735,
+   "extra": {
+    "budget_mib": 5168,
+    "session_status": "valid",
+    "validated": 3,
+    "warm_wall_s": 59.150299958884716,
+    "cold_wall_s": 59.89713666704483,
+    "producer_wait_share": 5.032349797159212e-06
+   }
+  },
+  {
+   "label": "b2_pair_flow_A",
+   "rc": 0,
+   "wall_s": 114.1800489590969,
+   "extra": {
+    "budget_mib": 3726,
+    "session_status": "valid",
+    "validated": 3,
+    "warm_wall_s": 79.38369479216635,
+    "cold_wall_s": 80.14943291712552,
+    "producer_wait_share": 3.826843797020873e-06
+   }
+  },
+  {
+   "label": "b3_pair_access_A",
+   "rc": 0,
+   "wall_s": 102.05925333313644,
+   "extra": {
+    "budget_mib": 4902,
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 88.02838183310814,
+    "cold_wall_s": 89.84051166591235,
+    "producer_wait_share": 8.660212582861276e-05
+   }
+  },
+  {
+   "label": "b3_pair_access_B",
+   "rc": 0,
+   "wall_s": 97.08318250020966,
+   "extra": {
+    "budget_mib": 5391,
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 80.24500391609035,
+    "cold_wall_s": 82.19463991606608,
+    "producer_wait_share": 0.00010006696502123152
+   }
+  },
+  {
+   "label": "b3_pair_flow_A",
+   "rc": 0,
+   "wall_s": 114.15777579206042,
+   "extra": {
+    "budget_mib": 5610,
+    "session_status": "valid",
+    "validated": 3,
+    "warm_wall_s": 79.50894979201257,
+    "cold_wall_s": 80.26094395807013,
+    "producer_wait_share": 2.6663287661900057e-06
+   }
+  },
+  {
+   "label": "b3_pair_flow_B",
+   "rc": 0,
+   "wall_s": 88.92534775007516,
+   "extra": {
+    "budget_mib": 3586,
+    "session_status": "valid",
+    "validated": 3,
+    "warm_wall_s": 59.05380241712555,
+    "cold_wall_s": 59.75691645801999,
+    "producer_wait_share": 3.2166937982796575e-06
+   }
+  },
+  {
+   "label": "b4_pair_access_B",
+   "rc": 0,
+   "wall_s": 96.12815729202703,
+   "extra": {
+    "budget_mib": 3869,
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 80.19623337499797,
+    "cold_wall_s": 82.09907724987715,
+    "producer_wait_share": 9.743783057068293e-05
+   }
+  },
+  {
+   "label": "b4_pair_access_A",
+   "rc": 0,
+   "wall_s": 97.75649429205805,
+   "extra": {
+    "budget_mib": 5133,
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 83.99562666704878,
+    "cold_wall_s": 85.79887333302759,
+    "producer_wait_share": 8.709233194958468e-05
+   }
+  },
+  {
+   "label": "b4_pair_flow_B",
+   "rc": 0,
+   "wall_s": 90.22647516708821,
+   "extra": {
+    "budget_mib": 5039,
+    "session_status": "valid",
+    "validated": 3,
+    "warm_wall_s": 59.52886450011283,
+    "cold_wall_s": 60.2580536659807,
+    "producer_wait_share": 4.04282866842763e-06
+   }
+  },
+  {
+   "label": "b4_pair_flow_A",
+   "rc": 0,
+   "wall_s": 113.69139479100704,
+   "extra": {
+    "budget_mib": 4143,
+    "session_status": "valid",
+    "validated": 3,
+    "warm_wall_s": 79.72739912499674,
+    "cold_wall_s": 80.47425654204562,
+    "producer_wait_share": 5.323351879754642e-06
+   }
+  },
+  {
+   "label": "b5_pair_access_A",
+   "rc": 0,
+   "wall_s": 102.03897504112683,
+   "extra": {
+    "budget_mib": 3641,
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 88.22490212484263,
+    "cold_wall_s": 90.15862345788628,
+    "producer_wait_share": 9.984639016697252e-05
+   }
+  },
+  {
+   "label": "b5_pair_access_B",
+   "rc": 0,
+   "wall_s": 92.08329525007866,
+   "extra": {
+    "budget_mib": 4916,
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 75.8655543748755,
+    "cold_wall_s": 77.75829000002705,
+    "producer_wait_share": 0.00010509760411953867
+   }
+  },
+  {
+   "label": "b5_pair_flow_A",
+   "rc": 0,
+   "wall_s": 121.94922716682777,
+   "extra": {
+    "budget_mib": 5540,
+    "session_status": "valid",
+    "validated": 3,
+    "warm_wall_s": 87.05689854105003,
+    "cold_wall_s": 87.86358783300966,
+    "producer_wait_share": 4.8438114275477135e-05
+   }
+  },
+  {
+   "label": "b5_pair_flow_B",
+   "rc": 0,
+   "wall_s": 92.27556504216045,
+   "extra": {
+    "budget_mib": 4664,
+    "session_status": "valid",
+    "validated": 3,
+    "warm_wall_s": 59.65277099981904,
+    "cold_wall_s": 60.37900658301078,
+    "producer_wait_share": 4.531055229619089e-06
+   }
+  },
+  {
+   "label": "b1_holdout_A",
+   "rc": 0,
+   "wall_s": 127.9,
+   "extra": {
+    "budget_mib": 3174,
+    "cache_root": "/tmp/nbc_q10_warm_b1_holdout_A_r0_20260929T222833_1790720913876940000",
+    "cache_class": "fresh-per-run",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/A/b1_holdout_A/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/Q00/q10_O3_HOLDOUT_sel_all.run.manifest.json",
+     "--arm",
+     "q10_b1_holdout_A",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/b0.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "189",
+     "--workers",
+     "9",
+     "--numba-threads",
+     "1",
+     "--flow-stripes",
+     "default",
+     "--queue-depth",
+     "9",
+     "--writer-limit",
+     "9",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "3174",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_warm_b1_holdout_A_r0_20260929T222833_1790720913876940000",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/A/b1_holdout_A/out"
+    ],
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 110.07126341713592,
+    "cold_wall_s": 112.4892418331001,
+    "producer_wait_share": 0.0002153950928150154,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "b1_holdout_B",
+   "rc": 0,
+   "wall_s": 126.2,
+   "extra": {
+    "budget_mib": 3773,
+    "cache_root": "/tmp/nbc_q10_warm_b1_holdout_B_r0_20260929T223041_1790721041826501000",
+    "cache_class": "fresh-per-run",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/B/b1_holdout_B/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/Q00/q10_O3_HOLDOUT_sel_all.run.manifest.json",
+     "--arm",
+     "q10_b1_holdout_B",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/selected.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "189",
+     "--workers",
+     "9",
+     "--numba-threads",
+     "1",
+     "--flow-stripes",
+     "default",
+     "--queue-depth",
+     "9",
+     "--writer-limit",
+     "9",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "3773",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_warm_b1_holdout_B_r0_20260929T223041_1790721041826501000",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/B/b1_holdout_B/out"
+    ],
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 105.16044870880432,
+    "cold_wall_s": 107.35774462483823,
+    "producer_wait_share": 0.00016348100651039405,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "b1_pair_access_A",
+   "rc": 0,
+   "wall_s": 135.4,
+   "extra": {
+    "budget_mib": 3727,
+    "cache_root": "/tmp/nbc_q10_warm_b1_pair_access_A_r0_20260929T223248_1790721168007736000",
+    "cache_class": "fresh-per-run",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/A/b1_pair_access_A/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/Q00/q10_O3_ACCESS_sel_all.run.manifest.json",
+     "--arm",
+     "q10_b1_pair_access_A",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/b0.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "189",
+     "--workers",
+     "9",
+     "--numba-threads",
+     "1",
+     "--flow-stripes",
+     "default",
+     "--queue-depth",
+     "9",
+     "--writer-limit",
+     "9",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "3727",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_warm_b1_pair_access_A_r0_20260929T223248_1790721168007736000",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/A/b1_pair_access_A/out"
+    ],
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 116.27349483384751,
+    "cold_wall_s": 118.44651645887643,
+    "producer_wait_share": 0.0007919893448768441,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "b1_pair_access_B",
+   "rc": 0,
+   "wall_s": 121.9,
+   "extra": {
+    "budget_mib": 3936,
+    "cache_root": "/tmp/nbc_q10_warm_b1_pair_access_B_r0_20260929T223503_1790721303370892000",
+    "cache_class": "fresh-per-run",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/B/b1_pair_access_B/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/Q00/q10_O3_ACCESS_sel_all.run.manifest.json",
+     "--arm",
+     "q10_b1_pair_access_B",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/selected.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "189",
+     "--workers",
+     "9",
+     "--numba-threads",
+     "1",
+     "--flow-stripes",
+     "default",
+     "--queue-depth",
+     "9",
+     "--writer-limit",
+     "9",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "3936",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_warm_b1_pair_access_B_r0_20260929T223503_1790721303370892000",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/B/b1_pair_access_B/out"
+    ],
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 98.19505649991333,
+    "cold_wall_s": 100.38434379105456,
+    "producer_wait_share": 0.00021921543474053603,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "b1_pair_flow_A",
+   "rc": 0,
+   "wall_s": 127.0,
+   "extra": {
+    "budget_mib": 4053,
+    "cache_root": "/tmp/nbc_q10_warm_b1_pair_flow_A_r0_20260929T223705_1790721425248441000",
+    "cache_class": "fresh-per-run",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/A/b1_pair_flow_A/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/Q00/q10_O3_FLOW_sel_all.run.manifest.json",
+     "--arm",
+     "q10_b1_pair_flow_A",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/b0.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "3",
+     "--workers",
+     "1",
+     "--numba-threads",
+     "5",
+     "--flow-stripes",
+     "4",
+     "--queue-depth",
+     "1",
+     "--writer-limit",
+     "1",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "4053",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_warm_b1_pair_flow_A_r0_20260929T223705_1790721425248441000",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/A/b1_pair_flow_A/out"
+    ],
+    "session_status": "valid",
+    "validated": 3,
+    "warm_wall_s": 89.06013791682199,
+    "cold_wall_s": 89.87397787487134,
+    "producer_wait_share": 8.770736473926556e-06,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "b1_pair_flow_B",
+   "rc": 0,
+   "wall_s": 90.6,
+   "extra": {
+    "budget_mib": 3177,
+    "cache_root": "/tmp/nbc_q10_warm_b1_pair_flow_B_r0_20260929T223912_1790721552275876000",
+    "cache_class": "fresh-per-run",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/B/b1_pair_flow_B/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/Q00/q10_O3_FLOW_sel_all.run.manifest.json",
+     "--arm",
+     "q10_b1_pair_flow_B",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/selected.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "3",
+     "--workers",
+     "1",
+     "--numba-threads",
+     "5",
+     "--flow-stripes",
+     "4",
+     "--queue-depth",
+     "1",
+     "--writer-limit",
+     "1",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "3177",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_warm_b1_pair_flow_B_r0_20260929T223912_1790721552275876000",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/B/b1_pair_flow_B/out"
+    ],
+    "session_status": "valid",
+    "validated": 3,
+    "warm_wall_s": 59.64745424990542,
+    "cold_wall_s": 60.40020233299583,
+    "producer_wait_share": 3.6966875246037784e-06,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "b1_smi_acc_A_w1",
+   "rc": 0,
+   "wall_s": 25.8,
+   "extra": {
+    "budget_mib": 3285,
+    "cache_root": "/tmp/nbc_q10_warm_b1_smi_acc_A_w1_r0_20260929T224042_1790721642878792000",
+    "cache_class": "fresh-per-run",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/A/b1_smi_acc_A_w1/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/scheduling/s01_O3_ACCESS.run.manifest.json",
+     "--arm",
+     "q10_b1_smi_acc_A_w1",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/b0.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "36",
+     "--workers",
+     "9",
+     "--numba-threads",
+     "1",
+     "--flow-stripes",
+     "default",
+     "--queue-depth",
+     "9",
+     "--writer-limit",
+     "9",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "3285",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_warm_b1_smi_acc_A_w1_r0_20260929T224042_1790721642878792000",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/A/b1_smi_acc_A_w1/out"
+    ],
+    "session_status": "valid",
+    "validated": 36,
+    "warm_wall_s": 12.990135208005086,
+    "cold_wall_s": 14.07436174992472,
+    "producer_wait_share": 0.00018853229475939424,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "b1_smi_acc_A_w2",
+   "rc": 0,
+   "wall_s": 24.3,
+   "extra": {
+    "budget_mib": 2864,
+    "cache_root": "/tmp/nbc_q10_warm_b1_smi_acc_A_w2_r0_20260929T224138_1790721698790009000",
+    "cache_class": "fresh-per-run",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/A/b1_smi_acc_A_w2/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/scheduling/s01_O3_ACCESS.run.manifest.json",
+     "--arm",
+     "q10_b1_smi_acc_A_w2",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/b0.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "36",
+     "--workers",
+     "9",
+     "--numba-threads",
+     "1",
+     "--flow-stripes",
+     "default",
+     "--queue-depth",
+     "9",
+     "--writer-limit",
+     "9",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "2864",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_warm_b1_smi_acc_A_w2_r0_20260929T224138_1790721698790009000",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/A/b1_smi_acc_A_w2/out"
+    ],
+    "session_status": "valid",
+    "validated": 36,
+    "warm_wall_s": 12.13728450005874,
+    "cold_wall_s": 13.158028709003702,
+    "producer_wait_share": 0.000153190526265657,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "b1_smi_acc_B_w1",
+   "rc": 0,
+   "wall_s": 30.1,
+   "extra": {
+    "budget_mib": 4380,
+    "cache_root": "/tmp/nbc_q10_warm_b1_smi_acc_B_w1_r0_20260929T224108_1790721668639954000",
+    "cache_class": "fresh-per-run",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/B/b1_smi_acc_B_w1/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/scheduling/s01_O3_ACCESS.run.manifest.json",
+     "--arm",
+     "q10_b1_smi_acc_B_w1",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/selected.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "36",
+     "--workers",
+     "9",
+     "--numba-threads",
+     "1",
+     "--flow-stripes",
+     "default",
+     "--queue-depth",
+     "9",
+     "--writer-limit",
+     "9",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "4380",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_warm_b1_smi_acc_B_w1_r0_20260929T224108_1790721668639954000",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/B/b1_smi_acc_B_w1/out"
+    ],
+    "session_status": "valid",
+    "validated": 36,
+    "warm_wall_s": 13.557143167126924,
+    "cold_wall_s": 14.541513417148963,
+    "producer_wait_share": 0.0001408985636908939,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "b1_smi_acc_B_w2",
+   "rc": 0,
+   "wall_s": 29.7,
+   "extra": {
+    "budget_mib": 4569,
+    "cache_root": "/tmp/nbc_q10_warm_b1_smi_acc_B_w2_r0_20260929T224203_1790721723068716000",
+    "cache_class": "fresh-per-run",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/B/b1_smi_acc_B_w2/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/scheduling/s01_O3_ACCESS.run.manifest.json",
+     "--arm",
+     "q10_b1_smi_acc_B_w2",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/selected.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "36",
+     "--workers",
+     "9",
+     "--numba-threads",
+     "1",
+     "--flow-stripes",
+     "default",
+     "--queue-depth",
+     "9",
+     "--writer-limit",
+     "9",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "4569",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_warm_b1_smi_acc_B_w2_r0_20260929T224203_1790721723068716000",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/B/b1_smi_acc_B_w2/out"
+    ],
+    "session_status": "valid",
+    "validated": 36,
+    "warm_wall_s": 14.168726082891226,
+    "cold_wall_s": 15.194038833025843,
+    "producer_wait_share": 0.0001182697717632816,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "cold_access_b0",
+   "rc": 0,
+   "wall_s": 102.8,
+   "extra": {
+    "budget_mib": 3604,
+    "cache_root": "/tmp/nbc_q10_cold_cold_access_b0_r0_20260929T192808",
+    "cache_class": "cold-fresh",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/b0/cold_access_b0/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/Q00/q10_O3_ACCESS_sel_all.run.manifest.json",
+     "--arm",
+     "q10_cold_access_b0",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/b0.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "189",
+     "--workers",
+     "9",
+     "--numba-threads",
+     "1",
+     "--flow-stripes",
+     "default",
+     "--queue-depth",
+     "9",
+     "--writer-limit",
+     "9",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "3604",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_cold_cold_access_b0_r0_20260929T192808",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/b0/cold_access_b0/out"
+    ],
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 88.51282429113053,
+    "cold_wall_s": 90.3418034161441,
+    "producer_wait_share": 9.655549993399539e-05,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "cold_access_sel",
+   "rc": 0,
+   "wall_s": 97.4,
+   "extra": {
+    "budget_mib": 5389,
+    "cache_root": "/tmp/nbc_q10_cold_cold_access_sel_r0_20260929T192951",
+    "cache_class": "cold-fresh",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/sel/cold_access_sel/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/Q00/q10_O3_ACCESS_sel_all.run.manifest.json",
+     "--arm",
+     "q10_cold_access_sel",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/selected.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "189",
+     "--workers",
+     "9",
+     "--numba-threads",
+     "1",
+     "--flow-stripes",
+     "default",
+     "--queue-depth",
+     "9",
+     "--writer-limit",
+     "9",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "5389",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_cold_cold_access_sel_r0_20260929T192951",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/sel/cold_access_sel/out"
+    ],
+    "session_status": "valid",
+    "validated": 189,
+    "warm_wall_s": 80.8109892080538,
+    "cold_wall_s": 82.755319833057,
+    "producer_wait_share": 9.115292452410511e-05,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "cold_flow_b0",
+   "rc": 0,
+   "wall_s": 114.1,
+   "extra": {
+    "budget_mib": 5411,
+    "cache_root": "/tmp/nbc_q10_cold_cold_flow_b0_r0_20260929T193128",
+    "cache_class": "cold-fresh",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/b0/cold_flow_b0/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/Q00/q10_O3_FLOW_sel_all.run.manifest.json",
+     "--arm",
+     "q10_cold_flow_b0",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/b0.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "3",
+     "--workers",
+     "1",
+     "--numba-threads",
+     "5",
+     "--flow-stripes",
+     "4",
+     "--queue-depth",
+     "1",
+     "--writer-limit",
+     "1",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "5411",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_cold_cold_flow_b0_r0_20260929T193128",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/b0/cold_flow_b0/out"
+    ],
+    "session_status": "valid",
+    "validated": 3,
+    "warm_wall_s": 79.52697512507439,
+    "cold_wall_s": 80.22014312515967,
+    "producer_wait_share": 4.530953169453431e-06,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "cold_flow_sel",
+   "rc": 0,
+   "wall_s": 88.5,
+   "extra": {
+    "budget_mib": 4694,
+    "cache_root": "/tmp/nbc_q10_cold_cold_flow_sel_r0_20260929T193322",
+    "cache_class": "cold-fresh",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/sel/cold_flow_sel/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/Q00/q10_O3_FLOW_sel_all.run.manifest.json",
+     "--arm",
+     "q10_cold_flow_sel",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/selected.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "3",
+     "--workers",
+     "1",
+     "--numba-threads",
+     "5",
+     "--flow-stripes",
+     "4",
+     "--queue-depth",
+     "1",
+     "--writer-limit",
+     "1",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "4694",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_cold_cold_flow_sel_r0_20260929T193322",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/blocks/1/sel/cold_flow_sel/out"
+    ],
+    "session_status": "valid",
+    "validated": 3,
+    "warm_wall_s": 58.504113000119105,
+    "cold_wall_s": 59.22065379214473,
+    "producer_wait_share": 6.123432723426995e-06,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "preflight_access",
+   "rc": 0,
+   "wall_s": 14.8,
+   "extra": {
+    "budget_mib": 3760,
+    "cache_root": "/tmp/nbc_q10_warm_accessibility_b0",
+    "cache_class": "warm-shared",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/prelude/preflight_access/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/Q00/q10_O3_ACCESS_sel_all.run.manifest.json",
+     "--arm",
+     "q10_preflight_access",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/b0.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "1",
+     "--workers",
+     "1",
+     "--numba-threads",
+     "1",
+     "--flow-stripes",
+     "default",
+     "--queue-depth",
+     "1",
+     "--writer-limit",
+     "1",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "3760",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_warm_accessibility_b0",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/prelude/preflight_access/out"
+    ],
+    "session_status": "valid",
+    "validated": 1,
+    "warm_wall_s": 2.9980270420201123,
+    "cold_wall_s": 3.569085916969925,
+    "producer_wait_share": 4.454296046309783e-05,
+    "sourced_from_lease": true
+   }
+  },
+  {
+   "label": "preflight_flow",
+   "rc": 0,
+   "wall_s": 64.8,
+   "extra": {
+    "budget_mib": 4037,
+    "cache_root": "/tmp/nbc_q10_warm_flow_b0",
+    "cache_class": "warm-shared",
+    "out_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/prelude/preflight_flow/out",
+    "argv": [
+     "--manifest",
+     "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/Q00/q10_O3_FLOW_sel_all.run.manifest.json",
+     "--arm",
+     "q10_preflight_flow",
+     "--identity",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/b0.json",
+     "--mode",
+     "batch",
+     "--jobs",
+     "1",
+     "--workers",
+     "1",
+     "--numba-threads",
+     "5",
+     "--flow-stripes",
+     "4",
+     "--queue-depth",
+     "1",
+     "--writer-limit",
+     "1",
+     "--cpu-budget",
+     "9",
+     "--memory-budget-mib",
+     "4037",
+     "--timeout-s",
+     "3600",
+     "--cache-root",
+     "/tmp/nbc_q10_warm_flow_b0",
+     "--out",
+     "/Users/alansynn/orca/workspaces/una-x/campaign_data/q10_run/prelude/preflight_flow/out"
+    ],
+    "session_status": "valid",
+    "validated": 1,
+    "warm_wall_s": 26.26412233384326,
+    "cold_wall_s": 27.005783959059045,
+    "producer_wait_share": 6.84233791313228e-06,
+    "sourced_from_lease": true
+   }
+  }
+ ],
+ "primary_gate": {
+  "gate": ">=1.10x successful-job throughput AND paired 95% CI lower bound > 1.00 (DECISION.md:15)",
+  "primary_per_family": {
+   "access": {
+    "n": 5,
+    "ratios": [
+     1.1841074182176383,
+     1.0343748618764228,
+     1.0969951715019743,
+     1.0473762062400716,
+     1.1629111900889264
+    ],
+    "median": 1.0969951715019743,
+    "bootstrap_ci95": [
+     1.0518485379517482,
+     1.1577532365900536
+    ],
+    "verdict": "FAIL",
+    "statistic": "throughput_ratio = A(b0)_wall/B(selected)_wall (equal jobs per pair; plan form_rule satisfied for k>1 and k=1 alike)"
+   },
+   "flow": {
+    "n": 5,
+    "ratios": [
+     1.4931087845540902,
+     1.3420674932729983,
+     1.3463815459401314,
+     1.3393065665622703,
+     1.4593940412477087
+    ],
+    "median": 1.3463815459401314,
+    "bootstrap_ci95": [
+     1.3418234340096669,
+     1.4549372249259942
+    ],
+    "verdict": "PASS",
+    "statistic": "throughput_ratio = A(b0)_wall/B(selected)_wall (equal jobs per pair; plan form_rule satisfied for k>1 and k=1 alike)"
+   }
+  },
+  "pooled_additional": {
+   "n": 10,
+   "ratios": [
+    1.1841074182176383,
+    1.0343748618764228,
+    1.0969951715019743,
+    1.0473762062400716,
+    1.1629111900889264,
+    1.4931087845540902,
+    1.3420674932729983,
+    1.3463815459401314,
+    1.3393065665622703,
+    1.4593940412477087
+   ],
+   "median": 1.2617069923899544,
+   "bootstrap_ci95": [
+    1.146633544488414,
+    1.3445141946252872
+   ],
+   "verdict": "PASS"
+  },
+  "pairs": [
+   {
+    "block": 1,
+    "family": "access",
+    "a_warm_s": 116.27349483384751,
+    "b_warm_s": 98.19505649991333,
+    "throughput_ratio": 1.1841074182176383
+   },
+   {
+    "block": 1,
+    "family": "flow",
+    "a_warm_s": 89.06013791682199,
+    "b_warm_s": 59.64745424990542,
+    "throughput_ratio": 1.4931087845540902
+   },
+   {
+    "block": 2,
+    "family": "access",
+    "a_warm_s": 86.73751404206268,
+    "b_warm_s": 83.8550096671097,
+    "throughput_ratio": 1.0343748618764228
+   },
+   {
+    "block": 2,
+    "family": "flow",
+    "a_warm_s": 79.38369479216635,
+    "b_warm_s": 59.150299958884716,
+    "throughput_ratio": 1.3420674932729983
+   },
+   {
+    "block": 3,
+    "family": "access",
+    "a_warm_s": 88.02838183310814,
+    "b_warm_s": 80.24500391609035,
+    "throughput_ratio": 1.0969951715019743
+   },
+   {
+    "block": 3,
+    "family": "flow",
+    "a_warm_s": 79.50894979201257,
+    "b_warm_s": 59.05380241712555,
+    "throughput_ratio": 1.3463815459401314
+   },
+   {
+    "block": 4,
+    "family": "access",
+    "a_warm_s": 83.99562666704878,
+    "b_warm_s": 80.19623337499797,
+    "throughput_ratio": 1.0473762062400716
+   },
+   {
+    "block": 4,
+    "family": "flow",
+    "a_warm_s": 79.72739912499674,
+    "b_warm_s": 59.52886450011283,
+    "throughput_ratio": 1.3393065665622703
+   },
+   {
+    "block": 5,
+    "family": "access",
+    "a_warm_s": 88.22490212484263,
+    "b_warm_s": 75.8655543748755,
+    "throughput_ratio": 1.1629111900889264
+   },
+   {
+    "block": 5,
+    "family": "flow",
+    "a_warm_s": 87.05689854105003,
+    "b_warm_s": 59.65277099981904,
+    "throughput_ratio": 1.4593940412477087
+   }
+  ],
+  "bootstrap": "paired fixed-seed (20260929) bootstrap CI over log ratios; 10,000 resamples; bounds exponentiated to the ratio scale",
+  "sampling_unit": "the pair",
+  "caveats": "small-sample limitations stated: n=5 per family, n=10 pooled; jobs from one pool window are NOT independent (plan statistics.caveats)"
+ },
+ "small_input_cell": {
+  "windows": [
+   "b1_smi_acc_A_w1",
+   "b1_smi_acc_B_w1",
+   "b1_smi_acc_A_w2",
+   "b1_smi_acc_B_w2",
+   "b1_smi_acc_A_w3",
+   "b1_smi_acc_B_w3",
+   "b1_smi_flo_A_w1",
+   "b1_smi_flo_B_w1",
+   "b1_smi_flo_A_w2",
+   "b1_smi_flo_B_w2",
+   "b1_smi_flo_A_w3",
+   "b1_smi_flo_B_w3"
+  ],
+  "statistic": "wall_ratio = B(selected)_warm/A(b0)_warm per window; >1 = selected slower \u2014 direction pinned by plan c.s01_disclosed_evidence access_warm_ratio=1.1503544030455606 (selected slower)",
+  "gate": "MEDIAN <= 1.05 per family (DECISION.md:17(c)); median > 1.05 => cell FAILS => recorded + routed; never hidden",
+  "per_family": {
+   "access": {
+    "n": 3,
+    "wall_ratios": [
+     1.0436491191232886,
+     1.1673720001226513,
+     0.9979034997515986
+    ],
+    "median": 1.0436491191232886,
+    "verdict": "PASS"
+   },
+   "flow": {
+    "n": 3,
+    "wall_ratios": [
+     0.9056450589414343,
+     0.9035386778964959,
+     0.9095063110079751
+    ],
+    "median": 0.9056450589414343,
+    "verdict": "PASS"
+   }
+  },
+  "cell_verdict": "PASS",
+  "risk_observation": "candidate ~15% slower on small input is a primary-gate risk signal (plan c.risk_observation)"
+ },
+ "cold_c2": {
+  "plan_clause": "cold median regression >5% requires explicitly bounded warm-only qualification",
+  "per_window": [
+   {
+    "label": "cold_access_b0",
+    "cold_wall_s": 90.3418034161441,
+    "warm_wall_s": 88.51282429113053,
+    "cold_over_warm": 1.0206634365094691,
+    "sourced_from_lease": true
+   },
+   {
+    "label": "cold_access_sel",
+    "cold_wall_s": 82.755319833057,
+    "warm_wall_s": 80.8109892080538,
+    "cold_over_warm": 1.0240602255220188,
+    "sourced_from_lease": true
+   },
+   {
+    "label": "cold_flow_b0",
+    "cold_wall_s": 80.22014312515967,
+    "warm_wall_s": 79.52697512507439,
+    "cold_over_warm": 1.0087161368704785,
+    "sourced_from_lease": true
+   },
+   {
+    "label": "cold_flow_sel",
+    "cold_wall_s": 59.22065379214473,
+    "warm_wall_s": 58.504113000119105,
+    "cold_over_warm": 1.0122476994399379,
+    "sourced_from_lease": true
+   }
+  ],
+  "median_cold_over_warm_by_family": {
+   "access": 1.0223618310157438,
+   "flow": 1.0104819181552083
+  },
+  "regression_gt_5pct": false,
+  "warm_only_qualification": {
+   "required": false,
+   "bound": null
+  }
+ },
+ "turns_odm": {
+  "status": "not_run",
+  "reason": "plan protected_cells.f_turns_odm_untouched: none composed in Q10"
+ },
+ "routed_findings": [
+  "primary_gate.access=FAIL"
+ ],
+ "charge": {
+  "windows_s": 3430.9,
+  "lease": 3431.0
+ }
+}

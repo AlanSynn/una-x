@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "task": "F1I",
+  "record": "admission",
+  "role": "implementation-owner",
+  "generated_utc": "2026-09-26T07:11:00Z",
+  "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e",
+  "branch": "perf/una-large-e2e",
+  "source_pin": {
+    "head_at_recheck": "25aef2dca9a7840e3f5a7c33d2784b3609bdc042",
+    "src_tree_hash_command": "git rev-parse HEAD:src",
+    "src_tree_hash": "b121ec0b4312f12caa98bc115243652e1564d3ec",
+    "expected_src_tree_hash": "b121ec0b4312f12caa98bc115243652e1564d3ec",
+    "expected_src_tree_source": "evidence/control.json selected_source.src_tree (selected source advanced to 7a27866 with A1 screened_in)",
+    "match": true,
+    "git_status_porcelain_entries": 0,
+    "aggregateflow_py_blob": {
+      "at_head": "0114ce8f318a3247b62e3d468e32d54e692737a2",
+      "at_b0_361928e": "0114ce8f318a3247b62e3d468e32d54e692737a2",
+      "identical": true,
+      "note": "git rev-parse <commit>:src/urban_network_analysis/Engines/AggregateFlow.py equal for 361928e (B0) and HEAD; the file F1 changes is byte-identical to the source H05 profiled and to B0 itself. A1 touched Accessibility.py/AccessibilityWElevation.py/_large_access_scratch.py only."
+    }
+  },
+  "reverified_facts": {
+    "method": "code inspection at HEAD 25aef2d with line citations; measured values accepted as committed H05 evidence (probe F1_002800.json ran on the b0 wheel, identity_ok true, at the same AggregateFlow bytes). No re-measurement performed in F1I Phase 1; the blob identity above is the bridge.",
+    "kernel_has_no_nogil": {
+      "citation": "src/urban_network_analysis/Engines/AggregateFlow.py:192",
+      "fact": "@nb.njit(cache=True, fastmath=True) — no nogil kwarg; _accumulate_od_flow is defined at lines 193-386",
+      "h05_fact": "_accumulate_od_flow is njit fastmath WITHOUT nogil (admissions.json F1_fixed_stripe_nogil)",
+      "match": true
+    },
+    "concurrent_od_worker_dispatch": {
+      "citations": [
+        "src/urban_network_analysis/Topology.py:79 num_threads default = mp.cpu_count()-1 (=9 on this 10-logical-CPU laptop, matching the probe's n_threads=9)",
+        "src/urban_network_analysis/Engines/Base.py:125 engine self.num_threads = topology.num_threads",
+        "src/urban_network_analysis/Engines/AggregateFlow.py:1008 n_threads = max(1, int(self.num_threads))",
+        "src/urban_network_analysis/Engines/AggregateFlow.py:1148-1153 ThreadPoolExecutor(max_workers=n_threads); one _process_stripe future per slot 0..n_threads-1"
+      ],
+      "h05_fact": "the engine dispatches up to 9 concurrent OD workers (engine_level_max_concurrent_at_sel1024=9)",
+      "match": true
+    },
+    "fixed_stripe_decomposition_and_reduction": {
+      "citations": [
+        "src/urban_network_analysis/Engines/AggregateFlow.py:1044 for o_pos in range(slot, n_origins, n_threads) — stripe s owns origins s, s+K, ... in ascending order",
+        "src/urban_network_analysis/Engines/AggregateFlow.py:1017-1025 per-stripe private local_AB/local_BA/local_node buffers",
+        "src/urban_network_analysis/Engines/AggregateFlow.py:1041-1042 per-stripe private dd_buf (np.full inf) / pd_buf (np.full -9999), allocated inside _process_stripe",
+        "src/urban_network_analysis/Engines/AggregateFlow.py:1156-1160 final reduction: self.edge_flow_AB += local_AB[slot] for slot in 0..K-1, on the calling thread after the executor context joins all stripes",
+        "src/urban_network_analysis/Engines/AggregateFlow.py:1144-1146 n_threads==1 fast path (no executor spawn)"
+      ],
+      "h05_fact": "fixed arithmetic stripes; slot-order 0..K-1 partial reduction is the exactness obligation (dossier design)",
+      "match": true
+    },
+    "per_call_temporaries_byte_account": {
+      "citations": [
+        "src/urban_network_analysis/Engines/AggregateFlow.py:224 reach = np.zeros(n_nodes, nb.boolean)   (1 B/node)",
+        "src/urban_network_analysis/Engines/AggregateFlow.py:252-253 cont_o, cont_d = np.zeros(n_nodes, nb.boolean) x2 (1 B/node each)",
+        "src/urban_network_analysis/Engines/AggregateFlow.py:308-309 acc_o, acc_d = np.zeros(n_nodes, float64) x2 (8 B/node each)"
+      ],
+      "check": "3*56844*1 + 2*56844*8 = 170532 + 909504 = 1080036 B",
+      "h05_fact": "per-call temporaries 1,080,036 B (48 NRT allocs/call, alloc==free; admissions.json F2_local_overlap bytes_per_stripe_per_od and memory_lifetimes.json runtime_nrt_evidence.accumulate_od_flow, measured at V'=56844)",
+      "match": "exact — the H05 byte figure is reproduced exactly by the three boolean + two float64 n_nodes-sized temporaries; the remaining NRT allocs (reach_nodes/order_o/order_d gathers, argsort temporaries) are envelope-sized (median 66 nodes at sel1024) and account for the 48-alloc runtime count",
+      "note": "alloc==free per call confirms temporaries are per-call churn, not retained state"
+    },
+    "two_fixed_full_Vprime_scans": {
+      "citations": [
+        "src/urban_network_analysis/Engines/AggregateFlow.py:226-231 reach scan: for v in range(n_nodes) — full V' scan",
+        "src/urban_network_analysis/Engines/AggregateFlow.py:238-241 reach_nodes gather scan: for v in range(n_nodes) — second full V' scan"
+      ],
+      "h05_fact": "kernel pays two fixed full-V' scans (F2 fixed_scans_share_of_mean_kernel=0.0178 corroborates)",
+      "match": true
+    },
+    "off_envelope_acc_writes": {
+      "citations": [
+        "src/urban_network_analysis/Engines/AggregateFlow.py:358 acc_o[pv] += f — pv may lie outside the reach envelope (tree predecessor of a reached node), value never read afterwards",
+        "src/urban_network_analysis/Engines/AggregateFlow.py:377 acc_d[pv] += f — same"
+      ],
+      "h05_fact": "off-envelope acc_o[pv] writes exist",
+      "match": true,
+      "f1_stance": "preserved verbatim; F1 owns none of the scratch-reset changes (F2 later owns scratch reset)"
+    },
+    "plus_inf_unreachable_sentinels": {
+      "citations": [
+        "src/urban_network_analysis/Engines/AggregateFlow.py:1041 dd_buf = np.full(n_total_nodes, np.inf)",
+        "src/urban_network_analysis/Engines/AggregateFlow.py:229 dov < np.inf and ddv < np.inf"
+      ],
+      "h05_fact": "+inf unreachable sentinels",
+      "match": true
+    },
+    "call_rate": {
+      "h05_fact": "8217 calls (8.02/origin) at sel1024",
+      "consistency": "code structure: one kernel call per qualifying OD pair inside for d_idx in range(n_dest) (AggregateFlow.py:1079-1109); 8217/1024 = 8.024 qualifying destinations per origin on the frozen workload. Measured value accepted; structure consistent.",
+      "match": true
+    },
+    "gil_bound_probe": {
+      "committed_evidence": "campaigns/una_large_e2e/evidence/H05/admissions.json F1_fixed_stripe_nogil, probe F1_002800.json: 9 threads on fully independent buffers, 12 rounds, observed_max_concurrent=1, parallel/serial=0.82",
+      "decisive_facts": "observed_max_concurrent=1 (kernels never overlap) with serial/parallel=0.82 < 1 — the loader does not overlap and there is overhead; admission per DECISION.md 'F1 additionally requires observed serialization/low concurrent kernel execution' is satisfied by this committed probe"
+    }
+  },
+  "drift_check": {
+    "found": false,
+    "detail": "no drift: AggregateFlow.py is byte-identical (blob 0114ce8f) from B0 361928e through the selected source 7a27866/b121ec0b to HEAD 25aef2d; every H05 flow fact checked above matches the code at line level. Task routing's stop-on-drift condition is not triggered."
+  },
+  "verdict": "ADMITTED — source pin verified (HEAD:src == b121ec0b == control.json selected src tree); all H05 F1 facts re-verified against this source by code inspection with exact line citations, and the per-call temporaries byte figure is reproduced exactly (1,080,036 B = 3 boolean + 2 float64 V'-sized arrays). nogil absence, concurrent striped dispatch, fixed-stripe decomposition, slot-order reduction, scan/temporary structure, off-envelope writes, and sentinels all match the committed probe evidence.",
+  "next_step": "proof.md (incl. the H04-N1 turns-closure proof) for independent review before any implementation; hard stop until approval is relayed by the coordinator."
+}

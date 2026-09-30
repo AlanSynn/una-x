@@ -1,0 +1,42 @@
+{
+ "schema_version": 1,
+ "task": "H05",
+ "record": "preregistration_errata",
+ "erratum_id": "F1I-K-label",
+ "role": "coordinator/integrator",
+ "generated_utc": "2026-09-26T07:26:23Z",
+ "routed_by": "team-lead (coordinator source re-read during F1I Phase 1, surfacing while the F1 proof review is in flight)",
+ "status": "LABEL_CORRECTION — grid values and capacity constraint UNCHANGED",
+ "committed_evidence_affected": {
+  "file": "evidence/H05/preregistration.json",
+  "disposition": "UNMODIFIED — this erratum corrects the record in place; the frozen preregistration is not rewritten",
+  "sections_affected": [
+   "s01_sweep_grid.flow_cell_O3FLOW.K_meaning"
+  ]
+ },
+ "claim_in_committed_preregistration": {
+  "statement": "K_meaning: 'flow engine internal thread pool size (BuildClusters workers)'",
+  "verdict": "MISLABELED — the parenthetical names the wrong pool as the identity of K"
+ },
+ "actual_fact": {
+  "K_knob_chain_verified": [
+   "benchmarks/large_e2e/run.py --flow-stripes <K> -> spec.flow_stripes -> job_spec['flow_stripes']",
+   "benchmarks/large_e2e/harness/worker.py:498-500: for analysis=='flow', una.topology.num_threads = int(stripes_requested) (public topology attribute; mirrors user-facing configuration, not a source change)",
+   "src Topology.py:79: num_threads default mp.cpu_count()-1 (=9 on this 10-CPU machine, matching observed default)",
+   "src Engines/Base.py:125: engine self.num_threads = topology.num_threads",
+   "src Engines/AggregateFlow.py:1008: n_threads = max(1, int(self.num_threads))",
+   "src Engines/AggregateFlow.py:1148 (non-turns driver) and :1433 (turns-aware driver): ThreadPoolExecutor(max_workers=n_threads) dispatching fixed-stripe tasks — the F1 parallelism locus per F1I proof sec 5c"
+  ],
+  "shared_knob_finding": "topology.num_threads — the SAME knob — also sizes the BuildClusters pool at src Topology.py:730 (max_workers = min(self.num_threads, len(weights))). K is therefore not exclusively the flow stripe executor's size, and not a BuildClusters-specific count: it is one shared logical-scratch-count knob with two consumer pools.",
+  "corrected_K_meaning": "K = --flow-stripes = topology.num_threads; primary F1 consumer is the AggregateFlow origin-loop stripe executor (AggregateFlow.py:1148; turns driver :1433 unchanged by F1); secondary consumer is the BuildClusters pool (Topology.py:730), which the F1 change does not touch. The H05 K_meaning parenthetical '(BuildClusters workers)' is withdrawn as the pool identity; the knob identity is topology.num_threads."
+ },
+ "validity_impact": {
+  "grid_values": "UNCHANGED — candidates_WKH [(1,8,1),(1,4,1),(1,2,1),(2,3,1),(3,2,1),(1,1,1)] and H=1 pinning stand",
+  "capacity_constraint": "UNCHANGED — W x (H + K) <= C remains the accounting rule",
+  "why_grid_remains_valid_despite_label": "both consumer pools key off the single shared knob, so sweeping K via --flow-stripes exercises exactly one degree of freedom; equal-resource B0-vs-candidate comparisons hold because both arms receive the same K through the same path",
+  "F1_scope_consistency": "consistent with F1I proof sec 5c, which already treats the flow stripe executor (:1148) as the locus and the BuildClusters pool (Topology.py:730) as out-of-scope-untouched",
+  "in_run_verification": "F1R concurrency verification should read harness-recorded engine_config_observed (worker.py:522-531: flow_stripes_requested, topology_num_threads, engine_num_threads) plus engine-level concurrent-kernel counters, per F1I proof sec 5c"
+ },
+ "no_gate_change": true,
+ "process_note": "erratum written by the coordinator from direct source and harness re-reads only; committed preregistration.json intentionally left byte-identical; no heavy execution performed (no lease consumed); filed before F1R spec drafting so the spec and S01 name the knob correctly"
+}

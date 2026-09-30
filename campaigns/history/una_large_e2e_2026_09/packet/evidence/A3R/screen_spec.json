@@ -1,0 +1,250 @@
+{
+ "spec_id": "A3R_SCREEN_SPEC",
+ "revision": "REV 2 (h04 gate review APPROVED 2026-09-28 on the pre-fold bytes f3daee05; F1 folded pre-commit per that verdict; REV 2 is the pre-authorized envelope amendment as extended by h04's sizing WITNESS PASS: F2/F3 folded per the deferred terms + the five realized envelope constants pinned with derivations + proposal copy delivered + the G4 binding band fixed from the sizing cold walls; vehicles hash-pinned at commit)",
+ "authored_utc": "2026-09-28T03:58:59Z",
+ "author": "h05-profiler (implementation/performance owner)",
+ "task": "#33 A3R: Private scope review + screen",
+ "review_chain": "h04 reviews this spec + both vehicles; team-lead hash-gates the commit; the fire then proceeds under R1/R2/R3 two-key with lease entries at fire time",
+ "standing_authority": {
+  "routing_terms": [
+   "P6: screen reads against preregistered 0.010638766512560852 serial-equivalent; post-T init share ~0.0785 expected above bar",
+   "note 5: one-time A1 recompile boundary budgeted in the screen; screen cache roots DECLARED before any fire",
+   "E displacement criterion (proof section 1) measures on A3R legs via this harness, same estimand as the pinned T3 reading",
+   "standing screen discipline: bare windows, in-run thread pin verification, per-arm cache roots, cold/warm separation, R1/R2/R3 two-key fire with interim custody for instrument-auto summaries"
+  ]
+ },
+ "source_identity_and_arms": {
+  "head_commit": "f17184bf931ac5012bc3b85e91588502937906a7",
+  "b0_commit": "9b1340eb008accdff45fbdf57c6009dd5a6b5146",
+  "parent_of_cand": "9b1340eb008accdff45fbdf57c6009dd5a6b5146 (verified via git rev-parse)",
+  "arm_mechanism": "PER-ARM BUILDS (arms-mechanism rule principle; A3 has NO production toggle so the F2R single-binary launcher form is unavailable): b0 wheel from `git archive 9b1340e...`, cand wheel from `git archive f17184b...`, each into a FRESH venv, real module name, identity asserted per run",
+  "wheels": {
+   "b0": {
+    "venv": "campaign_data/venvs/a3r_b0_wheel",
+    "wheel_record": "campaign_data/a3r_wheel_and_venv_b0.json",
+    "cache_root": "campaign_data/nbc_a3r_b0",
+    "cache_root_declaration": "DECLARED HERE before any fire (routing term 2)"
+   },
+   "cand": {
+    "venv": "campaign_data/venvs/a3r_cand_wheel",
+    "wheel_record": "campaign_data/a3r_wheel_and_venv_cand.json",
+    "cache_root": "campaign_data/nbc_a3r_cand",
+    "cache_root_declaration": "DECLARED HERE before any fire (routing term 2)"
+   }
+  },
+  "module_pins_sha256": {
+   "b0": {
+    "_large_access_scratch.py": "2d3b77363a5d42050024e335b5e2bedf8c8088a312d6e163666596ce42894e23",
+    "Accessibility.py": "5fec7ad5bf00b6b033747ae41ae2a7eec57f53748395ee7b5c0836536b805f75",
+    "AccessibilityWElevation.py": "83ed0bfdd0e2b0b7d413dc39a2e84899a1b145f6980ddd9a30243f6e76944a9c"
+   },
+   "cand": {
+    "_large_access_scratch.py": "a9679b653e6c55e5b88ccbdc79c5576aec1735afdeb994b72d850a2d8579a92b",
+    "Accessibility.py": "fa3e550b0cd51076a8323b7e45facc395ebf6f2f6816565d8d5d7cb7595c90e6",
+    "AccessibilityWElevation.py": "bfd65ab6609ad133dd12b25d92f80d237bdd819e66ac9f4ebed63630848e1400"
+   },
+   "derivation": "git cat-file blob <commit>:src/urban_network_analysis/Engines/<file> | sha256, computed in-session"
+  },
+  "arm_identity_preconditions": {
+   "full_tree_diff": "git diff 9b1340e..f17184b must equal EXACTLY the committed A3 change set (3 engine files + tests/large_e2e/A3/ + evidence/A3I/); anything else = STOP",
+   "wheel_content_compare": "per item 12(d): wheel content is the authoritative package compare (no __pycache__ in wheels)",
+   "venv_tree_diff": "per item 12(a): full site-packages diff of the two venvs, EXCLUDING __pycache__ with counts+reason recorded (item 12(d))",
+   "control_arm_rule": "item 12(b) honored: b0 = the A3-advanced line MINUS the A3 change (9b1340e), wheel REBUILT \u2014 the A1R baseline wheel is NOT inherited"
+  }
+ },
+ "frozen_triple": {
+  "W": 1,
+  "H": 8,
+  "form": "NUMBA_NUM_THREADS=8 in every run env; in-run verification records numba.config.NUMBA_NUM_THREADS AND numba.get_num_threads() AND threading_layer() (get_num_threads called BEFORE threading_layer \u2014 0.67.0 raises otherwise)",
+  "grounding": "accessibility grid W x H <= 9 (h04 disposition-grade recipe); A1R froze (1,8) for this cell class and its supervised disposition walls are the A3R budget basis",
+  "H_frame_disclosure": "the pinned T3 denominator (2,474,174,042 ns) was measured by the A3I instrumented ctl at numba_num_threads 10 (unpinned default), NOT at the screen grid H=8 \u2014 see disclosure D1"
+ },
+ "cell": {
+  "workload_id": "O3_ACCESS",
+  "manifest": "tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+  "manifest_sha256": "767de66838a3f968852f235ee83de611294b181d35a088d6bf7f68f8cd928f0c",
+  "selection_manifest_sha256": "2e535cbc45531d86b15a748e96888fe8bb007be7a05afee79683b718ce3586cd",
+  "counts_orientation": {
+   "V_nodes": 49159,
+   "E_edges": 69957,
+   "O_rows": 14751,
+   "D_rows": 6661,
+   "note": "orientation from the A3I admission frame; each run re-derives counts in-record from the live topology"
+  },
+  "why_this_cell": "the SAME cell as the A3I admission keeps the P6 estimand comparable to the pinned T3 reading (routing terms 1 and 3); sel_all identity cell (bare-driver identity shortcut applies)"
+ },
+ "screen_shape": {
+  "blocks": [
+   {
+    "block": 1,
+    "order": "AB",
+    "cache": "cold \u2014 BOTH per-arm roots wiped at block-1 b0 (before/after file counts recorded per run)"
+   },
+   {
+    "block": 2,
+    "order": "BA",
+    "cache": "warm \u2014 roots reused"
+   },
+   {
+    "block": 3,
+    "order": "AB",
+    "cache": "warm \u2014 roots reused"
+   }
+  ],
+  "runs_per_block": 2,
+  "total_runs": 6,
+  "run_ids": "<prefix>_b<N>_<ORDER>_<arm>; attempt-1 prefix a3r; a fresh attempt passes a fresh prefix so landed records are never rewritten (restart-whole discipline)",
+  "window": "bare complete-job: perf_counter_ns around the single una.RunAccessibility() call incl. synchronous exports; NO sampler thread, NO span patches, NO comparator inside the window; all observation strictly post-window",
+  "leg_c_placement": "the leg-C init microbench runs POST-window and POST-ru_maxrss in every gate run (instrument add-on, arm-symmetric); it compiles one njit(cache=False) replica \u2014 the one-time A1-recompile-class boundary (routing term 2) lands OUTSIDE every timed window and is budgeted in the worst-case arithmetic",
+  "bytecode_hygiene": "PYTHONDONTWRITEBYTECODE=1 in every child env (recorded per run); cache entry COUNTS are a supervisor obligation (driver records paths only)"
+ },
+ "estimand_and_preregistration": {
+  "p6_form": "share = legC_mean_s x O_rows / application_window_s \u2014 the SAME estimand as the pinned T3 reading (per-origin init mean x O over the complete-job warm window)",
+  "leg_c_instrument": {
+   "replica": "np.ones(n, dtype=np.float64) + cutoff via ONE njit(cache=False) driver function; n = nd (= V + D, the full init, b0's production form) and n = V (tail-free init, cand's production form); cutoff = float(settings.search_radius) recorded per run",
+   "dtype_grounding": "float64 pinned; A3I t2 record dtype_observed float64, replica vs real kernel array-equality 32/32 (admission.json)",
+   "protocol": "3 warmups then up to 2000 individually-timed reps under a 5.0 s wall deadline; stats n/mean/median/p10/p90/min/max; shares computed IN-RECORD vs that run's own window and O_rows"
+  },
+  "pinned_constants_decimal_exact": {
+   "derivation_frame": "exact rationals on the RECORD's printed decimals (num/10**k form), rounded once at the end \u2014 campaign convention",
+   "t_init_mean": "1.495376182720065e-05 (= 1495376182720065/10**20)",
+   "warm_window_H10_ns": 2474174042,
+   "O": 14751,
+   "D": 6661,
+   "V": 49159,
+   "nd": 55820,
+   "pre_T_share_serial_equiv": 0.08915417305677027,
+   "tail_fraction": 0.11932998925116446,
+   "preregistered_ceiling_serial_equiv": 0.010638766512560852,
+   "post_T_predicted_share": 0.07851540654420941,
+   "wall_honest_share_H10": 0.0010638766512560851
+  },
+  "readings": {
+   "realized_saving": "b0_share_full_warm_mid - cand_share_tailfree_warm_mid; mid = mean of warm blocks 2-3 per arm (block_set_ledger)",
+   "ceiling_rule": "realized_saving EXCEEDING 0.010638766512560852 = mechanism/estimand anomaly -> blocked_pending_adjudication (a saving larger than the accounted bound cannot be attributed to T)",
+   "M_E": "cand_share_tailfree_warm_mid recorded as E criterion (i) input; the 0.05 bar reading is recorded as a data point (m_e_data_point_me_ge_0_05); disposition is h04's/E's",
+   "frame_transfer_anchor": "b0_share_full_warm_mid vs pinned 0.08915417305677027; orientation band [0.078675895, 0.090888226] from the pinned mean x O over the six A1R H8 warm windows (printed derivation; NON-BINDING orientation per the receipt-convention rule)",
+   "gate_level_record": "the CROSS-ARM saving lives in the supervisor summary (baseline-note reversal rule); per-run records compute only their own shares"
+  },
+  "block_set_ledger": "admission reads ONLY warm blocks 2-3; block 1 feeds cold regression (G4) and Q00 peaks; proxy prohibition: no all-blocks aggregate is compared against any gate"
+ },
+ "gates": {
+  "G1_byte_identity": "the FOUR in-memory accessibility arrays (reach, gravity_exponential, gravity_logistic, knn_access) sha256_bytes cross-arm equal on EVERY matched pair; first-divergence capture; divergence = REJECT (track rejection signal). Exported artifacts recorded + cross-compared DESCRIPTIVE with run-id normalization (disclosure D3)",
+  "G2_warning_parity": "verbatim_warnings counts equal per block per arm \u2014 ENFORCED in the block comparator (the comparator READS the field; un-enforced-check rule)",
+  "G3_saving_gate": "leg-C share differential (see estimand.readings): ceiling rule + noise guard |realized_saving| > max(within-arm warm leg-C share spread) for screened_in; else not_demonstrated_at_screen (disclosure D2)",
+  "G4_cold_regression": "cold window ratio cand/b0 (block 1) within the FIXED band [1.0296296296296297, 1.25] (REV 2; the spec-predeclared act 'band fixed at prereg review from sizing-stage cold walls' executes here). ANCHOR: sizing attempt-2 cold walls as charged, b0 13.5 s / cand 14.3 s, exact ratio 143/135 = 1.0592592592592593; the legc add-on is negligible, stated in-record: n x mean_s sums 0.054225992 s (b0) / 0.056573565 s (cand), add-on-adjusted ratio 1.0593236526603385 vs raw 1.0592592592592593 — indistinguishable, raw-wall anchor acknowledged. LOW EDGE 139/135 = 1.0296296296296297 = 1 + (143/135 - 1)/2: the band tolerates cold-ratio run-to-run variance up to exactly HALF the measured compile inflation (0.0296296296296296) before the low edge; strictly > 1.0. HIGH EDGE 1.25 carried UNCHANGED from the a-priori illustration (A1R ACCESS realization 8.040295125/6.641840208 = 1.2105523278496795 for A1's +2 kernels — the same compile-inflation mechanism cand's A3 +2 kernels engage). The a-priori illustration [1.05, 1.25] is REPLACED by this band; the anchor r sits inside both (consistency check passes). Dispositions: beyond the band high = blocked_pending_adjudication (compile-cost anomaly); below the band low edge = blocked_pending_adjudication (cold-regression route); below 1.0 = blocked_pending_adjudication (arm-identity suspicion, independent clause)",
+  "G5_route_receipts": "cand engagement: (i) symbol PRESENCE hasattr receipts (never executed from the driver): _a3_tail_admits + _a3_scope_search_tailless present in cand, absent in b0; (ii) post-window numpy replay of the guard's admission conditions on inputs reconstructed from the same topology tables the engine uses (Engines/Accessibility.py :648-649 cand blob), labeled replay_on_reconstructed_inputs, corroborative-only; (iii) cache census delta cross-arm = entries matching ONLY the two A3 family markers (compiled = called; item 12(c) mechanism). b0 runs record the negative signature; comparator enforces both",
+  "G6_memory_parity": "warm-governing ru_maxrss cross-arm recorded; A3 REMOVES 53,288 B per live search allocation (proof section 6) \u2014 expected indistinguishable within variance; capacity claims gate on the WARM governing block only (governing-block rule); cold block keeps admission/watchdog role only",
+  "dossier_bar_mapping": "dossier A3_private_scope.md bar: branch/indirection + final materialization + rollover overhead are covered by G1 (bit-identical outputs) + proof section 6 (replacement work NONE) + G5 (route receipts); per-owner memory by G6"
+ },
+ "statistics_and_admission": {
+  "legc_quality_gates": "reps n recorded; n < 2000 only via the wall deadline (recorded); within-arm warm share spread computed in-summary",
+  "admission_ci": "descriptive companion only: t-interval on the two paired warm log-ratio wall differences (1 dof, t_crit 12.706204736174704 = cot(pi/40)); very limited small-sample precision; NOT an admission input",
+  "summary": "campaign_data/a3r_screen_summary.json \u2014 DESCRIPTIVE ONLY, no verdicts; h04 owns disposition/selection; R2 interim custody of any prior summary; TEMP + atomic rename filing everywhere"
+ },
+ "cold_expectation_and_q00_prereg": {
+  "cold_compile_transient": "block-1 cold is compile-dominated; sizing runs measure the COLD peak at the GATE ARMS first (direct frozen-driver invocations, throwaway roots disjoint from matrix roots, run ids outside the a3r_b<N> pattern, records to campaign_data, lease-charged diagnostics_class, REV-9 preconditions IN-record: available >= 5,368,709,120 B AND loadavg 1m < 8; second materially-low landing = systematic machine change, STOP and report)",
+  "envelope_rule": "watchdog budget = max(1.10 x governing, governing x 1.077) MiB (Q00 sizing rule); admission bar = budget/0.8; matrix entry = budget/0.8 + 50 MiB; constants pinned by SPEC AMENDMENT after sizing (the supervisor's draft constants are placeholders that cannot fire \u2014 the envelope gate refuses any --stage run until campaign_data/a3r_envelope.json exists and matches)",
+  "q00_band": "block-1 cold peaks vs per-arm sizing governing compared against the 7.5-7.7% precedent band (F2R 3,123.203125/2,905.265625 MiB; F1R 7.7%); materially above = Q00 blocking note, not a pass-with-comment"
+ },
+ "budget_arithmetic": {
+  "basis": "A1R supervised disposition walls at this cell (a1r_lease_log windows pairs_run:a1rp_O3_ACCESS_*): cold b0 9.8 s / cand 11.0 s; warm 4.9-6.5 s",
+  "A3R_allowances_orientation": {
+   "cold_b0_s": 11.0,
+   "cold_cand_s": 12.5,
+   "warm_plus_legC_s": 8.5
+  },
+  "one_pass_s": 57.5,
+  "one_pass_derivation": "11.0 + 12.5 + 4 x 8.5 = 57.5 \u2014 the cold pair (block 1) plus four warm legs (blocks 2-3) at the frozen allowances; exact rational 115/2",
+  "worst_case_one_restart_s": 115.0,
+  "worst_case_derivation": "2 x 57.5 = 115.0 (F2-folded per the gate verdict: the supervisor's design-time orientation 118.0 was un-derived; the derived value is pinned in both vehicles \u2014 either value passes headroom, so nothing is shaved to fit a gate)",
+  "headroom_rule": "worst_case_one_restart x 100 <= remaining at matrix entry (F2R form); at amendment time 115.0 x 100 = 11,500.0 <= 13,056.1 remaining (verified against lease bytes)",
+  "remaining_orientation_s": 13056.1,
+  "remaining_derivation": "14,400.0 - 1,316.1 a3r opening - 13.5 - 14.3 sizing charges (attempt-2 lease windows, rc=0), read from the lease log bytes",
+  "realized_envelope": {
+   "governing_mib": 627.125,
+   "governing_derivation": "max of the attempt-2 sizing peaks (b0 610.515625, cand 627.125 MiB); exact rational 5017/8",
+   "budget_mib": 690,
+   "budget_derivation": "ceil-to-whole-MiB of max(1.10 x 627.125, 627.125 x 1.077): the 1.10 branch 689.8375 (exact 55187/80) governs over the 1.077 branch 675.413625 (exact 5403309/8000); 689.8375 -> 690 (ceiling step explicit per the Q00 sizing rule)",
+   "budget_bytes": 723517440,
+   "admission_min_avail_bytes": 904396800,
+   "admission_derivation": "723,517,440 / 0.8 = 904,396,800 B exact",
+   "matrix_entry_min_avail_bytes": 956825600,
+   "entry_derivation": "904,396,800 + 50 MiB (52,428,800) = 956,825,600 B exact",
+   "envelope_record": "campaign_data/a3r_envelope.json delivered with this amendment (proposal copy + derivations); supervisor constants pinned to these values in the same amendment",
+   "sizing_source": "sizing attempt 2, 2026-09-28T10:43:06Z, committed supervisor 5393779a, records a36af2bd (b0) / d05c2209 (cand)"
+  },
+  "note": "remaining = 14,400 - a3r opening (f2r closing cumulative read fresh at init) - sizing charges; the a3r lease log is created by --stage init ONLY, chained to the F2R log (opening = F2R cumulative, parent_log_sha256 = F2R log bytes at init, source_commit = f17184b); f2r stored-vs-recomputed divergence checked at init (stored 1316.1 = recomputed 1316.1 at init); if the honest worst case ever exceeds remaining/100, STOP and route \u2014 allowances are never shaved to fit"
+ },
+ "vehicle_and_review_chain": {
+  "P1": "this spec REV 1 + disclosures D1-D5 reviewed by h04; the review pins the spec bytes",
+  "P2": "driver a3r_bare_job.py diff-vs-skeleton vs evidence/A1R/a1r_bare_job.py reviewed (deltas marked '# [A3R-delta n]' in-file)",
+  "P3": "supervisor a3r_run_pairs.py diff-vs-skeleton vs evidence/F2R/f2r_run_pairs.py reviewed; guard-shaped hunks get semantic probes of the firing AND passing cases (no-write probes per the ruled probe posture)",
+  "P4": "sizing stage executed AFTER spec+vehicle commit, BEFORE matrix entry; envelope constants by amendment",
+  "P5": "wheel/venv identity: per-arm git archive of the PINNED commits, per-run identity assertion (realpath under the arm's site-packages), wheel content compare + venv diff per item 12(a)/(d)",
+  "vehicles_at_drafting": {
+   "a3r_bare_job.py": "061d46ce3ad43b9ff6d0ce22cf60755191c701250c41c3ec6cae98f6da1ca2c4",
+   "a3r_run_pairs.py": "e031ea4239ba522d51d14d52eb12800f178db2fa5b35c23a1927ef9f539135bd"
+  },
+  "syntax_verification": "both vehicles ast.parse PASS under the campaign venv 3.11.16 (execution frame); argparse dest grep clean (no hyphen renames)",
+  "evidence_home": "campaigns/una_large_e2e/evidence/A3R/ (campaign-tree convention; the repo-root evidence/F2R home was an anomaly \u2014 choice stated, disclosed)"
+ },
+ "failure_policy": {
+  "vocabulary": [
+   "screened_in",
+   "not_demonstrated_at_screen",
+   "blocked_pending_adjudication",
+   "rejected"
+  ],
+  "stop_and_preserve": "on failure/timeout/watchdog breach/identity delta: preserve all logs, rename aside (_incident), STOP \u2014 no retries without h04 approval",
+  "restart_whole": "a voided matrix is not dispositional; restart-whole requires h04 approval and a fresh run-id prefix",
+  "uncharged_refusals": "admission/entry/quiet-window refusals are recorded and uncharged"
+ },
+ "disclosures_and_routed_items": [
+  {
+   "id": "D1",
+   "item": "H-frame: screen freezes (W,H) = (1,8) per the accessibility grid rule and A1R precedent, while the pinned T3 denominator (2,474,174,042 ns) was measured at H=10 (unpinned) in the A3I instrumented ctl. Mitigation: in-frame b0-arm share is the frame-transfer anchor with a non-binding orientation band [0.078675895, 0.090888226]; the preregistered ceiling stays the cross-check. QUESTION FOR H04: confirm (1,8) and the non-binding status of the band, or direct a different freeze."
+  },
+  {
+   "id": "D2",
+   "item": "G3-form deviation: F2R gated the WALL delta; here the accounted wall-level saving is ~0.0011 of the window (2.6596916281402128 ms on ~2.5 s walls; exact rational 10638766512560851/4000000000000000 = wall_honest_share_H10 0.0010638766512560851 x 2.5 s — F3-folded per the gate verdict: no defensible frame yields 1.3 ms), far below A1R's run-to-run warm wall spread (2.4270-2.8037 s), so a wall minimum-delta gate is structurally unpassable at this cell. Proposed form: the saving gate reads the leg-C share differential (2000-rep means) with the within-arm share spread as the noise guard; wall deltas recorded descriptive. QUESTION FOR H04: rule the gate form + the noise-guard definition."
+  },
+  {
+   "id": "D3",
+   "item": "G1 scoping: binds on the FOUR in-memory accessibility arrays (A1R cell precedent); exported artifacts recorded + descriptive cross-arm compare with run-id normalization and any name-field exclusion stated (item 17 signature expected). QUESTION FOR H04: confirm vs F2R's artifact-sha G1."
+  },
+  {
+   "id": "D4",
+   "item": "E-criterion scoping: proof section 1 criterion (ii) (amortized reset overhead) measures E's OWN machinery (epoch/marks), which does not exist in the T build \u2014 A3R records M_E (criterion (i) input) only; criterion (ii) is E-cycle material. QUESTION FOR H04: confirm this reading."
+  },
+  {
+   "id": "D5",
+   "item": "Route-receipt design (CORRECTED pre-commit per h04 F1; REV 1's persistence premise was FALSE): the production guard consumes the PERSISTED array graph.d_terminal_idxs, assigned at Accessibility.py :728 inside _build_compact_graph_from_topology (np.array([d_start_nodes, d_end_nodes], dtype=np.int64).T), retained via _initialize_graph_engine (:742-745) as self.graph_engine, and passed by the engine's o_scope (:560) and o_access (:573); REV 1 had inferred non-persistence from the engine's None-init at :539. The driver's guard-conditions receipt is UNCHANGED: a numpy replay on inputs reconstructed from topology.destinations.edge_start_node/.edge_end_node (:648-649), labeled replay_on_reconstructed_inputs, corroborative-only; h04 ruled the reconstruction construction-identical to the guard's actual input, so the design survives; the optional persisted-array hash receipt was DECLINED to keep the reviewed driver bytes (061d46ce) stable post-verdict; engagement is carried by the cache census (compiled = called) + G1 identity."
+  },
+  {
+   "id": "D6",
+   "item": "Pre-fire verification additions beyond P1-P5: the full-tree diff check (arm identity), wheel content compare, predicted cache-entry counts (orientation: A1R ACCESS realized 8 files b0 / 10 cand on a pre-A1 base; A3R b0 = A1-bearing base so expect +2 vs that, cand +2 more = the two A3 entries; ORIENTATION ONLY \u2014 the binding form is the in-record census + the family-marker rule), and quiet-window gate values for this cell carried from the F2R proven form."
+  }
+ ],
+ "amendment_log": [
+  {
+   "seq": 1,
+   "when": "pre-commit, 2026-09-28, under h04 A3R gate verdict APPROVED",
+   "ruling_anchor": "h04 hashed the pre-fold spec bytes f3daee058acff959a89c29c4e859c30722f31cf9c15c6da6c20038472d298e74 at verdict time and mandated the F1 fold; F2/F3 folds are deferred to the pre-authorized envelope amendment (five constants + proposal copy + F2/F3 only)",
+   "change": "D5 persistence premise corrected: d_terminal_idxs IS persisted post-window (cand Accessibility.py :728 assignment inside _build_compact_graph_from_topology, :742-745 retention as self.graph_engine, :560/:573 consumption by o_scope/o_access); replay design, label replay_on_reconstructed_inputs, and corroborative-only status unchanged; optional persisted-array hash receipt DECLINED to keep reviewed driver bytes 061d46ce stable",
+   "delta_scope": "D5 item text, revision marker, this log entry; no other byte changed from the verdict-hashed state; pre-fold bytes in custody at campaign_data/interim_f3daee05_screen_spec.json (sha f3daee05 verified before edit)"
+  },
+  {
+   "seq": 2,
+   "when": "post-sizing, 2026-09-28, under the pre-authorized envelope-amendment shape (gate verdict deferred terms + h04 sizing witness terms; team-lead authorization to author)",
+   "ruling_anchor": "h04 gate verdict F2/F3 findings (ruled text): F2 \"supervisor WORST_CASE_ONE_RESTART_S = 118.0 vs spec 115.0 (= 2 x 57.5); conservative direction, but un-derived in the vehicle — reconcile with a derivation; either value passes headroom\"; F3 \"no defensible frame yields 1.3 ms — fix the gloss\"; plus h04 sizing WITNESS PASS (2026-09-28) ruling the G4 band fix into this amendment with five derivation requirements (anchor = cold walls as charged; exact ratio; legc negligibility stated in-record; band contains r with an explicit margin rule, low edge > 1.0; a-priori illustration replaced, consistency noted); scope = five constants + proposal copy + F2/F3 + G4 band, nothing else",
+   "change": "F2 folded: worst_case_one_restart stays at the DERIVED 115.0 = 2 x 57.5 with the component derivation (11.0 + 12.5 + 4 x 8.5) now stated; supervisor constant folded 118.0 -> 115.0 to match; headroom re-verified 11,500.0 <= 13,056.1 (remaining updated 12,923.9 -> 13,056.1 = 14,400 - 1,316.1 opening - 27.8 sizing charges, lease bytes). F3 folded: D2 gloss '~1.3 ms' -> 2.6596916281402128 ms (exact 10638766512560851/4000000000000000 = 0.0010638766512560851 x 2.5 s). Five realized envelope constants pinned with in-record derivations incl. the explicit ceil-to-whole-MiB step (689.8375 -> 690); proposal copy delivered as campaign_data/a3r_envelope.json; supervisor memory constants folded to the realized envelope. G4 band FIXED: [1.0296296296296297, 1.25] = [139/135, 1.25]; anchor r = 143/135 = 1.0592592592592593 from the charged sizing walls (legc add-on negligibility in-record: n x mean_s sums 0.054225992 s b0 / 0.056573565 s cand, adjusted ratio 1.0593236526603385 indistinguishable from raw); low edge = 1 + (r-1)/2 tolerates ratio variance up to exactly half the measured compile inflation, strictly > 1.0; high edge 1.25 carried from the a-priori illustration's A1R compile-inflation precedent; illustration REPLACED; r sits inside both (consistency passes)",
+   "delta_scope": "revision marker, D2 item text, budget_arithmetic block (derivation keys + realized_envelope + remaining update), gates.G4_cold_regression value text, this log entry in the spec; the constants block (lines 102-108 region) in a3r_run_pairs.py; campaign_data/a3r_envelope.json delivered; nothing else — pre-amendment bytes in custody at interim_d4095d3e_screen_spec.json and interim_5393779a_a3r_run_pairs.py (both sha-verified before edit)"
+  }
+ ],
+ "f2r_lease_chain_orientation": {
+  "f2r_log_sha256_at_drafting": "74a3869f24bf4c4667a01dea15fd80b7ec61878dcf1566819f51c88adf8aefde",
+  "f2r_cumulative_stored": 1316.1,
+  "note": "the a3r init re-reads the F2R log fresh; this sha is orientation only, the init entry carries the chain"
+ }
+}

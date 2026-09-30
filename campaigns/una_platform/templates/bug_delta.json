@@ -1,0 +1,15 @@
+{
+  "bug_id": null,
+  "status": "hypothesis",
+  "reproducer": null,
+  "legacy_behavior": null,
+  "intended_rule": null,
+  "independent_oracle": null,
+  "corrected_profile": "corrected_v1",
+  "affected_outputs": [],
+  "old_reference_sha": null,
+  "new_reference_sha": null,
+  "unaffected_domain_parity": false,
+  "backend_parity_evidence": [],
+  "migration_note": null
+}

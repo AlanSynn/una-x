@@ -1,0 +1,175 @@
+{
+ "schema_version": 1,
+ "task": "F1R",
+ "record": "screen_spec",
+ "role": "independent-reviewer (screen-spec owner)",
+ "generated_utc": "2026-09-26T11:40:00Z",
+ "status": "DRAFT - execution-blocked until all preconditions in 'preconditions' are met; coordinator commits this spec; executor may not run until then",
+ "provenance": {
+  "proof_chain": [
+   "cb7f671 F1I proof v1",
+   "49255e8 F1I proof amendment (secs 5b/5c/5d) - THE reviewed proof",
+   "8ba1aa7 H05 erratum F1I-K-label: K = --flow-stripes = topology.num_threads; (W,K,H) ordering; grid + capacity constraint unchanged",
+   "8a9f31a F1I proof review v1 (APPROVE, zero blocking)",
+   "edb3c1e F1I proof review re-target to 49255e8 (verdict extends unchanged; F1I-N2 RESOLVED)"
+  ],
+  "dispatch_inputs": [
+   "coordinator dispatch terms (a)-(f) post-A1R, confirmed by reviewer with amendments recorded below",
+   "control_addendum_A1R.json v2: C1 gate granularity (per mandatory workload, never averaged) and C2 cold-gate reading (binds by default; explicitly bounded warm-only is the sanctioned exception) incorporated verbatim as governing",
+   "F1I-N2 resolution: screen defined in HARNESS terms (--flow-stripes), K-matched arms mandatory",
+   "F1I-N3: triple frozen a priori; B0-only mini-selection cannot discriminate F1 (B0 serializes the kernel at any stripe count: GIL-bound, H05 probe observed_max_concurrent=1)"
+  ],
+  "statistic_precedent": "a1rp disposition dataset statistic convention, per /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_screen_summary.json (proxy_speedup_median_b0_over_cand); A1R provenance lesson applied: this spec is committed BEFORE any execution, so there is exactly one schedule and no interim-spec divergence"
+ },
+ "preconditions": [
+  "P1: coordinator commits this spec to evidence/F1R/screen_spec.json",
+  "P2: F1I Phase 2 evidence committed by f1-impl, including proof obligation 9.2 artifacts (in-module inspect_llvm of _accumulate_od_flow at the observed signature, B0 tree vs candidate tree, committed under evidence/F1I/)",
+  "P3: reviewer verification of the 9.2 artifacts recorded: FP census counts AND site sequence equal across trees, ONLY permitted delta GIL save/restore; any other delta = proof rejection and F1R does not open",
+  "P4: candidate_commit pinned by a one-line amendment to this spec (must be the Phase-2 commit; its AggregateFlow.py blob must differ from 0114ce8f318a3247b62e3d468e32d54e692737a2 by EXACTLY the decorator line - reviewer verifies before pinning)",
+  "P4b: execution driver evidence/F1R/f1r_bare_job.py authored by the executor, committed by the coordinator, and verified line-by-line by the reviewer against driver_obligations_binding BEFORE any gate-eligible window opens",
+  "P5 (REV 5 ENVELOPE - supersedes the rev-4 numbers 2600/2620/2800; v4a STRUCTURE preserved; fresh heavy-execution lease granted with memory admission re-check per RESOURCES.md): the envelope is derived in ONE direction from the measured cold sel1024 peaks (gate variant, ru_maxrss true high-water, clean-window characterization): governing peak = max(b0p2 2885.96875 MiB, cand 3003.25 MiB) = 3003.25 MiB (candidate governs; b0p2 3.9% under - arm-symmetric within compile variance as pre-registered); watchdog budget = 1.10 x 3003.25 = 3303.575 -> 3304 MiB (ceil); per-window refusal = 0.80*available < 3354 MiB (budget + 50 MiB stated margin); matrix-ENTRY bar = 0.80*available >= 3534 MiB at initial fire and any post-void re-entry (refusal + 180 MiB v4-structure spread; equivalently available >= 4417.5 MiB = 4632084480 B); WITHIN a matrix the per-window guard is the sole binding mid-matrix protection; a mid-matrix refusal voids the partial matrix and the conformant matrix restarts as a whole (still 3 blocks, no partial-matrix disposition). SIZING INPUTS: f1r_diag_coldpeak_b0p2 (b0p arm, 2885.96875 MiB ru_maxrss, rc 0, window 12.74 s, cache_entries 12 == cand, fired at 5309.9 MiB available / load1 4.318 under the mandatory pre-fire preconditions available >= 5120 MiB (5368709120 B) AND loadavg 1m < 8, both recorded in the monitor record; polls 1, wait 0 s) and cand 3003.25 MiB. The REJECTED f1r_diag_coldpeak_b0p (2246.1 MiB under loadavg 40.56 / 3542.25 MiB avail - ambient pressure reclamation suppressed the resident peak, not demand; 3542.25 MiB = 3714318336 bytes) is NOT a sizing input; the stale five-kernel b0 basis 2891.3 MiB is SUPERSEDED. Quiet-window preconditions bind DIAGNOSTICS-CLASS SIZING runs only; gate-eligible runs keep the v4 entry bar + this P5 guard unchanged (addendum v5 batch item)."
+ ],
+ "frozen_triple": {
+  "value": {"W": 1, "K": 8, "H": 1},
+  "declared": "A PRIORI (before any F1 timing run)",
+  "meaning": "W = --workers (outer jobs) = 1; K = --flow-stripes = topology.num_threads = 8 (flow stripe executor pool, AggregateFlow.py:1148; BuildClusters pool :730 shares the knob but flow is the only analysis in this screen); H = --numba-threads (NUMBA_NUM_THREADS) = 1",
+  "rationale": [
+   "max-stripe on-grid entry: W*(H+K) = 1*(1+8) = 9 = C; B0 ambient default K=9 (cpu_count-1) is off-grid, so K=8 is the frozen entry expressing the thesis (un-serializing the kernel at maximum on-grid striping)",
+   "H=1 pins numba-internal threading inert (the kernel is njit non-parallel, proof sec 5c: H inert for this kernel), so the ONLY concurrency source is the engine executor - attribution is structural",
+   "F1I-N3 + team-lead endorsement: a priori freeze because B0-only selection cannot discriminate (B0 serialized at any K)"
+  ]
+ },
+ "arms_and_sources": {
+  "b0": {
+   "commit": "e95de8e7b81b7db7717a03b4ce2360d6d4001f76",
+   "commit_note": "REV 5 RE-PIN (pre-execution; was 361928e4ba38f34622cafe065b0025244db61368): the advanced line (361928e + A1 track) minus F1. Basis: DECISION.md same-configuration one-change attribution - each screen isolates its own track's increment on the advancing campaign line. Arm identity verified ARM-TO-ARM at tree level (git diff e95de8e..c1d7edc: src delta = AggregateFlow.py exactly 1 decorator line) AND at installed-bytes level (full-venv .py diff b0p_wheel vs f1r_cand_wheel: AggregateFlow.py only, line 192 decorator; beyond the package only __pycache__ and dist-info RECORD differ)",
+   "tree": "git archive of the pinned commit; build record campaign_data/f1r_b0p_wheel_and_venv.json (sha256 6dd347350b1510d3ec2635fdd58e796582bb9ea0e5bd2410f555f2eb89ccb870, status ok, derivative_of f3b7304c frozen build script with diff-vs-source stated)",
+   "wheel_sha256": "9d808304a987af9efe5ccfcbe709ce6b7f9e953098dfc6dd4b5e91c8c141026e (129683 bytes; reviewer-recomputed from the artifact)",
+   "venv": "campaign_data/venvs/b0p_wheel",
+   "aggregate_flow_blob": "0114ce8f318a3247b62e3d468e32d54e692737a2 (unchanged from the pre-A1 baseline: the A1 track does not touch AggregateFlow.py)",
+   "compiled_set": "6 cached kernels incl. _large_access_scratch._a1_scope_search (cache_entries_after 12 files) - IDENTICAL to candidate; the repaired arms differ only in the decorated kernel's nogil flag",
+   "lineage_note": "the prior b0 wheel 71fd5615 (+ venv b0_wheel) is RETAINED and labeled: A1R-correct (A1R's baseline was pre-A1 by design), F1R-wrong (inherited verbatim, it armed the stale pre-A1 baseline against the A1-carrying candidate); blocked first build attempt retained as campaign_data/f1r_b0p_wheel_and_venv_blocked_1.json (sha256 5c989ca4ad34fe3ab5664c386abde448052f104391e1004d3333819fbff2a4c8)"
+  },
+  "candidate": {
+   "commit": "c1d7edc (pinned per precondition P4 by this rev-3 amendment; Phase-2 commit)",
+   "aggregate_flow_blob": "455e92adb5f23748903435d3d6340a5d8a9c47d3",
+   "blob_check": "VERIFIED by reviewer at P3 (evidence/F1R/p3_verification.json): blob-level git diff 0114ce8f318a3247b62e3d468e32d54e692737a2 -> 455e92adb5f23748903435d3d6340a5d8a9c47d3 is exactly one decorator line (@nb.njit(cache=True, fastmath=True) -> @nb.njit(cache=True, fastmath=True, nogil=True) on _accumulate_od_flow); NO other src/ byte differs between e95de8e and c1d7edc"
+  },
+  "packaging": "per-arm wheels + per-arm venvs per the a1r_wheel_and_venv.json recipe, REV 5 RE-POINT: b0p wheel 9d808304a987af9e... (129683 bytes) + venv b0p_wheel; cand wheel from the Phase-2 commit archive + venv f1r_cand_wheel (unchanged); alias-loaded installs; audit scope REV 5: full package venv diff + wheel-content authoritative check (no pyc in wheels) + venv tree check with __pycache__ EXCLUDED and exclusion counts/reason recorded; blocked stops retained and referenced",
+  "cache_roots": "PER-ARM NUMBA_CACHE_DIR, created fresh at block 1, carried through blocks 2-3. Rationale (binding): numba cache entries pickle the loading module name - alias-loaded (wheel/install path) and real-name imports must NEVER share a NUMBA_CACHE_DIR, or one arm can be served the other's machine code. Roots, their paths and their entry counts recorded per run."
+ },
+ "screen_shape": {
+  "cell": "O3_FLOW, workload variant sel1024 (frozen at H05: preregistration workloads.origin_selection.O3_FLOW; sel-all capacity refusal recorded there)",
+  "execution_vehicle": "REV 4 CORRECTION: the gate-eligible vehicle is the dedicated bare-job driver evidence/F1R/f1r_bare_job.py (executor-authored, coordinator-committed and reviewer-verified BEFORE any gate-eligible window), per the A1R disposition-dataset precedent (evidence/A1R/a1r_bare_job.py; lease-log windows pairs_run:a1rp_* are the receipts). run.py is NOT the screen vehicle: its cache-root preflight (harness/spec.py:206-208, H02) forbids nonempty roots by design - a final-protocol session guard, never satisfied by the a1rp warm pairs, which were produced under the A1R bare driver. Driver parameters: --manifest <O3_FLOW manifest> --cell O3_FLOW --arm b0|cand --flow-stripes 8 --numba-threads 1, one job per invocation, W=1",
+  "driver_obligations_binding": [
+   "NUMBA_CACHE_DIR taken from ambient environment (per-arm persistent roots; wiped fresh before block 1 only, then carried through blocks 2-3 exactly as a1rp did)",
+   "flow-stripes wiring via una.topology.num_threads = 8 BEFORE engine construction - the public attribute, mirroring harness worker.py:498-500 (user-facing configuration, not a source change)",
+   "three-field in-run verification recorded from the LIVE objects after construction and re-read after the run: flow_stripes_requested (echo of request), topology_num_threads, engine_num_threads - the worker.py:522-531 equivalents",
+   "complete-job window = exactly ONE public analysis call with NO leaf instrumentation (a1r_bare_job.py:157-164 skeleton); input rehash, manifest/selection identity checks, byte hashes of all outputs, ru_maxrss, loadavg per run",
+   "per-window memory admission in the lease-runner wrapper exactly as A1R: available_at_admission, ceiling 0.80xavailable, pressure_stop, watchdog fields recorded per window in the lease log"
+  ],
+  "identical_for_both_arms": true,
+  "k_match_rule": "K_s=8 in BOTH arms in every gate-eligible block (dossier rule: never compare K=1 vs K=8); DECISION.md same-configuration attribution requirement satisfied by construction",
+  "window_definition": "bare complete-job window: construct UNA + settings outside the window, time exactly ONE public analysis call inside it, all observation (byte hashes, counts, config re-read) AFTER the window. NO instrumentation inside the timing window (A1R schedule-1 lesson). System load and RSS sampled outside the window."
+ },
+ "matrix": {
+  "blocks": 3,
+  "runs_total": 6,
+  "block_structure": "each block = one b0 run + one candidate run, adjacent in time",
+  "arm_order": "AB,BA,AB with A=b0 (prefix of the frozen paired_protocol AB,BA,AB,BA,AB; 3 blocks is the screen ceiling, 5 is the final-protocol shape)",
+  "cache_state": "block 1 = cold (fresh per-arm cache roots, first compile recorded); blocks 2-3 = warm",
+  "ceiling": "HARD: 3 paired blocks per revision, no additional gate-eligible blocks past the first conformant matrix (control_addendum_A1R discipline_note); instrumented pilots are not a substitute for blocks and do not extend the matrix"
+ },
+ "per_run_verification": {
+  "engine_config_observed": "ALL THREE fields must equal the frozen values on every flow run: flow_stripes_requested == 8 AND topology_num_threads == 8 AND engine_num_threads == 8 (worker.py:522-531; the three-field block exists to catch a break anywhere along the request->topology->engine chain; a single mismatch disqualifies the block)",
+  "byte_identity": "candidate output artifact sha256 == b0 output artifact sha256 in EVERY block. The proof predicts bit-identity (exactness induction; reviewer IR census: 92 identical FP sites, sole compiled delta GIL save/restore). ANY byte delta = REJECTION of the track, not an investigation item",
+  "completeness": "HARNESS.md End conformance per run; output radii/counts match the frozen workload contract (a1rp recipe)",
+  "records": "per-run JSON under evidence/F1R/raw/f1r_*.json including NUMBA_CACHE_DIR path + entry counts, wheel/venv identity, lease id, unrelated system load"
+ },
+ "statistics": {
+  "convention": "ratios are b0_wall/cand_wall for speedup (>1 favors candidate); candidate-over-b0 for regressions (>1 = candidate slower). Stated explicitly because direction errors occurred in A1R",
+  "per_block_speedup": "r_i = b0_wall_i / cand_wall_i for blocks 2-3 (warm); r_1 recorded but block 1 is the cold block",
+  "proxy_speedup": "median(b0 wall of all 3 blocks) / median(cand wall of all 3 blocks) - the a1r_screen_summary statistic proxy_speedup_median_b0_over_cand, replicated exactly for cross-track comparability (ACCESS 2.668/2.5776=1.0351 precedent)",
+  "mean_of_ratios": "mean(r_i over warm blocks), descriptive only",
+  "cold_regression": "cand_wall_block1 / b0_wall_block1 (>1 = candidate slower on first process)",
+  "paired_ci": "t-interval on the 3 paired log-ratio differences (2 dof), reported with its limited small-sample precision per DECISION.md; fixed-seed paired bootstrap of log ratios as descriptive interval. The 5-pair CI shape is the Q00/Q10 protocol, not the screen's",
+  "unit": "the pair (block) is the sampling unit, never the job (DECISION.md)"
+ },
+ "gates": {
+  "granularity": "C1: evaluated PER MANDATORY WORKLOAD on the O3_FLOW cell alone; never averaged across cells; this screen says nothing about ACCESS/HOLDOUT cells",
+  "admit_screen": "proxy_speedup >= 1.1 AND paired-CI lower bound of speedup > 1.0 AND cold_regression <= 1.05",
+  "cold_gate": "C2 governing reading: the cold gate binds by default; an explicitly bounded warm-only qualification is the packet-sanctioned exception constraining the final claim shape. Route chosen at Q00, not here; both cold and warm are documented regardless (coordinator dispatch term f)",
+  "investigate_trigger": "any single run where cand_wall / b0_wall (paired, same block) > 1.1 triggers investigation, not automatic rejection (frozen decision_rule)",
+  "failure_disposition": "a failed screen does not reject a zero-semantic-risk source change by itself; it forecloses claiming the cell (C1 cell_failure_consequence). Disposition vocabulary: screened_in / not_demonstrated_at_screen / blocked / rejected - never 'passed' without evidence"
+ },
+ "cold_expectation": {
+  "expected": "approximately parity. F1 adds NO kernels; the compiled body is identical except GIL save/restore (reviewer IR census, proof 5b), so there is NO A1-style one-time JIT deficit. With per-arm fresh cache roots the first compile is symmetric across arms - and SYMMETRIC IN COMPILED SET under the rev-5 re-pin: both arms carry the A1 track (6 cached kernels each, incl. _large_access_scratch._a1_scope_search; cache_entries_after 12 files per arm, verified)",
+  "rev5_reading_rule": "PRE-REGISTERED, repaired-pair form. The confounded-pair cold accommodation (cold misses 1.05-1.15 read as compile cost) is WITHDRAWN - it was sized by A1's extra-kernel compile under the wrong b0 pin, an instrument artifact, and died with that instrument. Under the repaired pair: block-1 cold cand/b0 wall in [0.95, 1.05] = compile/variance bookkeeping, NORMAL; a cold miss (> 1.05 - the gate value is UNCHANGED) is an ANOMALY to investigate (cache-keying, import-path asymmetry, compile-cost asymmetry) with the C2 route machinery available per its own terms; byte-identical outputs pin a miss to mechanism, never semantic regression, and never a wave-through",
+  "warm_adjudication": "WARM blocks 2-3 are the runtime adjudicator and the thesis test: nogil enabling stripe overlap at K=8 predicts warm cand/b0 <= 1. A warm miss is NOT explainable by compile and takes the frozen failure path (investigate_trigger / failure_disposition) with NO reading-rule protection",
+  "anomaly_reading": "cold_regression materially above 1.05 is an ANOMALY to investigate (e.g. cache-keying or import-path asymmetry), not an anticipated finding; the C2 route machinery is carried but is NOT expected to engage for F1"
+ },
+ "diagnostics_class": {
+  "definition": "runs outside the 3-block matrix; documented in the screen record; NEVER entering gate math, proxy, CI, or the block ceiling",
+  "k1_negative_control": {
+   "required": false,
+   "shape": "one block, both arms --flow-stripes 1, fresh cache roots; expected ~parity (mechanism demonstration: with 1 stripe the nogil change has nothing to overlap)",
+   "rule": "K=1 results are never compared against K=8 runs as performance evidence (dispatch term d; dossier K-matched rule)"
+  },
+  "instrumented_concurrency": {
+   "required": false,
+   "shape": "separate instrumented runs (engine-level concurrency counters or h05 probe wrappers), NEVER inside bare timing windows",
+   "rule": "in-window instrumentation would repeat the A1R schedule-1 defect; config-level engine_config_observed is the only in-window verification"
+  }
+ },
+ "exactness_anchor": {
+  "requirement": "the F1R screen record (selection.json) MUST cite the F1I Phase-2 in-module census artifacts (proof obligation 9.2, committed under evidence/F1I/) as the numeric-identity anchor, and MUST record their hashes as verified by the reviewer (precondition P3)",
+  "division_of_labor": "the census owns numeric identity; the screen owns speed. Screen timing evidence is admissible only against a verified-exact kernel"
+ },
+ "budget_and_revisions": {
+  "heavy_wall": "6 gate-eligible runs (+ optional diagnostics); a1rp executed 12 runs plus pilots inside 750.7 s; h05 sizes the lease. Campaign heavy wall remaining after A1R: 14400 - 750.7 = 13649.3 s",
+  "revisions": "<= 2 revisions per DECISION.md and proof sec 5d; any change to this spec AFTER first execution = revision 2, recorded with rationale; no schedule-to-schedule tuning (A1R precedent: candidate frozen before screening)"
+ },
+ "deliverables": {
+  "executor": ["evidence/F1R/raw/f1r_*.json (one per run)", "campaign_data/f1r_screen_summary.json + campaign_data_manifest.json (out-of-repo residency manifest, A1R convention)", "lease log"],
+  "reviewer": ["evidence/F1R/selection.json (disposition, statistics, byte-identity arrays, exactness-anchor citation)", "evidence/F1R/review.json (verdict + findings)"],
+  "coordinator": ["commit of this spec and of candidate pin amendment", "control addendum entry if any ruling is needed"]
+ },
+ "executor_assignment": "h05-profiler, under a fresh heavy lease. Reviewer (this file's author) executes nothing and holds no lease",
+ "out_of_scope": [
+  "no source edits by executor or reviewer (implementation is f1-impl's, committed before P2)",
+  "no harness changes for this screen: benchmarks/large_e2e/** stays byte-frozen; the screen vehicle is the evidence/F1R/ bare driver (evidence-directory tooling per the A1R precedent), not a harness modification",
+  "no gate-eligible runs at K != 8",
+  "campaign standing constraints: no GPU, no native backend, no relaxed math, no broad cache, no public RunBatch parallelization, no scientific bug fixing"
+ ],
+ "amendment_log": [
+  {
+   "rev": 1,
+   "utc": "2026-09-26T11:40:00Z",
+   "note": "initial draft. Two reviewer classifications beyond the coordinator dispatch terms, subject to coordinator countermand before P1: (1) diagnostics-class separation - K=1 control and instrumented concurrency are outside the block matrix and gate math; in-window verification is engine_config_observed only; (2) cold-expectation reset - F1 expects cold parity, cold>1.05 is an anomaly reading, C2 route carried but not expected to engage"
+  },
+  {
+   "rev": 2,
+   "utc": "2026-09-26T07:45:00Z",
+   "role": "coordinator",
+   "note": "P1 commit review: BOTH rev-1 classifications ACCEPTED, no countermand. Both were pre-accepted as F1R amendments and generalized to all R tasks in control_addendum_A1R.json v3_amendment (commit b093301: R_task_spec_protocol + bare_window_instrumentation_rule); this spec is their F1R instance. Coordinator has verified the spec against the dispatch terms (a)-(f), the C1/C2 rulings, the frozen grid (candidates_WKH ordering per erratum 8ba1aa7), and the wall arithmetic (14400 - 750.7 = 13649.3). Candidate commit is intentionally PENDING per P4 - the pin amendment follows Phase-2 landing, reviewer blob verification, and is itself not a revision (pre-execution). Spec committed unchanged apart from this log entry."
+  },
+  {
+   "rev": 3,
+   "utc": "2026-09-26T12:10:00Z",
+   "role": "reviewer",
+   "note": "P4 pin (pre-execution, not a revision): candidate commit = c1d7edc (AggregateFlow.py blob 455e92adb5f23748903435d3d6340a5d8a9c47d3). Blob check VERIFIED at P3 - evidence/F1R/p3_verification.json, 24/24 checks PASS, sole semantic IR delta = GIL save/restore, strict element-wise module identity after normalization. Arms_and_sources.candidate updated from PENDING to the pinned commit; NO other operative clause altered"
+  },
+  {
+   "rev": 4,
+   "utc": "2026-09-26T12:55:00Z",
+   "role": "reviewer",
+   "note": "PRE-EXECUTION correction (not a revision-budget item, same class as rev 3), ruling on executor blocker F1R-CACHE-1 reported by h05-profiler before any gate-eligible window: rev-1's run.py invocation string was reviewer defect - the a1rp disposition dataset never ran under run.py; it ran under the dedicated committed bare driver evidence/A1R/a1r_bare_job.py (lease-log windows pairs_run:a1rp_* are the receipts), which is the only mechanism consistent with the H02 cache-root preflight (harness/spec.py:206-208 refuses nonempty roots) AND warm pair reuse. screen_shape corrected to the precedent vehicle (evidence/F1R/f1r_bare_job.py) with binding driver obligations (three-field live-object verification, public-attribute stripes wiring, one-public-call window, per-window admission records); new precondition P4b (driver committed + reviewer-verified before execution); P5 gains the memory ruling (watchdog 2600 MiB, refusal when 0.80*available < 2620 MiB, voided matrices restart whole). Executor options (a) all-cold and (b) batch-per-block and (c) harness change are REJECTED. Matrix, statistics, gates, triple, byte-identity and exactness-anchor clauses are UNCHANGED - they were written for the precedent model."
+  },
+  {
+   "rev": 5,
+   "utc": "2026-09-26T13:24:42Z",
+   "role": "reviewer",
+   "note": "PRE-EXECUTION amendment (not a revision-budget item; zero gate-eligible windows burned; first execution has not occurred). TWO binding changes plus standing obligations. TRIGGER CHAIN: (1) the memory canary breach (watchdog 2600 MiB killed the b0-arm sel256 canary at 15.47 s - cold-compile transient, rev-4 budget sized from the WARM H05 peak) forced envelope re-characterization; (2) the characterization's cache roots exposed a STRUCTURAL ARM CONFOUND: the candidate arm carried the ENTIRE A1 track while the b0 pin (361928e) predated it - cand cache roots contained _large_access_scratch._a1_scope_search entries (compiled = called: A1's scratch route was live in flow gravity) and the full-venv diff showed _large_access_scratch.py only-in-cand plus A1 dispatch blocks in AccessibilityWElevation.py (+39 firstlineno on integrated_scope_access, +25.6% .nbc); commit-graph evidence: 361928e..e95de8e = the full A1 track (Accessibility.py +94, AccessibilityWElevation.py +93, _large_access_scratch.py +248), e95de8e..c1d7edc src delta = AggregateFlow.py exactly 1 decorator line. The armed comparison was (A1+F1)-vs-(neither); DECISION.md same-configuration one-change attribution was broken by construction. ROOT CAUSE (owned): the spec b0 pin is reviewer-authored; the P3 check verified candidate-vs-neighbor-commit (e95de8e..c1d7edc - true statement, wrong PAIR) and never compared the ARM commits to each other; the build audit pinned single-file blobs. CHANGE 1 - B0 RE-PIN: b0 = e95de8e7b81b7db7717a03b4ce2360d6d4001f76 (advanced line minus F1; coordinator basis ruling: each screen isolates its own track's increment on the advancing campaign line; countermand window closed CONFIRMED). New b0p wheel 9d808304a987af9efe5ccfcbe709ce6b7f9e953098dfc6dd4b5e91c8c141026e (129683 bytes, deterministic; blocked first attempt retained as f1r_b0p_wheel_and_venv_blocked_1.json, sha 5c989ca4ad34fe3a...f2a4c8, referenced); venv b0p_wheel; build record f1r_b0p_wheel_and_venv.json (sha 6dd347350b1510d3...b870, status ok, derivative_of the frozen f3b7304c script with diff-vs-source stated). Repaired arm identity VERIFIED by reviewer at installed-bytes level: full-venv .py diff b0p_wheel vs f1r_cand_wheel = AggregateFlow.py ONLY (line 192 decorator); compiled-set identity verified by cache receipts (coldpeak cache_entries_after b0=10 / b0p=12 / cand=12 - the +2 = the A1 scratch-kernel pair, resolving the earlier cache-count flag; NOT census-inconsistent, it was the confound). The prior 71fd5615 b0 wheel is retained and labeled A1R-correct/F1R-wrong. CHANGE 2 - P5 ENVELOPE (supersedes rev-4 numbers 2600/2620/2800; v4a STRUCTURE preserved): one-direction derivation chain measured cold sel1024 peak (gate variant, ru_maxrss, clean window) -> budget = 1.10x governing peak -> refusal = 0.80*avail < budget+margin -> entry bar = refusal + v4-spread at matrix ENTRY; per-window guard sole binding mid-matrix; void-restart-whole unchanged. Numbers were carried as [PENDING b0p2_clean] slots in the pre-fill draft (sha 42fbb31f365cccc0d739405cbb7e5a57aa8d1db110ba96c99c13390910a77f10) and FILLED from f1r_diag_coldpeak_b0p2 at fill time (clean window; preconditions recorded in its monitor record). Rejection history retained: first b0p characterization f1r_diag_coldpeak_b0p, 2246.1 MiB, REJECTED for sizing - fired under loadavg 40.56 / 3542.25 MiB avail, pressure-reclamation suppression not demand. Cand-side basis 3003.25 MiB stands. Quiet-window preconditions bind diagnostics-class SIZING runs ONLY; gate-eligible runs keep the v4 entry bar + P5 guard (coordinator addendum v5 batch). READING RULE REPLACEMENT (cold_expectation.rev5_reading_rule): the confounded-pair cold accommodation is WITHDRAWN; repaired-pair cold band [0.95,1.05] normal, cold miss = anomaly with C2 available per its own terms, gate value 1.05 UNCHANGED; warm blocks are the thesis adjudicator (warm cand/b0 <= 1), a warm miss takes the frozen failure path with no reading-rule protection. STANDING OBLIGATION (born from this confound, exercised by the b0p build): every future build audit = full package venv diff + wheel-content authoritative check (no pyc in wheels) + venv tree check with __pycache__ excluded and exclusion counts/reason recorded + arm-to-arm tree diff of the two pinned commits; single-file blob pins are NEVER sufficient arm identity. SUPERVISOR DELTA BOUNDARY (paired ruling, h05 authors): envelope constants + derived literal strings + ARMS b0-entry re-point (paths/identity exact-match against the b0p build record), diffed against committed blob 3b0fee6d - nothing else moves. THREE-WAY COHERENCE: spec b0 block, build record, and supervisor ARMS entry must reference the same b0p artifact values before any pin. Reviewer verification of this entry's claims: every hash recomputed programmatically from artifacts (wheel, both build records, commit graph, blob resolution, cache-root file counts); no hash hand-copied into this file without recomputation. Matrix, statistics, gates (values), triple, byte-identity, and exactness-anchor clauses UNCHANGED."
+  }
+ ]
+}

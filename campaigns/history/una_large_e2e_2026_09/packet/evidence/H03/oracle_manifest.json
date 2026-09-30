@@ -1,0 +1,190 @@
+{
+  "task": "H03",
+  "campaign": "una_large_e2e",
+  "role": "immutable numerical oracle owner (tests/large_e2e/oracle/**, benchmarks/large_e2e/oracle/**, campaigns/una_large_e2e/evidence/H03/**)",
+  "date": "2026-09-25",
+  "baseline": {
+    "name": "B0",
+    "import_root": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src",
+    "commit": "361928e4ba38f34622cafe065b0025244db61368",
+    "module_files_recorded_in": "golden/golden_b0.json (module_files)"
+  },
+  "two_import_root_parametrization": {
+    "env_arm_a": "UNA_ORACLE_ARM_A",
+    "env_arm_b": "UNA_ORACLE_ARM_B",
+    "default": "both arms resolve to the B0 root above; NO candidate code is imported anywhere in the oracle",
+    "arm_runner": "tests/large_e2e/oracle/runner_arm.py",
+    "arm_comparator": "benchmarks/large_e2e/oracle/compare_arms.py (subprocess per arm, root-independent NPZ keys, verdict BIT_IDENTICAL)"
+  },
+  "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_oracle",
+  "l1_reuse_dir": "unset and unhonored (conftest pops it; profile records L1_REUSE_DIR null)",
+  "fixture_seed": 20260925,
+  "golden_assets": {
+    "golden_b0.npz": {
+      "path": "tests/large_e2e/oracle/golden/golden_b0.npz",
+      "sha256": "ea61d7309faf95628cd62db117c3a8c77371e9b11cc0d9da6f438bce9b4dcae8",
+      "keys": 1031
+    },
+    "golden_b0.json": {
+      "path": "tests/large_e2e/oracle/golden/golden_b0.json",
+      "sha256": "d0226dd31bd5ce519f302968a8205460a1f2af67f03f978bfd411bc34677975b"
+    },
+    "golden_b0.hashes.json": {
+      "path": "tests/large_e2e/oracle/golden/golden_b0.hashes.json",
+      "sha256": "f93fdd641fbb1eb97dda1d4e3dd8662c71029c783dc0b215e4a4134b328f8913",
+      "contains": "per-key sha256 digests (dtype.str + shape + bytes), generator path, fixture seed, import root, B0 commit"
+    },
+    "generator": {
+      "path": "tests/large_e2e/oracle/golden/build_golden.py",
+      "sha256": "3271b37b0271489957591ec094c580822072a2a1628275cb206f3dc5e3737954",
+      "property": "golden values derive ONLY from a fresh B0-bound subprocess running runner_arm.py with --runs 2 (in-process double run asserted before write)"
+    }
+  },
+  "compiler_profile": {
+    "source": "golden/golden_b0.json (profile), captured live in the golden subprocess and re-verified by test_l1_determinism",
+    "python": "3.11.16 (CPython, campaign venv)",
+    "numba": "0.67.0",
+    "llvmlite": "0.49.0",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "platform": "arm64, Darwin, cpu_count 10",
+    "numba_threading_layer": "workqueue",
+    "numba_num_threads_default": "2",
+    "kernel_targetoptions": {
+      "compact_vector_node_view_scope": "nopython, nogil, fastmath, parallel=False, boundscheck unset",
+      "adjust_destination_distances": "nopython, nogil, fastmath, parallel=False",
+      "integrated_scope_access": "nopython, nogil, fastmath, parallel=True",
+      "od_compact_vector_node_view_scope": "nopython, nogil, fastmath, parallel=True",
+      "_accumulate_od_flow": "nopython, fastmath, NO nogil (verified live fact)",
+      "_decay": "inline='always' (inlined; 0 signatures)",
+      "_find_arc": "inline='always' (inlined; 0 signatures)"
+    },
+    "signature_inventory": {
+      "compact_vector_node_view_scope": 2,
+      "adjust_destination_distances": 2,
+      "integrated_scope_access": 3,
+      "od_compact_vector_node_view_scope": 3,
+      "_accumulate_od_flow": 1
+    },
+    "layout_note": "duplicate signature counts are C-vs-F terminal-array layout specializations: engine paths build terminals with np.array([a, b]).T (F-layout), kernel-level fixtures pass C-order arrays; both layouts are exercised and pinned",
+    "verified_live_facts": {
+      "_accumulate_od_flow_fastmath": true,
+      "_accumulate_od_flow_nogil": false,
+      "accessibility_kernels_nogil_fastmath": true,
+      "parallel_variants_use_parallel": true
+    }
+  },
+  "comparison_scope": {
+    "bit_exact_rule": "dtype + shape + bytes, first-difference reporting (comparator.assert_array_bytes_equal). Used for: golden vs current run, arm vs arm, double runs, thread-count runs, refusals, ownership, and ALL candidate-vs-baseline comparisons in later tasks.",
+    "ulp_rule_exception": "ONLY pure-Python explanatory trace vs compiled kernel comparisons of multi-term float sums (F1 finals, F2 per-OD out_AB/out_BA/out_node_flow/delivered) use assert_array_within_ulp(max_ulp=4). Reason: the kernels compile with fastmath=True, which reassociates multi-term additions; a strict IEEE left-to-right Python replica cannot reproduce that bit-for-bit on every input (observed 1 ULP on flow fixture edges 2/3, K=2). All integer/dtype/shape/NaN-placement/inf-placement structure stays exact even there.",
+    "no_tolerances_anywhere_else": true
+  },
+  "dossier_observables_to_oracle_assets": {
+    "A1_snapshot_scratch": {
+      "staged_snapshot_semantics": "trace_access.trace_scope journal: per-pop S0 snapshot, eligibility triples, assignments_in_order, pushes_in_order, queue_after; byte-equal to compiled scope on ALL engine corpus cases + all kernel cases (test_l0_traces)",
+      "duplicate_destination_last_eligible_wins": "downstream duplicate construction in test_a1_duplicate_overwrite_is_staged_not_immediate (assignments [[2,4.0],[2,6.0]] -> final 6.0)",
+      "seed_pop_discarded_and_double_seeded_start": "kernel source lines 134-141 replicated; k_dup_* golden bytes show the stale-seed re-scan converging origin-row duplicates to the cheap value (documented in test_l0_golden)",
+      "stale_queue_entry_popped_and_rescanned": "k_stale_queue fixture: [2.5,2] popped once, eligibility all-False, final label 2.0",
+      "degree_one_assigned_but_never_pushed": "k_flags_false_row + k_degree_one_no_push + trace push journals",
+      "negative_mutants": "immediate-update (caught on downstream duplicate), terminal-order swap (caught on k_same_terminal_overwrite)",
+      "immutability_ownership": "input immutability hashes + scope output aliasing checks in runner_arm battery"
+    },
+    "A2_destination_locality": {
+      "od_scan_semantics": "trace_access.trace_adjust byte-equal to compiled adjust_destination_distances on every case x origin; O(D) scan journal with rows",
+      "retained_sequences": "np.where(d<=cutoff) ascending original id; byte-equal n_distances/n_weights per case x origin; reversal mutant caught",
+      "numba_min_signed_zero_tie": "numba min returns -0.0 in BOTH argument orders (observed); flt_signed_zero fixture pins adjust bytes (0x80.. signatures); Python first-arg-min mutant caught",
+      "sentinel_probe": "trace_access.sentinel_probe reads the stored tail b = scope[V] and evaluates (finite AND b>R); test_sentinel_probe covers: admit (normal cutoff), refuse (2^53 rounding: b==R constructible WITHOUT weights beyond 2^53 because typed init rounds 1+cutoff back to cutoff), refuse (maxfloat), refuse (inf, from bounded child), D==0 path, and the asymmetry that the rounded-to-R destination IS still retained by the compiled filter",
+      "tied_distances_original_order": "kernel-level tied destinations (identical snaps, weights 1.0 vs 3.0): retained order [0,1] pins KNN-crop behavior"
+    },
+    "A3_private_scope": {
+      "initialization_state": "trace_access.scope_initialization_state: nd = D + V, typed sentinel b = ones(dtype)+cutoff, terminal assignment order (start then end, end wins on ties)",
+      "projection_and_epoch_rollover": "trace_access.simulate_epoch_workspace + projection_pi: shared workspace/marks, epoch++ per origin, forced full reset at limit, projected labels byte-equal to fresh searches on every origin; dropped-seed-writes mutant breaks it",
+      "integrated_pipeline_scalar_bits": "integrated_scope_access int64 reach (float truncation cast) + gexp/glog/knn scalar bits vs compiled reach_gravity_knn_access on traced sequences"
+    },
+    "F1_fixed_stripe_nogil": {
+      "static_stripes": "range(slot, n_origins, K) membership journaled; five active origins so every K in {1,2,3} has all stripes non-empty",
+      "per_stripe_partials": "local_AB/local_BA/local_node per slot journaled; shift mutant moves partials (caught)",
+      "final_fold_order": "fold slots 0..K-1 in order; descending-fold mutant is byte-detectable via BA and node arrays at K=3 (caught); compiled engine finals at matching num_threads byte-equal to faithful fold (within documented ULP rule for trace comparisons)",
+      "per_od_delivered": "F2 journal delivered scalars + zero-weight origin o2 skip + unreachable d2 absence"
+    },
+    "F2_local_overlap": {
+      "per_od_intermediates": "trace_accumulate_od_flow journal: reach decisions, reach_nodes, order_o/order_d (argsort), cont_o/cont_d marking, pass1_arcs, q_sum, scale, seed writes, acc_o/acc_d, per-OD out deltas (write-replay, byte-exact replay), delivered; compiled _accumulate_od_flow driven directly per OD with reconstructed scratch agrees within the ULP rule at K in {1,2,3}",
+      "per_od_delta_semantics": "journal out_* are THIS OD's writes replayed into zero buffers; live cumulative buffers recorded as out_*_cumulative; replica accumulates into live stripe buffers so the fold reproduces driver association",
+      "snap_edge_exclusion_domain": "network-network arcs of the two snap edges excluded by eid guard (u,x < n_net); CONNECTOR arcs with a virtual endpoint carry the host edge id and ARE loaded (od0 loads edge id 0 via virtual-endpoint arcs) — pinned in test_f2_overlapping_host_edge_od_has_live_envelope",
+      "u_turn_exclusion": "pred_d[x]==u / pred_o[u]==x guards replicated and journaled",
+      "zero_weight_origin_and_unreachable_destination": "o2 (weight 0) skipped; d2 (unreachable, self-loop node 7) never in any OD journal",
+      "overlapping_host_edge": "o0 and d0 share host edge e0; OD is real and delivers"
+    },
+    "F3_gradient_workspace": {
+      "chunked_assembly": "trace_gradients.trace_gradient_chunks with parametrized chunk (1, 2, 3, default max(1, 1e8//n_total)); indptr/nodes/dist/pred BYTE-equal across chunk sizes and to compiled _precompute_dest_gradients",
+      "dtype_roles": "nodes int64, dist float64, pred int32, indptr int64 cumsum",
+      "per_row_observables": "per-chunk/per-row dist+pred extracts, ascending np.where(finite) column order, uneven tail exercised (chunk 2 over 3 destinations)",
+      "negative_mutant": "reversed per-row where order caught on nodes/dist/pred"
+    }
+  },
+  "hazard_and_refusal_domains": {
+    "bounded_children_only": "all hazard probes run in child processes (tests/large_e2e/oracle/child_hazard.py) with wall-clock timeout and os._exit(9) kill path",
+    "negative_weight_cycle": {
+      "probe": "2-cycle 0->1 (1.0), 1->0 (-2.0), degree-2 padding via node 2",
+      "outcome": "timeout_kill (returncode 9) — kernel has NO negative-cycle guard; labels descend without bound; recorded as hazard characterization, not a numerical golden"
+    },
+    "nan_edge_weight": {
+      "outcome": "completed",
+      "recorded_scope_bytes": "node0=+0.0, node1=0x7ff8000000000000 (quiet NaN label), tail=11.0",
+      "finding": "under fastmath the VECTORIZED eligibility mask admits the NaN weight sum (unordered-comparison lowering), so the NaN label IS assigned; the labeled node is degree-1 and never pushed, so the search terminates"
+    },
+    "nan_origin_weight": {
+      "outcome": "completed",
+      "recorded_scope_bytes": "node0=0.0 (NaN start weight overwritten by end terminal), node1=1.0, tail=11.0",
+      "finding": "the scalar seed-push guard evaluates NaN < cutoff as FALSE (no NaN seed push) — scalar and vectorized comparison paths differ under the frozen profile; bytes recorded"
+    },
+    "inf_cutoff": {
+      "outcome": "completed (terminates on this positive-weight graph)",
+      "recorded_scope_bytes": "labels finite, tail sentinel b = +inf",
+      "finding": "sentinel b=inf is not finite, so sentinel_probe refuses local pruning; positive cycles with larger labels cannot loop with positive weights"
+    },
+    "refusal_probes": {
+      "scope_cutoff_str": "TypingError",
+      "scope_cutoff_none": "TypingError",
+      "scope_object_weights": "TypingError",
+      "engine_mismatched_origin_weights": "ValueError"
+    }
+  },
+  "findings": [
+    "B0 scope kernel is double-seeded: the start terminal is seeded, popped-and-discarded, then re-pushed via BOTH terminal guards; for start==end the start row is scanned twice (stale re-scan). Duplicate incidences on the ORIGIN row therefore converge to the cheap value; the staged-scan observable (last eligible wins) is only visible on downstream rows. Both facts pinned (golden bytes + downstream construction).",
+    "B0 scope kernel has NO bounds checking (numba default). A first-draft tie fixture pointed an incidence at the destination tail; the compiled kernel read past the end of adjacency_pointer (undefined but deterministic-looking). Fixture fixed to a well-formed graph; recorded here because candidate kernels must NOT rely on the same UB.",
+    "fastmath comparison lowering is observable in the NaN domain: the vectorized mask admitted a NaN weight while the scalar seed guard rejected NaN — hazard bytes recorded, not normalized.",
+    "The A2 sentinel rounding hazard is constructible without extreme weights: cutoff = 2^53 makes the typed init b = 1 + cutoff round to exactly R, and the compiled retained filter then KEEPS the unreachable destination whose adjusted distance equals R.",
+    "F2 stale-scratch (no dd_buf/pd_buf reset between ODs) is PROVEN INERT on this corpus: gradient finite-column sets coincide and each scatter overwrites all finite columns, so outputs AND scratch states stay byte-identical (test_f2_stale_scratch_is_inert_on_corpus_documented). The reset obligation for F2I is enforced by this journal evidence plus code review, not output bytes."
+  ],
+  "limitations_and_gaps": [
+    "L2 chronology (per-turn/per-iteration ordering on the observed workloads) is OUT OF SCOPE for H03 as executed: the turn-aware kernel path (_accumulate_od_flow_turns) is NOT covered by traces or the golden battery; turns=False in the flow fixture. If the campaign later enables turns, H03 needs a supplement.",
+    "Metric trace equivalence (gexp/glog) is established through B0's own compiled _decay/reach_gravity_knn_access callables — the numba exp implementation is compared against itself on traced sequences, NOT against a Python replica of exp. numba-exp bit-equality with numpy exp was probed once and matched, but that probe is not a contract.",
+    "np.argsort tie behavior in F2 tree orders is pinned only on the tie patterns present in the corpus (probe-matched numpy-vs-numba); a tie pattern outside the corpus could in principle order differently — golden bytes, not the trace, are the contract there.",
+    "Trace-vs-compiled float sums carry the documented max_ulp=4 allowance (fastmath reassociation); exact bit equality of a REPLICA is not achievable in general and is NOT required by VALIDATION — candidate comparisons remain byte-exact.",
+    "The compiled scope kernel reading adjacency_pointer out of bounds (missing boundscheck) was observed with a malformed fixture; production builders never emit such graphs, so the corpus pins well-formed graphs only.",
+    "Numba cache lives OUTSIDE both trees at /Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_oracle; cache reuse across runs is positional (same source + frozen profile), and golden rebuilds always ran the two-run determinism gate before writing."
+  ],
+  "file_inventory_sha256": {
+    "tests/large_e2e/oracle/conftest.py": "281911dc84559b5a8813bcac366a196f85fc6b8e56b39c8a979f642097d8a70b",
+    "tests/large_e2e/oracle/b0_import.py": "f28a5bc55861871f7ccee3e0a3a937bc3d98ceae246660a72e666c18af53e524",
+    "tests/large_e2e/oracle/comparator.py": "7037b7e1e31f799e518b4c7301158fede1dffb19778b68c735cc0cfe7e45ef0b",
+    "tests/large_e2e/oracle/compiler_profile.py": "089843b5e4cc06756637a7e8cd014c2cc1d8dc6ee16f9c66a8977d8cb1d07666",
+    "tests/large_e2e/oracle/fixtures.py": "afa708ec0d7f1d1240de64ee203663714100a3f29a942d0eff6072e2c6bdf017",
+    "tests/large_e2e/oracle/stub_topology.py": "be0f6f2dd4cad991cbe00e2c7824c50e34f0aa759f071e13542577fc9e066b7f",
+    "tests/large_e2e/oracle/trace_access.py": "8773bbce2cfa7bb0078c123f2dd37b38c0f3f0bc9a53385bbd125c2b30ba1ea6",
+    "tests/large_e2e/oracle/trace_flow.py": "745fb1f2b19ef598b4d39918537129286e45733b4e8790a4ceb3868fb35b5af6",
+    "tests/large_e2e/oracle/trace_gradients.py": "c750b17498d516bc1874d71de0f4d317a51d8fc17526b04de38a47e8035ca7a6",
+    "tests/large_e2e/oracle/mutants.py": "e342859105ea2961be744a4b2e80741f6e920b481a5f370670c116438d4ebb94",
+    "tests/large_e2e/oracle/runner_arm.py": "e72ae3556b44f580b875b9b5413b9867dcf4c62b1f533b335f09919ee6f12e4e",
+    "tests/large_e2e/oracle/support.py": "80203f12cea3592090268682d64349a0b319a3ef6dfc2c2522062daa18703e39",
+    "tests/large_e2e/oracle/test_l1_determinism.py": "0eb9e959bb28cad98aadfb5d115f6bdfeae48b2fbc667754d3c0a203e376539f",
+    "tests/large_e2e/oracle/test_l0_golden.py": "2d5bfb36bb2408eaa4d13f8f0729ae01c8526ea4fc42522c020db0ce1bc6f4b4",
+    "tests/large_e2e/oracle/test_l0_traces.py": "f2f42745e00dab96a319a0bbcc96f2e5298164c4cf9f4c9ba6fa73c25b93ced6",
+    "tests/large_e2e/oracle/test_negative_mutations.py": "734c534abbb2d05dee4dab28813521f97062fde8dc3c33c5860841e853c0dea7",
+    "tests/large_e2e/oracle/test_sentinel_probe.py": "9c424c806a7827b5247535a519c107bca363cd7f190b28b1b52be5545bb873a7",
+    "tests/large_e2e/oracle/child_hazard.py": "06c947d86154b7d1906673dd6879e4644a218a05fb1d564d3bf7148ae6a9eafb",
+    "tests/large_e2e/oracle/golden/build_golden.py": "3271b37b0271489957591ec094c580822072a2a1628275cb206f3dc5e3737954",
+    "benchmarks/large_e2e/oracle/compare_arms.py": "2e10ae50010a662624ae3cdc42d7436c446be15756244ed8b51a7cf822e75a65 (sha256 added per H04-N11; identical to the hash the H04 reviewer observed at review time; exercised by test_subprocess_b0_vs_b0_bit_identical)"
+  }
+}

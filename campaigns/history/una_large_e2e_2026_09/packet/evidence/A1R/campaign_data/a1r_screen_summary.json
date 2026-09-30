@@ -1,0 +1,524 @@
+{
+ "task": "A1R",
+ "record": "screen_summary",
+ "role": "screen-executor",
+ "spec_source": "h04-reviewer screen request (3 paired blocks AB/BA/AB per cell; pair 1 cold on fresh per-arm caches; (W,H)=(1,8) frozen; bare complete-job windows, no leaf profilers)",
+ "descriptive_only": "h04-reviewer owns disposition/verdicts",
+ "schedule": "per cell: p1 AB (cold), p2 BA, p3 AB; A=B0",
+ "arms": {
+  "b0": {
+   "venv_python": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+   "site_packages": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages",
+   "cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "wheel_sha256": "71fd5615b5683f3c798938a2762824da9ba3fada801aaa840343e7378d4fc979"
+  },
+  "cand": {
+   "venv_python": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+   "site_packages": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+   "cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "wheel_sha256": "9d808304a987af9efe5ccfcbe709ce6b7f9e953098dfc6dd4b5e91c8c141026e"
+  }
+ },
+ "candidate_commit": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29",
+ "WH_frozen": [
+  1,
+  8
+ ],
+ "grid_note": "W x H = 8 <= 9 (preregistered accessibility grid)",
+ "runs": [
+  {
+   "run_id": "a1rp_O3_ACCESS_p1_AB_b0",
+   "cell": "O3_ACCESS",
+   "pair": 1,
+   "order": "AB",
+   "arm": "b0",
+   "cold_warm": "cold (fresh per-arm cache)",
+   "WH": [
+    1,
+    8
+   ],
+   "window_s": 6.5983,
+   "numba_num_threads": 8,
+   "numba_threads_baked_at_compile": 8,
+   "cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_file_count_at_run": 8,
+   "peak_rss_mib": 544.9375,
+   "identity_ok": true,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "search_radius": 500,
+   "array_hashes": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": [],
+   "fatal": null
+  },
+  {
+   "run_id": "a1rp_O3_ACCESS_p1_AB_cand",
+   "cell": "O3_ACCESS",
+   "pair": 1,
+   "order": "AB",
+   "arm": "cand",
+   "cold_warm": "cold (fresh per-arm cache)",
+   "WH": [
+    1,
+    8
+   ],
+   "window_s": 7.898,
+   "numba_num_threads": 8,
+   "numba_threads_baked_at_compile": 8,
+   "cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_file_count_at_run": 10,
+   "peak_rss_mib": 591.4375,
+   "identity_ok": true,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "search_radius": 500,
+   "array_hashes": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": [],
+   "fatal": null
+  },
+  {
+   "run_id": "a1rp_O3_ACCESS_p2_BA_cand",
+   "cell": "O3_ACCESS",
+   "pair": 2,
+   "order": "BA",
+   "arm": "cand",
+   "cold_warm": "warm (reused cache)",
+   "WH": [
+    1,
+    8
+   ],
+   "window_s": 2.4052,
+   "numba_num_threads": 8,
+   "numba_threads_baked_at_compile": 8,
+   "cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_file_count_at_run": 10,
+   "peak_rss_mib": 505.765625,
+   "identity_ok": true,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "search_radius": 500,
+   "array_hashes": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": [],
+   "fatal": null
+  },
+  {
+   "run_id": "a1rp_O3_ACCESS_p2_BA_b0",
+   "cell": "O3_ACCESS",
+   "pair": 2,
+   "order": "BA",
+   "arm": "b0",
+   "cold_warm": "warm (reused cache)",
+   "WH": [
+    1,
+    8
+   ],
+   "window_s": 2.668,
+   "numba_num_threads": 8,
+   "numba_threads_baked_at_compile": 8,
+   "cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_file_count_at_run": 8,
+   "peak_rss_mib": 504.90625,
+   "identity_ok": true,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "search_radius": 500,
+   "array_hashes": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": [],
+   "fatal": null
+  },
+  {
+   "run_id": "a1rp_O3_ACCESS_p3_AB_b0",
+   "cell": "O3_ACCESS",
+   "pair": 3,
+   "order": "AB",
+   "arm": "b0",
+   "cold_warm": "warm (reused cache)",
+   "WH": [
+    1,
+    8
+   ],
+   "window_s": 2.606,
+   "numba_num_threads": 8,
+   "numba_threads_baked_at_compile": 8,
+   "cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_file_count_at_run": 8,
+   "peak_rss_mib": 504.546875,
+   "identity_ok": true,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "search_radius": 500,
+   "array_hashes": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": [],
+   "fatal": null
+  },
+  {
+   "run_id": "a1rp_O3_ACCESS_p3_AB_cand",
+   "cell": "O3_ACCESS",
+   "pair": 3,
+   "order": "AB",
+   "arm": "cand",
+   "cold_warm": "warm (reused cache)",
+   "WH": [
+    1,
+    8
+   ],
+   "window_s": 2.5776,
+   "numba_num_threads": 8,
+   "numba_threads_baked_at_compile": 8,
+   "cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_file_count_at_run": 10,
+   "peak_rss_mib": 504.625,
+   "identity_ok": true,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "search_radius": 500,
+   "array_hashes": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "verbatim_warnings": [],
+   "fatal": null
+  },
+  {
+   "run_id": "a1rp_O3_HOLDOUT_p1_AB_b0",
+   "cell": "O3_HOLDOUT",
+   "pair": 1,
+   "order": "AB",
+   "arm": "b0",
+   "cold_warm": "cold (fresh per-arm cache)",
+   "WH": [
+    1,
+    8
+   ],
+   "window_s": 7.0532,
+   "numba_num_threads": 8,
+   "numba_threads_baked_at_compile": 8,
+   "cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_file_count_at_run": 8,
+   "peak_rss_mib": 592.421875,
+   "identity_ok": true,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "search_radius": 1200,
+   "array_hashes": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": [],
+   "fatal": null
+  },
+  {
+   "run_id": "a1rp_O3_HOLDOUT_p1_AB_cand",
+   "cell": "O3_HOLDOUT",
+   "pair": 1,
+   "order": "AB",
+   "arm": "cand",
+   "cold_warm": "cold (fresh per-arm cache)",
+   "WH": [
+    1,
+    8
+   ],
+   "window_s": 7.985,
+   "numba_num_threads": 8,
+   "numba_threads_baked_at_compile": 8,
+   "cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_file_count_at_run": 10,
+   "peak_rss_mib": 534.15625,
+   "identity_ok": true,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "search_radius": 1200,
+   "array_hashes": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": [],
+   "fatal": null
+  },
+  {
+   "run_id": "a1rp_O3_HOLDOUT_p2_BA_cand",
+   "cell": "O3_HOLDOUT",
+   "pair": 2,
+   "order": "BA",
+   "arm": "cand",
+   "cold_warm": "warm (reused cache)",
+   "WH": [
+    1,
+    8
+   ],
+   "window_s": 2.6078,
+   "numba_num_threads": 8,
+   "numba_threads_baked_at_compile": 8,
+   "cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_file_count_at_run": 10,
+   "peak_rss_mib": 481.140625,
+   "identity_ok": true,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "search_radius": 1200,
+   "array_hashes": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": [],
+   "fatal": null
+  },
+  {
+   "run_id": "a1rp_O3_HOLDOUT_p2_BA_b0",
+   "cell": "O3_HOLDOUT",
+   "pair": 2,
+   "order": "BA",
+   "arm": "b0",
+   "cold_warm": "warm (reused cache)",
+   "WH": [
+    1,
+    8
+   ],
+   "window_s": 3.434,
+   "numba_num_threads": 8,
+   "numba_threads_baked_at_compile": 8,
+   "cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_file_count_at_run": 8,
+   "peak_rss_mib": 503.671875,
+   "identity_ok": true,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "search_radius": 1200,
+   "array_hashes": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": [],
+   "fatal": null
+  },
+  {
+   "run_id": "a1rp_O3_HOLDOUT_p3_AB_b0",
+   "cell": "O3_HOLDOUT",
+   "pair": 3,
+   "order": "AB",
+   "arm": "b0",
+   "cold_warm": "warm (reused cache)",
+   "WH": [
+    1,
+    8
+   ],
+   "window_s": 3.541,
+   "numba_num_threads": 8,
+   "numba_threads_baked_at_compile": 8,
+   "cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+   "cache_file_count_at_run": 8,
+   "peak_rss_mib": 504.078125,
+   "identity_ok": true,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "search_radius": 1200,
+   "array_hashes": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": [],
+   "fatal": null
+  },
+  {
+   "run_id": "a1rp_O3_HOLDOUT_p3_AB_cand",
+   "cell": "O3_HOLDOUT",
+   "pair": 3,
+   "order": "AB",
+   "arm": "cand",
+   "cold_warm": "warm (reused cache)",
+   "WH": [
+    1,
+    8
+   ],
+   "window_s": 2.7336,
+   "numba_num_threads": 8,
+   "numba_threads_baked_at_compile": 8,
+   "cache_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+   "cache_file_count_at_run": 10,
+   "peak_rss_mib": 506.09375,
+   "identity_ok": true,
+   "counts": {
+    "V_nodes": 49159,
+    "E_edges": 69957,
+    "O_rows": 14751,
+    "D_rows": 6661
+   },
+   "search_radius": 1200,
+   "array_hashes": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   },
+   "verbatim_warnings": [],
+   "fatal": null
+  }
+ ],
+ "aggregates": {
+  "O3_ACCESS": {
+   "n_b0": 3,
+   "n_cand": 3,
+   "median_b0_s": 2.668,
+   "median_cand_s": 2.5776,
+   "proxy_speedup_median_b0_over_cand": 1.0351,
+   "cold_pair1_b0_over_cand": 0.8354,
+   "per_pair": [
+    {
+     "pair": 1,
+     "order": "AB",
+     "cold_warm": "cold (fresh per-arm cache)",
+     "b0_s": 6.5983,
+     "cand_s": 7.898,
+     "b0_over_cand": 0.8354
+    },
+    {
+     "pair": 2,
+     "order": "BA",
+     "cold_warm": "warm (reused cache)",
+     "b0_s": 2.668,
+     "cand_s": 2.4052,
+     "b0_over_cand": 1.1093
+    },
+    {
+     "pair": 3,
+     "order": "AB",
+     "cold_warm": "warm (reused cache)",
+     "b0_s": 2.606,
+     "cand_s": 2.5776,
+     "b0_over_cand": 1.011
+    }
+   ],
+   "hash_sets_across_all_runs": 1,
+   "peak_rss_mib_max": 591.4375,
+   "ceiling_10p5gib_mib": 10752.0,
+   "warnings_nonzero_runs": []
+  },
+  "O3_HOLDOUT": {
+   "n_b0": 3,
+   "n_cand": 3,
+   "median_b0_s": 3.541,
+   "median_cand_s": 2.7336,
+   "proxy_speedup_median_b0_over_cand": 1.2954,
+   "cold_pair1_b0_over_cand": 0.8833,
+   "per_pair": [
+    {
+     "pair": 1,
+     "order": "AB",
+     "cold_warm": "cold (fresh per-arm cache)",
+     "b0_s": 7.0532,
+     "cand_s": 7.985,
+     "b0_over_cand": 0.8833
+    },
+    {
+     "pair": 2,
+     "order": "BA",
+     "cold_warm": "warm (reused cache)",
+     "b0_s": 3.434,
+     "cand_s": 2.6078,
+     "b0_over_cand": 1.3168
+    },
+    {
+     "pair": 3,
+     "order": "AB",
+     "cold_warm": "warm (reused cache)",
+     "b0_s": 3.541,
+     "cand_s": 2.7336,
+     "b0_over_cand": 1.2954
+    }
+   ],
+   "hash_sets_across_all_runs": 1,
+   "peak_rss_mib_max": 592.421875,
+   "ceiling_10p5gib_mib": 10752.0,
+   "warnings_nonzero_runs": []
+  }
+ },
+ "heavy_wall": {
+  "opening_balance_s": 426.4,
+  "cumulative_incl_opening_s": 750.7,
+  "budget_s": 14400.0
+ },
+ "lease_log": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_lease_log.json",
+ "raw_records_dir": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw",
+ "utc": "2026-09-26T06:50:49Z"
+}

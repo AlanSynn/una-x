@@ -1,0 +1,130 @@
+{
+  "task": "H03 supplement",
+  "closes": ["H04-N4"],
+  "related": ["H04-N11 (manifest hash, see oracle_manifest.json)"],
+  "date": "2026-09-25",
+  "role": "oracle-owner",
+  "purpose": "L1 kernel-boundary checks on ACTUAL typed arrays captured from the observed B0 O2 topology, and candidate-vs-B0 comparison hooks for A1R..F3R (VALIDATION.md L1).",
+  "capture": {
+    "method": "Single bounded B0 pass (UNA(verbosity=1); RunAccessibility; RunFlow) with Python-level monkeypatching of the numba dispatcher module attributes and the one Python-method gradient boundary. wt-b0 is read-only; NO B0 source edits. njit->njit inner calls bind at compile time and are not interceptable, so the captured boundaries are exactly the Python-visible kernel boundaries a candidate must reproduce. Every _accumulate_od_flow call is ledgered; the first 2 eligible calls per origin are additionally replayed immediately with byte-identical inputs and FRESH ZERO output buffers (per-call delta form); the kernel's delivered return was bit-identical live vs zero-replay on all 32 selected calls (asserted at capture time).",
+    "script": "tests/large_e2e/oracle/golden/observed/capture_observed.py",
+    "bounded_execution": {
+      "single_run": true,
+      "ram_gate": {"available_mib": 3642.5, "phys_mib": 16384.0, "threshold_mib": 1638.4, "rule": "abort unless available >= max(1 GiB, 10% phys)", "triggered": false},
+      "subprocess_timeout_s": 600,
+      "capture_wall_s": 11.53,
+      "walls": {"run_accessibility_s": 6.034, "run_flow_s": 5.362},
+      "no_sweeps": "one UNA construction, one RunAccessibility, one RunFlow; nothing repeated",
+      "first_attempt_note": "A first capture attempt ran RunFlow with B0 flow-setting defaults (no auto gravity cap); it did not match the observed workload and was DISCARDED. The stored capture is the second (and final) run with the H04 reviewer's exact call-2 flow settings. The stale first-run export folder was deleted from campaign_data."
+    },
+    "provenance": {
+      "b0_root": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src",
+      "b0_commit": "361928e4ba38f34622cafe065b0025244db61368",
+      "o2_fixture": "/Users/alansynn/orca/workspaces/una-x/campaign_data/O2_origins_h04review.geojson",
+      "o2_fixture_sha256": "afaf4bf4651a1c9d76a8328ab8e78d99bb35699b3fd378c297c54661dea09492",
+      "o2_manifest": "tests/large_e2e/inputs/O2.manifest.json",
+      "o2_manifest_sha256": "836228013161f1071bd773c1dd1521e73c3068c4e938805d6af9f95cb7c753a8",
+      "network_file": "inputs/20260703_PercLenNetwork_InnerCore.geojson",
+      "destinations_file": "inputs/MA_bus_stops.geojson",
+      "accessibility_settings": "H04 reviewer call-1 assembly (O2.manifest settings_overrides; search_radius=500, turns=False, elevation=False, reach+exp+logistic+KNN on)",
+      "flow_settings_changed_before_runflow": {"flow_engine": "aggregate_flow", "flow_decay": true, "flow_decay_method": "gravity_cap", "flow_gravity_cap": "p95", "output_folder": ".../h03_capture_out/flow"},
+      "resolved_gravity_cap": {"spec": "p95", "used": "p95", "value": 7540.0175, "metric": "gravity_exponential", "n_origins": 16, "resolved_inside_RunFlow": true}
+    },
+    "env": {"python": "3.11.16", "numba": "0.67.0", "numpy": "2.4.6", "scipy": "1.17.1", "numba_num_threads": 10, "numba_threading_layer_after_runs": "workqueue", "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_oracle"},
+    "scale": {"V_network_nodes": 49159, "E_network_edges": 69957, "n_destinations": 6661, "n_origins": 16, "n_csr_nodes": 55836, "n_csr_arcs": 165410, "gradient_finite_entries": "captured in npz (gradient indptr/nodes/dist/pred)", "gradient_limit": 525.0}
+  },
+  "cross_check_vs_h04_reviewer": {
+    "statement": "The captured pass independently reproduced the H04 reviewer's observed run: all 6 exported Results files (accessibility + flow) are byte-identical (sha256) to the artifacts recorded in campaign_data/h04_observed_l2_raw.json, and the auto-resolved p95 gravity cap matches exactly (7540.0175).",
+    "flow_artifacts_sha256": {
+      "Results.feather": "2f53fd68afa7e45a647af86d3d07631c41e57431743195a45f19110cea6a6ff7",
+      "Results.geojson": "41f58b68f0692952f0611c7988b25b66867d2df56840a0672c0ac7528b548c2f",
+      "Results.csv": "6f0d232d64171dcf239481d6dba3ac54dc54fe430959917b32db685454dcf4d1"
+    },
+    "accessibility_artifacts_sha256": {
+      "Results.feather": "4341c5cf4c53929040dc88e4303a965f1a5820a1ec4d4bf28c6f6e152dfa25bc",
+      "Results.geojson": "0f5c09f448097cdcf8d88141f8116068fb3723f131f2edf99adb4298447f0590",
+      "Results.csv": "f0d6e0e9d667b565e07d3294ad12e30e4189b56ab8f79e77c770b0db1c8cdaec"
+    }
+  },
+  "fixture_assets": {
+    "directory": "tests/large_e2e/oracle/golden/observed/",
+    "npz": {"path": "tests/large_e2e/oracle/golden/observed/observed_o2_kernels.npz", "bytes": 7755964, "sha256": "11dfbf84aa12021e970502dcd93aa0e72ca71cddbf9232586877f8b013aaaeda"},
+    "sidecar": {"path": "tests/large_e2e/oracle/golden/observed/observed_o2_kernels.hashes.json", "sha256": "1d9b41b020f3f35f3e1e735e7f16bfb1901e86cf9ba87cbf753fd62996b6e56b", "content": "per-array dtype/shape/contiguity/sha256 (216 arrays), call ledgers, provenance, env, npz sha256"},
+    "immutability": "npz + sidecar chmod 444; test_observed_fixture_files_intact re-hashes the npz file and every stored array",
+    "array_count": 216,
+    "uncompressed_mb": 86.6,
+    "dtype_inventory": {"float64": 155, "int32": 51, "int64": 8, "bool": 1, "int8": 1}
+  },
+  "captured_boundaries": {
+    "integrated_scope_access_AccessibilityWElevation": {
+      "calls": 2,
+      "contexts": ["RunAccessibility Centrality", "_ResolveGravityCap inside RunFlow (auto p95 cap)"],
+      "inputs_stored": "o_terminal_idxs int64[16,2], o_terminal_weights float64[16,2], adjacency_pointer int64[49160], adjacency_vector int64[139914], adjacency_vector_weights float64[139914], adjacynct_vector_network_node bool[139914], d_terminal_idxs int64[6661,2], d_terminal_weights float64[6661,2], d_weights float64[6661], scalars (gravity_beta, plateau, logistic midpoint, growth rate, knn_decay str, knn_weights, cutoff=500)",
+      "outputs_stored": "reach int64[16], gravity_exponential float64[16], gravity_logistic float64[16], knn_access float64[16]",
+      "determinism_fact": "the two calls ran in different engine instances on the same inputs: args AND outputs byte-identical (dedup collapsed them to the same array keys)"
+    },
+    "_accumulate_od_flow": {
+      "calls_total": 137,
+      "selected_full_io": 32,
+      "selection_rule": "first 2 eligible calls per origin (origin_virtual_node), capture-seq deterministic",
+      "per_call_stored": "csr (indptr int32[55837], indices int32[165410], weights float64[165410], edge_id int32[165410], dir int8[165410]) + d_o float64[55836] + pred_o int32[55836] + dense gradient scatter dd_buf float64[55836]/pd_buf int32[55836] + scalars (virtual nodes, edge ids, d_shortest, budget, decay_curve_id, decay_beta, decay_midpoint, trip_volume, n_net) + ZERO-BUFFER per-call outputs out_AB float64[69957], out_BA float64[69957], out_node_flow float64[0] + delivered",
+      "all_calls_ledger": "all 137 calls: scalars + d_o content hash (origin identity)",
+      "boundary_fact": "out arrays are EDGE-indexed (n_edges=69957), not arc-indexed; delivered bit-identical live vs zero-buffer replay on all 32 selected calls"
+    },
+    "_compute_trip_volumes": {
+      "calls": 16,
+      "observed_literal_specializations": {"decay_curve": "exponential", "decay_method": "gravity_cap", "gravity_cap": 7540.0175, "radius": 500.0, "gravity_beta": 0.001, "decay_on": true, "use_nearest": false, "use_d_weights": true},
+      "outputs_stored": "trip_vols float64[6661] per origin"
+    },
+    "_precompute_dest_gradients": {
+      "calls": 1,
+      "inputs_stored": "fwd csr (indptr/indices/weights/edge_id/direction) + reverse csr (indptr int32[55837], indices int32[165410], data float64[165410]) + dest_nodes int64[6661] + limit 525.0",
+      "outputs_stored": "indptr int64[6662], nodes/dist/pred sparse gradient arrays",
+      "note": "scipy-based Python method (no njit kernel in the B0 gradient path); replicated by trace_gradients.trace_gradient_chunks"
+    },
+    "not_called_at_O2": {
+      "Accessibility_base_family": "integrated_scope_access / od_compact_vector_node_view_scope: 0 calls (O2 dispatches non-turn runs to AccessibilityWElevation, a separate duplicated njit family; base family remains covered by the L0 corpus)",
+      "od_matrix_path": "0 calls (OD_Matrix is a separate public path, not in the O2 pass)",
+      "turns_path": "_accumulate_od_flow_turns / _build_line_csr_turns: not exercised (all workloads turns=False; H04-N1 deferred to F*R approval gates)"
+    }
+  },
+  "specialization_coverage_vs_final_workloads": {
+    "statement": "All final workloads are accessibility+flow with turns=False. Every compiled kernel those workloads execute is exercised by the captured pass and now has a stored observed typed-array fixture: integrated_scope_access (AccessibilityWElevation family, incl. its internal compact_vector_node_view_scope/adjust_destination_distances/reach_gravity_knn_access), _accumulate_od_flow (int32 endpoint specializations: indptr/indices/edge_id int32, dir int8), _compute_trip_volumes (literal string specializations 'exponential'/'gravity_cap'), and the scipy gradient assembly boundary. The captured dtypes pin the EXACT specializations the final workloads compile (numba specializes on dtype/contiguity; the stored arrays carry both).",
+    "candidate_vs_b0_hook": "tests/large_e2e/oracle/observed_replay.py: load a candidate namespace via b0_import.load_arm (UNA_ORACLE_ARM_A/ARM_B), run replay_integrated_scope_access / replay_od_flow / replay_trip_volumes / replay_gradient against the stored inputs, byte-compare outputs to the stored arrays with comparator.assert_array_bytes_equal (no tolerance, no exception). Exercised live in test_l1_observed.py."
+  },
+  "tests": {
+    "file": "tests/large_e2e/oracle/test_l1_observed.py",
+    "count": 11,
+    "names": [
+      "test_observed_fixture_files_intact",
+      "test_observed_provenance_and_env",
+      "test_observed_dtypes_pin_endpoint_typing",
+      "test_observed_call_ledger_shape",
+      "test_integrated_scope_access_replay_bytes",
+      "test_gradient_boundary_replay_bytes",
+      "test_od_flow_kernel_replay_bytes",
+      "test_trip_volume_replay_bytes",
+      "test_engine_outputs_anchor_present",
+      "test_negative_observed_gradient_reversed_where_caught",
+      "test_negative_observed_od_budget_offset_caught"
+    ],
+    "negative_checks": [
+      {"mutation": "gradient reversed-where assembly (existing F3 code-level mutant) run on the OBSERVED reverse CSR/dest_nodes/limit", "result": "CAUGHT: nodes, dist, pred all raise OracleMismatch vs the observed outputs (indptr unaffected, as designed)"},
+      {"mutation": "OD budget replaced by the gradient limit (drops detour ratio/buffer — F2-class budget-computation bug)", "result": "CAUGHT at selected call seq 0 (budget 348.151 -> 525.0): out_AB and out_BA bytes move; comparator raises. Deterministic scan over selected records in seq order; smaller offsets (+1.0) verified to move no byte (budget enters the reach mask by inequality over continuous distances) and are therefore NOT used as the mutant."}
+    ]
+  },
+  "suite_after_supplement": {
+    "command": "cd tests/large_e2e/oracle && venvs/campaign/bin/python -m pytest -v",
+    "result": "64 passed in 35.74s, exit 0 (53 original + 11 new)",
+    "tail_evidence": "campaigns/una_large_e2e/evidence/H03/pytest_l1_observed_tail.txt"
+  },
+  "limitations_and_gaps": [
+    "The inner njit->njit calls (compact_vector_node_view_scope, adjust_destination_distances inside integrated_scope_access) are not separately interceptable at observed scale; at observed scale they are pinned via the outer dispatcher boundary, and their inner semantics remain pinned by the L0 corpus inner-boundary tests (base Accessibility family).",
+    "Node flow is DISABLED at O2 (out_node_flow size 0; engine node_flow absent): node-flow observables at observed scale are not capturable in this pass; node-flow semantics remain covered by the L0 traces (flow fixture with node_flow=True).",
+    "32 of 137 OD calls store full input/output arrays (deterministic first-2-per-origin rule); the other 105 are ledgered with scalars + origin identity only.",
+    "The OD fixture stores the ZERO-BUFFER per-call delta (canonical kernel-boundary form). Cumulative stripe-buffer fold association at observed scale is NOT part of this fixture (remains L0-trace/driver territory; O2 engine-level edge_flow_AB/BA outputs are stored as anchors).",
+    "Capture ran with numba's default thread count (10) as observed on this laptop; the replay tests prove byte-equality again in the suite process, and small-scale thread-count determinism is separately pinned (test_parallel_kernel_identical_across_numba_thread_counts).",
+    "Gradient replay in-suite uses chunk=512 (bounds the dense scipy transient to ~340 MB); the captured outputs were assembled at the engine's chunk rule (1754). The test proves assembled-byte chunk-invariance by matching anyway.",
+    "The fixture is a capture of ONE observed run (verified reproducible against the reviewer's independent run byte-for-byte at the export level), not an execution tile for full-scale performance claims."
+  ]
+}

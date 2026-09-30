@@ -1,0 +1,96 @@
+{
+  "task": "F1I: flow nogil at fixed arithmetic stripes (implementation)",
+  "status": "PHASE-2-COMPLETE — self-verified; awaits independent re-run and commit by team-lead",
+  "date": "2026-09-26",
+  "worktree": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e (branch perf/una-large-e2e)",
+  "python": "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python",
+  "source_change": {
+    "file": "src/urban_network_analysis/Engines/AggregateFlow.py",
+    "cand_sha256": "73ac95b341ed128e77afc69e0789550fadeaadca13446f438ce771f966f48978",
+    "b0_sha256": "2547e06bad6fb301304fca9b40fe7195c0594e7240cb4f570cd667655be14923",
+    "removed": "@nb.njit(cache=True, fastmath=True)",
+    "added": "@nb.njit(cache=True, fastmath=True, nogil=True)",
+    "diff_is_exactly_one_line": true,
+    "note": "kernel-only change; driver _process_origins_aggregate untouched; K = num_threads = topology.num_threads (H05 erratum F1I-K-label); turns kernel untouched (no nogil)"
+  },
+  "suites_final_state": {
+    "f1": {"command": "python -m pytest tests/large_e2e/F1 -q", "passed": 30, "failed": 0, "seconds": 15.17},
+    "oracle": {"command": "python -m pytest tests/large_e2e/oracle -q", "passed": 64, "failed": 0, "seconds": 36.58}
+  },
+  "ir_artifact_F1I_N1": {
+    "generator": "capture_ir.py (self-verifying; manages a fresh per-run numba cache root because warm-cache loads return empty IR stubs from inspect_llvm)",
+    "specialization": "the single observed signature: int32 CSR/edge_id/pred x4 aligned C arrays, int8 dir, float64 weights/d_o/d_d/out x5, int64 scalars x5, float64 scalars x4",
+    "b0_ir_sha256": "328bb1d7111e6c95f923306b977b2d30de8e2426c31c0a0ea5b40a3277edeb6c",
+    "cand_ir_sha256": "072185a7d5471efacb97cc3c37507a4290320ae4a64f3b380e7f68d8669cf5f2",
+    "census_sequence_sha256": "f443ec3ae89dfd5c73cdf0cbcbba311b55dd36f0dd2838f0ed8fa472091d61c5 (identical both arms)",
+    "fp_sites": {"b0": 92, "cand": 92, "opcode+flags+operand-shape sequence equal": true},
+    "fma_fmuladd_llvm_fma": {"b0": 0, "cand": 0},
+    "gil": {"b0_save_restore": [0, 0], "cand_save_restore": [2, 2]},
+    "full_ir_residual": {"gil_lines": 4, "mechanical_pairs": 168, "non_mechanical_pairs": 0,
+      "detail": "pairwise line classification: every non-GIL diff line equals its opposite under renumber-insensitive placeholders (SSA temps, block-label numbering, module-name Itanium length prefix 22 vs 11, ABI/source-hash mangling, string-const lengths); the only insertions are the 2 GIL declares + 2 GIL calls around the kernel invocation in the CPython wrapper; float constants are NOT placeholdered and match everywhere"},
+    "reproducibility": "cold-cache runs are deterministic: identical IR sha256 across two independent cold runs",
+    "verdict": "PASS — any delta beyond GIL save/restore = rejection rule satisfied (none found)"
+  },
+  "binding_review_items": {
+    "F1I_N1": "done — see ir_artifact_F1I_N1 above; artifacts ir_b0/cand_accumulate_od_flow.ll, ir_census.json, ir_fp_census.txt, ir_side_by_side.md committed in this directory",
+    "T8_turns": "done — turns=True engine byte-equal at K=2; turns-kernel targetoptions identical (no nogil either arm); total tree source diff = exactly one decorator line",
+    "H03_frozen_fact_test": "not touched",
+    "one_revision_budget": "unspent — no review-driven source revision so far"
+  },
+  "evidence_files_sha256": {
+    "test_artifacts.json": "ab31a03bf65d9a6ff0df49b205285d2959fd38250f894d5b861e5e36c62db90c",
+    "capture_ir.py": "b5949c10ae94857cfb7119ec163d7b2a5cefd2cba3bb8a484077f0f63eac021d",
+    "ir_census.json": "3880e3dd9183d361e20b75f52f30bf632585d0dc7422ceedc7f59eba9fd965ae",
+    "ir_fp_census.txt": "c3b6535a92d61576dfdc17b63cb83b2e8edf17dd9687a7a4ff00d3d8fa248a8b",
+    "ir_b0_accumulate_od_flow.ll": "328bb1d7111e6c95f923306b977b2d30de8e2426c31c0a0ea5b40a3277edeb6c",
+    "ir_cand_accumulate_od_flow.ll": "072185a7d5471efacb97cc3c37507a4290320ae4a64f3b380e7f68d8669cf5f2",
+    "ir_side_by_side.md": "b28e07cfda3ae524ea51712f2e8ed387032e175e1ec806b88a4022bd1b294af3"
+  },
+  "test_files_sha256": {
+    "conftest.py": "856e80766d7c14d13a3ce0e52791d26c5161a927e2c02f0d0f00e235c7147296",
+    "cand_load.py": "7212803d6169fab42e7ddaf39309d3818213a4c75c9c686692bb745db141c6e4",
+    "fixtures_f1.py": "f65ee74ab4cfc28493d4522fc2c01e8f5432d817981bef13a1899ad55fcf630e",
+    "harness_f1.py": "3d4633fe3eaa3663c2f39d7985bc86b4f96478320aaef1da8a9091d737c926e7",
+    "mutant_f1.py": "23a02fcb5afc9dfed2075d7a4cf5da3f8bdf42e9da4afeb0999357890171a18d",
+    "mt_child_f1.py": "b88d0cfe61c647f55b7187d0dabbc8d0dc3e43b609c3aa89453e0b9499e6d98c",
+    "nrt_child_f1.py": "16a876c299425cedf9266daf130a4fb06a2c4c776ddaf8c5fc2a35c3bc4123c5",
+    "test_f1_kernel.py": "e491d2fca7e214326c92b4ba8252756b1084bd32c5d8ac25dad6d9058af74c9a",
+    "test_f1_drivers.py": "52c4cf0cf5044d267994b6d2a8ff7d5dc466403564919f79e6b9ca43d187d313",
+    "test_f1_stripes.py": "b52a54114d9a2fb6869cfcee33d8862149c93d30a6c13c4afe55d625baadf3fb",
+    "test_f1_observed.py": "f7d3cba4aaea2a5ef2628da7aa3f5fc3c4b894c96ff248f4d5b16e0befe12517",
+    "test_f1_compiler.py": "4c526af38795a23b69f19ce4cf2bbf6f7b7d7fc5b59a55a36cfb1d874c3607f1",
+    "test_f1_turns.py": "0a10cad8f3dc85dc9ae183574ef5a0a61a6e5a12ad5cedf2209e6a569371cbe5",
+    "test_f1_nrt.py": "94581b08f6a35da29894977681bc193c621d63fa110e58d2a50b664db231b257"
+  },
+  "empirical_pins_summary": {
+    "T1_micro_battery": "12 MicroCases (empty reach, q_sum==0 sparse+tight, u-turn leaf, same-edge snap, contamination, 3 decay curves, zero trip, tight budget, node-flow on/off) pass both arms at the single observed specialization",
+    "T2_drivers": "all 9 ENGINE_CASES K=1 byte-equal across arms; sequential reuse on the same engine instance byte-identical",
+    "T3_stripes": "K in {1,2,3,9}: serial stripe replica (running the arm's COMPILED kernel) reproduces the arm's engine output; per-slot partials arm-invariant",
+    "T4_persistence": "in-process repeats + fresh child processes (per-arm cache roots, 4 BLAS threads): outputs byte-equal within arm and across arms",
+    "T5_concurrency": "two independent engines on threads, distinct settings, no cross-contamination",
+    "T6_observed": "all 32 selected O2 records replay byte-equal (cross-arm AND vs stored fixture outputs incl. delivered); trip-volume records byte-equal",
+    "T7_compiler": "full-module targetoptions census: only delta is nogil absent->True on _accumulate_od_flow; identical battery yields exactly ONE specialization, signature lists equal",
+    "T8_turns": "see binding_review_items",
+    "T9_reduced_threads": "num_threads forced K in {1,3} byte-equal across arms",
+    "T10_exceptions": "kernel raise mid-origin -> zeros after failure, engine returns cleanly; rerun on the same instance byte-identical to a fresh run",
+    "T11_nrt": "NUMBA_NRT_STATS children: 48 allocs == 48 frees per kernel call, BOTH arms (H05 allocation rate holds exactly)",
+    "T12_progress_log": "'origin k/n (pct, rate/s, ETA min)' sequence arm-invariant; rate/ETA structural only",
+    "T13_buffers": "stripe scratch buffers distinct per stripe; node-off path shares one shape-0 _empty_node; outputs own their data"
+  },
+  "negatives_fire": {
+    "M1_fold_descending": {"fires_on": "decay_equal case, both arms", "first_diff": "final_BA byte 0, final_node byte 48"},
+    "M2_partition_contiguous": {"fires_on": "decay_equal case, both arms", "first_diff": "final_AB byte 8, final_BA byte 0, final_node byte 16"},
+    "M3_pass_swap": {"fires_on": ["m_base", "m_base_nonode", "m_uturn_leaf", "m_decay_exponential", "m_decay_logistic"], "first_diff_array": "out_AB"},
+    "T6_budget_override": {"fires": true, "record": 0, "kind": "byte-divergence", "first_diff_byte": 351984}
+  },
+  "caveats": [
+    "warmup_s entries in test_artifacts.json reflect warm-cache session state (cand first-call 0.0040s vs b0 0.0999s in-process because the candidate had already been JIT-warmed by earlier tests in the same session). NO performance claim is made here; cold-start JIT cost is F1R/D3's preregistered obligation.",
+    "MicroCase budget is kept finite by construction (production driver never calls the kernel with non-finite d_shortest/budget; it skips non-finite d_shortest before dispatch). Under fastmath the inf comparisons fold, so fixtures outside that domain are out of the kernel's contract and were not used as 'divergence' evidence.",
+    "capture_ir.py intentionally compiles cold: with a warm numba on-disk cache, inspect_llvm returns an empty stub; the script allocates its own fresh cache root and asserts non-stub IR."
+  ],
+  "f1r_handoff": {
+    "screen_budget": "<=3 paired blocks per revision (L0/L1; sel1024-scale needs a lease)",
+    "no_performance_claim_made_by_F1I": true,
+    "F1I_phase2_evidence_complete": true
+  }
+}

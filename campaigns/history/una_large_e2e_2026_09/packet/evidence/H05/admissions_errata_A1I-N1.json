@@ -1,0 +1,51 @@
+{
+ "schema_version": 1,
+ "task": "H05",
+ "record": "admissions_errata",
+ "erratum_id": "A1I-N1",
+ "role": "performance-owner",
+ "generated_utc": "2026-09-26T01:05:00Z",
+ "routed_by": "team-lead (implementer finding, verified by them via raw probe + fresh compile)",
+ "status": "ACKNOWLEDGED_CORRECT",
+ "committed_evidence_affected": {
+  "file": "evidence/H05/admissions.json",
+  "disposition": "UNMODIFIED — this erratum corrects the record in place; the committed file is not rewritten",
+  "sections_affected": [
+   "decisions.A1_snapshot_scratch.measured.ir_dynamic_alloc_callsites.adjust_destination_distances",
+   "decisions.A1_snapshot_scratch.reasoning (final clause citing adjust_destination_distances as caller-buffered precedent)"
+  ]
+ },
+ "claim_in_committed_admissions": {
+  "statement": "adjust_destination_distances has 0 dynamic compiled alloc callsites ... already caller-buffered (0 sites) showing the pattern is viable in this codebase",
+  "verdict": "WRONG — withdrawn"
+ },
+ "actual_fact": {
+  "probe_ir_entry_is_an_empty_read": {
+   "raw_probe": "campaign_data/h05_probes/A1_002140.json",
+   "raw_probe_sha256": "e303f07d40ca0aa9d998692831d8c435b77b87ace0b30ab506e9f5244a49a18f",
+   "adjust_destination_distances_entry": {
+    "llvm_bytes": 210,
+    "nrt_symbols_present": [],
+    "n_dynamic_callsites": 0,
+    "n_static_callsites": 0
+   },
+   "interpretation": "210 bytes of IR with zero NRT symbols is a stub read, not the compiled body of the kernel; the 0-sites figure was an artifact of that empty read, never a measured compile"
+  },
+  "corrected_site_count": {
+   "adjust_destination_distances": "2 dynamic in-function NRT sites per fresh compile (implementer-verified; consistent with the B0 source, which allocates its output in-function: d_distances = np.empty(d_count, dtype=scope_weights.dtype) at wt-b0 src/urban_network_analysis/Engines/AccessibilityWElevation.py in adjust_destination_distances — I re-read and confirm this line)"
+  }
+ },
+ "unaffected_facts_reconfirmed": {
+  "note": "the implementer re-derived all three; the raw probe's own IR sizes corroborate (183-593 kB of real compiled IR, vs the 210-byte stub)",
+  "integrated_scope_access": {"n_dynamic_callsites": 30, "nrt_alloc_per_origin_call": 9563127, "n_origins": 32},
+  "compact_vector_node_view_scope": {"n_dynamic_callsites": 12, "nrt_alloc_per_call_median": 527},
+  "reach_gravity_knn_access": {"n_dynamic_callsites": 13},
+  "A1_verdict": "ADMITTED — unchanged; these load-bearing measured facts stand"
+ },
+ "reasoning_impact": {
+  "withdrawn": "the claim that adjust_destination_distances is 'already caller-buffered' and thereby corroborates the reusable-scratch pattern is WITHDRAWN — that kernel is in fact another in-function allocator (2 dynamic sites), not a precedent for caller-buffering",
+  "replacement_basis": "the A1 admission stands on its own measured facts: integrated_scope_access performs ~9.56M NRT allocations per single-origin call (32/32 origins, min=median=max), all freed in-call, across 30 dynamic compiled allocation callsites; plus compact (12 sites) and reach_gravity_knn_access (13 sites). No corroborating-precedent clause is needed for admission",
+  "downstream_impact": "none on A1I scope or the A1R review: the A1 implementation task targets the integrated/compact/reach_gravity allocation churn, which is unchanged; if anything the corrected fact removes an invalid precedent-citation, it does not weaken the measured case"
+ },
+ "process_note": "erratum written by the performance-owner on request; committed admissions.json intentionally left byte-identical; no git writes; no heavy execution performed for this erratum (raw record + source re-read only)"
+}

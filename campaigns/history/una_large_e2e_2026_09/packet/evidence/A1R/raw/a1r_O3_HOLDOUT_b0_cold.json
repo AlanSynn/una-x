@@ -1,0 +1,1584 @@
+{
+ "schema_version": 1,
+ "task": "H05",
+ "record": "profile_session",
+ "role": "performance-owner",
+ "cell": "O3_HOLDOUT",
+ "mode": "clean",
+ "measurement_class": "diagnostic_profile_installed",
+ "run_id": "a1r_O3_HOLDOUT_b0_cold",
+ "lease_id": "A1R-lease-20260926",
+ "nrt_stats_enabled": false,
+ "timing_class": "clean",
+ "started_utc": "2026-09-26T06:41:43Z",
+ "pressure_stop_bytes": 1717986918,
+ "env": {
+  "L1_REUSE_DIR": "<unset>",
+  "PYTHONPATH": "<unset>",
+  "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_b0",
+  "NUMBA_NRT_STATS": null,
+  "numba_cache_dir_state_at_start": "exists_0_files",
+  "numba_cache_dir_state_at_end": "exists_8_files"
+ },
+ "import": {
+  "urban_network_analysis_file": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/urban_network_analysis",
+  "package_version": "2.6.0",
+  "identity_assertion": "ok (realpath under expected site-packages)",
+  "expected_site_packages": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages"
+ },
+ "process": {
+  "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "executable": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/bin/python",
+  "numpy": "2.4.6",
+  "numba": "0.67.0",
+  "numba_num_threads": 10,
+  "rss_at_import_mib": 253.15625,
+  "available_ram_bytes_at_start": 3404808192,
+  "swap_used_bytes_at_start": 6298599424,
+  "loadavg_at_start": [
+   23.861328125,
+   17.9765625,
+   10.71435546875
+  ],
+  "cmdline": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/benchmarks/large_e2e/h05_profile.py --manifest /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json --cell O3_HOLDOUT --mode clean --out /Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/A1R/raw/a1r_O3_HOLDOUT_b0_cold.json --output-root /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_cold --expected-site-packages /Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages --lease-id A1R-lease-20260926 --run-id a1r_O3_HOLDOUT_b0_cold"
+ },
+ "dispatchers_initial_sigcounts": {
+  "awe_integrated_scope_access": 0,
+  "af_accumulate_od_flow": 0,
+  "af_compute_trip_volumes": null
+ },
+ "nrt_counter": {
+  "enabled": false,
+  "error": null
+ },
+ "patch_registry": [
+  {
+   "attr": "Validation",
+   "stage": "settings_validation"
+  },
+  {
+   "attr": "AddNetwork",
+   "stage": "topology_add_network"
+  },
+  {
+   "attr": "BuildAccessPoints",
+   "stage": "topology_build_access_points"
+  },
+  {
+   "attr": "AddOrigins",
+   "stage": "topology_add_origins"
+  },
+  {
+   "attr": "AddDestinations",
+   "stage": "topology_add_destinations"
+  },
+  {
+   "attr": "AddObservers",
+   "stage": "topology_add_observers"
+  },
+  {
+   "attr": "AddObstacles",
+   "stage": "topology_add_obstacles"
+  },
+  {
+   "attr": "BuildClusters",
+   "stage": "flow_build_clusters"
+  },
+  {
+   "attr": "__init__",
+   "stage": "acc_engine_construct"
+  },
+  {
+   "attr": "Centrality",
+   "stage": "acc_centrality"
+  },
+  {
+   "attr": "integrated_scope_access",
+   "stage": "acc_search_kernel_integrated"
+  },
+  {
+   "attr": "_ResolveGravityCap",
+   "stage": "flow_auto_cap_resolve"
+  },
+  {
+   "attr": "__init__",
+   "stage": "flow_engine_construct"
+  },
+  {
+   "attr": "Centrality",
+   "stage": "flow_engine_centrality"
+  },
+  {
+   "attr": "_prepare_params",
+   "stage": "flow_prepare_params"
+  },
+  {
+   "attr": "_build_digraph",
+   "stage": "flow_build_digraph"
+  },
+  {
+   "attr": "_build_csr",
+   "stage": "flow_build_csr"
+  },
+  {
+   "attr": "_precompute_dest_gradients",
+   "stage": "flow_gradient_precompute"
+  },
+  {
+   "attr": "_process_origins_aggregate",
+   "stage": "flow_origin_loop"
+  },
+  {
+   "attr": "_accumulate_observer_flows",
+   "stage": "flow_observer_flows"
+  },
+  {
+   "attr": "ExportAccessibilityResults",
+   "stage": "export_accessibility_results"
+  },
+  {
+   "attr": "ExportFlowResult",
+   "stage": "export_flow_result"
+  }
+ ],
+ "pool_inventory_post_patch": {
+  "threadpoolctl": [
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 10,
+    "prefix": "libomp",
+    "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+    "version": null
+   }
+  ],
+  "numba": {
+   "version": "0.67.0",
+   "get_num_threads": 10,
+   "config_NUMBA_NUM_THREADS": 10,
+   "threading_layer_config": "default",
+   "threading_layer_initialized": true,
+   "threading_layer": "workqueue"
+  },
+  "pyarrow": {
+   "version": "25.0.1",
+   "cpu_count": 10,
+   "io_thread_count": 8
+  },
+  "python_threads": {
+   "count": 1,
+   "names": [
+    "MainThread"
+   ],
+   "native_ids": [
+    84924632
+   ]
+  },
+  "process_num_threads": 13,
+  "explicit_executors": [],
+  "os_cpu_count": 10,
+  "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+ },
+ "input_rehash": {
+  "network": {
+   "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+   "bytes": 71290787,
+   "match": true
+  },
+  "origins": {
+   "sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+   "bytes": 5982662,
+   "match": true
+  },
+  "destinations": {
+   "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+   "bytes": 2641054,
+   "match": true
+  }
+ },
+ "manifest": {
+  "path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT.manifest.json",
+  "sha256": "915a098f809fa88d517a3572c1a0cb566964b628690d8a3388984514cae88b63",
+  "workload_id": "O3_HOLDOUT",
+  "settings_overrides": {
+   "network_weight_column": "Geometric",
+   "origin_weight_column": "Count",
+   "destination_weight_column": "weekly_departures",
+   "search_radius": 1200,
+   "turns": false,
+   "elevation": false,
+   "calculate_reach": true,
+   "calculate_exponential_gravity": true,
+   "calculate_logistic_gravity": true,
+   "calculate_knn_access": true,
+   "output_csv": true,
+   "output_geojson": true,
+   "output_feather": true
+  }
+ },
+ "origin_selection": {
+  "selection_manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_HOLDOUT_sel_all.origin_indices.json",
+  "selection_manifest_sha256": "73415976c0cfac456e49d7bd24bd80d4f0dc8f8b408ff820043beed1207f3990",
+  "selected_count": 14751,
+  "workload_variant": "O3_HOLDOUT_sel_all",
+  "fixture": "none \u2014 ordered_indices is the identity; verified source file used directly, no rewrite"
+ },
+ "constructor": {
+  "call": "UNA(verbosity=1)",
+  "wall_ns": 61208,
+  "note": "outside application windows; counted once (protocol)"
+ },
+ "settings_pristine": {
+  "_version": "1.0",
+  "name": "Default",
+  "data_folder": "",
+  "network_file": "Network.feather",
+  "origins_file": "origins.feather",
+  "destinations_file": "destinations.feather",
+  "network_weight_column": "Geometric",
+  "network_weight_default": 1.0,
+  "network_precision": 3,
+  "network_saved_nodes": false,
+  "network_load_nodes": true,
+  "calculate_reach": true,
+  "calculate_exponential_gravity": true,
+  "calculate_logistic_gravity": true,
+  "calculate_knn_access": true,
+  "origin_weight_column": "Count",
+  "destination_weight_column": "Count",
+  "origin_uid_column": null,
+  "origin_destination_id_column": "",
+  "destination_id_column": "",
+  "default_cost": 1.0,
+  "use_nearest_destination": false,
+  "search_radius": 1500,
+  "clasters": 1,
+  "cluster_parallel": false,
+  "cluster_workers": 1,
+  "gravity_beta": 0.001,
+  "gravity_logistic_midpoint": 500,
+  "gravity_plateau": 0,
+  "gravity_decay_constant": 4.59511985013459,
+  "knn_weights": [
+   1.0,
+   1.0,
+   0.5
+  ],
+  "knn_decay": "logistic",
+  "elevation": false,
+  "elevation_penalty": 4,
+  "turns": false,
+  "turn_threshold": 45,
+  "turn_penalty": 32,
+  "output_folder": null,
+  "output_wStamp": true,
+  "output_copy_source_data": false,
+  "output_geojson": true,
+  "output_feather": true,
+  "output_csv": false,
+  "output_shp": false,
+  "csv_delimiter": ",",
+  "result_prefix": "",
+  "output_file_name": "Results",
+  "flow_engine": "aggregate_flow",
+  "flow_detour_ratio": 1.05,
+  "flow_detour_buffer": 100.0,
+  "flow_detour_mode": "ratio",
+  "flow_decay": true,
+  "flow_decay_curve": "exponential",
+  "flow_decay_method": "closest",
+  "flow_gravity_cap": 1.0,
+  "flow_path_detour_penalty": "logistic",
+  "flow_route_enumeration_beta": 0.0,
+  "flow_route_enumeration_logistic_midpoint": 150.0,
+  "flow_origin_weights": true,
+  "flow_destination_weights": true,
+  "flow_return_directional": false,
+  "observer_points_file": null,
+  "observer_points_uid_column": null,
+  "observer_points_snap_to": "edge",
+  "obstacle_points_file": null,
+  "obstacle_points_uid_column": null,
+  "obstacle_points_penalty_column": "penalty",
+  "obstacle_points_direction_column": null,
+  "obstacle_points_snap_to": "edge",
+  "flow_track_obstacle_points_usage": false,
+  "flow_k_nearest_destinations": 0,
+  "flow_max_destinations_per_origin": 0,
+  "flow_n_alternatives": 30,
+  "flow_alternative_penalty_factor": 1.01,
+  "flow_route_id_column": null,
+  "flow_output_routes": false,
+  "flow_debug_print_paths": false,
+  "flow_track_origins_per_destination": false,
+  "flow_compute_node_flow": false,
+  "batch_composite_output": false,
+  "batch_composite_result_column": "knn_access",
+  "batch_composite_column_prefix": "",
+  "batch_composite_sum_column_name": "composite_sum",
+  "progressbar": true,
+  "logger_verbosity": 1
+ },
+ "settings": {
+  "assembled": {
+   "_version": "1.0",
+   "name": "Default",
+   "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+   "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+   "origins_file": "Cambridge_building_centroids.geojson",
+   "destinations_file": "MA_bus_stops.geojson",
+   "network_weight_column": "Geometric",
+   "network_weight_default": 1.0,
+   "network_precision": 3,
+   "network_saved_nodes": false,
+   "network_load_nodes": true,
+   "calculate_reach": true,
+   "calculate_exponential_gravity": true,
+   "calculate_logistic_gravity": true,
+   "calculate_knn_access": true,
+   "origin_weight_column": "Count",
+   "destination_weight_column": "weekly_departures",
+   "origin_uid_column": null,
+   "origin_destination_id_column": "",
+   "destination_id_column": "",
+   "default_cost": 1.0,
+   "use_nearest_destination": false,
+   "search_radius": 1200,
+   "clasters": 1,
+   "cluster_parallel": false,
+   "cluster_workers": 1,
+   "gravity_beta": 0.001,
+   "gravity_logistic_midpoint": 500,
+   "gravity_plateau": 0,
+   "gravity_decay_constant": 4.59511985013459,
+   "knn_weights": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "knn_decay": "logistic",
+   "elevation": false,
+   "elevation_penalty": 4,
+   "turns": false,
+   "turn_threshold": 45,
+   "turn_penalty": 32,
+   "output_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_cold",
+   "output_wStamp": true,
+   "output_copy_source_data": false,
+   "output_geojson": true,
+   "output_feather": true,
+   "output_csv": true,
+   "output_shp": false,
+   "csv_delimiter": ",",
+   "result_prefix": "",
+   "output_file_name": "Results",
+   "flow_engine": "aggregate_flow",
+   "flow_detour_ratio": 1.05,
+   "flow_detour_buffer": 100.0,
+   "flow_detour_mode": "ratio",
+   "flow_decay": true,
+   "flow_decay_curve": "exponential",
+   "flow_decay_method": "closest",
+   "flow_gravity_cap": 1.0,
+   "flow_path_detour_penalty": "logistic",
+   "flow_route_enumeration_beta": 0.0,
+   "flow_route_enumeration_logistic_midpoint": 150.0,
+   "flow_origin_weights": true,
+   "flow_destination_weights": true,
+   "flow_return_directional": false,
+   "observer_points_file": null,
+   "observer_points_uid_column": null,
+   "observer_points_snap_to": "edge",
+   "obstacle_points_file": null,
+   "obstacle_points_uid_column": null,
+   "obstacle_points_penalty_column": "penalty",
+   "obstacle_points_direction_column": null,
+   "obstacle_points_snap_to": "edge",
+   "flow_track_obstacle_points_usage": false,
+   "flow_k_nearest_destinations": 0,
+   "flow_max_destinations_per_origin": 0,
+   "flow_n_alternatives": 30,
+   "flow_alternative_penalty_factor": 1.01,
+   "flow_route_id_column": null,
+   "flow_output_routes": false,
+   "flow_debug_print_paths": false,
+   "flow_track_origins_per_destination": false,
+   "flow_compute_node_flow": false,
+   "batch_composite_output": false,
+   "batch_composite_result_column": "knn_access",
+   "batch_composite_column_prefix": "",
+   "batch_composite_sum_column_name": "composite_sum",
+   "progressbar": true,
+   "logger_verbosity": 1
+  },
+  "assembly_diff_vs_manifest_settings_before": {
+   "output_folder": [
+    "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_cold",
+    null
+   ]
+  },
+  "origins_file_effective": "Cambridge_building_centroids.geojson",
+  "diff_policy": "only path-locational keys + explicit extra-settings may differ"
+ },
+ "public_call": "una.RunAccessibility()",
+ "pool_inventory_pre_window": {
+  "threadpoolctl": [
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 10,
+    "prefix": "libomp",
+    "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+    "version": null
+   }
+  ],
+  "numba": {
+   "version": "0.67.0",
+   "get_num_threads": 10,
+   "config_NUMBA_NUM_THREADS": 10,
+   "threading_layer_config": "default",
+   "threading_layer_initialized": true,
+   "threading_layer": "workqueue"
+  },
+  "pyarrow": {
+   "version": "25.0.1",
+   "cpu_count": 10,
+   "io_thread_count": 8
+  },
+  "python_threads": {
+   "count": 1,
+   "names": [
+    "MainThread"
+   ],
+   "native_ids": [
+    84924632
+   ]
+  },
+  "process_num_threads": 13,
+  "explicit_executors": [],
+  "os_cpu_count": 10,
+  "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+ },
+ "settings_before_window": {
+  "_version": "1.0",
+  "name": "Default",
+  "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+  "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+  "origins_file": "Cambridge_building_centroids.geojson",
+  "destinations_file": "MA_bus_stops.geojson",
+  "network_weight_column": "Geometric",
+  "network_weight_default": 1.0,
+  "network_precision": 3,
+  "network_saved_nodes": false,
+  "network_load_nodes": true,
+  "calculate_reach": true,
+  "calculate_exponential_gravity": true,
+  "calculate_logistic_gravity": true,
+  "calculate_knn_access": true,
+  "origin_weight_column": "Count",
+  "destination_weight_column": "weekly_departures",
+  "origin_uid_column": null,
+  "origin_destination_id_column": "",
+  "destination_id_column": "",
+  "default_cost": 1.0,
+  "use_nearest_destination": false,
+  "search_radius": 1200,
+  "clasters": 1,
+  "cluster_parallel": false,
+  "cluster_workers": 1,
+  "gravity_beta": 0.001,
+  "gravity_logistic_midpoint": 500,
+  "gravity_plateau": 0,
+  "gravity_decay_constant": 4.59511985013459,
+  "knn_weights": [
+   1.0,
+   1.0,
+   0.5
+  ],
+  "knn_decay": "logistic",
+  "elevation": false,
+  "elevation_penalty": 4,
+  "turns": false,
+  "turn_threshold": 45,
+  "turn_penalty": 32,
+  "output_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_cold",
+  "output_wStamp": true,
+  "output_copy_source_data": false,
+  "output_geojson": true,
+  "output_feather": true,
+  "output_csv": true,
+  "output_shp": false,
+  "csv_delimiter": ",",
+  "result_prefix": "",
+  "output_file_name": "Results",
+  "flow_engine": "aggregate_flow",
+  "flow_detour_ratio": 1.05,
+  "flow_detour_buffer": 100.0,
+  "flow_detour_mode": "ratio",
+  "flow_decay": true,
+  "flow_decay_curve": "exponential",
+  "flow_decay_method": "closest",
+  "flow_gravity_cap": 1.0,
+  "flow_path_detour_penalty": "logistic",
+  "flow_route_enumeration_beta": 0.0,
+  "flow_route_enumeration_logistic_midpoint": 150.0,
+  "flow_origin_weights": true,
+  "flow_destination_weights": true,
+  "flow_return_directional": false,
+  "observer_points_file": null,
+  "observer_points_uid_column": null,
+  "observer_points_snap_to": "edge",
+  "obstacle_points_file": null,
+  "obstacle_points_uid_column": null,
+  "obstacle_points_penalty_column": "penalty",
+  "obstacle_points_direction_column": null,
+  "obstacle_points_snap_to": "edge",
+  "flow_track_obstacle_points_usage": false,
+  "flow_k_nearest_destinations": 0,
+  "flow_max_destinations_per_origin": 0,
+  "flow_n_alternatives": 30,
+  "flow_alternative_penalty_factor": 1.01,
+  "flow_route_id_column": null,
+  "flow_output_routes": false,
+  "flow_debug_print_paths": false,
+  "flow_track_origins_per_destination": false,
+  "flow_compute_node_flow": false,
+  "batch_composite_output": false,
+  "batch_composite_result_column": "knn_access",
+  "batch_composite_column_prefix": "",
+  "batch_composite_sum_column_name": "composite_sum",
+  "progressbar": true,
+  "logger_verbosity": 1
+ },
+ "window": {
+  "public_call": "una.RunAccessibility()",
+  "application_window_ns": 6808955334,
+  "boundary": "perf_counter_ns immediately before the public call through return (incl. synchronous exports); exactly ONE real public call; constructor outside; gravity cap never pre-resolved outside RunFlow",
+  "raised": false,
+  "traceback": null,
+  "nrt_delta_window": null,
+  "peak_rss_tree_sampled_mib": 499.546875,
+  "pressure_breach": null
+ },
+ "settings_after_window": {
+  "_version": "1.0",
+  "name": "Default",
+  "data_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/inputs",
+  "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+  "origins_file": "Cambridge_building_centroids.geojson",
+  "destinations_file": "MA_bus_stops.geojson",
+  "network_weight_column": "Geometric",
+  "network_weight_default": 1.0,
+  "network_precision": 3,
+  "network_saved_nodes": false,
+  "network_load_nodes": true,
+  "calculate_reach": true,
+  "calculate_exponential_gravity": true,
+  "calculate_logistic_gravity": true,
+  "calculate_knn_access": true,
+  "origin_weight_column": "Count",
+  "destination_weight_column": "weekly_departures",
+  "origin_uid_column": null,
+  "origin_destination_id_column": "",
+  "destination_id_column": "",
+  "default_cost": 1.0,
+  "use_nearest_destination": false,
+  "search_radius": 1200,
+  "clasters": 1,
+  "cluster_parallel": false,
+  "cluster_workers": 1,
+  "gravity_beta": 0.001,
+  "gravity_logistic_midpoint": 500,
+  "gravity_plateau": 0,
+  "gravity_decay_constant": 4.59511985013459,
+  "knn_weights": [
+   1.0,
+   1.0,
+   0.5
+  ],
+  "knn_decay": "logistic",
+  "elevation": false,
+  "elevation_penalty": 4,
+  "turns": false,
+  "turn_threshold": 45,
+  "turn_penalty": 32,
+  "output_folder": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_cold",
+  "output_wStamp": true,
+  "output_copy_source_data": false,
+  "output_geojson": true,
+  "output_feather": true,
+  "output_csv": true,
+  "output_shp": false,
+  "csv_delimiter": ",",
+  "result_prefix": "",
+  "output_file_name": "Results",
+  "flow_engine": "aggregate_flow",
+  "flow_detour_ratio": 1.05,
+  "flow_detour_buffer": 100.0,
+  "flow_detour_mode": "ratio",
+  "flow_decay": true,
+  "flow_decay_curve": "exponential",
+  "flow_decay_method": "closest",
+  "flow_gravity_cap": 1.0,
+  "flow_path_detour_penalty": "logistic",
+  "flow_route_enumeration_beta": 0.0,
+  "flow_route_enumeration_logistic_midpoint": 150.0,
+  "flow_origin_weights": true,
+  "flow_destination_weights": true,
+  "flow_return_directional": false,
+  "observer_points_file": null,
+  "observer_points_uid_column": null,
+  "observer_points_snap_to": "edge",
+  "obstacle_points_file": null,
+  "obstacle_points_uid_column": null,
+  "obstacle_points_penalty_column": "penalty",
+  "obstacle_points_direction_column": null,
+  "obstacle_points_snap_to": "edge",
+  "flow_track_obstacle_points_usage": false,
+  "flow_k_nearest_destinations": 0,
+  "flow_max_destinations_per_origin": 0,
+  "flow_n_alternatives": 30,
+  "flow_alternative_penalty_factor": 1.01,
+  "flow_route_id_column": null,
+  "flow_output_routes": false,
+  "flow_debug_print_paths": false,
+  "flow_track_origins_per_destination": false,
+  "flow_compute_node_flow": false,
+  "batch_composite_output": false,
+  "batch_composite_result_column": "knn_access",
+  "batch_composite_column_prefix": "",
+  "batch_composite_sum_column_name": "composite_sum",
+  "progressbar": true,
+  "logger_verbosity": 1
+ },
+ "pool_inventory_post_window": {
+  "threadpoolctl": [
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 10,
+    "prefix": "libomp",
+    "filepath": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel/lib/python3.11/site-packages/sklearn/.dylibs/libomp.dylib",
+    "version": null
+   }
+  ],
+  "numba": {
+   "version": "0.67.0",
+   "get_num_threads": 10,
+   "config_NUMBA_NUM_THREADS": 10,
+   "threading_layer_config": "default",
+   "threading_layer_initialized": true,
+   "threading_layer": "workqueue"
+  },
+  "pyarrow": {
+   "version": "25.0.1",
+   "cpu_count": 10,
+   "io_thread_count": 8
+  },
+  "python_threads": {
+   "count": 1,
+   "names": [
+    "MainThread"
+   ],
+   "native_ids": [
+    84924632
+   ]
+  },
+  "process_num_threads": 22,
+  "explicit_executors": [
+   {
+    "executor_id": 1,
+    "max_workers": 9,
+    "created_under_stage": "topology_build_access_points",
+    "created_utc": "2026-09-26T06:41:48Z"
+   },
+   {
+    "executor_id": 2,
+    "max_workers": 9,
+    "created_under_stage": "topology_build_access_points",
+    "created_utc": "2026-09-26T06:41:48Z"
+   },
+   {
+    "executor_id": 3,
+    "max_workers": 10,
+    "created_under_stage": "export_accessibility_results",
+    "created_utc": "2026-09-26T06:41:52Z"
+   }
+  ],
+  "os_cpu_count": 10,
+  "note": "macOS: psutil cpu_affinity unsupported; C=9 is a policy slot budget, not OS pinning. Inventory = threadpoolctl-detectable BLAS/OpenMP pools + numba threading layer + explicit ThreadPoolExecutor objects + live Python threads."
+ },
+ "dispatchers_final_sigcounts": {
+  "awe_integrated_scope_access": 1,
+  "af_accumulate_od_flow": 0,
+  "af_compute_trip_volumes": null
+ },
+ "logger_entries": [
+  {
+   "seconds_elapsed": 1.709621542,
+   "cumulative_seconds": 1.7096635,
+   "event": "Network added",
+   "details": "CRS set to EPSG:6491."
+  },
+  {
+   "seconds_elapsed": 0.00013375,
+   "cumulative_seconds": 1.70979725,
+   "event": "Network added",
+   "details": "Network added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges."
+  },
+  {
+   "seconds_elapsed": 0.076539084,
+   "cumulative_seconds": 1.786336334,
+   "event": "BuildTopology",
+   "details": "Topology built with 49159 nodes and 69957 edges."
+  },
+  {
+   "seconds_elapsed": 0.011733166,
+   "cumulative_seconds": 1.7980695,
+   "event": "create topology",
+   "details": "edge_sindex created"
+  },
+  {
+   "seconds_elapsed": 8.75e-06,
+   "cumulative_seconds": 1.79807825,
+   "event": "create topology",
+   "details": "edge_list_dict created"
+  },
+  {
+   "seconds_elapsed": 0.131459708,
+   "cumulative_seconds": 1.929537958,
+   "event": "Build AccessPoints",
+   "details": "Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points."
+  },
+  {
+   "seconds_elapsed": 0.000107458,
+   "cumulative_seconds": 1.929645416,
+   "event": "Build AccessPoints",
+   "details": "There are 14751 points in 9 chunks"
+  },
+  {
+   "seconds_elapsed": 0.015010042,
+   "cumulative_seconds": 1.944655458,
+   "event": "Build AccessPoints",
+   "details": "Nearest edge is found"
+  },
+  {
+   "seconds_elapsed": 0.008657125,
+   "cumulative_seconds": 1.953312583,
+   "event": "Build AccessPoints",
+   "details": "Done"
+  },
+  {
+   "seconds_elapsed": 0.000238708,
+   "cumulative_seconds": 1.953551291,
+   "event": "Origins added",
+   "details": "Origins added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/Cambridge_building_centroids.geojson, with 14751 points."
+  },
+  {
+   "seconds_elapsed": 0.05541325,
+   "cumulative_seconds": 2.008964541,
+   "event": "Build AccessPoints",
+   "details": "Access points are built from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points."
+  },
+  {
+   "seconds_elapsed": 0.000120917,
+   "cumulative_seconds": 2.009085458,
+   "event": "Build AccessPoints",
+   "details": "There are 6661 points in 9 chunks"
+  },
+  {
+   "seconds_elapsed": 0.010849916,
+   "cumulative_seconds": 2.019935374,
+   "event": "Build AccessPoints",
+   "details": "Nearest edge is found"
+  },
+  {
+   "seconds_elapsed": 0.007678167,
+   "cumulative_seconds": 2.027613541,
+   "event": "Build AccessPoints",
+   "details": "Done"
+  },
+  {
+   "seconds_elapsed": 0.000213667,
+   "cumulative_seconds": 2.027827208,
+   "event": "Destinations added",
+   "details": "Destinations added from source /Users/alansynn/orca/workspaces/una-x/campaign_data/inputs/MA_bus_stops.geojson, with 6661 points."
+  },
+  {
+   "seconds_elapsed": 1.9625e-05,
+   "cumulative_seconds": 2.027846833,
+   "event": "UNA Accessibility",
+   "details": "Using AccessibilityWElevation (no elevation \u2014 symmetric weights)"
+  },
+  {
+   "seconds_elapsed": 1.9833e-05,
+   "cumulative_seconds": 2.027866666,
+   "event": "AccessibilityWElevation",
+   "details": "Initializing graph engine..."
+  },
+  {
+   "seconds_elapsed": 0.010649084,
+   "cumulative_seconds": 2.03851575,
+   "event": "AccessibilityWElevation",
+   "details": "Graph engine initialized"
+  },
+  {
+   "seconds_elapsed": 5.6417e-05,
+   "cumulative_seconds": 2.038572167,
+   "event": "AccessibilityWElevation",
+   "details": "Calculating centrality with radius (weight) 1200"
+  },
+  {
+   "seconds_elapsed": 4.561909834,
+   "cumulative_seconds": 6.600482001,
+   "event": "AccessibilityWElevation",
+   "details": "Reach calculated: min=718.00, max=49904.00, mean=24961.88"
+  },
+  {
+   "seconds_elapsed": 1.9375e-05,
+   "cumulative_seconds": 6.600501376,
+   "event": "AccessibilityWElevation",
+   "details": "Gravity (exponential) calculated: min=241.03, max=22311.34, mean=11584.63"
+  },
+  {
+   "seconds_elapsed": 1.5333e-05,
+   "cumulative_seconds": 6.600516709,
+   "event": "AccessibilityWElevation",
+   "details": "Gravity (logistic) calculated: min=3.30, max=15030.33, mean=4782.38"
+  },
+  {
+   "seconds_elapsed": 1.3e-05,
+   "cumulative_seconds": 6.600529709,
+   "event": "AccessibilityWElevation",
+   "details": "KNN access calculated: min=3.30, max=4206.99, mean=1122.54"
+  },
+  {
+   "seconds_elapsed": 0.033003333,
+   "cumulative_seconds": 6.633533042,
+   "event": "Export Results",
+   "details": "Combined results (with geometry) exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_cold/accessibility_2026-09-26_0241/Results.feather"
+  },
+  {
+   "seconds_elapsed": 0.086836,
+   "cumulative_seconds": 6.720369042,
+   "event": "Export Results",
+   "details": "Combined results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_cold/accessibility_2026-09-26_0241/Results.csv"
+  },
+  {
+   "seconds_elapsed": 0.096178833,
+   "cumulative_seconds": 6.816547875,
+   "event": "Export Results",
+   "details": "Combined results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_cold/accessibility_2026-09-26_0241/Results.geojson"
+  },
+  {
+   "seconds_elapsed": 4.58e-07,
+   "cumulative_seconds": 6.816548333,
+   "event": "ExportAccessibilityResults",
+   "details": "All results exported to /Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out/a1r_O3_HOLDOUT_b0_cold/accessibility_2026-09-26_0241"
+  }
+ ],
+ "verbatim_warnings": [],
+ "counts": {
+  "V_nodes": 49159,
+  "E_edges": 69957,
+  "O_rows": 14751,
+  "D_rows": 6661
+ },
+ "accessibility_arrays": {
+  "reach": {
+   "dtype": "int64",
+   "dtype_str": "<i8",
+   "shape": [
+    14751
+   ],
+   "first_k": [
+    12772,
+    12016,
+    10839,
+    10894,
+    8141,
+    8141,
+    8627,
+    8627
+   ],
+   "sha256_bytes": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+   "n_nonfinite": 0
+  },
+  "gravity_exponential": {
+   "dtype": "float64",
+   "dtype_str": "<f8",
+   "shape": [
+    14751
+   ],
+   "first_k": [
+    5948.573813892722,
+    5323.632460133802,
+    4831.536445633907,
+    4616.187728642029,
+    3411.8482161211455,
+    3415.400158436927,
+    3848.637904099907,
+    3850.1407820347254
+   ],
+   "sha256_bytes": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+   "n_nonfinite": 0
+  },
+  "gravity_logistic": {
+   "dtype": "float64",
+   "dtype_str": "<f8",
+   "shape": [
+    14751
+   ],
+   "first_k": [
+    2327.622692562395,
+    1693.9408059092352,
+    1601.4387899300139,
+    1439.3047726536847,
+    848.5040786738969,
+    852.1257685257904,
+    1036.1720488420942,
+    1038.3608919370167
+   ],
+   "sha256_bytes": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+   "n_nonfinite": 0
+  },
+  "knn_access": {
+   "dtype": "float64",
+   "dtype_str": "<f8",
+   "shape": [
+    14751
+   ],
+   "first_k": [
+    699.278578653504,
+    674.8399779436902,
+    602.162118161319,
+    709.9102734197364,
+    351.8130972617334,
+    351.80257810756507,
+    504.16674327641243,
+    504.76532888807515
+   ],
+   "sha256_bytes": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6",
+   "n_nonfinite": 0
+  }
+ },
+ "artifacts": {
+  "accessibility_2026-09-26_0241/Results.feather": {
+   "sha256": "d4aa378b3bbf41a29de3c26a3374b65eec4615fb58f44985ea2727216d4412cf",
+   "bytes": 702978
+  },
+  "accessibility_2026-09-26_0241/Results.geojson": {
+   "sha256": "deca1a16d6af9c45ca8a6f45a1fb49d748693f103a7d6c4a02511e892b51b8c0",
+   "bytes": 4062029
+  },
+  "accessibility_2026-09-26_0241/Results.csv": {
+   "sha256": "6a0b2e1a5a4217069b689ddb060bd45e0719188b684c5fa1d4ac6253236d8346",
+   "bytes": 1556423
+  }
+ },
+ "rss_after_window_mib": 502.84375,
+ "ru_maxrss_mib": 506.640625,
+ "spans": [
+  {
+   "stage": "settings_validation",
+   "parent": null,
+   "tid": 84924632,
+   "depth": 0,
+   "t0_ns": 1346636894639250,
+   "rss_in_mib": 256.0,
+   "t1_ns": 1346636894804041,
+   "rss_out_mib": 256.0,
+   "first_call": true
+  },
+  {
+   "stage": "topology_add_network",
+   "parent": null,
+   "tid": 84924632,
+   "depth": 0,
+   "t0_ns": 1346636894824000,
+   "rss_in_mib": 256.0,
+   "t1_ns": 1346638684918333,
+   "rss_out_mib": 421.828125,
+   "first_call": true
+  },
+  {
+   "stage": "topology_build_access_points",
+   "parent": "topology_add_origins",
+   "tid": 84924632,
+   "depth": 1,
+   "t0_ns": 1346638685084041,
+   "rss_in_mib": 421.828125,
+   "t1_ns": 1346638840190666,
+   "rss_out_mib": 432.15625,
+   "first_call": true
+  },
+  {
+   "stage": "topology_add_origins",
+   "parent": null,
+   "tid": 84924632,
+   "depth": 0,
+   "t0_ns": 1346638685016916,
+   "rss_in_mib": 421.828125,
+   "t1_ns": 1346638840342208,
+   "rss_out_mib": 432.15625,
+   "first_call": true
+  },
+  {
+   "stage": "topology_build_access_points",
+   "parent": "topology_add_destinations",
+   "tid": 84924632,
+   "depth": 1,
+   "t0_ns": 1346638840398375,
+   "rss_in_mib": 432.15625,
+   "t1_ns": 1346638914491916,
+   "rss_out_mib": 434.875,
+   "first_call": false
+  },
+  {
+   "stage": "topology_add_destinations",
+   "parent": null,
+   "tid": 84924632,
+   "depth": 0,
+   "t0_ns": 1346638840360291,
+   "rss_in_mib": 432.15625,
+   "t1_ns": 1346638914637208,
+   "rss_out_mib": 434.875,
+   "first_call": true
+  },
+  {
+   "stage": "acc_engine_construct",
+   "parent": null,
+   "tid": 84924632,
+   "depth": 0,
+   "t0_ns": 1346638914661166,
+   "rss_in_mib": 434.875,
+   "t1_ns": 1346638925332833,
+   "rss_out_mib": 434.9375,
+   "first_call": true
+  },
+  {
+   "stage": "acc_search_kernel_integrated",
+   "parent": "acc_centrality",
+   "tid": 84924632,
+   "depth": 1,
+   "t0_ns": 1346638925392458,
+   "rss_in_mib": 434.9375,
+   "t1_ns": 1346643487077583,
+   "rss_out_mib": 497.390625,
+   "first_call": true
+  },
+  {
+   "stage": "acc_centrality",
+   "parent": null,
+   "tid": 84924632,
+   "depth": 0,
+   "t0_ns": 1346638925371625,
+   "rss_in_mib": 434.9375,
+   "sig_before": {
+    "awe_integrated_scope_access": 0
+   },
+   "t1_ns": 1346643487373500,
+   "rss_out_mib": 497.390625,
+   "first_call": true,
+   "signatures_grew": {
+    "awe_integrated_scope_access": [
+     0,
+     1
+    ]
+   }
+  },
+  {
+   "stage": "export_accessibility_results",
+   "parent": null,
+   "tid": 84924632,
+   "depth": 0,
+   "t0_ns": 1346643487398000,
+   "rss_in_mib": 497.390625,
+   "t1_ns": 1346643703441041,
+   "rss_out_mib": 502.859375,
+   "first_call": true
+  }
+ ],
+ "first_call_stages": [
+  "acc_centrality",
+  "acc_engine_construct",
+  "acc_search_kernel_integrated",
+  "export_accessibility_results",
+  "settings_validation",
+  "topology_add_destinations",
+  "topology_add_network",
+  "topology_add_origins",
+  "topology_build_access_points"
+ ],
+ "partition_check": {
+  "window_ns": 6808955334,
+  "n_spans_total": 10,
+  "n_top_level": 7,
+  "top_level_stages_in_order": [
+   "settings_validation",
+   "topology_add_network",
+   "topology_add_origins",
+   "topology_add_destinations",
+   "acc_engine_construct",
+   "acc_centrality",
+   "export_accessibility_results"
+  ],
+  "sum_top_level_inclusive_ns": 6808577916,
+  "window_minus_sum_top_ns": 377418,
+  "residue_note": "window - sum(top-level inclusive) is the uninstrumented residue (loop glue, result assembly, interpreter overhead); partition holds iff residue >= 0 and no overlaps/outside",
+  "top_level_sibling_overlaps_ns": [],
+  "spans_started_before_window": [],
+  "top_level_exclusive": [
+   {
+    "stage": "settings_validation",
+    "inclusive_ns": 164791,
+    "children_inclusive_ns": 0,
+    "exclusive_ns": 164791,
+    "n_children_contained": 0
+   },
+   {
+    "stage": "topology_add_network",
+    "inclusive_ns": 1790094333,
+    "children_inclusive_ns": 0,
+    "exclusive_ns": 1790094333,
+    "n_children_contained": 0
+   },
+   {
+    "stage": "topology_add_origins",
+    "inclusive_ns": 155325292,
+    "children_inclusive_ns": 155106625,
+    "exclusive_ns": 218667,
+    "n_children_contained": 1
+   },
+   {
+    "stage": "topology_add_destinations",
+    "inclusive_ns": 74276917,
+    "children_inclusive_ns": 74093541,
+    "exclusive_ns": 183376,
+    "n_children_contained": 1
+   },
+   {
+    "stage": "acc_engine_construct",
+    "inclusive_ns": 10671667,
+    "children_inclusive_ns": 0,
+    "exclusive_ns": 10671667,
+    "n_children_contained": 0
+   },
+   {
+    "stage": "acc_centrality",
+    "inclusive_ns": 4562001875,
+    "children_inclusive_ns": 4561685125,
+    "exclusive_ns": 316750,
+    "n_children_contained": 1
+   },
+   {
+    "stage": "export_accessibility_results",
+    "inclusive_ns": 216043041,
+    "children_inclusive_ns": 0,
+    "exclusive_ns": 216043041,
+    "n_children_contained": 0
+   }
+  ],
+  "partition_ok": true
+ },
+ "sampler": {
+  "interval_s": 0.25,
+  "n_samples": 26,
+  "samples": [
+   {
+    "t_ns": 1346636894602416,
+    "wall_utc": "2026-09-26T06:41:46",
+    "rss_root_bytes": 268435456,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 268435456,
+    "n_children": 0,
+    "sys_available_bytes": 3399122944,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     23.861328125,
+     17.9765625,
+     10.71435546875
+    ]
+   },
+   {
+    "t_ns": 1346637159720250,
+    "wall_utc": "2026-09-26T06:41:46",
+    "rss_root_bytes": 284147712,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 284147712,
+    "n_children": 0,
+    "sys_available_bytes": 3406217216,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     23.861328125,
+     17.9765625,
+     10.71435546875
+    ]
+   },
+   {
+    "t_ns": 1346637425608791,
+    "wall_utc": "2026-09-26T06:41:46",
+    "rss_root_bytes": 284246016,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 284246016,
+    "n_children": 0,
+    "sys_available_bytes": 3406217216,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     23.861328125,
+     17.9765625,
+     10.71435546875
+    ]
+   },
+   {
+    "t_ns": 1346637691466416,
+    "wall_utc": "2026-09-26T06:41:47",
+    "rss_root_bytes": 284246016,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 284246016,
+    "n_children": 0,
+    "sys_available_bytes": 3406217216,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     23.861328125,
+     17.9765625,
+     10.71435546875
+    ]
+   },
+   {
+    "t_ns": 1346637957562750,
+    "wall_utc": "2026-09-26T06:41:47",
+    "rss_root_bytes": 306085888,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 306085888,
+    "n_children": 0,
+    "sys_available_bytes": 3429711872,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     23.861328125,
+     17.9765625,
+     10.71435546875
+    ]
+   },
+   {
+    "t_ns": 1346638216222625,
+    "wall_utc": "2026-09-26T06:41:47",
+    "rss_root_bytes": 322764800,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 322764800,
+    "n_children": 0,
+    "sys_available_bytes": 3432267776,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     23.861328125,
+     17.9765625,
+     10.71435546875
+    ]
+   },
+   {
+    "t_ns": 1346638482201041,
+    "wall_utc": "2026-09-26T06:41:47",
+    "rss_root_bytes": 336642048,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 336642048,
+    "n_children": 0,
+    "sys_available_bytes": 3414097920,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     23.861328125,
+     17.9765625,
+     10.71435546875
+    ]
+   },
+   {
+    "t_ns": 1346638740691166,
+    "wall_utc": "2026-09-26T06:41:48",
+    "rss_root_bytes": 441597952,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 441597952,
+    "n_children": 0,
+    "sys_available_bytes": 3367714816,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     23.861328125,
+     17.9765625,
+     10.71435546875
+    ]
+   },
+   {
+    "t_ns": 1346639007472666,
+    "wall_utc": "2026-09-26T06:41:48",
+    "rss_root_bytes": 478052352,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 478052352,
+    "n_children": 0,
+    "sys_available_bytes": 3366010880,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     23.861328125,
+     17.9765625,
+     10.71435546875
+    ]
+   },
+   {
+    "t_ns": 1346639273099916,
+    "wall_utc": "2026-09-26T06:41:48",
+    "rss_root_bytes": 494272512,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 494272512,
+    "n_children": 0,
+    "sys_available_bytes": 3363897344,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     23.861328125,
+     17.9765625,
+     10.71435546875
+    ]
+   },
+   {
+    "t_ns": 1346639537898041,
+    "wall_utc": "2026-09-26T06:41:48",
+    "rss_root_bytes": 492322816,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 492322816,
+    "n_children": 0,
+    "sys_available_bytes": 3357687808,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     23.861328125,
+     17.9765625,
+     10.71435546875
+    ]
+   },
+   {
+    "t_ns": 1346639800506041,
+    "wall_utc": "2026-09-26T06:41:49",
+    "rss_root_bytes": 492142592,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 492142592,
+    "n_children": 0,
+    "sys_available_bytes": 3355148288,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     23.861328125,
+     17.9765625,
+     10.71435546875
+    ]
+   },
+   {
+    "t_ns": 1346640066855375,
+    "wall_utc": "2026-09-26T06:41:49",
+    "rss_root_bytes": 490045440,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 490045440,
+    "n_children": 0,
+    "sys_available_bytes": 3354394624,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346640327871208,
+    "wall_utc": "2026-09-26T06:41:49",
+    "rss_root_bytes": 498401280,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 498401280,
+    "n_children": 0,
+    "sys_available_bytes": 3353526272,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346640592262583,
+    "wall_utc": "2026-09-26T06:41:49",
+    "rss_root_bytes": 491634688,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 491634688,
+    "n_children": 0,
+    "sys_available_bytes": 3355590656,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346640854345208,
+    "wall_utc": "2026-09-26T06:41:50",
+    "rss_root_bytes": 498466816,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 498466816,
+    "n_children": 0,
+    "sys_available_bytes": 3350511616,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346641129429208,
+    "wall_utc": "2026-09-26T06:41:50",
+    "rss_root_bytes": 504135680,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 504135680,
+    "n_children": 0,
+    "sys_available_bytes": 3351199744,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346641394740625,
+    "wall_utc": "2026-09-26T06:41:50",
+    "rss_root_bytes": 507183104,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 507183104,
+    "n_children": 0,
+    "sys_available_bytes": 3362963456,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346641660637458,
+    "wall_utc": "2026-09-26T06:41:51",
+    "rss_root_bytes": 505282560,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 505282560,
+    "n_children": 0,
+    "sys_available_bytes": 3349708800,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346641926549000,
+    "wall_utc": "2026-09-26T06:41:51",
+    "rss_root_bytes": 508887040,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 508887040,
+    "n_children": 0,
+    "sys_available_bytes": 3349708800,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346642192507333,
+    "wall_utc": "2026-09-26T06:41:51",
+    "rss_root_bytes": 514424832,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 514424832,
+    "n_children": 0,
+    "sys_available_bytes": 3359473664,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346642452921000,
+    "wall_utc": "2026-09-26T06:41:51",
+    "rss_root_bytes": 510754816,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 510754816,
+    "n_children": 0,
+    "sys_available_bytes": 3357032448,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346642717175250,
+    "wall_utc": "2026-09-26T06:41:52",
+    "rss_root_bytes": 513916928,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 513916928,
+    "n_children": 0,
+    "sys_available_bytes": 3368255488,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346642990460625,
+    "wall_utc": "2026-09-26T06:41:52",
+    "rss_root_bytes": 521224192,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 521224192,
+    "n_children": 0,
+    "sys_available_bytes": 3365666816,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346643257548250,
+    "wall_utc": "2026-09-26T06:41:52",
+    "rss_root_bytes": 521551872,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 521551872,
+    "n_children": 0,
+    "sys_available_bytes": 3364093952,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   },
+   {
+    "t_ns": 1346643514830583,
+    "wall_utc": "2026-09-26T06:41:52",
+    "rss_root_bytes": 523812864,
+    "rss_children_bytes": 0,
+    "rss_tree_bytes": 523812864,
+    "n_children": 0,
+    "sys_available_bytes": 3370844160,
+    "swap_used_bytes": 6298599424,
+    "loadavg": [
+     22.3505859375,
+     17.7607421875,
+     10.6806640625
+    ]
+   }
+  ],
+  "peak_rss_tree_bytes": 523812864,
+  "note": "summed RSS is conservative (shared pages may double count); macOS non-root has no USS/PSS"
+ },
+ "finished_utc": "2026-09-26T06:41:53Z",
+ "no_double_instrumentation_note": "Diagnostic nested spans are not added twice: every wrapped callable is instrumented exactly once (PATCH_REGISTRY raises on repeat), children attach to the enclosing stage via thread-local context (executor worker stacks are cleared and seeded with the dispatching stage's tag exactly once per task), and partition_check verifies sum(top-level) <= window, no sibling overlaps, and no span outside the window. Kernels invoked only inside compiled code (compact_vector_node_view_scope, adjust_destination_distances, reach_gravity_knn_access, _find_arc, _decay) are NOT wrapped \u2014 their time appears inside their compiled parent's span and is decomposed only by separate bounded kernel probes outside application windows."
+}

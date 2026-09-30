@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "una-platform-2026-09",
+  "status": "ready_for_execution",
+  "repository": "AlanSynn/una-x",
+  "integration_branch": "perf/una-platform",
+  "source_baseline_sha": "16bf404d2cc5e776a78dc073c80405f6d186da29",
+  "source_baseline_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+  "madina_reference_sha": "8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6",
+  "historical_campaign_snapshot": "campaigns/history/una_large_e2e_2026_09/packet",
+  "historical_tree_sha": "6ef3a4ff24728bfe969f97c1da7f6ad81a6c7a89",
+  "execution_authority": "Implement locally; this authorization publishes campaign only. No future push/merge/release or paid provisioning.",
+  "semantic_profiles": [
+    "una_legacy",
+    "madina_legacy",
+    "corrected_v1"
+  ],
+  "requirements": {
+    "madina_api": [
+      "INVENTORY",
+      "MADINA_ZONAL",
+      "MADINA_ACCESS",
+      "MADINA_PATHS",
+      "MADINA_FLOW",
+      "MADINA_WORKFLOWS",
+      "API_REVIEW"
+    ],
+    "scientific_fixes": [
+      "CONTRACT",
+      "SCIENCE",
+      "TOPOLOGY",
+      "PARITY"
+    ],
+    "city_failure_investigation": [
+      "FAILURES",
+      "CITIES",
+      "FAULTS"
+    ],
+    "public_parallel_runbatch": [
+      "BATCH_PLAN",
+      "BATCH_EXEC",
+      "BATCH_REVIEW"
+    ],
+    "caching": [
+      "CACHE_STORE",
+      "CACHE_GRAPH",
+      "SCREEN_CACHE_BATCH"
+    ],
+    "native_backend": [
+      "NATIVE_CORE",
+      "NATIVE_SIMD",
+      "PACKAGE"
+    ],
+    "gpu_backend": [
+      "GPU_DEVICE",
+      "GPU_KERNEL",
+      "GPU_REGION",
+      "SCREEN_GPU"
+    ],
+    "bitwise_parity": [
+      "CONTRACT",
+      "PARITY",
+      "CONFIRM"
+    ],
+    "end_to_end_frontier": [
+      "CPU_LAYOUT",
+      "SCREEN_CPU",
+      "SCREEN_GPU",
+      "SCREEN_CACHE_BATCH",
+      "BACKEND_POLICY",
+      "CONFIRM"
+    ],
+    "installed_and_review": [
+      "PACKAGE",
+      "INTEGRATE",
+      "REVIEW",
+      "CLOSE"
+    ]
+  },
+  "task_count": 39,
+  "new_runtime_qualification": "not_run",
+  "number_labels": [
+    "measured",
+    "derived_from_measured",
+    "hypothetical_sensitivity",
+    "unavailable"
+  ],
+  "actual_target": "unavailable",
+  "gate_files": [
+    "BENCHMARKS.md",
+    "NUMERICS.md",
+    "DECISION.md",
+    "RESOURCES.md"
+  ]
+}

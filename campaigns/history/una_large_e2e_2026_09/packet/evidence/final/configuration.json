@@ -1,0 +1,103 @@
+{
+ "schema_version": 1,
+ "task": "Z00",
+ "record": "final_configuration",
+ "utc": "2026-09-30T03:30:00Z",
+ "role": "coordinator/integrator (team-lead)",
+ "campaign_id": "una-large-e2e-2026-09",
+ "authority": "campaigns/una_large_e2e/evidence/control.json (immutable, sha256 a5277aa1… pin re-verified at R00) + evidence/control_addendum_A1R.json (governing readings; no frozen value changed)",
+
+ "frozen_gates": {
+  "source": "control.json gates_frozen_from_campaign_json — policy constants, not measured targets (DECISION.md)",
+  "values": {
+   "minimum_removable_fraction": 0.05,
+   "proxy_speedup": 1.1,
+   "paired_ci_lower_exclusive": 1.0,
+   "maximum_protected_median_time_ratio": 1.05,
+   "maximum_cold_median_time_ratio": 1.05,
+   "investigate_single_slowdown_ratio": 1.1
+  },
+  "primary_gate_text": ">=1.10x successful-job throughput AND paired 95% CI lower bound > 1.00 (DECISION.md:15); pair = sampling unit; bootstrap = paired fixed-seed 20260929, 10,000 resamples over log ratios (seed pinned at Q00 freeze — evidence/Q00/freeze.json)",
+  "per_workload_ruling": "control_addendum_A1R v2 C1_gate_granularity: gates evaluate PER MANDATORY WORKLOAD, never per-track averaged; mandatory set not curatable to exclude expected-fail cells"
+ },
+
+ "environment": {
+  "platform": "Darwin 25.6.0 (macOS), arm64, 8 P-cores + 2 E-cores (10 logical)",
+  "interpreter": "CPython 3.11.16 (BASE_PY /opt/homebrew/opt/python@3.11/bin/python3.11) — W00/M00 frames identical",
+  "campaign_venv": "/Users/alansynn/orca/workspaces/una-x/venvs/campaign (suite/supervision); arm wheels installed in dedicated fresh venvs",
+  "numba": "default threads observed 10, threading layer workqueue; NUMBA_CACHE_DIR pinned to declared fresh roots in every engine-importing command (machine-code cache only)",
+  "worktrees": {"integration": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e (perf/una-large-e2e)", "baseline": "/Users/alansynn/orca/workspaces/una-x/wt-b0 (detached at B0)", "main_untouched": true},
+  "custody_root_outside_repo": "/Users/alansynn/orca/workspaces/una-x/campaign_data/"
+ },
+
+ "budgets": {
+  "heavy_wall_total_s": 14400,
+  "ledger": {
+   "a1r_after_screen": 750.7,
+   "s01_close_charge_s": 3846.8,
+   "s01_close_fraction": "3,846.8/14,400 = 26.7139% (ruled; ruled remaining 10,690.3 s)",
+   "q10_lease_s": 3431.0,
+   "q10_windows_s": 3430.9,
+   "remaining_after_q10_s": "10,690.3 − 3,431.0 = 7,259.3 s (ruled-chain arithmetic)"
+  },
+  "cpu_slots": {"C": 9, "derivation": "10 logical, round down, reserve one (RESOURCES.md); W*H_numba<=C necessary not sufficient for flow", "numba_default_threads_observed": 10},
+  "memory_policy": {"ceiling_mib": "min(10650, 0.80 × available_at_admission), re-measured each heavy-lease admission", "physical_bytes": 17179869184, "pressure_stop": "max(1 GiB, 0.10×phys) = 1,717,986,918 B"}
+ },
+
+ "scheduling_track": "S — external job scheduling/writers via S01; public RunBatch unchanged (campaign prohibition honored: no public RunBatch parallelization)",
+
+ "wheel_and_identity": {
+  "selected_wheel": {"name": "urban_network_analysis-2.6.0-py3-none-any.whl", "sha256": "323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4", "bytes": 138442, "m00_rebuild": "BYTE-IDENTICAL"},
+  "selected_source": {"commit": "6b53a274e8a8d3e7360ab5e1b38f741107ce3358", "src_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031", "package_tree": "64471ec98511…"},
+  "constraints": {"file": "w00_build/selected/constraints.txt", "sha256": "8c501f870861286d6cd819738ffaf5714f36dd4624cba85242d3750007552c09"},
+  "identity_manifest": "campaign_data/w00_identities/selected.json — 17 module sha256 (install-probe comparison basis); M00 fresh-venv install 17/17 MATCH",
+  "comparability_basis": "commit + package-tree pins (comparability rides provenance, not wheel bytes; the M00 rebuild was byte-identical anyway)",
+  "manifests": "campaigns/una_large_e2e/evidence/W00/wheels.json (freeze-pinned c443bca9…), SOURCE_AUDIT.md (source manifests), evidence/H01/workloads.json (workload manifests), evidence/Q00/q10_O3_{ACCESS,FLOW,HOLDOUT}_sel_all.run.manifest.json (confirmation manifests)"
+ },
+
+ "r00_f2_filename_deltas": {
+  "finding": "R00-F2: declared vs delivered artifact filenames differ on two NON-REQUIRED stages; substance complete under the alternate names",
+  "deltas": [
+   {"stage": "A2I", "declared": "proof.md", "delivered": "result.json"},
+   {"stage": "A3I", "declared": "result.json", "delivered": "proof.md"}
+  ],
+  "correction_rule": "recorded here per R00 correction directive; sha-bound evidence files NOT renamed (frozen-evidence discipline)"
+ },
+
+ "preregistered_readings": {
+  "a1r_c1_access_marginality": "control_addendum_A1R (2026-09-26): honest terminal space if final gates split = improvement_only or radius-scoped claim, decided at Q10, never blanket throughput qualification — OBSERVED OUTCOME LANDED IN THIS SPACE (access median FAIL 1.0970 < 1.10, CI excludes 1.00)",
+  "a1r_c2_cold_gate": "cold gate binds by default (1.05); DECISION.md's explicitly-bounded warm-only qualification is the sanctioned exception and constrains the claim shape — NOT NEEDED: measured cold medians 1.0224 (access) / 1.0105 (flow), regression_gt_5pct=false, warm-only qualification not required",
+  "q00_freeze": "evidence/Q00/freeze.json — admission_gate == instrument GATE_PRIMARY text; seed 20260929 pinned; R00 verified preregistration traceability"
+ },
+
+ "m00_errata_and_incident": {
+  "errata_classification": "per h04 Z00 directive (supplemental ack): OPEN errata = M00-F1 corrected figures + R00-F2 filename deltas + R00-F3 claim-boundary language; M00-F2/F3 are RESOLVED-BY-RECORD (both mechanisms are named in the admitted v2 record itself); plus known-limitation dispositions and post-campaign hardening notes",
+  "f1_figure_erratum_OPEN": "v1 rehearsal.json recorded main..07fb3cc as '104 commits, 1,073 files, +719,973/−158' (actually main..53d70e1); corrected: 105 commits, 1,076 files, +720,115/−158 (live-recomputed independently by coordinator AND reviewer, exact match); committed v2 M00 evidence NOT rewritten per h04 'no v3' ruling — the corrected figures live in this errata list and decision.json",
+  "f2_mixed_frame_RESOLVED_BY_RECORD": "mechanism (named in admitted v2 incident_record): suite instruments hardcode primary-worktree paths — any suite run from another frame imports primary src and flushes primary evidence/F1I+F2I+F3I. Self-verified reconciled census (2026-09-30, coordinator grep + reviewer/h05 concurrence): 39 full-literal occurrences across 33 files — 32 under tests/ (26 .py code + 6 frozen-data: 4 inputs manifests + 2 oracle golden hash files) + benchmarks/large_e2e/oracle/compare_arms.py; plus w00_run.py:41 and s01_run.py:37 spelling the path via CAMPAIGN-variable f-string (REPO = f\"{CAMPAIGN}/wt-large-e2e\") = 35 instrument files total; none executed in the wheel/install route. M00 designed deviation: primary-frame correctness suite + disposable-frame tree/wheel/install checks",
+  "f3_rewrite_mechanism_RESOLVED_BY_RECORD": "mechanism (named in admitted v2 incident_record): F1/F3 harnesses flush evidence/F1I,F3I/test_artifacts.json on sessionfinish with no path override; F2's UNA_F2_ARTIFACTS (harness_f2.py:56 os.environ.get with committed-path default) behaves identically when unset — any rerun exercising tests/large_e2e/F1|F2|F3 rewrites committed evidence; retain→restore (interim_<sha8> FIRST) made mechanical in run scripts",
+  "incident": "v1 rehearsal-frame suite runs frame-invalid; coordinator restore preceded h04 RETAIN instruction — transient generations lost (loss record campaign_data/custody/m00_incident_overwrite_loss_record.md e06a8db0… 3,810 B; zero APFS snapshots; no reviewed/ruled bytes lost); v2 clean primary-frame rerun (console b44fc286… 38,133 B) with in-script retain/restore. Precision clause (h04 note, accepted): the rerun's pre-run porcelain gate is script-internal — the console evidences POST-RUN-CLEAN + interim retention only; the pre-run claim rests on the script assert plus reviewer clean-porcelain observations",
+  "post_campaign_hardening_notes": [
+   "hardcoded-WT: code sites (conftest/cand_load/harness/nrt_child/engagement_probe/capture_observed/matrix/test files + compare_arms.py) suit WT-from-__file__ derivation; the two CAMPAIGN-variable sites (w00_run.py:41, s01_run.py:37) need the same derivation introduced, not a port; frozen-data sites (4 inputs manifests + 2 oracle golden hash files) are recorded identity inside sha-referenced custody artifacts — an explicit exemption or a regeneration path is required, not a mechanical rewrite; h05 per-site semantics proposal available on request (e.g. engagement_probe may legitimately want env-override + __file__ default)",
+   "cross-directory interference: whether any cross-directory suite interference exists independently of the hardcoded-WT flush mechanism remains an open question — resolvable only after the WT fix; the full-repo single-invocation pytest leg stays withdrawn as unadjudicated frame-suspect data"
+  ],
+  "candidate_tip_check_failures": [
+   {"test": "tests/large_e2e/F1/test_f1_compiler.py::test_t7_targetoptions_census", "disposition": "known-limitation — stale F1-era source-audit pin vs screened F2/F3 integration (F2 fast-route kernel appears as extra dispatcher); no fix-forward"},
+   {"test": "tests/large_e2e/F1/test_f1_turns.py::test_t8_source_diff_single_decorator_line", "disposition": "known-limitation — pin expected 2 diff lines, actual 606 (the F2 AggregateFlow block); no fix-forward"},
+   {"test": "tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records", "disposition": "known-limitation with mechanism — NUMBA_DISABLE_JIT=1 × A1 @overload pass-stub returning None in pure Python → TypeError at AccessibilityWElevation.py:351 → worker_startup_failed; outside qualified measurement frame; post-campaign remediation: engine pure-Python fallback or diagnostic-frame A1 bypass"}
+  ]
+ },
+
+ "availability": {
+  "production_target_U4": "not supplied (START_HERE.txt:9) — O3 observed proxy only, never claimed as L4",
+  "CI": "none configured (evidence/M00/ci.json b962e632…: .github/workflows/, .gitlab-ci.yml, .circleci absent; remote github.com/AlanSynn/una-x) — designed limitation, recorded not passed",
+  "second_observed_morphology": "unavailable — O3_HOLDOUT is same-network generalization only",
+  "turns_odm_real_engine": "not_run with reason (Q10 turns_odm: none composed in Q10; no ODM/Turns engine file in candidate diff)",
+  "disposable_frame_full_suite": "not exercised (hardcoded-WT mechanism above); disposable-frame coverage = merge tree-equality probe + wheel/install identity legs"
+ },
+
+ "campaign_prohibitions_honored": [
+  "no GPU work", "no native backend", "no relaxed math / no tolerance relaxation (CONTRACT.md frozen; R00-verified)", "no broad result cache (numba machine-code caching only)", "no public RunBatch parallelization (S-track external scheduling only)", "no scientific bug fixing", "main never written", "no push/PR/merge/release/credential change (publication user-gated)"
+ ],
+
+ "archive": "campaigns/history/una_cpu_2026_09/packet preserved unchanged (archive_tree 917475d210218a7f3ae2765d5b8e6a1c9c587842); old benchmark scripts retained for provenance only"
+}

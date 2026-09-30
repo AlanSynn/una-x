@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "state": "partial",
+  "source_sha": null,
+  "reference_shas": {
+    "una": "16bf404d2cc5e776a78dc073c80405f6d186da29",
+    "madina": "8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6"
+  },
+  "features": {
+    "madina_api": {
+      "status": "unavailable",
+      "evidence": [],
+      "tests": 0
+    },
+    "scientific_fixes": {
+      "status": "unavailable",
+      "evidence": [],
+      "tests": 0
+    },
+    "city_failure_investigation": {
+      "status": "unavailable",
+      "evidence": [],
+      "tests": 0
+    },
+    "public_parallel_runbatch": {
+      "status": "unavailable",
+      "evidence": [],
+      "tests": 0
+    },
+    "caching": {
+      "status": "unavailable",
+      "evidence": [],
+      "tests": 0
+    },
+    "native_backend": {
+      "status": "unavailable",
+      "evidence": [],
+      "tests": 0
+    },
+    "gpu_backend": {
+      "status": "unavailable",
+      "evidence": [],
+      "tests": 0
+    },
+    "bitwise_parity": {
+      "status": "unavailable",
+      "evidence": [],
+      "tests": 0
+    },
+    "end_to_end_frontier": {
+      "status": "unavailable",
+      "evidence": [],
+      "tests": 0
+    },
+    "installed_and_review": {
+      "status": "unavailable",
+      "evidence": [],
+      "tests": 0
+    }
+  },
+  "api_census_complete": false,
+  "unimplemented_supported_apis": [],
+  "bitwise_failures": [],
+  "actual_target": "unavailable",
+  "limitations": [],
+  "review": "unavailable",
+  "ci": "unavailable",
+  "merge_disposition": "do_not_merge"
+}

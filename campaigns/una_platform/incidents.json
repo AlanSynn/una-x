@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "observed_date": "2026-09-30",
+  "incidents": [
+    {
+      "id": "INC01",
+      "sources": [
+        "https://github.com/City-Form-Lab/madina/issues/12",
+        "https://github.com/City-Form-Lab/madina/pull/13"
+      ],
+      "status": "reported_not_reproduced",
+      "reported_observation": "Pandas 3 pd.Series fastpath and NumPy 2 GeoDataFrame array_split incompatibilities reported; proposed PR not assumed integrated.",
+      "hypothesis": null,
+      "city_dataset": null,
+      "reproducer": null,
+      "fix_commit": null,
+      "root_cause_verified": false
+    },
+    {
+      "id": "INC02",
+      "sources": [
+        "https://github.com/City-Form-Lab/madina/issues/8",
+        "https://github.com/City-Form-Lab/madina/pull/10"
+      ],
+      "status": "reported_not_reproduced",
+      "reported_observation": "Network construction GeometryArray.data failure reported. A Cambridge sidewalk workaround is not a causal city-wide diagnosis and changes topology/input acceptance.",
+      "hypothesis": null,
+      "city_dataset": null,
+      "reproducer": null,
+      "fix_commit": null,
+      "root_cause_verified": false
+    },
+    {
+      "id": "INC03",
+      "sources": [
+        "https://github.com/City-Form-Lab/madina/issues/7"
+      ],
+      "status": "reported_not_reproduced",
+      "reported_observation": "service_area clip rejects GeometryCollection mask. Comments do not supply a verified root cause.",
+      "hypothesis": "Degenerate convex hull union yields non-polygon mask; minimize before correcting.",
+      "city_dataset": null,
+      "reproducer": null,
+      "fix_commit": null,
+      "root_cause_verified": false
+    },
+    {
+      "id": "INC04",
+      "sources": [
+        "https://github.com/City-Form-Lab/madina/issues/15"
+      ],
+      "status": "reported_not_reproduced",
+      "reported_observation": "Runtime dependency declaration inconsistency, NetworkX reported missing.",
+      "hypothesis": null,
+      "city_dataset": null,
+      "reproducer": null,
+      "fix_commit": null,
+      "root_cause_verified": false
+    },
+    {
+      "id": "INC05",
+      "sources": [
+        "https://github.com/City-Form-Lab/madina/issues/14"
+      ],
+      "status": "reported_not_reproduced",
+      "reported_observation": "Distribution location reported TestPyPI rather than PyPI; verify artifact install route instead of assuming.",
+      "hypothesis": null,
+      "city_dataset": null,
+      "reproducer": null,
+      "fix_commit": null,
+      "root_cause_verified": false
+    },
+    {
+      "id": "INC06",
+      "sources": [
+        "https://github.com/City-Form-Lab/madina/pull/9"
+      ],
+      "status": "reported_not_reproduced",
+      "reported_observation": "Actual redundant-edge default discard differs from docstring split; preserve legacy default.",
+      "hypothesis": null,
+      "city_dataset": null,
+      "reproducer": null,
+      "fix_commit": null,
+      "root_cause_verified": false
+    },
+    {
+      "id": "INC07",
+      "sources": [],
+      "status": "hypothesis_not_reproduced",
+      "reported_observation": "User reports cities fail or stall; actual city/data/settings/logs unavailable.",
+      "hypothesis": "Classify combinatorial enumeration, invalid costs, process queues, JIT, memory/I-O pressure with supervised reproducers; no invented universal cause.",
+      "city_dataset": null,
+      "reproducer": null,
+      "fix_commit": null,
+      "root_cause_verified": false
+    },
+    {
+      "id": "INC08",
+      "sources": [
+        "https://github.com/AlanSynn/una-x/blob/16bf404d2cc5e776a78dc073c80405f6d186da29/campaigns/una_large_e2e/CLOSEOUT.md"
+      ],
+      "status": "reported_not_reproduced",
+      "reported_observation": "UNA diagnostic mode TypeError and stale structural tests/hardcoded frames recorded in previous closeout.",
+      "hypothesis": null,
+      "city_dataset": null,
+      "reproducer": null,
+      "fix_commit": null,
+      "root_cause_verified": false
+    },
+    {
+      "id": "INC09",
+      "sources": [],
+      "status": "hypothesis_not_reproduced",
+      "reported_observation": "Source hypotheses: fractional weighted reach truncation, same-edge partial travel, coincident seed overwrite, workflow file/cost dependency, stale graphs and zero/nonfinite route hazards.",
+      "hypothesis": "Each requires independent bug specification and controlled old/corrected comparison.",
+      "city_dataset": null,
+      "reproducer": null,
+      "fix_commit": null,
+      "root_cause_verified": false
+    }
+  ],
+  "notice": "No city-specific hang root cause was locally reproduced during packet authoring."
+}

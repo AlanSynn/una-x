@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "check_count": 514,
+  "task_count": 39,
+  "scope": "campaign consistency and supplied file identity only; no runtime qualification",
+  "failures": []
+}

@@ -1,0 +1,268 @@
+{
+ "schema_version": 1,
+ "task": "A3R",
+ "record": "bare_complete_job",
+ "role": "screen-executor",
+ "cell": "O3_ACCESS",
+ "run_id": "a3r_m2_b3_AB_cand",
+ "arm": "cand",
+ "timing_class": "bare_complete_job_no_leaf_profiler",
+ "started_utc": "2026-09-28T12:08:04Z",
+ "env": {
+  "NUMBA_NUM_THREADS": "8",
+  "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a3r_cand",
+  "PYTHONDONTWRITEBYTECODE": "1",
+  "L1_REUSE_DIR": "<unset>",
+  "PYTHONPATH": "<unset>"
+ },
+ "import": {
+  "urban_network_analysis_file": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a3r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis",
+  "expected_site_packages": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a3r_cand_wheel/lib/python3.11/site-packages",
+  "identity_assertion": "ok (realpath under expected site-packages)",
+  "package_version": "2.6.0"
+ },
+ "process": {
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "numba": "0.67.0",
+  "numba_num_threads_config": 8,
+  "numba_get_num_threads": 8,
+  "numba_threading_layer": "workqueue"
+ },
+ "input_rehash": {
+  "network": {
+   "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+   "bytes": 71290787,
+   "match": true
+  },
+  "origins": {
+   "sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+   "bytes": 5982662,
+   "match": true
+  },
+  "destinations": {
+   "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c",
+   "bytes": 2641054,
+   "match": true
+  }
+ },
+ "manifest": {
+  "path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS.manifest.json",
+  "sha256": "767de66838a3f968852f235ee83de611294b181d35a088d6bf7f68f8cd928f0c",
+  "workload_id": "O3_ACCESS",
+  "settings_overrides": {
+   "network_weight_column": "Geometric",
+   "origin_weight_column": "Count",
+   "destination_weight_column": "weekly_departures",
+   "search_radius": 500,
+   "turns": false,
+   "elevation": false,
+   "calculate_reach": true,
+   "calculate_exponential_gravity": true,
+   "calculate_logistic_gravity": true,
+   "calculate_knn_access": true,
+   "output_csv": true,
+   "output_geojson": true,
+   "output_feather": true
+  }
+ },
+ "origin_selection": {
+  "selection_manifest": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/inputs/O3_ACCESS_sel_all.origin_indices.json",
+  "selection_manifest_sha256": "2e535cbc45531d86b15a748e96888fe8bb007be7a05afee79683b718ce3586cd",
+  "selected_count": 14751,
+  "workload_variant": "O3_ACCESS_sel_all",
+  "fixture": "none \u2014 ordered_indices is the identity; verified source file used directly, no rewrite"
+ },
+ "constructor": {
+  "call": "UNA(verbosity=1)"
+ },
+ "settings_effective_search_radius": 500,
+ "window": {
+  "application_window_ns": 2405365125,
+  "boundaries": "perf_counter_ns around the single una.RunAccessibility() call incl. synchronous exports; no instrumentation inside"
+ },
+ "accessibility_arrays": {
+  "reach": {
+   "dtype": "int64",
+   "dtype_str": "<i8",
+   "shape": [
+    14751
+   ],
+   "first_k": [
+    1389,
+    935,
+    1240,
+    1244,
+    927,
+    927,
+    622,
+    622
+   ],
+   "sha256_bytes": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+   "n_nonfinite": 0
+  },
+  "gravity_exponential": {
+   "dtype": "float64",
+   "dtype_str": "<f8",
+   "shape": [
+    14751
+   ],
+   "first_k": [
+    1005.5404258464483,
+    691.7520503336779,
+    867.8183192148771,
+    934.2845243461899,
+    610.7540063343398,
+    610.9692277787195,
+    415.0471774967206,
+    415.209251783913
+   ],
+   "sha256_bytes": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+   "n_nonfinite": 0
+  },
+  "gravity_logistic": {
+   "dtype": "float64",
+   "dtype_str": "<f8",
+   "shape": [
+    14751
+   ],
+   "first_k": [
+    1101.3900554656,
+    789.3874860821986,
+    945.7404908181068,
+    1053.4752034127964,
+    606.8359504733698,
+    608.2129264823268,
+    438.7660699733186,
+    439.22801829140656
+   ],
+   "sha256_bytes": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+   "n_nonfinite": 0
+  },
+  "knn_access": {
+   "dtype": "float64",
+   "dtype_str": "<f8",
+   "shape": [
+    14751
+   ],
+   "first_k": [
+    699.278578653504,
+    674.8399779436902,
+    602.162118161319,
+    709.9102734197364,
+    351.8130972617334,
+    351.80257810756507,
+    438.7660699733186,
+    439.22801829140656
+   ],
+   "sha256_bytes": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a",
+   "n_nonfinite": 0
+  }
+ },
+ "counts": {
+  "V_nodes": 49159,
+  "E_edges": 69957,
+  "O_rows": 14751,
+  "D_rows": 6661
+ },
+ "verbatim_warnings": [],
+ "artifacts": {
+  "accessibility_2026-09-28_0808/Results.feather": {
+   "sha256": "b11ba8eb48b29750607141e1b03c36572ae9935e024b54db2d7fb8ce4e139503",
+   "bytes": 672850
+  },
+  "accessibility_2026-09-28_0808/Results.geojson": {
+   "sha256": "4f43b142cf99c280a8599848ec3dfebd15ec9f999db285ef2ba75f0203e87b75",
+   "bytes": 4014222
+  },
+  "accessibility_2026-09-28_0808/Results.csv": {
+   "sha256": "933cf3067a2ea30341e2ccc540c3ce55749b8c48efa28c4f138230db5c1d8e0f",
+   "bytes": 1509992
+  }
+ },
+ "peak_rss_ru_maxrss_mib": 510.015625,
+ "module_pins": {
+  "engines_dir": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a3r_cand_wheel/lib/python3.11/site-packages/urban_network_analysis/Engines",
+  "checks": {
+   "_large_access_scratch.py": {
+    "expected": "a9679b653e6c55e5b88ccbdc79c5576aec1735afdeb994b72d850a2d8579a92b",
+    "observed": "a9679b653e6c55e5b88ccbdc79c5576aec1735afdeb994b72d850a2d8579a92b",
+    "match": true
+   },
+   "Accessibility.py": {
+    "expected": "fa3e550b0cd51076a8323b7e45facc395ebf6f2f6816565d8d5d7cb7595c90e6",
+    "observed": "fa3e550b0cd51076a8323b7e45facc395ebf6f2f6816565d8d5d7cb7595c90e6",
+    "match": true
+   },
+   "AccessibilityWElevation.py": {
+    "expected": "bfd65ab6609ad133dd12b25d92f80d237bdd819e66ac9f4ebed63630848e1400",
+    "observed": "bfd65ab6609ad133dd12b25d92f80d237bdd819e66ac9f4ebed63630848e1400",
+    "match": true
+   }
+  },
+  "all_match": true
+ },
+ "route_receipts": {
+  "symbol_presence": {
+   "_a3_tail_admits": true,
+   "_a3_scope_search_tailless": true,
+   "_a1_scope_admits": true,
+   "_a1_scope_search": true
+  },
+  "execution_from_driver": "none \u2014 hasattr only",
+  "guard_conditions_replay": {
+   "note": "replay_on_reconstructed_inputs \u2014 d_terminal_idxs is not persisted post-window; reconstructed from the same topology tables the engine builds it from (Engines/Accessibility.py :648-649, cand blob)",
+   "has_edge_start_node": true,
+   "has_edge_end_node": true,
+   "replay_D": 6661,
+   "shape_ok": true,
+   "range_ok": true,
+   "a3_guard_would_admit": true,
+   "replay_min": [
+    206,
+    181
+   ],
+   "replay_max": [
+    49158,
+    49157
+   ],
+   "node_count_used": 49159
+  }
+ },
+ "a3_legc": {
+  "replica": "np.ones(n, dtype=np.float64) + cutoff via one njit(cache=False) function; n selects the size",
+  "dtype_pinned": "float64",
+  "dtype_grounding": "A3I t2 record dtype_observed float64; replica vs real kernel array-equality 32/32 (admission.json)",
+  "cutoff": 500.0,
+  "n_full_nd": 55820,
+  "n_tailfree_V": 49159,
+  "nd_identity": "nd = V + D (proof.md section 2) from this record's counts",
+  "reps_cap": 2000,
+  "budget_s": 5.0,
+  "full_nd_init": {
+   "n": 2000,
+   "mean_s": 1.4425173500000001e-05,
+   "median_s": 1.4167e-05,
+   "p10_s": 1.4125e-05,
+   "p90_s": 1.4667e-05,
+   "min_s": 1.4041e-05,
+   "max_s": 5.7917e-05,
+   "share_serial_equiv": 0.08846296642739426
+  },
+  "tailfree_V_init": {
+   "n": 2000,
+   "mean_s": 1.27659445e-05,
+   "median_s": 1.2542e-05,
+   "p10_s": 1.25e-05,
+   "p90_s": 1.2708e-05,
+   "min_s": 1.2416e-05,
+   "max_s": 4.8459e-05,
+   "share_serial_equiv": 0.07828767672828882
+  },
+  "production_expression": "tailfree_V_init",
+  "window_s": 2.405365125,
+  "O_rows": 14751,
+  "note": "instrument add-on, strictly post-window and post-ru_maxrss; realized cross-arm saving is a supervisor-summary quantity"
+ },
+ "finished_utc": "2026-09-28T12:08:09Z"
+}

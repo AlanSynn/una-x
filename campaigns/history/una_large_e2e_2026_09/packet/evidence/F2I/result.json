@@ -1,0 +1,49 @@
+{
+ "schema": "f2i_result_v1",
+ "task": "F2I",
+ "date_utc": "2026-09-27",
+ "status": "admission_probe_complete_ADMITTED_awaiting_proof_approval",
+ "head_commit": "9a88eabe2eb2ab21b7772b8a1a6d1ffe1e8cc6a8",
+ "source_changed": false,
+ "artifacts": {
+  "probe_script": {
+   "path": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/F2I/f2i_admission_probe.py",
+   "sha256": "89bad6a6d2599df0f78895e02710fcf0d96f6b2ade44e032697bd9d3ac5048da"
+  },
+  "operative_record": {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f2i_probes/f2i_admission_125153.json",
+   "sha256": "e108e0c56c117ae0ee33c778c820bb70439c4ae18e3f7e83c476606aafde8087"
+  },
+  "admission": "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/campaigns/una_large_e2e/evidence/F2I/admission.json",
+  "superseded_records": [
+   {
+    "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f2i_probes/f2i_admission_124742.json",
+    "sha256": "4f26d92fc8906c3ea848d273dfa83168fe795bacfe6aeae22a108d36c5693948"
+   },
+   {
+    "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f2i_probes/f2i_admission_124952.json",
+    "sha256": "f83c7bbd303dabf0c6d4ec256f28a3616d143d95c6845f66e97f32f743720d70"
+   }
+  ],
+  "lease_log": {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f2i_lease_log.json",
+   "sha256": "4ff95097663fd11f7469a9921ed9dd0bdca201d7531560402fefef512c8cfe9d"
+  },
+  "custody_copies": [
+   {
+    "path": "campaign_data/interim_admission_42f48906.json",
+    "sha256": "42f4890695845309582cf1de06d085fa105a17e5792cbe10ac9b8f968e16f46c",
+    "bytes": 13799,
+    "note": "pre-amendment state verified by h04 proof approval; superseded by the smoke-row fold-in per h04 census ruling"
+   },
+   {
+    "path": "campaign_data/interim_result_8c016c0c.json",
+    "sha256": "8c016c0c9ebc1fff52a257fa025edcb49a2ea681fded58bf16489c13420d2c93",
+    "bytes": 1686,
+    "note": "pre-amendment state verified by h04 proof approval"
+   }
+  ]
+ },
+ "verdict": "ADMITTED",
+ "note": "proof.md intentionally not authored at probe time: the F2I objective's 'independent preimplementation proof approval' is h04's review of this admission; the proof document accompanies the implementation once approval is relayed"
+}

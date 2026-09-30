@@ -1,0 +1,30 @@
+{
+ "schema_version": "a3r_selection_consolidation_v1",
+ "record_type": "consolidation_pointer",
+ "task": "A3R",
+ "revision": "r1",
+ "role": "coordinator/integrator (team-lead), authored under h04-reviewer's I00 consolidation ruling",
+ "generated_utc": "2026-09-28T12:44:45Z",
+ "method_note": "CONSOLIDATION POINTER per TASKS_CLAUDE.yaml output obligation evidence/A3R/selection.json. No contemporaneous selection file exists at this path: A3R's selection outcome was ruled in-message (SCREENED_IN, track A3 advances) with the screen record under the campaign_data custody paradigm. This file records the selection state honestly. Every sha computed from bytes at assembly time.",
+ "disposition": "SCREENED_IN",
+ "selection": {
+  "selected_control": "A3 candidate (private scope initialization: tail-free kernel + typed guard) at the A3I admission chain head d9fff4c9d4596e120290fa1b3fce07781ad4bda9 - advances to the I00 integration line",
+  "source_identity_note": "src/ byte-identical between d9fff4c and HEAD 48deaa9d232a0a6c9f787d04f93676a67577e5ca (verified by team-lead and h04: evidence-only commits in between)",
+  "integration_set_note": "at I00 opening the integration line is A1 (provisional) + F1 (not_demonstrated_at_screen, stays in line) + F2 (SCREENED_IN) + F3 (SCREENED_IN cand) + A3 (this selection); A2 not_admitted and never integrated - I00 asserts A2 absence/fallback engagement"
+ },
+ "conditions_carried": {
+  "q00_cold_peak_note": "block-1 cold peaks b0 615.15625 / cand 623.78125 MiB materially above the 7.5-7.7% precedent band (h04 Q00 blocking note, rides to Q00 verbatim)",
+  "provisional_note": "A1's provisional-until-I00/W00/S01/Q00/Q10 clause pattern (DECISION.md) applies to the integrated line; A3 disposition itself is SCREENED_IN without a cold-band miss"
+ },
+ "evidence_pointers": {
+  "screen_record": {
+   "path": "campaign_data/a3r_screen_summary.json (outside repo; custody root)",
+   "sha256": "1fe5df2a8c6d1558d319a0a540b20c067e346d1575e272f5e5fa6c6a7e7e1164",
+   "bytes": 42770
+  },
+  "implementation_commits": ["f17184bf931ac5012bc3b85e91588502937906a7", "d9fff4c9d4596e120290fa1b3fce07781ad4bda9"],
+  "instrument_files": "evidence/A3R/{screen_spec.json, a3r_run_pairs.py, a3r_build_candidate.py, a3r_bare_job.py, raw/} - spec e01a735bfa0baaa0c7dc4facbabf67480f29e6b8cfa3e845c9b4ddc5a5dbe01f, supervisor blob db9dd3cae3de22fcc528d01e45bb2746c82c498ac8173858a0d43ede00d09869 at 48deaa9",
+  "review_pointer": "evidence/A3R/review.json (consolidation record, same round)"
+ },
+ "verification": "h04-reviewer verified this pointer record against bytes pre-commit; blobs re-verified post-commit per the I00 consolidation ruling condition (iv)."
+}

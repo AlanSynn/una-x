@@ -1,0 +1,370 @@
+{
+ "task": "F3R",
+ "record": "campaign_data_manifest",
+ "version": "v5",
+ "revision": "r1 (closeout; in-place pre-commit; supersedes v4 r3, custody listed in files[])",
+ "role": "screen-executor",
+ "purpose": "CLOSEOUT deliverable (F3R terminal manifest): the P7 matrix executed 2026-09-27T14:02:13Z, 6/6 runs rc=0 under the P7 grant (REV-9 unamended blocking quiet window enforced by the firer of record 29dc6474, supervisor admission stamps graded post-hoc per grant term 2; all 6 admission stamps quiet, zero refusals, zero watchdog breaches, zero G7 stops, zero run-id burns). Walls charged 66.9 s (lease cumulative 1115.4 -> 1182.3, remaining 13217.7 of 14400.0); all 10 lease windows terminal at this write. h04 review.json (3c78b9de, 13923 B) adjudicates G1-G6 PASS, G7 NOT TRIGGERED, verdict SCREENED_IN with selected control cand (byte-budgeted gradient workspace); selection.json (06410f29, 6737 B) records the advance per the capacity_only labeling of DECISION line 11, verbatim in every run record - walls are capacity evidence, not promotion claims. The screen summary 0007d4af stands AS-WRITTEN per h04 with block_findings VACUOUS-DISCLOSED (the supervisor's summary() feeds select-field rows to block_checks, which starves the artifact and array-hash comparisons); the real findings were independently computed into review.json. FOUR defect dispositions disclosed, all with NO vehicle change (supervisor 80bd5309 is the bytes that ran the evidentiary matrix and is immutable post-run): (1) summary block_findings vacuity on two axes - raw-record verification performed by h04 and ruled sufficient; (2) G2 warning parity unenforced (block_checks never reads verbatim_warnings) - parity real, zero == zero in all three blocks, recomputed into review.json; (3) the matrix firer's receipt-tail crashed post-fire and the receipt was reconstructed post-hoc with in-receipt disclosure, cross-verified by h04 and ACCEPTED AS-RAN (receipt 70e7673e listed as post-hoc-reconstructed-with-disclosure); (4) found during the executor's independent f3_analysis verification and ADJUDICATED as defect entry (4) in review r2 (3c78b9de; r1 5755405c superseded, custody filed byte-exact): the supervisor's cand_accounted_observed lookup (f3r_run_pairs.py lines 767-769) mis-parenthesizes its or-fallback chain - the chained .get(\"resim_inputs\") binds (attribute access outranks or) to the or-group's empty-dict literal instead of the receipt path, so margin resolves to None and the summary's descriptive pair (cand_accounted_observed_bytes_descriptive / measured_delta_vs_observed_accounted_descriptive) is null while the data is present in the raw records. h04 reproduced the null by executing the committed statements verbatim against the real receipt and ruled it an HONEST ABSENCE - summary 0007d4af stands AS-WRITTEN, real value recorded in review r2 as the durable channel and carried by selection r2's disclosure list. Executor recompute, matching r2: worst-instance lhs 263851452 B minus resim margin 67108864 B = 196742588 B <= the summary's own worst case 201326592 B (TRUE); the pair is descriptive-only with zero gate impact, mathematically redundant with binding leg (e)'s already-PASS slack 4584004 B (the G3 gate comparison uses the governing-peak delta, which passes unaffected). COMMIT-CONTENT EXCEPTION stated explicitly per h04 ruling: the v5 commit carries this manifest PLUS the six in-repo raw matrix records (f3r_b1_AB_b0 55231525; f3r_b1_AB_cand d58c496a; f3r_b2_BA_b0 08a950e7; f3r_b2_BA_cand 7406e210; f3r_b3_AB_b0 e1044e08; f3r_b3_AB_cand 31c24ba1) as tree content - a deliberate, declared exception to the v4 sole-tree constraint, which was about OUT-OF-REPO custody copies (those remain NEVER-COMMITTED); the six raws are FIRST-CLASS executed evidence at the supervisor's written paths, each listed with BOTH hash algebras (git object id via hash-object pre-commit, to be verified against ls-tree post-commit, plus content sha256 and bytes). PATH-FIELD SEMANTICS stated explicitly per h04's format flag: files[] path values for the EIGHT in-repo artifacts (the six raw matrix records, review.json, selection.json) are REPO-RELATIVE (repo root at the worktree), each with a git_object field; every OUT-OF-REPO campaign_data entry keeps the ABSOLUTE-path form with no git object - no reader should expect an absolute path on the in-repo entries. review.json and selection.json are likewise CARRIED IN the commit tree per h04's pin ruling (2026-09-27), at their written in-repo paths in the same dual-algebra entry form; each is listed at its r2 state (h04's amendment), with its r1 custody copy filed byte-exact by h04 BEFORE revision. Disclosed per h04's ruling for the custody census: the executor concurrently observed review.json at an intra-amendment interim state (~14:36Z, ead09610031f43e3bbd0d66528d4b7a0f8b66b88b5cebf036072dbc1ae12cacf, 11978 B) while h04's declared sole-delta r2 amendment was in flight; that state is classified a MID-AMENDMENT WAYSTATION of the single declared amendment - NOT a superseded record revision and not a gate state - and it carried the r2 revision-field declaration alone, delta content absent. h04 reconstructed it from the declared-edit replay chain (custody r1 5755405c + transcript edit strings), hash-verified byte-exact, and FILED it as f3r_review_interim_ead09610.json so the on-record sha has recoverable bytes; the custody census grows by exactly this ONE entry beyond the two r1 copies (no selection.json interim exists - its two edits ran back-to-back with no concurrent observation); the declared delta for gate purposes remains custody-r1 (5755405c) -> final r2 (3c78b9de), UNCHANGED. Everything else remains OUT-OF-REPO campaign_data state, listed byte-exact and never carried: the screen summary, the lease log (entry updated: the log grew from 3 to 10 windows across the matrix), the matrix fire receipt, the matrix fire console, the matrix firer of record, this manifest's own v4 r3 custody copy, and both deliverables' r1 custody copies.",
+ "spec_of_record": {
+  "commit": "17405a2 (message names 08c9e219; supersedes the REV-9 copy at 6f67fc0)",
+  "committed_path": "campaigns/una_large_e2e/evidence/F3R/screen_spec.json",
+  "git_object": "9d5e2ea8dc8f510d012c0a6f320df0348845db52",
+  "content_sha256": "08c9e21959c84ab88f6246635773266cc239f1b8054242dee74341863bdf9688",
+  "bytes": 59195,
+  "verification": "git cat-file blob 9d5e2ea8 | sha256 == 08c9e219, computed first-hand this session at HEAD 17405a2; two hash algebras stated separately: the git SHA-1 object name and the campaign's sha256 file hash are both pinned here so no future reader confuses them",
+  "vehicles": {
+   "commit": "a170d22",
+   "f3r_bare_job.py": {
+    "git_object": "5aeb0ce6a986c6ea0f10cd775b7c81749e4a4ed1",
+    "content_sha256": "26a34c15d0f0494573539efc496f890037056270c47a31891ba03a9aee663fde"
+   },
+   "f3r_run_pairs.py": {
+    "git_object": "abfdc6bfba8509cc4c8e2e1a0bf875f554101199",
+    "content_sha256": "80bd530973f45994087553c41170c0b0ee457e19cac46b6cfc311cfbc647e968"
+   },
+   "verification": "same cat-file chain, both computed first-hand this session"
+  }
+ },
+ "pending_records": "NONE at closeout: every item pending from v3/v4 is discharged and listed. The matrix-era reconciliation this manifest performs is the final F3R manifest action; F3R closes with review.json SCREENED_IN and selection.json advancing cand toward integration.",
+ "files": [
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_spec_proposed.json",
+   "sha256": "f6a7f927977deb65f9cb1ba85ac573418d63d6efa625873f37538f3ef18b1dd7",
+   "bytes": 21286
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_proof_superseded_rev1_eb399d3d.md",
+   "sha256": "eb399d3dc9cfe7df29febf873970d31583c1f76ba78ee721859e79a0bc549724",
+   "bytes": 19065
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_proof_superseded_rev2_01047258.md",
+   "sha256": "0104725829460eb2712ded8f5ad1deff2341f37d4b622df6c0c42d49c82b684d",
+   "bytes": 20861
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3i_proof_superseded_rev3_db738026.md",
+   "sha256": "db738026e4a82360a5f23a61ebcfb948a8f27e7a7aedd76f6b8090ec94b0264e",
+   "bytes": 25509
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_proposed.json",
+   "sha256": "08c9e21959c84ab88f6246635773266cc239f1b8054242dee74341863bdf9688",
+   "bytes": 59195
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_draft_4b78c85a.json",
+   "sha256": "4b78c85a039ed0653145e255b0843bc6e27d726de89aa4b4f39990ce1ba9dd5a",
+   "bytes": 15599
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev2_449f9976.json",
+   "sha256": "449f99760d4f9bcadff898df73e133bd8b7c56e3770c263daab391b33ed12176",
+   "bytes": 25176
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev3_c474a439.json",
+   "sha256": "c474a439f25a3de7681f990c981dd4fba1a4b47baa879f687bd9dcda69b45315",
+   "bytes": 30055
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev4_54de7532.json",
+   "sha256": "54de753286e844450d413e11ff74ed5ecd313275cf68290014126c14c55aa1fc",
+   "bytes": 33550
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev5_013f22cd.json",
+   "sha256": "013f22cdb39a710be9d695f293d203322331ced3c1a43136218363d385170ed9",
+   "bytes": 38036
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev6_5a84c9fa.json",
+   "sha256": "5a84c9fa080fa6c213914b5a4d51ce5c3fd6663e4c2ebf8863ec53168c457a04",
+   "bytes": 46569
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev7_20092bba.json",
+   "sha256": "20092bba0bb603057d3ec0693e2b515558d91c372204eb4d0b99672cc8f1410c",
+   "bytes": 49205
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev7_244439291.json",
+   "sha256": "244439291ddd3332b6c9937003e437818b4b1313a495b18885bedaca335ca8b2",
+   "bytes": 49098
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev8_53777456b.json",
+   "sha256": "53777456bd5ea18fde81cb079738a511dfbdbfa410111f1f8e0b23ae734eefb1",
+   "bytes": 49581
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_bare_job_superseded_14b7072c.py",
+   "sha256": "14b7072ca22d58f96fdc734b6573c42ebabcb37015386ea1bd841901583b5fa5",
+   "bytes": 38570
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_run_pairs_superseded_baa0018f.py",
+   "sha256": "baa0018f21539e3a322cdbf6820e8e119e2d7e1e4c778bcf4754ea1d5058e286",
+   "bytes": 48351
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_manifest_superseded_v3r1_3f9f8072.json",
+   "sha256": "3f9f8072eb69f2a93cb29cc3e672f5ab43a16fe50bc968ef67e0f0f8200f124e",
+   "bytes": 8351
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_manifest_superseded_v3r2_c08f3a80.json",
+   "sha256": "c08f3a8091ae8ed142afc797754b414f55b318efd4c2c4a0227598c72f555215",
+   "bytes": 11507
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_manifest_superseded_v3r3_9472cc6c.json",
+   "sha256": "9472cc6c6536a0316b475a804c795a6aed8ad9546e242a049bf110e092274cad",
+   "bytes": 13188
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_wheel_and_venv.json",
+   "sha256": "6e111bb19ad4e0fc4e66388cb7d7c7535200faefbee859f1c5b546fd9034e86e",
+   "bytes": 9466
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/wheels_f3r/b0/urban_network_analysis-2.6.0-py3-none-any.whl",
+   "sha256": "f9d7a86240ee846ed7a8ebe958b4321496474adb9002c73a19b10500dec5a00f",
+   "bytes": 129692
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/wheels_f3r/cand/urban_network_analysis-2.6.0-py3-none-any.whl",
+   "sha256": "04ce733a6f1ddf7aa97231be00744fb4c1707750e958e69364a68a7736cc84cf",
+   "bytes": 133334
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_build/constraints.txt",
+   "sha256": "8c501f870861286d6cd819738ffaf5714f36dd4624cba85242d3750007552c09",
+   "bytes": 409
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_lease_log.json",
+   "sha256": "1b729c95d8f9e765d7e485f3c118bac244cb7949778b24cfd7af3de551749bdd",
+   "bytes": 75825
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev9_e9fedee8.json",
+   "sha256": "e9fedee898747bdc8568294b5c1887f3eeb68be882d4127e20d818d91f56bf58",
+   "bytes": 51988
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_draft_rev10_wip_ec430558.json",
+   "sha256": "ec43055880e508c7cd1594c294e1b62ae2e776d17189d0f830b74b6bb83bcd7e",
+   "bytes": 52341
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_draft_rev10_framework_f606813f.json",
+   "sha256": "f606813fcec0d6136079817b107762b09b97424f9604438894d63a3873fa435c",
+   "bytes": 56192
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_draft_rev10_minimalform_1998a8ed.json",
+   "sha256": "1998a8ed4d9d2f8791ae4ef22b78a89332bf59be2423e6452e4023d9a7fc7403",
+   "bytes": 58275
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_spec_superseded_rev10_14ede651.json",
+   "sha256": "14ede651136281d0b79812d6ec45ba5c1ea8960968d4a0cb8539d08f9b928fb5",
+   "bytes": 58569
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_fire_sizing_superseded_gatepoll_5a246737.py",
+   "sha256": "5a2467375c362e05c1060d4b02e175c0026847be8ec0613f89b23f014c20f48d",
+   "bytes": 6550
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_fire_sizing_superseded_95bddb79.py",
+   "sha256": "95bddb796fa635985e79143aabce0081dc04e7567a96c72268e40d415297f367",
+   "bytes": 8999
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_fire_sizing_superseded_45349530.py",
+   "sha256": "4534953072b306b02dbbaae57f3e09599efbf57e00093f4f2cf625cdafdb62ac",
+   "bytes": 8999
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_fire_sizing_superseded_4d7eba13.py",
+   "sha256": "4d7eba1354ef6ba019d1e0e74009f5a231d14627fdb7c2417fbf58a36fa77e4d",
+   "bytes": 9943
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_fire_sizing_active.py",
+   "sha256": "06037c687cc6f02ea2775ef7e76cbf2c40b95a86a65ac3c5ed266a25ddd31149",
+   "bytes": 10748
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_run_pairs_superseded_80bd5309.py",
+   "sha256": "80bd530973f45994087553c41170c0b0ee457e19cac46b6cfc311cfbc647e968",
+   "bytes": 50132
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_run_pairs_rev10_interim_superseded_2b4582ce.py",
+   "sha256": "2b4582ce31bc054b802f0e8478a61079cee1fa8f6ff25ff204b6f51dfdcd810b",
+   "bytes": 54515
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_lease_log.json",
+   "sha256": "86621b0b8338f313704740621d669b7b83ddb5d80ae65b389b50b101df18ec84",
+   "bytes": 38573
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_sizing_b0.json",
+   "sha256": "d2edcdb290e5e65f504c02e92edf23f67e8d6c0f193d0c968bc5ab969e38f63f",
+   "bytes": 2524
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_sizing_cand.json",
+   "sha256": "4a25039fc82d3bff17eeaef4720ffa8f0b194294f4f8334b5af380c88000bc66",
+   "bytes": 2533
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_sizing_raw_b0.json",
+   "sha256": "a9d7c2d4d88eb2b93dbb1ccc74b5f5b134ebdb9cc58117a20967a7126dc47666",
+   "bytes": 9496
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_sizing_raw_cand.json",
+   "sha256": "beb388fa3525b332e2157f01de734481e6559254003fea8f74c3fc72646477f5",
+   "bytes": 14537
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_envelope.json",
+   "sha256": "720457b3bd668bbb42e5fcfb6ae4cb6c399a2e821c7c2530583371cde5644aba",
+   "bytes": 1100
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_sizing_fire_receipt.json",
+   "sha256": "bcafc4064d203d1249adf179ab1448af75752f391db7ab60c006f675faa8759d",
+   "bytes": 2294
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_sizing_fire_console_20260927T113122Z.log",
+   "sha256": "225ebc28cf7b220a94a6ce5315533f9374ca83e3e241a5d03deada5f67935732",
+   "bytes": 133
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_sizing_fire_console_20260927T122454Z.log",
+   "sha256": "72f8d070bc6b15130d5f64e2ba9196a23abe6af143369a821066bdc7058e57b0",
+   "bytes": 196
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_manifest_superseded_v3r4_f24065f1.json",
+   "sha256": "f24065f1f101419eb3b331384ef774d3e6f8952043a4224f51eae4b532ef4b7a",
+   "bytes": 14742
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_manifest_superseded_v4r1_8915f44e.json",
+   "sha256": "8915f44e71e4a045ea9693f5a12d401e74c2ffdac39eef64eb787f040dc4ccfc",
+   "bytes": 20127
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_manifest_superseded_v4r2_638205d6.json",
+   "sha256": "638205d6fddf9ab37ea1245a1d8d57e47a5fe4816c7fc3f1fc773c952652b37c",
+   "bytes": 21108
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_manifest_superseded_v4r3_93f440f1.json",
+   "sha256": "93f440f167fd35cc56bc098b48aa19de80d484317f48ad603e18c60f46f042fe",
+   "bytes": 22325
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_review_superseded_r1_5755405c.json",
+   "sha256": "5755405c71489f83ecfe0d23dac8ea00a96d7df771d468436438086f92a7988e",
+   "bytes": 11728
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_selection_superseded_r1_96f79af8.json",
+   "sha256": "96f79af8e59b1b0f10383b0d4c0727efb00236142aa4dbd4bff0846b150161a3",
+   "bytes": 6052
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_review_interim_ead09610.json",
+   "sha256": "ead09610031f43e3bbd0d66528d4b7a0f8b66b88b5cebf036072dbc1ae12cacf",
+   "bytes": 11978
+  },
+  {
+   "path": "campaigns/una_large_e2e/evidence/F3R/raw/f3r_b1_AB_b0.json",
+   "sha256": "55231525b200d3a986158ab6296e2e7a0d1c8a97d87bdd647bf8577bc5c21082",
+   "bytes": 9462,
+   "git_object": "5b89300de10d1db5093f30f0a96411ae18d61946"
+  },
+  {
+   "path": "campaigns/una_large_e2e/evidence/F3R/raw/f3r_b1_AB_cand.json",
+   "sha256": "d58c496a1ab542c1da14b47855d2fe8bac72a5714bdde87273e00c1d179dd8e6",
+   "bytes": 14492,
+   "git_object": "99e5624adf2a3133018cb5469d88a28ba022465c"
+  },
+  {
+   "path": "campaigns/una_large_e2e/evidence/F3R/raw/f3r_b2_BA_b0.json",
+   "sha256": "08a950e739caf18344127f509182e6f8771f7cd074c4f7b2b17dc7578e9cc669",
+   "bytes": 9455,
+   "git_object": "5e95967eeee925378942f0279c3db174dc0d535e"
+  },
+  {
+   "path": "campaigns/una_large_e2e/evidence/F3R/raw/f3r_b2_BA_cand.json",
+   "sha256": "7406e2106ac82462cc313d7ec3467f9c17f6199e0b42c6b67459075e97fd4ab0",
+   "bytes": 14485,
+   "git_object": "764131a7cabe149caa9b562f9b420e2047fe7451"
+  },
+  {
+   "path": "campaigns/una_large_e2e/evidence/F3R/raw/f3r_b3_AB_b0.json",
+   "sha256": "e1044e08c39db47c2c89066e7f927982061c4301d863618c3630edc9ebda8676",
+   "bytes": 9453,
+   "git_object": "147875f524983db1aa8e0aa3103ebdba98c993e0"
+  },
+  {
+   "path": "campaigns/una_large_e2e/evidence/F3R/raw/f3r_b3_AB_cand.json",
+   "sha256": "31c24ba1cbfc744cb882bc3d8acd4ea3f8538a9fef1a3e22ed7933a5f7f49e0a",
+   "bytes": 14482,
+   "git_object": "d48050b5a00d195640b1d8dc02e47426eaf24da8"
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_screen_summary.json",
+   "sha256": "0007d4af5604d0055de92f1c822bb6e06c26e6320fb4de115e8b8f15b3ced964",
+   "bytes": 46115
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_matrix_fire_receipt.json",
+   "sha256": "70e7673ecbc666e0b02e4d1fecd921fbb340571fc5c7cc99c9bf6ea940728a9f",
+   "bytes": 2568
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_matrix_fire_console_20260927T140213Z.log",
+   "sha256": "34422d6f0c292fe7c4a1777fcb9aae6160cbf12333affc3dafb01c0a12a4d949",
+   "bytes": 1110
+  },
+  {
+   "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f3r_fire_matrix_active.py",
+   "sha256": "29dc64744b062dfb50d84a9a4e1a473f7b90400bb19d985235068b574d626de3",
+   "bytes": 13722
+  },
+  {
+   "path": "campaigns/una_large_e2e/evidence/F3R/review.json",
+   "sha256": "3c78b9dec7b1c58d0cdd6b13a2ba5482313e69750021801106639d533d9f75c8",
+   "bytes": 13923,
+   "git_object": "3890138b845fd20899d13e0a10160f0de61dc2ed"
+  },
+  {
+   "path": "campaigns/una_large_e2e/evidence/F3R/selection.json",
+   "sha256": "06410f29b99fa2e703978fc785fe05101d076f51ecc18c8316e9dce9425077e8",
+   "bytes": 6737,
+   "git_object": "f90fa67c6738f66aae0a2df91f5b6f4855b2352b"
+  }
+ ],
+ "utc": "2026-09-27T14:52:32Z",
+ "lease_log_quiescent_at_write": true,
+ "lease_log_note": "TWO lease logs, stated separately: (A) PRIOR shared log f1r_lease_log.json (LISTED in files[]) - re-hashed at this write: sha256 1b729c95d8f9e765d7e485f3c118bac244cb7949778b24cfd7af3de551749bdd, 75825 B, byte-identical to the state recorded by manifest v4 r3; F3R NEVER appends to it. (B) F3R log f3r_lease_log.json - EXISTS since 11:31:23Z; state at this write: 10 windows, ALL terminal, NO window open: 3 sizing-era diagnostic runs (uncharged; one admission-refused hostile + two benign), 1 matrix entry check (capacity-only probe, uncharged, ruled not an admission), and 6 charged gate_run admission windows (walls 17.6, 16.9, 7.6, 8.6, 7.9, 8.3, sum 66.9 s; every stamp quiet under the REV-9 window - available >= 5,368,709,120 B and loadavg[0] < 8.0 - graded post-hoc per the P7 grant term 2, nothing for the voiding consequence to touch). cumulative_charged_s 1182.3 / remaining_s 13217.7 of budget_s 14400.0. sha256 at this write 86621b0b8338f313704740621d669b7b83ddb5d80ae65b389b50b101df18ec84, 38573 B.",
+ "supersedes": {
+  "predecessor": "F3R manifest v4 r3 (same live path; committed at e8cc9f4; custody copy f3r_manifest_superseded_v4r3_93f440f1.json filed FIRST, byte-exact, listed in files[])",
+  "predecessor_sha256": "93f440f167fd35cc56bc098b48aa19de80d484317f48ad603e18c60f46f042fe",
+  "predecessor_utc": "2026-09-27T13:06:07Z",
+  "revision_reason": "v5 is the closeout the P5/P7 chain requires. files[] grows by the six in-repo raw matrix records (dual hash algebras, carried IN the commit tree under the declared exception stated in purpose), review.json and selection.json at their r2 states (carried IN the tree per h04's pin; both r1 custody copies listed), the screen summary, the matrix fire receipt, the matrix fire console, the matrix firer of record 29dc6474, and the v4 r3 custody copy; the f3r_lease_log.json entry is updated in place (3 -> 10 windows, 66.9 s charged across the matrix). Four defect disclosures are recorded (summary vacuity; unenforced G2 parity; post-hoc receipt, accepted as-ran; and the null descriptive pair, root-caused after review r1's generation and adjudicated as defect (4) in review r2 - review r2 is that finding's durable channel, disclosed here as the fourth item). spec_of_record is UNCHANGED at commit 17405a2 / content 08c9e219. Custody-first honored: v4 r3 bytes (93f440f1, 22325 B) filed byte-exact as f3r_manifest_superseded_v4r3_93f440f1.json BEFORE this revision was written. Delta axes (computed): build_arms_commit_plan, files, lease_log_note, pending_records, purpose, revision, sanctioned_exclusions, supersedes, utc, version - with files[] specifically one in-place lease entry update + 16 appends. All other content is deep-equal to v4 r3 (verified outside the changed paths)."
+ },
+ "build_arms_commit_plan": "evidence/F3R/f3r_build_arms.py committed at e73b7e3 (git object 82dc7bded105ab9845473d5c0552aa5d0e2d8205; content sha256 268c24214b9dd996bbdcfa4d9b2b161ad4b098d4c7162d41a96ecdbfcb7cd4d4, 18,165 B); driver (26a34c15) and supervisor (80bd5309) at a170d22; spec (08c9e219) at 17405a2; matrix firer of record 29dc6474 is OUT-OF-REPO campaign_data state (as-ran bytes stay on disk per ruling). The upcoming v5 commit carries campaign_data_manifest.json PLUS the six in-repo raw matrix records under evidence/F3R/raw/ - the h04-ruled commit-content exception, deliberate and declared in purpose - PLUS review.json and selection.json per h04's pin ruling (2026-09-27). Every campaign_data file remains out-of-repo, listed in files[], never carried (r1-admitted convention: custody copies are never committed).",
+ "sanctioned_exclusions": "stated per the F1R v2 recipe: (a) BUILD STAGING AND VERIFICATION TREES - EVERYTHING under f3r_build/ EXCEPT constraints.txt (which IS listed): b0_src/ and cand_src/ are git-archive extractions of the pinned arm commits used as pip-wheel build roots; b0_wheel_extract/, cand_wheel_extract/, cand_wheel_extract_lfws/ are unpacked-wheel inspection copies used to verify wheel_packaged blob identity - all reproducible byte-exactly from the pinned commits; their evidentiary content is carried by the wheel shas and the wheel_packaged/installed blob identities in f3r_wheel_and_venv.json (F1R class-(e) precedent: trees excluded, records listed); (b) VENVS venvs/f3r_build (builder), venvs/f3r_b0_wheel, venvs/f3r_cand_wheel - reproducible installed artifacts whose identity f3r_wheel_and_venv.json carries (installed blob probes + pinned-version tables); (c) NUMBA CACHE ROOTS nbc_f3r_b0 / nbc_f3r_cand - designated in f3r_wheel_and_venv.json, created fresh by the supervisor per arm (sizing uses the disjoint nbc_f3r_<arm>_sizing roots per the P6 recipe); cache CONTENTS are regenerated per run and never evidence - kernel-set identity is carried by the per-block cache-entry census in the run records per the spec; (d) ALL non-F3R/F3I campaign_data content (a1r_*, f1r_* records, h0* records, O2/O3 workload artifacts, inputs/, other tasks' wheels and nbc_* roots) - owned by those tasks' own records; the shared f1r_lease_log.json is the one cross-task file listed here; (e) __pycache__ anywhere - never listed, never evidence.; (f) SIZING RUN-OUTPUT TREES f3r_sizing_out/f3r_sizing_b0/ and f3r_sizing_out/f3r_sizing_cand/ - reproducible Results.feather/geojson/csv outputs of the UNCHARGED P6 diagnostics runs; the evidentiary content (cold peaks, walls, admission stamps) is carried by f3r_sizing_raw_<arm>.json, f3r_sizing_<arm>.json, and the lease windows (class-(a) precedent: trees excluded, records listed). (g) MATRIX RUN-OUTPUT TREES campaign_data/f3r_out/f3r_b<1-3>_<ORDER>_<arm>/ - the reproducible Results.feather/geojson/csv outputs of the six P7 gate runs; the evidentiary content (per-run artifact sha256 + bytes, cross-arm and cross-block byte-identity verdicts) is carried by the raw records' artifacts sections and review.json's byte_identity recomputation (class-(f) precedent: trees excluded, records listed)."
+}

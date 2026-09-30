@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "status": "pass",
+  "scope": "Packet tools, DAG, content identities and requirement consistency; not application qualification",
+  "static_checks": 514,
+  "task_count": 39,
+  "dossiers": 12,
+  "tool_tests": {
+    "run": 31,
+    "passed": 31,
+    "failed": 0,
+    "skipped": 0,
+    "command": "python3 -m unittest discover -s campaigns/una_platform/tests -v",
+    "log": "validation/tool_tests.txt"
+  },
+  "validation_command": "python3 campaigns/una_platform/tools/validate_packet.py",
+  "python": "3.13.5",
+  "application_benchmarks": "not_run",
+  "native_gpu_parity": "not_run",
+  "city_incidents_reproduced": "none_during_packet_authoring",
+  "source_baseline_sha": "16bf404d2cc5e776a78dc073c80405f6d186da29",
+  "madina_reference_sha": "8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6",
+  "tool_test_log_sha256": "1d7a75bb544cca6df30f9f6e67680219655a5148d08eb821aabf8784aa5a39fc"
+}

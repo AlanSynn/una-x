@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "task": "H04",
+  "record": "observed_l2",
+  "role": "independent-reviewer",
+  "recorded_utc": "2026-09-26T02:55:00Z",
+  "purpose": "First observed-data execution of the campaign: O2 accessibility + aggregate flow with auto gravity cap in B0, per VALIDATION.md L2. ALL timings and RSS below are L2-CHRONOLOGY EVIDENCE, NOT performance qualification (single unreplicated runs, source import, shared laptop, no resource controls).",
+  "environment": {
+    "import_root": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src",
+    "b0_commit": "361928e4ba38f34622cafe065b0025244db61368",
+    "b0_src_tree": "a5883dddcef3afb8debdb4438a6338da886add6f",
+    "imported_una_from": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src/urban_network_analysis (asserted in-process)",
+    "python": "3.11.16 (campaign venv)",
+    "numpy": "2.4.6",
+    "numba": "0.67.0",
+    "numba_num_threads": 10,
+    "numba_threading_layer": "workqueue",
+    "NUMBA_CACHE_DIR": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_h04 (fresh, empty at start)",
+    "L1_REUSE_DIR": "unset",
+    "PYTHONPATH": "/Users/alansynn/orca/workspaces/una-x/wt-b0/src",
+    "host": "COD-MBP16-LOAN2",
+    "available_ram_at_start_mib": "recorded in raw json (h04_observed_l2_raw.json in campaign_data)"
+  },
+  "public_call_sequence_derivation": {
+    "source_files_read": ["wt-b0:src/urban_network_analysis/UNA.py", "wt-b0:src/urban_network_analysis/Topology.py", "wt-b0:src/urban_network_analysis/Logger.py"],
+    "sequence": [
+      "una = UNA(verbosity=1)  -- UNA.__init__ builds Topology() and Settings()+Reset()",
+      "settings attribute assembly (public attrs; O2.manifest settings_overrides + file paths + unique output_folder)",
+      "una.RunAccessibility()  -- internally: settings.Validation(); topology.AddNetwork -> AddOrigins -> AddDestinations; engine dispatch turns=False -> AccessibilityWElevation(topology, settings); .Centrality(settings); ExportAccessibilityResults(folder_prefix='accessibility_', file_name='Results')",
+      "una.RunFlow() on the SAME UNA object  -- internally: settings.Validation(); AddNetwork/AddOrigins/AddDestinations (layers RELOADED); BuildClusters(min(cpu_count-1,16), radius); auto cap: flow_decay & flow_decay_method=='gravity_cap' & cap is str -> _ResolveGravityCap() runs an internal AccessibilityWElevation Centrality pass and writes numeric cap back to settings; engine dispatch flow_engine=='aggregate_flow' -> AggregateFlow(topology); .Centrality(settings); ExportFlowResult(folder_prefix='flow_')",
+      "una.RunAccessibility() again with changed settings (search_radius 500->800, new output folder) -- sequential-reuse chronology"
+    ],
+    "harness_compliance": "each application window brackets EXACTLY ONE real public call; constructor timed once, outside windows; gravity cap never pre-resolved outside RunFlow (HARNESS.md behavior 9)"
+  },
+  "o2_fixture": {
+    "derived_fixture": "/Users/alansynn/orca/workspaces/una-x/campaign_data/O2_origins_h04review.geojson",
+    "sha256": "afaf4bf4651a1c9d76a8328ab8e78d99bb35699b3fd378c297c54661dea09492",
+    "bytes": 6666,
+    "rows": 16,
+    "row_order": "original source row order (ascending pinned indices); attributes untouched; no ID rewriting",
+    "pinned_indices": [1184, 1335, 2346, 2564, 2823, 2879, 4243, 4817, 5404, 6244, 6970, 7077, 7525, 9085, 11156, 13699],
+    "row_fids_in_order": [233861, 234012, 235023, 235241, 235500, 235556, 236922, 237521, 238402, 244410, 245220, 245327, 245775, 247335, 249469, 265926],
+    "cross_checks": [
+      "source Cambridge_building_centroids.geojson sha256 14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc verified before subsetting",
+      "16/16 rows attribute-identical (fid/id/lon/lat) to O2.origin_indices.json selected_row_attributes",
+      "round-trip read of the fixture: 16 rows, EPSG:6491, fid sequence preserved"
+    ],
+    "rng_rederivation": "numpy.random.default_rng(20260925).choice(14751, 16, replace=False) -> sort reproduces the pinned ordered list AND raw draw order exactly (numpy 2.4.6)"
+  },
+  "settings_assembly": {
+    "per_O2_manifest_overrides_applied": ["network_weight_column=Geometric", "origin_weight_column=Count", "destination_weight_column=weekly_departures", "search_radius=500", "turns=false", "elevation=false", "calculate_reach=true", "calculate_exponential_gravity=true", "calculate_logistic_gravity=true", "calculate_knn_access=true", "output_csv=true", "output_geojson=true", "output_feather=true"],
+    "diff_vs_O2_manifest_settings_before": "ONLY path-locational keys differ: data_folder, network_file, origins_file (derived 16-row fixture), destinations_file, output_folder. No semantic setting differs.",
+    "full_dicts": "captured in campaign_data/h04_observed_l2_raw.json (settings.pristine_defaults, settings.assembled, per-call settings_before/settings_after)"
+  },
+  "load_pass": {
+    "observed_V_nodes": 49159,
+    "observed_E_edges": 69957,
+    "note": "BuildTopology at network_precision=3 merged coordinates to 49159 unique nodes over 69957 edges (discard_redundant_edges=False, so E == GeoJSON feature count). These are the V/E values the H01 manifests await (counts.V/E were null pending this load pass).",
+    "geojson_features": 69957,
+    "empty_geometries_removed": 0,
+    "z_present": true,
+    "crs": "EPSG:6491 (network CRS set from file; origins/destinations CRS equality enforced by BuildAccessPoints, both EPSG:6491)",
+    "geometric_weights_sum": 7258443.613622238,
+    "geometric_weights_sum_cross_check": "equals H01 acquisition.json network geometric_length_stats.sum exactly; weights == geometry.length because network_weight_column='Geometric'",
+    "destination_weights_sum": 2238643.0,
+    "destination_weights_sum_cross_check": "equals H01 weekly_departures sum exactly",
+    "origin_weights": "'Count' sentinel resolved to np.ones(16) float64 as documented by H01 (no literal Count column in origins)",
+    "snap_behavior": "nearest edge via geometry.sindex.nearest per point (ThreadPoolExecutor chunks), projection shapely.line_locate_point(normalized=True), weight_to_start/end = edge_weight*(p, 1-p); observed first origin snaps to edges [44222, 44651, 43604, 43998], first destination snaps [17335, 54794, 26250, 54562]",
+    "warnings_verbatim": [],
+    "warnings_note": "0 warning-level entries in all 135 captured logger entries across the three calls (extraction rule: 'warn' case-insensitive over event+details). Full logger entries preserved in campaign_data/h04_observed_l2_raw.json and the console log copy evidence/H04/l2_run_console.log."
+  },
+  "chronology": [
+    {
+      "call": 1,
+      "public_call": "una.RunAccessibility()",
+      "engine": "AccessibilityWElevation (turns=False, elevation=False; log: 'Using AccessibilityWElevation (no elevation — symmetric weights)')",
+      "application_window_ns": 5977391750,
+      "window_boundaries": "perf_counter_ns immediately before una.RunAccessibility() through return incl. synchronous exports; includes first-call JIT compile (fresh NUMBA_CACHE_DIR)",
+      "settings_before_after": "full ToDict(compact=False) in raw json; no mutation beyond output_folder already set explicitly (Validation side-effect avoided)",
+      "readiness": {"una.has_centrality_results": true, "engine_class": "AccessibilityWElevation", "una.has_flow_results": false},
+      "peak_rss_sampled_mib": 538,
+      "metrics": {
+        "reach": {"dtype": "int64", "shape": [16], "sha256_bytes": "76cf3fbb378cd5010cc4575d5690eaf139774262b9048d55b9d6c8de0e2cac8a", "first3": [2357, 2517, 1856]},
+        "gravity_exponential": {"dtype": "float64", "shape": [16], "sha256_bytes": "851734cf9078d1d6b19afe7696d2674429bc01498bbf960e9651983feee48cb4", "first3": [1699.66154665573, 1808.0969295316722, 1180.9210848775083]},
+        "gravity_logistic": {"dtype": "float64", "shape": [16], "sha256_bytes": "3abceb3d5f5a9915c8ac8fa32d1bcfde77f1816e09ce92d2a65842d04344a5b9", "first3": [1785.734214703381, 1990.1540392038441, 1128.8843285756357]},
+        "knn_access": {"dtype": "float64", "shape": [16], "sha256_bytes": "a96f7cebb07ec19a5a9e21b85b204ea74bb6a7c71ce8938b1172c65bbf077778", "first3": [606.6151084728419, 1113.689094111239, 1128.8843285756357]}
+      },
+      "metrics_note": "all finite (n_nonfinite=0 per array); reach dtype int64 per contract",
+      "artifacts": {
+        "accessibility_2026-09-25_2252/Results.feather": {"sha256": "4341c5cf4c53929040dc88e4303a965f1a5820a1ec4d4bf28c6f6e152dfa25bc", "bytes": 13842},
+        "accessibility_2026-09-25_2252/Results.geojson": {"sha256": "0f5c09f448097cdcf8d88141f8116068fb3723f131f2edf99adb4298447f0590", "bytes": 4541},
+        "accessibility_2026-09-25_2252/Results.csv": {"sha256": "f0d6e0e9d667b565e07d3294ad12e30e4189b56ab8f79e77c770b0db1c8cdaec", "bytes": 1746}
+      },
+      "artifact_schema": "feather 16 rows, columns [geometry, reach int64, gravity_logistic double, gravity_exponential double, knn_logistic double] (knn column exported under decay-curve name knn_logistic, default knn_decay='logistic'); CSV header geometry,reach,gravity_logistic,gravity_exponential,knn_logistic",
+      "verbatim_warnings": []
+    },
+    {
+      "call": 2,
+      "public_call": "una.RunFlow() (same UNA/Topology object; auto gravity cap p95)",
+      "engine": "AggregateFlow",
+      "application_window_ns": 5995357000,
+      "window_boundaries": "brackets the single RunFlow call INCLUDING the internal auto-cap gravity pass (never pre-resolved)",
+      "settings_before_after": "flow_gravity_cap 'p95' (str) -> 7540.0175 (float) written back by _ResolveGravityCap; full dicts in raw json",
+      "cap_derivation": {"spec": "p95", "used": "p95", "value": 7540.0175, "metric": "gravity_exponential", "n_origins": 16, "fallback_cascade_engaged": false, "mechanism": "internal AccessibilityWElevation Centrality pass over the same network/origins/destinations, percentile over ALL origins incl. zeros, rounded to 4 dp"},
+      "readiness": {"una.has_flow_results": false, "flow.has_flow_results": true, "una.has_centrality_results": true, "acc_engine_still_stored": "AccessibilityWElevation", "flow_engine_class": "AggregateFlow", "quirk_recorded": "UNA.has_flow_results is NEVER set true by B0 RunFlow (set False at entry, never True); the engine-level flag carries the state. Recorded as B0 behavior, not fixed."},
+      "peak_rss_sampled_mib": 2522,
+      "flow_arrays": {
+        "edge_flow": {"dtype": "float64", "shape": [69957], "sha256_bytes": "c082d46087c599b7443bd065d8211c712a6d7ace98ef454f0a2dff5ddb9cfc0c", "max": 1.0, "nonzero": 496},
+        "edge_flow_AB": {"dtype": "float64", "shape": [69957], "sha256_bytes": "025f3d105401aecaf59221e2263a6e285ae90ba8f0ef15458b160168ccc750ea"},
+        "edge_flow_BA": {"dtype": "float64", "shape": [69957], "sha256_bytes": "71e0471e72f620c33a8a9e1b5c776373d3f084106cf4aae7b48fc7ecc6a96dc6"},
+        "node_flow": null,
+        "node_flow_note": "flow_compute_node_flow=False (default) -> AggregateFlow.node_flow is None; directional outputs single 'flow' column because flow_return_directional=False (default)"
+      },
+      "artifacts": {
+        "flow_2026-09-25_2252/Results.feather": {"sha256": "2f53fd68afa7e45a647af86d3d07631c41e57431743195a45f19110cea6a6ff7", "bytes": 5471130},
+        "flow_2026-09-25_2252/Results.geojson": {"sha256": "41f58b68f0692952f0611c7988b25b66867d2df56840a0672c0ac7528b548c2f", "bytes": 21086002},
+        "flow_2026-09-25_2252/Results.csv": {"sha256": "6f0d232d64171dcf239481d6dba3ac54dc54fe430959917b32db685454dcf4d1", "bytes": 696535}
+      },
+      "artifact_schema": "flow feather 69957 rows, columns [edge_id, flow, geometry]",
+      "verbatim_warnings": [],
+      "sequential_reuse_identity": {
+        "network_object_rebound": false,
+        "node_points_rebound": true,
+        "geometry_rebound": true,
+        "interpretation": "RunFlow's AddNetwork re-reads the 71MB GeoJSON into the SAME Network object: node_points/geometry arrays are replaced (fresh objects), V/E identical after reload (49159/69957 -> deterministic rebuild). The pre-flow arrays were held by reference and confirmed no longer identical (is-check).",
+        "accessibility_engine_object_replaced": false
+      }
+    },
+    {
+      "call": 3,
+      "public_call": "una.RunAccessibility() with changed settings (search_radius 500->800, new output folder) on the SAME object",
+      "engine": "AccessibilityWElevation (new instance)",
+      "application_window_ns": 1923268667,
+      "readiness": {"una.has_centrality_results": true, "engine_replaced_vs_call1": true},
+      "state_transitions_recorded": {
+        "flow_cap_persists_numeric": "settings.flow_gravity_cap remains 7540.0175 after the accessibility call (settings mutations from RunFlow persist)",
+        "una_flow_attr_not_reset": "una.flow still references the AggregateFlow with its results; RunAccessibility does not clear it (B0 behavior, recorded not fixed)",
+        "una_has_flow_results": false,
+        "metrics_change_as_expected": "all four metric array hashes differ from call 1 (radius change alters results): reach 76cf3fbb..->60bc0855.., gravity_exponential 851734cf..->560cf243.., gravity_logistic 3abceb3d..->d14e76a1.., knn_access a96f7ceb..->1899cf43.."
+      },
+      "peak_rss_sampled_mib": 1397,
+      "artifacts": {
+        "accessibility_2026-09-25_2252/Results.feather": {"sha256": "d9e3f76ef4c727e2766751aae22cabdf6fea532aada6e2cdb294997d483d6b9c", "bytes": 13842},
+        "accessibility_2026-09-25_2252/Results.geojson": {"sha256": "7d31568d4fb84fe2c2ea846bf3adb21fd05752ab56e4b45d02e79893fe2e5772", "bytes": 4552},
+        "accessibility_2026-09-25_2252/Results.csv": {"sha256": "f6fce157612678a5bf9d4e6c0b4fc27cf36470d8e9d717c13bc72632a4e89451", "bytes": 1754}
+      },
+      "verbatim_warnings": []
+    }
+  ],
+  "observed_scale_determinism_double_run": {
+    "purpose": "B0-vs-B0 determinism at observed scale (H03's determinism gate was corpus-scale only); two FRESH processes, same frozen inputs/settings",
+    "verdict": "BIT_IDENTICAL",
+    "compared": [
+      "V/E after load: 49159/69957 both runs",
+      "auto cap: 7540.0175 both runs",
+      "all four accessibility metric arrays byte-hash equal",
+      "edge_flow/edge_flow_AB/edge_flow_BA byte-hash equal",
+      "ALL artifact files byte-identical by SHA-256 (feather, geojson, csv; incl. 21MB flow GeoJSON), timestamped directory names translated away per VALIDATION.md artifact policy"
+    ],
+    "raw": "evidence/H04/observed_determinism_rerun.json"
+  },
+  "memory_observations": {
+    "peak_rss_sampled_whole_session_mib": 2521.6,
+    "ru_maxrss_mib": 2525.3,
+    "sampler_interval_s": 0.25,
+    "note": "flow call is the big allocation (~2.5 GiB RSS: reloaded 71MB GeoJSON -> gdf/topology plus accessibility engine retained). Sampler is conservative (summed RSS, no USS/PSS on macOS non-root)."
+  },
+  "timings_disclaimer": "Every wall number here is L2-chronology evidence: single unreplicated source-import runs on a shared laptop, first-call JIT included in call 1, exports synchronous inside windows. They are NOT baseline profiles and must not be quoted as performance results; H05 owns profiling.",
+  "raw_evidence_files": {
+    "campaign_data_raw_json": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h04_observed_l2_raw.json (full settings dicts, all 135 logger entries, all array hashes)",
+    "console_log_copy": "evidence/H04/l2_run_console.log",
+    "fixture_derivation_copy": "evidence/H04/o2_fixture_derivation.json",
+    "run_scripts": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h04_derive_o2.py, h04_l2_run.py, h04_l2_rerun.py",
+    "output_roots": "/Users/alansynn/orca/workspaces/una-x/campaign_data/h04_l2_out/{acc1,flow,acc2}, h04_l2_out_rerun/{acc1,flow}"
+  }
+}

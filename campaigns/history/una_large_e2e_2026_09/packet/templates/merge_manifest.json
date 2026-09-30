@@ -1,0 +1,23 @@
+{
+  "source_branch": "perf/una-large-e2e",
+  "source_commit": null,
+  "target_main_commit": null,
+  "merge_base": null,
+  "runtime_files": [],
+  "test_evidence_files": [],
+  "research_only_files": [],
+  "active_default_path": null,
+  "fallback_domain": null,
+  "commands": [],
+  "wheel_hashes": [],
+  "performance_evidence": [],
+  "memory_evidence": [],
+  "rehearsal_status": "unavailable",
+  "review_status": "unavailable",
+  "ci_status": "unavailable",
+  "actual_target_status": "unavailable",
+  "known_limitations": [],
+  "unverified_claims": [],
+  "archive_tree": "917475d210218a7f3ae2765d5b8e6a1c9c587842",
+  "disposition": "do_not_merge"
+}

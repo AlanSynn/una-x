@@ -1,0 +1,28 @@
+=== H02 harness suite rerun (H04 reviewer) ===
+host=COD-MBP16-LOAN2 start_utc=2026-09-26T02:46:41Z
+test_identity_guard.py::test_path_pth_into_source_tree_rejected PASSED   [ 64%]
+test_identity_guard.py::test_changed_module_source_hash_invalidates_warm_identity PASSED [ 66%]
+test_identity_guard.py::test_version_drift_rejected_with_consistent_identity PASSED [ 67%]
+test_identity_guard.py::test_tampered_identity_integrity_check_rejected PASSED [ 69%]
+test_identity_guard.py::test_package_only_in_fake_sibling_cannot_be_reached PASSED [ 70%]
+test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records PASSED [ 72%]
+test_pool_faults.py::test_worker_raise_records_failure_and_invalidates PASSED [ 74%]
+test_pool_faults.py::test_zero_size_output_rejected_by_worker PASSED     [ 75%]
+test_pool_faults.py::test_missing_companion_file_rejected PASSED         [ 77%]
+test_pool_faults.py::test_altered_bytes_caught_by_coordinator_rehash PASSED [ 79%]
+test_pool_faults.py::test_duplicate_job_id_rejected PASSED               [ 80%]
+test_pool_faults.py::test_wrong_engine_signature_rejected PASSED         [ 82%]
+test_pool_faults.py::test_exit_before_ready_fails_fast PASSED            [ 83%]
+test_pool_faults.py::test_die_while_dispatch_prompt_cancellation PASSED  [ 85%]
+test_pool_faults.py::test_hang_after_output_terminated_at_shutdown PASSED [ 87%]
+test_pool_faults.py::test_never_send_sentinel_marks_protocol_incomplete PASSED [ 88%]
+test_pool_faults.py::test_slow_drain_bounded_queue_completes_without_deadlock PASSED [ 90%]
+test_sampler.py::test_summary_labels_conservative_sampled_semantics PASSED [ 91%]
+test_sampler.py::test_interval_is_held_between_ticks PASSED              [ 93%]
+test_sampler.py::test_child_and_grandchild_in_same_simultaneous_snapshot PASSED [ 95%]
+test_sampler.py::test_memory_budget_watchdog_trips_and_stops_sampler PASSED [ 96%]
+test_sampler.py::test_external_pressure_stop_trips_on_tiny_available PASSED [ 98%]
+test_sampler.py::test_decimation_keeps_stored_samples_bounded PASSED     [100%]
+
+======================== 62 passed in 85.01s (0:01:25) =========================
+H02_EXIT_CODE=0

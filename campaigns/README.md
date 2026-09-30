@@ -1,7 +1,13 @@
-# UNA optimization campaigns
+# Engineering campaigns
 
-Active: [large end-to-end CPU campaign](una_large_e2e/START_HERE.txt), branch `perf/una-large-e2e`.
+Active: **UNA platform parity, correctness and throughput**, `campaigns/una_platform/`.
+Start Claude Code at repository root and run `/goal`. The machine-readable registry is
+`campaigns/REGISTRY.json`.
 
-Historical: [first CPU/ordered-CSR campaign](history/una_cpu_2026_09/README.md).
+The active campaign requires Madina API parity, real native/GPU paths, public parallel RunBatch,
+scientific fixes, safe caching/recovery and installed multi-city performance with bitwise
+profile-specific validation. Older restrictions do not override this campaign.
 
-`REGISTRY.json` selects exactly one active campaign. Root `CLAUDE.md` and `.claude/commands/goal.md` follow it. Updating campaign routing does not authorize runtime promotion or publication. Archived evidence is immutable; new benchmark results cannot overwrite it.
+Historical packets are immutable snapshots under `campaigns/history/`. Their old source/evidence
+links remain useful but are not active execution instructions. Publication of this packet did
+not change runtime code, existing tests, build metadata or prior raw evidence.

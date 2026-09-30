@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "evidence_class": "source_observation",
+  "observed_date": "2026-09-30",
+  "una": {
+    "repository": "AlanSynn/una-x",
+    "commit": "16bf404d2cc5e776a78dc073c80405f6d186da29",
+    "root_tree": "7c948f43920ff068056e932a2cc15f4994b99d86",
+    "src_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+    "files": {
+      "src/urban_network_analysis/Engines/Accessibility.py": "f37fd996ea31046ee9ce38a7fca2621438a4d7dc",
+      "src/urban_network_analysis/Engines/AccessibilityWElevation.py": "4c29cd7a11f788d45bdec9ebc3bb51c1112c35d2",
+      "src/urban_network_analysis/Engines/AccessibilityWTurns.py": "52240f26b1ea34571ed8a77cb3755c4ea31b23c5",
+      "src/urban_network_analysis/Engines/AggregateFlow.py": "dab30ab5e130a41c8b5d78efb0d0ba6c8e62dadb",
+      "src/urban_network_analysis/Engines/Base.py": "17442082028d47a78c29806fb21ffa35071b9280",
+      "src/urban_network_analysis/Engines/Flow.py": "4d7fe344a1fb6e1096102035a3b37ebac924e99f",
+      "src/urban_network_analysis/Engines/__init__.py": "057cdb371fae0fb06613e9b788bd89cd5e598235",
+      "src/urban_network_analysis/Engines/_betweenness_numba.py": "3a4ac72ea18c0910496127f87a68920c22d44242",
+      "src/urban_network_analysis/Engines/_large_access_scratch.py": "bb43a662c62b56e16939380d2ebdeb12cd48d9cd",
+      "src/urban_network_analysis/Engines/_large_flow_workspace.py": "6c3748838bc5f626a7b7e733e74d9a8e1c9e1aff",
+      "src/urban_network_analysis/Engines/_ordered_csr.py": "186e82c0ddb612eae0a5550e5e0b06cf4f16785d",
+      "src/urban_network_analysis/Logger.py": "d8bff242ccf838905b34be13a866ceb12fd228d6",
+      "src/urban_network_analysis/Settings.py": "8b2087c89dd6d7461f3c02f7e1e1ee47f208977e",
+      "src/urban_network_analysis/Topology.py": "26ca999f32f20bbb447a91ea51d60a3408ea6948",
+      "src/urban_network_analysis/UNA.py": "f803a536277c178f512e08243ac12ce18bf3de46",
+      "src/urban_network_analysis/__init__.py": "f985c5cdc96cb2660ad572bf761a87189e0dc732"
+    }
+  },
+  "madina": {
+    "repository": "City-Form-Lab/madina",
+    "commit": "8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6",
+    "archived": true,
+    "src_tree": "de818b93629911743799092ff7347ed2326683af",
+    "files": {
+      "src/madina/__init__.py": "5c02588a09fb836ab16af97966bcb9ebee0df814",
+      "src/madina/una/__init__.py": "f415c5efd528d288d8d72281a191edfae62690f1",
+      "src/madina/una/betweenness.py": "a8917d48f8b564686754fa34a69b1d109a93dd0f",
+      "src/madina/una/paths.py": "ed41df2583dd57ea8a397ad5dabe621bbd080e32",
+      "src/madina/una/tools.py": "a2f2bc7e8bf2fa4fd2b7b94a7adf82c7d032c4e4",
+      "src/madina/una/workflows.py": "95d4346a7bb8a89df4476d0d735a181115d4ac14",
+      "src/madina/zonal/__init__.py": "85b819d3b2e59af107631c031f7d528410ac920d",
+      "src/madina/zonal/layer.py": "3bdfa2acdfdb2d0da479eb3baf408fdfe5cfdc35",
+      "src/madina/zonal/network.py": "a29cb27aafee2031938e7a8c16254662f8d1dd52",
+      "src/madina/zonal/network_utils.py": "ad7fe5cfeb996f48a5885c1e9a0bcbadcbbca691",
+      "src/madina/zonal/utils.py": "cef8af5d5518068f59aa99893a3b6dda77a2feb3",
+      "src/madina/zonal/zonal.py": "f80cbd9eaa830bf2baf98db399095575b9105d99"
+    }
+  },
+  "previous_campaign_tree": "6ef3a4ff24728bfe969f97c1da7f6ad81a6c7a89",
+  "protected_publication_trees": {
+    "src": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+    "tests": "3352aad404641ea85de6419c230ff3e3f7748319",
+    "benchmarks": "9cbe3fd9bd3d2f4a13270e58e75f363a5be9467a",
+    "evidence": "cb0ce5924ed16cd2d9b6f123db79468b6a0a0bf8"
+  },
+  "notes": [
+    "Full source/semantic census still required.",
+    "Publication changes campaign metadata and entrypoints only."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+ "task": "A1R",
+ "record": "run_sidecar",
+ "role": "screen-executor",
+ "run_id": "a1r_O3_HOLDOUT_cand_w1",
+ "cell": "O3_HOLDOUT",
+ "arm": "cand",
+ "candidate_commit": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29",
+ "arm_python": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/bin/python",
+ "arm_site_packages": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel/lib/python3.11/site-packages",
+ "numba_cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+ "cache_root_wiped_before_run": false,
+ "cache_root_state_after_run": {
+  "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a1r_cand",
+  "exists": true,
+  "file_count": 10
+ },
+ "wheel_sha256": "9d808304a987af9efe5ccfcbe709ce6b7f9e953098dfc6dd4b5e91c8c141026e",
+ "pair_index": 1,
+ "pair_order": "AB",
+ "slot_is_cold": false,
+ "screening_note": "raw instrument record is byte-authored by h05_profile.py (record.task stays 'H05' by instrument design); this sidecar carries the A1R context",
+ "supervisor_rc": 0,
+ "utc": "2026-09-26T06:42:15Z"
+}

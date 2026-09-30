@@ -1,0 +1,118 @@
+{
+ "schema_version": 1,
+ "task": "H05",
+ "record": "admissions",
+ "role": "performance-owner",
+ "generated_utc": "2026-09-26T04:36:26Z",
+ "rule": "a probe that cannot run is not_admitted/capacity_blocked with the reason \u2014 never fudged; admission = evidence justifies opening the implementation task, the review+screen still owns the accept decision",
+ "decisions": {
+  "A1_snapshot_scratch": {
+   "verdict": "ADMITTED",
+   "probe": "A1_002140.json",
+   "measured": {
+    "integrated_scope_access_nrt_alloc_per_origin_call": 9563127,
+    "n_origins_measured": 32,
+    "alloc_equals_free": true,
+    "ir_dynamic_alloc_callsites": {
+     "integrated_scope_access": 30,
+     "compact_vector_node_view_scope": 12,
+     "reach_gravity_knn_access": 13,
+     "adjust_destination_distances": 0
+    },
+    "compact_alloc_per_call_median": 527
+   },
+   "reasoning": "the accessibility search kernel performs ~9.6M NRT allocations per origin call (32/32 origins, min=max=median), all freed in-call; 30 dynamic compiled allocation callsites; a per-thread reusable scratch removes the allocator from the hot path; adjust_destination_distances is already caller-buffered (0 sites) showing the pattern is viable in this codebase"
+  },
+  "A2_destination_locality": {
+   "verdict": "ADMITTED",
+   "probe": "A2_002536.json",
+   "measured": {
+    "out_share_of_scan_median": 0.9989491067407297,
+    "out_share_min": 0.9974478306560577,
+    "in_radius_mean_destinations": 7.15625,
+    "d_count": 6661,
+    "validation": "32/32 origins within ULP 4 (measured: all ULP 0)",
+    "acc_centrality_share_of_O3_ACCESS_window": 0.12908976561491572
+   },
+   "reasoning": "99.89% (min 99.74%) of the per-origin destination scan work is on destinations the metrics never use (mean 7.2 of 6661 in radius); replica is bit-exact vs the engine; with acc_centrality at 12.9% of the O3_ACCESS window, a destination-local enumeration plausibly clears the 5% removable gate end-to-end; the A2R screen measures the realized fraction"
+  },
+  "A3_private_scope": {
+   "verdict": "ADMITTED",
+   "probe": "A3_002546.json",
+   "measured": {
+    "init_share_median": 0.38401881119534864,
+    "init_share_mean": 0.3719885815308843,
+    "init_share_min": 0.02093651019281509,
+    "init_share_max": 0.6983565374141832,
+    "n_origins": 32,
+    "nd_node_count": 55820,
+    "init_array_bytes": 446560,
+    "init_value_check": true
+   },
+   "reasoning": "scope initialization is a median 38.4% of the per-origin kernel across 32 origins (nd=55820, 446,560 B per init); semantics validated (unreached == 1+cutoff == 501); a private per-origin scope with lazy/offset init removes most of that share"
+  },
+  "F1_fixed_stripe_nogil": {
+   "verdict": "ADMITTED",
+   "probe": "F1_002800.json",
+   "measured": {
+    "n_threads": 9,
+    "rounds": 12,
+    "serial_wall_ns": 6561417,
+    "parallel_wall_ns": 8025833,
+    "speedup_serial_over_parallel": 0.8175371952045352,
+    "observed_max_concurrent": 1,
+    "engine_level_max_concurrent_at_sel1024": 9,
+    "buffers": "every thread: independent d_o/pred_o, dd_buf/pd_buf, out_AB/out_BA; shared read-only CSR + gradients"
+   },
+   "reasoning": "9 threads on fully independent buffers: kernels NEVER overlap (max_concurrent=1) and parallel is 0.82x serial \u2014 _accumulate_od_flow is GIL-bound (no nogil); the engine dispatches up to 9 concurrently (engine-level counter) so nogil fixed stripes unlock real parallelism; F1I adds nogil + stripe ownership"
+  },
+  "F2_local_overlap": {
+   "verdict": "ADMITTED",
+   "probe": "F2_003032.json",
+   "measured": {
+    "envelope_over_V_prime_mean": 0.0012631277011890337,
+    "envelope_len_median": 66.0,
+    "fixed_scans_share_of_mean_kernel": 0.017813263950801548,
+    "bytes_per_stripe_per_od": 1080036,
+    "runtime_nrt_per_call_alloc": 48.0,
+    "alloc_equals_free": true,
+    "pilot_mean_kernel_ns": 2139321.581112328,
+    "pilot_n_calls": 8217
+   },
+   "reasoning": "the per-OD work envelope is 0.13% of V' (median 66 nodes) while every call pays two fixed full-V' scans (measured 1.78% of mean kernel service) and 1,080,036 B of per-call temporaries (48 NRT allocs/call, all freed); localizing the overlap work to the envelope and reusing/resetting a per-thread scratch targets the fixed cost",
+   "evidence_note": "compiled-IR parse of this kernel shows no NRT_Alloc literal sites (allocations reach NRT through inlined runtime paths); the load-bearing evidence is the measured runtime NRT rate (48/call, alloc==free) plus the dtype/size accounting vs measured V'"
+  },
+  "F3_gradient_workspace": {
+   "verdict": "ADMITTED",
+   "probe": "derived from FLOW pilots + flow decision + F2 envelope",
+   "measured": {
+    "gradient_stage_s_first_pilot": 1.8406795,
+    "gradient_stage_s_chosen": 1.73529525,
+    "gradient_share_of_window_first_pilot": 0.20771849773176707,
+    "sparse_grad_bytes": 9565360,
+    "dense_transient_bytes": 1199863152,
+    "chunk_chosen": 1759,
+    "peak_rss_chosen_mib": 2489.125,
+    "selall_capacity_refusal": "sel-all projected peak 2.43 GiB vs 0.9x ceiling 2.30 GiB, or projected origin loop 52s vs remaining heavy budget 14157s"
+   },
+   "reasoning": "destination gradients exist as 9.1 MiB of sparse envelope data but the precompute path pays a ~1.12 GiB dense transient (chunk rule 1e8/V'), the single largest flow allocation, present in the measured 2489 MiB peak; a byte-budgeted workspace directly attacks the allocation that caused the sel-all capacity refusal"
+  }
+ },
+ "cells_frozen": {
+  "O3_FLOW": {
+   "variant": "sel1024",
+   "o_rows": 1024,
+   "v_prime": 56844
+  },
+  "O3_HOLDOUT_3D_VE_check": {
+   "V": 49159,
+   "E": 69957,
+   "divergence": "none"
+  }
+ },
+ "not_admitted_or_blocked": [],
+ "heavy_wall": {
+  "used_s": 426.4,
+  "budget_s": 14400.0
+ }
+}

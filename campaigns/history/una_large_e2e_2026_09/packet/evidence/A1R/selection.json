@@ -1,0 +1,121 @@
+{
+ "schema_version": 1,
+ "task": "A1R",
+ "record": "selection_screen_disposition",
+ "role": "independent-reviewer",
+ "generated_utc": "2026-09-26T09:05:00Z",
+ "amendment_note": "v2: re-anchored after screen-executor reconciliation - the a1r_* 16-run block was team-lead's interim spec (H=10 ambient, instrumented windows with sampler+spans inside the timing window) executed before the reviewer spec landed; the DISPOSITION DATASET is the spec-executed a1rp_* 12-run block ((W,H)=(1,8) on-grid, bare complete-job window, per-arm fresh cache roots). a1r_* retained as supplementary diagnostics (directionally consistent). v1 treated both schedules as co-equal screen evidence - corrected here.",
+ "candidate": {
+  "commit": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29",
+  "diff_base": "5854588",
+  "wheel_sha256": "9d808304a987af9efe5ccfcbe709ce6b7f9e953098dfc6dd4b5e91c8c141026e",
+  "venv": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/a1r_cand_wheel",
+  "note": "wheel built from git archive of verified HEAD; real module name from installed wheel, no alias, no PYTHONPATH; hatch_build bakes commit_date='unknown' in archive builds (code byte-identical to tree; W00 owns the real-tree build proof)"
+ },
+ "baseline": {
+  "commit": "361928e4ba38f34622cafe065b0025244db61368",
+  "arm": "b0_wheel",
+  "wheel_sha256": "71fd5615b5683f3c798938a2762824da9ba3fada801aaa840343e7378d4fc979",
+  "venv": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0_wheel"
+ },
+ "lease": {
+  "lease_id": "A1R-lease-20260926",
+  "cumulative_heavy_s": 750.7,
+  "budget_s": 14400.0,
+  "opening_balance_s": 426.4,
+  "refusals": 0,
+  "timeout": "1200s/run bounded, never hit",
+  "note": "includes a retained failed first build (rc=2, retried rc=0) and both blocks"
+ },
+ "manifests_verified_vs_preregistration": {
+  "O3_ACCESS": "767de66838a3f968852f235ee83de611294b181d35a088d6bf7f68f8cd928f0c (radius 500)",
+  "O3_HOLDOUT": "915a098f809fa88d517a3572c1a0cb566964b628690d8a3388984514cae88b63 (radius 1200, 2D default variant)"
+ },
+ "disposition_dataset": {
+  "record_ids": "a1rp_<cell>_p<1|2|3>_<AB|BA>_<b0|cand> (12 runs)",
+  "protocol": "paired AB/BA/AB per cell, pair 1 cold on both arms (per-arm cache roots nbc_a1r_b0 / nbc_a1r_cand created fresh, 0-file verified at start; 8 files b0 / 10 files cand = +2 _large_access_scratch kernels after), pairs 2-3 warm",
+  "resources": "(W,H)=(1,8), NUMBA_NUM_THREADS=8 pinned; verified in-run in every record: process.numba_num_threads_config==8 AND process.numba_get_num_threads==8; W*H=8 <= C=9 (preregistered grid)",
+   "window": "bare complete-job: perf_counter_ns around the single una.RunAccessibility() incl. synchronous exports; no sampler thread, no spans inside the window; all observation strictly post-window; import identity asserted per run",
+  "counts": "O=14751 D=6661 V=49159 E=69957 in all 12 runs; rc=0 all; zero verbatim warnings; zero pressure breaches; peak RSS ~592 MiB max vs 10.5 GiB ceiling",
+  "statistics": {
+   "O3_ACCESS": {
+    "p1_AB_cold": {"b0_s": 6.5983, "cand_s": 7.898, "ratio_b0_over_cand": 0.8354},
+    "p2_BA_warm": {"b0_s": 2.668, "cand_s": 2.4052, "ratio_b0_over_cand": 1.1093},
+    "p3_AB_warm": {"b0_s": 2.606, "cand_s": 2.5776, "ratio_b0_over_cand": 1.011},
+    "proxy_ratio_of_medians": 1.0351,
+    "median_of_pair_ratios_warm": 1.0601,
+    "cold_ratio_cand_over_b0": 1.197
+   },
+   "O3_HOLDOUT": {
+    "p1_AB_cold": {"b0_s": 7.0532, "cand_s": 7.985, "ratio_b0_over_cand": 0.8833},
+    "p2_BA_warm": {"b0_s": 3.434, "cand_s": 2.6078, "ratio_b0_over_cand": 1.3168},
+    "p3_AB_warm": {"b0_s": 3.541, "cand_s": 2.7336, "ratio_b0_over_cand": 1.2954},
+    "proxy_ratio_of_medians": 1.2954,
+    "median_of_pair_ratios_warm": 1.3061,
+    "cold_ratio_cand_over_b0": 1.1321
+   }
+  }
+ },
+ "supplementary_dataset_not_disposition_basis": {
+  "record_ids": "a1r_* (16 runs) + screen_matrix.json",
+  "why_excluded": "team-lead interim spec executed before the reviewer spec: H=10 ambient (off the frozen S01 candidate grid, W*H=10 > C=9), h05_profile.py instrumented windows with sampler+spans inside the timing window (violates the outside-leaf-profilers screen measurement class)",
+  "corroboration_value": "directionally consistent with the disposition dataset: same per-cell byte-identity, same cold-compile penalty (cand/b0 1.211/1.150), same HOLDOUT > ACCESS ordering; its ACCESS warm numbers (proxy 1.089, MoR 1.112, one pair -7.4%) show the ACCESS effect is noise-regime-sensitive across instruments/thread regimes"
+ },
+ "byte_identity": {
+  "method": "sha256 of result arrays, programmatic cross-check by reviewer across ALL 28 runs of both blocks",
+  "per_cell_single_hash_set": true,
+  "across_arms_blocks_and_thread_regimes_8_and_10": true,
+  "arrays": {
+   "O3_ACCESS": {
+    "reach": "a41c6ab67890f2b91db855a8885695bfd4213b2cad0e89b5c723e10014a28602",
+    "gravity_exponential": "1fb0a39d63a9fb5c3760c59f660a3bcb42d45ae20ce58b7d3ac758ddd317a28c",
+    "gravity_logistic": "3c310162b424aa475a2541e059d96be4360f4ae86903cca5caa301f3cd7caca5",
+    "knn_access": "1b78e2ae2cc225f3554f7ef65e10e2fa2618e9971a68bad40814a0d859673f2a"
+   },
+   "O3_HOLDOUT": {
+    "reach": "c3d712fea196cc43a19b621aeb5ec7190f918a467af268ca1ee7564432bd3320",
+    "gravity_exponential": "972e6dfa8cc2d6f6749c21dcbfea22b0f603d83b52d40670ff0941c2c9677eaf",
+    "gravity_logistic": "8001806273903abde1028d4694567b0e3201f89a08587a6ce3b71f23f557cee1",
+    "knn_access": "24e08651178178675edb0a0413c25d9cd1fbd097e0e32c013044f585bb25d4a6"
+   }
+  }
+ },
+ "gates_on_disposition_dataset": {
+  "reject_on_semantic_failure": "NOT triggered: 12/12 (and 28/28 across both blocks) byte-identical per cell, zero warnings",
+  "reject_median_not_improving_beyond_noise": {
+   "O3_HOLDOUT": "NOT triggered: warm improvement ~30%, far beyond noise (cand warm spread 4.8%)",
+   "O3_ACCESS": "marginal, treated as NOT DEMONSTRATED: median warm improvement 5.8% is within the candidate arm's own warm spread (~6.9%); does not trigger experiment-level reject given the decisive cell"
+  },
+  "proxy_speedup_ge_1.1": {
+   "O3_HOLDOUT": "PASS (1.2954; warm pairs 1.3168/1.2954)",
+   "O3_ACCESS": "FAIL (1.0351; warm pairs 1.1093/1.0110)"
+  },
+  "investigate_single_slowdown_gt_1.1": {
+   "warm": "never triggered: candidate is faster than its paired B0 in ALL FOUR warm pairs (cand/b0: ACCESS 0.9015/0.9891, HOLDOUT 0.7595/0.7720); the ACCESS p3 margin (1.1%) is within noise but is not a slowdown",
+   "cold": "TRIGGERED and investigated: cand/b0 1.197 (ACCESS) / 1.1321 (HOLDOUT); cause = one-time first-call JIT of the 2 extra _large_access_scratch kernels (cache 10 vs 8 files); corroborated by the supplementary block (1.211/1.150); warm-invisible, bounded absolute ~1.3-1.4s"
+  },
+  "cold_median_ratio_le_1.05": "EXCEEDED on every cold pair in both blocks (disposition set: 1.197/1.1321) - qualification blocking-RISK, see disposition C2"
+ },
+ "disposition": {
+  "verdict": "screened_in",
+  "per_cell": {
+   "O3_HOLDOUT": "screened_in: decisive (proxy 1.2954, every warm pair candidate-favorable, improvement far beyond noise)",
+   "O3_ACCESS": "not demonstrated at screen: proxy 1.0351 fails the 1.1 screen-in bar and the 5.8% median improvement is within noise; carried only because A1 is a single source change that cannot be applied per-cell - Q00 owns final admission and must measure it"
+  },
+  "rationale": "zero semantic risk (byte-identical outputs everywhere, guard-protected fallback to the unchanged baseline path), one decisive cell, DECISION.md reject conditions not triggered; screened_in is provisional pending I00/W00/S01/Q00/Q10 per DECISION.md",
+  "conditions": {
+   "C1_access_and_gate_granularity": "A1 benefit concentrates at r=1200; at r=500 (O3_ACCESS, and by extension O2) realized proxy is 1.035-1.089 across instruments. The frozen decision_rule does not state whether paired-CI/proxy gates evaluate per-track or per-cell: if per-cell, A1 will fail on ACCESS-like cells at Q00 and the HOLDOUT gain is lost with it. Campaign owner must rule on gate granularity BEFORE Q00. No tiebreak pair requested - ACCESS is flat, a 4th pair would not change the ruling; lease preserved.",
+   "C2_cold_gate_risk": "reproducible cold ratio 1.13-1.21 vs frozen maximum_cold_median_time_ratio 1.05; the frozen preregistration is internally in tension (decision_rule includes the cold gate; environment_freeze says 'warm for qualification runs; cold documented at O2_cold'). If the cold gate binds at Q00, A1 as-is is NOT admitted. Owner must resolve which reading governs before Q00. Possible mitigations (owner decisions, not reviewer directives): install-time precompile/warm of the scratch kernels, or accept documented-cold status."
+  }
+ },
+ "raw_evidence": {
+  "disposition_raw": "evidence/A1R/raw/a1rp_* (12 records)",
+  "supplementary_raw": "evidence/A1R/raw/a1r_* (16 records + .a1r.json sidecars) + evidence/A1R/screen_matrix.json",
+  "summary": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_screen_summary.json",
+  "drivers": ["evidence/A1R/a1r_bare_job.py", "evidence/A1R/a1r_run_pairs.py", "evidence/A1R/a1r_run_screen.py", "evidence/A1R/a1r_build_candidate.py"],
+  "lease_log": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_lease_log.json",
+  "wheel_record": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_wheel_and_venv.json",
+  "exports_outside_windows": "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_out_pairs/<run_id>/ (sha256 per artifact in each run record)",
+  "reviewer_phaseB_replay": ["/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_replay_cold.json", "/Users/alansynn/orca/workspaces/una-x/campaign_data/a1r_replay_warm.json"]
+ }
+}

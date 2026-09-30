@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "UNA",
+      "url": "https://github.com/AlanSynn/una-x/tree/16bf404d2cc5e776a78dc073c80405f6d186da29",
+      "role": "source baseline"
+    },
+    {
+      "id": "CLOSEOUT",
+      "url": "https://github.com/AlanSynn/una-x/blob/16bf404d2cc5e776a78dc073c80405f6d186da29/campaigns/una_large_e2e/CLOSEOUT.md",
+      "role": "historical evidence and limitations"
+    },
+    {
+      "id": "MADINA",
+      "url": "https://github.com/City-Form-Lab/madina/tree/8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6",
+      "role": "API/model reference"
+    },
+    {
+      "id": "CUDA_FP",
+      "url": "https://docs.nvidia.com/cuda/floating-point/index.html",
+      "role": "operation order, contraction and CPU/device math cautions"
+    },
+    {
+      "id": "NUMBA_JIT",
+      "url": "https://numba.readthedocs.io/en/stable/user/jit.html",
+      "role": "nogil/cache behavior"
+    },
+    {
+      "id": "PYBIND_BUILD",
+      "url": "https://pybind11.readthedocs.io/en/stable/compiling.html",
+      "role": "native build packaging"
+    }
+  ],
+  "note": "Source observations and future campaign design are distinct; official docs are not proof of this project backend parity."
+}

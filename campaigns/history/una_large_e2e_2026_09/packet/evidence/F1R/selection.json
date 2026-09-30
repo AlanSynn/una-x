@@ -1,0 +1,235 @@
+{
+ "schema_version": 1,
+ "task": "F1R",
+ "record": "selection_screen_disposition",
+ "role": "independent-reviewer",
+ "generated_utc": "2026-09-27T02:05:10Z",
+ "method_note": "every number in this file is computed programmatically at authoring time from the raw records and the lease log (full-precision application_window_ns), never typed; sha256 values computed from file bytes this session",
+ "control_chain": {
+  "spec": "evidence/F1R/screen_spec.json rev 5, blob sha256 d145f924fc335f405d8de9fa44eb656a23a9dcde1232f5205e61ca452c22f0b2, committed 2f91140",
+  "addendum": "evidence/control_addendum_A1R.json v5 @ cd2b31b",
+  "supervisor": "evidence/F1R/f1r_run_pairs.py rev5c, sha256 195baaa4aca4a85121669e0ab6cbf7c7f76435d4bf70ea8a7f78b9b8cbd4106a, committed bb89e18 (pre-fire byte-verified by executor in the fire script; blob re-verified from git by reviewer)",
+  "driver": "evidence/F1R/f1r_bare_job.py (P4b reviewer-verified before any gate window)",
+  "candidate_commit": "c1d7edc519f254c0e81475509d34b437e33abf09",
+  "workload": "O3_FLOW sel1024, frozen triple (W,K,H)=(1,8,1), K = --flow-stripes = topology.num_threads = 8"
+ },
+ "arms": {
+  "b0": {
+   "commit": "e95de8e7b81b7db7717a03b4ce2360d6d4001f76",
+   "wheel_sha256": "9d808304a987af9efe5ccfcbe709ce6b7f9e953098dfc6dd4b5e91c8c141026e",
+   "venv": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/b0p_wheel",
+   "cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_f1r_b0"
+  },
+  "cand": {
+   "commit": "c1d7edc519f254c0e81475509d34b437e33abf09",
+   "wheel_sha256": "f9d7a86240ee846ed7a8ebe958b4321496474adb9002c73a19b10500dec5a00f",
+   "venv": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/f1r_cand_wheel",
+   "cache_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_f1r_cand"
+  },
+  "identity_note": "arm identity verified ARM TO ARM at tree and installed-bytes level (spec P4/rev-5 re-pin); wheels re-hashed from artifacts by reviewer; in-run import identity asserted in all 6 records"
+ },
+ "matrix_execution": {
+  "fired_utc": "2026-09-27T01:51:59Z (entry check 01:50:51Z)",
+  "supervisor": "bb89e18 content 195baaa4..., rc=0, wall_s 68.1",
+  "slots": "6/6 rc=0, order AB/BA/AB, block 1 cold (cache roots 0 -> 12 files both arms), blocks 2-3 warm (12/12 carried)",
+  "entry_gate": {
+   "quiet_gate_available_bytes": 7408680960,
+   "quiet_gate_loadavg_1m": 7.54296875,
+   "entry_bar_bytes": 4632084480,
+   "met": true,
+   "matrix_entry_check_uncharged": true
+  },
+  "peak_watchdog": {
+   "budget_mib": 3304,
+   "max_window_peak_mib": 3233.34375,
+   "margin_mib": 70.65625,
+   "trips": 0
+  }
+ },
+ "statistics_unit_block": {
+  "per_block_full_precision": [
+   {
+    "block": 1,
+    "order": "AB",
+    "cold_warm": "cold",
+    "run_ids": [
+     "f1r_b1_AB_b0",
+     "f1r_b1_AB_cand"
+    ],
+    "b0_window_s": 12.220189417,
+    "cand_window_s": 11.212052542,
+    "r_b0_over_cand": 1.0899154611721227,
+    "cold_regression_cand_over_b0": 0.9175023528197084
+   },
+   {
+    "block": 2,
+    "order": "BA",
+    "cold_warm": "warm",
+    "run_ids": [
+     "f1r_b2_BA_b0",
+     "f1r_b2_BA_cand"
+    ],
+    "b0_window_s": 5.674872209,
+    "cand_window_s": 5.234503291,
+    "r_b0_over_cand": 1.0841281194258017,
+    "cold_regression_cand_over_b0": null
+   },
+   {
+    "block": 3,
+    "order": "AB",
+    "cold_warm": "warm",
+    "run_ids": [
+     "f1r_b3_AB_b0",
+     "f1r_b3_AB_cand"
+    ],
+    "b0_window_s": 5.220971833,
+    "cand_window_s": 5.233316375,
+    "r_b0_over_cand": 0.9976411626747866,
+    "cold_regression_cand_over_b0": null
+   }
+  ],
+  "walls_b0_s": [
+   12.220189417,
+   5.674872209,
+   5.220971833
+  ],
+  "walls_cand_s": [
+   11.212052542,
+   5.234503291,
+   5.233316375
+  ],
+  "proxy_speedup_median_b0_over_cand": 1.0841281194258017,
+  "median_b0_s": 5.674872209,
+  "median_cand_s": 5.234503291,
+  "mean_warm_r_b0_over_cand": 1.040884641050294,
+  "cold_regression_cand_over_b0_block1": 0.9175023528197084,
+  "paired_log_ratio_diffs_ln_b0_minus_ln_cand": [
+   0.08610013467554625,
+   0.08077608738562246,
+   -0.0023616237646774656
+  ],
+  "t_interval_log_ratio_2dof": {
+   "mean": 0.05483819943216375,
+   "se": 0.028641177816788873,
+   "t_crit": 4.302652729911275,
+   "ci_ln": [
+    -0.06839484248911713,
+    0.17807124135344465
+   ],
+   "ci_speedup": [
+    0.9338916606626387,
+    1.1949104452399542
+   ],
+   "ci_lower_speedup_gt_1": false
+  },
+  "bootstrap_descriptive": "summary reports fixed-seed (20260926, B=10000) descriptive interval [0.9976, 1.0899]; with n=3 the resample distribution is supported on the observed ratios and the interval collapses to [min r, max r] - reproduced",
+  "precision_note": "the summary's statistics block was computed from its own 4-decimal wall list rather than the raw ns (e.g. paired-ln mean 0.054842 vs 0.05483820 full precision); all deltas <= 4e-6 absolute, no decision impact - accepted as stated-input self-consistency; this file carries the full-precision values"
+ },
+ "byte_identity": {
+  "method": "reviewer ran the committed block_checks (rev5c content) on the six raw records; array hashes additionally cross-checked across all six records programmatically",
+  "per_block_verdict": [
+   "block 1 IDENTICAL",
+   "block 2 IDENTICAL",
+   "block 3 IDENTICAL"
+  ],
+  "artifacts_normalized_per_block": 3,
+  "array_hashes_identical_across_all_6_records": true,
+  "arrays": {
+   "edge_flow": "08bf585b93ddbaf342320c79a273cfb8e513d922ed7de187b169d341abbb148d",
+   "edge_flow_AB": "0be418d0937d0535dd80a77cb2554fa3eb09202f09e79154fa18ec19554ee5b5",
+   "edge_flow_BA": "77ca997b0b3a421bc123b17378611475b66e7ec181cc3657c0bf54553a27a6d1"
+  },
+  "node_flow": null,
+  "fixture_content": "fixture_content_equal TRUE in all 3 blocks while whole-file fixture shas differ per-arm (layer-name metadata; rev5b content-compare exercised in production)"
+ },
+ "per_run_conformity": {
+  "three_field": "flow_stripes_requested == topology_num_threads == engine_num_threads == 8 in all 6 records",
+  "numba_threads": "config == get == 1 in all 6 records (H=1 pin verified in-run)",
+  "counts": "V=49159 E=69957 O=1024 D=6661 in all 6 records",
+  "gravity_cap": "p95 resolved in-run, value 7422.1767, n_origins 1024, all 6 records",
+  "verbatim_warnings": "zero",
+  "investigate_trigger": false,
+  "investigate_detail": "max per-block cand/b0 = 1.002364 (block 3) vs trigger 1.1 - not triggered"
+ },
+ "lease_closure": {
+  "log": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_lease_log.json",
+  "sha256": "1b729c95d8f9e765d7e485f3c118bac244cb7949778b24cfd7af3de551749bdd",
+  "entries_total": 27,
+  "windows": 21,
+  "annotations": 5,
+  "matrix_entry_check_entries": 1,
+  "opening_balance_s": 750.7,
+  "window_charge_sum_s": 364.7,
+  "window_charge_sum_exact_s": 364.705,
+  "cumulative_charged_s": 1115.4,
+  "remaining_s": 13284.6,
+  "closure_holds": true,
+  "closure_convention": "stored cumulative is defined by lease_append as round(opening_balance_s + sum(charged_s), 1); exact 750.7 + 364.705 = 1115.405 rounds to the stored 1115.4 - closure holds under the log's own 1-decimal convention; the 0.005-class tail pre-dates rev5c (prior state 1047.605 -> 1047.6)",
+  "gate_windows_charged_eq_wall_and_unrefused": true,
+  "gwo_field": 0,
+  "gwo_note": "log field 0 is stale-by-construction (in-place executor pass retired by h04 standing rule); the appended annotation:gate_windows_opened entry records computed value 6 - verified against the six gate_run windows"
+ },
+ "gates_admit_screen": {
+  "rule": "proxy_speedup >= 1.1 AND paired-CI lower bound of speedup > 1.0 AND cold_regression <= 1.05 (spec gates.admit_screen, frozen at rev 5)",
+  "proxy_speedup": {
+   "value": 1.0841281194258017,
+   "bar": 1.1,
+   "result": "FAIL"
+  },
+  "paired_ci_lower_gt_1": {
+   "value": 0.9338916606626387,
+   "bar": 1.0,
+   "result": "FAIL"
+  },
+  "cold_regression_le_1_05": {
+   "value": 0.9175023528197084,
+   "bar": 1.05,
+   "result": "PASS"
+  },
+  "reject_on_semantic_failure": "NOT triggered: 6/6 byte-identical, zero warnings, three-field conformant",
+  "failed_conjuncts": [
+   "proxy_speedup 1.084128 < 1.1",
+   "paired-CI lower bound 0.933892 <= 1.0"
+  ]
+ },
+ "exactness_anchor": {
+  "requirement": "spec P3/exactness_anchor: cite F1I Phase-2 census artifacts, hashes verified by reviewer",
+  "proof_chain": "49255e8 (reviewed proof; 8a9f31a APPROVE, re-target edb3c1e)",
+  "artifacts_verified": {
+   "ir_census.json": "3880e3dd9183d361e20b75f52f30bf632585d0dc7422ceedc7f59eba9fd965ae",
+   "ir_fp_census.txt": "c3b6535a92d61576dfdc17b63cb83b2e8edf17dd9687a7a4ff00d3d8fa248a8b",
+   "ir_b0_accumulate_od_flow.ll": "328bb1d7111e6c95f923306b977b2d30de8e2426c31c0a0ea5b40a3277edeb6c",
+   "ir_cand_accumulate_od_flow.ll": "072185a7d5471efacb97cc3c37507a4290320ae4a64f3b380e7f68d8669cf5f2",
+   "ir_side_by_side.md": "b28e07cfda3ae524ea51712f2e8ed387032e175e1ec806b88a4022bd1b294af3",
+   "result.json": "e32e6d862c4d300979bb63cbfcceac8eb279490c8e26c2d6b164daa222715c0c"
+  },
+  "anchor_conclusion": "92 identical FP sites, site sequence equal, sole compiled delta GIL save/restore - numeric identity owned by the census; screen timing therefore admissible"
+ },
+ "disposition": {
+  "verdict": "not_demonstrated_at_screen",
+  "cell": "O3_FLOW (C1 granularity: this ruling is per-workload and says nothing about other cells)",
+  "rationale": "admit_screen is conjunctive and two of three conjuncts fail: proxy 1.0841281 < 1.1 and paired-CI lower 0.933892 <= 1.0 (cold_regression passed at 0.917510 - the candidate was FASTER on the cold block, in the favorable direction of the rev-5 reading rule, so the C2 anomaly route does not engage). Per the frozen failure_disposition, a failed screen does not reject a zero-semantic-risk source change by itself; it forecloses claiming the cell at screen level. F1 remains in the candidate line; the O3_FLOW speedup claim is not demonstrated.",
+  "what_failed_and_why_it_matters": "warm-block effect is inside the noise band: warm r = 1.0841/0.9976 (mean 1.0409) with a 3-sample t-interval spanning [0.9339, 1.1949]; with only paired-block units available at the screen ceiling, no admissible screen statistic can separate this effect from noise",
+  "provenance_of_the_change_itself": "unchanged: the nogil decorator is byte-identical-output (proven at screen under byte_identity) and stays in the line; I00 integration and Q00 admission rules own any later claim",
+  "never_passed": "no gate is recorded as passed on the strength of this screen; vocabulary per spec failure_disposition"
+ },
+ "raw_evidence": {
+  "raw_records": "evidence/F1R/raw/f1r_b{1,2,3}_{AB,BA,AB}_{b0,cand}.json",
+  "raw_record_sha256": {
+   "f1r_b1_AB_b0.json": "a8818a94e8863ba76f2fe4e79bd5661640dc93ddeb27953de36f11757ccb4887",
+   "f1r_b1_AB_cand.json": "1d618800b92a118b4333392a41d8ec7d0c4f43a69cdb98f1a70cf5a224cb8514",
+   "f1r_b2_BA_b0.json": "7e8b20a3163f24114f39b74b73e010d6d313acd510f490dff998d7cae7095e58",
+   "f1r_b2_BA_cand.json": "af7bf797fdabdec8152fb50a6d405d795961d2ff3f603551646a036941e4164d",
+   "f1r_b3_AB_b0.json": "967d957dadbe37a58e2a1b1f5d930d20e24202ad270c21523e1ca808814f4ade",
+   "f1r_b3_AB_cand.json": "ea0155f8033da70e07bf193caa912ffb6702ead54a52576bbfbfd803c391d3cc"
+  },
+  "summary": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_screen_summary.json (sha256 577afcb72b6b002b003f25e9dacf79d41de7bb018e77bde26f8fb9774d921d4b)",
+  "matrix_gate": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_matrix_gate.json (sha256 292246ef317397337d5d4ded421cd9331c6b4232ffca4c1919814b6932cc1c1d)",
+  "console": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_matrix_console.log (sha256 9575b8ba580700eca7374547daba53c17dade09c6911a4566718eae6882726af)",
+  "lease_log": "/Users/alansynn/orca/workspaces/una-x/campaign_data/f1r_lease_log.json",
+  "reviewer_tooling": "block_checks executed from the committed rev5c content reconstructed at /tmp/recon5c.py == 195baaa4... (byte-exact reconstruction from blob bb89e18)"
+ },
+ "outstanding_remediation": {
+  "campaign_data_manifest": "REQUIRED before coordinator commit of this packet: the spec's executor deliverable campaign_data_manifest.json (out-of-repo residency manifest, A1R convention) was never filed (and no A1R-era instance exists - the convention citation is prospective). Remedy: h05 files f1r_campaign_data_manifest.json enumerating this screen's campaign_data artifacts with sha256+bytes. Does not alter the disposition; the sha table in raw_evidence carries the residency function in the interim."
+ }
+}

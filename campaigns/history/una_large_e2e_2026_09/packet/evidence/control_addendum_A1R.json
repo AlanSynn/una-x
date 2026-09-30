@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "record": "control_addendum_A1R",
+  "role": "coordinator/integrator",
+  "recorded_utc": "2026-09-26T07:05:00Z",
+  "purpose": "Record the governing readings and deviations surfaced by the A1R disposition, before Q00. No frozen gate value is changed; this file interprets, it does not amend.",
+  "a1r_disposition": {
+    "verdict": "approve / screened_in, provisional until I00/W00/S01/Q00/Q10 (DECISION.md)",
+    "review": "campaigns/una_large_e2e/evidence/A1R/review.json",
+    "selection": "campaigns/una_large_e2e/evidence/A1R/selection.json",
+    "selected_source_advanced_to": "7a27866670ae2b7f9ed6a4d61e01d95c18e17f29 (src tree b121ec0b4312f12caa98bc115243652e1564d3ec)"
+  },
+  "C1_access_marginality": {
+    "flag": "reviewer condition C1",
+    "fact": "A1 benefit concentrates at radius 1200 (O3_HOLDOUT median-of-pair-ratios 1.390/1.306 across two schedules); at radius 500 (O3_ACCESS, and by extension O2-like small-radius profiles) realized proxy ~1.06-1.09, below the 1.1 primary proxy bar on the stricter statistic in both schedules",
+    "consequence": "Q00/Q10 paired-CI-lower>1.0 may fail on ACCESS-like cells; the source change cannot be applied per-cell. Honest terminal space if final gates split: improvement_only or a radius-scoped claim, decided at Q10 with DECISION.md, never asserted as blanket throughput qualification.",
+    "no_action_now": true
+  },
+  "C2_cold_gate_reading": {
+    "flag": "reviewer condition C2: frozen preregistration internally in tension (decision_rule includes maximum_cold_median_time_ratio 1.05; environment_freeze says warm-for-qualification with cold documented)",
+    "governing_reading": "DECISION.md protected-cells clause: 'Cold process median must not regress by more than 5% without an explicitly bounded warm-only qualification; warm-only means no blanket-default promotion claim.' The packet therefore answers the question it was feared to leave open: the cold gate binds by default; an explicitly bounded warm-only qualification is the packet-sanctioned exception, and taking it constrains the final claim shape (no blanket-default promotion).",
+    "measured": "cold cand/b0 median ratio reproduced 1.20/1.13 (two schedules), caused by one-time JIT of the 2 added scratch kernels (~1.3-1.4 s), warm-invisible",
+    "decision_point": "Q00 freeze chooses the qualification route (cold-gate-conformant vs explicitly bounded warm-only); Z00 publishes the claim shape accordingly. Campaign owner may override before Q00; nothing in the packet requires stopping before then.",
+    "no_action_now": true
+  },
+  "screening_block_deviation": {
+    "fact": "A1 screening schedule 1 (instrumented matrix) ran 4 paired blocks per cell against the DECISION.md text 'at most three paired screening blocks per revision'; schedule 2 (a1rp, the disposition dataset) ran 3 per cell conformantly",
+    "mitigations": [
+      "candidate source was frozen at 7a27866 before any screening ran; no schedule-to-schedule tuning was possible or attempted",
+      "both schedules produced byte-identical outputs and consistent ratios; schedule 2 superseded schedule 1 for disposition",
+      "schedule 1 retained, clearly labeled supplementary diagnostics, in evidence/A1R/raw/a1r_*.json",
+      "hard budget bound held throughout: cumulative heavy wall 750.7 s of 14400 s"
+    ],
+    "discipline_note": "future R tasks (F1R..A3R): screening must stay within 3 paired blocks per revision; instrumented pilots are not a substitute and extra blocks are not to be executed past the first conformant matrix"
+  },
+  "heavy_wall_after_A1R_s": 750.7,
+  "heavy_wall_budget_s": 14400.0,
+  "v2_amendment": {
+    "recorded_utc": "2026-09-26T07:20:00Z",
+    "trigger": "reviewer re-anchor after screen-executor reconciliation: selection.json v2 + review.json F3/F4 corrections committed by coordinator; the a1r_* 16-run block (team-lead interim spec: H=10 ambient, off the frozen W*H<=C=9 grid, instrumentation inside the timing window) is DEMOTED to supplementary diagnostics; the disposition dataset is the a1rp_* 12-run block ((W,H)=(1,8) on-grid, bare windows).",
+    "corrected_screen_numbers": {
+      "O3_HOLDOUT": "screened_in decisive: proxy 1.2954, warm pairs 1.3168/1.2954, every warm pair candidate-favorable",
+      "O3_ACCESS": "NOT DEMONSTRATED at screen: proxy 1.0351 fails the 1.1 bar; 5.8% median improvement within the candidate arm's warm spread; candidate faster in every warm pair but margin thin",
+      "cold_cand_over_b0": "1.197/1.132 (disposition dataset), reproduced 1.211/1.150 by the supplementary block - one-time JIT of 2 added kernels"
+    },
+    "supersedes": "the C1 fact line above (the '~1.06-1.09' range mixed both schedules' instruments); per-cell dispositions in evidence/A1R/selection.json v2 are authoritative",
+    "coordinator_rulings": {
+      "C1_gate_granularity": {
+        "ruling": "Gates evaluate PER MANDATORY WORKLOAD, never per-track averaged. Basis: DECISION.md run budget ('five pairs per mandatory workload') and primary gate phrasing; no packet text supports averaging across cells.",
+        "mandatory_set_rule": "Q00 must fix the mandatory set as the FULL frozen workload set actually exercised by the screened-in tracks (O3_ACCESS, O3_HOLDOUT, O3_FLOW, plus O2 as protected small cell) - the set may not be curated to exclude cells a candidate is expected to fail.",
+        "cell_failure_consequence": "A cell failing the 1.1/paired-CI bar does not reject a zero-semantic-risk source change that decisively passes another frozen cell, but it FORBIDS claiming that cell; the final publication claim is scoped to passing cells and every per-cell result is published. In the packet's terminal vocabulary this is the improvement_only/scoped-claim space, never qualified_proxy across all cells.",
+        "user_override": "campaign owner may override this reading any time before Q00; recorded now so qualification is not surprised"
+      },
+      "C2_cold_gate": {
+        "ruling": "The cold gate binds by default (maximum_cold_median_time_ratio 1.05). DECISION.md's own exception is sanctioned: 'Cold process median must not regress by more than 5% without an explicitly bounded warm-only qualification; warm-only means no blanket-default promotion claim.'",
+        "mitigation_options_for_Q00": [
+          "install-time precompile/warm of added kernels as a W00 build step (if Q10 cold diagnostics then normalize, the gate is met outright - no warm-only carve-out needed)",
+          "documented-cold status + explicitly bounded warm-only qualification, with the claim constrained accordingly"
+        ],
+        "user_override": "campaign owner may override any time before Q00"
+      }
+    },
+    "W00_precompile_reading": {
+      "flag": "reviewer boundary flag: does install-time precompile/warm of added kernels collide with the campaign's 'broad cache' prohibition?",
+      "reading": "NO COLLISION. The prohibition (campaign contract) targets result memoization - caching computed outputs. Numba cache=True caches compiled machine code, not results; B0 itself already ships cache=True kernels (H04/H05 runs populated NUMBA_CACHE_DIR from baseline source). Install-time pre-population moves the identical JIT compile to install time, adding no numerical surface and no result cache. Compliant as a W00 build step.",
+      "condition": "if any W00/Q00 proposal goes beyond compilation warm-up (caching or reusing computed results across runs), it is out of bounds and must not be baked in",
+      "user_override": "campaign owner may override before W00"
+    },
+    "R00_checklist_items": [
+      "confirm campaign_data/{a1r_wheel_and_venv.json, a1r_lease_log.json, a1r_screen_summary.json} outside-repo residency is adequately covered by in-repo evidence copies (reviewer nit, accepted)",
+      "verify W00 real-wheel guard proof exists (H04-N2) and any install-time precompile step stayed within the W00_precompile_reading",
+      "confirm C1/C2 rulings were applied in Q00 protocol as recorded here (or documented overrides exist)"
+    ]
+  },
+  "v3_amendment": {
+    "recorded_utc": "2026-09-26T07:38:37Z",
+    "trigger": "F1R dispatch-term confirmation from the independent reviewer; protocol hardening extended to ALL remaining R tasks",
+    "R_task_spec_protocol": {
+      "ruling": "For every remaining R task (F1R, F3R, A2R, F2R, A3R): the screen spec is filed by the review owner BEFORE any execution, committed by the coordinator first, and only then does the screen executor run under a fresh heavy lease. This closes the a1r_/a1rp_ provenance gap permanently (A1R schedule 1 executed against an uncommitted interim team-lead spec).",
+      "bare_window_instrumentation_rule": "Inside bare disposition windows, in-run verification is config-level ONLY (harness-recorded engine_config_observed fields; zero perturbation). Any richer observation (concurrency counters, tracing, thread-pool inspection) is DIAGNOSTIC class: separate instrumented runs OUTSIDE the paired matrix, documented in the screen record, never entering gate math or the paired-block ceiling. Optional diagnostic controls (e.g. F1 K=1 structural negative control) are the executor's discretion under lease budget and earn no gate credit by design.",
+      "basis": "instrumentation inside timing windows is precisely what demoted A1R schedule 1 (v2_amendment.screening_block_deviation); this generalizes the discipline_note from a block-count rule into an instrumentation-placement rule"
+    },
+    "F1_specific_terms_note": "F1R-specific amendments (a priori frozen triple (W,K,H)=(1,8,1) with three-field in-run config verification flow_stripes_requested==8 AND topology_num_threads==8 AND engine_num_threads==8; byte identity mandatory in every pair with any delta = rejection not investigation; symmetric-cold expectation - F1 adds no kernels so per-arm fresh cache roots make first-compile symmetric and the C2 route machinery is carried but NOT anticipated to engage) live in evidence/F1R/screen_spec.json, reviewer-owned, coordinator-committed before execution per the R_task_spec_protocol.",
+    "user_override": "campaign owner may override any time before Q00"
+  },
+  "v4_amendment_f1r_execution_entry": {
+    "recorded_utc": "2026-09-26T09:43:22Z",
+    "trigger": "F1R canary admission refusal BEFORE any window opened: 0.80*available read 2608.4 MiB against the ruled 2620 MiB refusal threshold (11.6 MiB short), availability trending down (2625 -> 2608.4 -> 2578 MiB over minutes). Cause is ambient owner-side memory pressure (~80% of 16 GiB: browser helpers, mail, workspace app, security agent), not campaign consumption. Refusal entry UNCHARGED; heavy wall static 824.8 s / 14400 s; canary record retained with ok=false and screen roots untouched (they do not yet exist) - kept as evidence the ruled guard fired.",
+    "ruling": "EXECUTION-ENTRY TIGHTENING, coordinator discretion, no frozen value touched: F1R gate-eligible execution opens windows only while 0.80*available >= 2800 MiB, checked BEFORE the canary AND BEFORE EACH gate-eligible block, the read recorded in that block's record. Rationale: at the bar, available >= 3500 MiB, so the fixed 2600 MiB watchdog holds the ruled ~111 MiB trip margin over the ~2489 MiB sel1024 flow peak (P5 planning assumption restored), and a falling ambient trend cannot invite a mid-matrix admission refusal whose ruled consequence is void-restart-whole. The ruled per-window admission refusal (0.80*available < 2620 MiB -> refuse) remains the binding hard gate, byte-unchanged.",
+    "watch_authorization": "h05-profiler polls availability READ-ONLY while below the bar: no windows open, no lease charge, no writes outside its own diagnostics record. Proceeds autonomously under the standing GO once the bar holds (canary -> screen-roots check -> block 1 cold -> blocks 2-3 warm), reporting terms unchanged (canary in, per-block completion, immediate stop-and-report on byte delta / config mismatch / admission refusal). One cumulative-wait status report due to the coordinator if the wait exceeds ~1 h.",
+    "user_surface": "Freeing ambient memory is owner-side action (browser tabs / desktop apps); the coordinator surfaced it in-session as OPTIONAL. The screen proceeds autonomously on recovery and does not block on owner action.",
+    "no_gate_change": true,
+    "process_note": "filed BEFORE the first gate-eligible window per the R_task_spec_protocol principle (one committed schedule governing execution); interpretive record only - screen_spec.json rev 4 bytes untouched, freeze on evidence/F1R/ intact"
+  },
+  "v4a_clarification_bar_binding_point": {
+    "recorded_utc": "2026-09-26T09:50:13Z",
+    "trigger": "executor query before matrix fire: the frozen supervisor (bfc52e9a) has no per-block interlock - --stage run executes all 6 gate-eligible runs back-to-back, with the ruled per-window admission guard as the only mid-matrix gate. Enforcing the v4 2800 MiB bar literally 'before each block' would require a post-commit supervisor delta (pause/resume state machine) through the h04 freeze.",
+    "clarification": "The v4 bar binds at every matrix ENTRY: the initial fire and any re-entry after a void/restart, enforced by the executor's read-only watch loop (same psutil call the admission guard uses). WITHIN a matrix, the sole binding mid-matrix protection is the frozen P5 per-window guard: refuse any window whose admission shows 0.80*available < 2620 MiB, voiding the matrix, which then restarts as a whole and re-enters only at the v4 bar. The v4 'read recorded per record' clause maps to each run's lease-log available_at_admission_bytes, verified post-hoc by the reviewer against these thresholds; a mid-matrix window opening above the ruled refusal threshold but below the v4 bar is CONFORMANT (the ruled ~111 MiB watchdog margin over the ~2489 MiB sel1024 peak is intact at any passing admission), not a ruling violation.",
+    "rationale": "the per-window guard reads availability at the moment of Popen - strictly fresher than any pre-block read - using the same psutil quantity; an in-supervisor interlock would duplicate it with staler data, require editing frozen reviewer-verified bytes post-commit, and add a new pause/resume failure surface for headroom beyond what P5 requires. Entry-bar + per-window-guard + void-restart-whole already bounds the worst case: a mid-matrix ambient collapse costs a voided matrix and a bar-gated re-entry, never an under-protected window.",
+    "no_gate_change": true,
+    "process_note": "coordinator clarification of v4 within its owning record, filed BEFORE matrix fire; no screen_spec byte touched; reviewer ack requested for the verification-queue mapping (pre-block reads := per-run lease admission bytes)"
+  },
+  "v5_amendment_f1r_confound_repair_and_envelope": {
+    "recorded_utc": "2026-09-26T23:50:00Z",
+    "trigger": "Pre-matrix arm-confound discovery and repair. The armed F1R pair was b0=361928e (pre-A1) vs cand=c1d7edc (A1-advanced line + F1): the screen would have measured (A1+F1)-vs-(neither). Found via cache-root forensics (_large_access_scratch._a1_scope_search entries in the cand arm only) and a full-venv diff; commit graph confirmed 361928e..e95de8e = the A1 track, e95de8e..c1d7edc = AggregateFlow.py one decorator line. Contributing defect class: single-file blob pins for arm identity (spec P3 verified candidate-vs-neighbor-commit - true statement, wrong pair). Separately: the rev-4 watchdog constants (2600/2620/2800) were sized from the WARM H05 peak and are invalidated by the measured cold-compile transient (~2891/3003 MiB); and the first repaired-arm sizing run (f1r_diag_coldpeak_b0p, 2246.1 MiB) was REJECTED - fired under loadavg 40.56 / available 3542.25 MiB (3714318336 B), real pressure reclamation, not demand. Zero gate-eligible windows burned throughout.",
+    "rulings": {
+      "re_pin_basis_general_rule": "Every R screen isolates its own track's increment on the ADVANCING campaign line: the control arm is the advanced line MINUS that track's change, re-pinned and rebuilt per screen. An earlier screen's baseline wheel is never inherited verbatim once the line has advanced (mechanical origin of the confound: F1R inherited A1R's correct-for-A1R 71fd5615 wheel). 71fd5615 is RETAINED and labeled A1R-correct / F1R-wrong.",
+      "standing_audit_obligation": "Arm identity is verified ARM TO ARM, never by single-file blob pins: full-tree git diff of the two pinned commits AND full package venv diff with wheel CONTENT authoritative (wheels carry no __pycache__) plus venv tree check with __pycache__ EXCLUDED and exclusion counts/reason recorded (interpreter-derived pyc legitimately differs across venvs; a full diff correctly STOPs on it - exercised by the retained blocked_1 build record, sha 5c989ca4ad34fe3ab5664c386abde448052f104391e1004d3333819fbff2a4c8). Cache-entry counts per run double as kernel-set identity receipts (repaired arms: b0=10 / b0p=12 / cand=12 files; b0p==cand confirms identical compiled sets).",
+      "quiet_window_sizing_precondition": "Diagnostics-class SIZING runs (envelope/budget characterization) MUST record pre-fire preconditions IN the monitor record: psutil available >= 5368709120 B (5120 MiB) AND loadavg 1m < 8, poll read-only with no lease charge while waiting. Rationale: memory pressure reclaims resident pages during the compile transient, suppressing measured peaks far below true demand (2246.1 MiB observed vs ~3003 true) in a way both driver ru_maxrss and external tree sampling agree on - sizing from a suppressed peak guarantees mid-matrix watchdog kills. A second materially-low landing = STOP and report (systematic machine change, not variance). This PARTIALLY SUPERSEDES the v4 watch authorization for sizing runs only; GATE-ELIGIBLE runs keep the v4 entry bar + per-window guard unchanged (the v4a structure is untouched). Campaign unit convention is MiB/bytes, fraction-exact where non-integral, always paired with the byte count; frozen prose never states bare G-unit labels (coordinator's own decimal-GB mislabel corrected 2026-09-26).",
+      "reading_rule_replacement": "The confounded-instrument cold accommodation (misses 1.05-1.15 read as compile cost) is WITHDRAWN with its instrument. Repaired-pair pre-registration: block-1 cold cand/b0 wall in [0.95, 1.05] = normal compile/variance bookkeeping (both arms compile the identical 6-kernel set); a cold miss (>1.05; gate value UNCHANGED) is an anomaly to investigate with C2 available per its own terms; warm blocks 2-3 are the thesis adjudicator (warm cand/b0 <= 1) and a warm miss takes the frozen failure path with NO reading-rule protection.",
+      "envelope_supersession": "Rev-4 constants 2600/2620/2800 are superseded by the measured-peak chain, derived in ONE direction: governing cold sel1024 peak = max(b0p2_clean, cand 3003.25 MiB) -> budget = 1.10x peak -> per-window refusal = 0.80*avail < budget + margin -> entry bar = refusal + v4 spread at matrix ENTRY. Filled in screen_spec rev 5 from f1r_diag_coldpeak_b0p2 (mandatory quiet-window preconditions). Supervisor delta boundary: constants + derived literal strings + ARMS b0-entry re-point only, diffed against committed blob 3b0fee6d; h05 authors, coordinator commits hash-gated after the coordinator countermand window.",
+      "process_sequencing": "screen_spec rev 5 progressed: reviewer-authored pre-fill draft (sha 42fbb31f365cccc0d739405cbb7e5a57aa8d1db110ba96c99c13390910a77f10) carried [PENDING b0p2_clean] slots; the reviewer filled them from f1r_diag_coldpeak_b0p2 and stated a final sha; one narrow coordinator countermand window then fixed three same-note defects (bare '5.0' G-unit prose to byte-exact '5120 MiB (5368709120 B)'; present-tense slot language to past tense with the 42fbb31f-to-fill transition; and a reviewer-self-caught '3542.4 MiB' label to fraction-exact '3542.25 MiB' with run id f1r_diag_coldpeak_b0p added), landing final sha d145f924fc335f405d8de9fa44eb656a23a9dcde1232f5205e61ca452c22f0b2, on which the coordinator ran an independent whole-file raw-string validation and then CLOSED the window. Coordinator commits spec hash-gated, then this addendum entry (citing the committed spec sha at spec_final_sha), then the supervisor delta cycle, then re-canary, then screen-roots check, then the 3 paired blocks. Matrix/statistics/gates/triple/byte-identity/exactness-anchor clauses unchanged by all of the above."
+    },
+    "spec_final_sha": "d145f924fc335f405d8de9fa44eb656a23a9dcde1232f5205e61ca452c22f0b2 (committed as 2f91140 on perf/una-large-e2e; filled 2026-09-26T23:50:39Z)",
+    "no_gate_change": "gate VALUES unchanged (1.10 budget rule, 1.05 cold gate, 1.1 admit bar, byte-identity); only the envelope INPUTS and the arm identity are repaired",
+    "process_note": "coordinator-owned rulings recorded pre-execution per the R_task_spec_protocol principle; drafted in parallel with the reviewer fill; coordinator independent verification receipts for the draft: draft sha, build record sha 6dd347350b1510d3ec2635fdd58e796582bb9ea0e5bd2410f555f2eb89ccb870, blocked_1 sha, wheel sha, one-file +19/-6 dirty state, revs [1..5] all recomputed 2026-09-26; post-countermand verification receipt: sha recomputed from disk = d145f924fc335f405d8de9fa44eb656a23a9dcde1232f5205e61ca452c22f0b2, whole-file raw-string sweep all-PASS (bare G-unit 0, '3542.4' 0, '3542.25' x3, 5368709120 x1, 4632084480 x1, PENDING x3 all historical/quoted, chain fraction-exact 3303.575 recomputed), json.load OK 23 top-level keys, 2026-09-26"
+  }
+}

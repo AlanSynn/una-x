@@ -1,0 +1,29 @@
+{
+ "schema_version": "f2r_selection_consolidation_v1",
+ "record_type": "consolidation_pointer",
+ "task": "F2R",
+ "revision": "r1",
+ "role": "coordinator/integrator (team-lead), authored under h04-reviewer's I00 consolidation ruling",
+ "generated_utc": "2026-09-28T12:44:45Z",
+ "method_note": "CONSOLIDATION POINTER per TASKS_CLAUDE.yaml output obligation evidence/F2R/selection.json. No contemporaneous selection file exists at this path: F2R's selection outcome was ruled in-message (SCREENED_IN, candidate control advanced to the integration line) with evidence under the custody paradigm. This file records the selection state honestly, pointing at the ruled record. Every sha computed from bytes at assembly time.",
+ "disposition": "SCREENED_IN",
+ "selection": {
+  "selected_control": "F2 candidate (local flow overlap + scratch reset) at F2I implementation commit 61f3db64801018aea0c19d27a27c25506ed64e2d - advances to the I00 integration line",
+  "integration_set_note": "at I00 opening the integration line is A1 (provisional) + F1 (not_demonstrated_at_screen, stays in line) + F2 (this selection) + F3 (SCREENED_IN cand) + A3 (SCREENED_IN); A2 not_admitted and never integrated"
+ },
+ "conditions_carried": {
+  "q00_cold_note": "F2R block-1 cold regression 0.999058 missed the ruled band [1.066, 1.0985] LOW - Q00 note: flow memory sizing comes from flow realizations; the F3R basis does not transfer. Cross-caps cold-headroom prereg (h04: 7.5-7.7% band) governs at Q00.",
+  "q00_block1_cold_peaks_band_basis_mib": 2905.265625
+ },
+ "evidence_pointers": {
+  "screen_summary": {
+   "path": "campaign_data/f2r_screen_summary.json (outside repo; custody root)",
+   "sha256": "6ad0fbd3c3a7b059baec84c2600bb952e4701fb7f26898d5dbbffd992ef52e64",
+   "bytes": 39745
+  },
+  "implementation_commit": "61f3db64801018aea0c19d27a27c25506ed64e2d",
+  "raw_records_commit": "9b1340eb008accdff45fbdf57c6009dd5a6b5146",
+  "review_pointer": "evidence/F2R/review.json (consolidation record, same round)"
+ },
+ "verification": "h04-reviewer verified this pointer record against bytes pre-commit; blobs re-verified post-commit per the I00 consolidation ruling condition (iv)."
+}

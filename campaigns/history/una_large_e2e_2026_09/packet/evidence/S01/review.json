@@ -1,0 +1,53 @@
+{
+ "schema_version": "s01_review_pointer_v1",
+ "record_type": "consolidation_pointer",
+ "task": "S01",
+ "role": "coordinator/integrator (team-lead), assembled at R00-F1 remediation under h04-reviewer's R00 finding",
+ "generated_utc": "2026-09-30T01:15:00Z",
+ "method_note": "CONSOLIDATION POINTER per TASKS_CLAUDE.yaml output obligation evidence/S01/review.json, filed as R00-F1 record-only remediation. No contemporaneous review file existed at this path: S01 ran under the custody paradigm - the independent reviewer's intake verdict lives verbatim as the ruled record commit ec16d3f's verdict block plus campaign_data custody consoles. This file is an honest pointer record assembled from the ruled verdict bytes; no source bytes changed and no run was re-executed. Every sha in this file was computed from bytes at assembly time.",
+ "disposition": "CLEAN EXIT, key r9 retired (ruled by independent reviewer h04, 2026-09-29)",
+ "reviewer": "independent-reviewer (h04)",
+ "verdict_verbatim": {
+  "source": "ruled record commit ec16d3f verdict block, transcribed verbatim",
+  "header": "Intake verdict (h04, 2026-09-29): CLEAN EXIT, key r9 retired.",
+  "lines": [
+   "- 38/38 windows match pre-registered enumeration; 44 lease records all rc=0",
+   "- selections: accessibility W9H1 (median 2.6660 jobs/s), flow W1H5",
+   "- receipts: 38/38 valid, installed_wheel x38, 1,014 validated jobs",
+   "- amd6 per-window sizing at full scale: 38 distinct budgets 3,246-6,291 MiB",
+   "- first live O3_FLOW admission (H=5/K=4); zero refusals; zero strays",
+   "- charge: 3,846.8 s of 14,400 (26.7139%); ledger remaining 10,690.3 s"
+  ]
+ },
+ "review_basis": {
+  "note": "review was executed as in-message adversarial rulings across the S01 rounds (rev1-rev8 amendments, nine fire attempts including four VOID classes and five designed stops, incident adjudications) with all figures recomputed by the reviewer from record bytes; the CLEAN EXIT verdict was affirmed on fire #9",
+  "ruled_verdict_commit": {
+   "commit": "ec16d3f",
+   "subject": "Record S01 evidence: fire #9 intake-verified, key r9 clean exit"
+  },
+  "bound_artifacts": [
+   {
+    "path": "campaigns/una_large_e2e/evidence/S01/configurations.json",
+    "sha256_at_assembly": "ef670f214cf1c1704e3ff151325d8527c75c197f4c4f0230733a077ff638d7b4",
+    "bytes": 27660
+   },
+   {
+    "path": "campaigns/una_large_e2e/evidence/S01/memory.json",
+    "sha256_at_assembly": "e90bf33079f62bbe7df2e196a225ac35387357cd1cc3c55771e012a611998d4b",
+    "bytes": 3753
+   }
+  ],
+  "custody_consoles": [
+   {
+    "path": "campaign_data/custody/interim_238d24e8_s01_r9_fire_console.txt (outside repo; custody root)",
+    "sha256_at_assembly": "238d24e8b37c6db4a8558b62ed048ace96f240585df107805cd7932fd47b3d6b"
+   },
+   {
+    "path": "campaign_data/custody/interim_1da2c288_s01_r9_preclear_console.txt (outside repo; custody root)",
+    "sha256_at_assembly": "45b465c3d9a37e1f2dcdc6d8cc99aa5196da55e2b4645d08ca10b0187f8fc944"
+   }
+  ]
+ },
+ "remediation_record": "R00-F1 (record-only): the declared required output was never filed contemporaneously; assembled and filed 2026-09-30 by team-lead before Z00 per h04's R00 ruling. configurations.json and memory.json live-hashed equal to the verdict's bound figures at assembly time. No bytes change, no re-run.",
+ "verification": "h04-reviewer to verify this pointer against bytes at commit per the R00 flow (finding filed as record-only remediation; verdict bytes authoritative)"
+}

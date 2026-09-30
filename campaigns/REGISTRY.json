@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "active": "campaigns/una_large_e2e",
-  "active_campaign_id": "una-large-e2e-2026-09",
+  "active": "campaigns/una_platform",
+  "active_campaign_id": "una-platform-2026-09",
   "historical": [
     {
       "id": "una-cpu-2026-09",
@@ -10,8 +10,17 @@
       "original_path": "optimization_una_cpu",
       "source_commit": "361928e4ba38f34622cafe065b0025244db61368",
       "packet_tree": "917475d210218a7f3ae2765d5b8e6a1c9c587842"
+    },
+    {
+      "id": "una-large-e2e-2026-09",
+      "status": "historical",
+      "path": "campaigns/history/una_large_e2e_2026_09/packet",
+      "original_path": "campaigns/una_large_e2e",
+      "source_commit": "16bf404d2cc5e776a78dc073c80405f6d186da29",
+      "packet_tree": "6ef3a4ff24728bfe969f97c1da7f6ad81a6c7a89",
+      "legacy_path_preserved": true
     }
   ],
-  "publication_scope": "packet and routing only; runtime unchanged",
+  "publication_scope": "packet, archive and routing only; runtime/build/tests/benchmarks/evidence unchanged",
   "future_auto_publish": false
 }

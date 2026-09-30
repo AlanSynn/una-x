@@ -1,0 +1,101 @@
+{
+ "task": "W00",
+ "record": "wheels",
+ "utc": "2026-09-28T21:30:42Z",
+ "build_route": {
+  "method": "git archive of the verified tree -> pip wheel in a fresh build venv",
+  "source_worktrees_written": false,
+  "commit_date_note": "hatch_build.py bakes commit_date='unknown' on the archive route; source identity is carried by the pinned commit/src-tree shas",
+  "install_time_precompile": "none \u2014 a precompile/warm step is a Q00 decision under the ruled W00_precompile_reading",
+  "diagnostic_frame_cells": "none \u2014 every W00 evidence cell runs installed (identity kind installed_wheel); no diagnostic_profile_source cell exists in W00",
+  "rebuild_comparability": "cross-time comparability rides the commit+policy pins (source_commit / src_tree_sha256 / constraints_sha256 per arm), NOT wheel byte equality (h04 W00 ruling); the git-archive route keeps per-route wheel bytes reproducible"
+ },
+ "arms": {
+  "b0": {
+   "source_commit": "361928e4ba38f34622cafe065b0025244db61368",
+   "src_tree_sha256": "a5883dddcef3afb8debdb4438a6338da886add6f",
+   "wheel": {
+    "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/wheels/w00_b0/urban_network_analysis-2.6.0-py3-none-any.whl",
+    "filename": "urban_network_analysis-2.6.0-py3-none-any.whl",
+    "sha256": "71fd5615b5683f3c798938a2762824da9ba3fada801aaa840343e7378d4fc979",
+    "bytes": 125943
+   },
+   "identity": {
+    "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/b0.json",
+    "sha256": "3737eb7e0623fa14b1e095e7581352f57c46fe742ee224a35fbfbf1fbfc5a0a3",
+    "package_tree_sha256": "d1e34ba92e7b5f33a6a9e4651a6e106ec1b78251ea2adc63c1a380e87b6cbb89",
+    "module_count": 15,
+    "package_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_b0/lib/python3.11/site-packages/urban_network_analysis"
+   },
+   "constraints_sha256": "8c501f870861286d6cd819738ffaf5714f36dd4624cba85242d3750007552c09",
+   "runtime_venv": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_b0",
+   "runtime_venv_freeze": [
+    "certifi==2026.7.22",
+    "cloudpickle==3.1.2",
+    "geopandas==1.1.4",
+    "joblib==1.6.0",
+    "llvmlite==0.49.0",
+    "narwhals==2.26.0",
+    "networkx==3.6.1",
+    "numba==0.67.0",
+    "numpy==2.4.6",
+    "packaging==26.3",
+    "pandas==3.0.6",
+    "psutil==7.2.2",
+    "pyarrow==25.0.1",
+    "pyogrio==0.13.0",
+    "pyproj==3.7.2",
+    "python-dateutil==2.9.0.post0",
+    "scikit-learn==1.9.1",
+    "scipy==1.17.1",
+    "shapely==2.1.2",
+    "six==1.17.0",
+    "threadpoolctl==3.7.0",
+    "urban-network-analysis @ file:///Users/alansynn/orca/workspaces/una-x/campaign_data/wheels/w00_b0/urban_network_analysis-2.6.0-py3-none-any.whl#sha256=71fd5615b5683f3c798938a2762824da9ba3fada801aaa840343e7378d4fc979"
+   ]
+  },
+  "selected": {
+   "source_commit": "6b53a274e8a8d3e7360ab5e1b38f741107ce3358",
+   "src_tree_sha256": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+   "wheel": {
+    "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/wheels/w00_selected/urban_network_analysis-2.6.0-py3-none-any.whl",
+    "filename": "urban_network_analysis-2.6.0-py3-none-any.whl",
+    "sha256": "323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4",
+    "bytes": 138442
+   },
+   "identity": {
+    "path": "/Users/alansynn/orca/workspaces/una-x/campaign_data/w00_identities/selected.json",
+    "sha256": "b98915102d53d714dba2df9b71b42df97f8da90369b1fb1de5020ac6456458e1",
+    "package_tree_sha256": "64471ec98511aaed5cf8814aea0556907b18e74737e2ec4da6022207cfb153f0",
+    "module_count": 17,
+    "package_root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_selected/lib/python3.11/site-packages/urban_network_analysis"
+   },
+   "constraints_sha256": "8c501f870861286d6cd819738ffaf5714f36dd4624cba85242d3750007552c09",
+   "runtime_venv": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_selected",
+   "runtime_venv_freeze": [
+    "certifi==2026.7.22",
+    "cloudpickle==3.1.2",
+    "geopandas==1.1.4",
+    "joblib==1.6.0",
+    "llvmlite==0.49.0",
+    "narwhals==2.26.0",
+    "networkx==3.6.1",
+    "numba==0.67.0",
+    "numpy==2.4.6",
+    "packaging==26.3",
+    "pandas==3.0.6",
+    "psutil==7.2.2",
+    "pyarrow==25.0.1",
+    "pyogrio==0.13.0",
+    "pyproj==3.7.2",
+    "python-dateutil==2.9.0.post0",
+    "scikit-learn==1.9.1",
+    "scipy==1.17.1",
+    "shapely==2.1.2",
+    "six==1.17.0",
+    "threadpoolctl==3.7.0",
+    "urban-network-analysis @ file:///Users/alansynn/orca/workspaces/una-x/campaign_data/wheels/w00_selected/urban_network_analysis-2.6.0-py3-none-any.whl#sha256=323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4"
+   ]
+  }
+ }
+}

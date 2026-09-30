@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "profile": null,
+  "reference_sha": null,
+  "candidate_sha": null,
+  "model": null,
+  "environment_fingerprint": null,
+  "backend_requested": null,
+  "backend_effective": null,
+  "substantive_kernel_calls": 0,
+  "compared_arrays": 0,
+  "compared_bytes": 0,
+  "mismatches": [],
+  "state_steps_compared": 0,
+  "artifact_schema_pass": false,
+  "status": "unavailable"
+}

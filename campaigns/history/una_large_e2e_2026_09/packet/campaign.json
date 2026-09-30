@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "campaign_id": "una-large-e2e-2026-09",
+  "status": "active",
+  "repository": "AlanSynn/una-x",
+  "baseline_commit": "361928e4ba38f34622cafe065b0025244db61368",
+  "baseline_src_tree": "a5883dddcef3afb8debdb4438a6338da886add6f",
+  "integration_branch": "perf/una-large-e2e",
+  "archive_path": "campaigns/history/una_cpu_2026_09/packet",
+  "archive_tree": "917475d210218a7f3ae2765d5b8e6a1c9c587842",
+  "auto_publish": false,
+  "gpu_enabled": false,
+  "number_class": "policy_constants_not_measurements",
+  "portfolio": [
+    "A1",
+    "A2",
+    "A3",
+    "F1",
+    "F2",
+    "F3"
+  ],
+  "gates": {
+    "minimum_removable_fraction": 0.05,
+    "proxy_speedup": 1.1,
+    "paired_ci_lower_exclusive": 1.0,
+    "maximum_protected_median_time_ratio": 1.05,
+    "maximum_cold_median_time_ratio": 1.05,
+    "investigate_single_slowdown_ratio": 1.1
+  },
+  "budget": {
+    "max_optional_prototypes": 6,
+    "performance_revisions_per_track": 2,
+    "screening_pairs_per_revision": 3,
+    "final_pairs_per_primary": 5,
+    "extra_diagnostic_blocks": 1,
+    "configurations_per_family": 6,
+    "batches_per_configuration": 2,
+    "baseline_pilots_per_cell": 2,
+    "warm_window_target_seconds": 60,
+    "total_heavy_wall_seconds": 14400,
+    "actual_target_pairs": 1
+  },
+  "terminal_states": [
+    "qualified_proxy",
+    "improvement_only",
+    "no_change",
+    "blocked",
+    "inconclusive",
+    "no_safe_merge",
+    "merge_ready"
+  ],
+  "source_blobs": {
+    "src/urban_network_analysis/Engines/Accessibility.py": "473de486e5573992aba5079f3c8ac80668e61aa0",
+    "src/urban_network_analysis/Engines/AccessibilityWElevation.py": "dc75e48baf92817028a749a15778c6308e41c44f",
+    "src/urban_network_analysis/Engines/_ordered_csr.py": "186e82c0ddb612eae0a5550e5e0b06cf4f16785d",
+    "src/urban_network_analysis/Engines/AggregateFlow.py": "0114ce8f318a3247b62e3d468e32d54e692737a2",
+    "src/urban_network_analysis/Topology.py": "26ca999f32f20bbb447a91ea51d60a3408ea6948",
+    "src/urban_network_analysis/UNA.py": "f803a536277c178f512e08243ac12ce18bf3de46"
+  },
+  "actual_target_status": "unavailable",
+  "new_performance_results": "unavailable"
+}
