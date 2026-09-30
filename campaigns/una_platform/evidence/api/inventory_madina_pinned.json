@@ -1,0 +1,1377 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "path": "madina/__init__.py",
+      "sha256": "380d3e09d46bc8f3e7b13c0cb60fd7865364113800938459f8c1312b0aad2bd9"
+    },
+    {
+      "path": "madina/una/__init__.py",
+      "sha256": "a80766353242c8bbabc712e7300206e888a112ff86c191362575596965c7a4e8"
+    },
+    {
+      "path": "madina/una/betweenness.py",
+      "sha256": "412d0518b64b581e66d8cdfe9a0fff8f8bcda2874fe8a0b244c198d3780415b1"
+    },
+    {
+      "path": "madina/una/paths.py",
+      "sha256": "e1a9033fec71225dc73c0c06eb4da6b86d743c308dc89a8bea2467adcd41a451"
+    },
+    {
+      "path": "madina/una/tools.py",
+      "sha256": "fe28517378832cc6662c39a10b6ad2dafafb73c80cbc6a1edc24712381843a58"
+    },
+    {
+      "path": "madina/una/workflows.py",
+      "sha256": "0c653acd8494dc8bc8a00770fc4fbad355fae9770c2b51b944f13060f042311d"
+    },
+    {
+      "path": "madina/zonal/__init__.py",
+      "sha256": "5abd2f7a916bb9aa7162fff1b6fd1e7576db3fc903b3c7dcb7c4fae4738191e5"
+    },
+    {
+      "path": "madina/zonal/layer.py",
+      "sha256": "cdc0033283603e9947afa0db88225b672f1a78bd384ce7bcadd57feabe31e5d6"
+    },
+    {
+      "path": "madina/zonal/network.py",
+      "sha256": "5ac8d85a934718ed37f0ae2a10c8a934e3ae74862fdb5b69261d1cb0b80ef105"
+    },
+    {
+      "path": "madina/zonal/network_utils.py",
+      "sha256": "07647b3c3895f3f3664eb4d3759ac011cc16264024c6d7114b40b7d9790a2616"
+    },
+    {
+      "path": "madina/zonal/utils.py",
+      "sha256": "e21acd740ae43e65da7c0d69f060fdf4882963680249c287cc897043929e386c"
+    },
+    {
+      "path": "madina/zonal/zonal.py",
+      "sha256": "2491c4d3599b918407c7acf531434b83dfc2f4e676da2debb8166b6a02c69133"
+    }
+  ],
+  "records": [
+    {
+      "symbol": "madina.__init__",
+      "kind": "import_or_reexport",
+      "expression": "from .zonal import *",
+      "source": "madina/__init__.py",
+      "line": 1
+    },
+    {
+      "symbol": "madina.__init__",
+      "kind": "import_or_reexport",
+      "expression": "from .una import *",
+      "source": "madina/__init__.py",
+      "line": 2
+    },
+    {
+      "symbol": "madina.una.__init__",
+      "kind": "import_or_reexport",
+      "expression": "from .betweenness import *",
+      "source": "madina/una/__init__.py",
+      "line": 1
+    },
+    {
+      "symbol": "madina.una.__init__",
+      "kind": "import_or_reexport",
+      "expression": "from .paths import *",
+      "source": "madina/una/__init__.py",
+      "line": 2
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "import os",
+      "source": "madina/una/betweenness.py",
+      "line": 2
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "import time",
+      "source": "madina/una/betweenness.py",
+      "line": 5
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "import concurrent",
+      "source": "madina/una/betweenness.py",
+      "line": 6
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "from concurrent import futures",
+      "source": "madina/una/betweenness.py",
+      "line": 7
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "import multiprocessing as mp",
+      "source": "madina/una/betweenness.py",
+      "line": 9
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "import networkx as nx",
+      "source": "madina/una/betweenness.py",
+      "line": 11
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "import pandas as pd",
+      "source": "madina/una/betweenness.py",
+      "line": 12
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "import geopandas as gpd",
+      "source": "madina/una/betweenness.py",
+      "line": 13
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "import psutil",
+      "source": "madina/una/betweenness.py",
+      "line": 14
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "import math",
+      "source": "madina/una/betweenness.py",
+      "line": 16
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "madina/una/betweenness.py",
+      "line": 17
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "import random",
+      "source": "madina/una/betweenness.py",
+      "line": 18
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "import os",
+      "source": "madina/una/betweenness.py",
+      "line": 20
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "from sys import getsizeof",
+      "source": "madina/una/betweenness.py",
+      "line": 21
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "from ..zonal import Zonal",
+      "source": "madina/una/betweenness.py",
+      "line": 26
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "from ..zonal import Network",
+      "source": "madina/una/betweenness.py",
+      "line": 27
+    },
+    {
+      "symbol": "madina.una.betweenness",
+      "kind": "import_or_reexport",
+      "expression": "from .paths import path_generator, turn_o_scope, bfs_subgraph_generation, wandering_messenger",
+      "source": "madina/una/betweenness.py",
+      "line": 28
+    },
+    {
+      "symbol": "madina.una.betweenness.parallel_betweenness",
+      "kind": "callable",
+      "signature": "network: Network, search_radius=1000, detour_ratio=1.05, decay=True, decay_method='exponent', beta=0.003, num_cores=4, path_detour_penalty='equal', origin_weights=False, origin_weight_attribute=None, closest_destination=True, destination_weights=False, destination_weight_attribute=None, perceived_distance=False, light_graph=True, turn_penalty=False, retained_d_idxs=None, retained_paths=None, retained_distances=None, rertain_expensive_data=False",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/betweenness.py",
+      "line": 30,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.betweenness.one_betweenness_2",
+      "kind": "callable",
+      "signature": "network: Network, search_radius=1000, origins=None, detour_ratio=1.05, decay=True, beta=0.003, decay_method='exponent', path_detour_penalty='equal', origin_weights=False, origin_weight_attribute=None, closest_destination=False, destination_weights=False, destination_weight_attribute=None, perceived_distance=False, light_graph=True, turn_penalty=False, retained_d_idxs=None, retained_paths=None, retained_distances=None, rertain_expensive_data=False",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/betweenness.py",
+      "line": 167,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.betweenness.clockwiseangle_and_distance",
+      "kind": "callable",
+      "signature": "origin, point",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/betweenness.py",
+      "line": 408,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.betweenness.betweenness_exposure",
+      "kind": "callable",
+      "signature": "self: Zonal, core_index=None, origin_queue=None, search_radius=1000, detour_ratio=1.05, decay=True, beta=0.003, decay_method='exponent', path_detour_penalty='equal', closest_destination=False, elastic_weight=False, turn_penalty=False, path_exposure_attribute=None, return_path_record=False, destniation_cap=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/betweenness.py",
+      "line": 431,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.betweenness.paralell_betweenness_exposure",
+      "kind": "callable",
+      "signature": "self: Zonal, search_radius=1000, detour_ratio=1.05, decay=True, decay_method='exponent', beta=0.003, num_cores=4, path_detour_penalty='equal', closest_destination=True, elastic_weight=False, turn_penalty=False, path_exposure_attribute=None, return_path_record=False, destniation_cap=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/betweenness.py",
+      "line": 903,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.betweenness.get_origin_properties",
+      "kind": "callable",
+      "signature": "self: Zonal, search_radius=800, beta=0.001, turn_penalty=False, o_idx=None, d_idxs=None, o_graph=None, destination_weight=None, alpha=1.0",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/betweenness.py",
+      "line": 1016,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.betweenness.one_access",
+      "kind": "callable",
+      "signature": "self: Zonal, origin_queue=None, search_radius: float=None, destination_weight: str=None, alpha: float=None, beta: float=None, knn_weights: list=None, knn_plateau: int | float=None, closest_facility: bool=False, turn_penalty: bool=False, reporting: bool=False",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/betweenness.py",
+      "line": 1090,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.betweenness.parallel_access",
+      "kind": "callable",
+      "signature": "self: Zonal, search_radius: float=None, destination_weight: str=None, alpha: float=None, beta: float=None, knn_weights: list=None, knn_plateau: int | float=None, closest_facility: bool=False, turn_penalty: bool=False, num_cores: int=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/betweenness.py",
+      "line": 1182,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.paths",
+      "kind": "import_or_reexport",
+      "expression": "import math",
+      "source": "madina/una/paths.py",
+      "line": 1
+    },
+    {
+      "symbol": "madina.una.paths",
+      "kind": "import_or_reexport",
+      "expression": "from collections import deque",
+      "source": "madina/una/paths.py",
+      "line": 2
+    },
+    {
+      "symbol": "madina.una.paths",
+      "kind": "import_or_reexport",
+      "expression": "from heapq import heappush, heappop",
+      "source": "madina/una/paths.py",
+      "line": 3
+    },
+    {
+      "symbol": "madina.una.paths",
+      "kind": "import_or_reexport",
+      "expression": "from ..zonal import Network",
+      "source": "madina/una/paths.py",
+      "line": 4
+    },
+    {
+      "symbol": "madina.una.paths.path_generator",
+      "kind": "callable",
+      "signature": "network: Network, o_idx, search_radius=800, detour_ratio=1.15, turn_penalty=False",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/paths.py",
+      "line": 7,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.paths.bfs_subgraph_generation",
+      "kind": "callable",
+      "signature": "o_idx, detour_ratio=1.15, o_graph=None, d_idxs=None, o_scope=None, o_scope_paths=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/paths.py",
+      "line": 61,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.paths.bfs_paths_many_targets_iterative",
+      "kind": "callable",
+      "signature": "network: Network, o_graph, o_idx, d_idxs, distance_matrix=None, turn_penalty=False, od_scope=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/paths.py",
+      "line": 177,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.paths",
+      "kind": "import_or_reexport",
+      "expression": "import networkx as nx",
+      "source": "madina/una/paths.py",
+      "line": 265
+    },
+    {
+      "symbol": "madina.una.paths.wandering_messenger",
+      "kind": "callable",
+      "signature": "network: Network, o_graph, o_idx, d_idxs, distance_matrix=None, turn_penalty=False, od_scope=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/paths.py",
+      "line": 266,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.paths.bfs_path_edges_many_targets_iterative",
+      "kind": "callable",
+      "signature": "network: Network, o_graph, o_idx, d_idxs, distance_matrix=None, turn_penalty=False, od_scope=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/paths.py",
+      "line": 330,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.paths.turn_o_scope",
+      "kind": "callable",
+      "signature": "network: Network, o_idx, search_radius: float, detour_ratio: float, turn_penalty=True, o_graph=None, return_paths=True",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/paths.py",
+      "line": 420,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.paths.turn_penalty_value",
+      "kind": "callable",
+      "signature": "network: Network, previous_node, current_node, next_node",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/paths.py",
+      "line": 491,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.paths.angle_deviation_between_two_lines",
+      "kind": "callable",
+      "signature": "point_sequence, raw_angle=False",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/paths.py",
+      "line": 523,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.tools",
+      "kind": "import_or_reexport",
+      "expression": "import math",
+      "source": "madina/una/tools.py",
+      "line": 1
+    },
+    {
+      "symbol": "madina.una.tools",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "madina/una/tools.py",
+      "line": 2
+    },
+    {
+      "symbol": "madina.una.tools",
+      "kind": "import_or_reexport",
+      "expression": "import geopandas as gpd",
+      "source": "madina/una/tools.py",
+      "line": 3
+    },
+    {
+      "symbol": "madina.una.tools",
+      "kind": "import_or_reexport",
+      "expression": "from shapely import GeometryCollection",
+      "source": "madina/una/tools.py",
+      "line": 5
+    },
+    {
+      "symbol": "madina.una.tools",
+      "kind": "import_or_reexport",
+      "expression": "from .paths import turn_o_scope, path_generator",
+      "source": "madina/una/tools.py",
+      "line": 6
+    },
+    {
+      "symbol": "madina.una.tools",
+      "kind": "import_or_reexport",
+      "expression": "from .betweenness import paralell_betweenness_exposure, parallel_access",
+      "source": "madina/una/tools.py",
+      "line": 7
+    },
+    {
+      "symbol": "madina.una.tools",
+      "kind": "import_or_reexport",
+      "expression": "from ..zonal import Zonal",
+      "source": "madina/una/tools.py",
+      "line": 8
+    },
+    {
+      "symbol": "madina.una.tools.validate_zonal_ready",
+      "kind": "callable",
+      "signature": "zonal: Zonal",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/tools.py",
+      "line": 10,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.tools.accessibility",
+      "kind": "callable",
+      "signature": "zonal: Zonal, search_radius: float | int, destination_weight: str=None, alpha: float=1, beta: float=None, save_reach_as: str=None, save_gravity_as: str=None, knn_weights: list | str=None, knn_plateau: int | float=None, save_knn_access_as: str=None, closest_facility: bool=False, save_closest_facility_as: str=None, save_closest_facility_distance_as: str=None, turn_penalty: bool=False, num_cores: int=1",
+      "returns": "None",
+      "decorators": [],
+      "source": "madina/una/tools.py",
+      "line": 36,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.tools.service_area",
+      "kind": "callable",
+      "signature": "zonal: Zonal, search_radius: float, origin_ids: int | list=None, turn_penalty: bool=False",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/tools.py",
+      "line": 231,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.tools.alternative_paths",
+      "kind": "callable",
+      "signature": "zonal: Zonal, origin_id: int, search_radius: float | int, detour_ratio: float | int=1, turn_penalty: bool=False",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/tools.py",
+      "line": 355,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.tools.betweenness",
+      "kind": "callable",
+      "signature": "zonal: Zonal, search_radius: float, detour_ratio: float=1, decay: bool=False, decay_method: str='exponent', beta: float=0.003, num_cores: int=1, closest_destination: bool=True, elastic_weight: bool=False, knn_weight: str | list=None, knn_plateau: float | int=0, turn_penalty: bool=False, save_betweenness_as: str=None, save_reach_as: str=None, save_gravity_as: str=None, save_elastic_weight_as: str=None, keep_diagnostics: bool=False, path_exposure_attribute: str=None, save_path_exposure_as: str=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/tools.py",
+      "line": 437,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "import os",
+      "source": "madina/una/workflows.py",
+      "line": 1
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "import warnings",
+      "source": "madina/una/workflows.py",
+      "line": 2
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "import sys",
+      "source": "madina/una/workflows.py",
+      "line": 3
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "import time",
+      "source": "madina/una/workflows.py",
+      "line": 4
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "import shapely as shp",
+      "source": "madina/una/workflows.py",
+      "line": 8
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "import networkx as nx",
+      "source": "madina/una/workflows.py",
+      "line": 9
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "import geopandas as gpd",
+      "source": "madina/una/workflows.py",
+      "line": 10
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "madina/una/workflows.py",
+      "line": 11
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "import pydeck as pdk",
+      "source": "madina/una/workflows.py",
+      "line": 13
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "import pandas as pd",
+      "source": "madina/una/workflows.py",
+      "line": 14
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "import shapely.geometry as geo",
+      "source": "madina/una/workflows.py",
+      "line": 15
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "from datetime import datetime",
+      "source": "madina/una/workflows.py",
+      "line": 18
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "from pydeck.types import String",
+      "source": "madina/una/workflows.py",
+      "line": 19
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "from pathlib import Path",
+      "source": "madina/una/workflows.py",
+      "line": 20
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "from .tools import betweenness, accessibility",
+      "source": "madina/una/workflows.py",
+      "line": 21
+    },
+    {
+      "symbol": "madina.una.workflows",
+      "kind": "import_or_reexport",
+      "expression": "from ..zonal import Zonal, VERSION, RELEASE_DATE",
+      "source": "madina/una/workflows.py",
+      "line": 22
+    },
+    {
+      "symbol": "madina.una.workflows.Logger",
+      "kind": "class",
+      "source": "madina/una/workflows.py",
+      "line": 24,
+      "bases": []
+    },
+    {
+      "symbol": "madina.una.workflows.Logger.__init__",
+      "kind": "callable",
+      "signature": "self, output_folder, pairing_table",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/workflows.py",
+      "line": 25,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.workflows.Logger.log",
+      "kind": "callable",
+      "signature": "self, event: str, pairing: pd.Series=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/workflows.py",
+      "line": 42,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.workflows.Logger.pairing_end",
+      "kind": "callable",
+      "signature": "self, shaqra: Zonal, pairing: pd.Series, save_flow_map=True, save_flow_geoJSON=True, save_flow_csv=False, save_origin_geoJSON=True, save_origin_csv=False, save_diagnostics_map=False",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/workflows.py",
+      "line": 76,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.workflows.Logger.simulation_end",
+      "kind": "callable",
+      "signature": "self, shaqra: Zonal",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/workflows.py",
+      "line": 185,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.workflows.Logger.flow_map_template_1",
+      "kind": "callable",
+      "signature": "self, flow_gdf, flow_parameter, max_flow=None, dark_mode=True, file_name=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/workflows.py",
+      "line": 197,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.workflows.betweenness_flow_simulation",
+      "kind": "callable",
+      "signature": "city_name=None, data_folder=None, output_folder=None, pairings_file='pairings.csv', num_cores=8",
+      "returns": "None",
+      "decorators": [],
+      "source": "madina/una/workflows.py",
+      "line": 289,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.una.workflows.KNN_accessibility",
+      "kind": "callable",
+      "signature": "city_name=None, data_folder=None, output_folder=None, pairings_file='pairing.csv', num_cores=8",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/una/workflows.py",
+      "line": 420,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.__init__",
+      "kind": "import_or_reexport",
+      "expression": "from .zonal import *",
+      "source": "madina/zonal/__init__.py",
+      "line": 1
+    },
+    {
+      "symbol": "madina.zonal.__init__",
+      "kind": "import_or_reexport",
+      "expression": "from .layer import *",
+      "source": "madina/zonal/__init__.py",
+      "line": 2
+    },
+    {
+      "symbol": "madina.zonal.__init__",
+      "kind": "import_or_reexport",
+      "expression": "from .network import *",
+      "source": "madina/zonal/__init__.py",
+      "line": 3
+    },
+    {
+      "symbol": "madina.zonal.__init__",
+      "kind": "import_or_reexport",
+      "expression": "from .network_utils import *",
+      "source": "madina/zonal/__init__.py",
+      "line": 4
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers",
+      "kind": "class",
+      "source": "madina/zonal/layer.py",
+      "line": 2,
+      "bases": []
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__init__",
+      "kind": "callable",
+      "signature": "self, layers=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 7,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__getitem__",
+      "kind": "callable",
+      "signature": "self, item",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 18,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__setitem__",
+      "kind": "callable",
+      "signature": "self, key, value",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 32,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__str__",
+      "kind": "callable",
+      "signature": "self",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 59,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__contains__",
+      "kind": "callable",
+      "signature": "self, item",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 75,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__iter__",
+      "kind": "callable",
+      "signature": "self",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 83,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__next__",
+      "kind": "callable",
+      "signature": "self",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 86,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.add",
+      "kind": "callable",
+      "signature": "self, layer, pos=None, first=False, before: str=None, after=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 94,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.insert_at",
+      "kind": "callable",
+      "signature": "self, pos: int, layer",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 120,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.get_layer_at_pos",
+      "kind": "callable",
+      "signature": "self, pos: int",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 143,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.pos_at_label",
+      "kind": "callable",
+      "signature": "self, label",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 151,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layer",
+      "kind": "class",
+      "source": "madina/zonal/layer.py",
+      "line": 155,
+      "bases": []
+    },
+    {
+      "symbol": "madina.zonal.layer.Layer.__init__",
+      "kind": "callable",
+      "signature": "self, label: str, gdf, show: bool, original_crs: str, file_path: str, default_color=None, **kwargs",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 160,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layer.set_style",
+      "kind": "callable",
+      "signature": "self, params",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 172,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.layer.Layer.color_layer",
+      "kind": "callable",
+      "signature": "self, layer_name, color_by_attribute=None, color_method='single_color', color=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/layer.py",
+      "line": 186,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "madina/zonal/network.py",
+      "line": 1
+    },
+    {
+      "symbol": "madina.zonal.network",
+      "kind": "import_or_reexport",
+      "expression": "import networkx as nx",
+      "source": "madina/zonal/network.py",
+      "line": 2
+    },
+    {
+      "symbol": "madina.zonal.network",
+      "kind": "import_or_reexport",
+      "expression": "from geopandas import GeoDataFrame",
+      "source": "madina/zonal/network.py",
+      "line": 3
+    },
+    {
+      "symbol": "madina.zonal.network",
+      "kind": "import_or_reexport",
+      "expression": "from .layer import Layer",
+      "source": "madina/zonal/network.py",
+      "line": 4
+    },
+    {
+      "symbol": "madina.zonal.network.Network",
+      "kind": "class",
+      "source": "madina/zonal/network.py",
+      "line": 7,
+      "bases": []
+    },
+    {
+      "symbol": "madina.zonal.network.Network.__init__",
+      "kind": "callable",
+      "signature": "self, nodes: GeoDataFrame, edges: GeoDataFrame, turn_threshold_degree: float, turn_penalty_amount: float, weight_attribute=None, edge_source_layer: str=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network.py",
+      "line": 15,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network.Network.set_node_value",
+      "kind": "callable",
+      "signature": "self, idx, label, new_value",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network.py",
+      "line": 32,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network.Network.create_graph",
+      "kind": "callable",
+      "signature": "self, light_graph=False, d_graph=True, od_graph=False",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network.py",
+      "line": 39,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network.Network.visualize_graph",
+      "kind": "callable",
+      "signature": "self",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network.py",
+      "line": 87,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network.Network.add_node_to_graph",
+      "kind": "callable",
+      "signature": "self, graph: nx.Graph, node_idx",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network.py",
+      "line": 93,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network.Network.remove_node_to_graph",
+      "kind": "callable",
+      "signature": "self, graph: nx.Graph, node_idx",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network.py",
+      "line": 188,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network.Network.update_light_graph",
+      "kind": "callable",
+      "signature": "self, graph: nx.Graph, add_nodes: list=[], remove_nodes: list=[]",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network.py",
+      "line": 232,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network.Network.scan_for_intersections",
+      "kind": "callable",
+      "signature": "self, node_snapping_tolerance=1",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network.py",
+      "line": 400,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network.Network.fuse_degree_2_nodes",
+      "kind": "callable",
+      "signature": "self, tolerance_angle",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network.py",
+      "line": 403,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network.Network.network_to_layer",
+      "kind": "callable",
+      "signature": "self",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network.py",
+      "line": 406,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network_utils",
+      "kind": "import_or_reexport",
+      "expression": "from geopandas import GeoDataFrame",
+      "source": "madina/zonal/network_utils.py",
+      "line": 1
+    },
+    {
+      "symbol": "madina.zonal.network_utils",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "madina/zonal/network_utils.py",
+      "line": 2
+    },
+    {
+      "symbol": "madina.zonal.network_utils",
+      "kind": "import_or_reexport",
+      "expression": "import geopandas as gpd",
+      "source": "madina/zonal/network_utils.py",
+      "line": 3
+    },
+    {
+      "symbol": "madina.zonal.network_utils",
+      "kind": "import_or_reexport",
+      "expression": "import pandas as pd",
+      "source": "madina/zonal/network_utils.py",
+      "line": 4
+    },
+    {
+      "symbol": "madina.zonal.network_utils",
+      "kind": "import_or_reexport",
+      "expression": "import shapely.geometry as geo",
+      "source": "madina/zonal/network_utils.py",
+      "line": 5
+    },
+    {
+      "symbol": "madina.zonal.network_utils",
+      "kind": "import_or_reexport",
+      "expression": "from shapely.ops import split, snap",
+      "source": "madina/zonal/network_utils.py",
+      "line": 6
+    },
+    {
+      "symbol": "madina.zonal.network_utils.node_edge_builder",
+      "kind": "callable",
+      "signature": "geometry_gdf, weight_attribute=None, tolerance=0.0, source_layer: str=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network_utils.py",
+      "line": 10,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network_utils.vectorized_node_edge_builder",
+      "kind": "callable",
+      "signature": "point_xy",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network_utils.py",
+      "line": 80,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network_utils.GeoPandaExtractor",
+      "kind": "callable",
+      "signature": "poly_line_data",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network_utils.py",
+      "line": 143,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network_utils.tolerance_network_nodes_edges",
+      "kind": "callable",
+      "signature": "geometry_gdf, weight_attribute=None, tolerance=1.0, source_layer=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network_utils.py",
+      "line": 162,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.network_utils.efficient_node_insertion",
+      "kind": "callable",
+      "signature": "n_node_gdf: GeoDataFrame, n_edge_gdf: GeoDataFrame, source_gdf: GeoDataFrame, layer_name: str, label: str='origin', weight_attribute: str=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/network_utils.py",
+      "line": 468,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.utils",
+      "kind": "import_or_reexport",
+      "expression": "import time",
+      "source": "madina/zonal/utils.py",
+      "line": 1
+    },
+    {
+      "symbol": "madina.zonal.utils",
+      "kind": "import_or_reexport",
+      "expression": "import random",
+      "source": "madina/zonal/utils.py",
+      "line": 2
+    },
+    {
+      "symbol": "madina.zonal.utils",
+      "kind": "import_or_reexport",
+      "expression": "import warnings",
+      "source": "madina/zonal/utils.py",
+      "line": 3
+    },
+    {
+      "symbol": "madina.zonal.utils",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "madina/zonal/utils.py",
+      "line": 5
+    },
+    {
+      "symbol": "madina.zonal.utils",
+      "kind": "import_or_reexport",
+      "expression": "import pydeck as pdk",
+      "source": "madina/zonal/utils.py",
+      "line": 6
+    },
+    {
+      "symbol": "madina.zonal.utils",
+      "kind": "import_or_reexport",
+      "expression": "from geopandas import GeoDataFrame",
+      "source": "madina/zonal/utils.py",
+      "line": 8
+    },
+    {
+      "symbol": "madina.zonal.utils",
+      "kind": "import_or_reexport",
+      "expression": "from pydeck.types import String",
+      "source": "madina/zonal/utils.py",
+      "line": 9
+    },
+    {
+      "symbol": "madina.zonal.utils.prepare_geometry",
+      "kind": "callable",
+      "signature": "geometry_gdf: GeoDataFrame",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/utils.py",
+      "line": 32,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.utils.color_gdf",
+      "kind": "callable",
+      "signature": "gdf, color_by_attribute=None, color_method=None, color=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/utils.py",
+      "line": 60,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.utils.create_deckGL_map",
+      "kind": "callable",
+      "signature": "gdf_list=[], centerX=46.6725, centerY=24.7425, basemap=False, zoom=17, filename=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/utils.py",
+      "line": 117,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.utils.color_layer",
+      "kind": "callable",
+      "signature": "self, layer_name, color_by_attribute=None, color_method='single_color', color=None",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/utils.py",
+      "line": 244,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.zonal",
+      "kind": "import_or_reexport",
+      "expression": "import os",
+      "source": "madina/zonal/zonal.py",
+      "line": 2
+    },
+    {
+      "symbol": "madina.zonal.zonal",
+      "kind": "import_or_reexport",
+      "expression": "import random",
+      "source": "madina/zonal/zonal.py",
+      "line": 4
+    },
+    {
+      "symbol": "madina.zonal.zonal",
+      "kind": "import_or_reexport",
+      "expression": "import warnings",
+      "source": "madina/zonal/zonal.py",
+      "line": 5
+    },
+    {
+      "symbol": "madina.zonal.zonal",
+      "kind": "import_or_reexport",
+      "expression": "import geopandas as gpd",
+      "source": "madina/zonal/zonal.py",
+      "line": 6
+    },
+    {
+      "symbol": "madina.zonal.zonal",
+      "kind": "import_or_reexport",
+      "expression": "import pandas as pd",
+      "source": "madina/zonal/zonal.py",
+      "line": 7
+    },
+    {
+      "symbol": "madina.zonal.zonal",
+      "kind": "import_or_reexport",
+      "expression": "import pydeck as pdk",
+      "source": "madina/zonal/zonal.py",
+      "line": 8
+    },
+    {
+      "symbol": "madina.zonal.zonal",
+      "kind": "import_or_reexport",
+      "expression": "from pathlib import Path",
+      "source": "madina/zonal/zonal.py",
+      "line": 10
+    },
+    {
+      "symbol": "madina.zonal.zonal",
+      "kind": "import_or_reexport",
+      "expression": "from .network import Network",
+      "source": "madina/zonal/zonal.py",
+      "line": 11
+    },
+    {
+      "symbol": "madina.zonal.zonal",
+      "kind": "import_or_reexport",
+      "expression": "from .network_utils import node_edge_builder, _discard_redundant_edges, _split_redundant_edges, efficient_node_insertion",
+      "source": "madina/zonal/zonal.py",
+      "line": 12
+    },
+    {
+      "symbol": "madina.zonal.zonal",
+      "kind": "import_or_reexport",
+      "expression": "from .utils import prepare_geometry, color_gdf, create_deckGL_map, DEFAULT_COLORS",
+      "source": "madina/zonal/zonal.py",
+      "line": 13
+    },
+    {
+      "symbol": "madina.zonal.zonal",
+      "kind": "import_or_reexport",
+      "expression": "from .layer import Layer, Layers",
+      "source": "madina/zonal/zonal.py",
+      "line": 14
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal",
+      "kind": "class",
+      "source": "madina/zonal/zonal.py",
+      "line": 21,
+      "bases": []
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.__init__",
+      "kind": "callable",
+      "signature": "self",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/zonal.py",
+      "line": 36,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.__getitem__",
+      "kind": "callable",
+      "signature": "self, item",
+      "returns": null,
+      "decorators": [],
+      "source": "madina/zonal/zonal.py",
+      "line": 41,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.load_layer",
+      "kind": "callable",
+      "signature": "self, name: str, source: str | Path | gpd.GeoDataFrame, pos: int=None, first: bool=False, before: str=None, after: str=None",
+      "returns": "None",
+      "decorators": [],
+      "source": "madina/zonal/zonal.py",
+      "line": 44,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.create_street_network",
+      "kind": "callable",
+      "signature": "self, source_layer: str, weight_attribute: str=None, node_snapping_tolerance: int | float=0, redundant_edge_treatment: str='discard', turn_threshold_degree: int | float=45, turn_penalty_amount: int | float=30",
+      "returns": "None",
+      "decorators": [],
+      "source": "madina/zonal/zonal.py",
+      "line": 122,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.set_turn_parameters",
+      "kind": "callable",
+      "signature": "self, turn_threshold_degree: int | float, turn_penalty_amount: int | float",
+      "returns": "None",
+      "decorators": [],
+      "source": "madina/zonal/zonal.py",
+      "line": 216,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.insert_node",
+      "kind": "callable",
+      "signature": "self, layer_name: str, label: str, weight_attribute: str=None",
+      "returns": "None",
+      "decorators": [],
+      "source": "madina/zonal/zonal.py",
+      "line": 251,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.create_graph",
+      "kind": "callable",
+      "signature": "self, light_graph: bool=True, d_graph: bool=True, od_graph: bool=False",
+      "returns": "None",
+      "decorators": [],
+      "source": "madina/zonal/zonal.py",
+      "line": 318,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.describe",
+      "kind": "callable",
+      "signature": "self",
+      "returns": "None",
+      "decorators": [],
+      "source": "madina/zonal/zonal.py",
+      "line": 356,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.create_map",
+      "kind": "callable",
+      "signature": "self, layer_list: list=None, save_as: str=None, basemap: bool=False",
+      "returns": "pdk.Deck",
+      "decorators": [],
+      "source": "madina/zonal/zonal.py",
+      "line": 390,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.clear_nodes",
+      "kind": "callable",
+      "signature": "self",
+      "returns": "None",
+      "decorators": [],
+      "source": "madina/zonal/zonal.py",
+      "line": 445,
+      "body_requires_manual_semantic_review": true
+    }
+  ],
+  "complete_semantic_census": false,
+  "manual_review_required": [
+    "dynamic exports",
+    "inherited API",
+    "public data attributes",
+    "documented examples",
+    "parameter effects",
+    "unsupported stubs",
+    "return/state/error behavior"
+  ]
+}

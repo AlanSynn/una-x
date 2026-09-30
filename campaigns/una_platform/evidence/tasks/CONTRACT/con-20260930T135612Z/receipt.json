@@ -1,0 +1,23 @@
+{
+  "task": "CONTRACT",
+  "run_id": "con-20260930T135612Z",
+  "date_utc": "2026-09-30",
+  "objective": "Freeze una_legacy, madina_legacy, corrected_v1 references, canonical fold, bug registry and comparison fields before backend work.",
+  "frozen": {
+    "contract.md": "fd3babf990a1bea63b71749a0ddd968a297d31469bbdc5d9eb98a454f5425c2c",
+    "profiles.json": "f874a74e534509ae7c0ba3031b8d71a355dbdfa6233202f78b1a7f57711c710e",
+    "bug_registry.json": "3b94d1a94be87715cc8b4ecd42c09f296f0eece1bec51cabb1247569a4624097",
+    "madina_bridge.patch": "d47fbd6dc07580e10380a4dba43b5046797fb9c0fbe1abdc8bcbb6408cdc0afe"
+  },
+  "references_established": {
+    "una_legacy": "wheel 2.6.0 sha256 323c27f3...69448ac4 installed into .refs/venv_una_legacy; install identity verified (16/16 pinned files); perf_contract 24 passed/12 skipped; large_e2e collection errors recorded as HARNESS input",
+    "madina_legacy": "pinned 8b5c3bd3 + audited dependency bridge (sha256 d47fbd6d...c0afe); smoke-verified end-to-end (load_layer/create_street_network/insert_node/create_graph/accessibility/betweenness); seeded cross-process bitwise determinism verified 3x",
+    "corrected_v1": "reference pending SCIENCE; fold frozen (min(32,n) stripes, i mod L, increasing origin order, fold by stripe ID)"
+  },
+  "bug_resolution": "legacy-vs-corrected contradiction resolved per AUTHORITY: legacy reproduces pinned behavior on valid inputs incl. defects; unsafe nontermination/allocation become declared safety corrections; BUG-MADINA-BTN-STATS-NAMEERROR reproduced and registered",
+  "public_schema": "approved (contract.md section 6): ExecutionOptions/CacheOptions fields+defaults, UNA.execution, RunBatch(analysis, pairing_file=None, *, parallel=False, workers=None, execution=None), facade Zonal.execution, Settings serialization fields",
+  "limitations": [
+    "corrected_v1 has no reference until SCIENCE lands; no corrected parity claims admissible before that",
+    "num_cores>1 madina arms are not bitwise-comparable (as_completed order); recorded as profile restriction"
+  ]
+}

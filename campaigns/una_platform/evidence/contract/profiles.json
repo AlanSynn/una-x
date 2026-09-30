@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "frozen_date": "2026-09-30",
+  "profiles": {
+    "una_legacy": {
+      "source": {
+        "repo": "AlanSynn/una-x",
+        "commit": "16bf404d2cc5e776a78dc073c80405f6d186da29",
+        "src_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031"
+      },
+      "artifact": {
+        "wheel": "urban_network_analysis-2.6.0-py3-none-any.whl",
+        "sha256": "323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4",
+        "venv": ".refs/venv_una_legacy",
+        "install_identity": "all 16 pinned files match source_pins.json after install (verified 2026-09-30)"
+      }
+    },
+    "madina_legacy": {
+      "source": {
+        "repo": "City-Form-Lab/madina",
+        "commit": "8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6",
+        "src_tree": "de818b93629911743799092ff7347ed2326683af"
+      },
+      "bridge": {
+        "patch": "campaigns/una_platform/evidence/contract/madina_bridge.patch",
+        "sha256": "d47fbd6dc07580e10380a4dba43b5046797fb9c0fbe1abdc8bcbb6408cdc0afe",
+        "edits": [
+          "values.data -> np.asarray(geometry.values, dtype=object)",
+          "removed pd.Series fastpath kwarg"
+        ],
+        "policy": "dependency-only; no algorithm/order/arithmetic edits; never merged into UNA-X runtime"
+      },
+      "environment": {
+        "venv": ".refs/venv_madina_legacy",
+        "source_root": ".refs/madina_ref/src"
+      },
+      "determinism_pin": {
+        "num_cores": 1,
+        "rng": "random.seed(S) and numpy.random.seed(S) recorded per fixture",
+        "verified": "3x3 grid smoke fixture: identical betweenness byte hash across 3 separate processes"
+      }
+    },
+    "corrected_v1": {
+      "status": "reference_pending_science",
+      "fold": {
+        "stripes": "min(32, n_origins)",
+        "assignment": "origin i -> stripe i mod L",
+        "order": "increasing origin within stripe; fold increasing stripe ID"
+      },
+      "numerics": "binary64, explicit RN operation order, no unsafe fastmath, no implicit FMA; NUMERICS.md"
+    }
+  },
+  "numerical_environment": {
+    "python": "3.11.4",
+    "numpy": "2.4.6",
+    "numba": "0.67.0",
+    "scipy": "1.17.1",
+    "pandas": "3.0.6",
+    "geopandas": "1.2.0",
+    "shapely": "2.1.2",
+    "networkx": "3.6.1",
+    "scikit-learn": "1.9.1",
+    "psutil": "7.2.2",
+    "pytest": "9.1.1",
+    "cpu": "Intel Xeon Gold 6226 @ 2.70GHz, 4 effective cores (cpus 20-23)",
+    "os": "RHEL 9.6, kernel 5.14.0-570.128.1.el9_6.x86_64"
+  },
+  "comparison_fields": [
+    "dtypes/shapes/column order/index",
+    "numeric bytes incl signed-zero and NaN payloads",
+    "categorical values+order",
+    "geometry WKB+CRS",
+    "exception type+message",
+    "madina_legacy layer/network mutation state and lineage",
+    "timestamps format/order only under controlled clock"
+  ],
+  "public_schema": "approved as specified in contract.md section 6 (ExecutionOptions/CacheOptions/UNA.execution/RunBatch kwargs/compat facade control/Settings serialization)"
+}

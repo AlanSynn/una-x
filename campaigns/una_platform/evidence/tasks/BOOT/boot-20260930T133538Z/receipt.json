@@ -1,0 +1,73 @@
+{
+  "task": "BOOT",
+  "run_id": "boot-20260930T133538Z",
+  "campaign": "una-platform-2026-09",
+  "date_utc": "2026-09-30",
+  "checkout": {
+    "path": "/storage/scratch1/1/dsynn6/una-x",
+    "head_main": "cd957fd0f18d4ea7a8c72ad2f9c5855527aac94f",
+    "branch": "perf/una-platform (created from main cd957fd)",
+    "source_baseline_sha": "16bf404d2cc5e776a78dc073c80405f6d186da29",
+    "source_baseline_src_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+    "head_src_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+    "runtime_drift_16bf404_to_cd957fd": "none (packet-only commit; diff over src, benchmarks, tests, pyproject.toml, hatch_build.py, setup, examples, DESIGN.md is empty)",
+    "dirty_files_preserved": [
+      ".claude/commands/goal.md (user file, +7 lines, untouched)"
+    ],
+    "src_tree_file_count": 32,
+    "src_tree_working_digest": "3fd87e06d341a0c68eeb30d14787fe81c5844dac10f113bb1e150eafde192540"
+  },
+  "madina_reference": {
+    "repo": "City-Form-Lab/madina",
+    "sha": "8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6",
+    "access": "GitHub connector reads per SOURCE_AUDIT.md; local clone to be created read-only under evidence-adjacent isolation when MADINA tasks need it"
+  },
+  "oracles": {
+    "una_legacy": "baseline src/urban_network_analysis at 16bf404 (src tree 3c59bb0d), executed in the recorded numerical environment; never modified to fit new outputs",
+    "madina_legacy": "pinned Madina 8b5c3bd3; minimal audited dependency bridge for local execution only",
+    "corrected_v1": "to be constructed under CONTRACT from independently reviewed scalar/graph oracles"
+  },
+  "numerical_environment": {
+    "python": "3.11.4",
+    "interpreter": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python",
+    "packages": {
+      "numpy": "2.4.6",
+      "numba": "0.67.0",
+      "scipy": "1.17.1",
+      "pandas": "3.0.6",
+      "geopandas": "1.2.0",
+      "shapely": "2.1.2",
+      "networkx": "3.6.1",
+      "scikit-learn": "1.9.1",
+      "psutil": "7.2.2",
+      "pytest": "9.1.1"
+    },
+    "note": "Prior campaign environments purged at closeout; stack recreated 2026-09-30 into existing bare 'alan' micromamba env and frozen as the recorded numerical environment for una_legacy reference execution. Versions will be pinned in all evidence receipts."
+  },
+  "machine": {
+    "host": "atl1-1-02-003-4-2.pace.gatech.edu",
+    "os": "Red Hat Enterprise Linux 9.6 (kernel 5.14.0-570.128.1.el9_6.x86_64)",
+    "cpu_model": "Intel(R) Xeon(R) Gold 6226 CPU @ 2.70GHz",
+    "sockets": 2,
+    "cores_total_node": 24,
+    "cpus_allowed_list": "20-23",
+    "nproc_effective": 4,
+    "ram_gib": 376,
+    "local_gpu": "none (nvidia-smi absent; GPU work goes to PACE-Phoenix via pace skill per campaign instructions)",
+    "disk": "Lustre /storage/scratch1, 3.3P free"
+  },
+  "worktrees_and_remotes": {
+    "worktrees": [
+      {
+        "path": "/storage/scratch1/1/dsynn6/una-x",
+        "branch": "perf/una-platform",
+        "role": "integration root (main session)"
+      }
+    ],
+    "remotes": {
+      "origin": "git@github.com:AlanSynn/una-x.git"
+    },
+    "budget": "CPU: 4 effective cores; RAM cap: use <=64 GiB for any single run unless recorded; disk: effectively unbounded; device: PACE-Phoenix GPU only via pace skill, one lease at a time"
+  },
+  "historical_evidence": "untouched; campaigns/history/ and campaigns/una_platform/evidence/ pre-existing files unmodified"
+}

@@ -1,0 +1,31 @@
+{
+  "run_id": "inv-20260930T134302Z",
+  "checks": [
+    {
+      "name": "pinned_source_identity",
+      "result": "passed",
+      "detail": "all 12 madina file hashes + src tree hash match source_pins.json"
+    },
+    {
+      "name": "census_completeness",
+      "result": "passed",
+      "detail": "every public symbol of both trees enumerated (76 madina / 112 una); 18 seed families expanded with signatures+defaults+semantic notes"
+    },
+    {
+      "name": "seed_untouched",
+      "result": "passed",
+      "detail": "API_PARITY.json unmodified (packet digest enforced by validate_packet.py)"
+    },
+    {
+      "name": "stub_separation",
+      "result": "passed",
+      "detail": "NotImplementedError stubs recorded as unsupported, excluded from parity claims"
+    },
+    {
+      "name": "facade_shim_separate",
+      "result": "recorded",
+      "detail": "both surfaces enumerated as distinct required_checks"
+    }
+  ],
+  "receipt_path": "campaigns/una_platform/evidence/tasks/INVENTORY/inv-20260930T134302Z/receipt.json"
+}

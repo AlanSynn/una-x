@@ -1,0 +1,2414 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "path": "urban_network_analysis/Engines/Accessibility.py",
+      "sha256": "fa3e550b0cd51076a8323b7e45facc395ebf6f2f6816565d8d5d7cb7595c90e6"
+    },
+    {
+      "path": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "sha256": "bfd65ab6609ad133dd12b25d92f80d237bdd819e66ac9f4ebed63630848e1400"
+    },
+    {
+      "path": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "sha256": "a13d738541e1a303d5d76ce98f57ab9f9b242baaba91a04b0b5d9b2d4af18c78"
+    },
+    {
+      "path": "urban_network_analysis/Engines/AggregateFlow.py",
+      "sha256": "1f3cf4d2725320569c1b19bf339a39d0bf013d1cb7b6f8e5d72526a77531797c"
+    },
+    {
+      "path": "urban_network_analysis/Engines/Base.py",
+      "sha256": "223d69081fcbf75da3c152fbceaee20f3216efcd1121f8ba23b58fe4ad4cc65c"
+    },
+    {
+      "path": "urban_network_analysis/Engines/Flow.py",
+      "sha256": "388c14cc2cfc2fbd9960bab70f7067689cca275bb82b693e79aa1ed9ea69d193"
+    },
+    {
+      "path": "urban_network_analysis/Engines/__init__.py",
+      "sha256": "52ae2189db1fe776ef5f4e3a4845d23cb5c6da841261ac35c69fe1bf2449cada"
+    },
+    {
+      "path": "urban_network_analysis/Engines/_betweenness_numba.py",
+      "sha256": "66b5981e8234f4e54bfac31c03e3e2ec4cc0f25f41f6f03f83cea9d81af1fb0e"
+    },
+    {
+      "path": "urban_network_analysis/Engines/_large_access_scratch.py",
+      "sha256": "a9679b653e6c55e5b88ccbdc79c5576aec1735afdeb994b72d850a2d8579a92b"
+    },
+    {
+      "path": "urban_network_analysis/Engines/_large_flow_workspace.py",
+      "sha256": "646cc23da50c5ae3fad1a2fd540c1bda7b797615d1904ad16c0cb17d3a13d390"
+    },
+    {
+      "path": "urban_network_analysis/Engines/_ordered_csr.py",
+      "sha256": "822e49279243e37e4d571ab2bb7e93ef69bcda8cdecee001e500ca47e6da2b2e"
+    },
+    {
+      "path": "urban_network_analysis/Logger.py",
+      "sha256": "5abdb7e82cc044bac70dab233b5df73338027dab43e0626981c838aef8f5ebf0"
+    },
+    {
+      "path": "urban_network_analysis/Settings.py",
+      "sha256": "f882e4370a0d00484a7ec82911a9cd50c177af5d560e61ab97c99854551a9c79"
+    },
+    {
+      "path": "urban_network_analysis/Topology.py",
+      "sha256": "0821bc74b47ffa14dd6645a6204e7a7d6a01ffc69a90629b60772fef4097b809"
+    },
+    {
+      "path": "urban_network_analysis/UNA.py",
+      "sha256": "55e58b018c7c20a3062f360d1c85d167f11d136d57ecb0e6e03777bc3bd620c9"
+    },
+    {
+      "path": "urban_network_analysis/__init__.py",
+      "sha256": "077530be053f1e1d3eb918fce02d6f1d0fbcb11dd9577329156c05bb742a0123"
+    }
+  ],
+  "records": [
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from __future__ import annotations",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 3
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from cProfile import label",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 4
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import os",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 5
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import math",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 7
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import sys",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 9
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from pathlib import Path",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 10
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import time",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 11
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import psutil",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 13
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import heapq",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 14
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import shapely",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 15
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from ast import Tuple",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 19
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from heapq import heappush, heappop",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 20
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from typing import Dict, Self, TypeAlias",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 22
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from collections.abc import Collection, Callable",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 23
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from concurrent.futures import ThreadPoolExecutor",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 25
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from shapely.strtree import STRtree",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 26
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import networkx as nx",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 28
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import concurrent.futures as fr",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 29
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import multiprocessing as mp",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 30
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import geopandas as gpd",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 31
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 32
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import pandas as pd",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 33
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "import numba as nb",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 34
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from ..Logger import Logger",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 36
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from ..Topology import Topology, Network, AccessPoints",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 37
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from .Base import Base",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 38
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from ._ordered_csr import _try_build_ordered_csr",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 39
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility",
+      "kind": "import_or_reexport",
+      "expression": "from ._large_access_scratch import _a1_scope_admits, _a1_scope_search, _a3_scope_search_tailless, _a3_tail_admits",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 40
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.reach_gravity_knn_access",
+      "kind": "callable",
+      "signature": "d_distance, d_weights, cutoff, gravity_beta, gravity_plateau, gravity_logistic_midpoint, knn_gravity_plateau, knn_weights, knn_gravity_beta, knn_decay, knn_gravity_logistic_midpoint, gravity_growth_rate, knn_gravity_growth_rate",
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ],
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 68,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.compact_vector_node_view_scope",
+      "kind": "callable",
+      "signature": "o_terminal_idxs, o_terminal_weights, adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, cutoff, d_count",
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ],
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 116,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.adjust_destination_distances",
+      "kind": "callable",
+      "signature": "scope_weights, d_terminal_idxs, d_terminal_weights, d_count",
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ],
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 178,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.od_compact_vector_node_view_scope",
+      "kind": "callable",
+      "signature": "o_terminal_idxs, o_terminal_weights, adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, cutoff, d_count, d_terminal_idxs, d_terminal_weights",
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=True, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ],
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 213,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.integrated_scope_access",
+      "kind": "callable",
+      "signature": "o_terminal_idxs, o_terminal_weights, adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, d_terminal_idxs, d_terminal_weights, d_weights, gravity_beta, gravity_plateau, gravity_logistic_midpoint, gravity_growth_rate, knn_decay, knn_weights, cutoff",
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=True, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ],
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 322,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility",
+      "kind": "class",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 502,
+      "bases": [
+        "Base"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility.CompactNodeView",
+      "kind": "class",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 517,
+      "bases": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility.CompactNodeView.__init__",
+      "kind": "callable",
+      "signature": "self, dtype=None, max_error=None",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 520,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility.CompactNodeView.o_scope",
+      "kind": "callable",
+      "signature": "self, o_idx, search_radius",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 549,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility.CompactNodeView.o_access",
+      "kind": "callable",
+      "signature": "self, o_idx, settings, d_weights",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 564,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility.MinimalElementList",
+      "kind": "class",
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 588,
+      "bases": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility.MinimalElementList.__init__",
+      "kind": "callable",
+      "signature": "self, weights",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 591,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility.__init__",
+      "kind": "callable",
+      "signature": "self, topology",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 609,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility.Centrality",
+      "kind": "callable",
+      "signature": "self, settings: Settings",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 748,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility.OD_Matrix",
+      "kind": "callable",
+      "signature": "self, search_radius: float=1000, pairwise: bool=False",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Accessibility.py",
+      "line": 804,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from __future__ import annotations",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 2
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from cProfile import label",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 3
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import os",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 4
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import math",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 6
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import sys",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 8
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from pathlib import Path",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 9
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import time",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 10
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import psutil",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 12
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import heapq",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 13
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import shapely",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 14
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from ast import Tuple",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 18
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from heapq import heappush, heappop",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 19
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from typing import Dict, Self, TypeAlias",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 21
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from collections.abc import Collection, Callable",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 22
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from concurrent.futures import ThreadPoolExecutor",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 24
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from shapely.strtree import STRtree",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 25
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import networkx as nx",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 27
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import concurrent.futures as fr",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 28
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import multiprocessing as mp",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 29
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import geopandas as gpd",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 30
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 31
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import pandas as pd",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 32
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "import numba as nb",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 33
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from ..Logger import Logger",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 35
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from ..Topology import Topology, Network, AccessPoints",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 36
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from .Base import Base",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 37
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from ._ordered_csr import _try_build_ordered_csr",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 38
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation",
+      "kind": "import_or_reexport",
+      "expression": "from ._large_access_scratch import _a1_scope_admits, _a1_scope_search, _a3_scope_search_tailless, _a3_tail_admits",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 39
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.reach_gravity_knn_access",
+      "kind": "callable",
+      "signature": "d_distance, d_weights, cutoff, gravity_beta, gravity_plateau, gravity_logistic_midpoint, knn_gravity_plateau, knn_weights, knn_gravity_beta, knn_decay, knn_gravity_logistic_midpoint, gravity_growth_rate, knn_gravity_growth_rate",
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ],
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 67,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.compact_vector_node_view_scope",
+      "kind": "callable",
+      "signature": "o_terminal_idxs, o_terminal_weights, adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, cutoff, d_count",
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ],
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 112,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.adjust_destination_distances",
+      "kind": "callable",
+      "signature": "scope_weights, d_terminal_idxs, d_terminal_weights, d_count",
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ],
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 174,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.od_compact_vector_node_view_scope",
+      "kind": "callable",
+      "signature": "o_terminal_idxs, o_terminal_weights, adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, cutoff, d_count, d_terminal_idxs, d_terminal_weights",
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=True, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ],
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 209,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.integrated_scope_access",
+      "kind": "callable",
+      "signature": "o_terminal_idxs, o_terminal_weights, adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, d_terminal_idxs, d_terminal_weights, d_weights, gravity_beta, gravity_plateau, gravity_logistic_midpoint, gravity_growth_rate, knn_decay, knn_weights, cutoff",
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=True, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ],
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 318,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation",
+      "kind": "class",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 485,
+      "bases": [
+        "Base"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation.CompactNodeView",
+      "kind": "class",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 510,
+      "bases": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation.CompactNodeView.__init__",
+      "kind": "callable",
+      "signature": "self, dtype=None, max_error=None",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 513,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation.CompactNodeView.o_scope",
+      "kind": "callable",
+      "signature": "self, o_idx, search_radius",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 534,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation.CompactNodeView.o_access",
+      "kind": "callable",
+      "signature": "self, o_idx, settings, d_weights",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 549,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation.MinimalElementList",
+      "kind": "class",
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 571,
+      "bases": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation.MinimalElementList.__init__",
+      "kind": "callable",
+      "signature": "self, weights",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 574,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation.__init__",
+      "kind": "callable",
+      "signature": "self, topology, settings=None",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 594,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation.Centrality",
+      "kind": "callable",
+      "signature": "self, settings",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 830,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation.OD_Matrix",
+      "kind": "callable",
+      "signature": "self, search_radius: float=1000, pairwise: bool=False",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AccessibilityWElevation.py",
+      "line": 873,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "from __future__ import annotations",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 1
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "import copy",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 2
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "import os",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 3
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "import sys",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 4
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "import math",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 5
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "import heapq",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 6
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "from concurrent.futures import ThreadPoolExecutor, as_completed",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 7
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "from pathlib import Path",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 9
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 11
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "import pandas as pd",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 12
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "from ..Logger import Logger",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 91
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "from ..Topology import Topology, Network, AccessPoints",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 92
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns",
+      "kind": "import_or_reexport",
+      "expression": "from .Base import Base",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 93
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns.AccessibilityWTurns",
+      "kind": "class",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 96,
+      "bases": [
+        "Base"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns.AccessibilityWTurns.StateGraph",
+      "kind": "class",
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 104,
+      "bases": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns.AccessibilityWTurns.StateGraph.__init__",
+      "kind": "callable",
+      "signature": "self",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 107,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns.AccessibilityWTurns.__init__",
+      "kind": "callable",
+      "signature": "self, topology, settings=None, use_cluster_splitting: bool=True",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 117,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns.AccessibilityWTurns.Centrality",
+      "kind": "callable",
+      "signature": "self, settings, show_progress=None",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 559,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns.AccessibilityWTurns.OD_Matrix",
+      "kind": "callable",
+      "signature": "self, search_radius: float=1000, pairwise: bool=False",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AccessibilityWTurns.py",
+      "line": 636,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "from __future__ import annotations",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 105
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "import math",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 107
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "import time",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 108
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "import threading",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 109
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "import concurrent.futures",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 110
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "import networkx as nx",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 112
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 113
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "import numba as nb",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 114
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "from scipy.sparse import csr_matrix as _scipy_csr",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 115
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "from scipy.sparse.csgraph import dijkstra as _scipy_dijkstra",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 116
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "from ..Settings import Settings",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 118
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "from ..Topology import Topology",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 119
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "from .Base import Base",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 120
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "from . import _betweenness_numba as _bnumba",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 121
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow",
+      "kind": "import_or_reexport",
+      "expression": "from . import _large_flow_workspace as _lfws",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 122
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow.AggregateFlow",
+      "kind": "class",
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 743,
+      "bases": [
+        "Base"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow.AggregateFlow.__init__",
+      "kind": "callable",
+      "signature": "self, topology: Topology",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 776,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow.AggregateFlow.Centrality",
+      "kind": "callable",
+      "signature": "self, settings",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/AggregateFlow.py",
+      "line": 1051,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base",
+      "kind": "import_or_reexport",
+      "expression": "from __future__ import annotations",
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 2
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base",
+      "kind": "import_or_reexport",
+      "expression": "import os",
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 3
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 4
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base",
+      "kind": "import_or_reexport",
+      "expression": "import pandas as pd",
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 5
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base",
+      "kind": "import_or_reexport",
+      "expression": "import geopandas as gpd",
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 6
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base",
+      "kind": "import_or_reexport",
+      "expression": "from ..Logger import Logger",
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 8
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base",
+      "kind": "import_or_reexport",
+      "expression": "from ..Topology import Topology",
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 9
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base",
+      "kind": "import_or_reexport",
+      "expression": "from ..Settings import Settings",
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 10
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.resolve_output_folder",
+      "kind": "callable",
+      "signature": "settings: Settings, folder_prefix: str=''",
+      "returns": "str",
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 23,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.write_gdf_outputs",
+      "kind": "callable",
+      "signature": "gdf, settings: Settings, output_folder: str, file_name: str, logger, label: str, desc: str='', write_feather: bool=True, write_csv: bool=True, write_geojson: bool=True, csv_drop_geometry: bool=True",
+      "returns": "bool",
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 51,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base",
+      "kind": "class",
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 99,
+      "bases": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base.__init__",
+      "kind": "callable",
+      "signature": "self, topology",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 122,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base.UpdateToppology",
+      "kind": "callable",
+      "signature": "self, topology: Topology",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 130,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base.Centrality",
+      "kind": "callable",
+      "signature": "self, settings: Settings",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 134,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base.ExportAccessibilityResults",
+      "kind": "callable",
+      "signature": "self, settings: Settings, folder_prefix: str='', file_name: str=''",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 137,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base.ExportODM",
+      "kind": "callable",
+      "signature": "self, settings: Settings, folder_prefix: str, file_name: str='ODM', format: str='Sqlite', speed: float=5.0",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 206,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base.ExportFlowResult",
+      "kind": "callable",
+      "signature": "self, settings, folder_prefix='', file_name='flow'",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Base.py",
+      "line": 289,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "from __future__ import annotations",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 36
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "import math",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 38
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "import os",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 39
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "import sys",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 40
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "import threading",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 41
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "import time",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 42
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "from concurrent.futures import ThreadPoolExecutor, as_completed",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 43
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "from pathlib import Path",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 44
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "import geopandas as gpd",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 46
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "import networkx as nx",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 47
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 48
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "from ..Logger import Logger",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 76
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "from ..Topology import Topology",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 77
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "from ..Settings import Settings",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 78
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "from .Base import Base",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 79
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow",
+      "kind": "import_or_reexport",
+      "expression": "from . import _betweenness_numba as _bnumba",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 80
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow.Flow",
+      "kind": "class",
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 871,
+      "bases": [
+        "Base"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow.Flow.__init__",
+      "kind": "callable",
+      "signature": "self, topology: Topology",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 907,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow.Flow.Centrality",
+      "kind": "callable",
+      "signature": "self, settings: Settings",
+      "returns": "dict",
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/Flow.py",
+      "line": 1912,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.__init__.__all__",
+      "kind": "export_declaration",
+      "expression": "__all__ = ['Base', 'Accessibility', 'AccessibilityWElevation', 'AccessibilityWTurns', 'Flow', 'AggregateFlow']",
+      "source": "urban_network_analysis/Engines/__init__.py",
+      "line": 3
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._betweenness_numba",
+      "kind": "import_or_reexport",
+      "expression": "from __future__ import annotations",
+      "source": "urban_network_analysis/Engines/_betweenness_numba.py",
+      "line": 20
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._betweenness_numba",
+      "kind": "import_or_reexport",
+      "expression": "import math",
+      "source": "urban_network_analysis/Engines/_betweenness_numba.py",
+      "line": 22
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._betweenness_numba",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "urban_network_analysis/Engines/_betweenness_numba.py",
+      "line": 24
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._betweenness_numba.build_csr_from_digraph",
+      "kind": "callable",
+      "signature": "G, n_total_nodes: int",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/_betweenness_numba.py",
+      "line": 37,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._large_access_scratch",
+      "kind": "import_or_reexport",
+      "expression": "from heapq import heappush, heappop",
+      "source": "urban_network_analysis/Engines/_large_access_scratch.py",
+      "line": 31
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._large_access_scratch",
+      "kind": "import_or_reexport",
+      "expression": "import numba as nb",
+      "source": "urban_network_analysis/Engines/_large_access_scratch.py",
+      "line": 33
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._large_access_scratch",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "urban_network_analysis/Engines/_large_access_scratch.py",
+      "line": 34
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._large_access_scratch",
+      "kind": "import_or_reexport",
+      "expression": "from numba.extending import overload",
+      "source": "urban_network_analysis/Engines/_large_access_scratch.py",
+      "line": 35
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._large_flow_workspace.select_chunk",
+      "kind": "callable",
+      "signature": "v_prime, remaining, dist_itemsize, pred_itemsize, mask_itemsize, fixed_live_base, retained_parts_bytes, row_temporaries, source_index_cost, margin_bytes, cap_bytes",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Engines/_large_flow_workspace.py",
+      "line": 54,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._ordered_csr",
+      "kind": "import_or_reexport",
+      "expression": "from __future__ import annotations",
+      "source": "urban_network_analysis/Engines/_ordered_csr.py",
+      "line": 6
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._ordered_csr",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "urban_network_analysis/Engines/_ordered_csr.py",
+      "line": 8
+    },
+    {
+      "symbol": "urban_network_analysis.Logger",
+      "kind": "import_or_reexport",
+      "expression": "import time",
+      "source": "urban_network_analysis/Logger.py",
+      "line": 1
+    },
+    {
+      "symbol": "urban_network_analysis.Logger",
+      "kind": "import_or_reexport",
+      "expression": "import sys",
+      "source": "urban_network_analysis/Logger.py",
+      "line": 2
+    },
+    {
+      "symbol": "urban_network_analysis.Logger.Logger",
+      "kind": "class",
+      "source": "urban_network_analysis/Logger.py",
+      "line": 5,
+      "bases": []
+    },
+    {
+      "symbol": "urban_network_analysis.Logger.Logger.__init__",
+      "kind": "callable",
+      "signature": "self, verbosity: int=1",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/Logger.py",
+      "line": 16,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Logger.Logger.log",
+      "kind": "callable",
+      "signature": "self, event: str, details: str='', v: int=0",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Logger.py",
+      "line": 26,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Logger.Logger.warn",
+      "kind": "callable",
+      "signature": "self, warning_text",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Logger.py",
+      "line": 56,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Settings",
+      "kind": "import_or_reexport",
+      "expression": "from dataclasses import dataclass, asdict, field",
+      "source": "urban_network_analysis/Settings.py",
+      "line": 3
+    },
+    {
+      "symbol": "urban_network_analysis.Settings",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "urban_network_analysis/Settings.py",
+      "line": 4
+    },
+    {
+      "symbol": "urban_network_analysis.Settings",
+      "kind": "import_or_reexport",
+      "expression": "import json",
+      "source": "urban_network_analysis/Settings.py",
+      "line": 5
+    },
+    {
+      "symbol": "urban_network_analysis.Settings",
+      "kind": "import_or_reexport",
+      "expression": "import re",
+      "source": "urban_network_analysis/Settings.py",
+      "line": 6
+    },
+    {
+      "symbol": "urban_network_analysis.Settings",
+      "kind": "import_or_reexport",
+      "expression": "import math",
+      "source": "urban_network_analysis/Settings.py",
+      "line": 7
+    },
+    {
+      "symbol": "urban_network_analysis.Settings",
+      "kind": "import_or_reexport",
+      "expression": "from pathlib import Path",
+      "source": "urban_network_analysis/Settings.py",
+      "line": 8
+    },
+    {
+      "symbol": "urban_network_analysis.Settings",
+      "kind": "import_or_reexport",
+      "expression": "import os",
+      "source": "urban_network_analysis/Settings.py",
+      "line": 9
+    },
+    {
+      "symbol": "urban_network_analysis.Settings",
+      "kind": "import_or_reexport",
+      "expression": "from typing import Literal",
+      "source": "urban_network_analysis/Settings.py",
+      "line": 10
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings",
+      "kind": "class",
+      "source": "urban_network_analysis/Settings.py",
+      "line": 27,
+      "bases": []
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.__post_init__",
+      "kind": "callable",
+      "signature": "self",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Settings.py",
+      "line": 313,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.ApplyRow",
+      "kind": "callable",
+      "signature": "self, row: dict",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/Settings.py",
+      "line": 320,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.Load",
+      "kind": "callable",
+      "signature": "self, file_path: str",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Settings.py",
+      "line": 371,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.Save",
+      "kind": "callable",
+      "signature": "self, file_path: str",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Settings.py",
+      "line": 401,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.Validation",
+      "kind": "callable",
+      "signature": "self",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Settings.py",
+      "line": 409,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.Reset",
+      "kind": "callable",
+      "signature": "self",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Settings.py",
+      "line": 587,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.ToDict",
+      "kind": "callable",
+      "signature": "self, compact: bool=True",
+      "returns": "dict",
+      "decorators": [],
+      "source": "urban_network_analysis/Settings.py",
+      "line": 592,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "from __future__ import annotations",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 2
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "from cProfile import label",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 3
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import os",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 4
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import math",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 6
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import sys",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 8
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import time",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 9
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import psutil",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 11
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import heapq",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 12
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import shapely",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 13
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "from ast import Tuple",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 17
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "from heapq import heappush, heappop",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 18
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "from pathlib import Path",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 20
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "from typing import Dict, Self, TypeAlias",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 21
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "from collections.abc import Collection, Callable",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 22
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "from sklearn.cluster import KMeans",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 23
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "from concurrent.futures import ThreadPoolExecutor",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 24
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "from shapely.strtree import STRtree",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 25
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "from shapely.geometry import Point, LineString",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 26
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import networkx as nx",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 28
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import concurrent.futures as fr",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 29
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import multiprocessing as mp",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 30
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import geopandas as gpd",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 31
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 32
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import pandas as pd",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 33
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import numba as nb",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 34
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "import time",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 35
+    },
+    {
+      "symbol": "urban_network_analysis.Topology",
+      "kind": "import_or_reexport",
+      "expression": "from .Logger import Logger",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 38
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology",
+      "kind": "class",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 43,
+      "bases": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.__init__",
+      "kind": "callable",
+      "signature": "self, verbosity: int=1, num_threads: int=None",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 92,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.AddNetwork",
+      "kind": "callable",
+      "signature": "self, settings: Settings",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 103,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.AddOrigins",
+      "kind": "callable",
+      "signature": "self, settings: Settings",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 195,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.AddDestinations",
+      "kind": "callable",
+      "signature": "self, settings: Settings",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 216,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.AddObservers",
+      "kind": "callable",
+      "signature": "self, settings: Settings",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 235,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.AddObstacles",
+      "kind": "callable",
+      "signature": "self, settings: Settings",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 291,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.get_obstacle_arc_penalties",
+      "kind": "callable",
+      "signature": "self",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 420,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.get_partial_edge_corrections",
+      "kind": "callable",
+      "signature": "self, access_points, for_origins: bool=False",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 439,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.BuildClusters",
+      "kind": "callable",
+      "signature": "self, n_clusters: int=10, search_radius: float=100, random_state: int=42, cluster_concave_ratio: float=0.23",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 530,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.BuildTurnPenalties",
+      "kind": "callable",
+      "signature": "self, turn_angle_threshold: float=45.0, turn_penalty: float=32.0, store_zero_penalties: bool=False",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 614,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.BuildAccessPoints",
+      "kind": "callable",
+      "signature": "self, source_file: str, cost_attribute: str='Count', default_cost: float=1, uid_attribute: str=None, label: str='Access points'",
+      "returns": "AccessPoints",
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 629,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.Evaluate",
+      "kind": "callable",
+      "signature": "self, raise_on_error: bool=False",
+      "returns": "dict",
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 809,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.ExportNetworkNodes",
+      "kind": "callable",
+      "signature": "self, output_file: str",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 939,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.ExportNetworkNodesGradient",
+      "kind": "callable",
+      "signature": "self, output_file: str",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 952,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.ExportNetworkLinks",
+      "kind": "callable",
+      "signature": "self, output_file: str",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 1022,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.ExportNetwork",
+      "kind": "callable",
+      "signature": "self, output_file: str, geometry_column: str='geometry', keep_z: bool=False, connected: bool=False, export_filtered_edges: bool=False",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 1034,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.ExportClusters",
+      "kind": "callable",
+      "signature": "self, output_folder: str",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 1040,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network",
+      "kind": "class",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 1110,
+      "bases": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network.__init__",
+      "kind": "callable",
+      "signature": "self, logger",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 1147,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network.BuildTopology",
+      "kind": "callable",
+      "signature": "self, discard_redundant_edges: bool=False, precision: int=6",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 1152,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network.BuildTopologyWElevation",
+      "kind": "callable",
+      "signature": "self, discard_redundant_edges: bool=False, use_elevation: bool=False, elevation_coeficent: float=1.0, precision: int=6, load_nodes: bool=False",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 1231,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network.BuildTurnPenalties",
+      "kind": "callable",
+      "signature": "self, turn_angle_threshold: float=45.0, turn_penalty: float=32.0, store_zero_penalties: bool=False",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 1370,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network.ExportClusters",
+      "kind": "callable",
+      "signature": "self, output_file: str",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 1515,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network.ExportNetwork",
+      "kind": "callable",
+      "signature": "self, output_file: str, geometry_type: str='geometry', keep_z: bool=False, connected: bool=False, export_filtered_edges: bool=False",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 1532,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.AccessPoints",
+      "kind": "class",
+      "source": "urban_network_analysis/Topology.py",
+      "line": 2051,
+      "bases": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.AccessPoints.__init__",
+      "kind": "callable",
+      "signature": "self, logger",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 2081,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.AccessPoints.xy",
+      "kind": "callable",
+      "signature": "self",
+      "returns": "np.ndarray",
+      "decorators": [
+        "property"
+      ],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 2100,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.AccessPoints.ExportConnections",
+      "kind": "callable",
+      "signature": "self, output_file: str",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 2105,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.AccessPoints.ExportClusters",
+      "kind": "callable",
+      "signature": "self, output_file: str",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/Topology.py",
+      "line": 2127,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "import numpy as np",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 1
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "import pandas as pd",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 2
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "import geopandas as gpd",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 3
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "from shapely.geometry import Point",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 4
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "from .Topology import Topology",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 6
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "from .Settings import Settings, _json_dumps",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 7
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "from .Logger import Logger",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 8
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "from .Engines.Flow import Flow",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 9
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "from .Engines.AggregateFlow import AggregateFlow",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 10
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "from .Engines.AccessibilityWElevation import AccessibilityWElevation",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 11
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "from .Engines.Accessibility import Accessibility",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 12
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "from .Engines.AccessibilityWTurns import AccessibilityWTurns",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 13
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "from .Engines.Base import resolve_output_folder, write_gdf_outputs",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 14
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "import os",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 17
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "import json",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 18
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "import copy",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 19
+    },
+    {
+      "symbol": "urban_network_analysis.UNA",
+      "kind": "import_or_reexport",
+      "expression": "import multiprocessing as mp",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 20
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA",
+      "kind": "class",
+      "source": "urban_network_analysis/UNA.py",
+      "line": 22,
+      "bases": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.__init__",
+      "kind": "callable",
+      "signature": "self, verbosity: int=1",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 42,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.PrintSettings",
+      "kind": "callable",
+      "signature": "self",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 61,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.LoadSettings",
+      "kind": "callable",
+      "signature": "self, file_path: str=None",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 70,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.SaveSettings",
+      "kind": "callable",
+      "signature": "self, file_path: str=None",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 79,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.DataValidation",
+      "kind": "callable",
+      "signature": "self",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 83,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.RunBatch",
+      "kind": "callable",
+      "signature": "self, analysis: str, pairing_file: str=None",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 100,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.RunAccessibility",
+      "kind": "callable",
+      "signature": "self",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 193,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.RunODM",
+      "kind": "callable",
+      "signature": "self, format: str='Sqlite', speed: float=5.0, file_name: str=None",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 385,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.RunFlow",
+      "kind": "callable",
+      "signature": "self",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 449,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.ConvertProject_csv_to_json",
+      "kind": "callable",
+      "signature": "self, csv_file: str, json_file: str=None, compact: bool=True",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 518,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.SaveSettingsToProject",
+      "kind": "callable",
+      "signature": "self",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 562,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.ClearProject",
+      "kind": "callable",
+      "signature": "self",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 565,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.ExportProjectAsJSON",
+      "kind": "callable",
+      "signature": "self, folder: str=None, file_name: str='project', compact: bool=True",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 570,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.ExportProjectAsCSV",
+      "kind": "callable",
+      "signature": "self, file_name: str='project'",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 595,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.ConvertGeoJson_to_Feather",
+      "kind": "callable",
+      "signature": "self, geojson_file, feather_file",
+      "returns": null,
+      "decorators": [],
+      "source": "urban_network_analysis/UNA.py",
+      "line": 629,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.__init__.about",
+      "kind": "callable",
+      "signature": "",
+      "returns": "None",
+      "decorators": [],
+      "source": "urban_network_analysis/__init__.py",
+      "line": 49,
+      "body_requires_manual_semantic_review": true
+    },
+    {
+      "symbol": "urban_network_analysis.__init__",
+      "kind": "import_or_reexport",
+      "expression": "from .UNA import UNA",
+      "source": "urban_network_analysis/__init__.py",
+      "line": 57
+    },
+    {
+      "symbol": "urban_network_analysis.__init__",
+      "kind": "import_or_reexport",
+      "expression": "from .Settings import Settings",
+      "source": "urban_network_analysis/__init__.py",
+      "line": 58
+    },
+    {
+      "symbol": "urban_network_analysis.__init__",
+      "kind": "import_or_reexport",
+      "expression": "from .Topology import Topology",
+      "source": "urban_network_analysis/__init__.py",
+      "line": 59
+    },
+    {
+      "symbol": "urban_network_analysis.__init__.__all__",
+      "kind": "export_declaration",
+      "expression": "__all__ = ['UNA', 'Settings', 'Topology', '__version__', 'about']",
+      "source": "urban_network_analysis/__init__.py",
+      "line": 61
+    }
+  ],
+  "complete_semantic_census": false,
+  "manual_review_required": [
+    "dynamic exports",
+    "inherited API",
+    "public data attributes",
+    "documented examples",
+    "parameter effects",
+    "unsupported stubs",
+    "return/state/error behavior"
+  ]
+}

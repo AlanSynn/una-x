@@ -1,0 +1,6845 @@
+{
+  "schema_version": 1,
+  "generated_from": {
+    "madina": {
+      "commit": "8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6",
+      "path": ".refs/madina (read-only clone)",
+      "public_records": 76
+    },
+    "una_baseline": {
+      "commit": "16bf404d2cc5e776a78dc073c80405f6d186da29",
+      "public_records": 112
+    }
+  },
+  "seed": {
+    "file": "campaigns/una_platform/API_PARITY.json",
+    "rows": 18,
+    "note": "seed file untouched; this matrix is the expansion"
+  },
+  "required_checks": [
+    "signature_defaults",
+    "parameter_effects",
+    "return_type",
+    "mutable_state",
+    "IDs_index_order",
+    "numeric_bits",
+    "geometry_CRS",
+    "artifact_schema",
+    "warnings_errors",
+    "installed_facade",
+    "installed_shim"
+  ],
+  "families": [
+    {
+      "id": "M01",
+      "symbol": "madina.zonal.Zonal",
+      "signature_seed": "Zonal()",
+      "required_behavior": "Owns layers, network and geo_center; indexing delegates to layers.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [],
+      "semantic_notes": {
+        "behavior": [
+          "Zonal() starts network=None, geo_center=(None,None), empty Layers",
+          "__getitem__ delegates to Layers (str label or int position)",
+          "class constants DEFAULT_PROJECTED_CRS='EPSG:3857', DEFAULT_GEOGRAPHIC_CRS='EPSG:4326', DEFAULT_COLORS reexport",
+          "VERSION='0.0.15', RELEASE_DATE='2023-02-16' module constants"
+        ],
+        "mutation": [
+          "layers",
+          "network",
+          "geo_center mutated by load_layer/create_street_network/insert_node"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M02",
+      "symbol": "Zonal.load_layer",
+      "signature_seed": "(name, source, pos=None, first=False, before=None, after=None)",
+      "required_behavior": "File/GeoDataFrame inputs, copy and ID preparation, CRS, order and random-color state.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [],
+      "semantic_notes": {
+        "behavior": [
+          "TypeError when name not str; TypeError when source not Path|str|GeoDataFrame",
+          "GeoDataFrame sources are deep-copied; files read with engine='pyogrio'",
+          "gdf gets 'id' column = range(rows), set as index; original crs captured before prepare_geometry",
+          "prepare_geometry: Polygon->boundary, all-MultiLineString->first geom, Z dropped via transform(_to_2d) where _to_2d=tuple(filter(None,[x,y])) -- drops zero coordinates (quirk)",
+          "Layer default_color = [round(random.random()*255)]*3 (unseeded RNG)",
+          "geo_center set from first loaded layer's EPSG:4326 unary_union centroid",
+          "insertion respects pos/first/before/after via Layers.add"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M03",
+      "symbol": "Zonal.create_street_network",
+      "signature_seed": "(source_layer, weight_attribute=None, node_snapping_tolerance=0, redundant_edge_treatment='discard', turn_threshold_degree=45, turn_penalty_amount=30)",
+      "required_behavior": "keep/discard/split topology, source lineage, projected/custom costs, exact actual defaults.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [],
+      "semantic_notes": {
+        "behavior": [
+          "actual default redundant_edge_treatment='discard' (docstring text says 'split'; source default wins per CONTRACTS)",
+          "validations: source_layer str+exists, weight_attribute str+in columns, tolerance numeric >=0, treatment in keep|discard|split",
+          "tolerance==0 vectorized path; tolerance>0 tolerance_network_nodes_edges (sorts by weight desc, adds 'weight' column to the source layer gdf, snapped/snapping_distance columns on edges)",
+          "weight rule: geometric length if weight_attribute None else max(attr,0.01), but attr==0 falls back to geometric length",
+          "discard: shortest duplicate kept; self-loop edges always dropped (start==end continue)",
+          "split: shortest duplicate kept intact, others split at normalized midpoint, weight/2 halves, new node ids from max+1, 'streets' hardcoded as split-node source_layer",
+          "edge 'type' column dropped after coloring; Network(None,None turn params) then set_turn_parameters called"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M04",
+      "symbol": "Zonal.set_turn_parameters",
+      "signature_seed": "(turn_threshold_degree, turn_penalty_amount)",
+      "required_behavior": "Validation and network mutation.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [],
+      "semantic_notes": {
+        "behavior": [
+          "threshold numeric 0..180 else TypeError/ValueError; penalty numeric >=0",
+          "writes network.turn_threshold_degree / network.turn_penalty_amount",
+          "crashes with AttributeError if called before create_street_network (network None)"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M05",
+      "symbol": "Zonal.insert_node",
+      "signature_seed": "(layer_name, label, weight_attribute=None)",
+      "required_behavior": "Origin/destination insertion, IDs, partial edge weights, repeated calls.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [],
+      "semantic_notes": {
+        "behavior": [
+          "label must be 'origin'|'destination' else TypeError/ValueError",
+          "efficient_node_insertion: sindex.nearest edge match, centroid projected onto edge, weight_to_start=weight*(dist/len), weight_to_end=weight-weight_to_start",
+          "node weight column dtype float32 (fractional weights truncated toward float32)",
+          "missing node columns initialized to 0 before concat",
+          "network.nodes recolored categorically after every insertion (random colors for unseen types)"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M06",
+      "symbol": "Zonal.create_graph",
+      "signature_seed": "(light_graph=True, d_graph=True, od_graph=False)",
+      "required_behavior": "Supported graph variants and mutable topology state.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [],
+      "semantic_notes": {
+        "behavior": [
+          "Zonal defaults (True,True,False) forwarded to Network.create_graph which has different signature defaults (False,True,False)",
+          "light_graph: nx.Graph of street edges weight=max(w,0), edge attr id, node attr type",
+          "d_graph: light_graph.copy() + destination insertion via update_light_graph",
+          "od_graph: light_graph.copy() + origin+destination insertion",
+          "street_node_ids set refreshed on each call"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M07",
+      "symbol": "Zonal.clear_nodes",
+      "signature_seed": "()",
+      "required_behavior": "Remove access nodes retaining network; characterize graph lifecycle.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [],
+      "semantic_notes": {
+        "behavior": [
+          "network.nodes filtered to type=='street_node' (origins and destinations removed)",
+          "network/edges/graphs retained; d_graph/od_graph NOT rebuilt -> stale graphs keep old od nodes (lifecycle quirk)"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M08",
+      "symbol": "Zonal.create_map",
+      "signature_seed": "(layer_list=None, save_as=None, basemap=False)",
+      "required_behavior": "Actual pydeck.Deck return, HTML/visual layer behavior, optional dependency.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [],
+      "semantic_notes": {
+        "behavior": [
+          "layer_list None -> all visible layers colored with their default_color",
+          "'layer' key in dicts -> gdf copied from that layer and colored",
+          "create_deckGL_map: per layer deep copy, reset_index, to EPSG:4326, radius/width/opacity/color overrides, GeoJsonLayer; 'text' adds TextLayer",
+          "returns pdk.Deck; save_as writes HTML with css_background_color='cornflowerblue'",
+          "requires pydeck; geo_center (None,None) yields invalid ViewState lat/lon"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M09",
+      "symbol": "Zonal.describe",
+      "signature_seed": "()",
+      "required_behavior": "Documented display and observable state.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [],
+      "semantic_notes": {
+        "behavior": [
+          "prints table (Layer name | Visible | projection | rows | File path)",
+          "'No zonal_layers yet...' when empty",
+          "geo_center None check compares tuple to None (always False; prints center line with values) (quirk)",
+          "network None prints setup instructions"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M10",
+      "symbol": "Layer/Layers",
+      "signature_seed": "Census constructors, fields, __getitem__/__setitem__/__iter__/__next__/__contains__/__str__, add/insert_at/get_layer_at_pos/pos_at_label/set_style/color_layer",
+      "required_behavior": "Preserve public order, indexing, mutable gdf and error behavior; unsupported/broken paths need registered corrections.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [],
+      "semantic_notes": {
+        "behavior": [
+          "Layers: label list + dict; getitem str/int; setitem replaces; str form position:N reverse order; iteration yields LABELS (strings) not Layer objects",
+          "add/insert_at with duplicate-label KeyError, int-typed pos checks (bool is int)",
+          "pos_at_label raises ValueError for missing label (list.index)",
+          "Layer: gdf,label,show,crs,file_path,default_color,other_fields=kwargs",
+          "Layer.set_style/color_layer reference self.default_colors which Layer never defines -> AttributeError on call (broken path; registered correction required, not silent reinvention)"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M11",
+      "symbol": "Network",
+      "signature_seed": "Census constructor and set_node_value/create_graph/add_node_to_graph/remove_node_to_graph/update_light_graph; further methods from AST",
+      "required_behavior": "Graph mutation, geometric edge splitting/perturbation, topology IDs. visualize_graph currently unsupported is not working parity requirement.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [],
+      "semantic_notes": {
+        "behavior": [
+          "Network(nodes,edges,turn_threshold_degree,turn_penalty_amount,weight_attribute,edge_source_layer)",
+          "empty nodes/edges: 'pass # throw Error here' -- no actual validation",
+          "set_node_value -> nodes.at; create_graph (False,True,False defaults); visualize_graph raises NotImplementedError (documented unsupported)",
+          "add_node_to_graph: broad try/except print-and-continue; epsilon perturbation 1e-7*(weight_sec+1); chain rebuild sorted by weight_to_end",
+          "remove_node_to_graph: degree-2 rejoin; self-loop edge restore; silently returns for other degree!=2",
+          "update_light_graph: mutates add_nodes during iteration (RuntimeError risk), flat 1e-7 epsilon (differs from add_node_to_graph), prints on anomalies",
+          "_get_nodes_at_geometric_distance/_get_nodes_at_network_distance/_get_nodes_at_bf_distance/scan_for_intersections/fuse_degree_2_nodes raise NotImplementedError (documented unsupported)",
+          "network_to_layer returns two Layer objects (breaks: Layer requires 6 args) (broken path)"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M12",
+      "symbol": "madina.una.tools.accessibility",
+      "signature_seed": "(zonal, search_radius, destination_weight=None, alpha=1, beta=None, save_reach_as=None, save_gravity_as=None, knn_weights=None, knn_plateau=None, save_knn_access_as=None, closest_facility=False, save_closest_facility_as=None, save_closest_facility_distance_as=None, turn_penalty=False, num_cores=1)",
+      "required_behavior": "Alpha-weighted gravity/KNN, destination-to-origin closest facility, named layer joins and None return.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [
+        "madina.una.tools.accessibility"
+      ],
+      "semantic_notes": {
+        "behavior": [
+          "origin_layer/destination_layer read via .iloc[0] BEFORE validate_zonal_ready -> IndexError instead of ValueError on empty zonal (quirk)",
+          "search_radius numeric >=0; destination_weight str in destination layer columns",
+          "save_gravity_as requires beta; knn path requires knn_weights; knn_weights str '[0.5, 0.25]' parsed by [1:-1].split(','); knn_plateau None->search_radius, 0<=plateau<=radius, plateau requires beta",
+          "closest_facility=True requires BOTH save_closest_facility_as and save_closest_facility_distance_as strings",
+          "num_cores default 1; results written into origin layer gdf via source_id join; reach/gravity fillna(0); closest_facility columns joined to DESTINATION layer without fillna (unreachable -> NaN preserved)",
+          "returns None",
+          "closest_facility assigns each DESTINATION its closest ORIGIN (direction fixed by dossier D01); parallel tie-break: first-come wins; single-core tie-break: dict iteration over distance-sorted d_idxs",
+          "reach = sum of assigned-destination weights; gravity = sum(w^alpha / e^(beta*dist)) over assigned destinations when closest_facility"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M13",
+      "symbol": "madina.una.tools.service_area",
+      "signature_seed": "(zonal, search_radius, origin_ids=None, turn_penalty=False)",
+      "required_behavior": "Tuple destinations/network_edges/scope_gdf, convex-hull/intersection geometry semantics, degenerate cases.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [
+        "madina.una.tools.service_area"
+      ],
+      "semantic_notes": {
+        "behavior": [
+          "returns (destinations, network_edges, scope_gdf)",
+          "origin_ids None->all origins; int->source_id match; list validated against origin layer index then mapped via source_id",
+          "per origin: add origin to d_graph, turn_o_scope detour 1.0, remove origin",
+          "empty d_idxs -> origin skipped entirely (no scope rows)",
+          "destination_scope = reachable destination geometries unary_union convex_hull; network_scope = o_scope node geometries hull; scope = union",
+          "network_edges = edge_gdf.clip(scope) per origin, unary_union, exploded; Issue #7: scope can be GeometryCollection -> clip failure in shapely 2.x",
+          "scope_gdf rows alternate 'service area border'/'origin' with origin_id",
+          "crs taken from destination layer"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M14",
+      "symbol": "madina.una.tools.alternative_paths",
+      "signature_seed": "(zonal, origin_id, search_radius, detour_ratio=1, turn_penalty=False)",
+      "required_behavior": "ALL admitted alternatives, distance order, destination IDs, GeometryCollection full endpoint edges.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [
+        "madina.una.tools.alternative_paths"
+      ],
+      "semantic_notes": {
+        "behavior": [
+          "ALL admissible alternatives within detour_ratio of shortest path (NOT K-alternatives)",
+          "path_generator: add origin to d_graph, turn_o_scope(return_paths=True), bfs_subgraph_generation, bfs_path_edges_many_targets_iterative, remove origin",
+          "0.00001 tolerance on path-vs-shortest comparisons",
+          "paths recorded as node sequences; output geometry = GeometryCollection([origin whole edge] + interior edge geometries + [destination whole edge])",
+          "rows: destination (source_id), distance (path weight incl turn costs), geometry; sorted by distance, reset_index; tie order from enumeration (set-iteration dependent)",
+          "origin_id typed int|list in error text but only single int supported (iloc[0])",
+          "interior edge ids exclude first segment and destination segment during enumeration"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M15",
+      "symbol": "madina.una.tools.betweenness",
+      "signature_seed": "(zonal, search_radius, detour_ratio=1, decay=False, decay_method='exponent', beta=0.003, num_cores=1, closest_destination=True, elastic_weight=False, knn_weight=None, knn_plateau=0, turn_penalty=False, save_betweenness_as=None, save_reach_as=None, save_gravity_as=None, save_elastic_weight_as=None, keep_diagnostics=False, path_exposure_attribute=None, save_path_exposure_as=None)",
+      "required_behavior": "All-path assignment, exponent/power decay, competition/closest, elastic KNN demand, diagnostics/exposure, network/layer mutations.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [
+        "madina.una.tools.betweenness"
+      ],
+      "semantic_notes": {
+        "behavior": [
+          "all-path assignment via paralell_betweenness_exposure with path_detour_penalty hardcoded 'equal', destniation_cap=None",
+          "edge_gdf['betweenness']=0.0 then per-origin accumulation",
+          "closest_destination=True default: single min-distance destination, destination_probability=1",
+          "Huff mode: gravities=weight/e^(beta*dist), probabilities normalized; all-zero gravities -> origin skipped entirely, and (observed in source) origin not removed from d_graph (graph-poisoning candidate; must be captured by executed reference, not assumed)",
+          "origins.sample(frac=1) unseeded shuffle before queueing (order affects accumulation order; fixtures must seed RNG)",
+          "d_path_weights < 0.01 raised to 0.01",
+          "decay exponent uses min shortest-distance over the origin's d_idxs (1/e^(beta*min)), power uses per-path 1/w^2",
+          "diagnostics columns written per origin AFTER the stats block; with closest_destination=True the stats block raises NameError on eligible_destinations_shortest_distance -> caught -> later columns and graph removal skipped (candidate legacy behavior; verify by execution)",
+          "save_betweenness_as joins edge betweenness to source layer by parent_street_id drop_duplicates; index cast to int",
+          "keep_diagnostics saves every non-saved origin_gdf column as save_betweenness_as+'_'+column",
+          "num_cores>1: ProcessPoolExecutor of betweenness_exposure workers fed by Manager queue; as_completed merge order nondeterministic",
+          "path_exposure: mean exposure over interior path edges weighted by segment weight; expected_hazzard_meters accumulated per origin"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M16",
+      "symbol": "madina.una.workflows.betweenness_flow_simulation",
+      "signature_seed": "(city_name=None, data_folder=None, output_folder=None, pairings_file='pairings.csv', num_cores=8)",
+      "required_behavior": "Pairing CSV schema, network/cost/layer changes, outputs and logger.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [
+        "madina.una.workflows.betweenness_flow_simulation"
+      ],
+      "semantic_notes": {
+        "behavior": [
+          "ValueError when city_name/data_folder/output_folder all None",
+          "defaults data_folder='Cities/<city>/Data'; output 'Cities/<city>/Simulations/<YYYY-MM-DD HH-MM>'",
+          "pairings.csv columns: Flow_Name, Network_File, Origin_Name, Origin_File, Origin_Weight, Destination_Name, Destination_File, Destination_Weight, Network_Cost, Radius, Detour, Decay, Decay_Mode, Beta, Closest_destination, Elastic_Weights, KNN_Weight, Plateau, Turns, Turn_Penalty, Turn_Threshold",
+          "network rebuilt when Network_Cost changes; else nodes reset from clean copy",
+          "'Count' weight -> None (unit weights); snap tolerance 0.00001",
+          "num_cores=min(origin rows, num_cores)",
+          "decay disabled when Elastic_Weights true",
+          "keep_diagnostics=True always; outputs per pairing folder + time_log.csv + betweenness_record.geoJSON/csv",
+          "Logger prints cumulative/seconds-elapsed table; timestamps nondeterministic (test format/order under controlled clock)"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M17",
+      "symbol": "madina.una.workflows.KNN_accessibility",
+      "signature_seed": "(city_name=None, data_folder=None, output_folder=None, pairings_file='pairing.csv', num_cores=8)",
+      "required_behavior": "Distinct default filename, workflow validation, named accessibility results.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [
+        "madina.una.workflows.KNN_accessibility"
+      ],
+      "semantic_notes": {
+        "behavior": [
+          "ValueError when city_name None; default pairings_file='pairing.csv' (singular; distinct from M16)",
+          "streets layer reloaded when Network_File changes; network rebuilt when cost/file changes; else clear_nodes()",
+          "turn parameters set only when pairing['Turns'] truthy",
+          "accessibility with destination_weight=None, alpha=1, saves <Flow_Name>_reach/_gravity/_knn_access",
+          "final: total_knn_access = row sum of all <Flow_Name>_knn_access; normalized_knn_access min-max; origin_record.geoJSON + csv; assumes single origin layer across pairings (last pairing's Origin_Name)"
+        ]
+      },
+      "tests": []
+    },
+    {
+      "id": "M18",
+      "symbol": "Public helpers and reexports",
+      "signature_seed": "Expand AST/doc/test census before contract freeze",
+      "required_behavior": "paths, betweenness, network_utils, utils, validate_zonal_ready, module exports and directly used supported helpers. No silent omissions.",
+      "status": "required_unimplemented_or_unverified",
+      "expanded_symbols": [
+        "madina.una.betweenness.parallel_betweenness",
+        "madina.una.betweenness.one_betweenness_2",
+        "madina.una.betweenness.clockwiseangle_and_distance",
+        "madina.una.betweenness.betweenness_exposure",
+        "madina.una.betweenness.paralell_betweenness_exposure",
+        "madina.una.betweenness.get_origin_properties",
+        "madina.una.betweenness.one_access",
+        "madina.una.betweenness.parallel_access",
+        "madina.una.paths.path_generator",
+        "madina.una.paths.bfs_subgraph_generation",
+        "madina.una.paths.bfs_paths_many_targets_iterative",
+        "madina.una.paths.wandering_messenger",
+        "madina.una.paths.bfs_path_edges_many_targets_iterative",
+        "madina.una.paths.turn_o_scope",
+        "madina.una.paths.turn_penalty_value",
+        "madina.una.paths.angle_deviation_between_two_lines",
+        "madina.una.tools.validate_zonal_ready",
+        "madina.una.workflows.Logger",
+        "madina.una.workflows.Logger.__init__",
+        "madina.una.workflows.Logger.log",
+        "madina.una.workflows.Logger.pairing_end",
+        "madina.una.workflows.Logger.simulation_end",
+        "madina.una.workflows.Logger.flow_map_template_1",
+        "madina.zonal.layer.Layers",
+        "madina.zonal.layer.Layers.__init__",
+        "madina.zonal.layer.Layers.__getitem__",
+        "madina.zonal.layer.Layers.__setitem__",
+        "madina.zonal.layer.Layers.__str__",
+        "madina.zonal.layer.Layers.__contains__",
+        "madina.zonal.layer.Layers.__iter__",
+        "madina.zonal.layer.Layers.__next__",
+        "madina.zonal.layer.Layers.add",
+        "madina.zonal.layer.Layers.insert_at",
+        "madina.zonal.layer.Layers.get_layer_at_pos",
+        "madina.zonal.layer.Layers.pos_at_label",
+        "madina.zonal.layer.Layer",
+        "madina.zonal.layer.Layer.__init__",
+        "madina.zonal.layer.Layer.set_style",
+        "madina.zonal.layer.Layer.color_layer",
+        "madina.zonal.network.Network",
+        "madina.zonal.network.Network.__init__",
+        "madina.zonal.network.Network.set_node_value",
+        "madina.zonal.network.Network.create_graph",
+        "madina.zonal.network.Network.visualize_graph",
+        "madina.zonal.network.Network.add_node_to_graph",
+        "madina.zonal.network.Network.remove_node_to_graph",
+        "madina.zonal.network.Network.update_light_graph",
+        "madina.zonal.network.Network.scan_for_intersections",
+        "madina.zonal.network.Network.fuse_degree_2_nodes",
+        "madina.zonal.network.Network.network_to_layer",
+        "madina.zonal.network_utils.node_edge_builder",
+        "madina.zonal.network_utils.vectorized_node_edge_builder",
+        "madina.zonal.network_utils.GeoPandaExtractor",
+        "madina.zonal.network_utils.tolerance_network_nodes_edges",
+        "madina.zonal.network_utils.efficient_node_insertion",
+        "madina.zonal.utils.prepare_geometry",
+        "madina.zonal.utils.color_gdf",
+        "madina.zonal.utils.create_deckGL_map",
+        "madina.zonal.utils.color_layer",
+        "madina.zonal.zonal.Zonal",
+        "madina.zonal.zonal.Zonal.__init__",
+        "madina.zonal.zonal.Zonal.__getitem__",
+        "madina.zonal.zonal.Zonal.load_layer",
+        "madina.zonal.zonal.Zonal.create_street_network",
+        "madina.zonal.zonal.Zonal.set_turn_parameters",
+        "madina.zonal.zonal.Zonal.insert_node",
+        "madina.zonal.zonal.Zonal.create_graph",
+        "madina.zonal.zonal.Zonal.describe",
+        "madina.zonal.zonal.Zonal.create_map",
+        "madina.zonal.zonal.Zonal.clear_nodes"
+      ],
+      "semantic_notes": {
+        "behavior": [
+          "madina/__init__: from .zonal import *; from .una import *",
+          "zonal/__init__: zonal,layer,network,network_utils star imports",
+          "una/__init__: betweenness, paths star imports (tools and workflows NOT reexported; imported as madina.una.tools / madina.una.workflows)",
+          "network_utils publics: node_edge_builder, tolerance_network_nodes_edges, _tag_edges is private, efficient_node_insertion, GeoPandaExtractor, vectorized_node_edge_builder",
+          "utils publics (not star-reexported from madina): prepare_geometry, color_gdf, create_deckGL_map, color_layer(module-level fn taking self), DEFAULT_COLORS",
+          "tools publics: validate_zonal_ready, accessibility, service_area, alternative_paths, betweenness",
+          "paths publics: path_generator, wandering_messenger, bfs_* family, turn_o_scope, turn_penalty_value, angle_deviation_between_two_lines",
+          "betweenness publics: parallel_betweenness, one_betweenness_2, betweenness_exposure, paralell_betweenness_exposure, parallel_access, one_access, get_origin_properties, clockwiseangle_and_distance",
+          "Layer/Layers/Network/Zonal/DEFAULT_COLORS reachable via madina.zonal and madina top-level"
+        ]
+      },
+      "tests": []
+    }
+  ],
+  "madina_symbols": [
+    {
+      "symbol": "madina.una.betweenness.parallel_betweenness",
+      "kind": "function",
+      "source": "una/betweenness.py",
+      "line": 30,
+      "signature": "(network, search_radius=1000, detour_ratio=1.05, decay=True, decay_method='exponent', beta=0.003, num_cores=4, path_detour_penalty='equal', origin_weights=False, origin_weight_attribute=None, closest_destination=True, destination_weights=False, destination_weight_attribute=None, perceived_distance=False, light_graph=True, turn_penalty=False, retained_d_idxs=None, retained_paths=None, retained_distances=None, rertain_expensive_data=False)",
+      "parameters": [
+        {
+          "name": "network",
+          "annotation": "Network",
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": null,
+          "default": "1000"
+        },
+        {
+          "name": "detour_ratio",
+          "annotation": null,
+          "default": "1.05"
+        },
+        {
+          "name": "decay",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "decay_method",
+          "annotation": null,
+          "default": "'exponent'"
+        },
+        {
+          "name": "beta",
+          "annotation": null,
+          "default": "0.003"
+        },
+        {
+          "name": "num_cores",
+          "annotation": null,
+          "default": "4"
+        },
+        {
+          "name": "path_detour_penalty",
+          "annotation": null,
+          "default": "'equal'"
+        },
+        {
+          "name": "origin_weights",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "origin_weight_attribute",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "closest_destination",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "destination_weights",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "destination_weight_attribute",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "perceived_distance",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "light_graph",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "retained_d_idxs",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "retained_paths",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "retained_distances",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "rertain_expensive_data",
+          "annotation": null,
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.betweenness.one_betweenness_2",
+      "kind": "function",
+      "source": "una/betweenness.py",
+      "line": 167,
+      "signature": "(network, search_radius=1000, origins=None, detour_ratio=1.05, decay=True, beta=0.003, decay_method='exponent', path_detour_penalty='equal', origin_weights=False, origin_weight_attribute=None, closest_destination=False, destination_weights=False, destination_weight_attribute=None, perceived_distance=False, light_graph=True, turn_penalty=False, retained_d_idxs=None, retained_paths=None, retained_distances=None, rertain_expensive_data=False)",
+      "parameters": [
+        {
+          "name": "network",
+          "annotation": "Network",
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": null,
+          "default": "1000"
+        },
+        {
+          "name": "origins",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "detour_ratio",
+          "annotation": null,
+          "default": "1.05"
+        },
+        {
+          "name": "decay",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "beta",
+          "annotation": null,
+          "default": "0.003"
+        },
+        {
+          "name": "decay_method",
+          "annotation": null,
+          "default": "'exponent'"
+        },
+        {
+          "name": "path_detour_penalty",
+          "annotation": null,
+          "default": "'equal'"
+        },
+        {
+          "name": "origin_weights",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "origin_weight_attribute",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "closest_destination",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "destination_weights",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "destination_weight_attribute",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "perceived_distance",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "light_graph",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "retained_d_idxs",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "retained_paths",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "retained_distances",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "rertain_expensive_data",
+          "annotation": null,
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.betweenness.clockwiseangle_and_distance",
+      "kind": "function",
+      "source": "una/betweenness.py",
+      "line": 408,
+      "signature": "(origin, point)",
+      "parameters": [
+        {
+          "name": "origin",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "point",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.betweenness.betweenness_exposure",
+      "kind": "function",
+      "source": "una/betweenness.py",
+      "line": 431,
+      "signature": "(self, core_index=None, origin_queue=None, search_radius=1000, detour_ratio=1.05, decay=True, beta=0.003, decay_method='exponent', path_detour_penalty='equal', closest_destination=False, elastic_weight=False, turn_penalty=False, path_exposure_attribute=None, return_path_record=False, destniation_cap=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": "Zonal",
+          "default": null
+        },
+        {
+          "name": "core_index",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "origin_queue",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "search_radius",
+          "annotation": null,
+          "default": "1000"
+        },
+        {
+          "name": "detour_ratio",
+          "annotation": null,
+          "default": "1.05"
+        },
+        {
+          "name": "decay",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "beta",
+          "annotation": null,
+          "default": "0.003"
+        },
+        {
+          "name": "decay_method",
+          "annotation": null,
+          "default": "'exponent'"
+        },
+        {
+          "name": "path_detour_penalty",
+          "annotation": null,
+          "default": "'equal'"
+        },
+        {
+          "name": "closest_destination",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "elastic_weight",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "path_exposure_attribute",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "return_path_record",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "destniation_cap",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.betweenness.paralell_betweenness_exposure",
+      "kind": "function",
+      "source": "una/betweenness.py",
+      "line": 903,
+      "signature": "(self, search_radius=1000, detour_ratio=1.05, decay=True, decay_method='exponent', beta=0.003, num_cores=4, path_detour_penalty='equal', closest_destination=True, elastic_weight=False, turn_penalty=False, path_exposure_attribute=None, return_path_record=False, destniation_cap=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": "Zonal",
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": null,
+          "default": "1000"
+        },
+        {
+          "name": "detour_ratio",
+          "annotation": null,
+          "default": "1.05"
+        },
+        {
+          "name": "decay",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "decay_method",
+          "annotation": null,
+          "default": "'exponent'"
+        },
+        {
+          "name": "beta",
+          "annotation": null,
+          "default": "0.003"
+        },
+        {
+          "name": "num_cores",
+          "annotation": null,
+          "default": "4"
+        },
+        {
+          "name": "path_detour_penalty",
+          "annotation": null,
+          "default": "'equal'"
+        },
+        {
+          "name": "closest_destination",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "elastic_weight",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "path_exposure_attribute",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "return_path_record",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "destniation_cap",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.betweenness.get_origin_properties",
+      "kind": "function",
+      "source": "una/betweenness.py",
+      "line": 1016,
+      "signature": "(self, search_radius=800, beta=0.001, turn_penalty=False, o_idx=None, d_idxs=None, o_graph=None, destination_weight=None, alpha=1.0)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": "Zonal",
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": null,
+          "default": "800"
+        },
+        {
+          "name": "beta",
+          "annotation": null,
+          "default": "0.001"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "o_idx",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "d_idxs",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "o_graph",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "destination_weight",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "alpha",
+          "annotation": null,
+          "default": "1.0"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.betweenness.one_access",
+      "kind": "function",
+      "source": "una/betweenness.py",
+      "line": 1090,
+      "signature": "(self, origin_queue=None, search_radius=None, destination_weight=None, alpha=None, beta=None, knn_weights=None, knn_plateau=None, closest_facility=False, turn_penalty=False, reporting=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": "Zonal",
+          "default": null
+        },
+        {
+          "name": "origin_queue",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "search_radius",
+          "annotation": "float",
+          "default": "None"
+        },
+        {
+          "name": "destination_weight",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "alpha",
+          "annotation": "float",
+          "default": "None"
+        },
+        {
+          "name": "beta",
+          "annotation": "float",
+          "default": "None"
+        },
+        {
+          "name": "knn_weights",
+          "annotation": "list",
+          "default": "None"
+        },
+        {
+          "name": "knn_plateau",
+          "annotation": "int | float",
+          "default": "None"
+        },
+        {
+          "name": "closest_facility",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "reporting",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.betweenness.parallel_access",
+      "kind": "function",
+      "source": "una/betweenness.py",
+      "line": 1182,
+      "signature": "(self, search_radius=None, destination_weight=None, alpha=None, beta=None, knn_weights=None, knn_plateau=None, closest_facility=False, turn_penalty=False, num_cores=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": "Zonal",
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": "float",
+          "default": "None"
+        },
+        {
+          "name": "destination_weight",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "alpha",
+          "annotation": "float",
+          "default": "None"
+        },
+        {
+          "name": "beta",
+          "annotation": "float",
+          "default": "None"
+        },
+        {
+          "name": "knn_weights",
+          "annotation": "list",
+          "default": "None"
+        },
+        {
+          "name": "knn_plateau",
+          "annotation": "int | float",
+          "default": "None"
+        },
+        {
+          "name": "closest_facility",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "num_cores",
+          "annotation": "int",
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.paths.path_generator",
+      "kind": "function",
+      "source": "una/paths.py",
+      "line": 7,
+      "signature": "(network, o_idx, search_radius=800, detour_ratio=1.15, turn_penalty=False)",
+      "parameters": [
+        {
+          "name": "network",
+          "annotation": "Network",
+          "default": null
+        },
+        {
+          "name": "o_idx",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": null,
+          "default": "800"
+        },
+        {
+          "name": "detour_ratio",
+          "annotation": null,
+          "default": "1.15"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": null,
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.paths.bfs_subgraph_generation",
+      "kind": "function",
+      "source": "una/paths.py",
+      "line": 61,
+      "signature": "(o_idx, detour_ratio=1.15, o_graph=None, d_idxs=None, o_scope=None, o_scope_paths=None)",
+      "parameters": [
+        {
+          "name": "o_idx",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "detour_ratio",
+          "annotation": null,
+          "default": "1.15"
+        },
+        {
+          "name": "o_graph",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "d_idxs",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "o_scope",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "o_scope_paths",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.paths.bfs_paths_many_targets_iterative",
+      "kind": "function",
+      "source": "una/paths.py",
+      "line": 177,
+      "signature": "(network, o_graph, o_idx, d_idxs, distance_matrix=None, turn_penalty=False, od_scope=None)",
+      "parameters": [
+        {
+          "name": "network",
+          "annotation": "Network",
+          "default": null
+        },
+        {
+          "name": "o_graph",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_idx",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "distance_matrix",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "od_scope",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.paths.wandering_messenger",
+      "kind": "function",
+      "source": "una/paths.py",
+      "line": 266,
+      "signature": "(network, o_graph, o_idx, d_idxs, distance_matrix=None, turn_penalty=False, od_scope=None)",
+      "parameters": [
+        {
+          "name": "network",
+          "annotation": "Network",
+          "default": null
+        },
+        {
+          "name": "o_graph",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_idx",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "distance_matrix",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "od_scope",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.paths.bfs_path_edges_many_targets_iterative",
+      "kind": "function",
+      "source": "una/paths.py",
+      "line": 330,
+      "signature": "(network, o_graph, o_idx, d_idxs, distance_matrix=None, turn_penalty=False, od_scope=None)",
+      "parameters": [
+        {
+          "name": "network",
+          "annotation": "Network",
+          "default": null
+        },
+        {
+          "name": "o_graph",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_idx",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "distance_matrix",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "od_scope",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.paths.turn_o_scope",
+      "kind": "function",
+      "source": "una/paths.py",
+      "line": 420,
+      "signature": "(network, o_idx, search_radius, detour_ratio, turn_penalty=True, o_graph=None, return_paths=True)",
+      "parameters": [
+        {
+          "name": "network",
+          "annotation": "Network",
+          "default": null
+        },
+        {
+          "name": "o_idx",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": "float",
+          "default": null
+        },
+        {
+          "name": "detour_ratio",
+          "annotation": "float",
+          "default": null
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "o_graph",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "return_paths",
+          "annotation": null,
+          "default": "True"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.paths.turn_penalty_value",
+      "kind": "function",
+      "source": "una/paths.py",
+      "line": 491,
+      "signature": "(network, previous_node, current_node, next_node)",
+      "parameters": [
+        {
+          "name": "network",
+          "annotation": "Network",
+          "default": null
+        },
+        {
+          "name": "previous_node",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "current_node",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "next_node",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.paths.angle_deviation_between_two_lines",
+      "kind": "function",
+      "source": "una/paths.py",
+      "line": 523,
+      "signature": "(point_sequence, raw_angle=False)",
+      "parameters": [
+        {
+          "name": "point_sequence",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "raw_angle",
+          "annotation": null,
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.tools.validate_zonal_ready",
+      "kind": "function",
+      "source": "una/tools.py",
+      "line": 10,
+      "signature": "(zonal)",
+      "parameters": [
+        {
+          "name": "zonal",
+          "annotation": "Zonal",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.tools.accessibility",
+      "kind": "function",
+      "source": "una/tools.py",
+      "line": 36,
+      "signature": "(zonal, search_radius, destination_weight=None, alpha=1, beta=None, save_reach_as=None, save_gravity_as=None, knn_weights=None, knn_plateau=None, save_knn_access_as=None, closest_facility=False, save_closest_facility_as=None, save_closest_facility_distance_as=None, turn_penalty=False, num_cores=1)",
+      "parameters": [
+        {
+          "name": "zonal",
+          "annotation": "Zonal",
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": "float | int",
+          "default": null
+        },
+        {
+          "name": "destination_weight",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "alpha",
+          "annotation": "float",
+          "default": "1"
+        },
+        {
+          "name": "beta",
+          "annotation": "float",
+          "default": "None"
+        },
+        {
+          "name": "save_reach_as",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "save_gravity_as",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "knn_weights",
+          "annotation": "list | str",
+          "default": "None"
+        },
+        {
+          "name": "knn_plateau",
+          "annotation": "int | float",
+          "default": "None"
+        },
+        {
+          "name": "save_knn_access_as",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "closest_facility",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "save_closest_facility_as",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "save_closest_facility_distance_as",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "num_cores",
+          "annotation": "int",
+          "default": "1"
+        }
+      ],
+      "returns": "None",
+      "decorators": [],
+      "seed_family": "M12",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.tools.service_area",
+      "kind": "function",
+      "source": "una/tools.py",
+      "line": 231,
+      "signature": "(zonal, search_radius, origin_ids=None, turn_penalty=False)",
+      "parameters": [
+        {
+          "name": "zonal",
+          "annotation": "Zonal",
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": "float",
+          "default": null
+        },
+        {
+          "name": "origin_ids",
+          "annotation": "int | list",
+          "default": "None"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M13",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.tools.alternative_paths",
+      "kind": "function",
+      "source": "una/tools.py",
+      "line": 355,
+      "signature": "(zonal, origin_id, search_radius, detour_ratio=1, turn_penalty=False)",
+      "parameters": [
+        {
+          "name": "zonal",
+          "annotation": "Zonal",
+          "default": null
+        },
+        {
+          "name": "origin_id",
+          "annotation": "int",
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": "float | int",
+          "default": null
+        },
+        {
+          "name": "detour_ratio",
+          "annotation": "float | int",
+          "default": "1"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M14",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.tools.betweenness",
+      "kind": "function",
+      "source": "una/tools.py",
+      "line": 437,
+      "signature": "(zonal, search_radius, detour_ratio=1, decay=False, decay_method='exponent', beta=0.003, num_cores=1, closest_destination=True, elastic_weight=False, knn_weight=None, knn_plateau=0, turn_penalty=False, save_betweenness_as=None, save_reach_as=None, save_gravity_as=None, save_elastic_weight_as=None, keep_diagnostics=False, path_exposure_attribute=None, save_path_exposure_as=None)",
+      "parameters": [
+        {
+          "name": "zonal",
+          "annotation": "Zonal",
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": "float",
+          "default": null
+        },
+        {
+          "name": "detour_ratio",
+          "annotation": "float",
+          "default": "1"
+        },
+        {
+          "name": "decay",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "decay_method",
+          "annotation": "str",
+          "default": "'exponent'"
+        },
+        {
+          "name": "beta",
+          "annotation": "float",
+          "default": "0.003"
+        },
+        {
+          "name": "num_cores",
+          "annotation": "int",
+          "default": "1"
+        },
+        {
+          "name": "closest_destination",
+          "annotation": "bool",
+          "default": "True"
+        },
+        {
+          "name": "elastic_weight",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "knn_weight",
+          "annotation": "str | list",
+          "default": "None"
+        },
+        {
+          "name": "knn_plateau",
+          "annotation": "float | int",
+          "default": "0"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "save_betweenness_as",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "save_reach_as",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "save_gravity_as",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "save_elastic_weight_as",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "keep_diagnostics",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "path_exposure_attribute",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "save_path_exposure_as",
+          "annotation": "str",
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M15",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.workflows.Logger",
+      "kind": "class",
+      "source": "una/workflows.py",
+      "line": 24,
+      "bases": [],
+      "class_attributes": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.workflows.Logger.__init__",
+      "kind": "dunder_method",
+      "source": "una/workflows.py",
+      "line": 25,
+      "signature": "(self, output_folder, pairing_table)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "output_folder",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "pairing_table",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.workflows.Logger.log",
+      "kind": "method",
+      "source": "una/workflows.py",
+      "line": 42,
+      "signature": "(self, event, pairing=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "event",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "pairing",
+          "annotation": "pd.Series",
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.workflows.Logger.pairing_end",
+      "kind": "method",
+      "source": "una/workflows.py",
+      "line": 76,
+      "signature": "(self, shaqra, pairing, save_flow_map=True, save_flow_geoJSON=True, save_flow_csv=False, save_origin_geoJSON=True, save_origin_csv=False, save_diagnostics_map=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "shaqra",
+          "annotation": "Zonal",
+          "default": null
+        },
+        {
+          "name": "pairing",
+          "annotation": "pd.Series",
+          "default": null
+        },
+        {
+          "name": "save_flow_map",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "save_flow_geoJSON",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "save_flow_csv",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "save_origin_geoJSON",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "save_origin_csv",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "save_diagnostics_map",
+          "annotation": null,
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.workflows.Logger.simulation_end",
+      "kind": "method",
+      "source": "una/workflows.py",
+      "line": 185,
+      "signature": "(self, shaqra)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "shaqra",
+          "annotation": "Zonal",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.workflows.Logger.flow_map_template_1",
+      "kind": "method",
+      "source": "una/workflows.py",
+      "line": 197,
+      "signature": "(self, flow_gdf, flow_parameter, max_flow=None, dark_mode=True, file_name=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "flow_gdf",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "flow_parameter",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "max_flow",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "dark_mode",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "file_name",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.workflows.betweenness_flow_simulation",
+      "kind": "function",
+      "source": "una/workflows.py",
+      "line": 289,
+      "signature": "(city_name=None, data_folder=None, output_folder=None, pairings_file='pairings.csv', num_cores=8)",
+      "parameters": [
+        {
+          "name": "city_name",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "data_folder",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "output_folder",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "pairings_file",
+          "annotation": null,
+          "default": "'pairings.csv'"
+        },
+        {
+          "name": "num_cores",
+          "annotation": null,
+          "default": "8"
+        }
+      ],
+      "returns": "None",
+      "decorators": [],
+      "seed_family": "M16",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.una.workflows.KNN_accessibility",
+      "kind": "function",
+      "source": "una/workflows.py",
+      "line": 420,
+      "signature": "(city_name=None, data_folder=None, output_folder=None, pairings_file='pairing.csv', num_cores=8)",
+      "parameters": [
+        {
+          "name": "city_name",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "data_folder",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "output_folder",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "pairings_file",
+          "annotation": null,
+          "default": "'pairing.csv'"
+        },
+        {
+          "name": "num_cores",
+          "annotation": null,
+          "default": "8"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M17",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers",
+      "kind": "class",
+      "source": "zonal/layer.py",
+      "line": 2,
+      "bases": [],
+      "class_attributes": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__init__",
+      "kind": "dunder_method",
+      "source": "zonal/layer.py",
+      "line": 7,
+      "signature": "(self, layers=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "layers",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__getitem__",
+      "kind": "dunder_method",
+      "source": "zonal/layer.py",
+      "line": 18,
+      "signature": "(self, item)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "item",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__setitem__",
+      "kind": "dunder_method",
+      "source": "zonal/layer.py",
+      "line": 32,
+      "signature": "(self, key, value)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "key",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__str__",
+      "kind": "dunder_method",
+      "source": "zonal/layer.py",
+      "line": 59,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__contains__",
+      "kind": "dunder_method",
+      "source": "zonal/layer.py",
+      "line": 75,
+      "signature": "(self, item)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "item",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__iter__",
+      "kind": "dunder_method",
+      "source": "zonal/layer.py",
+      "line": 83,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.__next__",
+      "kind": "dunder_method",
+      "source": "zonal/layer.py",
+      "line": 86,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.add",
+      "kind": "method",
+      "source": "zonal/layer.py",
+      "line": 94,
+      "signature": "(self, layer, pos=None, first=False, before=None, after=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "layer",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "pos",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "first",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "before",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "after",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.insert_at",
+      "kind": "method",
+      "source": "zonal/layer.py",
+      "line": 120,
+      "signature": "(self, pos, layer)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "pos",
+          "annotation": "int",
+          "default": null
+        },
+        {
+          "name": "layer",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.get_layer_at_pos",
+      "kind": "method",
+      "source": "zonal/layer.py",
+      "line": 143,
+      "signature": "(self, pos)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "pos",
+          "annotation": "int",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layers.pos_at_label",
+      "kind": "method",
+      "source": "zonal/layer.py",
+      "line": 151,
+      "signature": "(self, label)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "label",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layer",
+      "kind": "class",
+      "source": "zonal/layer.py",
+      "line": 155,
+      "bases": [],
+      "class_attributes": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layer.__init__",
+      "kind": "dunder_method",
+      "source": "zonal/layer.py",
+      "line": 160,
+      "signature": "(self, label, gdf, show, original_crs, file_path, default_color=None, kwargs)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "gdf",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "show",
+          "annotation": "bool",
+          "default": null
+        },
+        {
+          "name": "original_crs",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "file_path",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "default_color",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "kwargs",
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layer.set_style",
+      "kind": "method",
+      "source": "zonal/layer.py",
+      "line": 172,
+      "signature": "(self, params)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "params",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.layer.Layer.color_layer",
+      "kind": "method",
+      "source": "zonal/layer.py",
+      "line": 186,
+      "signature": "(self, layer_name, color_by_attribute=None, color_method='single_color', color=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "layer_name",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "color_by_attribute",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "color_method",
+          "annotation": null,
+          "default": "'single_color'"
+        },
+        {
+          "name": "color",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network.Network",
+      "kind": "class",
+      "source": "zonal/network.py",
+      "line": 7,
+      "bases": [],
+      "class_attributes": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network.Network.__init__",
+      "kind": "dunder_method",
+      "source": "zonal/network.py",
+      "line": 15,
+      "signature": "(self, nodes, edges, turn_threshold_degree, turn_penalty_amount, weight_attribute=None, edge_source_layer=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "nodes",
+          "annotation": "GeoDataFrame",
+          "default": null
+        },
+        {
+          "name": "edges",
+          "annotation": "GeoDataFrame",
+          "default": null
+        },
+        {
+          "name": "turn_threshold_degree",
+          "annotation": "float",
+          "default": null
+        },
+        {
+          "name": "turn_penalty_amount",
+          "annotation": "float",
+          "default": null
+        },
+        {
+          "name": "weight_attribute",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "edge_source_layer",
+          "annotation": "str",
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network.Network.set_node_value",
+      "kind": "method",
+      "source": "zonal/network.py",
+      "line": 32,
+      "signature": "(self, idx, label, new_value)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "idx",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "label",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "new_value",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network.Network.create_graph",
+      "kind": "method",
+      "source": "zonal/network.py",
+      "line": 39,
+      "signature": "(self, light_graph=False, d_graph=True, od_graph=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "light_graph",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "d_graph",
+          "annotation": null,
+          "default": "True"
+        },
+        {
+          "name": "od_graph",
+          "annotation": null,
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network.Network.visualize_graph",
+      "kind": "method",
+      "source": "zonal/network.py",
+      "line": 87,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "unsupported_stub": "raises NotImplementedError",
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network.Network.add_node_to_graph",
+      "kind": "method",
+      "source": "zonal/network.py",
+      "line": 93,
+      "signature": "(self, graph, node_idx)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "graph",
+          "annotation": "nx.Graph",
+          "default": null
+        },
+        {
+          "name": "node_idx",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network.Network.remove_node_to_graph",
+      "kind": "method",
+      "source": "zonal/network.py",
+      "line": 188,
+      "signature": "(self, graph, node_idx)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "graph",
+          "annotation": "nx.Graph",
+          "default": null
+        },
+        {
+          "name": "node_idx",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network.Network.update_light_graph",
+      "kind": "method",
+      "source": "zonal/network.py",
+      "line": 232,
+      "signature": "(self, graph, add_nodes=[], remove_nodes=[])",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "graph",
+          "annotation": "nx.Graph",
+          "default": null
+        },
+        {
+          "name": "add_nodes",
+          "annotation": "list",
+          "default": "[]"
+        },
+        {
+          "name": "remove_nodes",
+          "annotation": "list",
+          "default": "[]"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network.Network.scan_for_intersections",
+      "kind": "method",
+      "source": "zonal/network.py",
+      "line": 400,
+      "signature": "(self, node_snapping_tolerance=1)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "node_snapping_tolerance",
+          "annotation": null,
+          "default": "1"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "unsupported_stub": "raises NotImplementedError",
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network.Network.fuse_degree_2_nodes",
+      "kind": "method",
+      "source": "zonal/network.py",
+      "line": 403,
+      "signature": "(self, tolerance_angle)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "tolerance_angle",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "unsupported_stub": "raises NotImplementedError",
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network.Network.network_to_layer",
+      "kind": "method",
+      "source": "zonal/network.py",
+      "line": 406,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network_utils.node_edge_builder",
+      "kind": "function",
+      "source": "zonal/network_utils.py",
+      "line": 10,
+      "signature": "(geometry_gdf, weight_attribute=None, tolerance=0.0, source_layer=None)",
+      "parameters": [
+        {
+          "name": "geometry_gdf",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "weight_attribute",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "tolerance",
+          "annotation": null,
+          "default": "0.0"
+        },
+        {
+          "name": "source_layer",
+          "annotation": "str",
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network_utils.vectorized_node_edge_builder",
+      "kind": "function",
+      "source": "zonal/network_utils.py",
+      "line": 80,
+      "signature": "(point_xy)",
+      "parameters": [
+        {
+          "name": "point_xy",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network_utils.GeoPandaExtractor",
+      "kind": "function",
+      "source": "zonal/network_utils.py",
+      "line": 143,
+      "signature": "(poly_line_data)",
+      "parameters": [
+        {
+          "name": "poly_line_data",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network_utils.tolerance_network_nodes_edges",
+      "kind": "function",
+      "source": "zonal/network_utils.py",
+      "line": 162,
+      "signature": "(geometry_gdf, weight_attribute=None, tolerance=1.0, source_layer=None)",
+      "parameters": [
+        {
+          "name": "geometry_gdf",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "weight_attribute",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "tolerance",
+          "annotation": null,
+          "default": "1.0"
+        },
+        {
+          "name": "source_layer",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.network_utils.efficient_node_insertion",
+      "kind": "function",
+      "source": "zonal/network_utils.py",
+      "line": 468,
+      "signature": "(n_node_gdf, n_edge_gdf, source_gdf, layer_name, label='origin', weight_attribute=None)",
+      "parameters": [
+        {
+          "name": "n_node_gdf",
+          "annotation": "GeoDataFrame",
+          "default": null
+        },
+        {
+          "name": "n_edge_gdf",
+          "annotation": "GeoDataFrame",
+          "default": null
+        },
+        {
+          "name": "source_gdf",
+          "annotation": "GeoDataFrame",
+          "default": null
+        },
+        {
+          "name": "layer_name",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": "'origin'"
+        },
+        {
+          "name": "weight_attribute",
+          "annotation": "str",
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.utils.prepare_geometry",
+      "kind": "function",
+      "source": "zonal/utils.py",
+      "line": 32,
+      "signature": "(geometry_gdf)",
+      "parameters": [
+        {
+          "name": "geometry_gdf",
+          "annotation": "GeoDataFrame",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.utils.color_gdf",
+      "kind": "function",
+      "source": "zonal/utils.py",
+      "line": 60,
+      "signature": "(gdf, color_by_attribute=None, color_method=None, color=None)",
+      "parameters": [
+        {
+          "name": "gdf",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "color_by_attribute",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "color_method",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "color",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.utils.create_deckGL_map",
+      "kind": "function",
+      "source": "zonal/utils.py",
+      "line": 117,
+      "signature": "(gdf_list=[], centerX=46.6725, centerY=24.7425, basemap=False, zoom=17, filename=None)",
+      "parameters": [
+        {
+          "name": "gdf_list",
+          "annotation": null,
+          "default": "[]"
+        },
+        {
+          "name": "centerX",
+          "annotation": null,
+          "default": "46.6725"
+        },
+        {
+          "name": "centerY",
+          "annotation": null,
+          "default": "24.7425"
+        },
+        {
+          "name": "basemap",
+          "annotation": null,
+          "default": "False"
+        },
+        {
+          "name": "zoom",
+          "annotation": null,
+          "default": "17"
+        },
+        {
+          "name": "filename",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.utils.color_layer",
+      "kind": "function",
+      "source": "zonal/utils.py",
+      "line": 244,
+      "signature": "(self, layer_name, color_by_attribute=None, color_method='single_color', color=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "layer_name",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "color_by_attribute",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "color_method",
+          "annotation": null,
+          "default": "'single_color'"
+        },
+        {
+          "name": "color",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal",
+      "kind": "class",
+      "source": "zonal/zonal.py",
+      "line": 21,
+      "bases": [],
+      "class_attributes": [
+        {
+          "name": "DEFAULT_PROJECTED_CRS",
+          "value": "'EPSG:3857'"
+        },
+        {
+          "name": "DEFAULT_GEOGRAPHIC_CRS",
+          "value": "'EPSG:4326'"
+        },
+        {
+          "name": "DEFAULT_COLORS",
+          "value": "DEFAULT_COLORS"
+        }
+      ],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.__init__",
+      "kind": "dunder_method",
+      "source": "zonal/zonal.py",
+      "line": 36,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.__getitem__",
+      "kind": "dunder_method",
+      "source": "zonal/zonal.py",
+      "line": 41,
+      "signature": "(self, item)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "item",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.load_layer",
+      "kind": "method",
+      "source": "zonal/zonal.py",
+      "line": 44,
+      "signature": "(self, name, source, pos=None, first=False, before=None, after=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "name",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "source",
+          "annotation": "str | Path | gpd.GeoDataFrame",
+          "default": null
+        },
+        {
+          "name": "pos",
+          "annotation": "int",
+          "default": "None"
+        },
+        {
+          "name": "first",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "before",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "after",
+          "annotation": "str",
+          "default": "None"
+        }
+      ],
+      "returns": "None",
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.create_street_network",
+      "kind": "method",
+      "source": "zonal/zonal.py",
+      "line": 122,
+      "signature": "(self, source_layer, weight_attribute=None, node_snapping_tolerance=0, redundant_edge_treatment='discard', turn_threshold_degree=45, turn_penalty_amount=30)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "source_layer",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "weight_attribute",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "node_snapping_tolerance",
+          "annotation": "int | float",
+          "default": "0"
+        },
+        {
+          "name": "redundant_edge_treatment",
+          "annotation": "str",
+          "default": "'discard'"
+        },
+        {
+          "name": "turn_threshold_degree",
+          "annotation": "int | float",
+          "default": "45"
+        },
+        {
+          "name": "turn_penalty_amount",
+          "annotation": "int | float",
+          "default": "30"
+        }
+      ],
+      "returns": "None",
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.set_turn_parameters",
+      "kind": "method",
+      "source": "zonal/zonal.py",
+      "line": 216,
+      "signature": "(self, turn_threshold_degree, turn_penalty_amount)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "turn_threshold_degree",
+          "annotation": "int | float",
+          "default": null
+        },
+        {
+          "name": "turn_penalty_amount",
+          "annotation": "int | float",
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.insert_node",
+      "kind": "method",
+      "source": "zonal/zonal.py",
+      "line": 251,
+      "signature": "(self, layer_name, label, weight_attribute=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "layer_name",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "weight_attribute",
+          "annotation": "str",
+          "default": "None"
+        }
+      ],
+      "returns": "None",
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.create_graph",
+      "kind": "method",
+      "source": "zonal/zonal.py",
+      "line": 318,
+      "signature": "(self, light_graph=True, d_graph=True, od_graph=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "light_graph",
+          "annotation": "bool",
+          "default": "True"
+        },
+        {
+          "name": "d_graph",
+          "annotation": "bool",
+          "default": "True"
+        },
+        {
+          "name": "od_graph",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": "None",
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.describe",
+      "kind": "method",
+      "source": "zonal/zonal.py",
+      "line": 356,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.create_map",
+      "kind": "method",
+      "source": "zonal/zonal.py",
+      "line": 390,
+      "signature": "(self, layer_list=None, save_as=None, basemap=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "layer_list",
+          "annotation": "list",
+          "default": "None"
+        },
+        {
+          "name": "save_as",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "basemap",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": "pdk.Deck",
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    },
+    {
+      "symbol": "madina.zonal.zonal.Zonal.clear_nodes",
+      "kind": "method",
+      "source": "zonal/zonal.py",
+      "line": 445,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": [],
+      "seed_family": "M18",
+      "semantic_notes": {}
+    }
+  ],
+  "una_baseline_symbols": [
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.reach_gravity_knn_access",
+      "kind": "function",
+      "source": "Engines/Accessibility.py",
+      "line": 68,
+      "signature": "(d_distance, d_weights, cutoff, gravity_beta, gravity_plateau, gravity_logistic_midpoint, knn_gravity_plateau, knn_weights, knn_gravity_beta, knn_decay, knn_gravity_logistic_midpoint, gravity_growth_rate, knn_gravity_growth_rate)",
+      "parameters": [
+        {
+          "name": "d_distance",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "cutoff",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_beta",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_plateau",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_logistic_midpoint",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_gravity_plateau",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_gravity_beta",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_decay",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_gravity_logistic_midpoint",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_growth_rate",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_gravity_growth_rate",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.compact_vector_node_view_scope",
+      "kind": "function",
+      "source": "Engines/Accessibility.py",
+      "line": 116,
+      "signature": "(o_terminal_idxs, o_terminal_weights, adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, cutoff, d_count)",
+      "parameters": [
+        {
+          "name": "o_terminal_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_terminal_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_pointer",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_vector",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_vector_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacynct_vector_network_node",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "cutoff",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_count",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.adjust_destination_distances",
+      "kind": "function",
+      "source": "Engines/Accessibility.py",
+      "line": 178,
+      "signature": "(scope_weights, d_terminal_idxs, d_terminal_weights, d_count)",
+      "parameters": [
+        {
+          "name": "scope_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_terminal_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_terminal_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_count",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.od_compact_vector_node_view_scope",
+      "kind": "function",
+      "source": "Engines/Accessibility.py",
+      "line": 213,
+      "signature": "(o_terminal_idxs, o_terminal_weights, adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, cutoff, d_count, d_terminal_idxs, d_terminal_weights)",
+      "parameters": [
+        {
+          "name": "o_terminal_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_terminal_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_pointer",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_vector",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_vector_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacynct_vector_network_node",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "cutoff",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_count",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_terminal_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_terminal_weights",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=True, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.integrated_scope_access",
+      "kind": "function",
+      "source": "Engines/Accessibility.py",
+      "line": 322,
+      "signature": "(o_terminal_idxs, o_terminal_weights, adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, d_terminal_idxs, d_terminal_weights, d_weights, gravity_beta, gravity_plateau, gravity_logistic_midpoint, gravity_growth_rate, knn_decay, knn_weights, cutoff)",
+      "parameters": [
+        {
+          "name": "o_terminal_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_terminal_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_pointer",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_vector",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_vector_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacynct_vector_network_node",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_terminal_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_terminal_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_beta",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_plateau",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_logistic_midpoint",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_growth_rate",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_decay",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "cutoff",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=True, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility",
+      "kind": "class",
+      "source": "Engines/Accessibility.py",
+      "line": 502,
+      "bases": [
+        "Base"
+      ],
+      "class_attributes": [
+        {
+          "name": "reach",
+          "value": "None"
+        },
+        {
+          "name": "gravity",
+          "value": "None"
+        },
+        {
+          "name": "gravity_exponential",
+          "value": "None"
+        },
+        {
+          "name": "gravity_logistic",
+          "value": "None"
+        },
+        {
+          "name": "knn_access",
+          "value": "None"
+        },
+        {
+          "name": "od_matrix",
+          "value": "None"
+        },
+        {
+          "name": "result_prefix",
+          "value": "''"
+        },
+        {
+          "name": "graph_engine",
+          "value": "None"
+        }
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.CompactNodeView",
+      "kind": "class",
+      "source": "Engines/Accessibility.py",
+      "line": 517,
+      "bases": [],
+      "class_attributes": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.CompactNodeView.__init__",
+      "kind": "dunder_method",
+      "source": "Engines/Accessibility.py",
+      "line": 520,
+      "signature": "(self, dtype=None, max_error=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "dtype",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "max_error",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.CompactNodeView.o_scope",
+      "kind": "method",
+      "source": "Engines/Accessibility.py",
+      "line": 549,
+      "signature": "(self, o_idx, search_radius)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_idx",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.CompactNodeView.o_access",
+      "kind": "method",
+      "source": "Engines/Accessibility.py",
+      "line": 564,
+      "signature": "(self, o_idx, settings, d_weights)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_idx",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_weights",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.MinimalElementList",
+      "kind": "class",
+      "source": "Engines/Accessibility.py",
+      "line": 588,
+      "bases": [],
+      "class_attributes": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.MinimalElementList.__init__",
+      "kind": "dunder_method",
+      "source": "Engines/Accessibility.py",
+      "line": 591,
+      "signature": "(self, weights)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "weights",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility.__init__",
+      "kind": "dunder_method",
+      "source": "Engines/Accessibility.py",
+      "line": 609,
+      "signature": "(self, topology)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "topology",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility.Centrality",
+      "kind": "method",
+      "source": "Engines/Accessibility.py",
+      "line": 748,
+      "signature": "(self, settings)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": "Settings",
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Accessibility.Accessibility.OD_Matrix",
+      "kind": "method",
+      "source": "Engines/Accessibility.py",
+      "line": 804,
+      "signature": "(self, search_radius=1000, pairwise=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": "float",
+          "default": "1000"
+        },
+        {
+          "name": "pairwise",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.reach_gravity_knn_access",
+      "kind": "function",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 67,
+      "signature": "(d_distance, d_weights, cutoff, gravity_beta, gravity_plateau, gravity_logistic_midpoint, knn_gravity_plateau, knn_weights, knn_gravity_beta, knn_decay, knn_gravity_logistic_midpoint, gravity_growth_rate, knn_gravity_growth_rate)",
+      "parameters": [
+        {
+          "name": "d_distance",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "cutoff",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_beta",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_plateau",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_logistic_midpoint",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_gravity_plateau",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_gravity_beta",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_decay",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_gravity_logistic_midpoint",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_growth_rate",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_gravity_growth_rate",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.compact_vector_node_view_scope",
+      "kind": "function",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 112,
+      "signature": "(o_terminal_idxs, o_terminal_weights, adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, cutoff, d_count)",
+      "parameters": [
+        {
+          "name": "o_terminal_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_terminal_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_pointer",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_vector",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_vector_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacynct_vector_network_node",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "cutoff",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_count",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.adjust_destination_distances",
+      "kind": "function",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 174,
+      "signature": "(scope_weights, d_terminal_idxs, d_terminal_weights, d_count)",
+      "parameters": [
+        {
+          "name": "scope_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_terminal_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_terminal_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_count",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.od_compact_vector_node_view_scope",
+      "kind": "function",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 209,
+      "signature": "(o_terminal_idxs, o_terminal_weights, adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, cutoff, d_count, d_terminal_idxs, d_terminal_weights)",
+      "parameters": [
+        {
+          "name": "o_terminal_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_terminal_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_pointer",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_vector",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_vector_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacynct_vector_network_node",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "cutoff",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_count",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_terminal_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_terminal_weights",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=True, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.integrated_scope_access",
+      "kind": "function",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 318,
+      "signature": "(o_terminal_idxs, o_terminal_weights, adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, d_terminal_idxs, d_terminal_weights, d_weights, gravity_beta, gravity_plateau, gravity_logistic_midpoint, gravity_growth_rate, knn_decay, knn_weights, cutoff)",
+      "parameters": [
+        {
+          "name": "o_terminal_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_terminal_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_pointer",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_vector",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacency_vector_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "adjacynct_vector_network_node",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_terminal_idxs",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_terminal_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_beta",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_plateau",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_logistic_midpoint",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "gravity_growth_rate",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_decay",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "knn_weights",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "cutoff",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [
+        "nb.njit(parallel=True, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation",
+      "kind": "class",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 485,
+      "bases": [
+        "Base"
+      ],
+      "class_attributes": [
+        {
+          "name": "reach",
+          "value": "None"
+        },
+        {
+          "name": "gravity",
+          "value": "None"
+        },
+        {
+          "name": "gravity_exponential",
+          "value": "None"
+        },
+        {
+          "name": "gravity_logistic",
+          "value": "None"
+        },
+        {
+          "name": "knn_access",
+          "value": "None"
+        },
+        {
+          "name": "od_matrix",
+          "value": "None"
+        },
+        {
+          "name": "result_prefix",
+          "value": "''"
+        },
+        {
+          "name": "graph_engine",
+          "value": "None"
+        }
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.CompactNodeView",
+      "kind": "class",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 510,
+      "bases": [],
+      "class_attributes": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.CompactNodeView.__init__",
+      "kind": "dunder_method",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 513,
+      "signature": "(self, dtype=None, max_error=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "dtype",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "max_error",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.CompactNodeView.o_scope",
+      "kind": "method",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 534,
+      "signature": "(self, o_idx, search_radius)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_idx",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.CompactNodeView.o_access",
+      "kind": "method",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 549,
+      "signature": "(self, o_idx, settings, d_weights)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "o_idx",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "d_weights",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.MinimalElementList",
+      "kind": "class",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 571,
+      "bases": [],
+      "class_attributes": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.MinimalElementList.__init__",
+      "kind": "dunder_method",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 574,
+      "signature": "(self, weights)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "weights",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation.__init__",
+      "kind": "dunder_method",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 594,
+      "signature": "(self, topology, settings=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "topology",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation.Centrality",
+      "kind": "method",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 830,
+      "signature": "(self, settings)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWElevation.AccessibilityWElevation.OD_Matrix",
+      "kind": "method",
+      "source": "Engines/AccessibilityWElevation.py",
+      "line": 873,
+      "signature": "(self, search_radius=1000, pairwise=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": "float",
+          "default": "1000"
+        },
+        {
+          "name": "pairwise",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns.AccessibilityWTurns",
+      "kind": "class",
+      "source": "Engines/AccessibilityWTurns.py",
+      "line": 96,
+      "bases": [
+        "Base"
+      ],
+      "class_attributes": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns.StateGraph",
+      "kind": "class",
+      "source": "Engines/AccessibilityWTurns.py",
+      "line": 104,
+      "bases": [],
+      "class_attributes": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns.StateGraph.__init__",
+      "kind": "dunder_method",
+      "source": "Engines/AccessibilityWTurns.py",
+      "line": 107,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns.AccessibilityWTurns.__init__",
+      "kind": "dunder_method",
+      "source": "Engines/AccessibilityWTurns.py",
+      "line": 117,
+      "signature": "(self, topology, settings=None, use_cluster_splitting=True)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "topology",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": null,
+          "default": "None"
+        },
+        {
+          "name": "use_cluster_splitting",
+          "annotation": "bool",
+          "default": "True"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns.AccessibilityWTurns.Centrality",
+      "kind": "method",
+      "source": "Engines/AccessibilityWTurns.py",
+      "line": 559,
+      "signature": "(self, settings, show_progress=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "show_progress",
+          "annotation": null,
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AccessibilityWTurns.AccessibilityWTurns.OD_Matrix",
+      "kind": "method",
+      "source": "Engines/AccessibilityWTurns.py",
+      "line": 636,
+      "signature": "(self, search_radius=1000, pairwise=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "search_radius",
+          "annotation": "float",
+          "default": "1000"
+        },
+        {
+          "name": "pairwise",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow.AggregateFlow",
+      "kind": "class",
+      "source": "Engines/AggregateFlow.py",
+      "line": 743,
+      "bases": [
+        "Base"
+      ],
+      "class_attributes": [
+        {
+          "name": "edge_flow",
+          "value": "None"
+        },
+        {
+          "name": "edge_flow_AB",
+          "value": "None"
+        },
+        {
+          "name": "edge_flow_BA",
+          "value": "None"
+        },
+        {
+          "name": "node_flow",
+          "value": "None"
+        }
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow.AggregateFlow.__init__",
+      "kind": "dunder_method",
+      "source": "Engines/AggregateFlow.py",
+      "line": 776,
+      "signature": "(self, topology)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "topology",
+          "annotation": "Topology",
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.AggregateFlow.AggregateFlow.Centrality",
+      "kind": "method",
+      "source": "Engines/AggregateFlow.py",
+      "line": 1051,
+      "signature": "(self, settings)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.resolve_output_folder",
+      "kind": "function",
+      "source": "Engines/Base.py",
+      "line": 23,
+      "signature": "(settings, folder_prefix='')",
+      "parameters": [
+        {
+          "name": "settings",
+          "annotation": "Settings",
+          "default": null
+        },
+        {
+          "name": "folder_prefix",
+          "annotation": "str",
+          "default": "''"
+        }
+      ],
+      "returns": "str",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.write_gdf_outputs",
+      "kind": "function",
+      "source": "Engines/Base.py",
+      "line": 51,
+      "signature": "(gdf, settings, output_folder, file_name, logger, label, desc='', write_feather=True, write_csv=True, write_geojson=True, csv_drop_geometry=True)",
+      "parameters": [
+        {
+          "name": "gdf",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": "Settings",
+          "default": null
+        },
+        {
+          "name": "output_folder",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "file_name",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "logger",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "desc",
+          "annotation": "str",
+          "default": "''"
+        },
+        {
+          "name": "write_feather",
+          "annotation": "bool",
+          "default": "True"
+        },
+        {
+          "name": "write_csv",
+          "annotation": "bool",
+          "default": "True"
+        },
+        {
+          "name": "write_geojson",
+          "annotation": "bool",
+          "default": "True"
+        },
+        {
+          "name": "csv_drop_geometry",
+          "annotation": "bool",
+          "default": "True"
+        }
+      ],
+      "returns": "bool",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base",
+      "kind": "class",
+      "source": "Engines/Base.py",
+      "line": 99,
+      "bases": [],
+      "class_attributes": [
+        {
+          "name": "topology",
+          "value": null
+        },
+        {
+          "name": "logger",
+          "value": null
+        },
+        {
+          "name": "num_threads",
+          "value": "None"
+        },
+        {
+          "name": "num_clusters",
+          "value": "None"
+        },
+        {
+          "name": "reach",
+          "value": "None"
+        },
+        {
+          "name": "gravity_exponential",
+          "value": "None"
+        },
+        {
+          "name": "gravity_logistic",
+          "value": "None"
+        },
+        {
+          "name": "knn_access",
+          "value": "None"
+        },
+        {
+          "name": "od_matrix",
+          "value": "None"
+        }
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base.__init__",
+      "kind": "dunder_method",
+      "source": "Engines/Base.py",
+      "line": 122,
+      "signature": "(self, topology)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "topology",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base.UpdateToppology",
+      "kind": "method",
+      "source": "Engines/Base.py",
+      "line": 130,
+      "signature": "(self, topology)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "topology",
+          "annotation": "Topology",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base.Centrality",
+      "kind": "method",
+      "source": "Engines/Base.py",
+      "line": 134,
+      "signature": "(self, settings)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": "Settings",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "unsupported_stub": "raises NotImplementedError"
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base.ExportAccessibilityResults",
+      "kind": "method",
+      "source": "Engines/Base.py",
+      "line": 137,
+      "signature": "(self, settings, folder_prefix='', file_name='')",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": "Settings",
+          "default": null
+        },
+        {
+          "name": "folder_prefix",
+          "annotation": "str",
+          "default": "''"
+        },
+        {
+          "name": "file_name",
+          "annotation": "str",
+          "default": "''"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base.ExportODM",
+      "kind": "method",
+      "source": "Engines/Base.py",
+      "line": 206,
+      "signature": "(self, settings, folder_prefix, file_name='ODM', format='Sqlite', speed=5.0)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": "Settings",
+          "default": null
+        },
+        {
+          "name": "folder_prefix",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "file_name",
+          "annotation": "str",
+          "default": "'ODM'"
+        },
+        {
+          "name": "format",
+          "annotation": "str",
+          "default": "'Sqlite'"
+        },
+        {
+          "name": "speed",
+          "annotation": "float",
+          "default": "5.0"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Base.Base.ExportFlowResult",
+      "kind": "method",
+      "source": "Engines/Base.py",
+      "line": 289,
+      "signature": "(self, settings, folder_prefix='', file_name='flow')",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "folder_prefix",
+          "annotation": null,
+          "default": "''"
+        },
+        {
+          "name": "file_name",
+          "annotation": null,
+          "default": "'flow'"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow.Flow",
+      "kind": "class",
+      "source": "Engines/Flow.py",
+      "line": 871,
+      "bases": [
+        "Base"
+      ],
+      "class_attributes": [
+        {
+          "name": "edge_flow",
+          "value": "None"
+        },
+        {
+          "name": "edge_flow_AB",
+          "value": "None"
+        },
+        {
+          "name": "edge_flow_BA",
+          "value": "None"
+        },
+        {
+          "name": "node_flow",
+          "value": "None"
+        }
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow.Flow.__init__",
+      "kind": "dunder_method",
+      "source": "Engines/Flow.py",
+      "line": 907,
+      "signature": "(self, topology)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "topology",
+          "annotation": "Topology",
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines.Flow.Flow.Centrality",
+      "kind": "method",
+      "source": "Engines/Flow.py",
+      "line": 1912,
+      "signature": "(self, settings)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": "Settings",
+          "default": null
+        }
+      ],
+      "returns": "dict",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._betweenness_numba.build_csr_from_digraph",
+      "kind": "function",
+      "source": "Engines/_betweenness_numba.py",
+      "line": 37,
+      "signature": "(G, n_total_nodes)",
+      "parameters": [
+        {
+          "name": "G",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "n_total_nodes",
+          "annotation": "int",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Engines._large_flow_workspace.select_chunk",
+      "kind": "function",
+      "source": "Engines/_large_flow_workspace.py",
+      "line": 54,
+      "signature": "(v_prime, remaining, dist_itemsize, pred_itemsize, mask_itemsize, fixed_live_base, retained_parts_bytes, row_temporaries, source_index_cost, margin_bytes, cap_bytes)",
+      "parameters": [
+        {
+          "name": "v_prime",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "remaining",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "dist_itemsize",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "pred_itemsize",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "mask_itemsize",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "fixed_live_base",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "retained_parts_bytes",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "row_temporaries",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "source_index_cost",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "margin_bytes",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "cap_bytes",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Logger.Logger",
+      "kind": "class",
+      "source": "Logger.py",
+      "line": 5,
+      "bases": [],
+      "class_attributes": []
+    },
+    {
+      "symbol": "urban_network_analysis.Logger.Logger.__init__",
+      "kind": "dunder_method",
+      "source": "Logger.py",
+      "line": 16,
+      "signature": "(self, verbosity=1)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "verbosity",
+          "annotation": "int",
+          "default": "1"
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Logger.Logger.log",
+      "kind": "method",
+      "source": "Logger.py",
+      "line": 26,
+      "signature": "(self, event, details='', v=0)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "event",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "details",
+          "annotation": "str",
+          "default": "''"
+        },
+        {
+          "name": "v",
+          "annotation": "int",
+          "default": "0"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Logger.Logger.warn",
+      "kind": "method",
+      "source": "Logger.py",
+      "line": 56,
+      "signature": "(self, warning_text)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "warning_text",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings",
+      "kind": "class",
+      "source": "Settings.py",
+      "line": 27,
+      "bases": [],
+      "class_attributes": [
+        {
+          "name": "name",
+          "value": "'Default'"
+        },
+        {
+          "name": "data_folder",
+          "value": "''"
+        },
+        {
+          "name": "network_file",
+          "value": "'Network.feather'"
+        },
+        {
+          "name": "origins_file",
+          "value": "'origins.feather'"
+        },
+        {
+          "name": "destinations_file",
+          "value": "'destinations.feather'"
+        },
+        {
+          "name": "network_weight_column",
+          "value": "'Geometric'"
+        },
+        {
+          "name": "network_weight_default",
+          "value": "1.0"
+        },
+        {
+          "name": "network_precision",
+          "value": "3"
+        },
+        {
+          "name": "network_saved_nodes",
+          "value": "False"
+        },
+        {
+          "name": "network_load_nodes",
+          "value": "True"
+        },
+        {
+          "name": "calculate_reach",
+          "value": "True"
+        },
+        {
+          "name": "calculate_exponential_gravity",
+          "value": "True"
+        },
+        {
+          "name": "calculate_logistic_gravity",
+          "value": "True"
+        },
+        {
+          "name": "calculate_knn_access",
+          "value": "True"
+        },
+        {
+          "name": "origin_weight_column",
+          "value": "'Count'"
+        },
+        {
+          "name": "destination_weight_column",
+          "value": "'Count'"
+        },
+        {
+          "name": "origin_uid_column",
+          "value": "None"
+        },
+        {
+          "name": "origin_destination_id_column",
+          "value": "''"
+        },
+        {
+          "name": "destination_id_column",
+          "value": "''"
+        },
+        {
+          "name": "default_cost",
+          "value": "1.0"
+        },
+        {
+          "name": "use_nearest_destination",
+          "value": "False"
+        },
+        {
+          "name": "search_radius",
+          "value": "1500"
+        },
+        {
+          "name": "clasters",
+          "value": "1"
+        },
+        {
+          "name": "cluster_parallel",
+          "value": "False"
+        },
+        {
+          "name": "cluster_workers",
+          "value": "1"
+        },
+        {
+          "name": "gravity_beta",
+          "value": "0.001"
+        },
+        {
+          "name": "gravity_logistic_midpoint",
+          "value": "500"
+        },
+        {
+          "name": "gravity_plateau",
+          "value": "0"
+        },
+        {
+          "name": "gravity_decay_constant",
+          "value": "math.log(99)"
+        },
+        {
+          "name": "knn_weights",
+          "value": "(1.0, 1.0, 0.5)"
+        },
+        {
+          "name": "knn_decay",
+          "value": "'logistic'"
+        },
+        {
+          "name": "elevation",
+          "value": "False"
+        },
+        {
+          "name": "elevation_penalty",
+          "value": "4"
+        },
+        {
+          "name": "turns",
+          "value": "False"
+        },
+        {
+          "name": "turn_threshold",
+          "value": "45"
+        },
+        {
+          "name": "turn_penalty",
+          "value": "32"
+        },
+        {
+          "name": "output_folder",
+          "value": "None"
+        },
+        {
+          "name": "output_wStamp",
+          "value": "True"
+        },
+        {
+          "name": "output_copy_source_data",
+          "value": "False"
+        },
+        {
+          "name": "output_geojson",
+          "value": "True"
+        },
+        {
+          "name": "output_feather",
+          "value": "True"
+        },
+        {
+          "name": "output_csv",
+          "value": "False"
+        },
+        {
+          "name": "output_shp",
+          "value": "False"
+        },
+        {
+          "name": "csv_delimiter",
+          "value": "','"
+        },
+        {
+          "name": "result_prefix",
+          "value": "''"
+        },
+        {
+          "name": "output_file_name",
+          "value": "'Results'"
+        },
+        {
+          "name": "flow_engine",
+          "value": "'aggregate_flow'"
+        },
+        {
+          "name": "flow_detour_ratio",
+          "value": "1.05"
+        },
+        {
+          "name": "flow_detour_buffer",
+          "value": "100.0"
+        },
+        {
+          "name": "flow_detour_mode",
+          "value": "'ratio'"
+        },
+        {
+          "name": "flow_decay",
+          "value": "True"
+        },
+        {
+          "name": "flow_decay_curve",
+          "value": "'exponential'"
+        },
+        {
+          "name": "flow_decay_method",
+          "value": "'closest'"
+        },
+        {
+          "name": "flow_gravity_cap",
+          "value": "1.0"
+        },
+        {
+          "name": "flow_path_detour_penalty",
+          "value": "'logistic'"
+        },
+        {
+          "name": "flow_route_enumeration_beta",
+          "value": "0.0"
+        },
+        {
+          "name": "flow_route_enumeration_logistic_midpoint",
+          "value": "150.0"
+        },
+        {
+          "name": "flow_origin_weights",
+          "value": "True"
+        },
+        {
+          "name": "flow_destination_weights",
+          "value": "True"
+        },
+        {
+          "name": "flow_return_directional",
+          "value": "False"
+        },
+        {
+          "name": "observer_points_file",
+          "value": "None"
+        },
+        {
+          "name": "observer_points_uid_column",
+          "value": "None"
+        },
+        {
+          "name": "observer_points_snap_to",
+          "value": "'edge'"
+        },
+        {
+          "name": "obstacle_points_file",
+          "value": "None"
+        },
+        {
+          "name": "obstacle_points_uid_column",
+          "value": "None"
+        },
+        {
+          "name": "obstacle_points_penalty_column",
+          "value": "'penalty'"
+        },
+        {
+          "name": "obstacle_points_direction_column",
+          "value": "None"
+        },
+        {
+          "name": "obstacle_points_snap_to",
+          "value": "'edge'"
+        },
+        {
+          "name": "flow_track_obstacle_points_usage",
+          "value": "False"
+        },
+        {
+          "name": "flow_k_nearest_destinations",
+          "value": "0"
+        },
+        {
+          "name": "flow_max_destinations_per_origin",
+          "value": "0"
+        },
+        {
+          "name": "flow_n_alternatives",
+          "value": "30"
+        },
+        {
+          "name": "flow_alternative_penalty_factor",
+          "value": "1.01"
+        },
+        {
+          "name": "flow_route_id_column",
+          "value": "None"
+        },
+        {
+          "name": "flow_output_routes",
+          "value": "False"
+        },
+        {
+          "name": "flow_debug_print_paths",
+          "value": "False"
+        },
+        {
+          "name": "flow_track_origins_per_destination",
+          "value": "False"
+        },
+        {
+          "name": "flow_compute_node_flow",
+          "value": "False"
+        },
+        {
+          "name": "batch_composite_output",
+          "value": "False"
+        },
+        {
+          "name": "batch_composite_result_column",
+          "value": "'knn_access'"
+        },
+        {
+          "name": "batch_composite_column_prefix",
+          "value": "''"
+        },
+        {
+          "name": "batch_composite_sum_column_name",
+          "value": "'composite_sum'"
+        },
+        {
+          "name": "progressbar",
+          "value": "True"
+        },
+        {
+          "name": "logger_verbosity",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.__post_init__",
+      "kind": "dunder_method",
+      "source": "Settings.py",
+      "line": 313,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.ApplyRow",
+      "kind": "method",
+      "source": "Settings.py",
+      "line": 320,
+      "signature": "(self, row)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "row",
+          "annotation": "dict",
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.Load",
+      "kind": "method",
+      "source": "Settings.py",
+      "line": 371,
+      "signature": "(self, file_path)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "file_path",
+          "annotation": "str",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.Save",
+      "kind": "method",
+      "source": "Settings.py",
+      "line": 401,
+      "signature": "(self, file_path)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "file_path",
+          "annotation": "str",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.Validation",
+      "kind": "method",
+      "source": "Settings.py",
+      "line": 409,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.Reset",
+      "kind": "method",
+      "source": "Settings.py",
+      "line": 587,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Settings.Settings.ToDict",
+      "kind": "method",
+      "source": "Settings.py",
+      "line": 592,
+      "signature": "(self, compact=True)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "compact",
+          "annotation": "bool",
+          "default": "True"
+        }
+      ],
+      "returns": "dict",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology",
+      "kind": "class",
+      "source": "Topology.py",
+      "line": 43,
+      "bases": [],
+      "class_attributes": [
+        {
+          "name": "network",
+          "value": "None"
+        },
+        {
+          "name": "origins",
+          "value": "None"
+        },
+        {
+          "name": "destinations",
+          "value": "None"
+        },
+        {
+          "name": "observer_points",
+          "value": "None"
+        },
+        {
+          "name": "obstacles",
+          "value": "None"
+        },
+        {
+          "name": "obstacle_arc_penalty_AB",
+          "value": "None"
+        },
+        {
+          "name": "obstacle_arc_penalty_BA",
+          "value": "None"
+        },
+        {
+          "name": "obstacle_node_penalty",
+          "value": "None"
+        },
+        {
+          "name": "access_points",
+          "value": "None"
+        },
+        {
+          "name": "num_threads",
+          "value": "mp.cpu_count() - 1 if mp.cpu_count() > 1 else 1"
+        },
+        {
+          "name": "has_clusters",
+          "value": "False"
+        },
+        {
+          "name": "cluster_masks",
+          "value": "None"
+        },
+        {
+          "name": "logger",
+          "value": "None"
+        },
+        {
+          "name": "num_clusters",
+          "value": "None"
+        },
+        {
+          "name": "crs",
+          "value": "None"
+        }
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.__init__",
+      "kind": "dunder_method",
+      "source": "Topology.py",
+      "line": 92,
+      "signature": "(self, verbosity=1, num_threads=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "verbosity",
+          "annotation": "int",
+          "default": "1"
+        },
+        {
+          "name": "num_threads",
+          "annotation": "int",
+          "default": "None"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.AddNetwork",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 103,
+      "signature": "(self, settings)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": "Settings",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.AddOrigins",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 195,
+      "signature": "(self, settings)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": "Settings",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.AddDestinations",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 216,
+      "signature": "(self, settings)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": "Settings",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.AddObservers",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 235,
+      "signature": "(self, settings)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": "Settings",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.AddObstacles",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 291,
+      "signature": "(self, settings)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "settings",
+          "annotation": "Settings",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.get_obstacle_arc_penalties",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 420,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.get_partial_edge_corrections",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 439,
+      "signature": "(self, access_points, for_origins=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "access_points",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "for_origins",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.BuildClusters",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 530,
+      "signature": "(self, n_clusters=10, search_radius=100, random_state=42, cluster_concave_ratio=0.23)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "n_clusters",
+          "annotation": "int",
+          "default": "10"
+        },
+        {
+          "name": "search_radius",
+          "annotation": "float",
+          "default": "100"
+        },
+        {
+          "name": "random_state",
+          "annotation": "int",
+          "default": "42"
+        },
+        {
+          "name": "cluster_concave_ratio",
+          "annotation": "float",
+          "default": "0.23"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.BuildTurnPenalties",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 614,
+      "signature": "(self, turn_angle_threshold=45.0, turn_penalty=32.0, store_zero_penalties=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "turn_angle_threshold",
+          "annotation": "float",
+          "default": "45.0"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": "float",
+          "default": "32.0"
+        },
+        {
+          "name": "store_zero_penalties",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.BuildAccessPoints",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 629,
+      "signature": "(self, source_file, cost_attribute='Count', default_cost=1, uid_attribute=None, label='Access points')",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "source_file",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "cost_attribute",
+          "annotation": "str",
+          "default": "'Count'"
+        },
+        {
+          "name": "default_cost",
+          "annotation": "float",
+          "default": "1"
+        },
+        {
+          "name": "uid_attribute",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": "'Access points'"
+        }
+      ],
+      "returns": "AccessPoints",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.Evaluate",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 809,
+      "signature": "(self, raise_on_error=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "raise_on_error",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": "dict",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.ExportNetworkNodes",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 939,
+      "signature": "(self, output_file)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "output_file",
+          "annotation": "str",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.ExportNetworkNodesGradient",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 952,
+      "signature": "(self, output_file)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "output_file",
+          "annotation": "str",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.ExportNetworkLinks",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 1022,
+      "signature": "(self, output_file)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "output_file",
+          "annotation": "str",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.ExportNetwork",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 1034,
+      "signature": "(self, output_file, geometry_column='geometry', keep_z=False, connected=False, export_filtered_edges=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "output_file",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "geometry_column",
+          "annotation": "str",
+          "default": "'geometry'"
+        },
+        {
+          "name": "keep_z",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "connected",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "export_filtered_edges",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Topology.ExportClusters",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 1040,
+      "signature": "(self, output_folder)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "output_folder",
+          "annotation": "str",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network",
+      "kind": "class",
+      "source": "Topology.py",
+      "line": 1110,
+      "bases": [],
+      "class_attributes": [
+        {
+          "name": "logger",
+          "value": "None"
+        },
+        {
+          "name": "node_points",
+          "value": "None"
+        },
+        {
+          "name": "start_nodes",
+          "value": "None"
+        },
+        {
+          "name": "end_nodes",
+          "value": "None"
+        },
+        {
+          "name": "degrees",
+          "value": "None"
+        },
+        {
+          "name": "z",
+          "value": "None"
+        },
+        {
+          "name": "node_gradient",
+          "value": "None"
+        },
+        {
+          "name": "geometry",
+          "value": "None"
+        },
+        {
+          "name": "weights",
+          "value": "None"
+        },
+        {
+          "name": "lengths",
+          "value": "None"
+        },
+        {
+          "name": "AB_weights",
+          "value": "None"
+        },
+        {
+          "name": "BA_weights",
+          "value": "None"
+        },
+        {
+          "name": "node_flow",
+          "value": "None"
+        },
+        {
+          "name": "edge_flow",
+          "value": "None"
+        },
+        {
+          "name": "mask",
+          "value": "None"
+        },
+        {
+          "name": "turns",
+          "value": "None"
+        },
+        {
+          "name": "edge_sindex",
+          "value": "None"
+        },
+        {
+          "name": "num_threads",
+          "value": "mp.cpu_count() - 1 if mp.cpu_count() > 1 else 1"
+        },
+        {
+          "name": "clasters_byId",
+          "value": "None"
+        }
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network.__init__",
+      "kind": "dunder_method",
+      "source": "Topology.py",
+      "line": 1147,
+      "signature": "(self, logger)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "logger",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network.BuildTopology",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 1152,
+      "signature": "(self, discard_redundant_edges=False, precision=6)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "discard_redundant_edges",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "precision",
+          "annotation": "int",
+          "default": "6"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network.BuildTopologyWElevation",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 1231,
+      "signature": "(self, discard_redundant_edges=False, use_elevation=False, elevation_coeficent=1.0, precision=6, load_nodes=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "discard_redundant_edges",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "use_elevation",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "elevation_coeficent",
+          "annotation": "float",
+          "default": "1.0"
+        },
+        {
+          "name": "precision",
+          "annotation": "int",
+          "default": "6"
+        },
+        {
+          "name": "load_nodes",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network.BuildTurnPenalties",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 1370,
+      "signature": "(self, turn_angle_threshold=45.0, turn_penalty=32.0, store_zero_penalties=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "turn_angle_threshold",
+          "annotation": "float",
+          "default": "45.0"
+        },
+        {
+          "name": "turn_penalty",
+          "annotation": "float",
+          "default": "32.0"
+        },
+        {
+          "name": "store_zero_penalties",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network.ExportClusters",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 1515,
+      "signature": "(self, output_file)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "output_file",
+          "annotation": "str",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.Network.ExportNetwork",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 1532,
+      "signature": "(self, output_file, geometry_type='geometry', keep_z=False, connected=False, export_filtered_edges=False)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "output_file",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "geometry_type",
+          "annotation": "str",
+          "default": "'geometry'"
+        },
+        {
+          "name": "keep_z",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "connected",
+          "annotation": "bool",
+          "default": "False"
+        },
+        {
+          "name": "export_filtered_edges",
+          "annotation": "bool",
+          "default": "False"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.AccessPoints",
+      "kind": "class",
+      "source": "Topology.py",
+      "line": 2051,
+      "bases": [],
+      "class_attributes": [
+        {
+          "name": "num_threads",
+          "value": "mp.cpu_count() - 1 if mp.cpu_count() > 1 else 1"
+        },
+        {
+          "name": "geometry",
+          "value": "None"
+        },
+        {
+          "name": "node_weight",
+          "value": "None"
+        },
+        {
+          "name": "uid",
+          "value": "None"
+        },
+        {
+          "name": "nearest_edge_point",
+          "value": "None"
+        },
+        {
+          "name": "nearest_edge_id",
+          "value": "None"
+        },
+        {
+          "name": "edge_start_node",
+          "value": "None"
+        },
+        {
+          "name": "edge_end_node",
+          "value": "None"
+        },
+        {
+          "name": "weight_to_start",
+          "value": "None"
+        },
+        {
+          "name": "weight_to_end",
+          "value": "None"
+        },
+        {
+          "name": "clasters",
+          "value": "None"
+        },
+        {
+          "name": "clasters_byId",
+          "value": "None"
+        },
+        {
+          "name": "raw",
+          "value": "None"
+        }
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.AccessPoints.__init__",
+      "kind": "dunder_method",
+      "source": "Topology.py",
+      "line": 2081,
+      "signature": "(self, logger)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "logger",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.AccessPoints.xy",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 2100,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": "np.ndarray",
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.AccessPoints.ExportConnections",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 2105,
+      "signature": "(self, output_file)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "output_file",
+          "annotation": "str",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.Topology.AccessPoints.ExportClusters",
+      "kind": "method",
+      "source": "Topology.py",
+      "line": 2127,
+      "signature": "(self, output_file)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "output_file",
+          "annotation": "str",
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA",
+      "kind": "class",
+      "source": "UNA.py",
+      "line": 22,
+      "bases": [],
+      "class_attributes": [
+        {
+          "name": "topology",
+          "value": null
+        },
+        {
+          "name": "settings",
+          "value": null
+        },
+        {
+          "name": "accessibility",
+          "value": "None"
+        },
+        {
+          "name": "flow",
+          "value": "None"
+        },
+        {
+          "name": "composite_result",
+          "value": "None"
+        },
+        {
+          "name": "has_centrality_results",
+          "value": "False"
+        },
+        {
+          "name": "has_flow_results",
+          "value": "False"
+        }
+      ]
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.__init__",
+      "kind": "dunder_method",
+      "source": "UNA.py",
+      "line": 42,
+      "signature": "(self, verbosity=1)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "verbosity",
+          "annotation": "int",
+          "default": "1"
+        }
+      ],
+      "returns": null,
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.PrintSettings",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 61,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.LoadSettings",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 70,
+      "signature": "(self, file_path=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "file_path",
+          "annotation": "str",
+          "default": "None"
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.SaveSettings",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 79,
+      "signature": "(self, file_path=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "file_path",
+          "annotation": "str",
+          "default": "None"
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.DataValidation",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 83,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": [],
+      "unsupported_stub": "raises NotImplementedError"
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.RunBatch",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 100,
+      "signature": "(self, analysis, pairing_file=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "analysis",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "pairing_file",
+          "annotation": "str",
+          "default": "None"
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.RunAccessibility",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 193,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.RunODM",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 385,
+      "signature": "(self, format='Sqlite', speed=5.0, file_name=None)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "format",
+          "annotation": "str",
+          "default": "'Sqlite'"
+        },
+        {
+          "name": "speed",
+          "annotation": "float",
+          "default": "5.0"
+        },
+        {
+          "name": "file_name",
+          "annotation": "str",
+          "default": "None"
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.RunFlow",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 449,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.ConvertProject_csv_to_json",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 518,
+      "signature": "(self, csv_file, json_file=None, compact=True)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "csv_file",
+          "annotation": "str",
+          "default": null
+        },
+        {
+          "name": "json_file",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "compact",
+          "annotation": "bool",
+          "default": "True"
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.SaveSettingsToProject",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 562,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.ClearProject",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 565,
+      "signature": "(self)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.ExportProjectAsJSON",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 570,
+      "signature": "(self, folder=None, file_name='project', compact=True)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "folder",
+          "annotation": "str",
+          "default": "None"
+        },
+        {
+          "name": "file_name",
+          "annotation": "str",
+          "default": "'project'"
+        },
+        {
+          "name": "compact",
+          "annotation": "bool",
+          "default": "True"
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.ExportProjectAsCSV",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 595,
+      "signature": "(self, file_name='project')",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "file_name",
+          "annotation": "str",
+          "default": "'project'"
+        }
+      ],
+      "returns": "None",
+      "decorators": []
+    },
+    {
+      "symbol": "urban_network_analysis.UNA.UNA.ConvertGeoJson_to_Feather",
+      "kind": "method",
+      "source": "UNA.py",
+      "line": 629,
+      "signature": "(self, geojson_file, feather_file)",
+      "parameters": [
+        {
+          "name": "self",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "geojson_file",
+          "annotation": null,
+          "default": null
+        },
+        {
+          "name": "feather_file",
+          "annotation": null,
+          "default": null
+        }
+      ],
+      "returns": null,
+      "decorators": [],
+      "unsupported_stub": "raises NotImplementedError"
+    },
+    {
+      "symbol": "urban_network_analysis.__init__.about",
+      "kind": "function",
+      "source": "__init__.py",
+      "line": 49,
+      "signature": "()",
+      "parameters": [],
+      "returns": "None",
+      "decorators": []
+    }
+  ]
+}

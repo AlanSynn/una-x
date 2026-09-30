@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "frozen_date": "2026-09-30",
+  "policy": "Every corrected behavior carries exactly one bug ID. Status 'reproduced' requires an executed pinned-reference run recorded under evidence/. Status 'hypothesis' requires confirmation with a minimal failing input before corrected_v1 implements a fix. 'registered_unsupported' records pinned broken paths that parity must not silently include; corrected_v1 may repair them under their ID.",
+  "bugs": [
+    {
+      "id": "BUG-MADINA-BTN-STATS-NAMEERROR",
+      "title": "betweenness per-origin diagnostics crash and d_graph poisoning with closest_destination=True",
+      "domain": "madina_legacy (pinned 8b5c3bd3) una/betweenness.py betweenness_exposure stats block",
+      "mechanism": "eligible_destinations_shortest_distance is bound only in the Huff (closest_destination=False) branch; the stats block dereferences it unconditionally. UnboundLocalError is caught by a bare except whose handler `continue`s, skipping remove_node_to_graph, so processed origins remain inserted in the shared d_graph for subsequent origins.",
+      "status": "reproduced",
+      "evidence": "campaigns/una_platform/evidence/tasks/FAILURES (3x3 grid run, 2026-09-30: UnboundLocalError for every origin; betweenness bytes deterministic under seed; graph poisoning visible in scope)",
+      "intended_rule": "per-origin diagnostics complete without exception and every inserted origin is removed from the working graph after processing",
+      "corrected_v1_action": "compute closest/furthest destination distances on the closest-destination branch as well; always remove the origin in a finally path",
+      "legacy_disposition": "madina_legacy reproduces the defective behavior bit-for-bit on valid inputs (it is the pinned reference)",
+      "migration": "corrected_v1 users see full diagnostics columns and unchanged graph state; documented in bug_deltas.json"
+    },
+    {
+      "id": "BUG-FRAC-WEIGHT-TRUNC",
+      "title": "fractional destination weights truncated/misrepresented (integer reach accumulation; float32 node weight storage in Madina)",
+      "domain": "UNA Engines accessibility reach; madina efficient_node_insertion weight column dtype float32",
+      "status": "hypothesis",
+      "intended_rule": "weighted reach preserves binary64 destination weight sums per the corrected reference",
+      "confirming_probe": "two-destination fixture with weights 0.25 and 0.50 (dossier 02 #1)"
+    },
+    {
+      "id": "BUG-SAME-EDGE-OD",
+      "title": "origin/destination on the same host edge: partial direct travel vs endpoint routes",
+      "domain": "engines' OD cost assembly",
+      "status": "hypothesis",
+      "intended_rule": "perceived distance = partial edge impedance between snap points in travel direction, derived from the model, not Euclidean substitution",
+      "confirming_probe": "single edge, OD snapped interior at asymmetric fractions"
+    },
+    {
+      "id": "BUG-COINCIDENT-SEEDS",
+      "title": "coincident terminal IDs: seed overwrite vs minimum in shortest-path label init",
+      "domain": "Dijkstra initialization in engines",
+      "status": "hypothesis",
+      "intended_rule": "seeds combine by declared minimum/tie rule; corrected reference documents the tie policy",
+      "confirming_probe": "two terminals snapped to the same network node"
+    },
+    {
+      "id": "BUG-NONFINITE-NOVALIDATION",
+      "title": "negative/nonfinite costs, finite-radius sentinel overflow, zero-cost cycles reach kernels unvalidated",
+      "domain": "input validation boundary before engines/backends",
+      "status": "hypothesis",
+      "intended_rule": "typed rejection before execution; proof of termination on admitted finite nonnegative graphs; safety corrections replace crashes/hangs with bounded failures",
+      "confirming_probe": "NaN/inf/negative weights; zero-cost cycle graph; radius near max float"
+    },
+    {
+      "id": "BUG-SVC-GEOMCOLL",
+      "title": "service_area passes GeometryCollection scope to clip (upstream Issue #7)",
+      "domain": "madina tools.service_area",
+      "status": "hypothesis",
+      "intended_rule": "preserve points/lines/polygons as geometry; exact intersection behavior; no fabricated buffer or discarded components",
+      "confirming_probe": "scope = union of destination hull + network hull producing GeometryCollection"
+    },
+    {
+      "id": "BUG-PREP-ZERO-COORD-DROP",
+      "title": "prepare_geometry Z-drop uses tuple(filter(None,[x,y])) which also drops 0.0 planar coordinates",
+      "domain": "madina zonal/utils.py prepare_geometry",
+      "status": "hypothesis",
+      "intended_rule": "drop only the Z coordinate; preserve x/y including zeros",
+      "confirming_probe": "3D geometry with a vertex at x=0 or y=0 alongside a has_z row"
+    },
+    {
+      "id": "BUG-JIT-DISABLED-STUB",
+      "title": "NUMBA_DISABLE_JIT diagnostic mode: @overload-only pass stub raises TypeError (historical unresolved obligation)",
+      "domain": "baseline engines numba dispatch",
+      "status": "hypothesis",
+      "intended_rule": "JIT-disabled execution either runs the pure-Python route or takes the declared reference route with identical results",
+      "confirming_probe": "run accessibility/flow with NUMBA_DISABLE_JIT=1 on a small fixture"
+    },
+    {
+      "id": "BUG-LAYER-SET-STYLE-ATTRERROR",
+      "title": "Layer.set_style/color_layer reference undefined self.default_colors (AttributeError)",
+      "domain": "madina zonal/layer.py",
+      "status": "registered_unsupported",
+      "corrected_v1_action": "working style application via Zonal DEFAULT_COLORS/colors, registered as a correction; madina_legacy reproduces the AttributeError"
+    },
+    {
+      "id": "BUG-NETWORK-TO-LAYER-TYPEERROR",
+      "title": "Network.network_to_layer constructs Layer with 2 of 6 required args (TypeError)",
+      "domain": "madina zonal/network.py",
+      "status": "registered_unsupported",
+      "corrected_v1_action": "construct valid Layer objects; madina_legacy reproduces the TypeError"
+    },
+    {
+      "id": "BUG-TURN-ELEV-AUDIT",
+      "title": "focused audit family: turn/elevation partial-edge formulas, KNN parameter selection, decay endpoints/overflow, demand normalization/conservation, parallel-edge attribution, empty arrays, stale obstacle/observer state, per-row workflow Network_File changes",
+      "domain": "engines + compat workflows",
+      "status": "hypothesis",
+      "note": "dossier 02 #6; each confirmed sub-finding gets its own bug ID (BUG-TEA-<n>) with independent derivation"
+    }
+  ]
+}

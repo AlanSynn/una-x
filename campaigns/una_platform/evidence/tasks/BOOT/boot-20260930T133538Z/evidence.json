@@ -1,0 +1,36 @@
+{
+  "run_id": "boot-20260930T133538Z",
+  "checks": [
+    {
+      "name": "packet_validator",
+      "result": "passed",
+      "detail": "514 checks / 39 tasks, exit 0 (validate_packet.py)"
+    },
+    {
+      "name": "packet_tool_tests",
+      "result": "passed",
+      "detail": "31 tests OK (python3 -m unittest discover -s campaigns/una_platform/tests)"
+    },
+    {
+      "name": "source_pin_drift",
+      "result": "reconciled",
+      "detail": "HEAD cd957fd src tree == baseline src tree 3c59bb0d; runtime source unchanged by packet publication"
+    },
+    {
+      "name": "baseline_import",
+      "result": "passed",
+      "detail": "urban_network_analysis 2.6.0 imports; 15 modules enumerated"
+    },
+    {
+      "name": "environment_created",
+      "result": "done",
+      "detail": "alan env frozen: python 3.11.4, numpy 2.4.6, numba 0.67.0, scipy 1.17.1, pandas 3.0.6, geopandas 1.2.0, shapely 2.1.2, networkx 3.6.1"
+    },
+    {
+      "name": "historical_evidence_integrity",
+      "result": "preserved",
+      "detail": "no writes under campaigns/history/ or pre-existing evidence/ files"
+    }
+  ],
+  "receipt_path": "campaigns/una_platform/evidence/tasks/BOOT/boot-20260930T133538Z/receipt.json"
+}

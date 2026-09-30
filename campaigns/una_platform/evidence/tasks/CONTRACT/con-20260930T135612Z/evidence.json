@@ -1,0 +1,36 @@
+{
+  "run_id": "con-20260930T135612Z",
+  "checks": [
+    {
+      "name": "una_legacy_reference",
+      "result": "established",
+      "detail": "baseline wheel installed, identity verified, tests run, state recorded"
+    },
+    {
+      "name": "madina_legacy_reference",
+      "result": "established",
+      "detail": "bridge audited (2 dependency-only edits), hashed, smoke-verified, determinism verified under seed"
+    },
+    {
+      "name": "canonical_fold",
+      "result": "frozen",
+      "detail": "NUMERICS partition adopted verbatim"
+    },
+    {
+      "name": "bug_registry",
+      "result": "frozen",
+      "detail": "1 reproduced + 7 hypothesis + 2 registered_unsupported + 1 audit family"
+    },
+    {
+      "name": "public_schema",
+      "result": "approved",
+      "detail": "frozen in contract.md before any worker codes against it"
+    },
+    {
+      "name": "negative_control_note",
+      "result": "deferred_to_harness",
+      "detail": "HARNESS owns broken-candidate controls; CONTRACT only freezes references"
+    }
+  ],
+  "receipt_path": "campaigns/una_platform/evidence/tasks/CONTRACT/con-20260930T135612Z/receipt.json"
+}

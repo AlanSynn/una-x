@@ -1,0 +1,36 @@
+{
+  "task": "INVENTORY",
+  "run_id": "inv-20260930T134302Z",
+  "date_utc": "2026-09-30",
+  "objective": "Expand AST/doc/test census into every supported API symbol, parameter, mutation, return and default; record unsupported upstream stubs separately.",
+  "inputs": {
+    "madina_pin": "8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6",
+    "madina_clone": ".refs/madina (read-only; src tree de818b93629911743799092ff7347ed2326683af and all 12 pinned file hashes verified)",
+    "una_baseline": "16bf404d2cc5e776a78dc073c80405f6d186da29 (src tree 3c59bb0d3f9bc1fba7547be47ec63add88dd3031)"
+  },
+  "outputs": {
+    "campaigns/una_platform/evidence/api/inventory_madina_pinned.json": "3e25e19b5aaf3a24d3d10632b90a159f65aaa4104acfe34af62fd3da5228db16",
+    "campaigns/una_platform/evidence/api/inventory_una_baseline.json": "551603fa730d5a00eeaab808da892c611840a54cfc59d5263550351b3b8e7bed",
+    "campaigns/una_platform/evidence/api/api_matrix.json": "875d80e9fb0da08a9f9d249e1cc2654e9d49f55097120e97224e0f41af119222",
+    "campaigns/una_platform/evidence/api/generate_api_matrix.py": "e43749e4374cb5d537a59d5f3e4b401cc415ba3fe1b741f6990c6a533256e3a1",
+    "campaigns/una_platform/evidence/api/semantic_notes.md": "96244c057d52c1d3f282de5e80cd93cc1410dae9605d7658e476a2d7557c4377"
+  },
+  "census": {
+    "madina_public_records": 76,
+    "una_baseline_public_records": 112,
+    "seed_rows_expanded": 18,
+    "seed_file_untouched": true,
+    "unsupported_stubs": [
+      "madina.zonal.network.Network.visualize_graph",
+      "madina.zonal.network.Network.scan_for_intersections",
+      "madina.zonal.network.Network.fuse_degree_2_nodes"
+    ]
+  },
+  "method": "tools/inventory_api.py AST census on both trees + full manual read of all 12 pinned Madina files (~4945 lines) and UNA public surface; semantic annotations recorded per seed family in api_matrix.json and semantic_notes.md",
+  "facade_shim": "tracked as separate required_checks (installed_facade / installed_shim); shim is a separately installed optional distribution, never overlapping upstream madina",
+  "limitations": [
+    "source observations only; executed reference behavior is established by CONTRACT/FAILURES with the pinned checkout run under the audited dependency bridge",
+    "documented notebooks/examples not yet enumerated (MADINA_* tasks add scenario rows)",
+    "upstream Madina cannot import on the 2026-09 stack without the dependency bridge (values.data / fastpath removals); bridge specified under CONTRACT"
+  ]
+}
