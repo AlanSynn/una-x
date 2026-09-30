@@ -1,0 +1,123 @@
+{
+ "schema_version": 1,
+ "template": "templates/final_decision.json (fields preserved; extra provenance keys added)",
+ "task": "Z00",
+ "record": "final_decision",
+ "utc": "2026-09-30T03:30:00Z",
+ "role": "coordinator/integrator (team-lead)",
+ "campaign_id": "una-large-e2e-2026-09",
+
+ "campaign_state": "closed — DECISION.md 'Approved qualified scope' arm satisfied per R00 completion_condition_mapping (evidence/R00/review.json sha256 fbf30368b21470c6…, re-hashed live 2026-09-30); M00 disposable merge rehearsal PASSED (v2, evidence/M00/rehearsal.json sha256 d5d2c7fa37d74c1b…); all required stages #16–#41 complete; publication to main is NOT performed and remains a separate user-gated act",
+
+ "performance_number_class": "measured — installed-proxy throughput on observed inputs (O3_ACCESS/O3_FLOW/O3_HOLDOUT at radii 500/1200; O2 small-input protected cell); production target L4/U4 NOT SUPPLIED (evidence/Q10/actual_target.json, status not_supplied per START_HERE.txt:9) so no production claim exists or is implied",
+
+ "primary_scope": "O3_FLOW sustained installed throughput — the flow family (F1 nogil fixed stripes + F2 local flow-overlap scratch + F3 byte-budgeted gradient workspace + A3 private scope initialization, on the A1-advanced line) is the qualified scope",
+ "source_commit": "6b53a274e8a8d3e7360ab5e1b38f741107ce3358 (selected source; W00 selected binding; src/ tree 3c59bb0d3f9bc1fba7547be47ec63add88dd3031)",
+ "source_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+ "candidate_tip": {
+  "commit": "992f4e565e1d46381750674b25d356e1abcfa530",
+  "tree": "2c960120ae11c86af077944b676716345a5bb967",
+  "src_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031 (re-derived live at tip 2026-09-30 — identical to selected source)",
+  "note": "tip = rehearsed closure 07fb3cc + 2 evidence-only commits (10dca11 M00 v1, 992f4e5 M00 v2); src/ byte-unchanged"
+ },
+ "baseline_commit": "361928e4ba38f34622cafe065b0025244db61368 (B0, includes ordered CSR; sole performance comparator; pre-CSR 98f498e and upstream c15ebda are provenance only)",
+
+ "accepted": [
+  {
+   "scope": "flow_family",
+   "terminal_state": "qualified_proxy (DECISION.md:25 — required exactness/review/installed/resource gates and proxy performance gate PASS, production target unavailable)",
+   "primary_gate": "median 1.3463815459401314 (n=5 pairs) >= 1.10 AND paired bootstrap CI95 lower 1.3418234340096669 > 1.00 — PASS (evidence/Q10/summary.json primary_gate.primary_per_family.flow; independently reproduced bit-exact from raw session times by R00)",
+   "tracks": ["F1", "F2", "F3", "A3"],
+   "review": "campaigns/una_large_e2e/evidence/R00/review.json — 'flow family + protected cells + untouched profiles approved as qualified'"
+  },
+  {
+   "scope": "access_family (A1 snapshot-preserving search scratch)",
+   "terminal_state": "improvement_only (DECISION.md:26) — preregistered space (evidence/control_addendum_A1R.json C1_access_marginality, filed 2026-09-26, plus v2 C1_gate_granularity ruling: gates evaluate PER MANDATORY WORKLOAD; a failing cell forbids claiming that cell and scopes the final claim)",
+   "primary_gate": "median 1.0969951715019743 (n=5 pairs) < 1.10 — FAIL by 0.0030048284980257467; paired bootstrap CI95 [1.0518485379517482, 1.1577532365900536] EXCLUDES 1.00 — the improvement is statistically real but sub-threshold; never a blanket throughput qualification (R00-F3 claim-boundary)",
+   "claim_language": "radius-scoped improvement only: benefit concentrates at radius 1200 (A1R holdout decisive proxy 1.2954); at radius 500 (O3_ACCESS) realized median 1.0970 < 1.10",
+   "tracks": ["A1"]
+  },
+  {
+   "scope": "protected_cells",
+   "terminal_state": "PASS — no regression admitted",
+   "figures": {
+    "small_input_cell_medians_wall_ratio": {"access": 1.0436491191232886, "flow": 0.9056450589414343, "gate_max": 1.05, "verdict": "PASS both (risk observation: candidate ~15% slower on small access windows is recorded, never hidden)"},
+    "cold_median_ratios": {"access": 1.0223618310157438, "flow": 1.0104819181552083, "gate_max": 1.05, "regression_gt_5pct": false, "warm_only_qualification_required": false},
+    "min_individual_pair_ratio_all_10": 1.0343748618764228,
+    "min_pair_note": ">10% individual slowdown: none — no pair below 1.0344 (investigate_single_slowdown_ratio 1.1 never engaged)"
+   }
+  }
+ ],
+ "rejected": [],
+ "not_admitted": [
+  {
+   "track": "A2 (local destination enumeration)",
+   "status": "not_admitted — never integrated on any line; absence-verified at I00 (zero _a2_ tokens in 14 B0 / 16 candidate source files, zero _a2 attributes across 16 imported alias modules; evidence/I00/composition.json)",
+   "review": "campaigns/una_large_e2e/evidence/A2R/review.json"
+  }
+ ],
+ "capacity_only": [
+  {
+   "track": "F3 (byte-budgeted gradient workspace)",
+   "labeling": "capacity_only per DECISION.md:11 — walls are capacity evidence, not promotion claims (governs every F3 record; measured lower peak/feasibility basis per DECISION.md:19)"
+  }
+ ],
+ "raw_evidence_index": {
+  "path": "campaigns/una_large_e2e/evidence/Q10/raw_index.json",
+  "sha256": "25ec966e0842d6306405032b24f958f4871e60518ec5fc9486d478ebb2f47774",
+  "note": "per-output-file sha256 index over campaign_data/q10_run (root outside repo); R00 intake pins re-hashed live 2026-09-30, match"
+ },
+
+ "installed_status": "INSTALLED — single wheel urban_network_analysis-2.6.0-py3-none-any.whl sha256 323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4 (138,442 B); M00 disposable-frame rebuild BYTE-IDENTICAL to the W00 selected wheel that executed all 40 Q10 sessions; fresh-venv install identity 17/17 module sha256 match vs campaign_data/w00_identities/selected.json; 40/40 Q10 sessions qualification_valid=true, installed_qualified=true, measurement_class=installed; executed harness digest 3b99e202d1f7cf6de22535a184257f0ca2ce92830de75801aa2d84d7167b2182 == audited harness in all 40 session.json (R00 runtime closure)",
+ "review_status": "APPROVED QUALIFIED SCOPE — h04-reviewer independent final audit (evidence/R00/review.json fbf30368b21470c6… + claim_audit.json f57c1a6f…): every Q10 gate figure reproduced bit-exact from raw session bytes under frozen seed 20260929; preregistration traceability verified (freeze.json admission_gate == instrument GATE_PRIMARY; A1R addendum preregistered the access terminal space on 2026-09-26)",
+ "ci_status": "unavailable — no CI configured (evidence/M00/ci.json b962e632…: .github/workflows/, .gitlab-ci.yml, .circleci absent on candidate and target; designed limitation, recorded not passed); the campaign's own per-directory suite topology is the correctness substitute (see known_limitations)",
+ "actual_target_status": "not_supplied — no user production target (evidence/Q10/actual_target.json 47b8f6d3…); O3 remains an observed proxy, never claimed as L4",
+
+ "measured_claims": [
+  "O3_FLOW (radius 1200 flow profile) installed throughput vs B0: 5-pair median 1.3463815459401314x, bootstrap CI95 [1.3418234340096669, 1.4549372249259942] (seed 20260929, 10,000 resamples, log-ratio, pair = sampling unit) — gate PASS",
+  "O3_ACCESS (radius 500) installed throughput vs B0: 5-pair median 1.0969951715019743x, CI95 [1.0518485379517482, 1.1577532365900536] — median leg FAIL (miss 0.0030048284980257467), CI leg PASS",
+  "O3_HOLDOUT generalization (same network): median-of-pair basis 1.31–1.39 at screen; Q10 holdout arms b1_holdout_A/B ran valid (warm 110.07/105.16 s, 189 jobs each) under the same protocol",
+  "small-input protected cell (O2-like): wall-ratio medians access 1.0436491191232886, flow 0.9056450589414343, both <= 1.05",
+  "cold process medians: access 1.0223618310157438, flow 1.0104819181552083 — no >5% cold regression; warm-only qualification NOT required",
+  "sustained equal-resource execution: S01 38/38 valid windows, 1,014 jobs, per-window budgets 3,246–6,291 MiB, CLEAN EXIT (evidence/S01/review.json a347f6d3…); Q10 40/40 valid windows, 2,972 validated jobs, per-window budgets 2,864–5,610 MiB (median 4,390.5), lease charge 3,431.0 s (windows 3,430.9 s)",
+  "heavy-wall ledger: S01 close 3,846.8 s of 14,400 s (26.7139%, ruled remaining 10,690.3 s); after Q10 lease 3,431.0 s the remaining ledger is 7,259.3 s (ruled-chain arithmetic: 10,690.3 − 3,431.0); finite-budget stop never approached"
+ ],
+ "derived_claims": [
+  "pooled 10-pair median 1.2617069923899544x (CI95 [1.146633544488414, 1.3445141946252872]) — DESCRIPTIVE ONLY, never citable as qualification (R00-F3): gates are per-family",
+  "wheel provenance equality: the wheel main would ship (M00 rebuild) is byte-identical to the wheel that produced every qualified number — comparability rides commit 6b53a274 + package tree 64471ec98511… pins",
+  "integration shape: main 98f498e5 is a strict ancestor (merge-base == main); main..tip = 107 commits, 1,078 files (src 6 — the 5 campaign engine files +1383/−20 vs baseline plus _ordered_csr.py +83 already present in baseline but absent from main; tests 124; campaigns evidence 857; campaigns packet/docs 38; benchmarks 31; other 22)",
+  "merge rehearsal: fast-forward 98f498e→07fb3cc with 0 conflicts; no-ff probe merge afa3c8eed5cce178075894bb6314c4da24b997c5 tree-diff vs candidate EMPTY (h04-corroborated); read-only merge-tree probes 2026-09-30: main←07fb3cc → tree e2b6fda9… (== closure tree), main←992f4e5 → tree 2c960120… (== tip tree), both rc=0 zero conflicts",
+  "M00-F1 corrected range figures (supersede the v1 rehearsal erratum): main..07fb3cc = 105 commits, 1,076 files, +720,115/−158 (independently recomputed live 2026-09-30; the erratum's main..53d70e1 = 104/1,073/+719,973/−158; delta = exactly the R00 record commit, 3 files +142)"
+ ],
+ "hypothetical_claims": [],
+
+ "unavailable": [
+  {"gate": "production target (L4/U4)", "status": "not_supplied (START_HERE.txt:9); O3 proxy only — never passed"},
+  {"gate": "CI", "status": "none configured in fork or target repo; recorded unavailable, never passed (evidence/M00/ci.json)"},
+  {"gate": "second observed morphology", "status": "unavailable; O3_HOLDOUT is same-network generalization only (control.json availability)"},
+  {"gate": "turns/ODM real-engine qualification", "status": "not_run with reason (Q10 turns_odm.status; no ODM/Turns engine file in the candidate diff — structural basis recorded in R00 source closure)"},
+  {"gate": "disposable-frame full-suite execution", "status": "not exercised — suite instruments hardcode the primary worktree path; M00 designed deviation (primary-frame correctness suite + disposable-frame tree/wheel/install checks); WT-from-__file__ hardening is a post-campaign suite amendment candidate (M00-F2)"},
+  {"gate": "full-repo single-invocation pytest leg", "status": "withdrawn with the M00 incident as unadjudicated frame-suspect data; cross-directory interference (independent of the hardcoded-WT flush mechanism) remains an open question for the suite amendment"}
+ ],
+
+ "known_limitations": [
+  "R00-F2 (filename deltas, recorded not renamed): A2I declared proof.md but delivered result.json; A3I declared result.json but delivered proof.md — both non-required stages, substance complete under the alternate names (see configuration.json r00_f2_filename_deltas)",
+  "R00-F3 (claim boundary): flow qualified both gate legs; access NOT throughput-qualified — improvement_only / radius-scoped language only; pooled figure never cited as qualification",
+  "M00-F1 (figure erratum, carried): v1 rehearsal.json recorded main..07fb3cc as '104 commits, 1,073 files, +719,973/−158' — those figures describe main..53d70e1; corrected figures in derived_claims above; committed M00 evidence not rewritten per h04 ruling",
+  "M00-F2 (mixed-frame mechanism): 32 files under tests/ + 3 benchmark instruments hardcode WT=/Users/alansynn/orca/workspaces/una-x/wt-large-e2e (coordinator census; h04 census ~31 sites/26 files — both byte-derived, reconciler note in rehearsal.json v2) — any suite run from another frame imports primary src and flushes primary evidence/F1I+F2I+F3I",
+  "M00-F3 (artifact-rewrite mechanism): F1/F3 harnesses flush evidence/F1I,F3I/test_artifacts.json on sessionfinish with no path override; F2's UNA_F2_ARTIFACTS defaults to the committed path when unset — any rerun exercising tests/large_e2e/F1|F2|F3 rewrites committed evidence; retain→restore (interim_<sha8> FIRST) is now mechanical",
+  "M00 incident: v1 rehearsal-frame suite runs were frame-invalid (imported primary src, flushed primary evidence); coordinator's restore preceded h04's RETAIN instruction, so transient overwritten generations were not interim-copied (loss record campaign_data/custody/m00_incident_overwrite_loss_record.md, sha256 e06a8db058d260b26b5f5272afaf454d0822cd5424069824af4c969a5c32ec67, 3,810 B; zero APFS snapshots; no reviewed/ruled bytes lost); v2 clean primary-frame rerun under recorded designed deviation",
+  "candidate-tip check failures (3, dispositions ruled by h04 — known-limitations, no fix-forward): tests/large_e2e/F1/test_f1_compiler.py::test_t7_targetoptions_census and test_f1_turns.py::test_t8_source_diff_single_decorator_line = stale F1-era source-audit pins vs the screened F2/F3 integration (t8 pinned 2 diff lines, actual 606 = the F2 AggregateFlow block; t7 saw the F2 fast-route kernel as an extra dispatcher); tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records = real pre-existing runtime incompatibility — NUMBA_DISABLE_JIT=1 × the A1 @overload pass-stub returning None in pure Python → TypeError at AccessibilityWElevation.py:351 → worker_startup_failed; outside the qualified measurement frame (diagnostic_source cannot emit installed-qualified records); no qualified measurement affected; post-campaign remediation note: engine pure-Python fallback for the admission guard or diagnostic-frame A1 bypass",
+  "small-input access risk observation: candidate ~15% slower on small access windows (median 1.0436 within gate; window spread [0.9979, 1.1674]) — recorded per plan c.risk_observation, gate outcome unaffected"
+ ],
+
+ "merge_disposition": "do_not_merge",
+ "merge_disposition_note": "As-delivered authorization state, not a quality judgment: R00 approved the qualified scope and M00 passed the disposable merge rehearsal, but DECISION.md merge_ready is NOT claimed (its 'required CI passed' leg is unsatisfiable — CI is unavailable, recorded never passed) and no user publication authorization exists. Publishing to main (merge/push/release) requires a separate explicit user instruction; OPERATIONS.md:24 forbids opening a PR or writing main. A reviewed local candidate and merge manifest are delivered; if main advances before any authorized merge, record drift and review a new merge rehearsal per OPERATIONS.md.",
+
+ "unverified_claims": [],
+ "review_report": {
+  "final_audit": "campaigns/una_large_e2e/evidence/R00/review.json (sha256 fbf30368b21470c6…, verdict APPROVED QUALIFIED SCOPE) + claim_audit.json (f57c1a6f…)",
+  "rehearsal_review": "evidence/M00/rehearsal.json v2 (d5d2c7fa37d74c1b…) — h04 APPROVED the M00 record at commit 10dca11 (v1 bytes); v2 supersedes v1's suite legs as frame-invalid and carries the verified frame-free legs hash-bound; supplemental ack requested from h04 at filing (verdict predates the v2 crossing)",
+  "stage_reviews": "all 7 in-repo stage review records authored by independent reviewer (h04); no implementer self-review (R00 review_independence)"
+ }
+}

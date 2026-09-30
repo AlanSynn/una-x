@@ -1,0 +1,90 @@
+{
+ "schema_version": 1,
+ "template": "templates/merge_manifest.json (fields preserved; extra provenance keys added)",
+ "task": "Z00",
+ "record": "merge_manifest",
+ "utc": "2026-09-30T03:30:00Z",
+ "role": "coordinator/integrator (team-lead)",
+
+ "source_branch": "perf/una-large-e2e",
+ "source_commit": "992f4e565e1d46381750674b25d356e1abcfa530",
+ "source_tree": "2c960120ae11c86af077944b676716345a5bb967",
+ "rehearsed_closure_commit": "07fb3cc621281402ed7cb2b25807d70047bb2fa3",
+ "rehearsed_closure_tree": "e2b6fda97d36dec8fbd4b2ebb292043cf7d5de14",
+ "drift_record": "candidate tip advanced past the rehearsed closure by exactly 2 evidence-only commits (10dca11 M00 v1, 992f4e5 M00 v2; git diff --stat 07fb3cc..992f4e5 = 2 files +131, both under evidence/M00/). src/ tree at tip re-derived live 2026-09-30 == 3c59bb0d3f9bc1fba7547be47ec63add88dd3031 == selected-source src tree — runtime bytes unchanged by the drift. OPERATIONS.md drift rule (main-advance-triggered re-rehearsal) is NOT triggered: main did not advance.",
+ "tip_merge_probe": "read-only git merge-tree --write-tree main 992f4e5 → rc=0, result tree 2c960120ae11c86af077944b676716345a5bb967 == tip tree (fast-forward-equivalent, zero conflicts); recorded 2026-09-30 in-session. A full disposable worktree rehearsal was performed only on 07fb3cc (M00); no full rehearsal is claimed for the tip — the probe plus byte-identity of src/ covers the 2-commit drift.",
+ "target_main_commit": "98f498e5b0ac97b05271d03812fa883b5e4afaba (unchanged through execution; primary checkout /Users/alansynn/Workspace/una-x on [main] not written)",
+ "target_main_tree": "e999840020ccca916387a937cedca7bbde22a56c",
+ "merge_base": "98f498e5b0ac97b05271d03812fa883b5e4afaba (main IS the merge-base — strict ancestor, fast-forward possible; 107 commits main..tip)",
+
+ "runtime_files": {
+  "scope": "src/ — the only runtime-required content the merge changes relative to main",
+  "changed_files_main_to_tip": [
+   "src/urban_network_analysis/Engines/Accessibility.py",
+   "src/urban_network_analysis/Engines/AccessibilityWElevation.py",
+   "src/urban_network_analysis/Engines/AggregateFlow.py",
+   "src/urban_network_analysis/Engines/_large_access_scratch.py (new)",
+   "src/urban_network_analysis/Engines/_large_flow_workspace.py (new)",
+   "src/urban_network_analysis/Engines/_ordered_csr.py (already present in baseline 361928e; absent from main 98f498e — campaign-neutral provenance delta)"
+  ],
+  "diff_stat_vs_baseline_361928e": "exactly 5 engine files, +1383/−20 (R00 source-closure figure, re-derived live 2026-09-30 at tip — bit-identical)",
+  "untouched_profiles": "no ODM or Turns engine file in any candidate diff (structural basis for untouched-profile claims)",
+  "semantic_preservation": "CONTRACT.md frozen; no tolerance-based relaxation in the final evidence chain (R00); all reductions, heap/adjacency/OD order, state, errors, outputs, defaults, and fallback preserved per dossier cleanup requirements"
+ },
+ "test_evidence_files": {
+  "count_by_area_main_to_tip": {"tests/": 124, "campaigns_evidence+history": 857, "benchmarks/": 31, "campaigns_packet_docs": 38, "other": 22, "total": 1078},
+  "note": "the campaign's own check topology (tests/large_e2e per-directory suites + tests/perf_contract) travels with the merge; its current candidate-tip state includes the 3 adjudicated check failures recorded in decision.json known_limitations (known-limitation dispositions, no fix-forward per h04)"
+ },
+ "research_only_files": {
+  "note": "campaigns/una_large_e2e/evidence/** (857 files) and campaigns/history/** archive are research-only records; they do not affect runtime behavior; archive preserved unchanged (DECISION.md 'Preserve archive unchanged')"
+ },
+
+ "active_default_path": "src/urban_network_analysis — package import path unchanged; A1/A3/F1/F2/F3 changes are internal engine optimizations behind existing public APIs; no default or fallback path changed (W00 path_engagement evidence)",
+ "fallback_domain": "unchanged — no GPU, no native backend, no relaxed math, no broad result cache; numba cache=True machine-code caching only (A1R addendum W00_precompile_reading boundary)",
+
+ "commands": "campaigns/una_large_e2e/evidence/final/commands.jsonl (exact command classes + verbatim Q10 argv)",
+
+ "wheel_hashes": [
+  {
+   "wheel": "urban_network_analysis-2.6.0-py3-none-any.whl",
+   "sha256": "323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4",
+   "bytes": 138442,
+   "role": "selected candidate wheel — executed all 40 Q10 sessions; M00 disposable-frame rebuild BYTE-IDENTICAL (the wheel main would ship == the wheel that ran)",
+   "binding": "wheels.json arms.selected: source_commit 6b53a274e8a8…, package_tree 64471ec98511… == control.json equivalence note; build constraints w00_build/selected/constraints.txt sha256 8c501f870861286d6cd819738ffaf5714f36dd4624cba85242d3750007552c09"
+  },
+  {
+   "wheel": "b0 baseline wheel",
+   "role": "comparator arm (B0 361928e4…, the frozen performance comparator) — full manifest at campaign_data/wheels.json (out-of-repo custody, hash-pinned by freeze.json wheels_json_sha256 c443bca9…, re-verified at R00)"
+  }
+ ],
+ "installed_tests": {
+  "manifest": "campaigns/una_large_e2e/evidence/W00/installed_tests.json",
+  "identity_probe": "17/17 installed module sha256 match vs campaign_data/w00_identities/selected.json in fresh 3.11.16 venv (M00 leg, carried); import smoke OK",
+  "sessions": "40/40 Q10 sessions installed_qualified=true, measurement_class=installed, harness digest 3b99e202… == all session.json",
+  "known_limitation": "harness diagnostic-mode test fails pre-existing at candidate tip (NUMBA_DISABLE_JIT × A1 @overload pass-stub; outside qualified frame — decision.json known_limitations)"
+ },
+
+ "performance_evidence": [
+  {"artifact": "campaigns/una_large_e2e/evidence/Q10/summary.json", "sha256": "438bc69f5ef6ae14eaf5d5fec19526cf7d6527e9042922cc21e42053443381be", "content": "primary gate per family + pairs + bootstrap + protected cells + charge (re-hashed live 2026-09-30)"},
+  {"artifact": "campaigns/una_large_e2e/evidence/Q10/raw_index.json", "sha256": "25ec966e0842d6306405032b24f958f4871e60518ec5fc9486d478ebb2f47774", "content": "per-output-file sha256 raw run index over campaign_data/q10_run"},
+  {"artifact": "campaigns/una_large_e2e/evidence/Q10/actual_target.json", "sha256": "47b8f6d3f427231d53c9d4609904cd28503b2892031edaea775c38d3f05e8a97", "content": "production target not_supplied record"},
+  {"artifact": "campaigns/una_large_e2e/evidence/S01/review.json", "sha256": "a347f6d3…", "content": "S01 sustained-scheduling CLEAN EXIT verdict record (R00-F1 remediation, h04-verified)"}
+ ],
+ "memory_evidence": {
+  "policy": "per-window budget = min(10650 MiB, 0.80 × available_at_admission), re-measured each heavy-lease admission (control.json memory_policy)",
+  "q10": "40/40 valid windows, per-window budgets 2,864–5,610 MiB (median 4,390.5), zero admission refusals, charge 3,431.0 s",
+  "s01": "38/38 valid windows, per-window budgets 3,246–6,291 MiB, CLEAN EXIT (evidence/S01/review.json; bound configurations ef670f21… 27,660 B + memory e90bf330… 3,753 B)",
+  "lifetime_table": "campaigns/una_large_e2e/evidence/final/RESULTS.md §memory-lifetime-table"
+ },
+ "rehearsal_status": "PASSED — M00 disposable merge rehearsal (evidence/M00/rehearsal.json v2, sha256 d5d2c7fa37d74c1b…): FF 98f498e→07fb3cc 0 conflicts; no-ff probe afa3c8ee tree-diff vs candidate EMPTY; rebuilt wheel byte-identical; install identity 17/17; main untouched (98f498e before/during/after). h04 APPROVED the M00 record at commit 10dca11; v2 (992f4e5) supersedes v1's frame-invalid suite legs carrying the verified legs hash-bound — supplemental ack requested, pending at filing",
+ "review_status": "APPROVED QUALIFIED SCOPE — evidence/R00/review.json fbf30368… + claim_audit.json f57c1a6f… (independent final audit; Q10 gates reproduced bit-exact from raw bytes; no no-safe-merge condition found)",
+ "ci_status": "unavailable — none configured (evidence/M00/ci.json b962e632…); never passed; local per-directory suite topology is the recorded substitute with its own 3-failure adjudication record",
+ "actual_target_status": "not_supplied — evidence/Q10/actual_target.json 47b8f6d3…",
+
+ "known_limitations": "campaigns/una_large_e2e/evidence/final/decision.json known_limitations (full carried set: R00-F2/F3, M00-F1/F2/F3 + incident, 3 candidate-tip check failure dispositions, CI absence, production-target absence, turns/ODM not_run)",
+ "unverified_claims": [],
+
+ "archive_tree": "917475d210218a7f3ae2765d5b8e6a1c9c587842 (campaigns/history/una_cpu_2026_09/packet — preserved unchanged)",
+ "disposition": "do_not_merge",
+ "disposition_note": "Authorization state, not quality: qualified candidate delivered as reviewed local commits on perf/una-large-e2e with a passed disposable rehearsal and an approved independent audit; publication (merge/push/release) requires a separate explicit user instruction (CLAUDE.md + OPERATIONS.md:24). DECISION.md merge_ready is not claimed because required CI is unavailable. If main advances before an authorized merge, record drift and review a new merge rehearsal; do not rewrite main."
+}
