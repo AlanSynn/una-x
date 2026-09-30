@@ -1,0 +1,196 @@
+{
+  "attempt": "/tmp/una_large_e2e_artifacts/incidents/run/issue12a/a1_corrected",
+  "payload": "/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_madina_network.py",
+  "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+  "status": "completed",
+  "timed_out": false,
+  "exitcode": 0,
+  "wall_s": 1.3192055965773761,
+  "timeout_s": 180,
+  "grace_s": 5.0,
+  "envelope": {
+    "python": "3.11.4",
+    "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+    "os": "Linux 5.14.0-570.128.1.el9_6.x86_64",
+    "start_method": "spawn (subprocess, start_new_session=True)",
+    "machine": "x86_64",
+    "dataset": {},
+    "parameters": {},
+    "child_env": {}
+  },
+  "memory": {
+    "label": "a1_corrected",
+    "interval_s": 0.2,
+    "samples_taken": 6,
+    "samples_lost": 0,
+    "peak_simultaneous_rss_bytes": 151404544,
+    "peak_is_simultaneous_tree_sum": true,
+    "per_sample": [
+      {
+        "t": 1790788138.093897,
+        "root_pid": 2365804,
+        "tree_size": 1,
+        "rss_bytes_sum": 9830400,
+        "rss_bytes_per_pid": {
+          "2365804": 9830400
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383937855488,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788138.3183043,
+        "root_pid": 2365804,
+        "tree_size": 1,
+        "rss_bytes_sum": 54972416,
+        "rss_bytes_per_pid": {
+          "2365804": 54972416
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383916740608,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788138.542612,
+        "root_pid": 2365804,
+        "tree_size": 1,
+        "rss_bytes_sum": 80728064,
+        "rss_bytes_per_pid": {
+          "2365804": 80728064
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383896526848,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788138.7664022,
+        "root_pid": 2365804,
+        "tree_size": 1,
+        "rss_bytes_sum": 99012608,
+        "rss_bytes_per_pid": {
+          "2365804": 99012608
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383895777280,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788138.990703,
+        "root_pid": 2365804,
+        "tree_size": 1,
+        "rss_bytes_sum": 115896320,
+        "rss_bytes_per_pid": {
+          "2365804": 115896320
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383907192832,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788139.214663,
+        "root_pid": 2365804,
+        "tree_size": 1,
+        "rss_bytes_sum": 151404544,
+        "rss_bytes_per_pid": {
+          "2365804": 151404544
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383894097920,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      }
+    ],
+    "meminfo_final": {
+      "MemTotal": 403781525504,
+      "MemAvailable": 383894097920,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589930496
+    },
+    "filesystem": "procfs(/proc)"
+  },
+  "child_result": {
+    "status": "completed",
+    "result": {
+      "dataset": {
+        "dir": "/tmp/una_incidents/fx",
+        "crs": "EPSG:3857",
+        "sha256": {
+          "streets": "b766806f811bdba282853f4c3998526c3225a0f7e907dbbca120463ad1e6bd50",
+          "origins": "fa2b747c053208a8313a111d45f47d17950d9bfc9e13e71cb0eaf02082e88f9b",
+          "destinations": "38ca43932ebedca19fca0862c97852a79a38d714e639083218d9faaa1e0d4219"
+        },
+        "census": {
+          "street_edges": 17,
+          "origins": 2,
+          "destinations": 2
+        }
+      },
+      "build": {
+        "interventions_applied": [
+          {
+            "module": "madina/zonal/network_utils.py",
+            "site": "point_xy = GeoPandaExtractor(geometry_gdf.geometry.values.data)",
+            "replacement": "point_xy = GeoPandaExtractor(np.asarray(geometry_gdf.geometry.values))",
+            "count": 1
+          },
+          {
+            "module": "madina/zonal/network_utils.py",
+            "site": "fastpath=True,",
+            "replacement": "",
+            "count": 34
+          }
+        ],
+        "pinned_source_sha256": {
+          "zonal/network_utils.py": "07647b3c3895f3f3664eb4d3759ac011cc16264024c6d7114b40b7d9790a2616",
+          "una/betweenness.py": "412d0518b64b581e66d8cdfe9a0fff8f8bcda2874fe8a0b244c198d3780415b1"
+        },
+        "nodes": 12,
+        "edges": 17,
+        "weights": [
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "fixture_crs": "EPSG:3857",
+        "fixture_dir": "/tmp/una_incidents/fx"
+      }
+    }
+  }
+}

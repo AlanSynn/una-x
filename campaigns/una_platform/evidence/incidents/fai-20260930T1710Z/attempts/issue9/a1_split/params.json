@@ -1,0 +1,1 @@
+{"madina_src": "/storage/scratch1/1/dsynn6/una-x/.refs/madina/src", "fixture": "redundant", "action": "build_only", "interventions": ["I1_geomarray_data", "I2_fastpath"], "redundant_edge_treatment": "split"}

@@ -1,0 +1,72 @@
+{
+  "task": "FAILURES",
+  "run_id": "fai-20260930T1710Z",
+  "campaign": "una-platform-2026-09",
+  "date_utc": "2026-09-30",
+  "role": "reliability-engineer",
+  "branch": "perf/una-platform",
+  "head_at_receipt": "b57c03a842d3359ff7922f0024876a6aa92b2e7b",
+  "source_baseline": "16bf404d2cc5e776a78dc073c80405f6d186da29 (no src/ drift introduced; no src/ file touched by this task)",
+  "pinned_reference": "City-Form-Lab/madina@8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6 (.refs/madina/src, read-only, never modified; intervened module copies in-memory only, sha256 of pinned sources recorded per attempt)",
+  "status": "completed",
+  "objective": "Reproduce published reports and supervised city stall mechanisms; retain minimized counterexamples and causal classification.",
+  "completion_condition": {
+    "clause": "Each incident has status and evidence, no claimed city root cause without data; bounded watchdog and failure cleanup verified.",
+    "assessment": "MET",
+    "evidence": [
+      "all 9 packet incidents (INC01..INC09) have status + executed or static evidence in evidence/incidents/fai-20260930T1710Z/incidents.json; 5 published reports causally reproduced/verified (#8+PR10, #12a+12b+PR13, #7, #15, #14) plus PR#9 (INC06) reproduced with a three-arm behavioral contrast",
+      "no city root cause claimed: original city datasets unavailable (retained as gap); INC07 carries mechanism evidence only (combinatorial all-path class on unit lattices, tie-only ALL observation); timeout treated as censored data",
+      "watchdog verified by executed runaway control: 600s runaway bounded in ~11s, SIGUSR1 dump -> cooperative cancel -> bounded grace -> SIGTERM owned pids -> kill -> reap, no orphans, capsule preserved, status incomplete; healthy child untouched (attempts/watchdog_runaway, attempts/watchdog_ok)"
+    ]
+  },
+  "deliverables": {
+    "new": [
+      "tests/incidents/ (conftest, madina_bridge read-only intervention bridge, incident_runner bounded-attempt engine reusing benchmarks.platform ProcessTreeSampler, 3 payloads, 3 test modules = 11 tests)",
+      "campaigns/una_platform/evidence/incidents/fai-20260930T1710Z/ (incidents.json report + 15 retained attempt capsules + suite log)"
+    ],
+    "reproduction_matrix": {
+      "INC01_issue12_PR13": "reproduced_causally (fastpath TypeError chain; array_split object chunks; silent-partial observation)",
+      "INC02_issue8_PR10": "reproduced_causally (exact reported AttributeError at network_utils.py:13 in node_edge_builder; A1/A2 intervention chain)",
+      "INC03_issue7": "reproduced_mechanism (GeometryCollection scope -> shapely clip 'mask' TypeError, tools.py:330)",
+      "INC04_issue15": "verified_declaration_gap (static: no networkx in pyproject/requirements; module-level imports in betweenness.py/paths.py)",
+      "INC05_issue14": "documented_local_metadata (meta.yaml present, no release workflows; no network probes)",
+      "INC06_PR9": "reproduced_causally (default='discard' behavior vs docstring 'split'; keep/split contrasts)",
+      "INC07_city_stalls": "no root cause claimed; all-path combinatorial mechanism evidenced (6->20->70 paths, 3.33x/ring, output lower bounds; tie-only ALL semantics)",
+      "INC08_bug_jit_stub": "reproduced in HARNESS; fix owned by SCIENCE",
+      "INC09_source_hypotheses": "open, owned by TOPOLOGY/SCIENCE/MADINA_*; one executed fact added (FACT-BTN-POISON)"
+    },
+    "local_facts_registered": [
+      "OBS-ALL-TIE: pinned ALL = shortest-tie enumeration (bound <= 0.00001 absolute; counts identical at detour_ratio 1.0 vs 1.5) -- parity-relevant for MADINA_PATHS",
+      "OBS-PARALLEL-PARTIAL: pinned parallel_betweenness prints worker errors and returns partial results without raising",
+      "FACT-BTN-POISON: closest_destination=True -> UnboundLocalError (eligible_destinations_shortest_distance bound only in Huff branch, betweenness.py:612/858-859) swallowed by bare excepts; ORIGIN nodes leak into shared d_graph (14->16); closest_destination=False clean; fix owned by SCIENCE",
+      "FACT-LATTICE-SCALE: 3.33x path growth per lattice ring with output-size lower bounds"
+    ]
+  },
+  "verification": [
+    {"check": "incident suite (5 published-report tests incl. causal A0/A1/A2 chains + BTN poisoning + PR#9 + all-path scaling + 2 watchdog tests)", "cmd": "python -m pytest tests/incidents/ -v", "outcome": "11 passed in 58.43s", "log": "evidence/incidents/fai-20260930T1710Z/incidents_suite.log"},
+    {"check": "pinned tree integrity (read-only protocol)", "outcome": "no writes to .refs/madina/src; interventions exec'd into fresh in-memory modules registered before package import; pinned source sha256 recorded in every capsule (e.g. network_utils 07647b3c3895f3f3..., betweenness 412d0518b64b581e...)"}
+  ],
+  "known_failures": [],
+  "environment": {
+    "python": "3.11.4 (micromamba env alan, harness side)",
+    "attempt_interpreter": ".refs/venv_madina_legacy/bin/python 3.11.4 (pandas 3.0.6, numpy 2.4.6, geopandas 1.2.0, networkx 3.6.1, shapely 2.1.2)",
+    "host": "PACE login-class CPU; no GPU used (not GPU-mandatory work)"
+  },
+  "raw_evidence_retained": [
+    "evidence/incidents/fai-20260930T1710Z/attempts/{issue8,issue12a,issue12b,issue7,btn_stats,issue9}/ (full per-attempt capsules: attempt_record.json with envelope+memory samples, result.json, child_log.txt, heartbeat.jsonl, params.json, child script)",
+    "evidence/incidents/fai-20260930T1710Z/attempts/allpaths_n{2,3,4}_r{1.0,1.5}/ (combinatorial growth cells with output lower bounds)",
+    "evidence/incidents/fai-20260930T1710Z/attempts/watchdog_{runaway,ok}/ (bounded-termination evidence)",
+    "evidence/incidents/fai-20260930T1710Z/incidents_suite.log",
+    "scratch attempts remain at /tmp/una_large_e2e_artifacts/incidents/run (untracked working area)"
+  ],
+  "dirty_user_files_preserved": [".claude/commands/goal.md (untouched, uncommitted)"],
+  "handoff": {
+    "TOPOLOGY": "INC02 (GeometryArray.data), INC03 (GeometryCollection clip scope) fixes; #8 correction must not drop non-LineStrings",
+    "SCIENCE": "BUG-JIT-DISABLED-STUB fix + FACT-BTN-POISON BTN-stats fix (corrected_v1); keep madina_legacy parity profile pinned to observed defective behavior with explicit deltas",
+    "MADINA_PATHS": "OBS-ALL-TIE parity semantics + exact-ALL output obligations (lower bounds retained)",
+    "API_REVIEW": "INC06: document actual redundant_edge_treatment default; una-x contract states behavior, not docstring",
+    "EXECUTION/compat": "INC01 dependency-compat fixes (fastpath removal, iloc position split) for the shim; corrected profile must raise on partial parallel results, not silently return",
+    "INTEGRATE/CLOSE": "packet-root incidents.json status reconciliation (registry file is outside FAILURES owned_files; dispositions recorded here)"
+  },
+  "next_tasks_unlocked": ["TOPOLOGY", "SCIENCE"]
+}

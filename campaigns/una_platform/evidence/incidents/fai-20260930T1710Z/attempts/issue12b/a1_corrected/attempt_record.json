@@ -1,0 +1,222 @@
+{
+  "attempt": "/tmp/una_large_e2e_artifacts/incidents/run/issue12b/a1_corrected",
+  "payload": "/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_madina_network.py",
+  "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+  "status": "completed",
+  "timed_out": false,
+  "exitcode": 0,
+  "wall_s": 1.43830386409536,
+  "timeout_s": 300,
+  "grace_s": 5.0,
+  "envelope": {
+    "python": "3.11.4",
+    "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+    "os": "Linux 5.14.0-570.128.1.el9_6.x86_64",
+    "start_method": "spawn (subprocess, start_new_session=True)",
+    "machine": "x86_64",
+    "dataset": {},
+    "parameters": {},
+    "child_env": {}
+  },
+  "memory": {
+    "label": "a1_corrected",
+    "interval_s": 0.2,
+    "samples_taken": 7,
+    "samples_lost": 0,
+    "peak_simultaneous_rss_bytes": 155684864,
+    "peak_is_simultaneous_tree_sum": true,
+    "per_sample": [
+      {
+        "t": 1790788142.5243082,
+        "root_pid": 2365883,
+        "tree_size": 1,
+        "rss_bytes_sum": 9633792,
+        "rss_bytes_per_pid": {
+          "2365883": 9633792
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383899877376,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788142.7482264,
+        "root_pid": 2365883,
+        "tree_size": 1,
+        "rss_bytes_sum": 34652160,
+        "rss_bytes_per_pid": {
+          "2365883": 34652160
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383899725824,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788142.971826,
+        "root_pid": 2365883,
+        "tree_size": 1,
+        "rss_bytes_sum": 75124736,
+        "rss_bytes_per_pid": {
+          "2365883": 75124736
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383881011200,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788143.1960719,
+        "root_pid": 2365883,
+        "tree_size": 1,
+        "rss_bytes_sum": 95965184,
+        "rss_bytes_per_pid": {
+          "2365883": 95965184
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383865081856,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788143.4202194,
+        "root_pid": 2365883,
+        "tree_size": 1,
+        "rss_bytes_sum": 114266112,
+        "rss_bytes_per_pid": {
+          "2365883": 114266112
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383852679168,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788143.644529,
+        "root_pid": 2365883,
+        "tree_size": 1,
+        "rss_bytes_sum": 127004672,
+        "rss_bytes_per_pid": {
+          "2365883": 127004672
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383837966336,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788143.8694124,
+        "root_pid": 2365883,
+        "tree_size": 1,
+        "rss_bytes_sum": 155684864,
+        "rss_bytes_per_pid": {
+          "2365883": 155684864
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383815548928,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      }
+    ],
+    "meminfo_final": {
+      "MemTotal": 403781525504,
+      "MemAvailable": 383815548928,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589930496
+    },
+    "filesystem": "procfs(/proc)"
+  },
+  "child_result": {
+    "status": "completed",
+    "result": {
+      "dataset": {
+        "dir": "/tmp/una_incidents/fx",
+        "crs": "EPSG:3857",
+        "sha256": {
+          "streets": "b766806f811bdba282853f4c3998526c3225a0f7e907dbbca120463ad1e6bd50",
+          "origins": "fa2b747c053208a8313a111d45f47d17950d9bfc9e13e71cb0eaf02082e88f9b",
+          "destinations": "38ca43932ebedca19fca0862c97852a79a38d714e639083218d9faaa1e0d4219"
+        },
+        "census": {
+          "street_edges": 17,
+          "origins": 2,
+          "destinations": 2
+        }
+      },
+      "build": {
+        "interventions_applied": [
+          {
+            "module": "madina/zonal/network_utils.py",
+            "site": "point_xy = GeoPandaExtractor(geometry_gdf.geometry.values.data)",
+            "replacement": "point_xy = GeoPandaExtractor(np.asarray(geometry_gdf.geometry.values))",
+            "count": 1
+          },
+          {
+            "module": "madina/zonal/network_utils.py",
+            "site": "fastpath=True,",
+            "replacement": "",
+            "count": 34
+          },
+          {
+            "module": "madina/una/betweenness.py",
+            "site": "splitted_origins = np.array_split(origins, num_procs)",
+            "replacement": "splitted_origins = [origins.iloc[s] for s in __import__('numpy').array_split(np.arange(len(origins)), num_procs)]",
+            "count": 1
+          }
+        ],
+        "pinned_source_sha256": {
+          "zonal/network_utils.py": "07647b3c3895f3f3664eb4d3759ac011cc16264024c6d7114b40b7d9790a2616",
+          "una/betweenness.py": "412d0518b64b581e66d8cdfe9a0fff8f8bcda2874fe8a0b244c198d3780415b1"
+        },
+        "nodes": 12,
+        "edges": 17,
+        "weights": [
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "fixture_crs": "EPSG:3857",
+        "fixture_dir": "/tmp/una_incidents/fx"
+      },
+      "btn_parallel": {
+        "completed": true,
+        "stdout_tail": ""
+      }
+    }
+  }
+}

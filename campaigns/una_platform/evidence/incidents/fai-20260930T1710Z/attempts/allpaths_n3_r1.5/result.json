@@ -1,0 +1,1 @@
+{"status": "completed", "result": {"applied_interventions": [], "attempts": [{"n": 3, "detour_ratio": 1.5, "paths_generated": 20, "sum_path_lengths": 140, "output_lower_bound_bytes_estimate": 1120, "shortest_distance": 6.0, "max_path_length": 7}]}}

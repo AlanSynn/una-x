@@ -1,0 +1,45 @@
+{
+  "task": "FAILURES",
+  "run_id": "fai-20260930T1710Z",
+  "kind": "task_evidence",
+  "receipt": "receipt.json (same directory)",
+  "incident_report": "campaigns/una_platform/evidence/incidents/fai-20260930T1710Z/incidents.json",
+  "test_modules": {
+    "tests/incidents/conftest.py": "attempt plumbing: ARTIFACTS_OUT/incidents root, session fixtures (pinned madina src + bridged reference venv), incidents marker",
+    "tests/incidents/incident_runner.py": "bounded-attempt engine: spawned child (start_new_session, RLIMIT_AS 8GiB / RLIMIT_FSIZE 512MiB), parent-side threading.Timer watchdog independent of the child GIL, SIGUSR1 faulthandler dump -> cooperative cancel -> bounded grace -> SIGTERM owned pids -> kill -> reap, process-tree RSS sampling via benchmarks.platform sampler, heartbeat daemon, attempt envelope, assert_attempt_ok treats timeouts as censored",
+    "tests/incidents/madina_bridge.py": "read-only pinned-source bridge; deterministic fixtures; causal interventions I1 (GeometryArray.data -> np.asarray, PR#10 style), I2 (drop pd.Series fastpath kwarg, 34 sites, PR#13 part 1), I3 (np.array_split -> iloc position split, PR#13 part 2) applied to in-memory module copies registered before package import; tree on disk never modified",
+    "tests/incidents/payloads/payload_madina_network.py": "staged payload: build_only / service_area (#7) / btn_exposure (in-process manager-queue feeding replicating the pinned driver worker body) / btn_parallel (#12b); per-stage state + stdout/stderr capture",
+    "tests/incidents/payloads/payload_allpaths.py": "unit-lattice corner-OD all-path enumeration through pinned bfs_paths_many_targets_iterative with output-size lower bound",
+    "tests/incidents/payloads/payload_runaway.py": "cancel-flag-ignoring sleep child (worst-case watchdog target)",
+    "tests/incidents/test_published_incidents.py": "6 tests: #8 chain, #12a chain + direct pandas probe, #12b + direct numpy probe, #7, BTN stats + poisoning, #15 static, #14 static, PR#9 three-arm",
+    "tests/incidents/test_all_path_scaling.py": "lattice cells (N, ratio) with censored-cell protocol (break, never re-run larger)",
+    "tests/incidents/test_watchdog_cleanup.py": "runaway bounded+reaped, healthy untouched"
+  },
+  "executed_results": {
+    "suite": "11 passed in 58.43s (incidents_suite.log)",
+    "key_observations": [
+      "#8 A0: AttributeError 'GeometryArray' object has no attribute 'data' at network_utils.py:13 (node_edge_builder chain) -- matches report screenshot text",
+      "#12a A0/A1/A2: fastpath TypeError -> removed by I2 (network builds, 12 nodes) -> restored",
+      "#12b A0/A1: worker prints \"'numpy.ndarray' object has no attribute 'index'\", driver completes with partial results -> I3 removes the error",
+      "#7: service_area raises GeometryCollection/'mask' should be TypeError in edge_gdf.clip (tools.py:330)",
+      "BTN a0: raised=None (bare excepts), per-origin 'error collecting origin statistics' lines, stderr UnboundLocalError eligible_destinations_shortest_distance, d_graph 14->16, ALL ORIGIN ids leaked, destinations legitimately pre-present; a1 (closest=False): no errors, no origin leak",
+      "PR#9: default 18 edges (longer redundant discarded) vs docstring 'split'; explicit split (13,20) keeps shortest intact; explicit keep (19 edges, >150 weight present)",
+      "all-path: 6 -> 20 -> 70 paths across N=2,3,4 lattices (3.33x/ring), identical at detour_ratio 1.0 and 1.5 => shortest-tie enumeration; output lower bounds > 0",
+      "watchdog: 600s runaway bounded ~11s, reaped, no orphans, capsule complete; healthy 0.2s child untouched"
+    ]
+  },
+  "failure_class_matrix": {
+    "import/ABI/dependency": "#12a fastpath, #12b array_split, #15 declaration gap -- reproduced/verified",
+    "geometry_preparation": "#8 GeometryArray.data, #7 GeometryCollection clip -- reproduced",
+    "combinatorial_all_path": "FACT-LATTICE-SCALE + OBS-ALL-TIE -- bounded mechanism evidence, output lower bounds recorded",
+    "algorithmic_nontermination": "not exercised (no minimized state trace; not claimed)",
+    "queue_deadlock_or_orphaned_worker": "not exercised as a reproduced incident; BTN exposure observed only as in-process worker feeding; watchdog/orphan handling verified by the runaway control instead",
+    "memory/JIT/IO_masquerade": "not exercised (BUG-JIT-DISABLED-STUB is a correctness failure, owned by SCIENCE)"
+  },
+  "limits_and_non_goals": [
+    "no city dataset was available for any report; nothing is labeled as an observed city",
+    "pinned tree untouched; intervention copies are in-memory and per-attempt",
+    "censored (timed-out) cells would be recorded incomplete and never re-run at larger sizes; none occurred within the bounded cells",
+    "packet-root incidents.json registry reconciliation deferred to INTEGRATE/CLOSE (outside FAILURES owned_files)"
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "attempt": "/tmp/una_large_e2e_artifacts/incidents/run/issue7/a0",
+  "payload": "/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_madina_network.py",
+  "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+  "status": "completed",
+  "timed_out": false,
+  "exitcode": 0,
+  "wall_s": 1.4867745246738195,
+  "timeout_s": 300,
+  "grace_s": 5.0,
+  "envelope": {
+    "python": "3.11.4",
+    "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+    "os": "Linux 5.14.0-570.128.1.el9_6.x86_64",
+    "start_method": "spawn (subprocess, start_new_session=True)",
+    "machine": "x86_64",
+    "dataset": {},
+    "parameters": {},
+    "child_env": {}
+  },
+  "memory": {
+    "label": "a0",
+    "interval_s": 0.2,
+    "samples_taken": 7,
+    "samples_lost": 0,
+    "peak_simultaneous_rss_bytes": 156827648,
+    "peak_is_simultaneous_tree_sum": true,
+    "per_sample": [
+      {
+        "t": 1790788144.0112379,
+        "root_pid": 2365912,
+        "tree_size": 1,
+        "rss_bytes_sum": 9830400,
+        "rss_bytes_per_pid": {
+          "2365912": 9830400
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383832690688,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788144.2353501,
+        "root_pid": 2365912,
+        "tree_size": 1,
+        "rss_bytes_sum": 43212800,
+        "rss_bytes_per_pid": {
+          "2365912": 43212800
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383833067520,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788144.4595697,
+        "root_pid": 2365912,
+        "tree_size": 1,
+        "rss_bytes_sum": 79163392,
+        "rss_bytes_per_pid": {
+          "2365912": 79163392
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383828967424,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788144.6837716,
+        "root_pid": 2365912,
+        "tree_size": 1,
+        "rss_bytes_sum": 99020800,
+        "rss_bytes_per_pid": {
+          "2365912": 99020800
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383828877312,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788144.908374,
+        "root_pid": 2365912,
+        "tree_size": 1,
+        "rss_bytes_sum": 114720768,
+        "rss_bytes_per_pid": {
+          "2365912": 114720768
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383821561856,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788145.1325238,
+        "root_pid": 2365912,
+        "tree_size": 1,
+        "rss_bytes_sum": 144015360,
+        "rss_bytes_per_pid": {
+          "2365912": 144015360
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383803944960,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788145.3563538,
+        "root_pid": 2365912,
+        "tree_size": 1,
+        "rss_bytes_sum": 156827648,
+        "rss_bytes_per_pid": {
+          "2365912": 156827648
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383798714368,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      }
+    ],
+    "meminfo_final": {
+      "MemTotal": 403781525504,
+      "MemAvailable": 383798714368,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589930496
+    },
+    "filesystem": "procfs(/proc)"
+  },
+  "child_result": {
+    "status": "completed",
+    "result": {
+      "dataset": {
+        "dir": "/tmp/una_incidents/fx",
+        "crs": "EPSG:3857",
+        "sha256": {
+          "streets": "b766806f811bdba282853f4c3998526c3225a0f7e907dbbca120463ad1e6bd50",
+          "origins": "fa2b747c053208a8313a111d45f47d17950d9bfc9e13e71cb0eaf02082e88f9b",
+          "destinations": "38ca43932ebedca19fca0862c97852a79a38d714e639083218d9faaa1e0d4219"
+        },
+        "census": {
+          "street_edges": 17,
+          "origins": 2,
+          "destinations": 2
+        }
+      },
+      "build": {
+        "interventions_applied": [
+          {
+            "module": "madina/zonal/network_utils.py",
+            "site": "point_xy = GeoPandaExtractor(geometry_gdf.geometry.values.data)",
+            "replacement": "point_xy = GeoPandaExtractor(np.asarray(geometry_gdf.geometry.values))",
+            "count": 1
+          },
+          {
+            "module": "madina/zonal/network_utils.py",
+            "site": "fastpath=True,",
+            "replacement": "",
+            "count": 34
+          }
+        ],
+        "pinned_source_sha256": {
+          "zonal/network_utils.py": "07647b3c3895f3f3664eb4d3759ac011cc16264024c6d7114b40b7d9790a2616",
+          "una/betweenness.py": "412d0518b64b581e66d8cdfe9a0fff8f8bcda2874fe8a0b244c198d3780415b1"
+        },
+        "nodes": 12,
+        "edges": 17,
+        "weights": [
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "fixture_crs": "EPSG:3857",
+        "fixture_dir": "/tmp/una_incidents/fx"
+      },
+      "service_area": {
+        "entered": true,
+        "raised": "TypeError: 'mask' should be GeoDataFrame, GeoSeries,(Multi)Polygon or list-like, got <class 'shapely.geometry.collection.GeometryCollection'>",
+        "traceback": "Traceback (most recent call last):\n  File \"/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_madina_network.py\", line 67, in payload\n    result = service_area(z, search_radius=radius)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/storage/scratch1/1/dsynn6/una-x/.refs/madina/src/madina/una/tools.py\", line 330, in service_area\n    all_network_edges.append(edge_gdf.clip(scope)[\"geometry\"].unary_union)\n                             ^^^^^^^^^^^^^^^^^^^^\n  File \"/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/lib/python3.11/site-packages/geopandas/geodataframe.py\", line 2883, in clip\n    return geopandas.clip(self, mask=mask, keep_geom_type=keep_geom_type, sort=sort)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/lib/python3.11/site-packages/geopandas/tools/clip.py\", line 182, in clip\n    raise TypeError(\nTypeError: 'mask' should be GeoDataFrame, GeoSeries,(Multi)Polygon or list-like, got <class 'shapely.geometry.collection.GeometryCollection'>\n"
+      }
+    }
+  }
+}

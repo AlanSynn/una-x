@@ -1,0 +1,139 @@
+{
+  "attempt": "/tmp/una_large_e2e_artifacts/incidents/run/issue8/a2_restored",
+  "payload": "/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_madina_network.py",
+  "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+  "status": "failed",
+  "timed_out": false,
+  "exitcode": 0,
+  "wall_s": 1.3107177522033453,
+  "timeout_s": 180,
+  "grace_s": 5.0,
+  "envelope": {
+    "python": "3.11.4",
+    "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+    "os": "Linux 5.14.0-570.128.1.el9_6.x86_64",
+    "start_method": "spawn (subprocess, start_new_session=True)",
+    "machine": "x86_64",
+    "dataset": {},
+    "parameters": {},
+    "child_env": {}
+  },
+  "memory": {
+    "label": "a2_restored",
+    "interval_s": 0.2,
+    "samples_taken": 6,
+    "samples_lost": 0,
+    "peak_simultaneous_rss_bytes": 140021760,
+    "peak_is_simultaneous_tree_sum": true,
+    "per_sample": [
+      {
+        "t": 1790788134.6160638,
+        "root_pid": 2365687,
+        "tree_size": 1,
+        "rss_bytes_sum": 9633792,
+        "rss_bytes_per_pid": {
+          "2365687": 9633792
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383963983872,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788134.8400226,
+        "root_pid": 2365687,
+        "tree_size": 1,
+        "rss_bytes_sum": 35131392,
+        "rss_bytes_per_pid": {
+          "2365687": 35131392
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383948996608,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788135.0637429,
+        "root_pid": 2365687,
+        "tree_size": 1,
+        "rss_bytes_sum": 78082048,
+        "rss_bytes_per_pid": {
+          "2365687": 78082048
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383925612544,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788135.2873418,
+        "root_pid": 2365687,
+        "tree_size": 1,
+        "rss_bytes_sum": 98725888,
+        "rss_bytes_per_pid": {
+          "2365687": 98725888
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383906496512,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788135.5116339,
+        "root_pid": 2365687,
+        "tree_size": 1,
+        "rss_bytes_sum": 114905088,
+        "rss_bytes_per_pid": {
+          "2365687": 114905088
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383888465920,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788135.7358832,
+        "root_pid": 2365687,
+        "tree_size": 1,
+        "rss_bytes_sum": 140021760,
+        "rss_bytes_per_pid": {
+          "2365687": 140021760
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383871221760,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      }
+    ],
+    "meminfo_final": {
+      "MemTotal": 403781525504,
+      "MemAvailable": 383871221760,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589930496
+    },
+    "filesystem": "procfs(/proc)"
+  },
+  "child_result": {
+    "status": "failed",
+    "error": "AttributeError: 'GeometryArray' object has no attribute 'data'",
+    "traceback": "Traceback (most recent call last):\n  File \"/tmp/una_large_e2e_artifacts/incidents/run/issue8/a2_restored/_child_incident.py\", line 38, in <module>\n    result = payload_ns[\"payload\"](params, state)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_madina_network.py\", line 40, in payload\n    z, info = build_project(madina_src, interventions, tolerance,\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/storage/scratch1/1/dsynn6/una-x/tests/incidents/madina_bridge.py\", line 219, in build_project\n    z.create_street_network(**kwargs)\n  File \"/storage/scratch1/1/dsynn6/una-x/.refs/madina/src/madina/zonal/zonal.py\", line 186, in create_street_network\n    node_gdf, edge_gdf = node_edge_builder(\n                         ^^^^^^^^^^^^^^^^^^\n  File \"/storage/scratch1/1/dsynn6/una-x/.refs/madina/src/madina/zonal/network_utils.py\", line 13, in node_edge_builder\n    point_xy = GeoPandaExtractor(geometry_gdf.geometry.values.data)\n                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'GeometryArray' object has no attribute 'data'\n"
+  }
+}

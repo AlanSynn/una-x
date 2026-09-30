@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "run_id": "fai-20260930T1710Z",
+  "task": "FAILURES",
+  "date_utc": "2026-09-30",
+  "protocol": "dossier 03: bounded spawned attempts, independent parent-side watchdog, per-attempt envelope (python/os/start-method/dataset-hash/CRS/census/params/stage/exit), process-tree RSS sampling, causal intervention A0 pinned -> A1 single correction in memory -> A2 deliberate restoration; pinned tree never modified on disk",
+  "pinned_reference": {
+    "repo": "City-Form-Lab/madina",
+    "sha": "8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6",
+    "clone": ".refs/madina/src (read-only; sha256 of intervened modules recorded per attempt)",
+    "archived_read_only": "2026-08-25"
+  },
+  "reference_env": {
+    "python": "3.11.4",
+    "venv": ".refs/venv_madina_legacy (pinned madina imports pydeck at package level)",
+    "pinned_deps_observed": {
+      "pandas": "3.0.6",
+      "numpy": "2.4.6",
+      "geopandas": "1.2.0",
+      "networkx": "3.6.1",
+      "shapely": "2.1.2"
+    }
+  },
+  "minimal_fixture": {
+    "description": "deterministic 3x3 grid (100-unit edges, EPSG:3857), 17 street edges, 12 nodes, 2 origins O1(5,5)/O2(205,205), 2 destinations D1(205,5)/D2(5,205); redundant variant adds two edges (0,0)-(100,100): straight ~141.42 and bent ~172.82",
+    "files": "tests/incidents/madina_bridge.py::ensure_fixture / ensure_fixture_redundant",
+    "sha256": {
+      "streets": "b766806f811bdba282853f4c3998526c3225a0f7e907dbbca120463ad1e6bd50",
+      "origins": "fa2b747c053208a8313a111d45f47d17950d9bfc9e13e71cb0eaf02082e88f9b",
+      "destinations": "38ca43932ebedca19fca0862c97852a79a38d714e639083218d9faaa1e0d4219",
+      "streets_redundant": "221fe8cf232dde74b8b6ea06f57fe3f54bfde0584eeec419df9865c662b4b3c5",
+      "note": "recorded per attempt in result.json result.dataset (census: street_edges 17, origins 2, destinations 2)"
+    }
+  },
+  "city_data_status": "unavailable: none of the published reports (#7 #8 #12 #14 #15, PRs 9/10/13) supplies the original city dataset/settings/logs; no city-specific root cause is claimed; this gap is retained, not filled synthetically (dossier 03 evidence discipline)",
+  "incidents": [
+    {
+      "packet_id": "INC01",
+      "issue": "#12 + PR #13 (pandas 3.0 fastpath; numpy 2 GeoDataFrame array_split)",
+      "source_urls": [
+        "https://github.com/City-Form-Lab/madina/issues/12",
+        "https://github.com/City-Form-Lab/madina/pull/13"
+      ],
+      "status": "reproduced_causally",
+      "parts": {
+        "a_fastpath": {
+          "mechanism": "pd.Series(..., fastpath=True) removed in pandas 3.0 (env pandas 3.0.6): direct probe raises TypeError; through the real path (after the #8 correction, single-chain) create_street_network fails with the fastpath TypeError",
+          "attempts": {
+            "A0_pinned_plus_I1": "failed: fastpath TypeError (attempts/issue12a/a0_chain)",
+            "A1_plus_I2_drop_fastpath_kwarg": "completed: network built, 12 nodes (attempts/issue12a/a1_corrected)",
+            "A2_restore": "failed again: fastpath TypeError (attempts/issue12a/a2_restored)"
+          }
+        },
+        "b_array_split": {
+          "mechanism": "np.array_split(origins GeoDataFrame, num_procs) yields object-ndarray chunks under numpy 2.x (env numpy 2.4.6); parallel_betweenness workers then fail with \"'numpy.ndarray' object has no attribute 'index'\"",
+          "attempts": {
+            "A0_I1+I2": "pinned driver PRINTS the ndarray error per worker and RETURNS PARTIAL results (completed=True) instead of raising (attempts/issue12b/a0_parallel)",
+            "A1_plus_I3_iloc_position_split": "ndarray error absent from worker output (attempts/issue12b/a1_corrected)"
+          }
+        }
+      },
+      "cause_confidence": "high (direct mechanism probes + causal chain through the real path, restoration reproduces)",
+      "failed_stage": "geometry/network preparation (fastpath); parallel worker fan-out (array_split)",
+      "fix_commit": null,
+      "fix_owner": "compatibility shim / dependency-bridged madina_legacy profile (not this task)",
+      "regression": "tests/incidents/test_published_incidents.py::test_issue12a_fastpath_removed_in_pandas3, ::test_issue12b_arraysplit_object_chunks",
+      "residual_limitations": "pinned parallel_betweenness silently returns partial results; registered as OBS-PARALLEL-PARTIAL below. Corrected profile must raise or document incompleteness, not imitate the silent partial."
+    },
+    {
+      "packet_id": "INC02",
+      "issue": "#8 + PR #10 (GeometryArray.data on network creation)",
+      "source_urls": [
+        "https://github.com/City-Form-Lab/madina/issues/8",
+        "https://github.com/City-Form-Lab/madina/pull/10"
+      ],
+      "status": "reproduced_causally",
+      "mechanism": "GeoPandas >= 1.0 GeometryArray lost `.data`; pinned network_utils.py:13 `GeoPandaExtractor(geometry_gdf.geometry.values.data)` raises AttributeError inside node_edge_builder when create_street_network is called (default tolerance)",
+      "attempts": {
+        "A0_pinned": "failed: AttributeError 'GeometryArray' object has no attribute 'data', traceback contains network_utils.py + node_edge_builder (attempts/issue8/a0_pinned)",
+        "A1_I1_np.asarray_extraction_PR10_style": "pipeline advances to the NEXT reported defect (fastpath #12a) (attempts/issue8/a1_corrected)",
+        "A2_restored": "failed again, same site (attempts/issue8/a2_restored)"
+      },
+      "cause_confidence": "high (exact reported stage and message; causal intervention and restoration both observed)",
+      "failed_stage": "geometry preparation: create_street_network -> node_edge_builder",
+      "fix_commit": null,
+      "fix_owner": "TOPOLOGY (geometry prep) for corrected_v1; compat shim for madina_legacy parity",
+      "regression": "tests/incidents/test_published_incidents.py::test_issue8_geometryarray_data_causal_chain",
+      "residual_limitations": "the issue report itself is screenshot-only; the message/stage match the report's screenshot text; dossier 03 note honored: any workaround that drops non-LineStrings is NOT an equivalent topology fix and is not proposed here"
+    },
+    {
+      "packet_id": "INC03",
+      "issue": "#7 (service_area clip with GeometryCollection)",
+      "source_urls": ["https://github.com/City-Form-Lab/madina/issues/7"],
+      "status": "reproduced_mechanism_high_confidence",
+      "mechanism": "service_area builds destination/network scopes whose union is a mixed-dimension geometry (degenerate convex hull over few point destinations -> GeometryCollection); pinned tools.py:330 edge_gdf.clip(scope) then raises TypeError ('mask' should be ...)",
+      "attempts": {
+        "A0_I1+I2": "service_area entered; raised 'TypeError: ... GeometryCollection ... 'mask' should be' with clip in the traceback (attempts/issue7/a0)"
+      },
+      "cause_confidence": "high for the local mechanism (clip mask type from degenerate scope); the reporter's actual dataset is unavailable, so no claim is made about the report's exact geometry",
+      "failed_stage": "una.tools.service_area (post create_graph)",
+      "fix_commit": null,
+      "fix_owner": "TOPOLOGY (scope geometry handling)",
+      "regression": "tests/incidents/test_published_incidents.py::test_issue7_service_area_geometrycollection",
+      "residual_limitations": "single minimized fixture; the non-degenerate control arm belongs to TOPOLOGY's fix task, not this reproduction"
+    },
+    {
+      "packet_id": "INC04",
+      "issue": "#15 (networkx missing from declared dependencies)",
+      "source_urls": ["https://github.com/City-Form-Lab/madina/issues/15"],
+      "status": "verified_declaration_gap",
+      "mechanism": "pinned clone root pyproject.toml and requirements.txt contain no 'networkx'; `import networkx` appears at module level in madina/una/betweenness.py and madina/una/paths.py",
+      "cause_confidence": "certain (static, in-tree)",
+      "failed_stage": "import/dependency declaration (pre-computation class)",
+      "fix_commit": null,
+      "fix_owner": "packaging (PACKAGE task owns una-x's own declarations; madina_legacy profile pins its env)",
+      "regression": "tests/incidents/test_published_incidents.py::test_issue15_networkx_dependency_declaration",
+      "residual_limitations": "none material; documents a report, does not change una-x deps"
+    },
+    {
+      "packet_id": "INC05",
+      "issue": "#14 (distribution on TestPyPI, not PyPI)",
+      "source_urls": ["https://github.com/City-Form-Lab/madina/issues/14"],
+      "status": "documented_local_metadata_only",
+      "mechanism": "local observables in the pinned tree: conda recipe meta.yaml present; no .github/workflows release pipeline. No PyPI/TestPyPI network fetch was attempted (out of policy scope); the report itself is retained as the distribution claim",
+      "cause_confidence": "n/a (documentation incident)",
+      "fix_commit": null,
+      "fix_owner": "PACKAGE (una-x's own distribution route is defined there)",
+      "regression": "tests/incidents/test_published_incidents.py::test_issue14_distribution_metadata",
+      "residual_limitations": "no artifact-index probe performed"
+    },
+    {
+      "packet_id": "INC06",
+      "issue": "PR #9 (redundant_edge_treatment: code default 'discard' vs docstring 'Default \"split\"')",
+      "source_urls": ["https://github.com/City-Form-Lab/madina/pull/9"],
+      "status": "reproduced_causally",
+      "mechanism": "zonal.py:127 signature default is 'discard' while the docstring (zonal.py:139) claims 'Default \"split\"'; behavior probe on a redundant pair (two edges joining (0,0)-(100,100), weights ~141.42 / ~172.82)",
+      "attempts": {
+        "default": "18 edges, no weight > 150 => LONGER redundant edge discarded (discard behavior; attempts/issue9/a0_default)",
+        "explicit_split": "(nodes,edges)=(13,20): shortest redundant edge kept intact, longer split at midpoint per network_utils.py sort_values('weight').index[1:] (attempts/issue9/a1_split)",
+        "explicit_keep": "19 edges incl. weight > 150 => both redundant edges retained (attempts/issue9/a2_keep)"
+      },
+      "cause_confidence": "certain (text mismatch + three-arm behavioral contrast)",
+      "failed_stage": "documentation/contract mismatch (network construction)",
+      "fix_commit": null,
+      "fix_owner": "API_REVIEW (una-x documents actual behavior; madina_legacy keeps pinned default)",
+      "regression": "tests/incidents/test_published_incidents.py::test_issue9_redundant_edge_default_matches_code_not_docstring",
+      "residual_limitations": "none"
+    },
+    {
+      "packet_id": "INC07",
+      "issue": "reported city failures/stalls (no data published)",
+      "source_urls": [],
+      "status": "no_city_root_cause_claimed__mechanism_evidence_retained",
+      "mechanisms_exercised_with_data": {
+        "finite_combinatorial_all_path_work": {
+          "evidence": "unit lattices N=2..4, corner OD: pinned enumerator generates 6 -> 20 -> 70 paths (x3.33 per ring); output-size lower bound computed per cell (attempts/allpaths_n*_r*)",
+          "censoring": "none observed within the bounded cells (all completed); per-attempt watchdog was armed and would have recorded censored cells as incomplete without re-running larger sizes",
+          "new_source_fact": "OBS-ALL-TIE below: pinned 'ALL' records only paths within 0.00001 absolute of the shortest, so counts are identical at detour_ratio 1.0 and 1.5 -- pinned ALL semantics = shortest-tie enumeration"
+        }
+      },
+      "mechanism_classes_NOT_exercised": [
+        "queue deadlock / orphaned worker (no reproduced instance)",
+        "memory pressure / swapping / disk exhaustion",
+        "JIT compilation masquerade (BUG-JIT-DISABLED-STUB is a correctness stub, owned by SCIENCE, not a stall)",
+        "algorithmic nontermination (no minimized state trace available)"
+      ],
+      "cause_confidence": "no city root cause: datasets/settings/logs unavailable; timeout is treated as censored data, never as deadlock proof or a finite runtime (dossier 03)",
+      "fix_commit": null,
+      "fix_owner": "MADINA_PATHS / EXECUTION (exact-ALL contract: output lower bound, explicit resource exception or documented incomplete stream, never K paths labeled ALL)",
+      "regression": "tests/incidents/test_all_path_scaling.py::test_all_path_growth_on_lattices",
+      "residual_limitations": "synthetic lattices are mechanism evidence only and are NOT labeled as any observed city"
+    },
+    {
+      "packet_id": "INC08",
+      "issue": "una-x diagnostic-mode TypeError (previous closeout BUG-JIT-DISABLED-STUB)",
+      "source_urls": [
+        "https://github.com/AlanSynn/una-x/blob/16bf404d2cc5e776a78dc073c80405f6d186da29/campaigns/una_large_e2e/CLOSEOUT.md"
+      ],
+      "status": "already_reproduced_in_HARNESS__fix_owned_elsewhere",
+      "disposition": "bug_registry.json: hypothesis -> reproduced (HARNESS run har-20260930T153809Z); fix assigned to SCIENCE (close diagnostic-mode guard failure). Suite end state 1 failed (this bug only), 98 passed, 0 errors.",
+      "fix_commit": null,
+      "fix_owner": "SCIENCE",
+      "residual_limitations": "not a FAILURES deliverable; listed for incident-matrix completeness"
+    },
+    {
+      "packet_id": "INC09",
+      "issue": "source hypotheses: weighted-reach truncation, same-edge partial travel, coincident seeds, workflow file/cost dependency, stale graphs, zero/nonfinite routes",
+      "source_urls": [],
+      "status": "open_owned_by_later_tasks",
+      "disposition": "each requires independent bug specification and controlled old/corrected comparison (TOPOLOGY/SCIENCE/MADINA_*); not reproduced in this task. One additional executed local fact was registered during this task: FACT-BTN-POISON below.",
+      "fix_commit": null,
+      "fix_owner": "TOPOLOGY / SCIENCE / MADINA_WORKFLOWS",
+      "residual_limitations": "none claimed here"
+    }
+  ],
+  "local_facts_registered": [
+    {
+      "id": "OBS-ALL-TIE",
+      "kind": "source observation + executed evidence",
+      "statement": "both pinned all-path enumerators record only paths whose length is within 0.00001 (absolute) of the shortest: pinned 'ALL' = shortest-tie enumeration, detour-ratio independent (6/20/70 identical at ratio 1.0 and 1.5)",
+      "evidence": "attempts/allpaths_n2_r1.0 vs allpaths_n2_r1.5 (etc.); .refs/madina/src/madina/una/paths.py bound '<= 0.00001' (both enumerators)",
+      "consequence": "Madina API parity and any exact-ALL contract must preserve shortest-tie semantics for madina_legacy parity; una_legacy ALL semantics are separate and must not be conflated"
+    },
+    {
+      "id": "OBS-PARALLEL-PARTIAL",
+      "kind": "source observation + executed evidence",
+      "statement": "pinned parallel_betweenness PRINTS per-worker errors (\"'numpy.ndarray' object has no attribute 'index'\") and returns partial results with no exception",
+      "evidence": "attempts/issue12b/a0_parallel (stdout_tail contains the worker error report; completed=True)"
+    },
+    {
+      "id": "FACT-BTN-POISON",
+      "kind": "executed local fact (bug registry: reproduced)",
+      "statement": "with closest_destination=True, per-origin statistics hit UnboundLocalError: eligible_destinations_shortest_distance is bound only in the Huff branch (betweenness.py:612); the bare except at betweenness.py:619-620 prints 'error collecting origin statistics' and continues; lines 858-859 .min()/.max() then raise, the 'error collecting origin statistics' handler swallows it and continue skips remove_node_to_graph => ORIGIN nodes leak into the shared d_graph (14 -> 16 nodes; both origin ids present after). closest_destination=False is clean (no error lines, no origin leak). In-process manager-queue feeding replicates the pinned driver's worker body so d_graph mutations are directly observable (the real ProcessPoolExecutor ships pickled copies, hiding worker-side poisoning from the parent).",
+      "evidence": "attempts/btn_stats/a0_closest_true (stderr_tail: UnboundLocalError + eligible_destinations_shortest_distance; origin_nodes_still_in_d_graph == all origins) and a1_closest_false (clean)",
+      "fix_owner": "SCIENCE (BTN stats fix, corrected_v1) + compat parity note for madina_legacy"
+    },
+    {
+      "id": "FACT-LATTICE-SCALE",
+      "kind": "executed local fact",
+      "statement": "all-path path count grows ~3.33x per lattice ring on corner-OD unit lattices (6 -> 20 -> 70 for N=2,3,4) with computed output-size lower bounds > 0 for every completed cell",
+      "evidence": "attempts/allpaths_n* (payload_allpaths.py records paths_generated, sum_path_lengths, output_lower_bound_bytes_estimate, max_path_length)"
+    }
+  ],
+  "watchdog_and_cleanup_verification": {
+    "independent_parent_watchdog": "threading.Timer in the parent (not the child GIL): watchdog_fired.json -> SIGUSR1 faulthandler dump -> cooperative cancel flag -> bounded grace -> SIGTERM owned pids only -> kill -> join/reap",
+    "resource_limits": "per-attempt RLIMIT_AS 8GiB, RLIMIT_FSIZE 512MiB (preexec), start_new_session=True",
+    "executed_evidence": {
+      "runaway": "600s sleep child bounded in ~11s wall, timed_out=true, status=incomplete, capsule preserved (watchdog_fired.json, heartbeat.jsonl, memory samples), no orphaned processes (attempts/watchdog_runaway)",
+      "healthy": "0.2s child untouched by watchdog, status=completed (attempts/watchdog_ok)"
+    },
+    "regression": "tests/incidents/test_watchdog_cleanup.py (2 tests)"
+  },
+  "suite_verification": {
+    "command": "python -m pytest tests/incidents/ -v",
+    "outcome": "11 passed in 58.43s (2026-09-30)",
+    "log": "incidents_suite.log"
+  },
+  "notice": "No city-specific hang root cause was reproduced or claimed. All reproductions ran against the pinned archived reference at 8b5c3bd3 in isolated spawned attempts; the pinned tree was never modified."
+}

@@ -1,0 +1,232 @@
+{
+  "attempt": "/tmp/una_large_e2e_artifacts/incidents/run/issue12b/a0_parallel",
+  "payload": "/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_madina_network.py",
+  "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+  "status": "completed",
+  "timed_out": false,
+  "exitcode": 0,
+  "wall_s": 1.6410582857206464,
+  "timeout_s": 300,
+  "grace_s": 5.0,
+  "envelope": {
+    "python": "3.11.4",
+    "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+    "os": "Linux 5.14.0-570.128.1.el9_6.x86_64",
+    "start_method": "spawn (subprocess, start_new_session=True)",
+    "machine": "x86_64",
+    "dataset": {},
+    "parameters": {},
+    "child_env": {}
+  },
+  "memory": {
+    "label": "a0_parallel",
+    "interval_s": 0.2,
+    "samples_taken": 8,
+    "samples_lost": 0,
+    "peak_simultaneous_rss_bytes": 156463104,
+    "peak_is_simultaneous_tree_sum": true,
+    "per_sample": [
+      {
+        "t": 1790788140.8355994,
+        "root_pid": 2365854,
+        "tree_size": 1,
+        "rss_bytes_sum": 9633792,
+        "rss_bytes_per_pid": {
+          "2365854": 9633792
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383899930624,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788141.0595129,
+        "root_pid": 2365854,
+        "tree_size": 1,
+        "rss_bytes_sum": 42885120,
+        "rss_bytes_per_pid": {
+          "2365854": 42885120
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383891189760,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788141.2834845,
+        "root_pid": 2365854,
+        "tree_size": 1,
+        "rss_bytes_sum": 79245312,
+        "rss_bytes_per_pid": {
+          "2365854": 79245312
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383866568704,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788141.5074396,
+        "root_pid": 2365854,
+        "tree_size": 1,
+        "rss_bytes_sum": 98709504,
+        "rss_bytes_per_pid": {
+          "2365854": 98709504
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383866556416,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788141.731249,
+        "root_pid": 2365854,
+        "tree_size": 1,
+        "rss_bytes_sum": 114712576,
+        "rss_bytes_per_pid": {
+          "2365854": 114712576
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383867052032,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788141.95566,
+        "root_pid": 2365854,
+        "tree_size": 1,
+        "rss_bytes_sum": 144437248,
+        "rss_bytes_per_pid": {
+          "2365854": 144437248
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383865810944,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788142.1793225,
+        "root_pid": 2365854,
+        "tree_size": 1,
+        "rss_bytes_sum": 156463104,
+        "rss_bytes_per_pid": {
+          "2365854": 156463104
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383862792192,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788142.4040835,
+        "root_pid": 2365854,
+        "tree_size": 1,
+        "rss_bytes_sum": 155316224,
+        "rss_bytes_per_pid": {
+          "2365854": 155316224
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383850528768,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      }
+    ],
+    "meminfo_final": {
+      "MemTotal": 403781525504,
+      "MemAvailable": 383850528768,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589930496
+    },
+    "filesystem": "procfs(/proc)"
+  },
+  "child_result": {
+    "status": "completed",
+    "result": {
+      "dataset": {
+        "dir": "/tmp/una_incidents/fx",
+        "crs": "EPSG:3857",
+        "sha256": {
+          "streets": "b766806f811bdba282853f4c3998526c3225a0f7e907dbbca120463ad1e6bd50",
+          "origins": "fa2b747c053208a8313a111d45f47d17950d9bfc9e13e71cb0eaf02082e88f9b",
+          "destinations": "38ca43932ebedca19fca0862c97852a79a38d714e639083218d9faaa1e0d4219"
+        },
+        "census": {
+          "street_edges": 17,
+          "origins": 2,
+          "destinations": 2
+        }
+      },
+      "build": {
+        "interventions_applied": [
+          {
+            "module": "madina/zonal/network_utils.py",
+            "site": "point_xy = GeoPandaExtractor(geometry_gdf.geometry.values.data)",
+            "replacement": "point_xy = GeoPandaExtractor(np.asarray(geometry_gdf.geometry.values))",
+            "count": 1
+          },
+          {
+            "module": "madina/zonal/network_utils.py",
+            "site": "fastpath=True,",
+            "replacement": "",
+            "count": 34
+          }
+        ],
+        "pinned_source_sha256": {
+          "zonal/network_utils.py": "07647b3c3895f3f3664eb4d3759ac011cc16264024c6d7114b40b7d9790a2616",
+          "una/betweenness.py": "412d0518b64b581e66d8cdfe9a0fff8f8bcda2874fe8a0b244c198d3780415b1"
+        },
+        "nodes": 12,
+        "edges": 17,
+        "weights": [
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "fixture_crs": "EPSG:3857",
+        "fixture_dir": "/tmp/una_incidents/fx"
+      },
+      "btn_parallel": {
+        "completed": true,
+        "stdout_tail": "'numpy.ndarray' object has no attribute 'index'\n'numpy.ndarray' object has no attribute 'index'\n"
+      }
+    }
+  }
+}

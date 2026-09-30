@@ -1,0 +1,9 @@
+{"t": 1790786064.4686308, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 39198720}
+{"t": 1790786375.6557412, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 28225536}
+{"t": 1790787453.4204907, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 27066368}
+{"t": 1790787455.4208066, "phase": "payload", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 118923264}
+{"t": 1790787508.588719, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 27062272}
+{"t": 1790787586.5566201, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 27095040}
+{"t": 1790787588.556905, "phase": "payload", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 123998208}
+{"t": 1790788120.5069447, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 27439104}
+{"t": 1790788122.507275, "phase": "payload", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 123977728}

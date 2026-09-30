@@ -1,0 +1,76 @@
+{
+  "attempt": "/tmp/una_large_e2e_artifacts/incidents/run/watchdog_ok",
+  "payload": "/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_runaway.py",
+  "python_exe": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python",
+  "status": "completed",
+  "timed_out": false,
+  "exitcode": 0,
+  "wall_s": 0.27307655895128846,
+  "timeout_s": 30,
+  "grace_s": 5.0,
+  "envelope": {
+    "python": "3.11.4",
+    "python_exe": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python",
+    "os": "Linux 5.14.0-570.128.1.el9_6.x86_64",
+    "start_method": "spawn (subprocess, start_new_session=True)",
+    "machine": "x86_64",
+    "dataset": {},
+    "parameters": {},
+    "child_env": {}
+  },
+  "memory": {
+    "label": "watchdog_ok",
+    "interval_s": 0.2,
+    "samples_taken": 2,
+    "samples_lost": 0,
+    "peak_simultaneous_rss_bytes": 16273408,
+    "peak_is_simultaneous_tree_sum": true,
+    "per_sample": [
+      {
+        "t": 1790788164.519889,
+        "root_pid": 2366236,
+        "tree_size": 1,
+        "rss_bytes_sum": 9830400,
+        "rss_bytes_per_pid": {
+          "2366236": 9830400
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383778750464,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788164.7439423,
+        "root_pid": 2366236,
+        "tree_size": 1,
+        "rss_bytes_sum": 16273408,
+        "rss_bytes_per_pid": {
+          "2366236": 16273408
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383775567872,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      }
+    ],
+    "meminfo_final": {
+      "MemTotal": 403781525504,
+      "MemAvailable": 383775567872,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589930496
+    },
+    "filesystem": "procfs(/proc)"
+  },
+  "child_result": {
+    "status": "completed",
+    "result": {
+      "never": true
+    }
+  }
+}

@@ -1,0 +1,20 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.4, pytest-9.1.1, pluggy-1.6.0 -- /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python
+cachedir: .pytest_cache
+rootdir: /storage/scratch1/1/dsynn6/una-x
+configfile: pyproject.toml
+collecting ... collected 11 items
+
+tests/incidents/test_all_path_scaling.py::test_all_path_growth_on_lattices PASSED [  9%]
+tests/incidents/test_published_incidents.py::test_issue8_geometryarray_data_causal_chain PASSED [ 18%]
+tests/incidents/test_published_incidents.py::test_issue12a_fastpath_removed_in_pandas3 PASSED [ 27%]
+tests/incidents/test_published_incidents.py::test_issue12b_arraysplit_object_chunks PASSED [ 36%]
+tests/incidents/test_published_incidents.py::test_issue7_service_area_geometrycollection PASSED [ 45%]
+tests/incidents/test_published_incidents.py::test_btn_stats_nameerror_and_graph_poisoning PASSED [ 54%]
+tests/incidents/test_published_incidents.py::test_issue15_networkx_dependency_declaration PASSED [ 63%]
+tests/incidents/test_published_incidents.py::test_issue14_distribution_metadata PASSED [ 72%]
+tests/incidents/test_published_incidents.py::test_issue9_redundant_edge_default_matches_code_not_docstring PASSED [ 81%]
+tests/incidents/test_watchdog_cleanup.py::test_runaway_child_bounded_and_reaped PASSED [ 90%]
+tests/incidents/test_watchdog_cleanup.py::test_healthy_child_untouched_by_watchdog PASSED [100%]
+
+============================= 11 passed in 58.43s ==============================

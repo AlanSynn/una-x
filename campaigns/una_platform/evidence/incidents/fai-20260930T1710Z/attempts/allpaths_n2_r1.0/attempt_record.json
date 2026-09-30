@@ -1,0 +1,231 @@
+{
+  "attempt": "/tmp/una_large_e2e_artifacts/incidents/run/allpaths_n2_r1.0",
+  "payload": "/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_allpaths.py",
+  "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+  "status": "completed",
+  "timed_out": false,
+  "exitcode": 0,
+  "wall_s": 2.460546855814755,
+  "timeout_s": 240,
+  "grace_s": 5.0,
+  "envelope": {
+    "python": "3.11.4",
+    "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+    "os": "Linux 5.14.0-570.128.1.el9_6.x86_64",
+    "start_method": "spawn (subprocess, start_new_session=True)",
+    "machine": "x86_64",
+    "dataset": {},
+    "parameters": {},
+    "child_env": {}
+  },
+  "memory": {
+    "label": "allpaths_n2_r1.0",
+    "interval_s": 0.2,
+    "samples_taken": 11,
+    "samples_lost": 0,
+    "peak_simultaneous_rss_bytes": 125800448,
+    "peak_is_simultaneous_tree_sum": true,
+    "per_sample": [
+      {
+        "t": 1790788120.4816422,
+        "root_pid": 2365458,
+        "tree_size": 1,
+        "rss_bytes_sum": 9633792,
+        "rss_bytes_per_pid": {
+          "2365458": 9633792
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382317580288,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788120.7070198,
+        "root_pid": 2365458,
+        "tree_size": 1,
+        "rss_bytes_sum": 29065216,
+        "rss_bytes_per_pid": {
+          "2365458": 29065216
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382313406464,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788120.9323802,
+        "root_pid": 2365458,
+        "tree_size": 1,
+        "rss_bytes_sum": 38473728,
+        "rss_bytes_per_pid": {
+          "2365458": 38473728
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382320267264,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788121.159976,
+        "root_pid": 2365458,
+        "tree_size": 1,
+        "rss_bytes_sum": 59793408,
+        "rss_bytes_per_pid": {
+          "2365458": 59793408
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382322663424,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788121.3850865,
+        "root_pid": 2365458,
+        "tree_size": 1,
+        "rss_bytes_sum": 74539008,
+        "rss_bytes_per_pid": {
+          "2365458": 74539008
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382312398848,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788121.6107857,
+        "root_pid": 2365458,
+        "tree_size": 1,
+        "rss_bytes_sum": 87711744,
+        "rss_bytes_per_pid": {
+          "2365458": 87711744
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382303109120,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788121.8355434,
+        "root_pid": 2365458,
+        "tree_size": 1,
+        "rss_bytes_sum": 97738752,
+        "rss_bytes_per_pid": {
+          "2365458": 97738752
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382294163456,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788122.06046,
+        "root_pid": 2365458,
+        "tree_size": 1,
+        "rss_bytes_sum": 108404736,
+        "rss_bytes_per_pid": {
+          "2365458": 108404736
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382284709888,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788122.286177,
+        "root_pid": 2365458,
+        "tree_size": 1,
+        "rss_bytes_sum": 114499584,
+        "rss_bytes_per_pid": {
+          "2365458": 114499584
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382277234688,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788122.5110176,
+        "root_pid": 2365458,
+        "tree_size": 1,
+        "rss_bytes_sum": 123977728,
+        "rss_bytes_per_pid": {
+          "2365458": 123977728
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382273085440,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788122.7354858,
+        "root_pid": 2365458,
+        "tree_size": 1,
+        "rss_bytes_sum": 125800448,
+        "rss_bytes_per_pid": {
+          "2365458": 125800448
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382270517248,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      }
+    ],
+    "meminfo_final": {
+      "MemTotal": 403781525504,
+      "MemAvailable": 382270517248,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589930496
+    },
+    "filesystem": "procfs(/proc)"
+  },
+  "child_result": {
+    "status": "completed",
+    "result": {
+      "applied_interventions": [],
+      "attempts": [
+        {
+          "n": 2,
+          "detour_ratio": 1.0,
+          "paths_generated": 6,
+          "sum_path_lengths": 30,
+          "output_lower_bound_bytes_estimate": 240,
+          "shortest_distance": 4.0,
+          "max_path_length": 5
+        }
+      ]
+    }
+  }
+}

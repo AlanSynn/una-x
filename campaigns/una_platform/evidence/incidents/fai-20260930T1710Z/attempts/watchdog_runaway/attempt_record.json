@@ -1,0 +1,844 @@
+{
+  "attempt": "/tmp/una_large_e2e_artifacts/incidents/run/watchdog_runaway",
+  "payload": "/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_runaway.py",
+  "python_exe": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python",
+  "status": "incomplete",
+  "timed_out": true,
+  "exitcode": -15,
+  "wall_s": 11.01003019977361,
+  "timeout_s": 6.0,
+  "grace_s": 5.0,
+  "envelope": {
+    "python": "3.11.4",
+    "python_exe": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python",
+    "os": "Linux 5.14.0-570.128.1.el9_6.x86_64",
+    "start_method": "spawn (subprocess, start_new_session=True)",
+    "machine": "x86_64",
+    "dataset": {},
+    "parameters": {},
+    "child_env": {}
+  },
+  "memory": {
+    "label": "watchdog_runaway",
+    "interval_s": 0.2,
+    "samples_taken": 50,
+    "samples_lost": 0,
+    "peak_simultaneous_rss_bytes": 16453632,
+    "peak_is_simultaneous_tree_sum": true,
+    "per_sample": [
+      {
+        "t": 1790788153.138739,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 9437184,
+        "rss_bytes_per_pid": {
+          "2366172": 9437184
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383955824640,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788153.3634036,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383953412096,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788153.5875695,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383949828096,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788153.8117862,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383954063360,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788154.0355093,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383966826496,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788154.2588255,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383962845184,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788154.4822392,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383958749184,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788154.705747,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383956520960,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788154.9296198,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383955238912,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788155.153385,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383953633280,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788155.3773124,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383948886016,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788155.600563,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383946211328,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788155.8242903,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383945682944,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788156.0484698,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383943106560,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788156.2719631,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383939891200,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788156.4968,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383935926272,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788156.7209644,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383934300160,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788156.9449575,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383933452288,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788157.1688783,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383932047360,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788157.3923492,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383920668672,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788157.615912,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383899942912,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788157.8395438,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383888003072,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788158.063804,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383881625600,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788158.2875187,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383874154496,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788158.511497,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383870365696,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788158.7354462,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383866875904,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788158.9590802,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16257024,
+        "rss_bytes_per_pid": {
+          "2366172": 16257024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383861628928,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788159.182681,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383853346816,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788159.4067738,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383843049472,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788159.6307602,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383840731136,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788159.8539748,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383839252480,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788160.078295,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383835115520,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788160.3021483,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383830081536,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788160.5259664,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383827156992,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788160.7493808,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383822295040,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788160.9738846,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383813844992,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788161.1979527,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383803842560,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788161.4219499,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383796293632,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788161.6454995,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383799984128,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788161.868913,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383797186560,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788162.0929909,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383799398400,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788162.3164773,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383795814400,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788162.540171,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383796953088,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788162.7636867,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383794114560,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788162.9878132,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383791886336,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788163.2115312,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383789969408,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788163.4356737,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383786905600,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788163.658967,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383783272448,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788163.882183,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383780175872,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788164.1067066,
+        "root_pid": 2366172,
+        "tree_size": 1,
+        "rss_bytes_sum": 16453632,
+        "rss_bytes_per_pid": {
+          "2366172": 16453632
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383776223232,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      }
+    ],
+    "meminfo_final": {
+      "MemTotal": 403781525504,
+      "MemAvailable": 383776223232,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589930496
+    },
+    "filesystem": "procfs(/proc)"
+  },
+  "child_result": {
+    "status": "completed",
+    "result": {
+      "never": true
+    }
+  }
+}

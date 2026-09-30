@@ -1,0 +1,139 @@
+{
+  "attempt": "/tmp/una_large_e2e_artifacts/incidents/run/issue12a/a0_chain",
+  "payload": "/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_madina_network.py",
+  "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+  "status": "failed",
+  "timed_out": false,
+  "exitcode": 0,
+  "wall_s": 1.2972388891503215,
+  "timeout_s": 180,
+  "grace_s": 5.0,
+  "envelope": {
+    "python": "3.11.4",
+    "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+    "os": "Linux 5.14.0-570.128.1.el9_6.x86_64",
+    "start_method": "spawn (subprocess, start_new_session=True)",
+    "machine": "x86_64",
+    "dataset": {},
+    "parameters": {},
+    "child_env": {}
+  },
+  "memory": {
+    "label": "a0_chain",
+    "interval_s": 0.2,
+    "samples_taken": 6,
+    "samples_lost": 0,
+    "peak_simultaneous_rss_bytes": 147165184,
+    "peak_is_simultaneous_tree_sum": true,
+    "per_sample": [
+      {
+        "t": 1790788136.7510314,
+        "root_pid": 2365763,
+        "tree_size": 1,
+        "rss_bytes_sum": 9437184,
+        "rss_bytes_per_pid": {
+          "2365763": 9437184
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383859277824,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788136.9753742,
+        "root_pid": 2365763,
+        "tree_size": 1,
+        "rss_bytes_sum": 43368448,
+        "rss_bytes_per_pid": {
+          "2365763": 43368448
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383832453120,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788137.1995702,
+        "root_pid": 2365763,
+        "tree_size": 1,
+        "rss_bytes_sum": 79826944,
+        "rss_bytes_per_pid": {
+          "2365763": 79826944
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383880749056,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788137.4233503,
+        "root_pid": 2365763,
+        "tree_size": 1,
+        "rss_bytes_sum": 98897920,
+        "rss_bytes_per_pid": {
+          "2365763": 98897920
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383879712768,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788137.6472614,
+        "root_pid": 2365763,
+        "tree_size": 1,
+        "rss_bytes_sum": 115351552,
+        "rss_bytes_per_pid": {
+          "2365763": 115351552
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383881637888,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788137.8711529,
+        "root_pid": 2365763,
+        "tree_size": 1,
+        "rss_bytes_sum": 147165184,
+        "rss_bytes_per_pid": {
+          "2365763": 147165184
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 383881428992,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      }
+    ],
+    "meminfo_final": {
+      "MemTotal": 403781525504,
+      "MemAvailable": 383881428992,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589930496
+    },
+    "filesystem": "procfs(/proc)"
+  },
+  "child_result": {
+    "status": "failed",
+    "error": "TypeError: Series.__init__() got an unexpected keyword argument 'fastpath'",
+    "traceback": "Traceback (most recent call last):\n  File \"/tmp/una_large_e2e_artifacts/incidents/run/issue12a/a0_chain/_child_incident.py\", line 38, in <module>\n    result = payload_ns[\"payload\"](params, state)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_madina_network.py\", line 40, in payload\n    z, info = build_project(madina_src, interventions, tolerance,\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/storage/scratch1/1/dsynn6/una-x/tests/incidents/madina_bridge.py\", line 219, in build_project\n    z.create_street_network(**kwargs)\n  File \"/storage/scratch1/1/dsynn6/una-x/.refs/madina/src/madina/zonal/zonal.py\", line 186, in create_street_network\n    node_gdf, edge_gdf = node_edge_builder(\n                         ^^^^^^^^^^^^^^^^^^\n  File \"<intervention:madina/zonal/network_utils.py>\", line 25, in node_edge_builder\nTypeError: Series.__init__() got an unexpected keyword argument 'fastpath'\n"
+  }
+}

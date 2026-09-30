@@ -1,0 +1,8 @@
+{"t": 1790786663.4041982, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 29884416}
+{"t": 1790786944.307113, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 29462528}
+{"t": 1790787400.7703998, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 28012544}
+{"t": 1790787464.4209735, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 29499392}
+{"t": 1790787518.8831282, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 29511680}
+{"t": 1790787597.0373027, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 29528064}
+{"t": 1790788131.9481843, "phase": "boot", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 29691904}
+{"t": 1790788133.9484787, "phase": "build_project", "units_done": 0, "last_marker": "start", "ru_maxrss_bytes": 103686144}

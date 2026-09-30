@@ -1,0 +1,151 @@
+{
+  "attempt": "/tmp/una_large_e2e_artifacts/incidents/run/allpaths_n4_r1.5",
+  "payload": "/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_allpaths.py",
+  "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+  "status": "completed",
+  "timed_out": false,
+  "exitcode": 0,
+  "wall_s": 1.2239221860654652,
+  "timeout_s": 240,
+  "grace_s": 5.0,
+  "envelope": {
+    "python": "3.11.4",
+    "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+    "os": "Linux 5.14.0-570.128.1.el9_6.x86_64",
+    "start_method": "spawn (subprocess, start_new_session=True)",
+    "machine": "x86_64",
+    "dataset": {},
+    "parameters": {},
+    "child_env": {}
+  },
+  "memory": {
+    "label": "allpaths_n4_r1.5",
+    "interval_s": 0.2,
+    "samples_taken": 6,
+    "samples_lost": 0,
+    "peak_simultaneous_rss_bytes": 126758912,
+    "peak_is_simultaneous_tree_sum": true,
+    "per_sample": [
+      {
+        "t": 1790788128.197877,
+        "root_pid": 2365581,
+        "tree_size": 1,
+        "rss_bytes_sum": 9633792,
+        "rss_bytes_per_pid": {
+          "2365581": 9633792
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382247022592,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788128.4232438,
+        "root_pid": 2365581,
+        "tree_size": 1,
+        "rss_bytes_sum": 39362560,
+        "rss_bytes_per_pid": {
+          "2365581": 39362560
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382246539264,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788128.647968,
+        "root_pid": 2365581,
+        "tree_size": 1,
+        "rss_bytes_sum": 78721024,
+        "rss_bytes_per_pid": {
+          "2365581": 78721024
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382228963328,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788128.8728116,
+        "root_pid": 2365581,
+        "tree_size": 1,
+        "rss_bytes_sum": 98775040,
+        "rss_bytes_per_pid": {
+          "2365581": 98775040
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382213468160,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788129.097549,
+        "root_pid": 2365581,
+        "tree_size": 1,
+        "rss_bytes_sum": 114647040,
+        "rss_bytes_per_pid": {
+          "2365581": 114647040
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382211465216,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788129.3222911,
+        "root_pid": 2365581,
+        "tree_size": 1,
+        "rss_bytes_sum": 126758912,
+        "rss_bytes_per_pid": {
+          "2365581": 126758912
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382211350528,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      }
+    ],
+    "meminfo_final": {
+      "MemTotal": 403781525504,
+      "MemAvailable": 382211350528,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589930496
+    },
+    "filesystem": "procfs(/proc)"
+  },
+  "child_result": {
+    "status": "completed",
+    "result": {
+      "applied_interventions": [],
+      "attempts": [
+        {
+          "n": 4,
+          "detour_ratio": 1.5,
+          "paths_generated": 70,
+          "sum_path_lengths": 630,
+          "output_lower_bound_bytes_estimate": 5040,
+          "shortest_distance": 8.0,
+          "max_path_length": 9
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+Thread 0x00001555477ff640 (most recent call first):
+  File "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/lib/python3.11/threading.py", line 324 in wait
+  File "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/lib/python3.11/threading.py", line 622 in wait
+  File "/tmp/una_large_e2e_artifacts/incidents/run/watchdog_runaway/_child_incident.py", line 28 in _hb
+  File "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/lib/python3.11/threading.py", line 975 in run
+  File "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Current thread 0x0000155555413000 (most recent call first):
+  File "/tmp/una_large_e2e_artifacts/incidents/run/watchdog_runaway/_child_incident.py", line 10 in _dump
+  File "/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_runaway.py", line 13 in payload
+  File "/tmp/una_large_e2e_artifacts/incidents/run/watchdog_runaway/_child_incident.py", line 38 in <module>

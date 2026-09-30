@@ -1,0 +1,219 @@
+{
+  "attempt": "/tmp/una_large_e2e_artifacts/incidents/run/issue8/a0_pinned",
+  "payload": "/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_madina_network.py",
+  "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+  "status": "failed",
+  "timed_out": false,
+  "exitcode": 0,
+  "wall_s": 2.3932267418131232,
+  "timeout_s": 180,
+  "grace_s": 5.0,
+  "envelope": {
+    "python": "3.11.4",
+    "python_exe": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python",
+    "os": "Linux 5.14.0-570.128.1.el9_6.x86_64",
+    "start_method": "spawn (subprocess, start_new_session=True)",
+    "machine": "x86_64",
+    "dataset": {},
+    "parameters": {},
+    "child_env": {}
+  },
+  "memory": {
+    "label": "a0_pinned",
+    "interval_s": 0.2,
+    "samples_taken": 11,
+    "samples_lost": 0,
+    "peak_simultaneous_rss_bytes": 152723456,
+    "peak_is_simultaneous_tree_sum": true,
+    "per_sample": [
+      {
+        "t": 1790788129.4727418,
+        "root_pid": 2365605,
+        "tree_size": 1,
+        "rss_bytes_sum": 9633792,
+        "rss_bytes_per_pid": {
+          "2365605": 9633792
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382236839936,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788129.6992984,
+        "root_pid": 2365605,
+        "tree_size": 1,
+        "rss_bytes_sum": 41431040,
+        "rss_bytes_per_pid": {
+          "2365605": 41431040
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382229315584,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788129.9253492,
+        "root_pid": 2365605,
+        "tree_size": 1,
+        "rss_bytes_sum": 77582336,
+        "rss_bytes_per_pid": {
+          "2365605": 77582336
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382192898048,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788130.1498165,
+        "root_pid": 2365605,
+        "tree_size": 1,
+        "rss_bytes_sum": 97636352,
+        "rss_bytes_per_pid": {
+          "2365605": 97636352
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382206570496,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788130.374352,
+        "root_pid": 2365605,
+        "tree_size": 1,
+        "rss_bytes_sum": 113123328,
+        "rss_bytes_per_pid": {
+          "2365605": 113123328
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382192300032,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788130.5989234,
+        "root_pid": 2365605,
+        "tree_size": 1,
+        "rss_bytes_sum": 129347584,
+        "rss_bytes_per_pid": {
+          "2365605": 129347584
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382176346112,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788130.8230772,
+        "root_pid": 2365605,
+        "tree_size": 1,
+        "rss_bytes_sum": 132493312,
+        "rss_bytes_per_pid": {
+          "2365605": 132493312
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382175621120,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788131.0473094,
+        "root_pid": 2365605,
+        "tree_size": 1,
+        "rss_bytes_sum": 137801728,
+        "rss_bytes_per_pid": {
+          "2365605": 137801728
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382177394688,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788131.271355,
+        "root_pid": 2365605,
+        "tree_size": 1,
+        "rss_bytes_sum": 141930496,
+        "rss_bytes_per_pid": {
+          "2365605": 141930496
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382191857664,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788131.4963121,
+        "root_pid": 2365605,
+        "tree_size": 1,
+        "rss_bytes_sum": 147996672,
+        "rss_bytes_per_pid": {
+          "2365605": 147996672
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382198784000,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      },
+      {
+        "t": 1790788131.7211316,
+        "root_pid": 2365605,
+        "tree_size": 1,
+        "rss_bytes_sum": 152723456,
+        "rss_bytes_per_pid": {
+          "2365605": 152723456
+        },
+        "pids_missing_statm": 0,
+        "meminfo": {
+          "MemTotal": 403781525504,
+          "MemAvailable": 382204866560,
+          "SwapTotal": 8589930496,
+          "SwapFree": 8589930496
+        }
+      }
+    ],
+    "meminfo_final": {
+      "MemTotal": 403781525504,
+      "MemAvailable": 382204866560,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589930496
+    },
+    "filesystem": "procfs(/proc)"
+  },
+  "child_result": {
+    "status": "failed",
+    "error": "AttributeError: 'GeometryArray' object has no attribute 'data'",
+    "traceback": "Traceback (most recent call last):\n  File \"/tmp/una_large_e2e_artifacts/incidents/run/issue8/a0_pinned/_child_incident.py\", line 38, in <module>\n    result = payload_ns[\"payload\"](params, state)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/storage/scratch1/1/dsynn6/una-x/tests/incidents/payloads/payload_madina_network.py\", line 40, in payload\n    z, info = build_project(madina_src, interventions, tolerance,\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/storage/scratch1/1/dsynn6/una-x/tests/incidents/madina_bridge.py\", line 219, in build_project\n    z.create_street_network(**kwargs)\n  File \"/storage/scratch1/1/dsynn6/una-x/.refs/madina/src/madina/zonal/zonal.py\", line 186, in create_street_network\n    node_gdf, edge_gdf = node_edge_builder(\n                         ^^^^^^^^^^^^^^^^^^\n  File \"/storage/scratch1/1/dsynn6/una-x/.refs/madina/src/madina/zonal/network_utils.py\", line 13, in node_edge_builder\n    point_xy = GeoPandaExtractor(geometry_gdf.geometry.values.data)\n                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'GeometryArray' object has no attribute 'data'\n"
+  }
+}
