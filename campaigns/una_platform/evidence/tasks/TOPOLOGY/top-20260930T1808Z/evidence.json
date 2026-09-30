@@ -1,0 +1,77 @@
+{
+  "task": "TOPOLOGY",
+  "run_id": "top-20260930T1808Z",
+  "campaign": "una-platform-2026-09",
+  "date_utc": "2026-09-30",
+  "role": "geometry-engineer",
+  "branch": "perf/una-platform",
+  "head_at_start": "196dc86726da5bcbeb76f38877ba096c79138594",
+  "pinned_reference": "City-Form-Lab/madina@8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6",
+  "protocol": {
+    "parity_arms": "reference (.refs/madina_ref/src = pinned + CONTRACT bridge) and facade (src/urban_network_analysis/compat/madina/zonal) run under the SAME interpreter (.refs/venv_madina_legacy/bin/python), identically seeded RNG (random.seed(20260930), PYTHONHASHSEED=0), scenario fixtures written to a deterministic scenario-scoped root (/tmp/pgeom_fixed/<scenario>) wiped per run so layer file_path digests match across arms",
+    "digest": "bitwise-strict: float64 as IEEE-754 bit patterns (struct.pack), geometries as WKB sha256, dtypes/categories/index/order recorded, NaN-stable; zonal digest covers geo_center, layers (all gdfs incl. colors), network (nodes, edges, light_graph, d_graph, od_graph, added_nodes, turn params)",
+    "baseline_determinism": "every build scenario runs the reference arm twice; arms must match before the facade is compared, else the parity baseline is declared invalid",
+    "sensitivity": "three well-formed sabotage variants of the facade must be DETECTED as digest differences (mutation kill); a crash-based sabotage (shift_node_ids, KeyError in create_graph) was replaced because it evaded the comparator under test — superseded artifact retained as provenance (facade/grid_basic__shift_node_ids.json)",
+    "error_contract": "error scenarios compare raised exception TYPE and full message string, identical across arms; registered-unsupported pinned paths keep pinned failure behavior"
+  },
+  "delta_ledger_verification": {
+    "D1_geomarray_data": "facade network_utils uses np.asarray(geometry_gdf.geometry.values, dtype=object); same delta present in bridged reference (CONTRACT bridge); covered behaviorally by tests/incidents A1/A2 chains",
+    "D2_fastpath_removal": "all 34 pinned fastpath kwarg sites removed (pandas 3.0); same delta in bridged reference",
+    "D3_no_USE_PYGEOS_env_write": "tested: fresh interpreter importing the facade asserts USE_PYGEOS never enters os.environ (test_facade_import_writes_no_environment_variables)",
+    "D4_lazy_pydeck": "tested: reload of facade utils with builtins.__import__ blocking pydeck succeeds (no module-level import); create_deckGL_map raises ImportError with actionable 'pip install pydeck' message"
+  },
+  "build_scenario_matrix": {
+    "grid_basic": "canonical 4x4 grid streets + 2 origins/2 destinations; full pipeline load->csn->insert->create_graph; digests cover all three graphs",
+    "redundant_keep|discard|split": "same-edge duplicates with weight contrast (141.42 vs 172.82 over the same endpoints); pinned discard keeps the SHORTEST redundant edge (sort_values('weight').index[1:]) — INC06 semantics pinned bitwise; keep retains both; split keeps shortest + splits the rest (+1 node +2 edges)",
+    "tolerance_snap": "endpoints 30 units off grid nodes, node_snapping_tolerance=30; snap geometry/ids pinned",
+    "custom_weight": "weight_attribute='cost' with a zero-weight feature (pinned max(w,0.01) branch) and fractional weight 12.5",
+    "prep_geometry": "all-Z layer (Polygon + LineStrings): pinned has_z.any() branch strips Z via shapely transform; Polygon exterior-ring substitution; bitwise post-transform geometry",
+    "multilinestring_pure": "all-MLS layer: pinned takes geoms[0] of every multi-part geometry (silent first-part truncation quirk) — pinned and kept",
+    "layer_order": "pos/first/before/after load_layer variants + Layers dunders (getitem str/int, contains, iter, get_layer_at_pos, pos_at_label, __setitem__, repr)",
+    "clear_reinsert": "clear_nodes then re-insert; id/counter semantics pinned",
+    "coincident_od": "origin pair on the same grid node + destination on a node (same-edge/OD insertion mechanism)",
+    "gdf_input": "in-memory GeoDataFrame layer input (no file round-trip)",
+    "crs_variant": "EPSG:4326 geographic streets (pinned does NOT project; weights derive from geographic lengths — parity keeps that)",
+    "repeat_network": "create_street_network called twice on one Zonal (rebuild semantics)"
+  },
+  "error_scenario_matrix": {
+    "argument_validation": [
+      "load_layer(123, ..) bad name", "load_layer bad source type",
+      "csn unknown source_layer (no layers loaded)", "csn bad weight_attribute",
+      "csn negative snapping tolerance", "csn bad redundant_edge_treatment",
+      "set_turn_parameters threshold 181 (out of (0,180])",
+      "set_turn_parameters negative penalty", "insert_node bad label",
+      "insert_node unknown layer", "create_graph non-bool light_graph",
+      "layers[3.5] bad key"
+    ],
+    "registered_pinned_input_behavior": [
+      "prep_mixed_z: mixed 2D/3D layer crashes pinned prepare_geometry (_to_2d applied to 2D geoms missing 'z') — TypeError contract, identical both arms; NEW registered quirk",
+      "csn_multilinestring: MLS+LineString mixed layer crashes GeoPandaExtractor (.coords on multi-part) — NotImplementedError contract; NEW registered quirk (pure-MLS layers take geoms[0] instead; see multilinestring_pure)",
+      "visualize_graph: NotImplementedError (registered unsupported), digest-equal both arms"
+    ]
+  },
+  "new_pinned_quirks_confirmed_this_run": [
+    "BUG-PREP-MIXED-Z: pinned prepare_geometry applies the Z-stripping transform to ALL geometries when has_z.any() but _to_2d(x,y,z) requires 3 coords -> TypeError on any 2D geometry in a layer containing at least one Z geometry (utils.py:50-55 pinned; facade preserves verbatim; error scenario prep_mixed_z)",
+    "BUG-MLS-MIXED-CRASH: pinned prepare_geometry unwraps MultiLineString only when ALL rows are MLS (utils.py:42-44); a mixed layer reaches GeoPandaExtractor which calls .coords on the multi-part geometry -> NotImplementedError (network_utils.py:156 pinned; facade preserves verbatim; error scenario csn_multilinestring)",
+    "QUIRK-MLS-FIRST-PART: all-MLS layers are silently truncated to the first part of every multi-part geometry (build scenario multilinestring_pure, bitwise)"
+  ],
+  "adapter": {
+    "network_state": "frozen dataclass snapshot; numpy arrays copied then read-only views (write-in-place raises ValueError); equality/hash over CONTENTS bitwise (byte payloads + shapes), not elementwise ndarray ==; survives later facade mutation (set_node_value + clear_nodes) with pre-mutation values intact; weight_bits() exposes exact float64 bit tuples for cache/fingerprint identity",
+    "graph_state": "frozen snapshot of any networkx variant (light/d/od): sorted (u, v, weight-bits, id) edges + pinned added_nodes order; from_nx reads only",
+    "tests": "test_snapshot_is_immutable_and_stable, test_snapshot_survives_facade_mutation, test_weight_bits_are_exact_not_tolerance (0.1+0.2 vs 0.3 distinct at bit level)"
+  },
+  "import_structural_fixes": [
+    "root package __init__ made lazy (PEP 562 __getattr__/__dir__) so the shim imports without sklearn/numba present (required by venv_madina_legacy reference env and by the future drop-in shim distribution in madina-only environments); no legacy import surface changed (module attribute access still resolves and caches)",
+    "compat/madina/__init__: star-importing the zonal package copies its 'zonal' submodule attribute (zonal.py) over the package binding, breaking 'import ...compat.madina.zonal.<sub>' attribute traversal; binding restored explicitly after the star import"
+  ],
+  "limits": [
+    "visualization parity: create_map/create_deckGLMap verified for lazy import + absent-dependency error contract only; the HTML-producing path with pydeck present is NOT parity-tested (dossier 01: visualization optional at install; pydeck output embeds non-deterministic externals) — registered as a documented limit, not silently claimed",
+    "create_map uses pydeck types not exercised elsewhere; Layer.set_style AttributeError quirk (BUG-LAYER-SET-STYLE-ATTRERROR) preserved verbatim but not separately error-scenariod (it is a documented registry bug; facade carries it unchanged)",
+    "packet-root bug_registry.json not updated with the three new pinned quirks (file outside TOPOLOGY owned_files; reconciliation owned by INTEGRATE/CLOSE per FAILURES handoff convention)"
+  ],
+  "environment": {
+    "parity_interpreter": ".refs/venv_madina_legacy/bin/python 3.11.4 (pandas 3.0.6, numpy 2.4.6, geopandas 1.2.0, networkx 3.6.1, shapely 2.1.2, numba 0.67.0, pydeck present, sklearn ABSENT)",
+    "harness": "micromamba env alan (pytest driver, subprocess arms)",
+    "host": "PACE login-class CPU; no GPU used (not GPU-mandatory work)"
+  }
+}

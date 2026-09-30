@@ -1,0 +1,17 @@
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python', '/storage/scratch1/1/dsynn6/un... _a1_scope_admits(\\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^\\nTypeError: cannot unpack non-iterable NoneType object\\n\'}}}\n').returncode
+
+tests/large_e2e/harness/test_identity_guard.py:320: AssertionError
+=============================== warnings summary ===============================
+tests/platform_geometry/test_adapter.py::test_snapshot_is_immutable_and_stable
+tests/platform_geometry/test_adapter.py::test_snapshot_survives_facade_mutation
+  /storage/scratch1/1/dsynn6/una-x/src/urban_network_analysis/compat/madina/zonal/zonal.py:134: DeprecationWarning: The 'unary_union' attribute is deprecated, use the 'union_all()' method instead.
+    centroid_point = gdf['geometry'].to_crs("EPSG:4326").unary_union.centroid
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records
+1 failed, 145 passed, 348 skipped, 2 warnings in 669.60s (0:11:09)
+
+[exited with code 0]

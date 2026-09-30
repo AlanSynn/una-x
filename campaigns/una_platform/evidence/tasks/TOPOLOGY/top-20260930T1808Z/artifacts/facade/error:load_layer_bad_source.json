@@ -1,0 +1,1 @@
+{"message": "Parameter 'file_path' must be either (<class 'pathlib.Path'>, <class 'str'>, <class 'geopandas.geodataframe.GeoDataFrame'>). <class 'float'> was given.", "raised": "TypeError"}

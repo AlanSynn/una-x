@@ -1,0 +1,1 @@
+{"message": "Parameter 'node_snapping_tolerance': Cannot be negative. node_snapping_tolerance=-1 was given.", "raised": "ValueError"}

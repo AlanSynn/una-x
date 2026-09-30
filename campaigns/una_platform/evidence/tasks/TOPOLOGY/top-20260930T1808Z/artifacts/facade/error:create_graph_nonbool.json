@@ -1,0 +1,1 @@
+{"message": "Parameter 'light_graph' must either be a boolean True or False, <class 'str'> was given.", "raised": "TypeError"}

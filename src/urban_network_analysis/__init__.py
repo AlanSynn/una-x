@@ -54,8 +54,29 @@ def about() -> None:
           "MIT City Form Lab. Website: http://cityform.mit.edu/")
 
 
-from .UNA import UNA
-from .Settings import Settings
-from .Topology import Topology
+# UNA/Settings/Topology are resolved lazily (PEP 562) so that importing the
+# package — in particular the compat.madina facade and the drop-in `madina`
+# shim distribution built on it — does not pull the analysis stack (numba,
+# sklearn) into environments that only need topology/compat functionality.
+# Attribute access is unchanged: `from urban_network_analysis import UNA`
+# and `urban_network_analysis.UNA` keep working.
+_LAZY_EXPORTS = {"UNA": ".UNA", "Settings": ".Settings", "Topology": ".Topology"}
+
+
+def __getattr__(name: str):
+    target = _LAZY_EXPORTS.get(name)
+    if target is None:
+        raise AttributeError(
+            f"module {__name__!r} has no attribute {name!r}")
+    from importlib import import_module
+
+    value = getattr(import_module(target, __name__), name)
+    globals()[name] = value
+    return value
+
+
+def __dir__() -> list:
+    return sorted(list(globals().keys()) + list(_LAZY_EXPORTS))
+
 
 __all__ = ["UNA", "Settings", "Topology", "__version__", "about"]

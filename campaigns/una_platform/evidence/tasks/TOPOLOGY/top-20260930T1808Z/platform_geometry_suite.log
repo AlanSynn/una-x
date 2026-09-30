@@ -1,0 +1,55 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.4, pytest-9.1.1, pluggy-1.6.0 -- /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python
+cachedir: .pytest_cache
+rootdir: /storage/scratch1/1/dsynn6/una-x
+configfile: pyproject.toml
+collecting ... collected 37 items
+
+tests/platform_geometry/test_adapter.py::test_snapshot_is_immutable_and_stable PASSED [  2%]
+tests/platform_geometry/test_adapter.py::test_snapshot_survives_facade_mutation PASSED [  5%]
+tests/platform_geometry/test_adapter.py::test_weight_bits_are_exact_not_tolerance PASSED [  8%]
+tests/platform_geometry/test_comparator_sensitivity.py::test_sabotaged_facade_is_detected[bump_edge_weight-grid_basic] PASSED [ 10%]
+tests/platform_geometry/test_comparator_sensitivity.py::test_sabotaged_facade_is_detected[discard_longest-redundant_discard] PASSED [ 13%]
+tests/platform_geometry/test_comparator_sensitivity.py::test_sabotaged_facade_is_detected[swap_od_colors-grid_basic] PASSED [ 16%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[load_layer_bad_name] PASSED [ 18%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[load_layer_bad_source] PASSED [ 21%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[csn_unknown_layer] PASSED [ 24%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[csn_bad_weight_attr] PASSED [ 27%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[csn_negative_tolerance] PASSED [ 29%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[csn_bad_treatment] PASSED [ 32%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[turn_threshold_range] PASSED [ 35%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[turn_penalty_negative] PASSED [ 37%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[insert_bad_label] PASSED [ 40%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[insert_unknown_layer] PASSED [ 43%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[create_graph_nonbool] PASSED [ 45%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[layers_bad_key] PASSED [ 48%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[prep_mixed_z] PASSED [ 51%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_error_contract_matches_reference[csn_multilinestring] PASSED [ 54%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_registered_unsupported_paths_match_reference PASSED [ 56%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_facade_import_writes_no_environment_variables PASSED [ 59%]
+tests/platform_geometry/test_errors_and_unsupported.py::test_facade_lazily_imports_without_pydeck_usage_paths PASSED [ 62%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[grid_basic] PASSED [ 64%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[redundant_keep] PASSED [ 67%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[redundant_discard] PASSED [ 70%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[redundant_split] PASSED [ 72%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[tolerance_snap] PASSED [ 75%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[custom_weight] PASSED [ 78%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[prep_geometry] PASSED [ 81%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[layer_order] PASSED [ 83%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[clear_reinsert] PASSED [ 86%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[coincident_od] PASSED [ 89%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[gdf_input] PASSED [ 91%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[crs_variant] PASSED [ 94%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[repeat_network] PASSED [ 97%]
+tests/platform_geometry/test_zonal_parity.py::test_facade_matches_bridged_reference_bitwise[multilinestring_pure] PASSED [100%]
+
+=============================== warnings summary ===============================
+tests/platform_geometry/test_adapter.py::test_snapshot_is_immutable_and_stable
+tests/platform_geometry/test_adapter.py::test_snapshot_survives_facade_mutation
+  /storage/scratch1/1/dsynn6/una-x/src/urban_network_analysis/compat/madina/zonal/zonal.py:134: DeprecationWarning: The 'unary_union' attribute is deprecated, use the 'union_all()' method instead.
+    centroid_point = gdf['geometry'].to_crs("EPSG:4326").unary_union.centroid
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 37 passed, 2 warnings in 160.30s (0:02:40) ==================
+
+[exited with code 0]

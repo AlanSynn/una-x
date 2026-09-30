@@ -1,0 +1,1 @@
+{"message": "Parameter 'redundant_edge_treatment': must be one of ['keep', 'discard', 'split']. node_snapping_tolerance=trim was given.", "raised": "ValueError"}
