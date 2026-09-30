@@ -1,14 +1,23 @@
 {
  "task": "M00",
  "record": "rehearsal",
- "utc": "2026-09-30T01:50:00Z",
+ "revision": 2,
+ "utc": "2026-09-30T02:02:34Z",
  "role": "integrator (team-lead)",
+ "supersedes": "revision 1 as filed in commit 10dca115dae700ac2e417e12ec86965b539f217f — v1's correctness_checks and interference_record legs are SUPERSEDED as frame-invalid per h04-reviewer's incident adjudication (msgs 4412afd7 / f1bc7ed9); v1's tree-relationship, merge-rehearsal, install_checks, and main_untouched legs are carried forward UNCHANGED (frame-free legs); ci.json unchanged",
+ "incident_record": {
+  "summary": "v1's suite legs ran pytest from the disposable worktree, but the suite instruments hardcode the primary worktree path WT=/Users/alansynn/orca/workspaces/una-x/wt-large-e2e — byte-verified by h04 in the rehearsal tree itself (tests/large_e2e/F2/conftest.py CANDIDATE_ROOT / harness_f2.py DEFAULT_ARTIFACTS 'mirrors the F1/F3 convention'); the run imported the PRIMARY tree's src (F2I stamp aggregate_flow_sha256_at_flush 1f3cf4d2… == live wt-large-e2e AggregateFlow.py) and flushed artifacts into PRIMARY evidence/F1I+F2I+F3I",
+  "census": "32 files under tests/ contain the hardcoded path (A1/A3/composition/F1/F2/F3 conftest+harness+cand_load, installed/engagement_probe.py, oracle capture_observed.py + test_l1_determinism.py, scheduling, inputs manifests); 3 benchmarks instruments (w00_run.py, compare_arms.py, s01_run.py) also carry it — NONE executed in the M00 wheel/install route (git archive + tar + venv + pip only); evidence/ records legitimately name the path as historical provenance",
+  "adjudication": "h04: v1 suite legs invalid on both isolation legs (wrote into the reviewed campaign tree; did not exercise the disposable tree's own src); record NEITHER pass nor candidate-failure from pre-fix runs; the 71-failure full-repo legs are suspected frame artifacts, NOT adjudicated — dropped from this revision entirely",
+  "primary_tree_recovery": "three flushed files restored from HEAD (last reviewed generations, I00 close 6b53a27, h04-verified); one retain/restore CROSSING disclosed: coordinator's restore preceded h04's RETAIN instruction, so the incident's transient overwritten generations were not interim-copied — loss record at campaign_data/custody/m00_incident_overwrite_loss_record.md (sha256 e06a8db058d260b26b5f5272afaf454d0822cd5424069824af4c969a5c32ec67, 3,810 B; includes h04's pre-restore census shas and the surviving F1I diff lines; tmutil local snapshots: zero)",
+  "remediation": "designed deviation per h04's Option B: correctness suite runs in the PRIMARY frame (WT==cwd, known-good; src bytes identical across trees — R00-verified src/ diff-empty selected..HEAD, and merged tree == candidate tree by the v1 legs below), rehearsal-specific checks (tree equality, conflicts, wheel build, fresh-venv install identity) stay in the disposable frame; retain->restore order made MECHANICAL inside the re-run script (interim copies captured before any restore, porcelain-gated pre/post)"
+ },
  "base_commit": {
   "selector": "last_reviewed_selected_source",
   "baseline": "361928e4ba38f34622cafe065b0025244db61368",
   "main_at_rehearsal": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
   "candidate_closure": "07fb3cc621281402ed7cb2b25807d70047bb2fa3",
-  "note": "candidate_closure = R00 record commit on perf/una-large-e2e; R00 (APPROVED QUALIFIED SCOPE) is in the closure, so the rehearsed tip is the reviewed candidate closure"
+  "note": "candidate_closure = R00 record commit; R00 (APPROVED QUALIFIED SCOPE) is in the closure"
  },
  "tree_relationship": {
   "main_is_strict_ancestor": true,
@@ -17,7 +26,8 @@
   "commits_candidate_to_main": 0,
   "diff_stat_main_to_candidate": "1,073 files changed, 719,973 insertions(+), 158 deletions(-)",
   "structural_conflicts": 0,
-  "fast_forward_possible": true
+  "fast_forward_possible": true,
+  "reviewer_corroboration": "h04 independent pins re-derived this session from live bytes: main tree e999840020ccca916387a937cedca7bbde22a56c, HEAD 07fb3cc tree e2b6fda97d36dec8fbd4b2ebb292043cf7d5de14 (== my FF merge result tree), selected 6b53a274 tree e451cdf19ca3c15581769e893ad9d38e68115992; h04's read-only merge-tree main main 07fb3cc: rc=0, zero conflict markers"
  },
  "merge_rehearsal": {
   "worktree": "disposable detached worktree wt-m00-rehearsal at 98f498e, sim branch m00_rehearsal_main_sim; main itself never written",
@@ -35,7 +45,8 @@
   "src_tree_identity": "git rev-parse HEAD:src == 3c59bb0d3f9bc1fba7547be47ec63add88dd3031 at BOTH the merge result HEAD and 07fb3cc — merged src/ is the W00 selected src/ byte-for-byte (tree-object identity)"
  },
  "correctness_checks": {
-  "topology": "campaign's own per-suite (per-directory) pytest topology, campaign venv, NUMBA_CACHE_DIR pinned to declared fresh roots; full-repo single-invocation pytest is NOT a campaign check (see interference record)",
+  "topology": "DESIGNED DEVIATION (recorded): the campaign's per-directory pytest topology executed in the PRIMARY worktree frame (candidate tip 07fb3cc, WT==cwd — the frame every prior campaign suite run used), NOT in the disposable tree, because the instruments hardcode WT; disposable-frame integration coverage is carried by the merge tree-equality probe (merged src tree object == selected src tree object; whole-tree diff empty) plus the disposable-frame wheel/install legs. src bytes are identical across frames (R00: src/ diff selected..HEAD empty at both audited HEADs; merged tree == candidate tree)",
+  "run_conditions": "clean-tree gated (porcelain empty pre-run, verified empty post-run after in-script restore), campaign venv, NUMBA_CACHE_DIR pinned to the declared fresh baseline root",
   "per_dir_results": [
    {"dir": "tests/perf_contract", "rc": 0},
    {"dir": "tests/large_e2e/A1", "rc": 0},
@@ -48,29 +59,27 @@
    {"dir": "tests/large_e2e/oracle", "rc": 0},
    {"dir": "tests/large_e2e/scheduling", "rc": 0}
   ],
-  "per_dir_note": "tests/large_e2e/installed has no top-level test_*.py (collect skipped by the same gate on both trees); its coverage lives in the W00 installed_tests instrument, not re-run here (no heavy execution in M00)",
-  "pre_existing_failures_identical_on_both_trees": [
+  "per_dir_note": "tests/large_e2e/installed has no top-level test_*.py (collect skipped by the same gate in every run); its coverage lives in the W00 installed_tests instrument, not re-run (no heavy execution in M00)",
+  "failing_tests": [
    "tests/large_e2e/F1/test_f1_compiler.py::test_t7_targetoptions_census",
    "tests/large_e2e/F1/test_f1_turns.py::test_t8_source_diff_single_decorator_line",
    "tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records"
   ],
-  "pre_existing_failure_characterization": "3 failures, byte-identical sets on the merged rehearsal tree AND the reviewed candidate tip (wt-large-e2e) under the identical commands: source-audit pins authored at F1I/F1R time (single-decorator-line diff expectation, targetoptions census, diagnostic-mode label census) vs the integrated tree that additionally carries the screened F2 route in the same engine files. F2/F3 suites green; NOT merge-induced (merge delta is zero by tree identity); characterization above is the integrator's read — disposition (fix-forward amendment vs Z00 known-limitation record) routed to the independent reviewer",
-  "interference_record": {
-   "finding": "invoking tests/perf_contract + tests/large_e2e in ONE pytest session fails 71/552 (A1 24, F1 27, F3 17, harness 1, oracle 2) with cross-directory state interference; per-directory runs are green except the 3 pins above; F3's 17 and harness/oracle full-suite failures disappear when their dirs run alone",
-   "delta_proof": "71-failure name sets are IDENTICAL on the merged tree and the reviewed candidate tip (consoles a955c242/df203e11) — zero merge-induced behavioral delta, both mechanically (tree equality) and behaviorally (identical failure sets)",
-   "disposition": "recorded for merge consumers; not a campaign check; no fix attempted in M00 (rehearsal scope; no scientific bug fixing in campaign)"
-  }
+  "failing_tests_adjudication_status": "integrator evidence (reviewer to rule): the same 3 failures reproduce on the CLEAN primary frame (this run) — they are genuine candidate-tip facts, not incident contamination; characterization: source-audit pins authored at F1I/F1R time (single-decorator-line diff expectation, targetoptions census, diagnostic-mode label census) vs the integrated tree that additionally carries the screened F2 route in the same engine files (t8's assertion output literally shows the F2 local-overlap kernel block as the unexpected diff); F2/F3/A1/A3/oracle/scheduling/perf_contract suites green; disposition (fix-forward amendment vs Z00 known-limitation record) routed to h04",
+  "interference_record": "DROPPED from v1: the full-repo single-invocation pytest leg (71F/469P/12S) is withdrawn as unadjudicated frame-suspect data per h04; the full-repo invocation is not a campaign check; whether any cross-directory interference exists independently of the hardcoded-WT flush mechanism remains an open question FOR THE SUITE AMENDMENT (WT-from-__file__ fix, h05 impl / h04 review per standing pattern) — not blocking M00"
  },
  "install_checks": {
   "wheel_rebuild": {
-   "route": "W00 replica: git archive of merged HEAD -> src_copy -> fresh 3.11 venv + hatchling -> pip wheel --no-build-isolation --no-deps (single wheel gate)",
+   "frame": "disposable (v1 leg, carried forward unchanged)",
+   "route": "W00 replica: git archive of merged HEAD -> src_copy -> fresh 3.11 venv + hatchling -> pip wheel --no-build-isolation --no-deps (single wheel gate); tooling-clean per census (no hardcoded-WT instrument executed)",
    "pre_gate": "src tree verified 3c59bb0d3f9bc1fba7547be47ec63add88dd3031 before archive",
    "wheel": "urban_network_analysis-2.6.0-py3-none-any.whl",
    "sha256": "323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4",
    "bytes": 138442,
-   "comparison": "BYTE-IDENTICAL to the W00 selected arm wheel (sha256 323c27f3... / 138,442 B) — the wheel main would ship equals the wheel that ran all 40 Q10 sessions, byte for byte"
+   "comparison": "BYTE-IDENTICAL to the W00 selected arm wheel — the wheel main would ship equals the wheel that ran all 40 Q10 sessions, byte for byte"
   },
   "install_identity": {
+   "frame": "disposable-side fresh venv (v1 leg, carried forward unchanged)",
    "venv": "campaign_data/venvs/m00_rehearsal (fresh, interpreter 3.11.16 = W00 frame)",
    "constraints": "w00_build/selected/constraints.txt sha256 8c501f870861286d6cd819738ffaf5714f36dd4624cba85242d3750007552c09 (pinned value re-hashed live)",
    "module_identity": "17/17 installed module sha256 MATCH vs campaign_data/w00_identities/selected.json module_hashes",
@@ -81,20 +90,26 @@
   "main_ref": "98f498e5b0ac97b05271d03812fa883b5e4afaba (unchanged before/during/after rehearsal)",
   "primary_checkout": "/Users/alansynn/Workspace/una-x on [main] at 98f498e — not written by M00",
   "rehearsal_worktree_porcelain": "clean (0 lines) after all stages",
+  "primary_worktree_porcelain_after_remediation": "clean — pre-run gate, in-script restore, and post-run gate all verified in the v2 suite run",
   "publication": "none — no push, no main write, no PR, no release"
  },
  "custody": {
-  "root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/m00_rehearsal/ (outside repo)",
+  "root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/ (outside repo)",
   "consoles": [
-   {"file": "suite_console.txt (rehearsal tree, full-repo invocation)", "sha256": "a955c242ea8fba97e0a09aa5c4495fe369433d8fa9379d6c604ba85ba4e17c71", "bytes": 173912},
-   {"file": "suite_console_baseline_wt.txt (wt-large-e2e candidate tip, full-repo invocation)", "sha256": "df203e11e689abb8ad4d0cb663cbbb6a9d24f44298da1ca1d7cfdfdf927d7007", "bytes": 173841},
-   {"file": "suite_console_perdir.txt (rehearsal tree, per-directory topology)", "sha256": "7af3ec357bb6f99b07911c49d5b26d5a415798e0403ae4c0ca047e0ee4a584cf", "bytes": 38032},
-   {"file": "suite_console_perdir_baseline.txt (wt-large-e2e, per-directory topology)", "sha256": "1e5cdcce7916dff6cf6018f46550444d4f0c8c945dc73235ade1913f41f8f830", "bytes": 38000},
-   {"file": "wheel_console.txt (rebuild route)", "sha256": "a9d65f07361174eb017e49591dd3d56752d5cc229976d7077ecafad391f2db47", "bytes": 1134},
-   {"file": "install_console.txt (fresh-venv install identity)", "sha256": "95aa4bfd7d721809bb885821535d831911878c45cd221593e8972c79195d6b8b", "bytes": 704}
+   {"file": "m00_rehearsal/suite_console.txt (INVALID pre-fix rehearsal-frame full-suite run; retained as incident evidence, results withdrawn)", "sha256": "a955c242ea8fba97e0a09aa5c4495fe369433d8fa9379d6c604ba85ba4e17c71", "bytes": 173912},
+   {"file": "m00_rehearsal/suite_console_perdir.txt (INVALID pre-fix rehearsal-frame per-dir run; retained as incident evidence, results withdrawn)", "sha256": "7af3ec357bb6f99b07911c49d5b26d5a415798e0403ae4c0ca047e0ee4a584cf", "bytes": 38032},
+   {"file": "m00_rehearsal/suite_console_baseline_wt.txt (pre-fix primary-frame full-suite run; results withdrawn with the full-repo leg)", "sha256": "df203e11e689abb8ad4d0cb663cbbb6a9d24f44298da1ca1d7cfdfdf927d7007", "bytes": 173841},
+   {"file": "m00_rehearsal/suite_console_perdir_baseline.txt (pre-fix primary-frame per-dir run; corroborates the v2 clean rerun's 3-failure set; retained)", "sha256": "1e5cdcce7916dff6cf6018f46550444d4f0c8c945dc73235ade1913f41f8f830", "bytes": 38000},
+   {"file": "m00_rehearsal/suite_console_perdir_primaryframe_v2.txt (CLEAN primary-frame per-dir re-run — the v2 correctness leg)", "sha256": "b44fc28662031b921e420388960ca44a0aea28035504f4bff709183f31b340b1", "bytes": 38133},
+   {"file": "m00_rehearsal/wheel_console.txt (disposable-frame rebuild)", "sha256": "a9d65f07361174eb017e49591dd3d56752d5cc229976d7077ecafad391f2db47", "bytes": 1134},
+   {"file": "m00_rehearsal/install_console.txt (fresh-venv install identity)", "sha256": "95aa4bfd7d721809bb885821535d831911878c45cd221593e8972c79195d6b8b", "bytes": 704},
+   {"file": "custody/m00_incident_overwrite_loss_record.md", "sha256": "e06a8db058d260b26b5f5272afaf454d0822cd5424069824af4c969a5c32ec67", "bytes": 3810},
+   {"file": "custody/interim_cceb3aa4_m00_primaryframe_rerun_F1I_test_artifacts.json (v2 run flush, retained pre-restore)", "sha256": "cceb3aa439aee492fc6f6770feae9a132eec7561c532f3155ce006f6ecc0d43e", "bytes": 6149},
+   {"file": "custody/interim_2993ff68_m00_primaryframe_rerun_F2I_test_artifacts.json (v2 run flush, retained pre-restore)", "sha256": "2993ff686e2621127c7456a4cd4f3cd5615af6a9b6af7efa1603b86751c807ae", "bytes": 9240},
+   {"file": "custody/interim_59c0981e_m00_primaryframe_rerun_F3I_test_artifacts.json (v2 run flush, retained pre-restore)", "sha256": "59c0981ef89b3f4d5a301106533a4e83e2f352e2887fe389ccc9deb2a7bf6834", "bytes": 25385}
   ],
-  "note": "all sha256 computed from live bytes at evidence assembly (2026-09-30T01:46:21Z pass); rehearsal worktree + sim branch retained until review ack, then removable"
+  "note": "all sha256 computed from live bytes at assembly (2026-09-30T02:02:34Z); rehearsal worktree + sim branch afa3c8ee retained until review ack"
  },
- "proof_obligation": "Rehearsal source equals reviewed candidate closure: SATISFIED (merge result tree == 07fb3cc tree, zero-byte diff; src tree object == W00 selected). main remains untouched: SATISFIED.",
- "verdict": "REHEARSAL PASSED: integration is a clean fast-forward with zero conflicts; rebuilt wheel is byte-identical to the qualified W00 wheel; installed identity 17/17 exact; 3 pre-existing candidate-tip check failures recorded (identical on both trees) with disposition routed to reviewer"
+ "proof_obligation": "Rehearsal source equals reviewed candidate closure: SATISFIED (merge result tree == 07fb3cc tree, zero-byte diff, reviewer-corroborated tree pins; src tree object == W00 selected). main remains untouched: SATISFIED.",
+ "verdict": "REHEARSAL PASSED (v2): integration is a clean fast-forward with zero conflicts (reviewer merge-tree corroboration); rebuilt wheel byte-identical to the qualified W00 wheel; installed identity 17/17 exact; correctness leg re-run clean in the primary frame under a recorded designed deviation with 3 genuine candidate-tip check failures routed for disposition; v1 suite legs withdrawn as frame-invalid with the incident, crossing loss, and remediation fully recorded"
 }
