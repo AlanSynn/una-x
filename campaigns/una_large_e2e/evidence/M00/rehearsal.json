@@ -1,0 +1,100 @@
+{
+ "task": "M00",
+ "record": "rehearsal",
+ "utc": "2026-09-30T01:50:00Z",
+ "role": "integrator (team-lead)",
+ "base_commit": {
+  "selector": "last_reviewed_selected_source",
+  "baseline": "361928e4ba38f34622cafe065b0025244db61368",
+  "main_at_rehearsal": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+  "candidate_closure": "07fb3cc621281402ed7cb2b25807d70047bb2fa3",
+  "note": "candidate_closure = R00 record commit on perf/una-large-e2e; R00 (APPROVED QUALIFIED SCOPE) is in the closure, so the rehearsed tip is the reviewed candidate closure"
+ },
+ "tree_relationship": {
+  "main_is_strict_ancestor": true,
+  "merge_base": "98f498e5b0ac97b05271d03812fa883b5e4afaba",
+  "commits_main_to_candidate": 104,
+  "commits_candidate_to_main": 0,
+  "diff_stat_main_to_candidate": "1,073 files changed, 719,973 insertions(+), 158 deletions(-)",
+  "structural_conflicts": 0,
+  "fast_forward_possible": true
+ },
+ "merge_rehearsal": {
+  "worktree": "disposable detached worktree wt-m00-rehearsal at 98f498e, sim branch m00_rehearsal_main_sim; main itself never written",
+  "ff_rehearsal": {
+   "command_class": "git merge --ff-only perf/una-large-e2e (the exact integration main would receive)",
+   "result": "fast-forward 98f498e -> 07fb3cc, HEAD == candidate tip EXACT",
+   "conflicts": 0
+  },
+  "no_ff_probe": {
+   "command_class": "git merge --no-ff perf/una-large-e2e from reset base",
+   "merge_commit": "afa3c8eed5cce178075894bb6314c4da24b997c5",
+   "tree_diff_vs_candidate": "EMPTY (git diff 07fb3cc <merge> — zero bytes)",
+   "conflicts": 0
+  },
+  "src_tree_identity": "git rev-parse HEAD:src == 3c59bb0d3f9bc1fba7547be47ec63add88dd3031 at BOTH the merge result HEAD and 07fb3cc — merged src/ is the W00 selected src/ byte-for-byte (tree-object identity)"
+ },
+ "correctness_checks": {
+  "topology": "campaign's own per-suite (per-directory) pytest topology, campaign venv, NUMBA_CACHE_DIR pinned to declared fresh roots; full-repo single-invocation pytest is NOT a campaign check (see interference record)",
+  "per_dir_results": [
+   {"dir": "tests/perf_contract", "rc": 0},
+   {"dir": "tests/large_e2e/A1", "rc": 0},
+   {"dir": "tests/large_e2e/A3", "rc": 0},
+   {"dir": "tests/large_e2e/composition", "rc": 0},
+   {"dir": "tests/large_e2e/F1", "rc": 1},
+   {"dir": "tests/large_e2e/F2", "rc": 0},
+   {"dir": "tests/large_e2e/F3", "rc": 0},
+   {"dir": "tests/large_e2e/harness", "rc": 1},
+   {"dir": "tests/large_e2e/oracle", "rc": 0},
+   {"dir": "tests/large_e2e/scheduling", "rc": 0}
+  ],
+  "per_dir_note": "tests/large_e2e/installed has no top-level test_*.py (collect skipped by the same gate on both trees); its coverage lives in the W00 installed_tests instrument, not re-run here (no heavy execution in M00)",
+  "pre_existing_failures_identical_on_both_trees": [
+   "tests/large_e2e/F1/test_f1_compiler.py::test_t7_targetoptions_census",
+   "tests/large_e2e/F1/test_f1_turns.py::test_t8_source_diff_single_decorator_line",
+   "tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records"
+  ],
+  "pre_existing_failure_characterization": "3 failures, byte-identical sets on the merged rehearsal tree AND the reviewed candidate tip (wt-large-e2e) under the identical commands: source-audit pins authored at F1I/F1R time (single-decorator-line diff expectation, targetoptions census, diagnostic-mode label census) vs the integrated tree that additionally carries the screened F2 route in the same engine files. F2/F3 suites green; NOT merge-induced (merge delta is zero by tree identity); characterization above is the integrator's read — disposition (fix-forward amendment vs Z00 known-limitation record) routed to the independent reviewer",
+  "interference_record": {
+   "finding": "invoking tests/perf_contract + tests/large_e2e in ONE pytest session fails 71/552 (A1 24, F1 27, F3 17, harness 1, oracle 2) with cross-directory state interference; per-directory runs are green except the 3 pins above; F3's 17 and harness/oracle full-suite failures disappear when their dirs run alone",
+   "delta_proof": "71-failure name sets are IDENTICAL on the merged tree and the reviewed candidate tip (consoles a955c242/df203e11) — zero merge-induced behavioral delta, both mechanically (tree equality) and behaviorally (identical failure sets)",
+   "disposition": "recorded for merge consumers; not a campaign check; no fix attempted in M00 (rehearsal scope; no scientific bug fixing in campaign)"
+  }
+ },
+ "install_checks": {
+  "wheel_rebuild": {
+   "route": "W00 replica: git archive of merged HEAD -> src_copy -> fresh 3.11 venv + hatchling -> pip wheel --no-build-isolation --no-deps (single wheel gate)",
+   "pre_gate": "src tree verified 3c59bb0d3f9bc1fba7547be47ec63add88dd3031 before archive",
+   "wheel": "urban_network_analysis-2.6.0-py3-none-any.whl",
+   "sha256": "323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4",
+   "bytes": 138442,
+   "comparison": "BYTE-IDENTICAL to the W00 selected arm wheel (sha256 323c27f3... / 138,442 B) — the wheel main would ship equals the wheel that ran all 40 Q10 sessions, byte for byte"
+  },
+  "install_identity": {
+   "venv": "campaign_data/venvs/m00_rehearsal (fresh, interpreter 3.11.16 = W00 frame)",
+   "constraints": "w00_build/selected/constraints.txt sha256 8c501f870861286d6cd819738ffaf5714f36dd4624cba85242d3750007552c09 (pinned value re-hashed live)",
+   "module_identity": "17/17 installed module sha256 MATCH vs campaign_data/w00_identities/selected.json module_hashes",
+   "import_smoke": "OK — urban_network_analysis imports from the installed venv site-packages"
+  }
+ },
+ "main_untouched_proof": {
+  "main_ref": "98f498e5b0ac97b05271d03812fa883b5e4afaba (unchanged before/during/after rehearsal)",
+  "primary_checkout": "/Users/alansynn/Workspace/una-x on [main] at 98f498e — not written by M00",
+  "rehearsal_worktree_porcelain": "clean (0 lines) after all stages",
+  "publication": "none — no push, no main write, no PR, no release"
+ },
+ "custody": {
+  "root": "/Users/alansynn/orca/workspaces/una-x/campaign_data/m00_rehearsal/ (outside repo)",
+  "consoles": [
+   {"file": "suite_console.txt (rehearsal tree, full-repo invocation)", "sha256": "a955c242ea8fba97e0a09aa5c4495fe369433d8fa9379d6c604ba85ba4e17c71", "bytes": 173912},
+   {"file": "suite_console_baseline_wt.txt (wt-large-e2e candidate tip, full-repo invocation)", "sha256": "df203e11e689abb8ad4d0cb663cbbb6a9d24f44298da1ca1d7cfdfdf927d7007", "bytes": 173841},
+   {"file": "suite_console_perdir.txt (rehearsal tree, per-directory topology)", "sha256": "7af3ec357bb6f99b07911c49d5b26d5a415798e0403ae4c0ca047e0ee4a584cf", "bytes": 38032},
+   {"file": "suite_console_perdir_baseline.txt (wt-large-e2e, per-directory topology)", "sha256": "1e5cdcce7916dff6cf6018f46550444d4f0c8c945dc73235ade1913f41f8f830", "bytes": 38000},
+   {"file": "wheel_console.txt (rebuild route)", "sha256": "a9d65f07361174eb017e49591dd3d56752d5cc229976d7077ecafad391f2db47", "bytes": 1134},
+   {"file": "install_console.txt (fresh-venv install identity)", "sha256": "95aa4bfd7d721809bb885821535d831911878c45cd221593e8972c79195d6b8b", "bytes": 704}
+  ],
+  "note": "all sha256 computed from live bytes at evidence assembly (2026-09-30T01:46:21Z pass); rehearsal worktree + sim branch retained until review ack, then removable"
+ },
+ "proof_obligation": "Rehearsal source equals reviewed candidate closure: SATISFIED (merge result tree == 07fb3cc tree, zero-byte diff; src tree object == W00 selected). main remains untouched: SATISFIED.",
+ "verdict": "REHEARSAL PASSED: integration is a clean fast-forward with zero conflicts; rebuilt wheel is byte-identical to the qualified W00 wheel; installed identity 17/17 exact; 3 pre-existing candidate-tip check failures recorded (identical on both trees) with disposition routed to reviewer"
+}

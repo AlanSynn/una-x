@@ -1,0 +1,16 @@
+{
+ "task": "M00",
+ "record": "ci",
+ "utc": "2026-09-30T01:50:00Z",
+ "ci_configured": false,
+ "checked_at": "candidate tip 07fb3cc621281402ed7cb2b25807d70047bb2fa3",
+ "evidence": [
+  ".github/workflows/ absent",
+  ".gitlab-ci.yml absent",
+  ".circleci absent"
+ ],
+ "remote": "https://github.com/AlanSynn/una-x.git (origin; no CI observed configured on the target repository)",
+ "classification": "designed limitation, recorded not passed",
+ "consequence": "no CI status may be claimed in the merge manifest or Z00 decision artifacts; the local per-directory suite topology (campaign's own check topology, consoles under campaign_data/m00_rehearsal/) is the correctness substitute, and its results carry the pre-existing-failure and interference records of evidence/M00/rehearsal.json",
+ "verification": "existence checks run on the merged rehearsal tree at the no-ff merge result (tree-identical to the candidate tip)"
+}
