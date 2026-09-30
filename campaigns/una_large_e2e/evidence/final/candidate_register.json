@@ -46,13 +46,13 @@
   "q10_close": "53d70e1f2eed4c7e37c078e99006bf095bed563e (Q10 evidence mirror; R00 intake pins 438bc69f/25ec966e/47b8f6d3 verified against its content)",
   "r00_close": "07fb3cc621281402ed7cb2b25807d70047bb2fa3 (R00 record commit + S01 review remediation; REHEARSED CLOSURE)",
   "m00_v1": "10dca115dae700ac2e417e12ec86965b539f217f (M00 rehearsal v1 + ci.json — h04 ADMITTED)",
-  "tip": "992f4e565e1d46381750674b25d356e1abcfa530 (M00 rehearsal v2 supersedion — evidence-only vs closure: 2 files +131 under evidence/M00/)",
+  "tip": "advances with Z00 record commits (52c3550 Z00 v1 + this amendment — evidence-only; the self-reference rule bars this register from pinning the amendment's own commit, so the final tip generation is named by the reviewer's Z00 verdict); src tree 3c59bb0d verified unchanged at 52c3550 (live) — runtime content pinned by selected source 6b53a274 + rehearsed closure 07fb3cc",
   "m00f1_corrected_range": "main..07fb3cc = 105 commits, 1,076 files, +720,115/−158 (supersedes the v1 erratum '104/1,073/+719,973' which described main..53d70e1)"
  },
 
  "closure_chain_verdicts": [
   {"stage": "R00", "verdict": "APPROVED QUALIFIED SCOPE", "evidence": "evidence/R00/review.json fbf30368b21470c6… + claim_audit.json f57c1a6f…", "commit": "07fb3cc"},
-  {"stage": "M00", "verdict": "REHEARSAL PASSED (v2) / ADMITTED (v1)", "evidence": "evidence/M00/rehearsal.json d5d2c7fa37d74c1b… + ci.json b962e632…", "commit": "10dca11 (v1) / 992f4e5 (v2); supplemental ack pending at filing"},
+  {"stage": "M00", "verdict": "APPROVED + SUPPLEMENTAL ACK — admitted M00 generation = rehearsal.json d5d2c7fa at 992f4e5 (supersedes v1 6e981422 at 10dca11; v1 suite/full-repo legs withdrawn as frame-invalid, frame-free legs carried)", "evidence": "evidence/M00/rehearsal.json d5d2c7fa37d74c1b… + ci.json b962e632…", "commit": "10dca11 (v1) / 992f4e5 (v2)"},
   {"stage": "S01", "verdict": "CLEAN EXIT, key r9 retired (38/38 windows)", "evidence": "evidence/S01/review.json a347f6d3…", "commit": "ec16d3f (ruled verdict body)"},
   {"stage": "Q10", "verdict": "flow PASS / access median FAIL CI-pass; 40/40 valid", "evidence": "evidence/Q10/summary.json 438bc69f…", "commit": "53d70e1"}
  ],
