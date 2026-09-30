@@ -1,0 +1,25 @@
+{
+ "task": "R00",
+ "record": "claim_audit",
+ "method": "every figure below recomputed in-session from raw bytes (session.json out trees, lease log, curated summary, console custody); no figure taken from peer prose; bootstrap CIs reproduced with the pinned instrument statistic source on independently derived ratios",
+ "claims": [
+  {"claim": "flow family throughput-qualified", "basis": "median 1.3463815459401314 >= 1.10 AND CI95 lower 1.3418234340096669 > 1.00 (frozen seed 20260929, n=5 pairs, pair=sampling unit)", "status": "VERIFIED-TRUE", "evidence": "q10_curated/summary.json + 20 raw session bytes + bit-exact CI reproduction"},
+  {"claim": "access family throughput-qualified", "basis": "median 1.0969951715019743 < 1.10 (miss 0.0030048284980257467); CI leg passes but AND-gate fails", "status": "VERIFIED-FALSE", "qualified_claim": "access improvement is statistically real (CI95 [1.0518485379517482, 1.1577532365900536] excludes 1.00) but below the preregistered 1.10 median bar; only improvement_only or radius-scoped claim language authorized (control_addendum_A1R C1, 2026-09-26)"},
+  {"claim": "pooled 1.2617069923899544 supports qualification", "basis": "preregistered per-family gate; pooled reported additionally", "status": "NOT-A-QUALIFICATION-BASIS", "note": "pooled may be reported as descriptive only"},
+  {"claim": "small-input protected cell holds", "basis": "wall-ratio medians access 1.0436491191232886 / flow 0.9056450589414343 <= 1.05", "status": "VERIFIED-TRUE"},
+  {"claim": "no cold regression >5%", "basis": "cold/warm medians access 1.0223618310157438 / flow 1.0104819181552083; regression_gt_5pct false; warm-only bound NOT triggered", "status": "VERIFIED-TRUE"},
+  {"claim": "no individual >10% slowdown discarded", "basis": "min pair ratio across all 10 pairs = 1.0343748618764226 (access b2); no ratio < 1 in either family; BENCHMARKS.md:28 repeat-block clause not triggered", "status": "VERIFIED-TRUE"},
+  {"claim": "turns/ODM untouched profiles preserved", "basis": "candidate diff (5 files) contains no ODM/Turns engine file; H02: ODM dispatcher+stub tested (62-test suite), real engine never exercised; Q10 marks not_run with reason, never passed", "status": "VERIFIED-WITH-SCOPE-LIMIT", "qualified_claim": "untouched-by-diff structurally true; real-engine qualification absent; DECISION.md honest-limitation clause governs"},
+  {"claim": "installed execution provenance", "basis": "W00 wheels selected binding 6b53a274/64471ec9; all 40 Q10 sessions harness_sha256 == live-worktree harness_tree_sha256 replay (3b99e202...); installed_wheel identity guards (H02 suite)", "status": "VERIFIED-TRUE"},
+  {"claim": "numerical exactness (L0-L2)", "basis": "per-stage exactness evidence + reviews (H02/H03/H04, track reviews); R00 tier read_only - carried, not re-executed", "status": "CARRIED-PER-RECORDS", "note": "no contrary indication found in final records"},
+  {"claim": "budget continuity", "basis": "S01 ledger remaining 10,690.3 s == Q10 lease budget_s; Q10 charged 3,431.0 = 1,321.4 + 2,109.6 exact; S01 arc 3,846.8/14,400 = 26.7139%", "status": "VERIFIED-TRUE"},
+  {"claim": "Q10 evidence mirror integrity (53d70e1)", "basis": "evidence/Q10/{actual_target,raw_index,summary}.json re-hashed at R00 == the intake ruling pins 47b8f6d3/25ec966e/438bc69f byte-exact; commit touches evidence mirrors only; src/ unchanged", "status": "VERIFIED-TRUE"},
+  {"claim": "charge figures", "basis": "curated charge.windows_s 3,430.9 (rounded sum, informational) vs lease cumulative 3,431.0 (authoritative); delta = designed rounding", "status": "VERIFIED-CONSISTENT"}
+ ],
+ "evidence_inventory_deltas": [
+  {"delta": "evidence/S01/review.json absent (required)", "substance": "verdict preserved verbatim in ec16d3f commit message + campaign_data custody consoles", "route": "R00-F1 record-only remediation to coordinator"},
+  {"delta": "evidence/A2I/proof.md absent; delivered as result.json (non-required)", "route": "record in Z00 configuration.json"},
+  {"delta": "evidence/A3I/result.json absent; delivered as proof.md (non-required)", "route": "record in Z00 configuration.json"}
+ ],
+ "adjudication": "APPROVED QUALIFIED SCOPE: flow + protected cells + untouched profiles qualified; access carries preregistered improvement_only/radius-scoped claim language only; no claim in the final record may assert blanket access throughput qualification"
+}

@@ -1,0 +1,64 @@
+{
+ "task": "R00",
+ "record": "review",
+ "reviewer": "h04-reviewer (independent-final-reviewer; implemented no candidate code; chose no favorable samples)",
+ "base_commit": {
+  "selector": "last_reviewed_selected_source",
+  "baseline": "361928e4ba38f34622cafe065b0025244db61368",
+  "selected_source": "6b53a274e8a8d3e7360ab5e1b38f741107ce3358",
+  "resolved_full_sha": true,
+  "verification": "baseline resolves full-SHA and IS ancestor of HEAD; selected_source IS ancestor of HEAD; src/ git subtree hash at selected_source == control.json src_tree 3c59bb0d3f9bc1fba7547be47ec63add88dd3031 (recomputed live); src/ diff selected_source..HEAD EMPTY at BOTH audit-time HEADs (6c3bee7245745a59faf7d01b8c5cd6746becd1b3 and 53d70e1f2eed4c7e37c078e99006bf095bed563e - the Q10 close-out evidence-mirror commit, re-verified after it landed) - candidate bytes == Q10-confirmed bytes",
+ "head_at_filing": {"commit": "53d70e1f2eed4c7e37c078e99006bf095bed563e", "parent": "6c3bee7245745a59faf7d01b8c5cd6746becd1b3", "branch": "perf/una-large-e2e", "porcelain": 0, "status_note": "53d70e1 is an evidence-mirror commit filed after the last reviewed record commit (6c3bee7) by design, per the S01 commit-time-mirror model; R00 reviews its content: the mirrored Q10 trio hashes EXACTLY match the h04 intake ruling pins (actual_target 47b8f6d3f427231d53c9d4609904cd28503b2892031edaea775c38d3f05e8a97, raw_index 25ec966e0842d6306405032b24f958f4871e60518ec5fc9486d478ebb2f47774, summary 438bc69f5ef6ae14eaf5d5fec19526cf7d6527e9042922cc21e42053443381be - all three recomputed from evidence/Q10/ bytes); commit message figures cross-checked against the ruled intake record; no source bytes in the commit"}
+ },
+ "validation_tier": "read_only (heavy_execution: none used; every figure recomputed from raw records/bytes in-session)",
+ "scope": ["source/numerical proof", "wheel/runtime closure", "final claims vs raw records", "review independence", "missing-gate sweep", "Q10 primary-gate reproduction from raw bytes"],
+ "closure_verifications": {
+  "source": {
+   "baseline_to_candidate_diff": "exactly 5 engine files (+1383/-20): Engines/Accessibility.py, Engines/AccessibilityWElevation.py, Engines/AggregateFlow.py, Engines/_large_access_scratch.py, Engines/_large_flow_workspace.py",
+   "untouched_profiles": "no ODM or Turns engine file in candidate diff (structural basis for untouched-profile claims)",
+   "contract": "CONTRACT.md frozen; no tolerance-based relaxation found in final evidence chain"
+  },
+  "wheel": {
+   "selected_binding": "wheels.json arms.selected: source_commit 6b53a274e8a8..., package_tree 64471ec98511... == control.json equivalence note",
+   "b0_binding": "arms.b0: source_commit 361928e4... (the frozen comparator)",
+   "pins": "freeze.json wheels_json_sha256 c443bca9... and control_json_sha256 a5277aa1... re-hashed live, both match"
+  },
+  "runtime": {
+   "harness_digest": "harness_tree_sha256 replayed from current worktree bytes == 3b99e202d1f7cf6de22535a184257f0ca2ce92830de75801aa2d84d7167b2182 == harness_sha256 in ALL 40 Q10 session.json files (audited harness == executed harness)",
+   "sessions": "40/40 out-tree sessions qualification_valid=true + installed_qualified=true, measurement_class=installed"
+  },
+  "q10_gate_reproduction": {
+   "method": "all 20 pair ratios re-derived from raw session.json times_ns.warm_batch_application_wall_s; pinned instrument _median/_boot_ci_log/_primary_stat source executed on the independently derived ratios",
+   "result": "access median 1.0969951715019743 CI [1.0518485379517482, 1.1577532365900536]; flow median 1.3463815459401314 CI [1.3418234340096669, 1.4549372249259942]; both CIs reproduced BIT-EXACT under the frozen seed 20260929; verdicts FAIL(access)/PASS(flow) are the correct AND-leg applications of the frozen gate text"
+  },
+  "preregistration_traceability": "freeze.json admission_gate.primary_per_family == instrument GATE_PRIMARY text; seed 20260929 pinned at freeze; control_addendum_A1R C1 preregistered the access terminal space on 2026-09-26 (improvement_only / radius-scoped; never blanket throughput qualification) - the observed access outcome (CI leg passes, median leg fails) lands in that preregistered space"
+ },
+ "findings": [
+  {
+   "id": "R00-F1",
+   "severity": "record-only remediation",
+   "finding": "declared output evidence/S01/review.json (required task S01) was never filed; the S01 intake verdict exists byte-complete as the commit message of ec16d3f ('Intake verdict (h04, 2026-09-29): CLEAN EXIT, key r9 retired' + full figures) and in campaign_data custody consoles",
+   "correction": "coordinator to file evidence/S01/review.json assembled verbatim from the ruled verdict, hash-bound to the custody consoles, before Z00; no evidence bytes change, no re-run"
+  },
+  {
+   "id": "R00-F2",
+   "severity": "observation (non-required stages)",
+   "finding": "A2I declared proof.md but delivered result.json; A3I declared result.json but delivered proof.md; both stages non-required, substance complete under the alternate names",
+   "correction": "record the filename deltas in Z00 configuration.json; do NOT rename sha-bound evidence files"
+  },
+  {
+   "id": "R00-F3",
+   "severity": "claim-boundary enforcement",
+   "finding": "primary_gate.access=FAIL (median 1.09699 < 1.10, miss 0.0030048285; CI-lower leg passes) is a designed, bit-exact-verified gate outcome",
+   "correction": "Z00 publish decision must carry: flow qualified (both legs), access NOT throughput-qualified (improvement is statistically real per CI excluding 1.00 but sub-threshold; preregistered improvement_only / radius-scoped claim language governs), protected cells hold, pooled figure never cited as qualification"
+  }
+ ],
+ "missing_gates_sweep": {
+  "required_tasks": "all required stages #16-#38 complete; every declared output exists EXCEPT evidence/S01/review.json (R00-F1); R00/M00/Z00 outputs pending as future stages; audit universe = 23 stage evidence dirs (incl. evidence/Q10/, mirrored and pin-verified) + control.json + control_addendum_A1R.json",
+  "unavailable_evidence": "turns/ODM real-engine qualification not exercised: marked not_run with reason in Q10 curation (never marked passed); H02 dispatcher/stub coverage recorded; DECISION.md honest-limitation clause applies",
+  "review_independence": "all 7 in-repo review records authored by independent-reviewer (h04); no implementer self-review found"
+ },
+ "verdict": "APPROVED QUALIFIED SCOPE: flow family + protected cells + untouched profiles approved as qualified; access family approved only as preregistered improvement (not throughput-qualified); S01 record remediation (R00-F1) routed to coordinator; disposition detailed in claim_audit.json",
+ "c2_keys_retirement": "q10_fire_keys_c2.json frozen on disk at 673aa6331c20cb04071d3d4c293c4edffe9ab40a97d8ef1a6687fd278c224384 (163 B) - hash re-verified unchanged at R00 filing; retirement is a record act (never re-armed), consistent with ruling \u00b61 no-further-fire",
+ "completion_condition_mapping": "'Approved qualified scope' arm satisfied; no no-safe-merge condition found; unavailable evidence nowhere marked passed"
+}
