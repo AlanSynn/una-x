@@ -67,9 +67,10 @@
       "id": "BUG-JIT-DISABLED-STUB",
       "title": "NUMBA_DISABLE_JIT diagnostic mode: @overload-only pass stub raises TypeError (historical unresolved obligation)",
       "domain": "baseline engines numba dispatch",
-      "status": "hypothesis",
+      "status": "reproduced",
+      "evidence": "HARNESS 2026-09-30, executed probe: tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records (diagnostic source run, NUMBA_DISABLE_JIT=1, small stub fixture) fails with worker TypeError 'cannot unpack non-iterable NoneType object' at src/urban_network_analysis/Engines/AccessibilityWElevation.py:351 integrated_scope_access unpacking _a1_scope_admits(...) -> None (the @overload-only guard stub has no pure-Python body). Pre-existing on this checkout/environment; harness task owns no engine fix — disposition assigned to SCIENCE ('close diagnostic-mode guard failure'). Historical suite left red until the fix lands; recorded as a known failure, not waived.",
       "intended_rule": "JIT-disabled execution either runs the pure-Python route or takes the declared reference route with identical results",
-      "confirming_probe": "run accessibility/flow with NUMBA_DISABLE_JIT=1 on a small fixture"
+      "confirming_probe": "run accessibility/flow with NUMBA_DISABLE_JIT=1 on a small fixture (executed, see evidence)"
     },
     {
       "id": "BUG-LAYER-SET-STYLE-ATTRERROR",

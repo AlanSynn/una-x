@@ -1,0 +1,122 @@
+{
+  "task": "HARNESS",
+  "run_id": "har-20260930T153809Z",
+  "campaign": "una-platform-2026-09",
+  "date_utc": "2026-09-30",
+  "harness_version": "una-platform-2026-09-h1",
+  "branch": "perf/una-platform",
+  "head_at_receipt": "315187ab3cf14f5a150fbd3323a39737a6db96a0",
+  "source_baseline": {
+    "sha": "16bf404d2cc5e776a78dc073c80405f6d186da29",
+    "src_tree": "3c59bb0d3f9bc1fba7547be47ec63add88dd3031",
+    "drift": "none in src/ (BOOT receipt); HARNESS touched no src/ file"
+  },
+
+  "harness_modules": {
+    "benchmarks/platform/errors.py": "13 typed HarnessViolation subclasses with check_ids: IDENTITY, MANIFEST, MODEL_DISPATCH, ENGAGEMENT, OUTPUT_VALIDATION, EMPTY_COMPARISON, BITWISE_MISMATCH, SAFETY, OUTPUT_DIR_REUSE, RECORD_AUDIT, PROVENANCE, RESOURCE_LEDGER, BATCH_RUN",
+    "benchmarks/platform/identity.py": "child identity probe (installed-tree file digests -> installed_tree_sha256 + per-file map), scrubbed_env() (strips PYTHONPATH/PYTHONSTARTUP/PYTHONHOME/NUMBA_DISABLE_JIT), resolve_identity via pipe+pass_fds, assert_installed (site-packages location, forbidden-root shadowing, pinned tree digest)",
+    "benchmarks/platform/manifest.py": "frozen manifests (MANIFEST_VERSION=1); freeze_manifest computes workload input sha256s; load_manifest recomputes them BEFORE any timing and raises ManifestError('changed since freeze') on drift; resource_policy_of",
+    "benchmarks/platform/guards.py": "OutputDirGuard (one run_id per out-dir, completed-manifest reuse refused), SourceWriteGuard (sys.addaudithook denying open(w/a/x/+)/remove/rename/replace/rmdir/truncate/copyfile on git-tracked paths; raises SafetyViolation before the write lands)",
+    "benchmarks/platform/sampler.py": "ProcessTreeSampler: /proc walk of the child's full descendant tree, simultaneous per-pid RSS sum + meminfo at 0.2 s; reports peak_simultaneous_rss_bytes with peak_is_simultaneous_tree_sum=true (never sums noncoexisting maxima)",
+    "benchmarks/platform/child.py": "clean-interpreter worker: MarkerWriter (flush+fsync JSONL markers), DispatchTrace (sys.setprofile on RunAccessibility/RunODM/RunFlow/RunBatch in package modules), settings built from frozen patch with output_folder redirected into the leg's campaign-owned dir and output_wStamp forced False, _backend_counters (native/gpu module loaded flags), mutant injectors (wrong_dispatch, missing_output, unsynced_output), exit 3 on source-shadow detection",
+    "benchmarks/platform/runner.py": "run_one_real_job: pre-flight identity, leg 1 timed+sampled uninstrumented, leg 2 traced engagement, BITWISE leg comparison binds them as the same kernel, full measurement record with separate timing boundaries; run_bounded_batch: bounded submission (min(max_workers, queue_depth)), fail-fast abort, exit recording for killed children, per-job dirs; enforce_ledger",
+    "benchmarks/platform/validation.py": "validate_output_obligations (exists/non-empty/min_bytes/expect_features/expect_rows/expect_columns), compare_dirs_bitwise (identical artifact sets; empty -> EmptyComparisonError), compare_files_bitwise, compare_frame_bytes_equal with first-divergence",
+    "benchmarks/platform/provenance.py": "check_oracle_provenance: filename-only reuse, missing provenance fields, different reference build, and self-oracle (producer == candidate) all raise ProvenanceError; oracle_metadata_from_run",
+    "benchmarks/platform/records.py": "validate_record: required top fields, all five timing boundaries, complete identity hashes, simultaneous process-tree memory present and non-vacuous, export_synced truthy, backend claims require counters, counts keys, fault_status; write_session append-only custody (refuses existing run-id files)",
+    "benchmarks/platform/cli.py": "python -m benchmarks.platform run --manifest M --python PY --repo R --out-dir O; validates record, writes session, prints status JSON; HarnessViolation -> exit 2 with [check_id]; resolves child-facing paths at the boundary (interpreter made absolute WITHOUT symlink resolution to preserve venv prefix detection)",
+    "benchmarks/platform/fixtures.py": "deterministic 3x3 grid smoke fixture (EPSG:3857, 2 origins, 1 destination) + smoke_manifest factory with frozen input hashes",
+    "benchmarks/__init__.py": "package marker",
+    "benchmarks/platform/__main__.py": "python -m benchmarks.platform entry point"
+  },
+
+  "ten_negative_controls": {
+    "statement": "Each control runs an intentionally broken candidate through the real harness path and asserts the named check fires (tests/platform_harness/test_harness_mutants.py).",
+    "controls": [
+      {"m": 1, "name": "wrong_dispatch", "broken_candidate": "manifest declares accessibility, child analysis mutated to flow", "expected": "MODEL_DISPATCH (expects UNA.RunFlow)", "outcome": "PASSED"},
+      {"m": 2, "name": "source_shadowing", "broken_candidate": "PYTHONPATH=repo/src injected into child env", "expected": "IDENTITY (module outside site-packages)", "outcome": "PASSED"},
+      {"m": 3, "name": "fake_backend_engagement", "broken_candidate": "record claims backend_reported=native with no native module loaded", "expected": "ENGAGEMENT (no native module loaded)", "outcome": "PASSED"},
+      {"m": 4, "name": "missing_output / empty_comparison / failed_job", "broken_candidate": "mutant deletes first output; empty dirs; failing child", "expected": "OUTPUT_VALIDATION / EMPTY_COMPARISON / BATCH_RUN", "outcome": "PASSED"},
+      {"m": 5, "name": "workload_drift", "broken_candidate": "input file edited after freeze (Geometric 100.0 -> 12345.0)", "expected": "MANIFEST 'changed since freeze' BEFORE timing", "outcome": "PASSED"},
+      {"m": 6, "name": "child_death_full_queues", "broken_candidate": "worker SIGKILLs itself at 0.3 s with queue_depth=2 and 4 jobs", "expected": "bounded window (elapsed << serial), status failed, killed child exitcode -SIGKILL recorded, assert_window_validated raises, no orphans left", "outcome": "PASSED"},
+      {"m": 7, "name": "output_dir_reuse + committed_write", "broken_candidate": "second run_id into finalized out-dir; child appends to a git-tracked file", "expected": "OUTPUT_DIR_REUSE; SAFETY with file content unchanged after denied append", "outcome": "PASSED"},
+      {"m": 8, "name": "thin_measurement_records", "broken_candidate": "5 record faces: parent-only memory, no memory, unsynced export, thin timings, fake accel claim, dropped-job counts", "expected": "RECORD_AUDIT on every face (incl. dedicated simultaneous-tree memory check)", "outcome": "PASSED"},
+      {"m": 9, "name": "oracle_provenance", "broken_candidate": "4 faces: filename-only reuse, missing fields, different reference build, self-oracle", "expected": "PROVENANCE on every face", "outcome": "PASSED"},
+      {"m": 10, "name": "resource_ledger", "broken_candidate": "enforced != declared workers; peak_inflight 4 > declared 1; sampler peak > memory_limit", "expected": "RESOURCE_LEDGER on all three faces", "outcome": "PASSED"}
+    ],
+    "retained_log": "harness_gate_pytest.log"
+  },
+
+  "positive_real_job": {
+    "pilot_cli_run": {
+      "command": "python -m benchmarks.platform run --manifest manifest.json --python .refs/venv_una_legacy/bin/python --repo . --out-dir pilot_run",
+      "run_id": "h-20260930T154246Z-baf95d03",
+      "status": "validated",
+      "dispatch_called": ["urban_network_analysis.UNA.RunAccessibility"],
+      "backend": "reference -> reference; counters native=false gpu=false (numba 0.67.0)",
+      "installed_tree_sha256": "6b9903bebbb4eaeb371361e7211d68526b7d3da0a6a7aa6f18806a49b57b85e8",
+      "distribution_version": "2.6.0",
+      "timings_s": {"child_import": 2.577, "child_compute": 57.007, "child_wall": 61.606, "engagement_wall": 42.540, "launch_to_exit": 61.609, "post_hash": 0.707},
+      "memory": {"peak_simultaneous_rss_bytes": 391294976, "peak_is_simultaneous_tree_sum": true, "interval_s": 0.2, "filesystem": "procfs(/proc)"},
+      "outputs": {
+        "Results.geojson sha256": "dc432c137ef5c1699f5b3a60eef3df35b8c9005aecb42af535c7b29c0da0d307",
+        "Results.feather sha256": "0e12f16b1e5c5677aee32e585e075c49fa4dfd85fe02efcbb1918cb65d6825c8",
+        "timed_vs_engagement_legs": "byte-identical (both files)"
+      },
+      "export_synced": true,
+      "fault_status": "none",
+      "note": "Output hashes match the independent pilot runs from earlier the same day (cross-process bitwise determinism of una_legacy accessibility on this fixture)."
+    },
+    "test_positive_controls": [
+      "test_installed_identity_is_truthful - installed venv probes as site-packages with pinned tree digest",
+      "test_one_real_job_end_to_end - dispatch/obligations/record/memory boundaries ordered; append-only session custody (second write to same run_id refused)",
+      "test_baseline_determinism_timed_vs_engagement - legs byte-identical; artifact set exactly {Results.feather, Results.geojson}"
+    ]
+  },
+
+  "old_suite_repair": {
+    "problem": "Historical tests/large_e2e hardcoded the original author's macOS workspace paths, resolved helper imports only from one cwd, and wrote evidence into committed campaigns/una_large_e2e/evidence/** trees.",
+    "mechanism": [
+      "tests/large_e2e/_legacy_paths.py (NEW): LEGACY_WS (env UNA_LEGACY_WORKSPACE, default repo parent), ARTIFACTS_OUT (env UNA_LARGE_E2E_ARTIFACTS, default /tmp/una_large_e2e_artifacts), _LEGACY_SUITES, legacy_layout_present(), skip_without_legacy_layout",
+      "tests/large_e2e/conftest.py (NEW): repo-relative sys.path for sub-suite helpers; autouse skip fixture for suites under _LEGACY_SUITES (harness/ exempt)",
+      "39 existing files rewritten: macOS-absolute paths -> LEGACY_WS/ARTIFACTS_OUT expressions + import line 'from _legacy_paths import ...  # portable-path fix (HARNESS 2026-09-30)'",
+      "Evidence-write redirects: F1/F2/F3 harness recorders + F3 child NUMBA_CACHE_DIR now write under ARTIFACTS_OUT, never campaigns/**",
+      "7 modules with setup-time package imports (A3/test_a3_guard, F2 kernel/driver/precondition, scheduling/test_s01_l3, oracle/test_l0_golden, oracle/test_l0_traces) carry module-level legacy-layout guards because their module-scoped fixtures import the pinned package BEFORE any function-scoped skip fixture can run"
+    ],
+    "constraint_honored": "No committed goldens or historical evidence touched; repairs are path/logic-portable only; suites skip with explicit reason when the legacy layout is absent (env-overridable)."
+  },
+
+  "contract_amendments": [
+    {"id": "ENV-AMEND-1-PYARROW", "change": "pyarrow 25.0.1 added to the frozen numerical environment in profiles.json + contract.md; justification: pinned source reads inputs via gpd.read_file(engine='pyogrio', use_arrow=True), which requires pyarrow; I/O only, no numerical dependency"},
+    {"id": "ENV-AMEND-2-WHEEL-ARTIFACT", "change": "profiles.json una_legacy.artifact records that the original .whl (file sha256 323c27f3...) was not retained by the prior closeout; identity anchor switched to installed_tree_sha256 6b9903be... after content-verifying a fresh rebuild 17/17 files identical vs the installed tree (only auto-generated _build_info.py __commit_date__ differs; rebuilt wheel zip hash 28004c69... noted, not retained)"}
+  ],
+
+  "bug_registry_update": {
+    "BUG-JIT-DISABLED-STUB": "status hypothesis -> reproduced with executed evidence (tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records: NUMBA_DISABLE_JIT=1, TypeError 'cannot unpack non-iterable NoneType object' at src/urban_network_analysis/Engines/AccessibilityWElevation.py:351 unpacking _a1_scope_admits(...) -> None from the @overload-only guard stub). Fix disposition assigned to SCIENCE ('close diagnostic-mode guard failure'); historical suite left red, recorded as known failure, not waived."
+  },
+
+  "verification": {
+    "commands": [
+      {"cmd": "python -m pytest tests/platform_harness -v", "outcome": "13 passed in 219.69s", "log": "harness_gate_pytest.log"},
+      {"cmd": "python -m benchmarks.platform run --manifest ... --python .refs/venv_una_legacy/bin/python --repo . --out-dir pilot_run", "outcome": "exit 0, status validated (run h-20260930T154246Z-baf95d03)", "log": "pilot_cli.log + pilot_run/session_*.jsonl"},
+      {"cmd": "python -m pytest tests/ -q", "outcome": "1 failed, 98 passed, 348 skipped, 0 errors in 399.56s", "log": "full_suite_final.log"},
+      {"cmd": "python -m pytest tests/ -q --collect-only", "outcome": "439 collected, 0 collection errors"}
+    ],
+    "full_suite_single_failure": {
+      "test": "tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records",
+      "classification": "known pre-existing BUG-JIT-DISABLED-STUB (documented in bug_registry.json; fix owned by SCIENCE)",
+      "not_a_harness_regressor": "fails identically on the untouched baseline checkout"
+    }
+  },
+
+  "limitations": [
+    "tests/large_e2e historical suites require the historical worktree/venv layout (LEGACY_WS/wt-large-e2e + campaign_data) which is absent on this machine; they skip with explicit reason. Reactivating them needs the layout restored via UNA_LEGACY_WORKSPACE - not fabricated.",
+    "The ten controls prove the harness catches each broken-candidate class on the smoke workload; they do not validate performance claims (that is SCREEN_*/CONFIRM scope).",
+    "Numba caches are cold by construction per leg (fresh NUMBA_CACHE_DIR per work dir); warm-cache measurement paths are exercised by CACHE tasks through the same record schema."
+  ],
+
+  "handoff": {
+    "to_FAILURES": "harness record/custody schema is the required envelope for incident reproductions; bounded batch runner available for watchdog-style bounded reproductions",
+    "to_CACHE_STORE/GPU_DEVICE/BATCH_EXEC (depend on HARNESS)": "run_one_real_job + validate_record are the acceptance envelope; backend claims must carry _backend_counters truth (see control 3); use run_bounded_batch + enforce_ledger for parallel scopes",
+    "to_SCIENCE": "BUG-JIT-DISABLED-STUB fix will turn tests/large_e2e/harness/test_identity_guard.py green; no harness change required"
+  }
+}

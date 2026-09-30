@@ -12,6 +12,12 @@ from __future__ import annotations
 
 import numpy as np
 
+import pytest as _pytest
+from _legacy_paths import legacy_layout_present as _llp
+if not _llp():
+    _pytest.skip('historical large_e2e layout not present '
+                 '(set UNA_LEGACY_WORKSPACE)', allow_module_level=True)
+
 from urban_network_analysis.Engines import AggregateFlow as AF
 from harness_f2 import record
 

@@ -1,0 +1,1 @@
+{"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "EPSG:3857"}}, "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [205.0, 5.0]}, "properties": {"Count": 30, "DID": "D0"}}]}

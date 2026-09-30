@@ -1,0 +1,62 @@
+{
+  "task": "HARNESS",
+  "run_id": "har-20260930T153809Z",
+  "campaign": "una-platform-2026-09",
+  "date_utc": "2026-09-30",
+  "role": "harness-owner",
+  "branch": "perf/una-platform",
+  "head_at_receipt": "315187ab3cf14f5a150fbd3323a39737a6db96a0",
+  "source_baseline": "16bf404d2cc5e776a78dc073c80405f6d186da29 (src tree 3c59bb0d; no src/ drift, no src/ file touched)",
+  "status": "completed",
+  "objective": "Implement HARNESS.md; repair relocatability, existing test source-frame contamination and evidence writes in isolated reviewed patches.",
+  "completion_condition": {
+    "clause": "All ten harness negative controls fail intentionally broken candidates; installed identity and correct dispatch verified; no committed-file writes.",
+    "assessment": "MET",
+    "evidence": [
+      "ten controls PASSED (harness_gate_pytest.log, 13 passed in 219.69s)",
+      "installed identity truthful (site-packages tree digest 6b9903be...); dispatch_called == ['urban_network_analysis.UNA.RunAccessibility'] in retained pilot h-20260930T154246Z-baf95d03",
+      "SourceWriteGuard denies committed-path writes (control 7: denied append left tracked file byte-unchanged); F1/F2/F3 recorders redirected to ARTIFACTS_OUT; full-suite runs wrote nothing under campaigns/** except this task's own evidence"
+    ]
+  },
+  "deliverables": {
+    "new": [
+      "benchmarks/platform/ (13 modules: errors identity manifest guards sampler child runner validation provenance records cli fixtures __main__ + package __init__)",
+      "tests/platform_harness/ (conftest + 3 positive/negative test modules, 13 tests)",
+      "tests/large_e2e/_legacy_paths.py",
+      "tests/large_e2e/conftest.py"
+    ],
+    "reviewed_patches": [
+      "39 existing tests/large_e2e files: portable-path repair (LEGACY_WS/ARTIFACTS_OUT), evidence-write redirects out of committed trees, 7 module-level layout guards where module-scoped fixtures import the pinned package before any skip fixture"
+    ],
+    "contract_updates": [
+      "profiles.json: pyarrow 25.0.1 amendment (ENV-AMEND-1-PYARROW) + una_legacy wheel-artifact provenance note (ENV-AMEND-2-WHEEL-ARTIFACT)",
+      "contract.md §2: pyarrow line",
+      "bug_registry.json: BUG-JIT-DISABLED-STUB hypothesis -> reproduced with executed evidence; fix assigned to SCIENCE",
+      ".gitignore: .refs/ (campaign-pinned reference venvs stay untracked)"
+    ]
+  },
+  "verification": [
+    {"check": "13 harness tests (3 positive + 10 negative controls)", "cmd": "python -m pytest tests/platform_harness -v", "outcome": "13 passed in 219.69s", "log": "harness_gate_pytest.log"},
+    {"check": "one real job through public API via CLI (installed una_legacy venv)", "cmd": "python -m benchmarks.platform run --manifest manifest.json --python .refs/venv_una_legacy/bin/python --repo . --out-dir pilot_run", "outcome": "validated; bitwise leg equality; outputs Results.geojson dc432c13..., Results.feather 0e12f16b...", "log": "pilot_cli.log"},
+    {"check": "whole-repo suite final state", "cmd": "python -m pytest tests/ -q", "outcome": "1 failed, 98 passed, 348 skipped, 0 errors in 399.56s (single failure = documented BUG-JIT-DISABLED-STUB, pre-existing, owned by SCIENCE)", "log": "full_suite_final.log"},
+    {"check": "collection cleanliness", "cmd": "python -m pytest tests/ -q --collect-only", "outcome": "439 collected, 0 errors"}
+  ],
+  "known_failures": [
+    {"test": "tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records", "bug_id": "BUG-JIT-DISABLED-STUB", "disposition": "reproduced; fix owned by SCIENCE task (close diagnostic-mode guard failure); not waived, not weakened"}
+  ],
+  "environment": {
+    "python": "3.11.4 (/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python)",
+    "installed_reference": ".refs/venv_una_legacy (site-packages tree sha256 6b9903bebbb4eaeb371361e7211d68526b7d3da0a6a7aa6f18806a49b57b85e8, distribution 2.6.0, pyarrow 25.0.1 amended)",
+    "host": "atl1-1-02-003-4-2.pace.gatech.edu (login-class CPU work; no GPU used)"
+  },
+  "raw_evidence_retained": [
+    "harness_gate_pytest.log",
+    "pilot_cli.log",
+    "pilot_run/session_h-20260930T154246Z-baf95d03.jsonl (append-only custody record)",
+    "pilot_run/leg_timed/ + pilot_run/leg_engagement/ (bitwise-equal output artifacts + markers)",
+    "pilot_run/run_manifest.json + manifest.json + fixture/ (frozen workload, input hashes)",
+    "full_suite_final.log + full_suite_exit.txt"
+  ],
+  "dirty_user_files_preserved": [".claude/commands/goal.md (untouched, uncommitted)"],
+  "next_task": "FAILURES (depends_on CONTRACT+HARNESS: both now complete)"
+}

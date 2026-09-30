@@ -18,6 +18,12 @@ A single bitwise divergence rejects the domain outright.
 """
 from __future__ import annotations
 
+import pytest as _pytest
+from _legacy_paths import legacy_layout_present as _llp
+if not _llp():
+    _pytest.skip('historical large_e2e layout not present '
+                 '(set UNA_LEGACY_WORKSPACE)', allow_module_level=True)
+
 import numpy as np
 
 import fixtures_f2

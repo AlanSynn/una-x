@@ -29,6 +29,7 @@ from support import b0, golden_hashes
 from scipy.sparse.csgraph import dijkstra as scipy_dijkstra
 
 
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
 @pytest.fixture(scope="module")
 def observed():
     return obsrep.load_observed()
@@ -54,7 +55,7 @@ def test_observed_provenance_and_env(observed):
     commit, from the H04 reviewer's O2 fixture, in THIS environment."""
     sidecar, _ = observed
     prov = sidecar["provenance"]
-    assert prov["b0_root"] == "/Users/alansynn/orca/workspaces/una-x/wt-b0/src"
+    assert prov["b0_root"] == str(LEGACY_WS) + "/wt-b0/src"
     assert prov["b0_commit"] == golden_hashes()["b0_commit"]
     assert prov["o2_fixture_sha256"] == (
         "afaf4bf4651a1c9d76a8328ab8e78d99bb35699b3fd378c297c54661dea09492")

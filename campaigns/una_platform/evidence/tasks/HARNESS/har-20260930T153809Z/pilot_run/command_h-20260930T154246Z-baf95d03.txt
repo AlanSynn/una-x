@@ -1,0 +1,1 @@
+/storage/scratch1/1/dsynn6/una-x/benchmarks/platform/__main__.py run --manifest campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/manifest.json --python .refs/venv_una_legacy/bin/python --repo . --out-dir campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/pilot_run

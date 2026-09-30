@@ -1,0 +1,67 @@
+{
+  "backend_requested": "reference",
+  "campaign": "una-platform-2026-09",
+  "expected_identity": {},
+  "manifest_version": 1,
+  "model": {
+    "analysis": "accessibility",
+    "engine": "auto"
+  },
+  "output_obligations": {
+    "files": {
+      "Results.feather": {
+        "format": "feather"
+      },
+      "Results.geojson": {
+        "format": "geojson"
+      }
+    }
+  },
+  "profile": "una_legacy",
+  "resource_policy": {
+    "max_workers": 1,
+    "memory_limit_bytes": null,
+    "queue_depth": 2,
+    "threads_per_worker": 1
+  },
+  "settings_patch": {
+    "data_folder": "/storage/scratch1/1/dsynn6/una-x/campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/fixture",
+    "destination_weight_column": "Count",
+    "destinations_file": "destinations.geojson",
+    "name": "smoke_grid",
+    "network_file": "network.geojson",
+    "network_weight_column": "Geometric",
+    "origin_weight_column": "Count",
+    "origins_file": "origins.geojson",
+    "output_csv": false,
+    "output_feather": true,
+    "output_file_name": "Results",
+    "output_folder": "/storage/scratch1/1/dsynn6/una-x/campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/fixture/out",
+    "output_geojson": true,
+    "output_shp": false,
+    "output_wStamp": false,
+    "search_radius": 1000
+  },
+  "workload": {
+    "class": "L2_smoke_grid_3x3",
+    "input_hashes": {
+      "destinations": {
+        "path": "/storage/scratch1/1/dsynn6/una-x/campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/fixture/destinations.geojson",
+        "sha256": "93b1d4bb5afcda082e3c605068e1ca612fdcde017c524e21fbfd2fa4cc40e0bd"
+      },
+      "network": {
+        "path": "/storage/scratch1/1/dsynn6/una-x/campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/fixture/network.geojson",
+        "sha256": "1e7f80529dccbf1887ab0a073792298423c9bc5fa23dd9ced244d4e8d8da56bc"
+      },
+      "origins": {
+        "path": "/storage/scratch1/1/dsynn6/una-x/campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/fixture/origins.geojson",
+        "sha256": "d988681b54cddbc4e6abb623863200cbd5ee645232d654ae9de6a1850eef5b52"
+      }
+    },
+    "inputs": {
+      "destinations": "/storage/scratch1/1/dsynn6/una-x/campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/fixture/destinations.geojson",
+      "network": "/storage/scratch1/1/dsynn6/una-x/campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/fixture/network.geojson",
+      "origins": "/storage/scratch1/1/dsynn6/una-x/campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/fixture/origins.geojson"
+    }
+  }
+}

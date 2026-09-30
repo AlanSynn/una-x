@@ -19,3 +19,6 @@ src/urban_network_analysis/_build_info.py
 # Editors / envs
 .vscode/
 .venv/
+
+# Campaign-pinned reference environments (una_legacy / madina_legacy venvs)
+.refs/

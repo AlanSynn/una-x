@@ -18,6 +18,14 @@ import numpy as np
 import pytest
 from scipy.sparse.csgraph import dijkstra as scipy_dijkstra
 
+# Module-level guard (HARNESS 2026-09-30): module-scoped fixtures here import
+# the pinned B0 package at setup, before any function-scoped skip fixture runs.
+import pytest as _pytest
+from _legacy_paths import legacy_layout_present as _llp
+if not _llp():
+    _pytest.skip('historical large_e2e layout not present (set UNA_LEGACY_WORKSPACE)',
+                 allow_module_level=True)
+
 import fixtures
 import stub_topology
 import trace_access

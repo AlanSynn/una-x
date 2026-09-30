@@ -14,10 +14,11 @@ import fixtures
 from support import b0
 from test_l0_traces import _scope_inputs_for_engine_case
 
-CAMPAIGN_PYTHON = ("/Users/alansynn/orca/workspaces/una-x/venvs/campaign/"
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
+CAMPAIGN_PYTHON = (str(LEGACY_WS) + "/venvs/campaign/"
                    "bin/python")
 ORACLE_DIR = os.path.dirname(os.path.abspath(__file__))
-B0_ROOT = "/Users/alansynn/orca/workspaces/una-x/wt-b0/src"
+B0_ROOT = str(LEGACY_WS) + "/wt-b0/src"
 
 
 def _scope_for(case_name):

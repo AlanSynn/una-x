@@ -1,0 +1,53 @@
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 16%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 32%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 49%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 65%]
+ssssssssss............................................F................. [ 82%]
+ssssssssssssssssssssssssssssss........................ssssssssssss...... [ 98%]
+.......                                                                  [100%]
+=================================== FAILURES ===================================
+_____________ test_diagnostic_mode_runs_source_and_labels_records ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-dsynn6/pytest-27/test_diagnostic_mode_runs_sour0')
+
+    def test_diagnostic_mode_runs_source_and_labels_records(tmp_path):
+        """Diagnostic mode: distinctly named, imports the REAL source tree, runs
+        one real accessibility analysis on a tiny fixture, and structurally
+        cannot emit installed-qualified records.  NUMBA_DISABLE_JIT is legal
+        ONLY here (installed mode rejects it before work)."""
+        data_dir = tmp_path / "inputs_real"
+        input_files = stubkit.make_real_tiny_fixture(data_dir)
+        manifest = stubkit.make_manifest(
+            tmp_path / "w_real.json", data_dir, analysis="accessibility",
+            settings_overrides={
+                "network_file": "network.feather",
+                "origins_file": "origins.feather",
+                "destinations_file": "destinations.feather",
+                "search_radius": 250,
+                "output_wStamp": False,
+                "progressbar": False,
+            },
+            input_files=input_files)
+        identity_path = tmp_path / "identity_diag.json"
+        stubkit.generate_identity(
+            stubkit.CAMPAIGN_PYTHON, arm="diag", kind="diagnostic_source",
+            out_path=identity_path,
+            source_root=stubkit.REPO_ROOT / "src",
+            extra_sys_path=[stubkit.REPO_ROOT / "src"])
+        out = tmp_path / "run_out"
+        out.mkdir()
+        completed = run_harness(out, manifest, identity_path,
+                                diagnostic_source_root=stubkit.REPO_ROOT / "src",
+                                cache_root=tmp_path / "cache",
+                                extra_env={"NUMBA_DISABLE_JIT": "1"},
+                                timeout=600.0)
+>       assert completed.returncode == 0, completed.stderr[-4000:]
+E       AssertionError: failure: {'reason': 'worker_startup_failed', 'detail': {'worker_id': 0, 'error': {'type': 'TypeError', 'message': 'cannot unpack non-iterable NoneType object', 'traceback_tail': 'Traceback (most recent call last):\n  File "/storage/scratch1/1/dsynn6/una-x/benchmarks/large_e2e/harness/worker.py", line 655, in worker_main\n    warm_record = run_job(warm_spec, una_cls, settings_cls,\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/storage/scratch1/1/dsynn6/una-x/benchmarks/large_e2e/harness/worker.py", line 508, in run_job\n    outcome = execute_analysis(\n              ^^^^^^^^^^^^^^^^^\n  File "/storage/scratch1/1/dsynn6/una-x/benchmarks/large_e2e/harness/dispatch.py", line 121, in execute_analysis\n    getattr(una_obj, method_name)()\n  File "/storage/scratch1/1/dsynn6/una-x/src/urban_network_analysis/UNA.py", line 258, in RunAccessibility\n    self.accessibility.Centrality(self.settings)\n  File "/storage/scratch1/1/dsynn6/una-x/src/urban_network_analysis/Engines/AccessibilityWElevation.py", line 844, in Centrality\n    reach, gravity_exponential, gravity_logistic, knn_access = self.graph_engine.o_access(\n                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/storage/scratch1/1/dsynn6/una-x/src/urban_network_analysis/Engines/AccessibilityWElevation.py", line 551, in o_access\n    return integrated_scope_access(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/storage/scratch1/1/dsynn6/una-x/src/urban_network_analysis/Engines/AccessibilityWElevation.py", line 351, in integrated_scope_access\n    a1_admitted, a1_max_degree = _a1_scope_admits(\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: cannot unpack non-iterable NoneType object\n'}}}
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python', '/storage/scratch1/1/dsynn6/un... _a1_scope_admits(\\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^\\nTypeError: cannot unpack non-iterable NoneType object\\n\'}}}\n').returncode
+
+tests/large_e2e/harness/test_identity_guard.py:320: AssertionError
+=========================== short test summary info ============================
+FAILED tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records
+1 failed, 98 passed, 348 skipped in 399.56s (0:06:39)

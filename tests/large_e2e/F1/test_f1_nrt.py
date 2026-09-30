@@ -12,9 +12,10 @@ import subprocess
 from harness_f1 import b0ns, cns, flush_artifacts, record_census
 
 
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
 HERE = os.path.dirname(os.path.abspath(__file__))
-CAMPAIGN_DATA = "/Users/alansynn/orca/workspaces/una-x/campaign_data"
-VENV_PY = "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python"
+CAMPAIGN_DATA = str(LEGACY_WS) + "/campaign_data"
+VENV_PY = str(LEGACY_WS) + "/venvs/campaign/bin/python"
 H05_ALLOC_RATE = 48
 
 

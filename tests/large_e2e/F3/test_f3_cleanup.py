@@ -24,7 +24,9 @@ from harness_f3 import (assert_gradient_bytes, b0ns, cns, record_note,
                         record_schedule)
 from test_f3_chunk_equivalence import parse_f3_tail
 
-CANDIDATE_ROOT = ("/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src")
+from _legacy_paths import ARTIFACTS_OUT, LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
+
+CANDIDATE_ROOT = (str(LEGACY_WS) + "/wt-large-e2e/src")
 CHILD = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                      "f3_mem_child.py")
 
@@ -89,9 +91,8 @@ def test_margin_gap_gate():
     proc = subprocess.run(
         [sys_exe, CHILD, CANDIDATE_ROOT],
         capture_output=True, text=True, timeout=300,
-        env=dict(os.environ, NUMBA_CACHE_DIR="/Users/alansynn/orca"
-                                             "/workspaces/una-x/"
-                                             "campaign_data/nbc_f3"),
+        env=dict(os.environ, NUMBA_CACHE_DIR=str(ARTIFACTS_OUT
+                                                 / "nbc_f3")),
     )
     assert proc.returncode == 0, (
         f"margin child failed rc={proc.returncode}\n"

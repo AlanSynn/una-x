@@ -1,0 +1,22 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.4, pytest-9.1.1, pluggy-1.6.0 -- /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python
+cachedir: .pytest_cache
+rootdir: /storage/scratch1/1/dsynn6/una-x
+configfile: pyproject.toml
+collecting ... collected 13 items
+
+tests/platform_harness/test_harness_mutants.py::test_mutant1_wrong_dispatch_fails PASSED [  7%]
+tests/platform_harness/test_harness_mutants.py::test_mutant2_source_shadowing_fails PASSED [ 15%]
+tests/platform_harness/test_harness_mutants.py::test_mutant3_fake_backend_engagement_fails PASSED [ 23%]
+tests/platform_harness/test_harness_mutants.py::test_mutant4_missing_output_and_empty_comparison PASSED [ 30%]
+tests/platform_harness/test_harness_mutants.py::test_mutant5_workload_drift_fails_before_timing PASSED [ 38%]
+tests/platform_harness/test_harness_mutants.py::test_mutant6_child_death_full_queues_bounded PASSED [ 46%]
+tests/platform_harness/test_harness_mutants.py::test_mutant7_output_reuse_and_committed_write_guard PASSED [ 53%]
+tests/platform_harness/test_harness_mutants.py::test_mutant8_thin_measurement_records_fail PASSED [ 61%]
+tests/platform_harness/test_harness_mutants.py::test_mutant9_oracle_provenance_fails PASSED [ 69%]
+tests/platform_harness/test_harness_mutants.py::test_mutant10_resource_ledger_fails PASSED [ 76%]
+tests/platform_harness/test_positive_real_job.py::test_installed_identity_is_truthful PASSED [ 84%]
+tests/platform_harness/test_positive_real_job.py::test_one_real_job_end_to_end PASSED [ 92%]
+tests/platform_harness/test_positive_real_job.py::test_baseline_determinism_timed_vs_engagement PASSED [100%]
+
+======================== 13 passed in 219.69s (0:03:39) ========================

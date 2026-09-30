@@ -22,6 +22,7 @@ Binding sources:
 from __future__ import annotations
 
 # --- base (resolved: Commit B landed; h04 corroborated) -------------------
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
 BASE_COMMIT = "6b53a274e8a8d3e7360ab5e1b38f741107ce3358"
 BASE_SRC_TREE = "3c59bb0d3f9bc1fba7547be47ec63add88dd3031"
 
@@ -31,7 +32,7 @@ BASE_SRC_TREE = "3c59bb0d3f9bc1fba7547be47ec63add88dd3031"
 W00_CHAIN_PIN = "7d35e9101c46dfda71298521c5a710942b63cdf70377beb885a138d2b1e933b7"
 LEDGER = {
     "budget_total_s": 14400.0,
-    "w00_final_log": ("/Users/alansynn/orca/workspaces/una-x/campaign_data/"
+    "w00_final_log": (str(LEGACY_WS) + "/campaign_data/"
                       "w00_lease_log.json"),
     "w00_final_log_sha256": W00_CHAIN_PIN,
     "w00_charged_s": 1991.9,
@@ -148,7 +149,7 @@ FLOW_VARIANT = {
     "basis": "H05 flow-variant decision (campaign_data/"
              "h05_flow_decision.json: chosen_variant=sel1024; sel-all "
              "capacity-refused)",
-    "origins_fixture": ("/Users/alansynn/orca/workspaces/una-x/"
+    "origins_fixture": (str(LEGACY_WS) + "/"
                         "campaign_data/inputs/"
                         "O3_FLOW_origins_sel1024.geojson"),
     "origins_fixture_sha256": (
@@ -159,7 +160,7 @@ ACCESS_ORIGINS = {
                   "2026-09-29: bounded fixture ordered; the former sel_all "
                   "identity-selection block is SUPERSEDED and must not "
                   "survive to the declaration freeze)"),
-    "origins_fixture": ("/Users/alansynn/orca/workspaces/una-x/"
+    "origins_fixture": (str(LEGACY_WS) + "/"
                         "campaign_data/inputs/"
                         "s01_O3_ACCESS_origins_sel1024.geojson"),
     "origins_fixture_sha256": (
@@ -176,7 +177,7 @@ ACCESS_ORIGINS = {
                         "Cambridge_building_centroids.geojson"),
         "source_file_sha256": (
             "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc"),
-        "derivation_record": ("/Users/alansynn/orca/workspaces/una-x/"
+        "derivation_record": (str(LEGACY_WS) + "/"
                               "campaign_data/"
                               "s01_O3_ACCESS_fixture_derivation.json"),
         "derivation_record_sha256": (
@@ -195,22 +196,22 @@ ACCESS_ORIGINS = {
     },
 }
 RUN_MANIFESTS = {
-    "O3_ACCESS": ("/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/"
+    "O3_ACCESS": (str(LEGACY_WS) + "/wt-large-e2e/"
                   "tests/large_e2e/scheduling/"
                   "s01_O3_ACCESS.run.manifest.json"),
-    "O3_FLOW": ("/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/"
+    "O3_FLOW": (str(LEGACY_WS) + "/wt-large-e2e/"
                 "tests/large_e2e/scheduling/"
                 "s01_O3_FLOW_sel1024.run.manifest.json"),
 }
 ARM_VENVS = {
-    "b0": "/Users/alansynn/orca/workspaces/una-x/campaign_data/venvs/w00_b0",
-    "selected": ("/Users/alansynn/orca/workspaces/una-x/campaign_data/"
+    "b0": str(LEGACY_WS) + "/campaign_data/venvs/w00_b0",
+    "selected": (str(LEGACY_WS) + "/campaign_data/"
                  "venvs/w00_selected"),
 }
 ARM_IDENTITIES = {
-    "b0": ("/Users/alansynn/orca/workspaces/una-x/campaign_data/"
+    "b0": (str(LEGACY_WS) + "/campaign_data/"
            "w00_identities/b0.json"),
-    "selected": ("/Users/alansynn/orca/workspaces/una-x/campaign_data/"
+    "selected": (str(LEGACY_WS) + "/campaign_data/"
                  "w00_identities/selected.json"),
 }
 # Reference configs for the P0 baseline-only pilots (per-job wall source).

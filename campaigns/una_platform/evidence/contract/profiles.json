@@ -11,8 +11,11 @@
       "artifact": {
         "wheel": "urban_network_analysis-2.6.0-py3-none-any.whl",
         "sha256": "323c27f3ace8daafcc6d025596a605e8263cc14c8c4fe602c427d51069448ac4",
+        "wheel_file_retained": false,
         "venv": ".refs/venv_una_legacy",
-        "install_identity": "all 16 pinned files match source_pins.json after install (verified 2026-09-30)"
+        "install_identity": "all 16 pinned files match source_pins.json after install (verified 2026-09-30)",
+        "installed_tree_sha256": "6b9903bebbb4eaeb371361e7211d68526b7d3da0a6a7aa6f18806a49b57b85e8",
+        "artifact_note": "HARNESS 2026-09-30: the original wheel file was not retained through the environment purge. The installed venv tree is the artifact of record. Content verification against a fresh baseline-source rebuild (`python -m pip wheel --no-deps --no-build-isolation .` with hatchling): 17/17 package files byte-identical except auto-generated _build_info.py (__commit_date__ 'unknown' in the historical install vs '2026-09-30' in the rebuild; non-numerical build metadata). The rebuilt wheel's own zip bytes differ (hash 28004c6927a3a260afec2896390befd8f8f59c735ebd6b99f90c7344f1f1dba6) and was not retained. Installed-tree sha256 above is the identity anchor used by the harness."
       }
     },
     "madina_legacy": {
@@ -62,9 +65,20 @@
     "scikit-learn": "1.9.1",
     "psutil": "7.2.2",
     "pytest": "9.1.1",
+    "pyarrow": "25.0.1",
     "cpu": "Intel Xeon Gold 6226 @ 2.70GHz, 4 effective cores (cpus 20-23)",
     "os": "RHEL 9.6, kernel 5.14.0-570.128.1.el9_6.x86_64"
   },
+  "amendments": [
+    {
+      "date": "2026-09-30",
+      "id": "ENV-AMEND-1-PYARROW",
+      "change": "pyarrow 25.0.1 added to both reference venvs (.refs/venv_una_legacy, .refs/venv_madina_legacy)",
+      "reason": "Pinned baseline Topology._get_gdf calls gpd.read_file(engine='pyogrio', use_arrow=True); without pyarrow the pinned reference cannot read any GeoJSON/feather input (RuntimeError from pyogrio). pyarrow is a dependency of the pinned source's I/O path on geopandas 1.2, present in the historical environment but omitted from the initial venv reconstruction.",
+      "scope": "I/O deserialization only; no numerical kernel, ordering, or reduction dependency identified. No pinned numerical package version changed.",
+      "recorded_by": "HARNESS task during first real-job pilot (accessibility smoke run)"
+    }
+  ],
   "comparison_fields": [
     "dtypes/shapes/column order/index",
     "numeric bytes incl signed-zero and NaN payloads",

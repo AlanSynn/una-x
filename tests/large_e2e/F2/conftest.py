@@ -19,8 +19,9 @@ from __future__ import annotations
 import os
 import sys
 
-WT = "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e"
-DEFAULT_CACHE_ROOT = "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_f2"
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
+WT = str(LEGACY_WS) + "/wt-large-e2e"
+DEFAULT_CACHE_ROOT = str(LEGACY_WS) + "/campaign_data/nbc_f2"
 CANDIDATE_ROOT = os.environ.get("UNA_F2_CANDIDATE_ROOT", f"{WT}/src")
 
 os.environ["NUMBA_CACHE_DIR"] = os.environ.get("UNA_F2_NUMBA_CACHE", DEFAULT_CACHE_ROOT)

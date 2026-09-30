@@ -1,0 +1,32 @@
+{
+  "harness": {
+    "repo": "/storage/scratch1/1/dsynn6/una-x",
+    "package": "urban_network_analysis"
+  },
+  "model": {
+    "analysis": "accessibility",
+    "engine": "auto"
+  },
+  "settings_patch": {
+    "data_folder": "/storage/scratch1/1/dsynn6/una-x/campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/fixture",
+    "destination_weight_column": "Count",
+    "destinations_file": "destinations.geojson",
+    "name": "smoke_grid",
+    "network_file": "network.geojson",
+    "network_weight_column": "Geometric",
+    "origin_weight_column": "Count",
+    "origins_file": "origins.geojson",
+    "output_csv": false,
+    "output_feather": true,
+    "output_file_name": "Results",
+    "output_folder": "/storage/scratch1/1/dsynn6/una-x/campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/fixture/out",
+    "output_geojson": true,
+    "output_shp": false,
+    "output_wStamp": false,
+    "search_radius": 1000
+  },
+  "backend_reported": "reference",
+  "run": {
+    "out_dir": "/storage/scratch1/1/dsynn6/una-x/campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/pilot_run/leg_timed"
+  }
+}

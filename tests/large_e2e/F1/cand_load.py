@@ -21,11 +21,12 @@ import os
 import sys
 import types
 
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
 ALIAS = "una_f1_cand"
 
 CANDIDATE_ROOT = os.environ.get(
     "UNA_F1_CANDIDATE_ROOT",
-    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src",
+    str(LEGACY_WS) + "/wt-large-e2e/src",
 )
 
 _CAND = None

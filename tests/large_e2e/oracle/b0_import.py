@@ -23,7 +23,8 @@ import os
 import sys
 import types
 
-B0_ROOT = "/Users/alansynn/orca/workspaces/una-x/wt-b0/src"
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
+B0_ROOT = str(LEGACY_WS) + "/wt-b0/src"
 B0_COMMIT = "361928e4ba38f34622cafe065b0025244db61368"
 
 

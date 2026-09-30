@@ -22,6 +22,11 @@ the golden's producing run cannot be reproduced from recorded inputs.
 - numpy 2.4.6, numba 0.67.0, scipy 1.17.1, pandas 3.0.6, geopandas 1.2.0,
   shapely 2.1.2 (+GEOS via wheels), networkx 3.6.1, scikit-learn 1.9.1, psutil 7.2.2,
   pydeck (madina_legacy venv only, latest at install), pytest 9.1.1
+- pyarrow 25.0.1 — added 2026-09-30 by HARNESS as amendment ENV-AMEND-1-PYARROW
+  (see profiles.json): the pinned baseline reads all inputs through
+  `gpd.read_file(engine='pyogrio', use_arrow=True)` / `gpd.read_feather`, which
+  require pyarrow; I/O deserialization only, no numerical dependency identified.
+  Both reference venvs received the identical version.
 - CPU: Intel Xeon Gold 6226 @ 2.70GHz, cpus 20-23 (4 effective), numba threads default 1
   unless a receipt records otherwise; Linux 5.14.0-570.128.1.el9_6.x86_64
 - fastmath flags: whatever the baseline source pins (una_legacy); recorded per-kernel at

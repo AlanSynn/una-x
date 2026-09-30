@@ -13,9 +13,11 @@ import hashlib
 import json
 import os
 
-WT = "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e"
-DEFAULT_ARTIFACTS = (f"{WT}/campaigns/una_large_e2e/evidence/F2I/"
-                     "test_artifacts.json")
+from _legacy_paths import ARTIFACTS_OUT, LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
+WT = str(LEGACY_WS) + "/wt-large-e2e"
+# Write target moved out of the committed evidence tree (HARNESS: runs never
+# write campaigns/** evidence; override with UNA_LARGE_E2E_ARTIFACTS).
+DEFAULT_ARTIFACTS = str(ARTIFACTS_OUT / "F2I" / "test_artifacts.json")
 
 ARTIFACTS = {
     "task": "F2I",

@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import os
 
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
 os.environ["NUMBA_NRT_STATS"] = "1"  # must precede numba import
 
 import sys
@@ -26,7 +27,7 @@ sys.path.insert(0, root)
 from urban_network_analysis.Engines.AggregateFlow import _accumulate_od_flow
 from numba.core.runtime import rtsys
 
-OBS_DIR = ("/Users/alansynn/orca/workspaces/una-x/wt-large-e2e"
+OBS_DIR = (str(LEGACY_WS) + "/wt-large-e2e"
            "/tests/large_e2e/oracle/golden/observed")
 SIDECAR_PATH = os.path.join(OBS_DIR, "observed_o2_kernels.hashes.json")
 NPZ_PATH = os.path.join(OBS_DIR, "observed_o2_kernels.npz")

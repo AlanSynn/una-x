@@ -18,9 +18,10 @@ from comparator import assert_array_bytes_equal
 from harness_f1 import assert_engine_bytes, b0ns, cns, record_note
 
 
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
 HERE = os.path.dirname(os.path.abspath(__file__))
-CAMPAIGN_DATA = "/Users/alansynn/orca/workspaces/una-x/campaign_data"
-VENV_PY = "/Users/alansynn/orca/workspaces/una-x/venvs/campaign/bin/python"
+CAMPAIGN_DATA = str(LEGACY_WS) + "/campaign_data"
+VENV_PY = str(LEGACY_WS) + "/venvs/campaign/bin/python"
 
 
 def _replica(ns, engine, settings, k, **knobs):

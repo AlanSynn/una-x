@@ -57,11 +57,12 @@ import time
 
 import numpy as np
 
-B0_SRC = "/Users/alansynn/orca/workspaces/una-x/wt-b0/src"
-CAMPAIGN_DATA = "/Users/alansynn/orca/workspaces/una-x/campaign_data"
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
+B0_SRC = str(LEGACY_WS) + "/wt-b0/src"
+CAMPAIGN_DATA = str(LEGACY_WS) + "/campaign_data"
 FIXTURE = os.path.join(CAMPAIGN_DATA, "O2_origins_h04review.geojson")
 FIXTURE_SHA = "afaf4bf4651a1c9d76a8328ab8e78d99bb35699b3fd378c297c54661dea09492"
-O2_MANIFEST = ("/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/"
+O2_MANIFEST = (str(LEGACY_WS) + "/wt-large-e2e/"
                "tests/large_e2e/inputs/O2.manifest.json")
 OUT_DIR = os.path.dirname(os.path.abspath(__file__))
 NPZ_PATH = os.path.join(OUT_DIR, "observed_o2_kernels.npz")
@@ -509,12 +510,12 @@ def main():
             "una_imported_from": una_pkg_dir,
             "o2_fixture": FIXTURE,
             "o2_fixture_sha256": FIXTURE_SHA,
-            "o2_fixture_derivation": ("/Users/alansynn/orca/workspaces/una-x/"
+            "o2_fixture_derivation": (str(LEGACY_WS) + "/"
                                       "wt-large-e2e/campaigns/una_large_e2e/"
                                       "evidence/H04/o2_fixture_derivation.json"),
             "o2_manifest": O2_MANIFEST,
             "o2_manifest_sha256": o2_manifest_sha,
-            "reviewer_l2_record": ("/Users/alansynn/orca/workspaces/una-x/"
+            "reviewer_l2_record": (str(LEGACY_WS) + "/"
                                    "campaign_data/h04_observed_l2_raw.json"),
             "settings_echo": settings_echo,
             "flow_settings_changed_before_runflow": flow_settings_changed,

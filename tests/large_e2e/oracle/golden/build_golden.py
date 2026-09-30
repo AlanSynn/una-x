@@ -21,13 +21,14 @@ import subprocess
 import sys
 from pathlib import Path
 
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
 ORACLE_DIR = Path(__file__).resolve().parent.parent
 GOLDEN_DIR = Path(__file__).resolve().parent
-B0_ROOT = "/Users/alansynn/orca/workspaces/una-x/wt-b0/src"
+B0_ROOT = str(LEGACY_WS) + "/wt-b0/src"
 B0_COMMIT = "361928e4ba38f34622cafe065b0025244db61368"
-CAMPAIGN_PYTHON = ("/Users/alansynn/orca/workspaces/una-x/venvs/campaign/"
+CAMPAIGN_PYTHON = (str(LEGACY_WS) + "/venvs/campaign/"
                    "bin/python")
-CACHE_ROOT = "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_oracle"
+CACHE_ROOT = str(LEGACY_WS) + "/campaign_data/nbc_oracle"
 
 
 def sha256_file(path):

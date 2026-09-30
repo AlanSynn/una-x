@@ -24,8 +24,10 @@ from comparator import assert_array_bytes_equal
 from support import b0 as _b0
 import cand_load
 
-EVIDENCE_DIR = ("/Users/alansynn/orca/workspaces/una-x/wt-large-e2e"
-                "/campaigns/una_large_e2e/evidence/F3I")
+from _legacy_paths import ARTIFACTS_OUT  # portable-path fix (HARNESS 2026-09-30)
+# Write target moved out of the committed evidence tree (HARNESS: runs never
+# write campaigns/** evidence; override with UNA_LARGE_E2E_ARTIFACTS).
+EVIDENCE_DIR = str(ARTIFACTS_OUT / "F3I")
 ARTIFACT_PATH = os.path.join(EVIDENCE_DIR, "test_artifacts.json")
 
 _ARTIFACTS = {"env": {}, "schedules": {}, "call_sequences": {},

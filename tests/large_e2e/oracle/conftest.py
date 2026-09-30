@@ -18,7 +18,8 @@ from __future__ import annotations
 
 import os
 
-DEFAULT_CACHE_ROOT = "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_oracle"
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
+DEFAULT_CACHE_ROOT = str(LEGACY_WS) + "/campaign_data/nbc_oracle"
 
 os.environ["NUMBA_CACHE_DIR"] = os.environ.get(
     "UNA_ORACLE_NUMBA_CACHE", DEFAULT_CACHE_ROOT

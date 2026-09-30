@@ -15,11 +15,12 @@ import os
 import subprocess
 import tempfile
 
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
 CANDIDATE_ROOT = os.environ.get(
     "UNA_A1_CANDIDATE_ROOT",
-    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src")
-B0_ROOT = "/Users/alansynn/orca/workspaces/una-x/wt-b0/src"
-CAMPAIGN_PYTHON = ("/Users/alansynn/orca/workspaces/una-x/venvs/campaign/"
+    str(LEGACY_WS) + "/wt-large-e2e/src")
+B0_ROOT = str(LEGACY_WS) + "/wt-b0/src"
+CAMPAIGN_PYTHON = (str(LEGACY_WS) + "/venvs/campaign/"
                    "bin/python")
 CHILD_TIMEOUT_S = 900
 # Fatal memory-fault signals, resolved per platform (SIGBUS is 10 on

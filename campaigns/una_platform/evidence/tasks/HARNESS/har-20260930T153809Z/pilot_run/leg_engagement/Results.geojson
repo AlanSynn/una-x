@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "Results",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
+"features": [
+{ "type": "Feature", "properties": { "reach": 1, "gravity_logistic": 0.94031150442049449, "gravity_exponential": 0.81873075307798182, "knn_logistic": 0.94031150442049449 }, "geometry": { "type": "Point", "coordinates": [ 5.0, 5.0 ] } },
+{ "type": "Feature", "properties": { "reach": 1, "gravity_logistic": 0.94031150442049449, "gravity_exponential": 0.81873075307798182, "knn_logistic": 0.94031150442049449 }, "geometry": { "type": "Point", "coordinates": [ 205.0, 205.0 ] } }
+]
+}

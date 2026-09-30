@@ -21,9 +21,16 @@ from pathlib import Path
 
 import pytest
 
-REPO = "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e"
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
+REPO = str(LEGACY_WS) + "/wt-large-e2e"
 SCHED = f"{REPO}/tests/large_e2e/scheduling"
 HARNESS = f"{REPO}/benchmarks/large_e2e/harness"
+import pytest as _pytest
+from _legacy_paths import legacy_layout_present as _llp
+if not _llp():
+    _pytest.skip('historical large_e2e layout not present '
+                 '(set UNA_LEGACY_WORKSPACE)', allow_module_level=True)
+
 for p in (SCHED, HARNESS, f"{REPO}/benchmarks/large_e2e"):
     if p not in sys.path:
         sys.path.insert(0, p)

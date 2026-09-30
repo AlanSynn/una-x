@@ -11,10 +11,11 @@ import os
 import fixtures_a3
 from harness_a3 import cns, run_tailless
 
-SCRATCH = "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src/urban_network_analysis/Engines/_large_access_scratch.py"
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
+SCRATCH = str(LEGACY_WS) + "/wt-large-e2e/src/urban_network_analysis/Engines/_large_access_scratch.py"
 CACHE_ROOT = os.environ.get(
     "UNA_A3_NUMBA_CACHE",
-    "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a3")
+    str(LEGACY_WS) + "/campaign_data/nbc_a3")
 
 KERNEL_DECORATOR = ("nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, "
                     "nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)")

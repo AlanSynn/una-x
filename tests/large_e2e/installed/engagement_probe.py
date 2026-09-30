@@ -31,7 +31,8 @@ import os
 import sys
 from pathlib import Path
 
-REPO = Path("/Users/alansynn/orca/workspaces/una-x/wt-large-e2e")
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
+REPO = Path(str(LEGACY_WS) + "/wt-large-e2e")
 
 # numpy-only fixture stack (oracle + composition builders)
 sys.path.insert(0, str(REPO / "tests/large_e2e/oracle"))

@@ -30,7 +30,9 @@ import sys
 from harness_composition import (assert_flow_bytes, b0ns, build_flow_arm,
                                  cns, flow_output_arrays, record)
 
-WT = "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e"
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
+
+WT = str(LEGACY_WS) + "/wt-large-e2e"
 CONTRACT_PATH = f"{WT}/campaigns/una_large_e2e/CONTRACT.md"
 CONTRACT_SHA256 = ("3283a12e70ec72163556c94f65269bc422cb621f860900000"
                    "e672a7ef80adad1")

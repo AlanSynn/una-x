@@ -1,0 +1,8 @@
+{"marker": "identity", "module_file": "/storage/scratch1/1/dsynn6/una-x/.refs/venv_una_legacy/lib/python3.11/site-packages/urban_network_analysis/__init__.py", "source_shadow": false, "t_rel": 3016222.148273078}
+{"marker": "imported", "t_import": 2.5774659793823957, "t_rel": 3016222.204105544}
+{"marker": "dispatch", "called": null, "t_compute": 57.00700729014352, "t_rel": 3016279.278636705}
+{"marker": "compute_done", "t_compute": 57.00700729014352, "t_rel": 3016279.315297999}
+{"marker": "outputs", "files": ["Results.feather", "Results.geojson"], "t_rel": 3016279.319213488}
+{"marker": "export_synced", "files": ["Results.feather", "Results.geojson"], "t_rel": 3016279.338656907}
+{"marker": "backend", "effective": "reference", "counters": {"numba_version": "0.67.0", "native_module_loaded": false, "gpu_module_loaded": false}, "t_rel": 3016279.342745587}
+{"marker": "done", "t_total": 59.71885813213885, "t_rel": 3016279.345499058}

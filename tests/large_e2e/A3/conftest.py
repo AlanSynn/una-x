@@ -21,10 +21,11 @@ from __future__ import annotations
 import os
 import sys
 
-DEFAULT_CACHE_ROOT = "/Users/alansynn/orca/workspaces/una-x/campaign_data/nbc_a3"
+from _legacy_paths import LEGACY_WS  # portable-path fix (HARNESS 2026-09-30)
+DEFAULT_CACHE_ROOT = str(LEGACY_WS) + "/campaign_data/nbc_a3"
 CANDIDATE_ROOT = os.environ.get(
     "UNA_A3_CANDIDATE_ROOT",
-    "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/src",
+    str(LEGACY_WS) + "/wt-large-e2e/src",
 )
 
 os.environ["NUMBA_CACHE_DIR"] = os.environ.get("UNA_A3_NUMBA_CACHE", DEFAULT_CACHE_ROOT)
@@ -33,6 +34,6 @@ os.environ.setdefault("NUMBA_NUM_THREADS", os.environ.get("UNA_A3_NUM_THREADS", 
 
 # The H03 oracle package (fixtures, comparator, b0_import, support) is
 # imported, never modified (prereg review pin P5).
-ORACLE_DIR = "/Users/alansynn/orca/workspaces/una-x/wt-large-e2e/tests/large_e2e/oracle"
+ORACLE_DIR = str(LEGACY_WS) + "/wt-large-e2e/tests/large_e2e/oracle"
 if ORACLE_DIR not in sys.path:
     sys.path.insert(0, ORACLE_DIR)
