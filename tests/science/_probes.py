@@ -205,8 +205,12 @@ def probe_nonfinite_validation():
 
     # (d) negative cycle: supervised hang/corruption check.  A 2-node
     # ring with -5 costs drives label-correcting forever if the kernel
-    # re-relaxes; bound THIS sub-probe with an internal iteration guard
-    # so the capsule records the mechanism without hanging the child.
+    # re-relaxes.  NOTE (review finding 2): the Python-level SIGALRM
+    # below CANNOT preempt the compiled nogil njit call — a genuinely
+    # nonterminating relaxation would hang until the conftest
+    # subprocess wall-time kill (the real supervision bound).  The
+    # timer only documents the observed outcome; on the pinned 2-node
+    # shape the call terminated on its own (capsule: "terminated").
     pointer, vector, weights = _csr([(0, 1, 10.0)])
     weights[:] = -5.0              # both directed slots: -5 ring
     net_node = np.array([True], dtype=np.bool_)

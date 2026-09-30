@@ -102,6 +102,13 @@ def _a1_scope_admits_scan(
     if o_terminal_weights.shape[1] != 2:
         return (False, 0)
 
+    # Condition 6b (review finding 4): the cost scan below indexes
+    # weights by vector offset; a short weights array would raise in
+    # diagnostic mode and read out of bounds in compiled mode.  Refuse
+    # instead, identically in both dispatch modes.
+    if adjacency_vector_weights.shape[0] != adjacency_vector.shape[0]:
+        return (False, 0)
+
     # Condition 7: cutoff finite and nonnegative.
     if not (cutoff == cutoff):
         return (False, 0)
@@ -152,6 +159,11 @@ def _a1_scope_admits(
     # compile-time typing gate with numpy dtypes, then runs the same
     # value scan, so interpreted diagnostic runs make the same
     # admission decision as compiled ones (BUG-JIT-DISABLED-STUB).
+    # The cutoff check uses exact types: numba types Python int / float
+    # and np.int64 / np.float64 as int64 / float64 (admitted), while
+    # bool, np.bool_ and narrower/wider numpy scalars type differently
+    # and are refused compiled — refusing them here too keeps both
+    # dispatch modes decision-identical (review finding 3).
     admitted = (
         adjacency_pointer.ndim == 1
         and adjacency_pointer.dtype == np.int64
@@ -165,7 +177,12 @@ def _a1_scope_admits(
         and o_terminal_idxs.dtype == np.int64
         and o_terminal_weights.ndim == 2
         and o_terminal_weights.dtype == np.float64
-        and isinstance(cutoff, (int, float, np.integer, np.floating))
+        and (
+            type(cutoff) is int
+            or type(cutoff) is float
+            or type(cutoff) is np.int64
+            or type(cutoff) is np.float64
+        )
     )
     if not admitted:
         return (False, 0)

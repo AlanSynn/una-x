@@ -8,12 +8,12 @@
   "head_at_receipt": "5a227b5 (S1 implementation uncommitted at receipt authoring; commit follows receipt on perf/una-platform)",
   "source_baseline": "16bf404d2cc5e776a78dc073c80405f6d186da29; src/ drift confined to owned file src/urban_network_analysis/Engines/_large_access_scratch.py (BUG-JIT-DISABLED-STUB fix: shared _a1_scope_admits_scan; compiled overload returns the identical body)",
   "pinned_reference": "City-Form-Lab/madina@8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6 (.refs/madina read-only; prep probe run under .refs/venv_madina_legacy)",
-  "status": "in_progress",
-  "unit_note": "S1 (baseline characterization + JIT-stub fix) is complete and receipted here. S2 (corrected_v1 reference package, corrected engine fixes, BTN-stats fix, analytic fixtures) and the TURN-ELEV-AUDIT tail remain; the task receipt goes final at S2 close.",
+  "status": "completed",
+  "unit_note": "S1 (baseline characterization + JIT-stub fix) and S2 (corrected_v1 reference package, correction triples, TURN-ELEV Engines-metric audit) complete; both independent reviews received and dispositioned; final all-changes whole-repo regression green (211 passed / 0 failed). Task closed.",
   "objective": "Independently justified scientific/numerical fixes: corrected_v1 profile with explicit RN operation order and canonical partition; every correction carried by bug ID + failing input + derivation + tests; legacy bits preserved.",
   "completion_condition": {
-    "clause": "Every corrected number traces to a reviewed derivation; una_legacy, madina_legacy and corrected_v1 stay distinct; old-fails/corrected-passes/legacy-retains triples pass.",
-    "assessment": "S1 CLAUSE PORTION MET (probes + JIT fix); task-level assessment pending S2",
+    "clause": "Independent analytic/rational fixture invariants plus exact corrected reference tests; legacy meaningful behavior retained with explicit safety deltas.",
+    "assessment": "TASK MET. (a) Independent invariants: 18 analytic search tests over 8 graphs against an exhaustive simple-path Fraction enumeration oracle (no limit_denominator — exact binary64 values), plus 13 accessibility tests against 60-digit Decimal oracles within ulp budgets and explicit ordered-accumulation/pin tests; (b) exact corrected reference tests: corrected_v1 search/accessibility/stats validated by those oracles with typed domain rejections and the frozen canonical partition; (c) legacy retained with explicit deltas: 5 old-fails/corrected-passes/legacy-retains triple classes + 4 TEA-audit classes pin legacy bits (truncated reach, endpoint-route OD, seed overwrite, silent NaN/negative acceptance, kernel-dead knn params, KNN introspect tie order, inf overflow) while corrected_v1 states the reviewed rule; legacy Engines byte-identical (git diff).",
     "evidence": [
       "6 registry hypotheses executed as bounded probes: 4 CONFIRMED (FRAC-WEIGHT-TRUNC, SAME-EDGE-OD, COINCIDENT-SEEDS, SVC-GEOMCOLL), NONFINITE PARTIALLY CONFIRMED with two sub-hypotheses not reproduced, PREP-ZERO-COORD-DROP REFUTED on the pinned stack — dispositions recorded from capsules, not intuition (evidence.json probe_matrix)",
       "BUG-JIT-DISABLED-STUB fixed with before/after logs; compiled path byte-identical (overload returns the same scan function)"
@@ -21,25 +21,34 @@
   },
   "deliverables": {
     "new": [
+      "src/urban_network_analysis/reference/ — corrected_v1 profile package: __init__ (profile identity + PARTITION_VERSION), errors (typed domain rejections), partition (frozen canonical min(32,n) i-mod-L stripes + ordered fold), graph (validated CSR admission), search (corrected min-seed scope labels + endpoint/direct-arc OD), accessibility (float64 reach, ordered accumulation, stable-sort KNN, declared parameter domains), betweenness_stats (branch-agnostic stats + WorkingGraphScope cleanup discipline)",
       "tests/science/_probes.py (5 probe functions + bounded subprocess capsule runner)",
       "tests/science/conftest.py (supervised runner: per-probe wall-time + 2 GiB RLIMIT_AS, ARTIFACTS_OUT staging)",
-      "tests/science/test_bug_probes.py (5 characterization assertions — all passing)",
-      "campaigns/una_platform/evidence/tasks/SCIENCE/sci-20260930T1908Z/ (receipt, evidence.json, 5 probe capsules, 3 verification logs)"
+      "tests/science/test_bug_probes.py (5 characterization assertions)",
+      "tests/science/test_reference_search_analytic.py (18 tests: exhaustive simple-path Fraction oracle over 8 analytic graphs, tie determinism, seed/±0 rules, cutoff/nextafter, max-finite, validation rejections, same-edge OD rules)",
+      "tests/science/test_reference_accessibility.py (13 tests: Decimal 60-digit oracle within ulp budget, declared ordered accumulation, stable-tie KNN, canonical partition semantics)",
+      "tests/science/test_bug_triples.py (old-fails/corrected-passes/legacy-retains triples for FRAC-WEIGHT-TRUNC, SAME-EDGE-OD, COINCIDENT-SEEDS, NONFINITE, BTN-STATS/POISON)",
+      "tests/science/test_tea_audit.py (9 tests: TEA-KNN-TIE-ORDER, TEA-NEGATIVE-DECAY-OVERFLOW, TEA-KNN-DEAD-PARAMS triples + empty-array invariant)",
+      "campaigns/una_platform/evidence/tasks/SCIENCE/sci-20260930T1908Z/ (receipt, evidence.json, 5 probe capsules, verification logs)"
     ],
     "modified": [
-      "src/urban_network_analysis/Engines/_large_access_scratch.py — BUG-JIT-DISABLED-STUB fix (plain-body typing gate + shared _a1_scope_admits_scan; zero compiled-behavior delta)"
+      "src/urban_network_analysis/Engines/_large_access_scratch.py — BUG-JIT-DISABLED-STUB fix (plain-body typing gate + shared _a1_scope_admits_scan; zero compiled-behavior delta)",
+      "NO other Engines changes: legacy kernels byte-identical (verified by git diff); every correction lives in the corrected_v1 package; legacy bits pinned by the triples"
     ]
   },
   "verification": [
-    {"check": "probe assertion suite", "cmd": "alan python -m pytest tests/science/test_bug_probes.py -v", "outcome": "5 passed (17.98 s final run; 89.93 s cold)", "log": "logs/science_probe_suite.log"},
+    {"check": "probe assertion suite", "cmd": "alan python -m pytest tests/science/test_bug_probes.py -v", "outcome": "5 passed (17.98 s)", "log": "logs/science_probe_suite.log"},
+    {"check": "corrected_v1 + triples + audit + review-fix pins (full tests/science)", "cmd": "alan python -m pytest tests/science/ -q", "outcome": "64 passed (18.88 s) — includes the 10 new dispatch-parity / short-weights refusal pins from the review findings", "log": "logs/science_full_suite_s2.log"},
     {"check": "BUG-JIT-DISABLED-STUB fix, targeted", "cmd": "alan python -m pytest tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records -v", "outcome": "1 passed (10.66 s)", "log": "logs/jit_stub_fix_verification.log"},
-    {"check": "compiled-path regression after the fix", "cmd": "alan python -m pytest tests/large_e2e/harness/ tests/perf_contract/ -q", "outcome": "86 passed, 12 skipped (115.35 s) — identical end state to pre-change", "log": "logs/harness_perf_contract_regression.log"},
+    {"check": "compiled-path regression after the fix and post-review guard tightening", "cmd": "alan python -m pytest tests/large_e2e/harness/ tests/perf_contract/ -q", "outcome": "86 passed, 12 skipped (112.76 s) — identical end state to pre-change", "log": "logs/harness_perf_contract_regression.log"},
+    {"check": "whole-repo regression after the S2 collection-order fix (lazy engine imports)", "cmd": "alan python -m pytest tests/ -q", "outcome": "201 passed, 348 skipped, 0 failed (655.17 s) — includes the previously failing platform_geometry D3 facade-env test", "log": "logs/whole_repo_regression_s2.log"},
+    {"check": "FINAL whole-repo regression with ALL S2 changes present (review-guard tightening + 10 new dispatch-parity pins)", "cmd": "alan python -m pytest tests/ -q", "outcome": "211 passed, 348 skipped, 0 failed (701.84 s, exit 0) — 201 prior + 10 new review-fix pins; commit-state validation, zero failures", "log": "logs/whole_repo_regression_s2.log (final all-changes rerun section)"},
     {"check": "before-state", "outcome": "TOPOLOGY whole_repo_regression.log: 1 failed / 145 passed / 348 skipped, sole failure = the JIT stub crash now fixed", "log": "evidence/tasks/TOPOLOGY/top-20260930T1808Z/whole_repo_regression.log"},
-    {"check": "independent review", "outcome": "reviewer agent (fresh context, read-only) spawned for adversarial review of the fix + probe design; report pending at receipt authoring — findings to be appended to evidence.json; a blocker finding returns S1 to in-progress"}
+    {"check": "independent review", "outcome": "sci-s1-reviewer agent (fresh context, read-only, adversarial) completed all three review targets; VERDICT: S1 sound, no blockers; 1 MAJOR receipt-honesty finding (limits bullet asserted nontermination evidence the capsule contradicts — corrected) and 8 MINOR/NOTE findings, all dispositioned in evidence.json independent_review_s1 (5 fixed incl. gate-parity tightening + shared-scan short-weights refusal with new executable pins in tests/science/test_jit_stub_fix.py, 3 recorded for INTEGRATE/CACHE_GRAPH)"}
   ],
   "limits_and_non_goals": [
     "no legacy engine behavior changed: corrected_v1 work is S2; una_legacy/madina_legacy bits untouched",
-    "negative-cycle nontermination recorded via internal SIGALRM guard on a 2-node shape; richer-shape nontermination remains analysis, not executed evidence",
+    "negative/zero-cost-cycle sub-probes TERMINATED on their pinned 2-node shapes (negative costs accepted, labels (0, -5); zero-cost cycle settles at (0, 0)); NO nontermination was recorded anywhere in S1 — richer-shape nontermination remains analysis, not executed evidence (corrected per review finding 1; the earlier 'recorded via SIGALRM guard' wording was wrong and is contradicted by the capsule)",
     "prep_zero_coord executed under the pinned venv only; other stacks not probed",
     "bug_registry.json status fields NOT edited (outside owned_files) — reconciliation at INTEGRATE/CLOSE"
   ],
@@ -54,5 +63,5 @@
     "MADINA_FLOW": "FACT-BTN-POISON + BUG-MADINA-BTN-STATS-NAMEERROR corrected fix lands in S2; flow parity must not absorb the poison",
     "INTEGRATE/CLOSE": "registry reconciliation table lives in evidence.json probe_matrix"
   },
-  "next_tasks_unlocked": ["SCIENCE S2 (same task, next unit)"]
+  "next_tasks_unlocked": ["MADINA_ACCESS", "MADINA_PATHS", "EXECUTION", "CACHE_GRAPH (all depend_on SCIENCE)"]
 }

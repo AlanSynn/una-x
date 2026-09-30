@@ -1,0 +1,7 @@
+whole-repo regression (lazy-import fix validation, pre-guard-tightening): 201 passed, 348 skipped, 0 failed in 655.17s
+(platform_geometry D3 facade-env test green; final all-changes rerun appended at close)
+
+final all-changes rerun (post review-guard tightening, S2 package + all tests present):
+211 passed, 348 skipped, 0 failed in 701.84s  [exit 0]
+(201 prior + the 10 new dispatch-parity / short-weights refusal pins from
+test_jit_stub_fix.py = 211; zero failures — commit-state validation)

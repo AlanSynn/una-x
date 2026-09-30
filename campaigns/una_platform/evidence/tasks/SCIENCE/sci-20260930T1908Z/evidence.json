@@ -5,13 +5,13 @@
   "date_utc": "2026-09-30",
   "probe_protocol": {
     "runner": "tests/science/_probes.py (one function per registry hypothesis; returns observations; no judgment inside the probe)",
-    "supervision": "each probe executes in a subprocess with a hard per-probe wall-time bound (240-300 s) and a 2 GiB RLIMIT_AS cap (conftest.run_probe); the negative-cycle sub-probe additionally carries an internal SIGALRM iteration guard so a nonterminating relaxation is recorded, not hung",
+    "supervision": "each probe executes in a subprocess with a hard per-probe wall-time bound (240-300 s) and a 2 GiB RLIMIT_AS cap (conftest.run_probe) -- the real supervision bound. The negative-cycle sub-probe's internal 2 s SIGALRM cannot preempt the compiled nogil njit call (CPython services pending signals only when Python bytecode resumes), so it documents the observed outcome only; a genuinely nonterminating relaxation would be caught by the subprocess wall-time kill (review finding 2)",
     "assertions": "tests/science/test_bug_probes.py pins the recorded characterizations (5 tests, all passing); promotions/refutations flow only from executed capsules",
     "capsules": "evidence/tasks/SCIENCE/sci-20260930T1908Z/probes/*.json (curated copies of the ARTIFACTS_OUT run outputs from the receipt-authoring run)"
   },
   "fix_bug_jit_disabled_stub": {
     "defect": "Engines/_large_access_scratch.py::_a1_scope_admits had a plain-Python `pass` body whose @overload supplied the real logic only under JIT compilation; under NUMBA_DISABLE_JIT=1 (diagnostic mode) the guard returned None and the driver crashed unpacking (False, 0)",
-    "fix": "typing gate kept in the plain body (numpy dtype/ndim mirrors of the numba gate); the full runtime value scan extracted verbatim into module-level _a1_scope_admits_scan, shared by BOTH dispatch modes — compiled overload returns the identical function body, so the compiled path is byte-for-byte the same code it was",
+    "fix": "typing gate kept in the plain body (numpy dtype/ndim mirrors of the numba gate); the full runtime value scan extracted verbatim into module-level _a1_scope_admits_scan, shared by BOTH dispatch modes — the compiled overload returns that same function body, so the compiled path is semantically identical to the pre-fix scan (mechanical diff of the moved body: verbatim); machine-code byte identity is not separately established (review finding 8); post-review tightening: the plain cutoff gate now accepts exactly the scalar types numba types as int64/float64 (Python int/float, np.int64/np.float64 — review finding 3, pinned by tests/science/test_jit_stub_fix.py), and the scan refuses short weights arrays in BOTH modes instead of raising (diagnostic) / reading out of bounds (compiled) (review finding 4)",
     "before": "evidence/tasks/TOPOLOGY/top-20260930T1808Z/whole_repo_regression.log — 1 failed, 145 passed, 348 skipped; sole failure test_diagnostic_mode_runs_source_and_labels_records (TypeError unpacking None)",
     "after": [
       "logs/jit_stub_fix_verification.log — test_diagnostic_mode_runs_source_and_labels_records PASSED (10.66 s)",
@@ -23,8 +23,8 @@
       "registry_id": "BUG-FRAC-WEIGHT-TRUNC",
       "probe": "frac_weight_trunc",
       "disposition": "CONFIRMED — promote hypothesis -> reproduced",
-      "executed_facts": "destinations weighted 0.25+0.50=0.75 binary64 inside radius; reach allocated with o_terminal_idxs.dtype (int64); kernel result reach[0]==0 — the fractional reach is silently truncated to an integer (capsule: probes/frac_weight_trunc.json)",
-      "affected": "reach_gravity_knn_access reach vector (Engines/Accessibility.py:68-108 allocation); any fractional destination weight"
+      "executed_facts": "destinations weighted 0.25+0.50=0.75 binary64 inside radius; the DRIVER allocates reach with o_terminal_idxs.dtype (int64) and stores the kernel's binary64 sum into it; result reach[0]==0 — the fractional reach is silently truncated to an integer (capsule: probes/frac_weight_trunc.json)",
+      "affected": "integrated_scope_access reach vector allocation (Engines/Accessibility.py:346, np.empty(o_count, dtype=o_terminal_idxs.dtype)) with truncation at the tuple store; any fractional destination weight"
     },
     {
       "registry_id": "BUG-SAME-EDGE-OD",
@@ -67,6 +67,129 @@
     }
   ],
   "not_reconciled_here": "bug_registry.json (campaigns/una_platform/evidence/contract/) is outside SCIENCE owned_files; the disposition table above is the SCIENCE-recorded truth. Packet-root status reconciliation (promotions, NONFINITE refinement, PREP-ZERO-COORD refutation, TOPOLOGY's three new pinned quirks) is queued for INTEGRATE/CLOSE exactly as TOPOLOGY did.",
+  "independent_review_s1": {
+    "reviewer": "sci-s1-reviewer agent (fresh context, read-only, adversarial)",
+    "verdict": "S1 sound; no blockers",
+    "report_received_utc": "2026-09-30",
+    "findings_disposition": {
+      "F1 (MAJOR, receipt honesty)": "FIXED — receipt limits bullet asserted 'nontermination recorded' while the capsule records 'terminated'; sentence corrected to state the observed termination and that nontermination remains analysis-only",
+      "F2 (MINOR, dead supervision guard)": "FIXED — supervision wording above corrected; _probes.py comment now states the true bound (subprocess wall time); the SIGALRM handler retained only as an outcome documenter",
+      "F3 (MINOR, gate divergence)": "FIXED — plain cutoff gate tightened to exact numba-type mirror (Python int/float, np.int64/np.float64 only); executable pin tests/science/test_jit_stub_fix.py::test_cutoff_gate_decision_parity",
+      "F4 (MINOR, raise/UB asymmetry)": "FIXED — scan refuses weights arrays shorter than the vector offset count in BOTH modes; pinned by test_jit_stub_fix.py::test_short_weights_array_refused_not_raised",
+      "F5 (MINOR, misattribution)": "FIXED — FRAC-WEIGHT affected-field text and test_bug_probes docstring now cite the integrated_scope_access allocation (Accessibility.py:346)",
+      "F6 (NOTE, stale A3 comment)": "RECORDED for INTEGRATE — tests/large_e2e/A3/test_a3_guard.py docstring still describes the removed pass stub; historical-suite file, not edited here",
+      "F7 (NOTE, probe net_node under-fill)": "RECORDED — probes under-size adjacynct_vector_network_node relative to slot count on shapes where the extra slots are never indexed; capsules retained as-run for provenance; real driver builds per-slot (Accessibility.py:679-693); related pre-existing gate hole (len(net_node) unchecked) noted for CACHE_GRAPH",
+      "F8 (NOTE, byte-identity claim strength)": "FIXED — wording softened to semantic identity with mechanical-diff support (see fix description above)",
+      "F9 (NOTE, unretained cold figure)": "FIXED — receipt cites only the retained 17.98 s run"
+    },
+    "verified_sound": "compiled path semantically exact; all five probe dispositions supported by code and capsules; PREP-ZERO-COORD-DROP refutation independently verified against installed shapely 2.1.2 sources (shapely/ops.py:264-293) with no overclaim"
+  },
+  "incidents_during_s2": [
+    {
+      "what": "whole-repo regression failure: tests/platform_geometry/test_errors_and_unsupported.py::test_facade_import_writes_no_environment_variables (D3) failed in the first S2 regression run (1 failed / 200 passed / 348 skipped, 672.35 s) after passing at the TOPOLOGY receipt",
+      "mechanism": "pytest imports every test module during collection, before any test executes; SCIENCE's module-level 'from urban_network_analysis.Engines import Accessibility' made collection import Engines/Accessibility.py, whose line 6 writes os.environ['USE_PYGEOS']='0' in the pytest process; the D3 test then spawned its check subprocess inheriting that environment, so the facade was (falsely) seen to have written the variable",
+      "resolution": "SCIENCE-owned fix only: legacy engines imported at RUN time via a module-scoped fixture in test_bug_triples.py / test_tea_audit.py (directory order runs platform_geometry before science, so the D3 test executes before any engine import); whole-repo regression rerun green",
+      "recorded_for_integrate": "the D3 test remains fragile against ANY earlier in-process engine import (e.g. 'pytest tests/science tests/platform_geometry' order): its subprocess inherits the parent environment, so it cannot distinguish the facade's own writes from inherited parent state. A one-line repair (spawn with an explicit env scrubbing USE_PYGEOS) belongs to TOPOLOGY's owned file and needs a TOPOLOGY delta-ledger entry, so it is recorded here as a handoff rather than edited cross-scope"
+    }
+  ],
+  "corrected_v1_package": {
+    "location": "src/urban_network_analysis/reference/ (new; SCIENCE owned_files)",
+    "modules": {
+      "__init__.py": "profile identity (PROFILE_NAME=corrected_v1, ARITHMETIC=binary64-explicit-order, TRANSCENDENTALS=platform-libm-via-numpy, ACCUMULATION=ordered-left-to-right) and PARTITION_VERSION=canonical-min32-imodL-v1 (cache-key surface)",
+      "errors.py": "typed domain rejections: NonFiniteCostError, NegativeCostError, MalformedGraphError, OutOfRangeTerminalError, ParameterDomainError (all CorrectedValidationError)",
+      "partition.py": "frozen canonical logical partition: L=min(32,n_origins), origin i -> i mod L, increasing origin order per stripe, final fold increasing stripe ID; scalar reference performs the identical sequence with one worker",
+      "graph.py": "validate_csr / validate_cutoff / validate_terminals -- the single reviewed admission point (finite nonnegative domain) enforced in pure Python, outside any fastmath context",
+      "search.py": "corrected_scope_labels (min-rule seeds, +inf init, (distance,node) heap tuples, strict improvement, closed radius, declared stale-skip proof, termination proof) and corrected_od_distances (endpoint routes + same-edge direct arc, declared candidate order, +inf for unreachable)",
+      "accessibility.py": "corrected_reach_gravity_knn: float64 reach, ordered left-to-right accumulation, declared plateau clamp (+0.0), stable-sort KNN, one declared decay-parameter set (BUG-TEA-KNN-DEAD-PARAMS corrected rule), ParameterDomainError validation",
+      "betweenness_stats.py": "branch-agnostic per-origin destination stats (BUG-MADINA-BTN-STATS-NAMEERROR corrected rule) + WorkingGraphScope guaranteed insert/remove discipline (FACT-BTN-POISON corrected rule)"
+    },
+    "per_correction_records": {
+      "BUG-FRAC-WEIGHT-TRUNC": {
+        "failing_input": "two destinations weighted 0.25/0.50 inside radius (S1 probe fixture)",
+        "current": "reach allocated o_terminal_idxs.dtype (int64); 0.75 truncated to 0",
+        "intended_rule": "weighted reach is a real quantity accumulated in binary64",
+        "derivation": "reach(o,r) = sum_j w_j * [d_j <= r]; dtype is a representation choice, and int64 loses the defined value",
+        "affected_fields": "reach column of integrated_scope_access outputs",
+        "migration": "legacy keeps int64 bits; corrected_v1 consumers read float64; delta declared in bug_deltas at reconciliation",
+        "tests": "test_bug_triples.py::TestFracWeightTrunc (triple); test_reference_accessibility.py::test_reach_is_float64_and_exact"
+      },
+      "BUG-SAME-EDGE-OD": {
+        "failing_input": "origin 10 m / destination 90 m on one 100 m edge",
+        "current": "od = min(endpoint routes) = 100",
+        "intended_rule": "min(endpoint routes, along-edge direct arc |x_o - x_d|) = 80",
+        "derivation": "x from split geometry (distance from start node along host edge); the direct candidate is the model's own along-edge arc, not a Euclidean substitution; one-way handling is surfaced as a model choice at INTEGRATE (corrected_v1 declares bidirectional partial travel)",
+        "affected_fields": "od distance matrices",
+        "migration": "legacy keeps endpoint-route-only bits; corrected_v1 admits the direct candidate",
+        "tests": "test_bug_triples.py::TestSameEdgeOd; test_reference_search_analytic.py same-edge trio"
+      },
+      "BUG-COINCIDENT-SEEDS": {
+        "failing_input": "coincident terminal pair (0,0) with split weights (0,5)",
+        "current": "seed overwrite keeps 5.0; neighbor relaxes from the stale discarded entry",
+        "intended_rule": "seed = min(start split, end split) = 0.0; declared combine order start-then-strict-improvement (+/-0.0 tie keeps the start incumbent)",
+        "derivation": "both split points lie on the same host edge; the distance to a shared endpoint is the shorter arc around that edge",
+        "affected_fields": "scope labels, everything downstream (od, accessibility)",
+        "migration": "legacy keeps overwrite bits",
+        "tests": "test_bug_triples.py::TestCoincidentSeeds; test_reference_search_analytic.py::test_coincident_seeds_combine_by_minimum, test_seed_signed_zero_tie_keeps_start_split"
+      },
+      "BUG-NONFINITE-NOVALIDATION": {
+        "failing_input": "NaN arc cost; negative-cost ring",
+        "current": "silent sentinel labels / invalid negative labels; no rejection",
+        "intended_rule": "typed rejections before any search; admitted domain = finite nonnegative graphs with a termination proof (search.py docstring)",
+        "derivation": "Dijkstra finiteness: heap entries correspond to strict improvements along simple-path prefixes; finite graph => finite simple paths; zero-cost cycles produce equal candidates rejected by strict improvement",
+        "affected_fields": "all engines' label-correcting entries",
+        "migration": "legacy keeps silent acceptance (retained in the S1 supervised probe capsule); corrected_v1 refuses",
+        "tests": "test_bug_triples.py::TestNonfiniteValidation; test_reference_search_analytic.py::test_validation_rejects_invalid_domains"
+      },
+      "BUG-MADINA-BTN-STATS-NAMEERROR + FACT-BTN-POISON": {
+        "failing_input": "closest_destination=True per-origin stats (FAILURES 3x3 grid reproduction)",
+        "current": "eligible_destinations_shortest_distance unbound on the closest branch -> UnboundLocalError -> bare except continue skips remove_node_to_graph -> origin leaks into shared d_graph",
+        "intended_rule": "stats derive from the branch-produced eligible set (branch-agnostic); working-graph mutation scoped with guaranteed removal",
+        "derivation": "the stats block needs exactly the distances the routing stage computed; deriving them from the same object removes the unbound state, and scope-based cleanup removes the poisoning path",
+        "affected_fields": "origin diagnostics columns; d_graph state of subsequent origins",
+        "migration": "madina_legacy reproduces the defective behavior (pinned); corrected consumers get full diagnostics and unchanged graph state",
+        "tests": "test_bug_triples.py::TestBtnStats (stats bind, empty-set refusal, guaranteed removal incl. cleanup-failure chaining, pinned-source pin); live legacy reproduction retained at evidence/incidents/fai-20260930T1710Z"
+      }
+    }
+  },
+  "turn_elev_audit": {
+    "executed_findings": [
+      {
+        "id": "BUG-TEA-KNN-TIE-ORDER",
+        "status": "CONFIRMED (reproduced)",
+        "mechanism": "legacy KNN sorts distances with default np.argsort (introsort, unstable); coefficient-to-destination pairing on equal distances follows an undeclared implementation artifact",
+        "failing_fixture": "seed 20260930 first all-tie sweep draw: n=125 zero distances, weights = integers(1,100), coefficients 1..125; legacy knn 389319.0 vs stable-declared 398846.0",
+        "corrected_rule": "stable sort, ties by ascending destination index (declared in reference/accessibility.py)",
+        "tests": "test_tea_audit.py::TestTeaKnnTieOrder (triple)"
+      },
+      {
+        "id": "BUG-TEA-NEGATIVE-DECAY-OVERFLOW",
+        "status": "CONFIRMED (reproduced)",
+        "mechanism": "decay coefficients unvalidated; beta=-800 with distance 10 -> exp(8000)=inf -> gravity and knn silently non-finite (no error, inf propagates into outputs)",
+        "corrected_rule": "ParameterDomainError: decay coefficients finite and nonnegative (reference/accessibility.py validation block)",
+        "tests": "test_tea_audit.py::TestTeaNegativeDecayOverflow (triple)"
+      },
+      {
+        "id": "BUG-TEA-KNN-DEAD-PARAMS",
+        "status": "CONFIRMED (source + behavior; latent in the integrated driver, which wires knn_* := gravity_*)",
+        "mechanism": "kernel body never reads knn_gravity_beta, knn_gravity_logistic_midpoint, knn_gravity_growth_rate: the exponential KNN branch reads gravity_beta/gravity_plateau, the logistic KNN branch reads gravity_growth_rate/gravity_plateau/gravity_logistic_midpoint (Accessibility.py:99-103)",
+        "behavioral_proof": "beta=0.0 with knn_gravity_beta=3.0 returns UNdecayed knn=2.0; growth=0.0 with knn_gravity_growth_rate=5.0 returns the gravity-driven 1.0",
+        "corrected_rule": "one declared decay-parameter set drives both decays (matches the integrated driver's wiring); dead surface removed",
+        "tests": "test_tea_audit.py::TestTeaKnnDeadParams (triple)"
+      },
+      {
+        "id": "TEA-INV-EMPTY-ARRAYS",
+        "status": "INVARIANT HOLDS (pinned, no defect)",
+        "facts": "empty in-scope destination set -> all four metrics exactly 0.0; empty knn_weights -> knn exactly 0.0 with reach/gravity still computed",
+        "tests": "test_tea_audit.py::TestTeaInvEmptyArrays"
+      }
+    ],
+    "routed_to_owning_tasks": [
+      {"area": "turn penalties / elevation partial-edge formulas", "owner": "MADINA_ACCESS (+ AccessibilityWTurns/AccessibilityWElevation engines)", "rationale": "formula audit requires the turn-aware/elevation-aware madina reference runs those tasks build; auditing against an absent reference would be redone"},
+      {"area": "demand normalization and conservation", "owner": "MADINA_FLOW", "rationale": "Flow/AggregateFlow semantics are that task's parity surface"},
+      {"area": "parallel-edge attribution", "owner": "MADINA_FLOW + CACHE_GRAPH", "rationale": "attribution surfaces in flow aggregation and graph fingerprints"},
+      {"area": "stale obstacle/observer state; per-row workflow Network_File changes", "owner": "MADINA_WORKFLOWS", "rationale": "workflow-level state, outside Engines"}
+    ]
+  },
   "environment": {
     "baseline_probes_interpreter": "micromamba env alan (repo source under test)",
     "pinned_probe_interpreter": ".refs/venv_madina_legacy/bin/python (shapely 2.1.2) for prep_zero_coord",

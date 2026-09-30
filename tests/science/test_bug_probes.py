@@ -25,10 +25,10 @@ from conftest import (  # noqa: E402  (path set up by conftest)
 class TestFracWeightTrunc:
     """BUG-FRAC-WEIGHT-TRUNC promotion to reproduced.
 
-    reach_gravity_knn_access allocates the reach vector with
-    o_terminal_idxs.dtype (int64) and the njit kernel stores the
-    binary64 weighted sum into it, so fractional reach silently
-    truncates toward zero.
+    The driver integrated_scope_access allocates the per-origin reach
+    vector with o_terminal_idxs.dtype (int64, Engines/Accessibility.py
+    allocation site) and stores the njit kernel's binary64 weighted sum
+    into it, so fractional reach silently truncates toward zero.
     """
 
     def test_fractional_reach_truncated_to_int(self, baseline_runner):
