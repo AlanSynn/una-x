@@ -1,0 +1,14 @@
+{
+ "observations": {
+  "direct_partial_impedance": 80.0,
+  "endpoint_route_value": 100.0,
+  "matches_endpoint_routes_not_direct": true,
+  "od_distance": 100.0,
+  "scope_node_labels": [
+   10.0,
+   90.0
+  ]
+ },
+ "ok": true,
+ "probe": "same_edge_od"
+}

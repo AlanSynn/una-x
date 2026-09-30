@@ -1,0 +1,10 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.4, pytest-9.1.1, pluggy-1.6.0 -- /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python
+cachedir: .pytest_cache
+rootdir: /storage/scratch1/1/dsynn6/una-x
+configfile: pyproject.toml
+collecting ... collected 1 item
+
+tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records PASSED [100%]
+
+============================== 1 passed in 10.66s ==============================

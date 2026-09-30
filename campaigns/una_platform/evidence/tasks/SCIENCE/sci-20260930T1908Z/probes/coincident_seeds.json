@@ -1,0 +1,12 @@
+{
+ "observations": {
+  "coincident_node_label": 5.0,
+  "matches_overwrite_not_min": true,
+  "min_rule_label": 0.0,
+  "neighbor_label": 10.0,
+  "neighbor_via_stale_start_entry": 10.0,
+  "overwrite_rule_label": 5.0
+ },
+ "ok": true,
+ "probe": "coincident_seeds"
+}

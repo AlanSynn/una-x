@@ -1,0 +1,14 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.4, pytest-9.1.1, pluggy-1.6.0 -- /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python
+cachedir: .pytest_cache
+rootdir: /storage/scratch1/1/dsynn6/una-x
+configfile: pyproject.toml
+collecting ... collected 5 items
+
+tests/science/test_bug_probes.py::TestFracWeightTrunc::test_fractional_reach_truncated_to_int PASSED [ 20%]
+tests/science/test_bug_probes.py::TestSameEdgeOd::test_endpoint_route_beats_direct_partial PASSED [ 40%]
+tests/science/test_bug_probes.py::TestCoincidentSeeds::test_seed_overwrites_rather_than_mins PASSED [ 60%]
+tests/science/test_bug_probes.py::TestNonfiniteValidation::test_recorded_kernel_behavior_under_invalid_costs PASSED [ 80%]
+tests/science/test_bug_probes.py::TestPrepZeroCoord::test_planar_zeros_preserved_on_pinned_stack PASSED [100%]
+
+============================== 5 passed in 17.98s ==============================

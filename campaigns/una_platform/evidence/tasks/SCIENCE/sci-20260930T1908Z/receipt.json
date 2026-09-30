@@ -1,0 +1,58 @@
+{
+  "task": "SCIENCE",
+  "run_id": "sci-20260930T1908Z",
+  "campaign": "una-platform-2026-09",
+  "date_utc": "2026-09-30",
+  "role": "numerical-architect",
+  "branch": "perf/una-platform",
+  "head_at_receipt": "5a227b5 (S1 implementation uncommitted at receipt authoring; commit follows receipt on perf/una-platform)",
+  "source_baseline": "16bf404d2cc5e776a78dc073c80405f6d186da29; src/ drift confined to owned file src/urban_network_analysis/Engines/_large_access_scratch.py (BUG-JIT-DISABLED-STUB fix: shared _a1_scope_admits_scan; compiled overload returns the identical body)",
+  "pinned_reference": "City-Form-Lab/madina@8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6 (.refs/madina read-only; prep probe run under .refs/venv_madina_legacy)",
+  "status": "in_progress",
+  "unit_note": "S1 (baseline characterization + JIT-stub fix) is complete and receipted here. S2 (corrected_v1 reference package, corrected engine fixes, BTN-stats fix, analytic fixtures) and the TURN-ELEV-AUDIT tail remain; the task receipt goes final at S2 close.",
+  "objective": "Independently justified scientific/numerical fixes: corrected_v1 profile with explicit RN operation order and canonical partition; every correction carried by bug ID + failing input + derivation + tests; legacy bits preserved.",
+  "completion_condition": {
+    "clause": "Every corrected number traces to a reviewed derivation; una_legacy, madina_legacy and corrected_v1 stay distinct; old-fails/corrected-passes/legacy-retains triples pass.",
+    "assessment": "S1 CLAUSE PORTION MET (probes + JIT fix); task-level assessment pending S2",
+    "evidence": [
+      "6 registry hypotheses executed as bounded probes: 4 CONFIRMED (FRAC-WEIGHT-TRUNC, SAME-EDGE-OD, COINCIDENT-SEEDS, SVC-GEOMCOLL), NONFINITE PARTIALLY CONFIRMED with two sub-hypotheses not reproduced, PREP-ZERO-COORD-DROP REFUTED on the pinned stack — dispositions recorded from capsules, not intuition (evidence.json probe_matrix)",
+      "BUG-JIT-DISABLED-STUB fixed with before/after logs; compiled path byte-identical (overload returns the same scan function)"
+    ]
+  },
+  "deliverables": {
+    "new": [
+      "tests/science/_probes.py (5 probe functions + bounded subprocess capsule runner)",
+      "tests/science/conftest.py (supervised runner: per-probe wall-time + 2 GiB RLIMIT_AS, ARTIFACTS_OUT staging)",
+      "tests/science/test_bug_probes.py (5 characterization assertions — all passing)",
+      "campaigns/una_platform/evidence/tasks/SCIENCE/sci-20260930T1908Z/ (receipt, evidence.json, 5 probe capsules, 3 verification logs)"
+    ],
+    "modified": [
+      "src/urban_network_analysis/Engines/_large_access_scratch.py — BUG-JIT-DISABLED-STUB fix (plain-body typing gate + shared _a1_scope_admits_scan; zero compiled-behavior delta)"
+    ]
+  },
+  "verification": [
+    {"check": "probe assertion suite", "cmd": "alan python -m pytest tests/science/test_bug_probes.py -v", "outcome": "5 passed (17.98 s final run; 89.93 s cold)", "log": "logs/science_probe_suite.log"},
+    {"check": "BUG-JIT-DISABLED-STUB fix, targeted", "cmd": "alan python -m pytest tests/large_e2e/harness/test_identity_guard.py::test_diagnostic_mode_runs_source_and_labels_records -v", "outcome": "1 passed (10.66 s)", "log": "logs/jit_stub_fix_verification.log"},
+    {"check": "compiled-path regression after the fix", "cmd": "alan python -m pytest tests/large_e2e/harness/ tests/perf_contract/ -q", "outcome": "86 passed, 12 skipped (115.35 s) — identical end state to pre-change", "log": "logs/harness_perf_contract_regression.log"},
+    {"check": "before-state", "outcome": "TOPOLOGY whole_repo_regression.log: 1 failed / 145 passed / 348 skipped, sole failure = the JIT stub crash now fixed", "log": "evidence/tasks/TOPOLOGY/top-20260930T1808Z/whole_repo_regression.log"},
+    {"check": "independent review", "outcome": "reviewer agent (fresh context, read-only) spawned for adversarial review of the fix + probe design; report pending at receipt authoring — findings to be appended to evidence.json; a blocker finding returns S1 to in-progress"}
+  ],
+  "limits_and_non_goals": [
+    "no legacy engine behavior changed: corrected_v1 work is S2; una_legacy/madina_legacy bits untouched",
+    "negative-cycle nontermination recorded via internal SIGALRM guard on a 2-node shape; richer-shape nontermination remains analysis, not executed evidence",
+    "prep_zero_coord executed under the pinned venv only; other stacks not probed",
+    "bug_registry.json status fields NOT edited (outside owned_files) — reconciliation at INTEGRATE/CLOSE"
+  ],
+  "raw_evidence_retained": [
+    "probes/*.json (5 capsules from the receipt-authoring run)",
+    "logs/{science_probe_suite,jit_stub_fix_verification,harness_perf_contract_regression}.log",
+    "scratch run area /tmp/una_large_e2e_artifacts/science/ (untracked)"
+  ],
+  "dirty_user_files_preserved": [".claude/commands/goal.md (untouched, uncommitted)"],
+  "handoff": {
+    "MADINA_ACCESS/MADINA_PATHS": "confirmed engine defects (SAME-EDGE-OD, COINCIDENT-SEEDS, FRAC-WEIGHT-TRUNC) are the corrected_v1 deltas those parity tasks must keep visible; legacy arms stay pinned",
+    "MADINA_FLOW": "FACT-BTN-POISON + BUG-MADINA-BTN-STATS-NAMEERROR corrected fix lands in S2; flow parity must not absorb the poison",
+    "INTEGRATE/CLOSE": "registry reconciliation table lives in evidence.json probe_matrix"
+  },
+  "next_tasks_unlocked": ["SCIENCE S2 (same task, next unit)"]
+}

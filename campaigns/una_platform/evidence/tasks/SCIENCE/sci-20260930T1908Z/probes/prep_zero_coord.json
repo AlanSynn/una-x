@@ -1,0 +1,41 @@
+{
+ "observations": {
+  "control_row_first_vertex": [
+   50.0,
+   50.0
+  ],
+  "expected_first_vertex": [
+   0.0,
+   0.0
+  ],
+  "planar_zeros_dropped": false,
+  "result_coords": [
+   [
+    [
+     50.0,
+     50.0
+    ],
+    [
+     60.0,
+     60.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     10.0,
+     10.0
+    ]
+   ]
+  ],
+  "zero_row_first_vertex": [
+   0.0,
+   0.0
+  ]
+ },
+ "ok": true,
+ "probe": "prep_zero_coord"
+}

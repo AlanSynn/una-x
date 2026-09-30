@@ -1,0 +1,82 @@
+{
+  "task": "SCIENCE",
+  "run_id": "sci-20260930T1908Z",
+  "unit": "S1 — baseline characterization (bug-registry confirmation probes) + BUG-JIT-DISABLED-STUB fix",
+  "date_utc": "2026-09-30",
+  "probe_protocol": {
+    "runner": "tests/science/_probes.py (one function per registry hypothesis; returns observations; no judgment inside the probe)",
+    "supervision": "each probe executes in a subprocess with a hard per-probe wall-time bound (240-300 s) and a 2 GiB RLIMIT_AS cap (conftest.run_probe); the negative-cycle sub-probe additionally carries an internal SIGALRM iteration guard so a nonterminating relaxation is recorded, not hung",
+    "assertions": "tests/science/test_bug_probes.py pins the recorded characterizations (5 tests, all passing); promotions/refutations flow only from executed capsules",
+    "capsules": "evidence/tasks/SCIENCE/sci-20260930T1908Z/probes/*.json (curated copies of the ARTIFACTS_OUT run outputs from the receipt-authoring run)"
+  },
+  "fix_bug_jit_disabled_stub": {
+    "defect": "Engines/_large_access_scratch.py::_a1_scope_admits had a plain-Python `pass` body whose @overload supplied the real logic only under JIT compilation; under NUMBA_DISABLE_JIT=1 (diagnostic mode) the guard returned None and the driver crashed unpacking (False, 0)",
+    "fix": "typing gate kept in the plain body (numpy dtype/ndim mirrors of the numba gate); the full runtime value scan extracted verbatim into module-level _a1_scope_admits_scan, shared by BOTH dispatch modes — compiled overload returns the identical function body, so the compiled path is byte-for-byte the same code it was",
+    "before": "evidence/tasks/TOPOLOGY/top-20260930T1808Z/whole_repo_regression.log — 1 failed, 145 passed, 348 skipped; sole failure test_diagnostic_mode_runs_source_and_labels_records (TypeError unpacking None)",
+    "after": [
+      "logs/jit_stub_fix_verification.log — test_diagnostic_mode_runs_source_and_labels_records PASSED (10.66 s)",
+      "logs/harness_perf_contract_regression.log — tests/large_e2e/harness/ + tests/perf_contract/: 86 passed, 12 skipped (115.35 s), end state identical to pre-change compiled behavior"
+    ]
+  },
+  "probe_matrix": [
+    {
+      "registry_id": "BUG-FRAC-WEIGHT-TRUNC",
+      "probe": "frac_weight_trunc",
+      "disposition": "CONFIRMED — promote hypothesis -> reproduced",
+      "executed_facts": "destinations weighted 0.25+0.50=0.75 binary64 inside radius; reach allocated with o_terminal_idxs.dtype (int64); kernel result reach[0]==0 — the fractional reach is silently truncated to an integer (capsule: probes/frac_weight_trunc.json)",
+      "affected": "reach_gravity_knn_access reach vector (Engines/Accessibility.py:68-108 allocation); any fractional destination weight"
+    },
+    {
+      "registry_id": "BUG-SAME-EDGE-OD",
+      "probe": "same_edge_od",
+      "disposition": "CONFIRMED — promote hypothesis -> reproduced",
+      "executed_facts": "origin at 10 m, destination at 90 m on one 100 m edge, cutoff 1000: od impedance returned 100.0 (min of the two endpoint routes assembled by seed init) while direct partial travel is 80.0 (capsule: probes/same_edge_od.json)",
+      "affected": "adjust_destination_distances endpoint-route assembly; origin/destination pairs splitting the same edge"
+    },
+    {
+      "registry_id": "BUG-COINCIDENT-SEEDS",
+      "probe": "coincident_seeds",
+      "disposition": "CONFIRMED — promote hypothesis -> reproduced",
+      "executed_facts": "coincident terminal pair (0,0) with split weights (0,5): seed init assigns start then overwrites with end, origin label 5.0 (min-rule label would be 0.0); neighbor relaxes to 10.0 from the stale queue entry of the DISCARDED start weight — the overwrite rule plus stale-entry propagation are both pinned (capsule: probes/coincident_seeds.json)",
+      "affected": "compact_vector_node_view_scope seed initialization (Accessibility.py seed init lines) and queue seeding order"
+    },
+    {
+      "registry_id": "BUG-NONFINITE-NOVALIDATION",
+      "probe": "nonfinite_validation",
+      "disposition": "PARTIALLY CONFIRMED — sub-hypotheses split; registry entry to be refined at reconciliation",
+      "executed_facts": [
+        "NaN edge cost: neighbor silently unreachable (label stays sentinel > cutoff), no error, no marker — CONFIRMED silent non-validation",
+        "negative costs accepted: 2-node -5 ring returns labels (0.0, -5.0) — invalid negative costs produce invalid negative labels instead of rejection — CONFIRMED",
+        "zero-cost cycle: 2-node 0.0 ring terminates with clean labels (0,0) on the pinned shape — zero-cost-cycle nontermination NOT reproduced (richer-shape analysis remains theoretical)",
+        "sentinel overflow at extreme radius: NOT observed — nextafter(max,0) cutoff + ones(...) sentinel stays finite; sub-hypothesis refuted on this stack (capsule: probes/nonfinite_validation.json, sentinel_overflow_label_init=false)"
+      ],
+      "affected": "all Engines label-correcting kernels: no input validation of cost domain"
+    },
+    {
+      "registry_id": "BUG-SVC-GEOMCOLL",
+      "probe": "none (promoted on FAILURES evidence, no duplicate probe)",
+      "disposition": "CONFIRMED — promote hypothesis -> reproduced",
+      "executed_facts": "FAILURES fai-20260930T1710Z reproduction INC03_issue7 = reproduced_mechanism: GeometryCollection scope reaches shapely clip -> 'mask' TypeError (tools.py:330); capsules retained at evidence/incidents/fai-20260930T1710Z/"
+    },
+    {
+      "registry_id": "BUG-PREP-ZERO-COORD-DROP",
+      "probe": "prep_zero_coord",
+      "disposition": "REFUTED on the pinned reference stack — do not promote; refine or retire at reconciliation",
+      "executed_facts": "hypothesis: pinned prepare_geometry strips Z with tuple(filter(None,[x,y])) and filter(None) drops 0.0, so planar zero coordinates are eaten. Executed probe (all-Z layer, vertex (0.0,0.0,1.0) plus control row) under .refs/venv_madina_legacy (shapely 2.1.2): planar_zeros_dropped=false — (0.0,0.0) is PRESERVED (capsule: probes/prep_zero_coord.json)",
+      "mechanism_of_refutation": "shapely 2.1.2 transform takes the vectorized path zip(*func(*zip(*geom.coords))): _to_2d is called ONCE per AXIS with (xs, ys, zs) tuples, so filter(None) can only drop whole axes — and a non-empty axis tuple is truthy; per-coordinate filter(None) semantics (which WOULD drop 0.0) exist only on the listcomp fallback branch, which is unreachable for the single-part LineString/Polygon geometries prepare_geometry receives (multi-part inputs crash earlier: BUG-MLS-MIXED-CRASH, registered by TOPOLOGY)"
+    }
+  ],
+  "not_reconciled_here": "bug_registry.json (campaigns/una_platform/evidence/contract/) is outside SCIENCE owned_files; the disposition table above is the SCIENCE-recorded truth. Packet-root status reconciliation (promotions, NONFINITE refinement, PREP-ZERO-COORD refutation, TOPOLOGY's three new pinned quirks) is queued for INTEGRATE/CLOSE exactly as TOPOLOGY did.",
+  "environment": {
+    "baseline_probes_interpreter": "micromamba env alan (repo source under test)",
+    "pinned_probe_interpreter": ".refs/venv_madina_legacy/bin/python (shapely 2.1.2) for prep_zero_coord",
+    "host": "PACE login-class CPU; no GPU used (not GPU-mandatory work)"
+  },
+  "handoff_to_S2": [
+    "corrected_v1 reference package (src/urban_network_analysis/reference/**): binary64, explicit RN operation order, canonical logical partition min(32, n_origins) stripes, origin i -> i mod L, increasing origin order per stripe, final fold by increasing stripe ID (NUMERICS.md)",
+    "corrected implementations for the four confirmed engine defects (FRAC-WEIGHT-TRUNC int64 truncation, SAME-EDGE-OD endpoint-route assembly, COINCIDENT-SEEDS overwrite init, NONFINITE validation boundary) behind corrected_v1 only — legacy engines keep pinned bits",
+    "corrected BTN-stats fix: BUG-MADINA-BTN-STATS-NAMEERROR + FACT-BTN-POISON (closest_destination UnboundLocalError swallowed by bare excepts; ORIGIN leak into shared d_graph)",
+    "tests/science analytic fixtures: independent path enumeration, rational-cost graphs with exactly representable results, old-fails/corrected-passes/legacy-retains triples",
+    "TURN-ELEV-AUDIT family remains the audit tail of the task"
+  ]
+}

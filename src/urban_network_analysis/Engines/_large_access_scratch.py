@@ -57,6 +57,87 @@ def _a1_threads_bound():
     return nb.config.NUMBA_NUM_THREADS
 
 
+def _a1_scope_admits_scan(
+    adjacency_pointer,
+    adjacency_vector,
+    adjacency_vector_weights,
+    adjacynct_vector_network_node,
+    o_terminal_idxs,
+    o_terminal_weights,
+    cutoff,
+):
+    """Runtime value scan (proof.md section 3, conditions 1-12).
+
+    Refusals return (False, 0); the caller then runs its original,
+    unchanged loop.  Shared verbatim by the compiled overload (numba
+    compiles this body) and the pure-Python guard below (executed when
+    numba JIT is disabled), so both dispatch modes make the SAME
+    admission decision.  BUG-JIT-DISABLED-STUB fix: the guard used to
+    have a `pass` body whose @overload only applied under compilation,
+    so NUMBA_DISABLE_JIT=1 runs unpacked None and crashed.
+    """
+    n_pointer = adjacency_pointer.shape[0]
+    if n_pointer < 1:
+        return (False, 0)
+    node_count = n_pointer - 1
+
+    # Condition 8: CSR validity; maximum degree from the same pass.
+    if adjacency_pointer[0] != 0:
+        return (False, 0)
+    max_degree = 0
+    for v in range(node_count):
+        degree = adjacency_pointer[v + 1] - adjacency_pointer[v]
+        if degree < 0:
+            return (False, 0)
+        if degree > max_degree:
+            max_degree = degree
+    if adjacency_pointer[node_count] != adjacency_vector.shape[0]:
+        return (False, 0)
+
+    # Conditions 5/6 shape parts: terminal rows are (start, end).
+    if o_terminal_idxs.shape[1] != 2:
+        return (False, 0)
+    if o_terminal_weights.shape[0] != o_terminal_idxs.shape[0]:
+        return (False, 0)
+    if o_terminal_weights.shape[1] != 2:
+        return (False, 0)
+
+    # Condition 7: cutoff finite and nonnegative.
+    if not (cutoff == cutoff):
+        return (False, 0)
+    if not (cutoff < np.inf):
+        return (False, 0)
+    if not (cutoff >= 0):
+        return (False, 0)
+
+    # Conditions 9/10: endpoints in range, costs finite and >= 0.
+    n_edges = adjacency_vector.shape[0]
+    for j in range(n_edges):
+        neighbor = adjacency_vector[j]
+        if neighbor < 0 or neighbor >= node_count:
+            return (False, 0)
+        cost = adjacency_vector_weights[j]
+        if cost != cost or cost == np.inf or cost < 0.0:
+            return (False, 0)
+
+    # Condition 11: origin terminal nodes in range.
+    n_origins = o_terminal_idxs.shape[0]
+    for o in range(n_origins):
+        for k in range(2):
+            terminal = o_terminal_idxs[o, k]
+            if terminal < 0 or terminal >= node_count:
+                return (False, 0)
+
+    # Condition 12: scratch capacity (bytes = H * max_degree * 16).
+    threads_bound = _a1_threads_bound()
+    if threads_bound < 1:
+        return (False, 0)
+    if max_degree > _A1_SCRATCH_CAP_ELEMS // threads_bound:
+        return (False, 0)
+
+    return (True, max_degree)
+
+
 def _a1_scope_admits(
     adjacency_pointer,
     adjacency_vector,
@@ -66,7 +147,37 @@ def _a1_scope_admits(
     o_terminal_weights,
     cutoff,
 ):
-    pass
+    # Pure-Python body: executed only when numba JIT is disabled (the
+    # @overload below replaces it under compilation).  Mirrors the
+    # compile-time typing gate with numpy dtypes, then runs the same
+    # value scan, so interpreted diagnostic runs make the same
+    # admission decision as compiled ones (BUG-JIT-DISABLED-STUB).
+    admitted = (
+        adjacency_pointer.ndim == 1
+        and adjacency_pointer.dtype == np.int64
+        and adjacency_vector.ndim == 1
+        and adjacency_vector.dtype == np.int64
+        and adjacency_vector_weights.ndim == 1
+        and adjacency_vector_weights.dtype == np.float64
+        and adjacynct_vector_network_node.ndim == 1
+        and adjacynct_vector_network_node.dtype == np.bool_
+        and o_terminal_idxs.ndim == 2
+        and o_terminal_idxs.dtype == np.int64
+        and o_terminal_weights.ndim == 2
+        and o_terminal_weights.dtype == np.float64
+        and isinstance(cutoff, (int, float, np.integer, np.floating))
+    )
+    if not admitted:
+        return (False, 0)
+    return _a1_scope_admits_scan(
+        adjacency_pointer,
+        adjacency_vector,
+        adjacency_vector_weights,
+        adjacynct_vector_network_node,
+        o_terminal_idxs,
+        o_terminal_weights,
+        cutoff,
+    )
 
 
 @overload(_a1_scope_admits)
@@ -101,80 +212,7 @@ def _ol_a1_scope_admits(
     if not admitted:
         return lambda adjacency_pointer, adjacency_vector, adjacency_vector_weights, adjacynct_vector_network_node, o_terminal_idxs, o_terminal_weights, cutoff: (False, 0)
 
-    def _a1_scope_admits_impl(
-        adjacency_pointer,
-        adjacency_vector,
-        adjacency_vector_weights,
-        adjacynct_vector_network_node,
-        o_terminal_idxs,
-        o_terminal_weights,
-        cutoff,
-    ):
-        # Runtime value scan (proof.md section 3, conditions 1-12).
-        # Refusals return (False, 0); the caller then runs its original,
-        # unchanged loop.
-        n_pointer = adjacency_pointer.shape[0]
-        if n_pointer < 1:
-            return (False, 0)
-        node_count = n_pointer - 1
-
-        # Condition 8: CSR validity; maximum degree from the same pass.
-        if adjacency_pointer[0] != 0:
-            return (False, 0)
-        max_degree = 0
-        for v in range(node_count):
-            degree = adjacency_pointer[v + 1] - adjacency_pointer[v]
-            if degree < 0:
-                return (False, 0)
-            if degree > max_degree:
-                max_degree = degree
-        if adjacency_pointer[node_count] != adjacency_vector.shape[0]:
-            return (False, 0)
-
-        # Conditions 5/6 shape parts: terminal rows are (start, end).
-        if o_terminal_idxs.shape[1] != 2:
-            return (False, 0)
-        if o_terminal_weights.shape[0] != o_terminal_idxs.shape[0]:
-            return (False, 0)
-        if o_terminal_weights.shape[1] != 2:
-            return (False, 0)
-
-        # Condition 7: cutoff finite and nonnegative.
-        if not (cutoff == cutoff):
-            return (False, 0)
-        if not (cutoff < np.inf):
-            return (False, 0)
-        if not (cutoff >= 0):
-            return (False, 0)
-
-        # Conditions 9/10: endpoints in range, costs finite and >= 0.
-        n_edges = adjacency_vector.shape[0]
-        for j in range(n_edges):
-            neighbor = adjacency_vector[j]
-            if neighbor < 0 or neighbor >= node_count:
-                return (False, 0)
-            cost = adjacency_vector_weights[j]
-            if cost != cost or cost == np.inf or cost < 0.0:
-                return (False, 0)
-
-        # Condition 11: origin terminal nodes in range.
-        n_origins = o_terminal_idxs.shape[0]
-        for o in range(n_origins):
-            for k in range(2):
-                terminal = o_terminal_idxs[o, k]
-                if terminal < 0 or terminal >= node_count:
-                    return (False, 0)
-
-        # Condition 12: scratch capacity (bytes = H * max_degree * 16).
-        threads_bound = _a1_threads_bound()
-        if threads_bound < 1:
-            return (False, 0)
-        if max_degree > _A1_SCRATCH_CAP_ELEMS // threads_bound:
-            return (False, 0)
-
-        return (True, max_degree)
-
-    return _a1_scope_admits_impl
+    return _a1_scope_admits_scan
 
 
 @nb.njit(

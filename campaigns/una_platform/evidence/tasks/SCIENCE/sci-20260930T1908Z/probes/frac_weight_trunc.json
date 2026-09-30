@@ -1,0 +1,12 @@
+{
+ "observations": {
+  "exact_weighted_sum_binary64": 0.75,
+  "gravity_exponential_dtype": "float64",
+  "gravity_exponential_value": 0.75,
+  "reach_dtype": "int64",
+  "reach_value": 0,
+  "truncated": true
+ },
+ "ok": true,
+ "probe": "frac_weight_trunc"
+}

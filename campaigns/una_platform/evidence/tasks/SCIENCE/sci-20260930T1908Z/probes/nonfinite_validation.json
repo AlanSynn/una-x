@@ -1,0 +1,20 @@
+{
+ "observations": {
+  "extreme_cutoff_reachable_label": 10.0,
+  "nan_edge_neighbor_label": 101.0,
+  "nan_edge_silently_unreachable": true,
+  "negative_cycle": "terminated",
+  "negative_cycle_labels": [
+   0.0,
+   -5.0
+  ],
+  "sentinel_overflow_label_init": false,
+  "zero_cost_cycle_labels": [
+   0.0,
+   0.0
+  ],
+  "zero_cost_cycle_terminated": true
+ },
+ "ok": true,
+ "probe": "nonfinite_validation"
+}
