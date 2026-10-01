@@ -9,6 +9,8 @@ from pathlib import Path
 import os
 from typing import Literal
 
+from .Execution import ExecutionOptions, settings_serialization_fields
+
 
 _NUMERIC_ARRAY_RE = re.compile(
     r'\[\s*(-?[\d.]+(?:[eE][+-]?\d+)?(?:\s*,\s*-?[\d.]+(?:[eE][+-]?\d+)?)*)\s*\]'
@@ -26,7 +28,7 @@ def _json_dumps(data, indent: int = 2) -> str:
 @dataclass
 class Settings:
 
-    _version: str = "1.0" # settings version, for future compatibility checks when loading old settings files. Update this if you make any changes to the settings structure or default values.
+    _version: str = "1.1" # settings version, for future compatibility checks when loading old settings files. Update this if you make any changes to the settings structure or default values. (1.1: added the `execution` execution-control field — campaign EXECUTION task, contract §6.)
 
     name: str = "Default"  # if paring files are converted to settings then there is a flow_name. we can use it to name the settings file. if not then we can use this default name.
 
@@ -303,6 +305,16 @@ class Settings:
     batch_composite_column_prefix: str = ""              # prepended to each per-row column name; blank uses row's `name`
     batch_composite_sum_column_name: str = "composite_sum"  # column name for the row-wise sum
 
+    ##——— EXECUTION CONTROL (campaign EXECUTION task; contract §6)———
+    # Immutable execution/profile/cache policy.  Serialized into project
+    # files as exactly the four dotted keys named in
+    # Execution.settings_serialization_fields — always, defaults included
+    # ("explicit serialized defaults": the semantic profile is part of
+    # output identity and of every numerical cache key, so it is never
+    # implicitly defaulted on a round-trip).  Runtime-only ownership
+    # references (device handles, cancellation tokens) are never serialized.
+    execution: ExecutionOptions = field(default_factory=ExecutionOptions)
+
     ##——— OTHER SETTINGS———
 
     progressbar: bool = True # Define if a progress bar should be shown during calculations (for long-running processes)
@@ -317,11 +329,36 @@ class Settings:
             except Exception as e:
                 print(f"Warning: Could not convert knn_weights to np.ndarray: {e}")
 
+    def _apply_execution_key(self, key: str, value) -> None:
+        """Apply one of the four serialized execution dotted keys.
+
+        Values revalidate through the frozen dataclasses, so an invalid
+        payload raises ValueError — callers keep their own convention
+        (ApplyRow warns and keeps the default; Load warns and skips).
+        """
+        from dataclasses import replace as _replace
+        value = str(value).strip()
+        if key == 'execution.semantic_profile':
+            self.execution = _replace(self.execution, semantic_profile=value)
+        elif key == 'execution.backend':
+            self.execution = _replace(self.execution, backend=value)
+        elif key == 'execution.cache.mode':
+            self.execution = _replace(
+                self.execution,
+                cache=_replace(self.execution.cache, mode=value))
+        elif key == 'execution.cache.directory':
+            self.execution = _replace(
+                self.execution,
+                cache=_replace(self.execution.cache, directory=value))
+
     def ApplyRow(self, row: dict) -> None:
         """Reset to defaults then apply one row of a pairing CSV/TSV.
 
         Column names must match Settings field names exactly; unknown columns
-        are silently ignored (e.g. flow_name, destination_name).
+        are silently ignored (e.g. flow_name, destination_name).  The four
+        execution dotted keys (execution.semantic_profile / execution.backend
+        / execution.cache.mode / execution.cache.directory) are also accepted
+        — that is their one authoritative CSV/TSV representation.
         Empty / NaN cells are skipped so the Settings default is kept.
         """
         import dataclasses as _dc
@@ -330,6 +367,25 @@ class Settings:
 
         valid_fields = {f.name: f for f in _dc.fields(self)}
         for key, raw in row.items():
+            if key == 'execution':
+                # The nested object is never serialized (only the four dotted
+                # keys above are); a bare 'execution' column/key in an
+                # externally-edited file would smuggle a raw dict/str past
+                # validation and break later attribute access (review F2).
+                print(f"Warning: pairing-row key 'execution' is not valid — "
+                      f"use the dotted keys (execution.semantic_profile, "
+                      f"execution.backend, execution.cache.mode, "
+                      f"execution.cache.directory); skipping.")
+                continue
+            if key in settings_serialization_fields:
+                if raw is None or str(raw).strip() in ('', 'nan', 'NaN', 'NaT'):
+                    continue
+                try:
+                    self._apply_execution_key(key, raw)
+                except (ValueError, TypeError) as e:
+                    print(f"Warning: pairing-row value {raw!r} for '{key}' "
+                          f"could not be parsed ({e}); keeping the default.")
+                continue
             if key not in valid_fields:
                 continue
             if raw is None or str(raw).strip() in ('', 'nan', 'NaN', 'NaT'):
@@ -376,6 +432,21 @@ class Settings:
         with open(input_path, 'r', encoding='utf-8') as f:
             loaded_dict = json.load(f)
         for key, value in loaded_dict.items():
+            if key == 'execution':
+                # Nested object is never serialized; reject raw injections
+                # from externally-edited files (review F2).
+                print(f"Warning: 'execution' from file is not a recognized "
+                      f"Settings attribute — use the dotted execution.* keys "
+                      f"(skipping)")
+                continue
+            if key in settings_serialization_fields:
+                if value is None or not str(value).strip():
+                    continue
+                try:
+                    self._apply_execution_key(key, value)
+                except (ValueError, TypeError) as e:
+                    print(f"Warning: Could not apply '{key}' value {value!r}: {e}")
+                continue
             if key not in valid_fields:
                 print(f"Warning: '{key}' from file is not a recognized Settings attribute (skipping)")
                 continue
@@ -599,8 +670,20 @@ class Settings:
         """
         import dataclasses as _dc
         _defaults = Settings()
-        result = {}
+        # Execution control is ALWAYS emitted, defaults included, as the one
+        # authoritative dotted-key representation (contract §6: "explicit
+        # serialized defaults"; the semantic profile guards numerical cache
+        # keys).  The nested object itself is never serialized.
+        ex = self.execution
+        result = {
+            "execution.semantic_profile": ex.semantic_profile,
+            "execution.backend": ex.backend,
+            "execution.cache.mode": ex.cache.mode,
+            "execution.cache.directory": ex.cache.directory,
+        }
         for f in _dc.fields(self):
+            if f.name == 'execution':
+                continue  # serialized as the dotted keys above
             val = getattr(self, f.name)
             default = getattr(_defaults, f.name)
             if compact:

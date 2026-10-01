@@ -6,6 +6,14 @@ from shapely.geometry import Point
 from .Topology import Topology
 from .Settings import Settings, _json_dumps
 from .Logger import Logger
+from .Execution import (
+    ExecutionOptions,
+    BatchReport,
+    RowOutcome,
+    admit_execution,
+    BackendNotAvailableError,
+    ExecutionNotAdmittedError,
+)
 from .Engines.Flow import Flow
 from .Engines.AggregateFlow import AggregateFlow
 from .Engines.AccessibilityWElevation import AccessibilityWElevation
@@ -23,9 +31,11 @@ class UNA:
 
     topology: Topology
     settings: Settings
+    execution: ExecutionOptions  # immutable execution/profile/cache control (contract §6; default = una_legacy)
     accessibility = None
     flow = None
     composite_result = None  # populated by RunBatch when a row requests batch_composite_output
+    batch_report = None       # populated by RunBatch: effective execution + per-row outcomes
 
     has_centrality_results = False
     has_flow_results = False
@@ -45,8 +55,10 @@ class UNA:
         self.accessibility = None
         self.flow = None
         self.composite_result = None
+        self.batch_report = None
         self.settings = Settings()
         self.settings.Reset()
+        self.execution = ExecutionOptions()  # default: una_legacy / auto (contract §6)
         self.projects = []
 
         self.has_flow_results = False
@@ -97,7 +109,9 @@ class UNA:
 
         self.topology.Evaluate()
 
-    def RunBatch(self, analysis: str, pairing_file: str = None) -> None:
+    def RunBatch(self, analysis: str, pairing_file: str = None, *,
+                 parallel: bool = False, workers: int = None,
+                 execution: ExecutionOptions = None) -> None:
         """Run an analysis (accessibility or flow) for every entry in self.projects.
 
         A "project" in UNA is a saved list of Settings snapshots (this method's
@@ -114,12 +128,63 @@ class UNA:
         Args:
             analysis:     "accessibility" or "flow"
             pairing_file: optional path to a .csv / .tsv / .json batch file
+            parallel:     keyword-only (contract §6).  Must stay False in this
+                          build: the parallel batch runtime is a later campaign
+                          task, and requesting it raises the typed
+                          ExecutionNotAdmittedError instead of silently
+                          running serial.
+            workers:      keyword-only.  Recorded in batch_report; on the
+                          serial route workers are not used.
+            execution:    keyword-only ExecutionOptions override for this
+                          call (default: this instance's ``self.execution``).
+                          Admission (backend availability) happens BEFORE any
+                          row runs; a forced 'native'/'gpu' backend with no
+                          qualified capability raises BackendNotAvailableError.
+                          Per-row execution restored from pairing/project rows
+                          (the four serialized dotted keys) is admitted too: a
+                          row forcing native/gpu raises before any row runs;
+                          each row's semantic_profile is reported in that
+                          row's outcome.
+
+        After the run, ``self.batch_report`` holds a BatchReport with the
+        requested/effective execution and one outcome per row.  The return
+        value remains None (existing behavior preserved).
         """
         analysis = analysis.lower().strip()
         if analysis not in ('accessibility', 'flow'):
             raise ValueError(
                 f"Unknown analysis '{analysis}'. Use 'accessibility' or 'flow'."
             )
+
+        # ---- execution admission (contract §6, staged delivery) -----------
+        # Admission happens BEFORE any scientific work; nothing here changes
+        # the serial row loop's behavior.
+        requested_execution = self.execution if execution is None else execution
+        if not isinstance(requested_execution, ExecutionOptions):
+            raise TypeError(
+                f"execution must be an ExecutionOptions instance, got "
+                f"{type(requested_execution).__name__}")
+        effective = admit_execution(requested_execution)
+        if parallel:
+            raise ExecutionNotAdmittedError(
+                "RunBatch(parallel=True) was requested but the parallel "
+                "batch runtime is not admitted in this build; the serial "
+                "route is parallel=False. Requesting an unadmitted mode "
+                "raises rather than silently running serial.")
+        notes = []
+        if workers is not None and (
+                not isinstance(workers, int) or isinstance(workers, bool)
+                or workers < 1):
+            raise ValueError(
+                f"workers must be a positive integer or None, "
+                f"got {workers!r}")
+        if workers is not None and not parallel:
+            notes.append(
+                f"workers={workers} recorded but not used on the serial "
+                f"route (parallel runtime not admitted in this build)")
+        # Any report from a previous call goes stale the moment this call is
+        # admitted; a run that raises mid-way leaves None, never a stale report.
+        self.batch_report = None
 
         # Script-level fallback: an output_folder configured on the UNA
         # instance BEFORE calling RunBatch (e.g. the OUTPUT_FOLDER
@@ -157,9 +222,26 @@ class UNA:
         if not self.projects:
             raise RuntimeError("No settings to run — provide a pairing_file or call SaveSettingsToProject() first to populate the batch list.")
 
+        # Row-level execution (restored from pairing/project rows via the
+        # four serialized dotted keys) participates in admission too: a row
+        # that force-routes to native/gpu cannot be honoured by this build,
+        # and the call must fail BEFORE any row runs rather than silently
+        # running that row on the call-level route.  Row semantic profiles
+        # are per-row identity: they flow to RowOutcome below (and to the
+        # kernel layer once the engine ABI lands).
+        for i, s in enumerate(self.projects):
+            if s.execution.backend in ('native', 'gpu'):
+                raise BackendNotAvailableError(
+                    f"project row {i + 1} ({s.name or 'unnamed'}) requests "
+                    f"execution.backend={s.execution.backend!r}, but no "
+                    f"qualified capability is registered for this build; "
+                    f"forced expert routes never fall back silently.")
+
         self.topology.logger.log('RunBatch', f"Running {analysis} — {len(self.projects)} settings", v=1)
 
         self._init_batch_compositor()
+
+        row_outcomes = []
 
         for i, s in enumerate(self.projects):
             self.settings = s
@@ -172,6 +254,11 @@ class UNA:
                        if not (getattr(self.settings, f, None) or '').strip()]
             if missing:
                 self.topology.logger.log('RunBatch', f"Row {i+1}/{len(self.projects)}: skipped — missing required fields: {missing}", v=1)
+                row_outcomes.append(RowOutcome(
+                    index=i, name=s.name, status="skipped",
+                    semantic_profile=s.execution.semantic_profile,
+                    backend=effective.backend,
+                    detail=f"missing required fields: {missing}"))
                 continue
 
             if self.settings.output_file_name == "Results":
@@ -181,14 +268,27 @@ class UNA:
 
             if analysis == 'flow':
                 self.RunFlow()
-                engine = self.flow 
+                engine = self.flow
             else:
                 self.RunAccessibility()
-                engine = self.accessibility 
+                engine = self.accessibility
 
             self._capture_batch_row(s, engine)
+            row_outcomes.append(RowOutcome(
+                index=i, name=s.name, status="ran",
+                semantic_profile=s.execution.semantic_profile,
+                backend=effective.backend))
 
         self._finalize_batch_composite()
+
+        self.batch_report = BatchReport(
+            requested=requested_execution,
+            effective=effective,
+            parallel_requested=False,
+            workers_requested=workers,
+            rows=tuple(row_outcomes),
+            notes=tuple(notes),
+        )
 
     def RunAccessibility(self) -> None:
 

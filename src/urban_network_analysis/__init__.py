@@ -58,9 +58,20 @@ def about() -> None:
 # package — in particular the compat.madina facade and the drop-in `madina`
 # shim distribution built on it — does not pull the analysis stack (numba,
 # sklearn) into environments that only need topology/compat functionality.
+# The public execution contract types (campaign EXECUTION task, contract §6)
+# are lazy too: they live in the dependency-free Execution module.
 # Attribute access is unchanged: `from urban_network_analysis import UNA`
 # and `urban_network_analysis.UNA` keep working.
-_LAZY_EXPORTS = {"UNA": ".UNA", "Settings": ".Settings", "Topology": ".Topology"}
+_LAZY_EXPORTS = {
+    "UNA": ".UNA",
+    "Settings": ".Settings",
+    "Topology": ".Topology",
+    "ExecutionOptions": ".Execution",
+    "CacheOptions": ".Execution",
+    "CapabilityError": ".Execution",
+    "BackendNotAvailableError": ".Execution",
+    "ExecutionNotAdmittedError": ".Execution",
+}
 
 
 def __getattr__(name: str):
@@ -79,4 +90,8 @@ def __dir__() -> list:
     return sorted(list(globals().keys()) + list(_LAZY_EXPORTS))
 
 
-__all__ = ["UNA", "Settings", "Topology", "__version__", "about"]
+__all__ = ["UNA", "Settings", "Topology",
+           "ExecutionOptions", "CacheOptions",
+           "CapabilityError", "BackendNotAvailableError",
+           "ExecutionNotAdmittedError",
+           "__version__", "about"]

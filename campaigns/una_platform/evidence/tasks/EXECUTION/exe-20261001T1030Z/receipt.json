@@ -1,0 +1,58 @@
+{
+  "task": "EXECUTION",
+  "run_id": "exe-20261001T1030Z",
+  "status": "CLOSED: APPROVED by independent review (0 MAJOR / 4 MINOR dispositioned in this commit / 7 NOTE), completion condition satisfied. Delivered the contract §6 public execution surface and the dossier-10 kernel ABI: ExecutionOptions/CacheOptions frozen kw_only dataclasses matching the frozen schema field-for-field; Settings.execution field serialized as exactly the four dotted keys (execution.semantic_profile/.backend/.cache.mode/.cache.directory) — always emitted with explicit defaults in JSON/CSV/TSV via ToDict, accepted by ApplyRow/Load, Reset restores, deepcopy carries; typed admission (admit_execution: reference honoured, native/gpu -> BackendNotAvailableError, auto -> reference with recorded reason; CapabilityError hierarchy) enforced in UNA.RunBatch BEFORE any scientific work, at call level AND per restored Settings row; RunBatch signature (analysis, pairing_file=None, *, parallel=False, workers=None, execution=None) with existing serial behavior and None return preserved (reviewer-verified byte-identical outputs vs HEAD on a real row); batch_report holds requested/effective/notes + one RowOutcome per row with per-row semantic_profile; RunBatch(parallel=True) raises ExecutionNotAdmittedError (staged delivery — raising beats silently running serial); kernel ABI in urban_network_analysis.backends.contracts (ArrayDescriptor with sha256 content-hash identity, ArrayResult, KernelInputs structurally REQUIRING stage/semantic_profile/logical_reduction_plan/owner, kernel_inputs_fingerprint excluding owner, KernelOutputs restart contract, KernelCapabilities/CapabilityRegistryEntry/ExecutionContext) with no stub execution routes and an empty capability registry keeping forced routes raising.",
+  "reviewer": "independent reviewer (fresh context; see evidence/reviews/execution/review_report_execution.md, run exe-review-20261001T0900Z)",
+  "branch": "worktree-execution (merged locally to perf/una-platform; no push)",
+  "head_reviewed": "99469d419b12fd37ec718ba8bf9296c5ad8cae8f + uncommitted implementation working tree (settled state after in-review per-row-admission correction, see review F5)",
+  "delivered": {
+    "source": [
+      "src/urban_network_analysis/Execution.py (new: contract §6 options/admission/reports; dependency-free)",
+      "src/urban_network_analysis/backends/__init__.py + backends/contracts.py (new: dossier-10 kernel ABI; imports numpy only)",
+      "src/urban_network_analysis/Settings.py (execution field + dotted-key serialization + bare-key guard; _version 1.0->1.1)",
+      "src/urban_network_analysis/__init__.py (five lazy exports: ExecutionOptions/CacheOptions/CapabilityError/BackendNotAvailableError/ExecutionNotAdmittedError)",
+      "src/urban_network_analysis/UNA.py (surgical additive: Execution imports, execution/batch_report attrs, RunBatch keyword-only params + call-level and per-row admission + RowOutcome/BatchReport plumbing)"
+    ],
+    "tests": "tests/execution/ (7 files incl. fixtures): 107 tests — contract schema exactness, validation matrices, serialization round-trips (ToDict/ApplyRow/Load/Save/Reset/deepcopy/ExportProjectAsJSON/ExportProjectAsCSV), admission (call-level + per-row, before-any-work output-absence), kernel ABI (construction-required fields, fingerprint properties, restart contract, import hygiene subprocess probes), real serial RunBatch accessibility runs on the committed 3x3 smoke-grid fixture (sha256 == HARNESS har-20260930T153809Z manifest hashes)",
+    "fixtures": "tests/execution/fixtures/{network,origins,destinations}.geojson + PROVENANCE.md (copies of the frozen HARNESS smoke grid; hashes match the HARNESS manifest workload.input_hashes exactly)",
+    "review_evidence": [
+      "campaigns/una_platform/evidence/reviews/execution/review_report_execution.md",
+      "campaigns/una_platform/evidence/tasks/EXECUTION/exe-review-20261001T0900Z/{evidence.json,receipt.json}"
+    ]
+  },
+  "verification": {
+    "implementation_runs": "alan interpreter, PYTHONHASHSEED=0: tests/execution 107 passed / 0 failed (post-disposition); ExportProjectAsJSON/CSV -> RunBatch pairing reload probe: rows ran, per-row profile corrected_v1 restored from dotted keys through both export formats; reviewer independently: contract field audit EXACT, serialization probes exact, byte-identical HEAD-vs-current real-run regression (r1.feather 0e12f16b…, r1.geojson e7553065…), fingerprint equals independent sha256 recomputation, fixtures match HARNESS manifest",
+    "whole_repo_disposition_review_F1": "worktree whole-repo pytest tests/ was 6 failed / 275 passed / 506 skipped with the suite present (reviewer classification: 1 .refs-absence artifact + 1 un-scrubbed platform_geometry env probe + 4 science cutoff failures from collection-time numba/env interaction). Disposition: (a) tests/execution now imports urban_network_analysis.UNA call-time only (fixture), never at collection — removes the numba-init-before-large_e2e-setdefault and env-write-at-collection mechanisms; (b) ledgered minimal fix in tests/platform_geometry/test_errors_and_unsupported.py::test_facade_import_writes_no_environment_variables — the subprocess now pops inherited USE_PYGEOS exactly like its madina_api sibling tests/madina_api/zonal/test_zonal_facade_env.py::_run does, so the probe tests the facade import's behavior rather than ambient interpreter state. Post-fix worktree whole-repo: 1 failed / 285 passed / 506 skipped — the single failure is the .refs-absence artifact (test_bug_triples FileNotFoundError on .refs/madina/...; fails identically with tests/execution excluded; main checkout has .refs). Final closure regression runs in the main checkout.",
+    "review_findings_disposition": {
+      "F1": "FIXED (see whole_repo_disposition_review_F1); final confirmation lands with the main-checkout closure run recorded in evidence.json",
+      "F2": "FIXED: Settings.ApplyRow/Load now reject a bare 'execution' key/column with the standard warning (nested object is never serialized); regression tests added",
+      "F3": "FIXED: contracts.py — content_hash must be 64-char lowercase sha256 hex (hashlib hexdigest form), ExecutionContext.backend restricted to the post-admission routes reference|native|gpu, empty members rejected in supported_profiles/isa_or_device_requirements; regression tests added (test caught an uppercase-hex validator gap during disposition)",
+      "F4": "FIXED: scratch _probe_export.py removed before commit",
+      "F5": "NO ACTION (process note: tree settled mid-review at 08:56; review covers the settled state; final count 107 after disposition tests)",
+      "F6": "NO ACTION NOW; forward obligation recorded: when engines consume profiles (SCIENCE/BATCH_EXEC), RowOutcome.backend must become per-row factual or profile fields renamed *_requested",
+      "F7": "FIXED: unused EffectiveExecution import removed from UNA.py",
+      "F8": "FIXED: non-int workers now raise the documented ValueError (bool-guarded isinstance check); regression test added",
+      "F9": "CLOSED BY THIS RECEIPT (implementation receipt + handoffs + final counts)",
+      "F10": "NO ACTION (pre-existing: _version written, never read)",
+      "F11": "NO ACTION (pre-existing lazy-export shadowing quirk documented in tests/execution/test_lazy_imports.py; new export names avoid it)"
+    }
+  },
+  "handoffs": [
+    "ZONAL owners / INTEGRATE: contract §6 facade bullet — 'compat.madina facade: Zonal.execution optional control (default madina_legacy); existing Madina-signature positional parameters and defaults remain intact; additive keyword-only controls only'. NOT implemented here (compat/ untouched; one owner per writable scope). Settings.execution + the dotted serialization this task delivered are the substrate the facade control should build on.",
+    "BATCH_EXEC: RunBatch(parallel=True) raises ExecutionNotAdmittedError until the parallel runtime lands; BatchReport/RowOutcome field names are the staged ABI and will not be renamed (F6 obligation above applies when rows run on different routes).",
+    "NATIVE_CORE / GPU_DEVICE: register qualified KernelCapabilities/CapabilityRegistryEntry; admit_execution keeps its exact signature and becomes the registry consult point. Until then forced routes raise and auto stays reference (no silent fallback).",
+    "CACHE_GRAPH: cache keys must consume KernelInputs fingerprint identity (ArrayDescriptor.content_hash is producer-computed sha256; never invented).",
+    "API_REVIEW R1/R2 (route via lead, from the separate API_REVIEW receipt): top-level compat/madina/__init__.py reexport block (30 upstream names) -> compat namespace owner; api_matrix.json verification rows -> INVENTORY."
+  ],
+  "deviations": [
+    "UNA.py edited despite BATCH_EXEC DAG interest: authorized by contract §6 header ('Approved for EXECUTION to implement exactly' over integrator-owned public schema files) + AUTHORITY.md integrator role; diff reviewed as surgical/additive and behavior-preserving (reviewer byte-identical output check).",
+    "tests/execution/ not in DAG owned_files: declared verification home of this task; no other owner writes there.",
+    "platform_geometry one-line env-scrub (ledgered above): cross-suite isolation fix required to keep the whole-repo green standard; mirrors the test's own madina_api sibling; intent preserved (probe starts the child clean, still asserts the facade import sets nothing)."
+  ],
+  "notes": [
+    "Serialized representation rationale: one flat dotted-key representation for JSON/CSV/TSV (nested dict would str()-garble through pandas in ExportProjectAsCSV); execution keys always emitted with explicit defaults because the semantic profile guards numerical identity and future cache keys.",
+    "Option construction validates structure only; semantic-profile resolution against the frozen profile registry happens at the admission/kernel layer and fails closed there (staged with profiles.json-consuming tasks).",
+    "Pre-existing quirk documented, unchanged: after urban_network_analysis.UNA is imported, the Settings/UNA/Topology submodule attributes shadow the PEP 562 lazy classes on all access paths; new execution export names avoid same-named modules.",
+    "No pushes, merges to main, releases, purchases, or credential/provider changes."
+  ]
+}

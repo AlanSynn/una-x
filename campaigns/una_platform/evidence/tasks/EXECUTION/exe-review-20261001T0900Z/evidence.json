@@ -1,0 +1,107 @@
+{
+  "run_id": "exe-review-20261001T0900Z",
+  "task": "EXECUTION",
+  "leg": "independent-review",
+  "reviewer": "independent-reviewer (fresh context, not an implementation owner)",
+  "reviewed_state": {
+    "worktree": "/storage/scratch1/1/dsynn6/una-x/.claude/worktrees/execution",
+    "branch": "worktree-execution",
+    "head": "99469d419b12fd37ec718ba8bf9296c5ad8cae8f",
+    "changes": "uncommitted working tree: M Settings.py, M UNA.py, M __init__.py; untracked Execution.py, backends/{__init__,contracts}.py, tests/execution/**",
+    "note": "tree mutated during review (UNA.py 08:53:44 EDT, test_admission.py 08:55:22, test_runbatch_serial.py 08:55:33); all numbers are from the settled tree (>= 08:56:22 EDT). Intermediate state observed: tests/execution 99 passed / 1 failed (test_instance_execution_is_the_default_request), fixed by the implementer's settled per-row-profile change.",
+    "review_window": "2026-10-01 08:35-09:35 EDT"
+  },
+  "contract_s6_field_audit": {
+    "result": "EXACT",
+    "execution_options": "13 fields, contract names/order/defaults verbatim (Execution.py:137-191)",
+    "cache_options": "6 fields, contract names/order/defaults verbatim (Execution.py:101-134)",
+    "runbatch_signature": "RunBatch(analysis, pairing_file=None, *, parallel=False, workers=None, execution=None) matches contract verbatim (UNA.py:113-115); None return preserved",
+    "errors": "BackendNotAvailableError/ExecutionNotAdmittedError under CapabilityError(RuntimeError); forced native/gpu raise before scientific execution; auto falls back with recorded reason"
+  },
+  "serialization_probes": {
+    "script": "/tmp/exe_rev_serial_probe.py (reviewer-owned, repo untouched)",
+    "results": {
+      "T1_default_todict": "exactly 4 dotted keys with explicit defaults ['una_legacy','auto','off','.una-cache']; no nested 'execution' key",
+      "T2_custom_compact": "custom values emitted even in compact mode",
+      "T3_csv_roundtrip": "ExportProjectAsCSV -> pd.read_csv(dtype=str) -> ApplyRow reproduces ExecutionOptions exactly (both rows)",
+      "T4_json_roundtrip": "ExportProjectAsJSON raw file carries exactly the 4 dotted keys; Save/Load single-settings roundtrip exact",
+      "T5_reset_deepcopy": "Reset restores default; deepcopy independent",
+      "T6_invalid_payloads": "per-key convention: invalid backend keeps default backend (warning) while valid keys in same row still apply; invalid cache.mode and empty profile keep defaults entirely",
+      "T7_tsv_roundtrip": "TSV pairing columns execution.semantic_profile / execution.backend apply",
+      "T8_literal_execution_key": "ApplyRow column 'execution' -> str set raw; Load key 'execution' -> dict set raw (MINOR F2)"
+    }
+  },
+  "admission_probes": {
+    "reference_honoured": "admit_execution(backend='reference') -> backend='reference', fallback_reason=None, options is requested",
+    "auto": "-> reference with recorded fallback_reason",
+    "native_gpu": "BackendNotAvailableError (CapabilityError subclass) for both, message names the backend and profiles",
+    "ordering": "admission precedes pairing load, composite init and row loop; rejected calls leave output dirs empty and preserve the last ADMITTED call's batch_report; mid-run failure leaves batch_report None",
+    "row_level_admission": "rows restored from pairing/project dotted keys with backend native/gpu raise BackendNotAvailableError naming the row before any row runs (UNA.py:222-236)"
+  },
+  "regression_check_head_vs_current": {
+    "method": "HEAD UNA.py/Settings.py/__init__.py over a copy of this src tree in /tmp; identical one-row accessibility batch on the committed smoke fixture; sha256 of outputs compared",
+    "row_loop_diff": "byte-identical apart from RowOutcome appends and two trailing-whitespace cleanups",
+    "r1_feather_sha256": "0e12f16b1e5c5677aee32e585e075c49fa4dfd85fe02efcbb1918cb65d6825c8 (HEAD == current)",
+    "r1_geojson_sha256": "e7553065cfb65fb5baa3b4ff7a7d691c5f364f4f1def78908960c5166b155d9b (HEAD == current)"
+  },
+  "kernel_abi_probes": {
+    "script": "/tmp/exe_rev_abi_probe.py",
+    "structural_requirement": "omitting stage/semantic_profile/logical_reduction_plan/owner from KernelInputs raises TypeError; empty/whitespace raises ValueError",
+    "duplicates": "duplicate array names rejected in KernelInputs and KernelOutputs",
+    "fingerprint": "equals independent sha256 recomputation over canonical JSON; follows profile/plan/stage/content/layout/array-order; excludes owner (verified)",
+    "restart_contract": "incomplete without next_logical_state raises ValueError; unknown status rejected",
+    "import_hygiene": "fresh-interpreter probes: package import and backends import pull neither numba/sklearn/geopandas/pandas; Execution.py imports only dataclasses/typing",
+    "no_stub_routes": "backends/ contains contract types only; empty registry keeps native/gpu raising and auto on reference"
+  },
+  "fixtures": {
+    "network_geojson_sha256": "1e7f80529dccbf1887ab0a073792298423c9bc5fa23dd9ced244d4e8d8da56bc",
+    "origins_geojson_sha256": "d988681b54cddbc4e6abb623863200cbd5ee645232d654ae9de6a1850eef5b52",
+    "destinations_geojson_sha256": "93b1d4bb5afcda082e3c605068e1ca612fdcde017c524e21fbfd2fa4cc40e0bd",
+    "harness_manifest": "campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/manifest.json workload.input_hashes — all three match exactly"
+  },
+  "suites_ran": [
+    {"command": "PYTHONHASHSEED=0 alan-python -m pytest tests/execution/ -q", "result": "102 passed, 0 failed (14.9s)"},
+    {"command": "PYTHONHASHSEED=0 alan-python -m pytest tests/perf_contract/ tests/platform_geometry/ -q", "result": "29 passed, 44 skipped (.refs absent, expected)"},
+    {"command": "alan-python -m pytest tests/ -q -p no:cacheprovider", "result": "6 failed, 275 passed, 506 skipped"},
+    {"command": "alan-python -m pytest tests/ -q -p no:cacheprovider --ignore=tests/execution", "result": "1 failed, 178 passed, 506 skipped"},
+    {"command": "/tmp copy of tree, tests/execution renamed tests/zexe (sorts last), pytest tests/ -q", "result": "3 failed: facade USE_PYGEOS (position-independent), bug_triples (.refs), test_mutant7 (relocation artifact of the copy only — passes in worktree); the 4 cutoff failures disappear"},
+    {"command": "single reruns", "result": "facade test passes in isolation; 4 cutoff_gate failures reproduce deterministically only after the execution suite ran in-process"}
+  ],
+  "whole_repo_failure_attribution": [
+    {"test": "tests/science/test_bug_triples.py::TestBtnStats::test_legacy_retains_pinned_defect_pattern", "cause": "FileNotFoundError .refs/madina/.../betweenness.py — worktree has no .refs (expected per briefing); fails identically without the execution suite; unrelated to diff"},
+    {"test": "tests/platform_geometry/test_errors_and_unsupported.py::test_facade_import_writes_no_environment_variables", "cause": "subprocess inherits parent env; execution suite's collection-time in-process import triggers pre-existing Topology.py:5 os.environ['USE_PYGEOS']='0' write; this test (unlike its madina_api sibling, which scrubs env) does not scrub; passes in isolation; position-independent"},
+    {"test": "tests/science/test_jit_stub_fix.py::test_cutoff_gate_decision_parity x4", "cause": "exact mechanism reproduced in single interpreter (/tmp/exe_rev_numba_probe.py): numba imported with ambient env (config=4) at execution-suite collection, tests/large_e2e/*/conftest.py collection-time os.environ.setdefault('NUMBA_NUM_THREADS','2'), then science test's njit compile-time read of nb.config.NUMBA_NUM_THREADS (_large_access_scratch.py:57) re-processes environ -> RuntimeError 'Cannot set NUMBA_NUM_THREADS...'; run-order dependent (disappears with execution suite sorted last)"},
+    {"conclusion": "delivered source diff contains no os.environ writes, no numba configuration, no global mutation (grepped); all five extra failures are cross-suite isolation interactions with pre-existing fragile global state (MINOR F1)"}
+  ],
+  "findings": {
+    "MAJOR": [],
+    "MINOR": [
+      "F1 whole-repo pytest tests/ not green with the new suite present (6 failed vs 1 without); pre-existing-fragility interaction; must be dispositioned before the next whole-repo closure claim",
+      "F2 literal 'execution' key/column bypasses validation on externally-edited files (Settings.py:379-412, :433-449); later AttributeError in ToDict (:660) or RunBatch row admission (UNA.py:229)",
+      "F3 contracts.py validation inconsistent with declared tightening: ArrayDescriptor.content_hash accepts '' (contracts.py:54); ExecutionContext.backend accepts arbitrary strings (:217); empty members accepted in KernelCapabilities supported_profiles/isa tuples",
+      "F4 untracked scratch file _probe_export.py at repo root; remove before commit"
+    ],
+    "NOTE": [
+      "F5 tree mutated during review; intermediate state had 1 failing test; settled state 102/102; brief's '100 tests' count superseded",
+      "F6 RowOutcome mixed provenance (per-row semantic_profile vs call-level backend) — deliberate/documented; per-row backend must become factual once engines consume profiles",
+      "F7 EffectiveExecution imported but unused in UNA.py:11",
+      "F8 workers non-int raises TypeError not ValueError",
+      "F9 no implementation receipt existed at evidence/tasks/EXECUTION/ during review; must land with Zonal handoff, final 102-test count, and whole-repo disposition of F1",
+      "F10 Settings._version never read (informational bump; pre-existing)",
+      "F11 pre-existing lazy-export shadowing quirk confirmed unchanged and documented; new names avoid it"
+    ]
+  },
+  "deviations_adjudicated": {
+    "una_py_edited_by_integrator": "legitimate (AUTHORITY.md integrator authority over shared API/schema files; contract §6 header); diff surgical/additive; behavior byte-identical on real run",
+    "tests_execution_not_in_owned_files": "acceptable as the task's verification home; no other owner",
+    "zonal_execution_control_not_touched": "correct; compat/ unmodified (verified); handoff must be recorded in the implementation receipt",
+    "contracts_validation_tightening": "real but incomplete (F3)"
+  },
+  "completion_condition": "SATISFIED for this delivery: existing positional calls work (byte-identical real run + binding tests); new options roundtrip/reset across ToDict/CSV/TSV/JSON/Save/Load/ApplyRow/Reset/deepcopy; profile/partition/ownership (and stage) structurally required on every KernelInputs; engine consumption honestly staged to later DAG tasks with no stub routes",
+  "verdict": "APPROVED",
+  "not_verified": [
+    "whole-repo regression on a .refs-equipped environment (main checkout) — not available in this worktree",
+    "behavior of the parallel route (does not exist; raises by design — verified)",
+    "tests/madina_api bitwise parity suites (skip without reference venvs)"
+  ]
+}

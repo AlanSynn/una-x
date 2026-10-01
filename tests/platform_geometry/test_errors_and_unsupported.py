@@ -46,8 +46,16 @@ def test_facade_import_writes_no_environment_variables(monkeypatch):
         "assert 'USE_PYGEOS' not in os.environ, 'USE_PYGEOS was set'\n"
         "print('env-clean', zp.Zonal.__name__)\n"
     )
+    # The property under test is THIS import's behavior, not ambient
+    # interpreter state: pop the inherited var so other suites' in-process
+    # package imports in the same whole-repo run (Topology.py writes
+    # USE_PYGEOS at import) cannot fail this probe spuriously — exactly the
+    # scrub its madina_api sibling (_test_zonal_facade_env) applies.
+    # (EXECUTION review F1, 2026-10-01.)
+    env = dict(os.environ)
+    env.pop("USE_PYGEOS", None)
     proc = subprocess.run([sys.executable, "-c", code], capture_output=True,
-                          text=True, timeout=120)
+                          text=True, timeout=120, env=env)
     assert proc.returncode == 0, proc.stderr[-2000:]
     assert "env-clean Zonal" in proc.stdout
 

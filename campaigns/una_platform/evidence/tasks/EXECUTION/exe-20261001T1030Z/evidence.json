@@ -1,0 +1,42 @@
+{
+  "task": "EXECUTION",
+  "run_id": "exe-20261001T1030Z",
+  "date": "2026-10-01",
+  "objective": "Immutable public execution/cache/capability types, backend-neutral ABI and profile plumbing (contract §6, dossier 10).",
+  "completion_condition": {
+    "existing_positional_calls_work": "PROVEN — RunBatch(analysis, pairing_file) positional and keyword forms bind unchanged; serial row loop byte-identical vs HEAD apart from RowOutcome appends (reviewer rebuilt HEAD sources in /tmp and compared real-run outputs: r1.feather sha256 0e12f16b1e5c5677aee32e585e075c49fa4dfd85fe02efcbb1918cb65d6825c8, r1.geojson e7553065cfb65fb5baa3b4ff7a7d691c5f364f4f1def78908960c5166b155d9b, identical under both code versions)",
+    "new_options_roundtrip_reset": "PROVEN — ToDict/ApplyRow/Load/Save/Reset/deepcopy round-trips exact across JSON/CSV/TSV; ExportProjectAsJSON/ExportProjectAsCSV -> RunBatch pairing reload restores per-row execution (probe: corrected_v1/reference/disk through both formats); Reset restores ExecutionOptions()",
+    "profile_model_partition_ownership_sent_to_every_kernel": "PROVEN STRUCTURALLY — KernelInputs construction requires stage/semantic_profile/logical_reduction_plan/owner (missing -> TypeError; empty/whitespace -> ValueError); kernel_inputs_fingerprint covers profile/plan/stage/array identity and excludes owner; engine-side consumption honestly staged to NATIVE_CORE/GPU_DEVICE/CACHE_GRAPH/CPU_LAYOUT/BATCH_EXEC (no stub execution routes exist)"
+  },
+  "contract_audit": {
+    "execution_options_fields": "13/13 exact (names, order, defaults) — reviewer-verified against contract.md §6 lines 87-93",
+    "cache_options_fields": "6/6 exact — §6 lines 94-97",
+    "runbatch_signature": "(analysis, pairing_file=None, *, parallel=False, workers=None, execution=None) verbatim — §6 line 99",
+    "settings_persistence": "exactly the four dotted keys, explicit serialized defaults, Reset restores, clone preserves, runtime-only fields never serialized — §6 lines 105-109",
+    "admission_policy": "native/gpu unqualified -> typed BackendNotAvailableError before scientific execution (call level and per restored row); auto -> reference with recorded reason; no silent fallback — §6 lines 111-112"
+  },
+  "runs": [
+    {"cmd": "pytest tests/execution/ -q (alan, PYTHONHASHSEED=0, post-disposition)", "observed": "107 passed / 0 failed"},
+    {"cmd": "pytest tests/perf_contract/ tests/platform_geometry/ tests/madina_api/ -q", "observed": "44 passed / 155 skipped (skips are .refs-dependent; worktree has no .refs)"},
+    {"cmd": "pytest tests/ -q (worktree whole-repo, POST F1 disposition)", "observed": "1 failed / 285 passed / 506 skipped — the failure is tests/science/test_bug_triples FileNotFoundError on .refs/madina/... (environment artifact: fails identically with tests/execution excluded; passes in the .refs-equipped main checkout)"},
+    {"cmd": "pytest tests/ -q (worktree whole-repo, PRE disposition — reviewer measurement)", "observed": "6 failed / 275 passed / 506 skipped; mechanisms classified by the reviewer and all six addressed (see receipt.verification.whole_repo_disposition_review_F1)"},
+    {"cmd": "ExportProjectAsJSON/CSV -> RunBatch reload probe (scratch, since removed)", "observed": "rows ran; per-row profile corrected_v1 restored from dotted keys through both formats; call-level request untouched"},
+    {"cmd": "reviewer suite runs (exe-review-20261001T0900Z)", "observed": "tests/execution 102 passed (pre-disposition tree); perf_contract+platform_geometry 29 passed/44 skipped; contract/serialization/ABI probes all exact"}
+  ],
+  "review": {
+    "report": "campaigns/una_platform/evidence/reviews/execution/review_report_execution.md",
+    "verdict": "APPROVED — 0 MAJOR / 4 MINOR (F1-F4, all dispositioned in this delivery) / 7 NOTE (F5-F11, dispositioned in receipt)",
+    "reviewer_independent_reproduction": "byte-identical HEAD regression run, independent sha256 recomputation of the fingerprint, fixture hash match vs HARNESS manifest, admission-order probes"
+  },
+  "artifacts": {
+    "source": ["src/urban_network_analysis/Execution.py", "src/urban_network_analysis/backends/__init__.py", "src/urban_network_analysis/backends/contracts.py", "src/urban_network_analysis/Settings.py", "src/urban_network_analysis/__init__.py", "src/urban_network_analysis/UNA.py", "tests/platform_geometry/test_errors_and_unsupported.py (ledgered env-scrub, review F1)"],
+    "tests": "tests/execution/ (conftest + 5 modules + fixtures)",
+    "evidence": ["campaigns/una_platform/evidence/reviews/execution/review_report_execution.md", "campaigns/una_platform/evidence/tasks/EXECUTION/exe-review-20261001T0900Z/", "campaigns/una_platform/evidence/tasks/EXECUTION/exe-20261001T1030Z/"]
+  },
+  "environment": {
+    "interpreter": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python",
+    "hash_seed": "PYTHONHASHSEED=0",
+    "worktree": ".claude/worktrees/execution (branch worktree-execution, base 99469d4)",
+    "limitations": "worktree lacks .refs/ (madina_legacy venv + reference tree) — venv-dependent suites skip; the authoritative whole-repo closure run happens in the main checkout and is recorded there"
+  }
+}

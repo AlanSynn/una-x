@@ -1,0 +1,44 @@
+{
+  "run_id": "exe-review-20261001T0900Z",
+  "task": "EXECUTION",
+  "leg": "independent-review",
+  "status": "CLOSED",
+  "verdict": "APPROVED",
+  "reviewer": "independent-reviewer (fresh context; not an implementation owner)",
+  "head_reviewed": "99469d419b12fd37ec718ba8bf9296c5ad8cae8f + uncommitted working-tree changes (M Settings.py, M UNA.py, M __init__.py; untracked Execution.py, backends/{__init__,contracts}.py, tests/execution/**). Tree mutated during the review window (implementer edits 08:53:44-08:56:22 EDT incl. one intermediate failing test); this review covers the settled tree.",
+  "delivered": [
+    "campaigns/una_platform/evidence/reviews/execution/review_report_execution.md",
+    "campaigns/una_platform/evidence/tasks/EXECUTION/exe-review-20261001T0900Z/evidence.json",
+    "campaigns/una_platform/evidence/tasks/EXECUTION/exe-review-20261001T0900Z/receipt.json"
+  ],
+  "verification": {
+    "contract_s6_field_audit": "EXACT — 13 ExecutionOptions + 6 CacheOptions fields, names/order/defaults verbatim; RunBatch keyword-only signature per contract; typed CapabilityError(RuntimeError) hierarchy",
+    "suites": [
+      "pytest tests/execution/ -q -> 102 passed / 0 failed (settled tree)",
+      "pytest tests/perf_contract/ tests/platform_geometry/ -q -> 29 passed / 44 skipped (.refs absent, expected)",
+      "pytest tests/ -q -> 6 failed / 275 passed / 506 skipped",
+      "pytest tests/ -q --ignore=tests/execution -> 1 failed / 178 passed / 506 skipped",
+      "position experiment in /tmp copy (execution suite sorted last) -> cutoff failures disappear; facade failure persists"
+    ],
+    "regression": "HEAD-vs-current real accessibility run on the committed smoke fixture: output bytes identical (r1.feather 0e12f16b…, r1.geojson e7553065…); serial row loop byte-identical to HEAD apart from RowOutcome appends",
+    "probes": "serialization roundtrips (ToDict/CSV/TSV/JSON/Save/Load/ApplyRow/Reset/deepcopy), admission ordering and state preservation, kernel ABI structural requirements/fingerprint/restart contract, fresh-interpreter import hygiene — all run by the reviewer, observed values in evidence.json",
+    "whole_repo_attribution": "all 6 whole-repo failures classified: 1x .refs-absence environment artifact (fails without the execution suite too), 1x USE_PYGEOS inherited-env interaction (pre-existing Topology.py:5 write; fragile un-scrubbed platform_geometry test), 4x NUMBA_NUM_THREADS pool/env interaction (pre-existing large_e2e conftest collection-time env writes + science-test compile-time numba config read; reproduced exactly in a single interpreter). Delivered source diff contains no env/global mutations."
+  },
+  "findings_summary": {
+    "MAJOR": 0,
+    "MINOR": 4,
+    "notes": 7,
+    "minors": [
+      "F1 whole-repo pytest tests/ not green with the new suite present — disposition before next whole-repo closure claim (fix belongs to pre-existing fragile tests' owners)",
+      "F2 literal 'execution' key/column bypasses validation on externally-edited files",
+      "F3 contracts.py validation gaps (content_hash/ExecutionContext.backend/tuple members)",
+      "F4 untracked scratch _probe_export.py at repo root — remove before commit"
+    ]
+  },
+  "handoffs": [
+    "EXECUTION implementer: remove _probe_export.py; close F2/F3; land the implementation receipt (absent at review time) recording the Zonal-execution handoff to the zonal owners/INTEGRATE (compat/ untouched — verified), the final 102-test count, and the whole-repo disposition of F1",
+    "platform_geometry / large_e2e / science owners (via coordinator): F1 — scrub inherited env in test_facade_import_writes_no_environment_variables (its madina_api sibling already does) and pin numba thread config against collection-time env mutation",
+    "BATCH_EXEC/SCIENCE: per-row RowOutcome.backend must become per-row factual once engines consume profiles (F6 forward obligation)"
+  ],
+  "notes": "Review executed read-only; repo untouched; scratch probes kept in /tmp. No pushes, merges, releases, purchases, or credential/provider changes."
+}
