@@ -1,0 +1,75 @@
+{
+  "run_id": "cst-20261001T1315Z",
+  "task": "CACHE_STORE",
+  "environment": {
+    "interpreter": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python",
+    "pytest_env": "PYTHONHASHSEED=0",
+    "worktree": ".claude/worktrees/cache-store (branch worktree-cache-store, base 5abff34)",
+    "refs_note": "worktrees have no .refs/ -> venv-dependent suites skip (12 skips in the combined run are exactly that artifact)"
+  },
+  "content_hashes_at_commit": {
+    "src/urban_network_analysis/cache/__init__.py": "319ca355f1c629b3e1e3ece1ef8f1a14ff7d890c41c537a372a28ea017a97299",
+    "src/urban_network_analysis/cache/store.py": "4a3b81e9a7c9f0b084450689416a5746f8db9945168a4ca8cc631071dfb376f7",
+    "tests/cache/store/conftest.py": "4def90723c16db62289bf136ded5e4e299057af98cd528bbae8061654ba711c4",
+    "tests/cache/store/test_corruption_crash_partial.py": "abd74dd800fd410b53a66362f02d241bd71cad1632bc30cdd8e6a881c523fe49",
+    "tests/cache/store/test_eviction_bounds.py": "204fdb67a76a15e8dd5e103a45ef57b895462792077f73f9b2e369ea8d3adc2b",
+    "tests/cache/store/test_import_hygiene.py": "6670cf76f4de74c884f8eec39620007197dca6307b04f80c0d90bef8b75ab9a4",
+    "tests/cache/store/test_keys_and_policy.py": "fdc757adaef6ab6aa97aa4ddb3b01d6e318e079a29fb92cc5d4d27b56a77095e",
+    "tests/cache/store/test_roundtrip_warmcold.py": "4b25845b531a80813991945eb189900f72d0721e18592841336fbfa6c9f20643",
+    "tests/cache/store/test_singleflight.py": "704d2c506e67e6436db19251c719799376ea9bf317fa927a3f30f01d69c6d9df",
+    "evidence/reviews/cache_store/review_report_cache_store.md": "8c5ff4f3e848309c5fe83228ca276205a35c61615cb191d7074d309ae52fb19a"
+  },
+  "commands_and_outcomes": [
+    {
+      "command": "python -m pytest tests/cache/store/ -q   (alan, PYTHONHASHSEED=0, worktree)",
+      "outcome": "102 passed / 0 failed, ~1.6 s (post-disposition final run)"
+    },
+    {
+      "command": "python -m pytest tests/cache/store/ tests/execution/ tests/perf_contract/ -q   (worktree)",
+      "outcome": "233 passed / 12 skipped / 0 failed in 37.43 s (skips = .refs-absence artifacts in worktrees)"
+    },
+    {
+      "command": "python -m pytest tests/cache/store/test_singleflight.py -q   (3 consecutive runs)",
+      "outcome": "18 passed on each run — the 6-real-process compute-once race and lock-atomicity watcher tests are stable, not flaky"
+    },
+    {
+      "command": "import-hygiene subprocess probe (tests/cache/store/test_import_hygiene.py)",
+      "outcome": "importing urban_network_analysis.cache loads exactly [urban_network_analysis, .Execution, .cache, .cache.store]; heavy third-party set (numpy/pandas/geopandas/numba/shapely/networkx) == []"
+    }
+  ],
+  "mutation_battery": {
+    "protocol": "each mutant applied to src/urban_network_analysis/cache/store.py, suite re-run, then restored and the restore verified byte-identical by sha256 (pristine sha256 4a3b81e9a7c9f0b084450689416a5746f8db9945168a4ca8cc631071dfb376f7)",
+    "mutants": [
+      {"id": "M1", "change": "_touch() body disabled (LRU recency removed)", "selected_by": "1 failing test (disk-quota LRU order)"},
+      {"id": "M2", "change": "on_read checksum verification skipped", "selected_by": "2 failing tests (bitflip corruption tests)"},
+      {"id": "M3", "change": "_release_file_lock token match removed (unconditional unlink)", "selected_by": "1 failing test (stolen-reissue never unlinked)"},
+      {"id": "M4b", "change": "_quarantine rename disabled (post-MINOR-2a form; first attempt only mutated the fallback branch and was behaviorally equivalent — replaced)", "selected_by": "2 failing tests (corruption->quarantine tests)"},
+      {"id": "M5", "change": "singleflight loser treats itself as owner (recompute-on-miss broken)", "selected_by": "3 failing tests incl. the 6-process compute-once race"},
+      {"id": "M6", "change": "memory-tier eviction drain loop disabled (while -> never entered)", "selected_by": "4 failing tests (memory bounds)"},
+      {"id": "M7", "change": "_read_manifest per-entry validation skipped (MINOR-1 regression guard)", "selected_by": "4 failing tests (structural-manifest-damage variants)"}
+    ],
+    "restored": "byte-identical after the battery; final suite re-run green (102 passed)"
+  },
+  "review": {
+    "verdict": "ACCEPT-WITH-FINDINGS — 1 MAJOR / 4 MINOR / 8 NOTE, all dispositioned (see receipt.json)",
+    "report": "campaigns/una_platform/evidence/reviews/cache_store/review_report_cache_store.md (reviewer-run suites, probes A-F incl. real os._exit(9) crash and 6-process double-ownership reproduction, independent mutant re-run)",
+    "notable": "MAJOR-1 was a real cross-process lock-steal race (empty-lock window between O_EXCL create and content flush, read as stale by a waiter; reproduced 1-in-12 across 6 processes). Fix: atomic write-to-tmp + fsync + os.link publish, so a lock file becomes visible only together with its full content. Regression-tested with 6 real processes + content-parsing watcher threads."
+  },
+  "dossier_06_protocol_mapping": {
+    "read_only_immutable_copy_on_use": "payloads immutable raw bytes; every get()/require() returns fresh copies; mutable-view publish discipline documented for the array layer",
+    "single_flight": "per-key: in-process Condition serialization + cross-process (disk mode) atomic-content lock files, dead-holder recovery, token-matched release",
+    "bounded_memory_and_disk": "memory LRU inert without positive max_memory_bytes; disk quota eviction by touched atime; stale tmp//quarantine debris swept at 6h grace",
+    "atomic_commit": "stage in tmp/ -> fsync payload files -> fsync manifest -> rename dir into store/ -> fsync parent",
+    "verified_reads": "sizes always; checksums per verification policy (default on_read); on_write/always do genuine staged-bytes readback",
+    "corruption_quarantine": "miss + quarantine only while damage is current; require(): absent->KeyError, damaged->CacheCorruption with evidence retained",
+    "non_executable": "raw bytes only at the door (TypeError names pickle); traversal guards on keys and manifest payload names; layout holds only manifests+payloads",
+    "ejection_vs_inflight": "returned hits are fresh bytes; eviction/clear cannot affect an in-flight reader"
+  },
+  "limitations": [
+    "Storage primitive only: numerical key closure (profile/plan/dtype/shape/schema fingerprints) is CACHE_GRAPH's duty via put() metadata + digest keys.",
+    "singleflight in-process wait is unbounded by design (that IS compute-once for a same-process loser); file-lock wait bounded by wait_timeout_s.",
+    "clear() is not coordinated with concurrent writers/flights (documented; loud-failure contract, reviewer probe F3).",
+    "Generation numbering restarts if an entry is lost in a crash window (documented; diagnostic, not identity)."
+  ],
+  "scope_discipline": "Only src/urban_network_analysis/cache/**, tests/cache/store/**, and evidence under campaigns/una_platform/evidence/{reviews/cache_store,tasks/CACHE_STORE} touched. Scratch probe/battery scripts removed before commit. No pushes, merges to main, releases, purchases, or credential/provider changes."
+}

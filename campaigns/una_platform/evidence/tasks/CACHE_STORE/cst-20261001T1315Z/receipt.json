@@ -1,0 +1,55 @@
+{
+  "task": "CACHE_STORE",
+  "run_id": "cst-20261001T1315Z",
+  "status": "IMPLEMENTATION CLOSED: independent review ACCEPT-WITH-FINDINGS (1 MAJOR / 4 MINOR / 8 NOTE) and ALL findings dispositioned in this delivery — MAJOR-1, MINOR-1/2/3 FIXED with regression tests and mutant selection, MINOR-4 closed by this receipt; NOTE-1/2/3/4/5/7/8a/8b/8c FIXED, NOTE-6 documented as a contract on callers. Final suite: 102 tests, 102 passed / 0 failed (worktree, alan interpreter, PYTHONHASHSEED=0). Whole-repo closure regression on the merged tree runs in the main checkout and is recorded in the closure commit there (NOT yet executed at receipt-writing time).",
+  "objective": "Bounded non-executable content-addressed store primitive: checksums, single-flight locks, eviction, atomic commit manifests (dossier 06 store protocol; contract §6 CacheOptions). Storage primitive only — numerical key closure is CACHE_GRAPH's.",
+  "reviewer": "independent reviewer (fresh context; see evidence/reviews/cache_store/review_report_cache_store.md)",
+  "branch": "worktree-cache-store (merged locally to perf/una-platform; no push)",
+  "delivered": {
+    "source": [
+      "src/urban_network_analysis/cache/__init__.py (scoped docstring; re-exports CacheCorruption/ContentStore/StoreHit; imports no analysis stack)",
+      "src/urban_network_analysis/cache/store.py (~700 lines: ContentStore — the dossier-06 store protocol for contract CacheOptions)"
+    ],
+    "tests": "tests/cache/store/ (conftest + 6 modules, 102 tests): keys/traversal/policy/layout/generations; bitwise round-trips + fresh-copy + warm/cold/off equivalence; corruption/partial/crash/structural-manifest-damage/racing-reader; single-flight (threads, real multi-process contention, lock-atomicity watchers, stale/live/unreadable locks, token-matched release, cancellation); eviction/bounds (memory LRU, disk quota LRU, oversized-entry discipline, sweep, clear); schema_version; import hygiene subprocess probe",
+    "review_evidence": "campaigns/una_platform/evidence/reviews/cache_store/review_report_cache_store.md (reviewer's own suite runs, 6-process contention probes incl. the deterministic MAJOR-1 mechanism proof, crash probe with real os._exit(9), 6-mutant re-run with byte-identical restore)"
+  },
+  "verification": {
+    "suite": "pytest tests/cache/store/ -q => 102 passed / 0 failed (post-disposition; 1.6 s)",
+    "neighbors": "pytest tests/cache/store/ tests/execution/ tests/perf_contract/ -q => 233 passed / 12 skipped (skips are .refs-absence artifacts of the worktree)",
+    "mutation_selection": "7 sabotage mutants applied and restored byte-identical (sha256-verified): M1 remove LRU touch -> 1 fail; M2 skip on_read checksum -> 2; M3 token-mismatch release -> 1; M4b quarantine rename off -> 2; M5 loser recomputes -> 3; M6 while-drain disabled -> 4; M7 manifest-entry validation skipped -> 4 (the review's surviving-mutant coverage hole NOTE-7 is closed: both size guards are now individually selected)",
+    "multiprocess_stability": "tests/cache/store/test_singleflight.py (includes the 6-real-process compute-once race and the lock-atomicity watchers) run 3x: 18 passed each",
+    "import_hygiene": "subprocess probe: importing urban_network_analysis.cache loads only the package, .Execution and cache siblings — no UNA/Topology/Settings/numpy/pandas/geopandas/numba"
+  },
+  "review_findings_disposition": {
+    "MAJOR-1": "FIXED: the per-key lock file is now published ATOMICALLY WITH its content (write to private tmp/ file, fsync, os.link — EEXIST on contention), eliminating the create-to-flush window in which a waiter declared a live holder's empty lock stale and stole it (reviewer reproduced double ownership across 6 processes, 1-in-12). Regression tests: 6-real-process compute-once (exactly one OWNER, no orphaned locks) + 3 watcher threads asserting every observed lock file parses as complete {pid, token, host} JSON. Full 7-mutant battery re-run post-fix, all selected, restore byte-identical.",
+    "MINOR-1": "FIXED: _read_manifest now validates everything the read path trusts — generation (int>=1), payload non-empty list of dicts with names passing the same guard as the write path (no '/', '\\', '.', '..'), int bytes>=0, 64-hex sha256, metadata mapping. Structurally corrupt manifests are ordinary corruption: get() misses+quarantines, require() raises CacheCorruption — never TypeError/KeyError, no manifest-declared traversal. 8 parametrized damage-variant tests; M7 mutant (validation skipped) selected by 4 tests.",
+    "MINOR-2": "FIXED (three parts): (a) quarantine now fires only when the damage is still current (_fail_read re-checks the manifest generation it read; a reader superseded mid-retire-window observes a plain miss and never moves the NEW generation aside — deterministic in-process replay of the reviewer's probe C asserts miss + quarantined==0 + gen 2 intact and readable); (b) stale tmp/ AND quarantine/ debris ages out (6h grace, swept on every disk put; test with backdated mtimes: stale swept, live staging untouched) — the unbounded-crash-debris hole at the store/ boundary is closed; (c) generation numbering restart after an entry is lost in a crash window is documented in put()'s docstring (diagnostic, not identity).",
+    "MINOR-3": "FIXED: CacheOptions.schema_version is honored on write (manifest records options.schema_version) and on read (foreign-schema manifests are corruption: miss+quarantine); non-positive/non-int schema_version raises ValueError at construction. Tests: v2 round-trip, v1-manifest-under-v2-store, invalid value.",
+    "MINOR-4": "CLOSED BY THIS RECEIPT (receipt.json + evidence.json under evidence/tasks/CACHE_STORE/cst-20261001T1315Z/).",
+    "NOTE-1": "FIXED (docstring): quarantine is 'best effort' — if even the quarantine rename fails, the unusable tree is removed rather than left as recurring corruption; stated where the promise was.",
+    "NOTE-2": "FIXED: memory-mode put() of an entry larger than the whole tier returns 0 (nothing stored) instead of a misleading generation; stats()['entries'] counts the resident tier in memory mode. Both regression-tested; the oversized-memory-mode test also selects the _next_mem_generation guard (M6' family).",
+    "NOTE-3": "FIXED (docstring): singleflight now states that cross-process flight is disk-mode-only (memory mode is in-process by the no-disk-residue rule), and that wait_timeout_s bounds only the file-lock wait while the in-process serialization wait is unbounded by design (that unbounded wait IS the compute-once a same-process loser asked for). Part (c) is closed by the MAJOR-1 fix.",
+    "NOTE-4": "FIXED: diagnostic counters (hits/misses/hit_reasons/quarantined/evicted_disk) increment under a dedicated lock; evicted_memory was already serialized under the memory-tier lock.",
+    "NOTE-5": "FIXED (docstrings, package + module): the bitwise-or-miss guarantee is scoped to the checksummed policies (default on_read, on_write, always); verification='never' is the caller's explicit no-checksum choice with sizes still enforced.",
+    "NOTE-6": "NO CODE CHANGE, DOCUMENTED CONTRACT: clear() is not coordinated with concurrent writers/flights — a racing put fails loudly (OSError; reviewer probe F3: 3469 loud failures, zero corruption, zero silent acceptance) and held lock files are removed. clear() docstring now says to quiesce writers/flights first. Fencing was judged more risk than value for a diagnostics operation.",
+    "NOTE-7": "FIXED: test_oversized_put_evicts_nothing_else distinguishes 'refused wholesale, nothing evicted' from 'drained the tier'; mutant-verified against the tier-admission guard (previously the review showed this mutant surviving the suite).",
+    "NOTE-8a": "FIXED: real 6-process single-flight contention test (the MAJOR-1 regime).",
+    "NOTE-8b": "FIXED: structurally-corrupt-manifest variants (MINOR-1 tests).",
+    "NOTE-8c": "FIXED: tests/cache/store/test_import_hygiene.py subprocess probe (no analysis stack, no heavy deps)."
+  },
+  "handoffs": [
+    "CACHE_GRAPH: consume this primitive as-is. Cache keys MUST be 64-char lowercase sha256 hex digests over the full numerical closure (profile, plan/stage, producer-computed ArrayDescriptor.content_hash inputs) — path/mtime keys are unrepresentable by design and the constructor rejects them. Record schema/dtypes/shape in put() metadata (the store persists metadata verbatim and binds payloads by checksum — dossier's dtype/shape duty lands here). Use get() miss -> singleflight(key) owner True -> compute -> put(key, payload, metadata); loser False -> re-get. StoreHit.payload values are fresh immutable bytes; publish numpy views with allow_pickle=False at the layer above.",
+    "BATCH_EXEC / engine owners: verification policy comes from the row's CacheOptions; default on_read is the identity-protecting floor — do not silently downgrade to never.",
+    "INTEGRATE: clear() quiesce contract (NOTE-6) applies to any engine-level cache invalidation UI."
+  ],
+  "deviations": [
+    "tests/cache/store/ extends beyond the DAG's literal owned_files glob only in existing-tree terms: the DAG names tests/cache/store/** which is exactly what was created (new directory, no collisions).",
+    "Quarantine sweep (MINOR-2b) deletes quarantine debris older than 6h — this is runtime cache diagnostics inside the cache's own dedicated directory, NOT campaign evidence (campaign evidence lives under campaigns/ and is untouched)."
+  ],
+  "notes": [
+    "Store protocol mapping to dossier 06: read-only immutable values + explicit copy-on-use (fresh bytes every read; mutable-array publish discipline documented for layers above); per-key single-flight (atomic-content locks, dead-holder recovery, token-matched release); bounded memory LRU INERT without a positive max_memory_bytes + bounded disk quota eviction by touched atime; writers stage+fsync+atomic dir-rename commit manifests; readers verify sizes always and checksums per policy before use; corruption = quarantine + miss; non-executable formats (raw bytes only, no pickle anywhere; allow_pickle=False discipline documented for the array layer); traversal guards on keys AND manifest-declared payload names; ejection never invalidates in-flight readers.",
+    "Mode semantics: 'off' fully inert (not even the directory is created); 'memory' memory-only with zero disk residue, inert without a positive bound; 'disk' disk-backed with the memory tier as an optional write-through accelerator layer.",
+    "Review evidence preserved: the reviewer's report includes its complete run log (suite counts, probe outcomes, mutant re-runs with sha256 restore checks).",
+    "No pushes, merges to main, releases, purchases, or credential/provider changes."
+  ]
+}
