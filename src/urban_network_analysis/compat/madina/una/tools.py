@@ -1,30 +1,25 @@
-"""Madina una.tools parity: interim surface (see the package __init__
+"""Madina una.tools parity: complete surface (see the package __init__
 delta ledger).
 
-Upstream keeps five public names in ``madina/una/tools.py``.
+All five upstream public names are present:
 ``validate_zonal_ready`` / ``accessibility`` / ``service_area`` /
-``alternative_paths`` are verbatim below (the first three delivered by
-the accessibility task, the last by the paths task); ``betweenness``
-joins from ``.betweenness`` with MADINA_FLOW, reproducing the upstream
-tools namespace exactly.  INTERIM import-line delta (ledgered): upstream
-line 7 reads ``from .betweenness import paralell_betweenness_exposure,
-parallel_access``; the facade imports ``parallel_access`` only until
-MADINA_FLOW delivers ``paralell_betweenness_exposure``, then the line
-becomes the verbatim two-name form.  ``accessibility`` consumes the
-imported ``parallel_access`` exactly as upstream does.
+``alternative_paths`` verbatim below (delivered by the accessibility
+and paths tasks), and ``betweenness`` /
+``paralell_betweenness_exposure`` re-imported from ``.betweenness``
+(the MADINA_FLOW delivery) exactly as upstream line 7 does.  The
+facade's import block is organized for the interim composite history
+and differs from upstream only in layout (each import LINE is
+verbatim); ``accessibility`` consumes the imported ``parallel_access``
+exactly as upstream does.
 """
-
 import math
 import numpy as np
 import geopandas as gpd
 
 from shapely import GeometryCollection
-from .paths import turn_o_scope, path_generator  # noqa: F401
-# INTERIM: upstream line 7 also imports paralell_betweenness_exposure;
-# that name lands with MADINA_FLOW, then this line becomes verbatim.
-from .betweenness import parallel_access  # noqa: F401
+from .paths import turn_o_scope, path_generator
+from .betweenness import paralell_betweenness_exposure, parallel_access
 from ..zonal import Zonal
-
 
 def validate_zonal_ready(zonal: Zonal):
     if not isinstance(zonal, Zonal):
@@ -49,6 +44,8 @@ def validate_zonal_ready(zonal: Zonal):
     if zonal.network.d_graph is None:
         raise ValueError("Zonal object does not have a d_graph, call zonal..create_graph() to create graphs first.")
     return
+
+
 
 def accessibility(
     zonal: Zonal,
@@ -244,6 +241,7 @@ def accessibility(
 
     return
 
+
 def service_area(
     zonal: Zonal,
     search_radius: float, 
@@ -367,6 +365,7 @@ def service_area(
     return destinations, network_edges, scope_gdf
 
 
+
 def alternative_paths(
     zonal: Zonal,
     origin_id: int,
@@ -448,4 +447,234 @@ def alternative_paths(
     destination_gdf = gpd.GeoDataFrame({'destination': destination_list, 'distance': distance_list, 'geometry': path_geometries}, crs = zonal.network.nodes.crs)
     destination_gdf = destination_gdf.sort_values("distance").reset_index(drop=True)
     return destination_gdf
+
+def betweenness(
+    zonal: Zonal,
+    search_radius: float,
+    detour_ratio: float = 1,
+    decay: bool = False,
+    decay_method: str = "exponent",
+    beta: float = 0.003,
+    num_cores: int = 1,
+    closest_destination: bool = True,
+    elastic_weight: bool = False,
+    knn_weight: str | list = None,
+    knn_plateau: float | int = 0, 
+    turn_penalty: bool = False,
+    save_betweenness_as: str = None, 
+    save_reach_as: str = None, 
+    save_gravity_as: str = None,
+    save_elastic_weight_as: str = None,
+    keep_diagnostics: bool = False, 
+    path_exposure_attribute: str = None,
+    save_path_exposure_as: str = None,
+):
+    """Generate trips between origins and destinations along network segment, accounting for a search radius, decay, detour, destination competition, turn penalty and elastic trip generation.
+
+    :param zonal: A zonal object populated with a network, origins, destinations and a graph
+    :type zonal: Zonal
+    :param search_radius: The maximum distance to search for reachable destinatations. In the same unit as the network CRS.
+    :type search_radius: float
+    :param detour_ratio: A percentage of detour over the shortest path between an origin and a destination when allocating trips across alternative paths. Defaults to 1 and only allocate trips along the shortest path. Must be greater than or equal to one. if set to a large number, could result in severe performance issues and memory overflow
+    :type detour_ratio: float, optional
+    :param decay: If ennabled, trip generation is decayed according to the chosen decay function and beta parameter, defaults to False
+    :type decay: bool, optional
+    :param decay_method: the function that applies distance decay to trips. could be one of ['exponent', 'power'], defaults to "exponent"
+    :type decay_method: str, optional
+    :param beta: When applying decay to trip generation, the beta parameter represent the sensitivity to walk. a smaller beta value means that people are less sensitive to walking. When units are in meters, a typical beta value ranges between 0.001 (Low sensitivity) and 0.004 (High sensitivity), defaults to 0.003
+    :type beta: float, optional
+    :param num_cores: By default, only use a single core, set to as many cores as you want to use for running parallel calculations., defaults to 1
+    :type num_cores: int, optional
+    :param closest_destination: If set to true, trips are only routed to the closest destination. if set to false, destinations compete to attract trips based on the Huff model that factors in destination attractivenes and distance, defaults to True
+    :type closest_destination: bool, optional
+    :param elastic_weight: If set to false, origins generate theur full trip potential irrespective of how many destinations they can access. if set to true, origins generate more trips as they have access to more destinations, as defined by the K-nearest neighbor access, defaults to False
+    :type elastic_weight: bool, optional
+    :param knn_weight: The K-nesrest neighbor access array, should be of the form [0.5, 0.25, ..., 0.01] to assign partial score foe each reachable destination. Should add up to one so it controls trip generation appropriatly, defaults to None
+    :type knn_weight: str | list, optional
+    :param knn_plateau: A distance penalty could be applied to the KNN access score depending on how close the destination is. the KNN plateau gives a penalty-free score sccumilation for destinations that are closer than the plateau, and applies penalty on the distance that exceeds the plateau, defaults to 0
+    :type knn_plateau: float | int, optional
+    :param turn_penalty: _description_, defaults to False
+    :type turn_penalty: bool, optional
+    :param save_betweenness_as: Specify a name for the column in the network layer where the betweenness flow is stored, defaults to None
+    :type save_betweenness_as: str, optional
+    :param save_reach_as: Specify a name for thecolumn in the origin layer where the reach accessibility score is stored , defaults to None
+    :type save_reach_as: str, optional
+    :param save_gravity_as: Specify a name for the column in the origin layer where the gravity score is stored, defaults to None
+    :type save_gravity_as: str, optional
+    :param save_elastic_weight_as: specify a name for the column in the origin layer where the KNN-adjusted origin weight is stored, defaults to None
+    :type save_elastic_weight_as: str, optional
+    :param keep_diagnostics: If set to true, store performance and memory statistics in the network, defaults to False
+    :type keep_diagnostics: bool, optional
+    :param path_exposure_attribute: If provided, calculates an exposure to a network value for trips originatinbg from an origin en route to destinations, defaults to None
+    :type path_exposure_attribute: str, optional 
+    :param save_path_exposure_as: if path exposure attribute is proviided, this is a name for a column in the origin layer that captures origin's exposure to the network exposure attribute, defaults to None
+    :type save_path_exposure_as: str, optional
+    """
+
+    validate_zonal_ready(zonal)
+
+    if not isinstance(search_radius, (int, float)):
+        raise TypeError(f"Parameter 'search_radius' must be either {int, float}. {type(search_radius)} was given.")
+    elif search_radius < 0:
+        raise ValueError(f"Parameter 'search_radius': Cannot be negative. search_radius={search_radius} was given.")
+
+    if not isinstance(detour_ratio, (int, float)):
+        raise TypeError(f"Parameter 'detour_ratio' must be either {int, float}. {type(detour_ratio)} was given.")
+    elif detour_ratio < 1:
+        raise ValueError(f"Parameter 'detour_ratio': Cannot be less than 1. detour_ratio={detour_ratio} was given.")
+
+    if not isinstance(decay, bool):
+        raise TypeError(f"Parameter 'decay' must either be a boolean True or False, {type(decay)} was given.")
+    
+    if decay and (decay_method not in ['exponent', 'power']):
+        if not isinstance(decay_method, str):
+            raise TypeError(f"Parameter 'decay_method' must be a string. {type(decay_method)} was given.")
+        else: 
+            raise ValueError(f"Parameter 'decay_method': must be one of ['exponent', 'power']. decay_method={decay_method} was given.")
+
+    if (decay or save_gravity_as is not None) and (not isinstance(beta, (int, float))):
+        raise TypeError(f"Parameter 'beta' must be either {int, float}. {type(beta)} was given.")
+
+    if not isinstance(num_cores, int):
+        raise TypeError(f"Parameter 'num_cores' must be {int}. {type(num_cores)} was given.")
+    elif num_cores < 1:
+        raise ValueError(f"Parameter 'num_cores': Cannot be less than 1. num_cores={num_cores} was given.")
+    
+    if not isinstance(closest_destination, bool):
+        raise TypeError(f"Parameter 'closest_destination' must either be a boolean True or False, {type(closest_destination)} was given.")
+    
+    if not isinstance(elastic_weight, bool):
+        raise TypeError(f"Parameter 'elastic_weight' must either be a boolean True or False, {type(elastic_weight)} was given.")
+
+
+    if elastic_weight:
+        if knn_weight is None:
+            raise ValueError(f"Parameter 'elastic_weight': must be provided if `elastic_weight=True`")
+        elif isinstance(knn_weight, str):
+            knn_weight = knn_weight[1:-1].split(',')
+            knn_weight = [float(x) for x in knn_weight]
+        elif isinstance(knn_weight, list):
+            knn_weight = knn_weight
+        else:
+            raise ValueError(f"Parameter 'knn_weight' must be either {str, list} of numerical values like [0.5, 0.25, 0.25]. {type(knn_weight)} was given.")
+
+
+        if not isinstance(knn_plateau, (int, float)):
+            raise TypeError(f"Parameter 'knn_plateau' must be either {int, float}. {type(knn_plateau)} was given.")
+        if knn_plateau < 0:
+            raise ValueError(f"Parameter 'knn_plateau': Cannot be negative. knn_plateau={knn_plateau} was given.")
+
+
+    if not isinstance(turn_penalty, bool):
+        raise TypeError(f"Parameter 'turn_penalty' must either be a boolean True or False, {type(turn_penalty)} was given.")
+
+    if (save_betweenness_as is not None) and not isinstance(save_betweenness_as, str):
+        raise TypeError(f"Parameter 'save_betweenness_as' must be a string. {type(save_betweenness_as)} was given.")
+    
+    if (save_reach_as is not None) and not isinstance(save_reach_as, str):
+        raise TypeError(f"Parameter 'save_reach_as' must be a string. {type(save_reach_as)} was given.")
+
+    if (save_gravity_as is not None) and not isinstance(save_gravity_as, str):
+        raise TypeError(f"Parameter 'save_gravity_as' must be a string. {type(save_gravity_as)} was given.")
+    
+    if (save_gravity_as is not None) and not isinstance(save_gravity_as, str):
+        raise TypeError(f"Parameter 'save_gravity_as' must be a string. {type(save_gravity_as)} was given.")
+    
+    if save_elastic_weight_as is not None:
+        if not isinstance(save_elastic_weight_as, str):
+            raise TypeError(f"Parameter 'save_elastic_weight_as' must be a string. {type(save_elastic_weight_as)} was given.")
+        if not elastic_weight:
+            raise ValueError(f"Parameter 'elastic_weight': must be set to True if `save_elastic_weight_as` is provided")
+
+
+    if not isinstance(keep_diagnostics, bool):
+        raise TypeError(f"Parameter 'keep_diagnostics' must either be a boolean True or False, {type(keep_diagnostics)} was given.")
+
+
+    if path_exposure_attribute is not None:
+        if not isinstance(path_exposure_attribute, str):
+            raise TypeError(f"Parameter 'path_exposure_attribute' must be a string. {type(path_exposure_attribute)} was given.")
+        
+        if path_exposure_attribute not in zonal[zonal.network.edge_source_layer].gdf.columns:
+            raise ValueError(f"Parameter 'path_exposure_attribute' not in layer {zonal.network.edge_source_layer}'s columns. options are: {list(zonal[zonal.network.edge_source_layer].gdf.columns)}")
+
+    if save_path_exposure_as is not None:
+        if not isinstance(save_path_exposure_as, str):
+            raise TypeError(f"Parameter 'save_path_exposure_as' must be a string. {type(save_path_exposure_as)} was given.")
+        if path_exposure_attribute is None:
+            raise ValueError(f"Parameter 'path_exposure_attribute' must be provided if `save_path_exposure_as` is provided")
+
+    zonal.network.knn_weight = knn_weight
+    zonal.network.knn_plateau = knn_plateau
+
+    betweenness_output = paralell_betweenness_exposure(
+        zonal,
+        search_radius=search_radius,
+        detour_ratio=detour_ratio,
+        decay=decay,
+        decay_method=decay_method,
+        beta=beta,
+        num_cores=num_cores,
+        path_detour_penalty='equal', # "power" | "exponent" | "equal"
+        closest_destination=closest_destination,
+        elastic_weight=elastic_weight,
+        turn_penalty=turn_penalty,
+        path_exposure_attribute=path_exposure_attribute,
+        return_path_record=False, 
+        destniation_cap=None, 
+    )
+
+    if save_betweenness_as is not None:
+        edge_layer_name = zonal.network.edge_source_layer
+        edge_gdf = zonal.network.edges
+
+        # if the name is already a column, drop it to avoid 'GeoDataFrame cannot contain duplicated column names' error.
+        if save_betweenness_as in zonal[edge_layer_name].gdf.columns:
+            zonal[edge_layer_name].gdf.drop(columns=[save_betweenness_as], inplace=True)
+
+        zonal[edge_layer_name].gdf = zonal[edge_layer_name].gdf.join(
+        edge_gdf[['parent_street_id', 'betweenness']].drop_duplicates(subset='parent_street_id').set_index('parent_street_id')).rename(
+        columns={"betweenness": save_betweenness_as})
+
+        #TODO: The index became a float after te join, probably due to the type of 'parent_street_id' in the edge gdf.
+        zonal[edge_layer_name].gdf.index = zonal[edge_layer_name].gdf.index.astype(int)
+
+
+    if (save_reach_as is not None) or (save_gravity_as is not None) or (save_elastic_weight_as is not None): 
+        origin_gdf = betweenness_output['origin_gdf']
+        origin_layer = origin_gdf.iloc[0]['source_layer']
+
+        saved_attributes = {}
+        if save_reach_as is not None:
+            saved_attributes['reach'] = save_reach_as
+
+        if save_gravity_as is not None:
+            saved_attributes['gravity'] = save_gravity_as
+
+        if (save_elastic_weight_as is not None) and (elastic_weight):
+            saved_attributes['knn_weight'] = save_elastic_weight_as
+        
+        if (save_path_exposure_as is not None) and (path_exposure_attribute is not None):
+            saved_attributes['expected_hazzard_meters'] = save_path_exposure_as
+
+        for key, value in saved_attributes.items():
+            origin_gdf[key] = origin_gdf[key].fillna(0)
+            if value in zonal[origin_layer].gdf.columns:
+                zonal[origin_layer].gdf.drop(columns=[value], inplace=True)
+
+
+        
+        if keep_diagnostics:
+            for column_name in origin_gdf.columns:
+                if (column_name not in saved_attributes.keys()) and (column_name not in ["source_id"]):
+                    saved_attributes[column_name] = save_betweenness_as + "_" + column_name
+                    if saved_attributes[column_name] in zonal[origin_layer].gdf.columns:
+                        zonal[origin_layer].gdf.drop(columns=[saved_attributes[column_name]], inplace=True)
+            zonal[origin_layer].gdf = zonal[origin_layer].gdf.join(origin_gdf.drop(columns=['geometry']).set_index("source_id").rename(columns=saved_attributes))
+        else:
+            zonal[origin_layer].gdf = zonal[origin_layer].gdf.join(origin_gdf[['source_id'] + list(saved_attributes.keys()) ].set_index("source_id").rename(columns=saved_attributes))
+
+        zonal[origin_layer].gdf.index = zonal[origin_layer].gdf.index.astype(int)
+    return
+
 

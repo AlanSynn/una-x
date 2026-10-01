@@ -1,0 +1,40 @@
+{
+  "task": "MADINA_FLOW",
+  "run_id": "mda-20261001T0406Z",
+  "status": "CLOSED: implementation complete; independent adversarial review ACCEPT (0 MAJOR, 0 MINOR, 3 NOTE all dispositioned — see review_report_mda.md); one REAL review catch (false 'detour moot' pin from a vacuous 1.0-vs-1.0 flag pairing, exposed by a stalled reviewer's partial evidence + the detour_swap digest diff) fixed pre-review with pre-fix artifacts retained; post-review NOTE-2 strengthening (nc=2 empirical bit-stability experiment retained, wording corrected) with suite re-run green (27 passed); closure whole-repo regression on the final tree recorded in evidence.json",
+  "branch": "perf/una-platform",
+  "head_base": "568af2b (MADINA_ACCESS)",
+  "delivered": {
+    "facade_source": [
+      "src/urban_network_analysis/compat/madina/una/betweenness.py (COMPLETES the verbatim module: full upstream behind a 102-line docstring header; diff +102/-0; delivers parallel_betweenness / one_betweenness_2 / clockwiseangle_and_distance / betweenness_exposure / paralell_betweenness_exposure alongside the ACCESS-era trio)",
+      "src/urban_network_analysis/compat/madina/una/tools.py (tools.betweenness verbatim; diff +14/-0 header-only; md5 22d9170f0c30e1553cb9d06af20ae7ae)",
+      "src/urban_network_analysis/compat/madina/una/__init__.py (delta-ledger rows completed for the full module incl. the nc>1 array_split defect, the attribution degeneracy, the exposure queue-partition facts)"
+    ],
+    "tests": [
+      "tests/madina_api/flow/_flow_scenario.py (9 scenarios, 4 sabotage mutants, IEEE-754 hex digest helpers, RNG control, documented nondeterminism policy)",
+      "tests/madina_api/flow/_flow_reflection.py + test_flow_reflection.py (NO-ledger surface pin: 8 betweenness + 6 tools signatures)",
+      "tests/madina_api/flow/conftest.py (two-arm runners in .refs/venv_madina_legacy, artifacts dirs, .resolve() fix)",
+      "tests/madina_api/flow/test_flow_surface_parity.py (9 bitwise scenario tests, 8 completion-condition tests, 4 sabotage-selection, 2 mutant-integrity)",
+      "tests/madina_api/flow/test_flow_facade_env.py (alan-interpreter import probe, no madina* leak)"
+    ],
+    "evidence_dir": "campaigns/una_platform/evidence/tasks/MADINA_FLOW/mda-20261001T0406Z/ (artifacts/madina_flow/ = final 24 digests; artifacts/madina_flow_review_accepted/ = the byte-identical set the ACCEPT review verified; artifacts/madina_flow_prefix_detour_fix/ = the pre-review-catch run; logs/nc2_stability_probe/ = the NOTE-2 3-run experiment; logs/flow_suite*.log + whole_repo_regression logs; review_report_mda.md; custody_md5s_post_fix.txt; evidence.json; this receipt)"
+  },
+  "verification": {
+    "suite": "final flow suite 27 passed in 286.46 s (logs/flow_suite.log); reviewed set byte-identical to the reviewer's own run (24/24 md5); 9/9 scenarios bitwise-equal across arms (reference determinism control x2 + facade); 4/4 sabotages selected",
+    "parity": "same-interpreter two-arm bitwise parity (IEEE-754 hex, WKB hashes, dtypes, orders, error messages verbatim); TIME-dependent exposure stats excluded from digests with presence pinned (documented policy)",
+    "independent_review": "ACCEPT (mda-flow-reviewer-3, fresh context, read-only, adversarial, incremental report). 0 MAJOR / 0 MINOR / 3 NOTE dispositioned in evidence.json independent_review_outcome.findings_and_dispositions; NOTE-2 actioned with a retained 3-run nc=2 bit-stability experiment",
+    "whole_repo_regression": "see evidence.json whole_repo_regression (closure run on the final tree; standing skips unchanged)",
+    "post_review_changes": "NOTE-2 wording strengthening only (facade header docstring, scenario note text, test docstrings, evidence wording); suite re-run green after; no facade semantics touched"
+  },
+  "handoffs": [
+    "MADINA_WORKFLOWS: una/workflows.py is the next owned file; the betweenness surface (tools.betweenness + engines), closest-facility quirks (num_cores>1 low-level all-zero defect; exposure nc>1 no bitwise contract) and the per-parent street join (drop_duplicates on parent_street_id) are all pinned and available for workflow assembly",
+    "bug-registry owner: two NEW pinned upstream defects propose registry entries — (1) parallel_betweenness num_cores>1 np.array_split all-zero silent failure (flow_lowlevel_engine nc2 pins); (2) one_betweenness_2 attribution degeneracy (trimmed paths + nearest_edge_id 0 -> edge-0 collapse; float32 split of the equal penalty branch). corrected_v1 fix candidates; NOT corrected in this task (legacy parity)",
+    "API_REVIEW: validation matrix (27 probes, 17 TypeError / 10 ValueError) + the save_path_exposure_as gating + keep_diagnostics post-engine TypeError inform the API surface review",
+    "CACHE/BATCH owners: exposure num_cores>1 has no bitwise-stability contract upstream (queue partition) — any corrected_v1 re-ordered reduction must be a ledgered delta, and cache keys for exposure at nc>1 cannot assume per-edge bit reproducibility on the legacy profile"
+  ],
+  "notes": [
+    "the detour-moot review catch is documented end-to-end (evidence.json lowlevel_detour_ratio_filters_path_set REVIEW CATCH + retraction note + retained prefix artifacts); no assertion was weakened anywhere — the fix strengthened the pin",
+    "split streets are constructed on the engine edge table (pipeline-equivalent state) because load_layer provably resets the input index at this commit — pinned as an upstream fact, not worked around silently",
+    "historical evidence untouched; no pushes, merges, releases, purchases, credential or provider changes; .claude/commands/goal.md preserved unstaged"
+  ]
+}

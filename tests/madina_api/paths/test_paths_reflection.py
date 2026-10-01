@@ -1,31 +1,24 @@
 """Reflection matrix: the facade's public una surface must match the
 pinned upstream surface — every paths function with its exact
-signature, star-export identity, and the module namespaces modulo an
-EXPLICIT ledgered interim delta.
+signature, star-export identity, and the module namespaces.
 
 Reflection is necessary but not sufficient (dossier 01); the behavior
-scenarios live in test_paths_surface_parity.py.  Interim ledgered
-deltas here (see compat una/__init__ ledger; the remaining betweenness
-functions land with MADINA_FLOW and these lists shrink to empty then):
-
-Post-ACCESS state (updated at MADINA_ACCESS delivery): the access
-engine trio (get_origin_properties, one_access, parallel_access), the
-submodule binding ``betweenness`` and the betweenness module's own
-public imports (concurrent, futures, getsizeof, gpd, mp, np, os, pd,
-psutil, random, time, Zonal) retired from this ledger — both sides
-carry them now.
+scenarios live in test_paths_surface_parity.py.  Post-MADINA_FLOW state
+(see compat una/__init__ ledger): the facade una package is COMPLETE —
+both ledgers below are EMPTY, so any una/tools name delta at all is an
+unledgered surface change and fails.  (History: at PATHS delivery these
+sets held the then-undelivered betweenness surface; MADINA_ACCESS
+shrank them to the five betweenness functions + two tools names;
+MADINA_FLOW delivered those and the ledgers retired to empty, per the
+documented shrink-to-empty mechanism this file's original docstring
+anticipated.)
 
 una package, reference-only names
-  the five undelivered betweenness functions (parallel_betweenness,
-  one_betweenness_2, clockwiseangle_and_distance, betweenness_exposure,
-  paralell_betweenness_exposure).
+  none expected.
 una package, facade-only names
   none expected.
 una.tools, reference-only names
-  betweenness (the fifth upstream tools function, MADINA_FLOW) and
-  paralell_betweenness_exposure (upstream tools re-imports it).
-  validate_zonal_ready, accessibility, service_area and parallel_access
-  retired at MADINA_ACCESS delivery.
+  none expected.
 una.tools, facade-only names
   none expected.
 """
@@ -35,14 +28,10 @@ import pytest
 
 pytestmark = pytest.mark.madina_api
 
-# ---- ledgered interim deltas (see module docstring) -----------------
-REFERENCE_ONLY_UNA_NAMES = {
-    "parallel_betweenness", "one_betweenness_2",
-    "clockwiseangle_and_distance", "betweenness_exposure",
-    "paralell_betweenness_exposure",
-}
+# ---- ledgered deltas (see module docstring; post-FLOW: empty) -------
+REFERENCE_ONLY_UNA_NAMES = set()
 FACADE_ONLY_UNA_NAMES = set()
-REFERENCE_ONLY_TOOLS_NAMES = {"betweenness", "paralell_betweenness_exposure"}
+REFERENCE_ONLY_TOOLS_NAMES = set()
 FACADE_ONLY_TOOLS_NAMES = set()
 
 

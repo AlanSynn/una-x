@@ -1,0 +1,42 @@
+{
+ "arm": "reference",
+ "scenario": "flow_validation",
+ "seed": 20260930,
+ "state": {
+  "errors": {
+   "beta_str_with_decay": "TypeError: Parameter 'beta' must be either (<class 'int'>, <class 'float'>). <class 'str'> was given.",
+   "closest_destination_str": "TypeError: Parameter 'closest_destination' must either be a boolean True or False, <class 'str'> was given.",
+   "decay_method_bad_str": "ValueError: Parameter 'decay_method': must be one of ['exponent', 'power']. decay_method=linear was given.",
+   "decay_method_not_str": "TypeError: Parameter 'decay_method' must be a string. <class 'int'> was given.",
+   "decay_str": "TypeError: Parameter 'decay' must either be a boolean True or False, <class 'str'> was given.",
+   "detour_ratio_below_1": "ValueError: Parameter 'detour_ratio': Cannot be less than 1. detour_ratio=0.5 was given.",
+   "detour_ratio_str": "TypeError: Parameter 'detour_ratio' must be either (<class 'int'>, <class 'float'>). <class 'str'> was given.",
+   "elastic_weight_str": "TypeError: Parameter 'elastic_weight' must either be a boolean True or False, <class 'str'> was given.",
+   "elastic_without_knn": "ValueError: Parameter 'elastic_weight': must be provided if `elastic_weight=True`",
+   "keep_diagnostics_str": "TypeError: Parameter 'keep_diagnostics' must either be a boolean True or False, <class 'str'> was given.",
+   "knn_plateau_negative": "ValueError: Parameter 'knn_plateau': Cannot be negative. knn_plateau=-1 was given.",
+   "knn_plateau_str": "TypeError: Parameter 'knn_plateau' must be either (<class 'int'>, <class 'float'>). <class 'str'> was given.",
+   "knn_weight_bad_type": "ValueError: Parameter 'knn_weight' must be either (<class 'str'>, <class 'list'>) of numerical values like [0.5, 0.25, 0.25]. <class 'int'> was given.",
+   "num_cores_str": "TypeError: Parameter 'num_cores' must be <class 'int'>. <class 'str'> was given.",
+   "num_cores_zero": "ValueError: Parameter 'num_cores': Cannot be less than 1. num_cores=0 was given.",
+   "path_exposure_attr_int": "TypeError: Parameter 'path_exposure_attribute' must be a string. <class 'int'> was given.",
+   "path_exposure_attr_missing": "ValueError: Parameter 'path_exposure_attribute' not in layer streets's columns. options are: ['length', 'geometry']",
+   "save_betweenness_as_int": "TypeError: Parameter 'save_betweenness_as' must be a string. <class 'int'> was given.",
+   "save_elastic_as_int": "TypeError: Parameter 'save_elastic_weight_as' must be a string. <class 'int'> was given.",
+   "save_elastic_without_elastic": "ValueError: Parameter 'elastic_weight': must be set to True if `save_elastic_weight_as` is provided",
+   "save_gravity_as_int": "TypeError: Parameter 'save_gravity_as' must be a string. <class 'int'> was given.",
+   "save_path_exposure_as_int": "TypeError: Parameter 'save_path_exposure_as' must be a string. <class 'int'> was given.",
+   "save_path_exposure_without_attr": "ValueError: Parameter 'path_exposure_attribute' must be provided if `save_path_exposure_as` is provided",
+   "save_reach_as_int": "TypeError: Parameter 'save_reach_as' must be a string. <class 'int'> was given.",
+   "search_radius_negative": "ValueError: Parameter 'search_radius': Cannot be negative. search_radius=-1 was given.",
+   "search_radius_str": "TypeError: Parameter 'search_radius' must be either (<class 'int'>, <class 'float'>). <class 'str'> was given.",
+   "turn_penalty_str": "TypeError: Parameter 'turn_penalty' must either be a boolean True or False, <class 'str'> was given."
+  },
+  "keep_diagnostics_typeerror_after_run": {
+   "edges_got_betweenness_column": true,
+   "error": "TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'",
+   "origins_layer_untouched": true
+  },
+  "zonal_untouched_after_probes": true
+ }
+}

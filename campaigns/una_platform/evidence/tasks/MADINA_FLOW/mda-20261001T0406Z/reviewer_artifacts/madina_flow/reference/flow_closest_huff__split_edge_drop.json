@@ -1,0 +1,996 @@
+{
+ "arm": "reference",
+ "sabotage": "split_edge_drop",
+ "scenario": "flow_closest_huff",
+ "seed": 20260930,
+ "state": {
+  "closest_true": {
+   "betweenness_by_edge": {
+    "0": "3ff0000000000000",
+    "1": "4000000000000000",
+    "2": "4000000000000000",
+    "3": "4010000000000000",
+    "4": "4000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "edges": {
+    "columns": [
+     "length",
+     "weight",
+     "parent_street_id",
+     "start",
+     "end",
+     "geometry",
+     "color",
+     "betweenness"
+    ],
+    "dtypes": [
+     "float64",
+     "float64",
+     "int64",
+     "int32",
+     "int32",
+     "geometry",
+     "object",
+     "float64"
+    ],
+    "index": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "index_name": "'id'",
+    "values": {
+     "betweenness": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "4000000000000000",
+      "4010000000000000",
+      "4000000000000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+     ],
+     "color": [
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]"
+     ],
+     "end": [
+      1,
+      4,
+      5,
+      2,
+      1,
+      5,
+      3,
+      6
+     ],
+     "geometry": [
+      "c63485a4cde2f9ae5b68989a",
+      "1fc49fd42ce8d94886d4d462",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "280f9c05edc25fd71d8cb188",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "8daf83c02b0f915aa774c3bc",
+      "2740689bf5a1e1a71873112e"
+     ],
+     "length": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "parent_street_id": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+     ],
+     "start": [
+      0,
+      1,
+      4,
+      5,
+      2,
+      1,
+      2,
+      5
+     ],
+     "weight": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ]
+    }
+   },
+   "error": null,
+   "layers": {
+    "destinations": {
+     "columns": [
+      "weight",
+      "geometry"
+     ],
+     "dtypes": [
+      "float64",
+      "geometry"
+     ],
+     "index": [
+      0,
+      1
+     ],
+     "index_name": "'id'",
+     "values": {
+      "geometry": [
+       "297573dc6da16e7efa1445d4",
+       "1350f12179e02f14a77311db"
+      ],
+      "weight": [
+       "4000000000000000",
+       "4008000000000000"
+      ]
+     }
+    },
+    "origins": {
+     "columns": [
+      "weight",
+      "geometry",
+      "reach",
+      "grav"
+     ],
+     "dtypes": [
+      "float64",
+      "geometry",
+      "float64",
+      "float64"
+     ],
+     "index": [
+      0,
+      1,
+      2
+     ],
+     "index_name": "'id'",
+     "values": {
+      "geometry": [
+       "45afda2c75ea418738e5fb6b",
+       "003c59764374ddffeb26ab7f",
+       "06c9547eaf87c57c004e2be4"
+      ],
+      "grav": [
+       "3ff18fdd6b9604e4",
+       "3ff18fdd6b9604e4",
+       "3ff4a252eaacc075"
+      ],
+      "reach": [
+       "4000000000000000",
+       "4000000000000000",
+       "4000000000000000"
+      ],
+      "weight": [
+       "3ff0000000000000",
+       "4000000000000000",
+       "3ff0000000000000"
+      ]
+     }
+    }
+   },
+   "network_knn_plateau": "0",
+   "network_knn_weight": "None",
+   "progress_seen": true,
+   "return": "None",
+   "shuffled_origin_order": [
+    9,
+    8,
+    7
+   ]
+  },
+  "direct_closest": {
+   "betweenness_by_edge": {
+    "0": "3ff0000000000000",
+    "1": "4000000000000000",
+    "2": "4000000000000000",
+    "3": "4010000000000000",
+    "4": "4000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "origin_gdf": {
+    "columns": [
+     "source_layer",
+     "source_id",
+     "type",
+     "weight",
+     "degree",
+     "geometry",
+     "color",
+     "nearest_edge_id",
+     "edge_start_node",
+     "weight_to_start",
+     "edge_end_node",
+     "weight_to_end",
+     "chunck_path_count",
+     "chunck_path_segment_count",
+     "chunck_path_segment_memory",
+     "chunk_scope_node_count",
+     "reach",
+     "gravity"
+    ],
+    "dtypes": [
+     "str",
+     "int32",
+     "str",
+     "float32",
+     "int32",
+     "geometry",
+     "object",
+     "int64",
+     "int64",
+     "float64",
+     "int64",
+     "float64",
+     "object",
+     "object",
+     "object",
+     "object",
+     "float64",
+     "float64"
+    ],
+    "excluded_time_columns_present": [
+     "chunck_time"
+    ],
+    "index": [
+     9,
+     8,
+     7
+    ],
+    "index_name": "'id'",
+    "stats_columns_present": [
+     "reach",
+     "gravity"
+    ],
+    "values": {
+     "chunck_path_count": [
+      "nan",
+      "nan",
+      "nan"
+     ],
+     "chunck_path_segment_count": [
+      "nan",
+      "nan",
+      "nan"
+     ],
+     "chunck_path_segment_memory": [
+      "nan",
+      "nan",
+      "nan"
+     ],
+     "chunk_scope_node_count": [
+      "nan",
+      "nan",
+      "nan"
+     ],
+     "color": [
+      "[86, 5, 255]",
+      "[86, 5, 255]",
+      "[86, 5, 255]"
+     ],
+     "degree": [
+      0,
+      0,
+      0
+     ],
+     "edge_end_node": [
+      5,
+      4,
+      1
+     ],
+     "edge_start_node": [
+      4,
+      1,
+      0
+     ],
+     "geometry": [
+      "06c9547eaf87c57c004e2be4",
+      "003c59764374ddffeb26ab7f",
+      "45afda2c75ea418738e5fb6b"
+     ],
+     "gravity": [
+      "3ff4a252eaacc075",
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4"
+     ],
+     "nearest_edge_id": [
+      2,
+      1,
+      0
+     ],
+     "reach": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "source_id": [
+      2,
+      1,
+      0
+     ],
+     "source_layer": [
+      "origins",
+      "origins",
+      "origins"
+     ],
+     "type": [
+      "origin",
+      "origin",
+      "origin"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ],
+     "weight_to_end": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ],
+     "weight_to_start": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ]
+    }
+   },
+   "progress_seen": true,
+   "return_keys": [
+    "edge_gdf",
+    "origin_gdf"
+   ]
+  },
+  "direct_huff": {
+   "betweenness_by_edge": {
+    "0": "3ff0000000000000",
+    "1": "4000000000000000",
+    "2": "3ff6666666666667",
+    "3": "400199999999999a",
+    "4": "4004cccccccccccd",
+    "5": "0000000000000000",
+    "6": "40029c591faebe61",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "origin_gdf": {
+    "columns": [
+     "source_layer",
+     "source_id",
+     "type",
+     "weight",
+     "degree",
+     "geometry",
+     "color",
+     "nearest_edge_id",
+     "edge_start_node",
+     "weight_to_start",
+     "edge_end_node",
+     "weight_to_end",
+     "chunck_path_count",
+     "chunck_path_segment_count",
+     "chunck_path_segment_memory",
+     "chunk_scope_node_count",
+     "reach",
+     "gravity",
+     "closest_destination_distance",
+     "furthest_destination_distance",
+     "mean_path_length",
+     "probable_travel_distance",
+     "eligible_destinations",
+     "path_count",
+     "path_segment_count",
+     "path_segment_memory",
+     "scope_node_count",
+     "chunck_count",
+     "memory_stalls"
+    ],
+    "dtypes": [
+     "str",
+     "int32",
+     "str",
+     "float32",
+     "int32",
+     "geometry",
+     "object",
+     "int64",
+     "int64",
+     "float64",
+     "int64",
+     "float64",
+     "object",
+     "object",
+     "object",
+     "object",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64"
+    ],
+    "excluded_time_columns_present": [
+     "destination_discovery_time",
+     "destination_prep_time",
+     "path_generation_time",
+     "chunck_time"
+    ],
+    "index": [
+     9,
+     8,
+     7
+    ],
+    "index_name": "'id'",
+    "stats_columns_present": [
+     "reach",
+     "gravity",
+     "closest_destination_distance",
+     "furthest_destination_distance",
+     "mean_path_length",
+     "probable_travel_distance",
+     "eligible_destinations",
+     "path_count",
+     "path_segment_count",
+     "path_segment_memory",
+     "scope_node_count",
+     "chunck_count",
+     "memory_stalls"
+    ],
+    "values": {
+     "chunck_count": [
+      "3ff0000000000000",
+      "3ff0000000000000",
+      "3ff0000000000000"
+     ],
+     "chunck_path_count": [
+      "[2]",
+      "[3]",
+      "[2]"
+     ],
+     "chunck_path_segment_count": [
+      "[5]",
+      "[9]",
+      "[6]"
+     ],
+     "chunck_path_segment_memory": [
+      "[152]",
+      "[240]",
+      "[160]"
+     ],
+     "chunk_scope_node_count": [
+      "5",
+      "7",
+      "5"
+     ],
+     "closest_destination_distance": [
+      "4059000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "color": [
+      "[86, 5, 255]",
+      "[86, 5, 255]",
+      "[86, 5, 255]"
+     ],
+     "degree": [
+      0,
+      0,
+      0
+     ],
+     "edge_end_node": [
+      5,
+      4,
+      1
+     ],
+     "edge_start_node": [
+      4,
+      1,
+      0
+     ],
+     "eligible_destinations": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "furthest_destination_distance": [
+      "4069000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "geometry": [
+      "06c9547eaf87c57c004e2be4",
+      "003c59764374ddffeb26ab7f",
+      "45afda2c75ea418738e5fb6b"
+     ],
+     "gravity": [
+      "3ff4a252eaacc075",
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4"
+     ],
+     "mean_path_length": [
+      "4063144b41810977",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "memory_stalls": [
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+     ],
+     "nearest_edge_id": [
+      2,
+      1,
+      0
+     ],
+     "path_count": [
+      "4000000000000000",
+      "4008000000000000",
+      "4000000000000000"
+     ],
+     "path_segment_count": [
+      "4014000000000000",
+      "4022000000000000",
+      "4018000000000000"
+     ],
+     "path_segment_memory": [
+      "4063000000000000",
+      "406e000000000000",
+      "4064000000000000"
+     ],
+     "probable_travel_distance": [
+      "4063144b41810977",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "reach": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "scope_node_count": [
+      "4014000000000000",
+      "401c000000000000",
+      "4014000000000000"
+     ],
+     "source_id": [
+      2,
+      1,
+      0
+     ],
+     "source_layer": [
+      "origins",
+      "origins",
+      "origins"
+     ],
+     "type": [
+      "origin",
+      "origin",
+      "origin"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ],
+     "weight_to_end": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ],
+     "weight_to_start": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ]
+    }
+   },
+   "progress_seen": true,
+   "return_keys": [
+    "edge_gdf",
+    "origin_gdf"
+   ]
+  },
+  "huff": {
+   "betweenness_by_edge": {
+    "0": "3ff0000000000000",
+    "1": "4000000000000000",
+    "2": "3ff6666666666667",
+    "3": "400199999999999a",
+    "4": "4004cccccccccccd",
+    "5": "0000000000000000",
+    "6": "40029c591faebe61",
+    "7": "0000000000000000"
+   },
+   "edges": {
+    "columns": [
+     "length",
+     "weight",
+     "parent_street_id",
+     "start",
+     "end",
+     "geometry",
+     "color",
+     "betweenness"
+    ],
+    "dtypes": [
+     "float64",
+     "float64",
+     "int64",
+     "int32",
+     "int32",
+     "geometry",
+     "object",
+     "float64"
+    ],
+    "index": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "index_name": "'id'",
+    "values": {
+     "betweenness": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff6666666666667",
+      "400199999999999a",
+      "4004cccccccccccd",
+      "0000000000000000",
+      "40029c591faebe61",
+      "0000000000000000"
+     ],
+     "color": [
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]"
+     ],
+     "end": [
+      1,
+      4,
+      5,
+      2,
+      1,
+      5,
+      3,
+      6
+     ],
+     "geometry": [
+      "c63485a4cde2f9ae5b68989a",
+      "1fc49fd42ce8d94886d4d462",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "280f9c05edc25fd71d8cb188",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "8daf83c02b0f915aa774c3bc",
+      "2740689bf5a1e1a71873112e"
+     ],
+     "length": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "parent_street_id": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+     ],
+     "start": [
+      0,
+      1,
+      4,
+      5,
+      2,
+      1,
+      2,
+      5
+     ],
+     "weight": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ]
+    }
+   },
+   "error": null,
+   "layers": {
+    "destinations": {
+     "columns": [
+      "weight",
+      "geometry"
+     ],
+     "dtypes": [
+      "float64",
+      "geometry"
+     ],
+     "index": [
+      0,
+      1
+     ],
+     "index_name": "'id'",
+     "values": {
+      "geometry": [
+       "297573dc6da16e7efa1445d4",
+       "1350f12179e02f14a77311db"
+      ],
+      "weight": [
+       "4000000000000000",
+       "4008000000000000"
+      ]
+     }
+    },
+    "origins": {
+     "columns": [
+      "weight",
+      "geometry",
+      "reach",
+      "grav"
+     ],
+     "dtypes": [
+      "float64",
+      "geometry",
+      "float64",
+      "float64"
+     ],
+     "index": [
+      0,
+      1,
+      2
+     ],
+     "index_name": "'id'",
+     "values": {
+      "geometry": [
+       "45afda2c75ea418738e5fb6b",
+       "003c59764374ddffeb26ab7f",
+       "06c9547eaf87c57c004e2be4"
+      ],
+      "grav": [
+       "3ff18fdd6b9604e4",
+       "3ff18fdd6b9604e4",
+       "3ff4a252eaacc075"
+      ],
+      "reach": [
+       "4000000000000000",
+       "4000000000000000",
+       "4000000000000000"
+      ],
+      "weight": [
+       "3ff0000000000000",
+       "4000000000000000",
+       "3ff0000000000000"
+      ]
+     }
+    }
+   },
+   "network_knn_plateau": "0",
+   "network_knn_weight": "None",
+   "progress_seen": true,
+   "return": "None",
+   "shuffled_origin_order": [
+    9,
+    8,
+    7
+   ]
+  },
+  "models_distinguish": true,
+  "split_probe": {
+   "betweenness_by_edge": {
+    "0": "3ff0000000000000",
+    "1": "4000000000000000",
+    "3": "4010000000000000",
+    "4": "4000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "edges": {
+    "columns": [
+     "length",
+     "weight",
+     "parent_street_id",
+     "start",
+     "end",
+     "geometry",
+     "color",
+     "betweenness"
+    ],
+    "dtypes": [
+     "float64",
+     "float64",
+     "int64",
+     "int32",
+     "int32",
+     "geometry",
+     "object",
+     "float64"
+    ],
+    "index": [
+     0,
+     1,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "index_name": "'id'",
+    "values": {
+     "betweenness": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "4010000000000000",
+      "4000000000000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+     ],
+     "color": [
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]",
+      "[125, 125, 125]"
+     ],
+     "end": [
+      1,
+      4,
+      2,
+      1,
+      5,
+      3,
+      6
+     ],
+     "geometry": [
+      "c63485a4cde2f9ae5b68989a",
+      "1fc49fd42ce8d94886d4d462",
+      "280f9c05edc25fd71d8cb188",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "8daf83c02b0f915aa774c3bc",
+      "2740689bf5a1e1a71873112e"
+     ],
+     "length": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "parent_street_id": [
+      0,
+      1,
+      2,
+      4,
+      5,
+      6,
+      7
+     ],
+     "start": [
+      0,
+      1,
+      5,
+      2,
+      1,
+      2,
+      5
+     ],
+     "weight": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ]
+    }
+   },
+   "first_split_row": 2,
+   "first_split_shared_by": 2,
+   "parents": [
+    0,
+    1,
+    2,
+    4,
+    5,
+    6,
+    7
+   ],
+   "split_edge_dropped": {
+    "parent_street_id": 2,
+    "row": 2,
+    "shared_by": 2
+   },
+   "street_bt_index": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "street_bt_index_dtype": "int64",
+   "street_bt_values": [
+    "3ff0000000000000",
+    "4000000000000000",
+    "4000000000000000",
+    "7ff8000000000000",
+    "4000000000000000",
+    "0000000000000000",
+    "0000000000000000",
+    "0000000000000000"
+   ]
+  }
+ }
+}

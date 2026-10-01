@@ -1,0 +1,11 @@
+nc=2 exposure per-edge bit-stability experiment (review NOTE-2 disposition)
+===========================================================================
+Three independent process invocations of the direct exposure engine at
+num_cores=2 (facade arm, suite fixture, seed 20260930): per-edge
+betweenness bits (IEEE-754 hex) are IDENTICAL across all three runs
+(run1==run2==run3). So on this 3-origin fixture the shared-queue
+partition happens to be stable; the suite still digests nc=2 exposure
+edges structurally only, because the partition is load-dependent by
+construction and carries no bitwise-stability contract upstream.
+Commands: probe_nc2_edges.py x3 -> nc2_edges_run{1,2,3}.json; compared
+with run1==run2 / run1==run3 / run2==run3 all True, 1 distinct digest set.

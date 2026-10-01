@@ -6,15 +6,27 @@ Upstream archived read-only 2026-08-25; this port tracks that exact commit.
 
 DELTA LEDGER (complete list of deviations from the pinned source):
 
-betweenness.py  INTERIM: carries the verbatim module import block and the
-           access-engine trio (``get_origin_properties`` / ``one_access`` /
-           ``parallel_access``, upstream lines 1016-1323) delivered by the
-           accessibility task.  The five betweenness functions
-           (``parallel_betweenness``, ``one_betweenness_2``,
+betweenness.py  VERBATIM module — the facade file is a module-docstring
+           header followed by the pinned upstream file byte for byte
+           (delivered across MADINA_ACCESS: the access-engine trio
+           ``get_origin_properties`` / ``one_access`` /
+           ``parallel_access``; and MADINA_FLOW:
+           ``parallel_betweenness``, ``one_betweenness_2``,
            ``clockwiseangle_and_distance``, ``betweenness_exposure``,
-           ``paralell_betweenness_exposure``, upstream lines 30-1015) land
-           with MADINA_FLOW extending this same file; until then the
-           ``una`` namespace is missing those five names vs upstream.
+           ``paralell_betweenness_exposure``).  The header docstring is
+           the only delta (upstream has no module docstring); it
+           records the pinned betweenness quirks (in-place
+           ``decay_method`` reassignment with a first-path decay
+           factor, the 0.01 weight clamp, per-destination exception
+           swallowing, the closest_destination origin-stats NameError,
+           the uniform min-distance exponent decay, the all-zero-gravity
+           ``task_done`` skip, the hardcoded 'cocentric-chunks'
+           chunking, the 'decayed_mean_hazzad' typo column, the
+           UNSEEDED ``sample(frac=1)`` origin shuffle, the low-level
+           engine's num_cores>1 ``array_split`` all-zero defect, the
+           one_betweenness_2 attribution degeneracy over trimmed paths,
+           and the exposure engine's queue-partition nondeterminism at
+           num_cores>1).
 
 paths.py   VERBATIM copy — zero deltas.  The module is pure
            math/collections/heapq/networkx over the already-bridged
@@ -25,27 +37,28 @@ paths.py   VERBATIM copy — zero deltas.  The module is pure
 
 __init__.  Upstream star-imports ``.betweenness`` BEFORE ``.paths``;
            this init does the same.  The star-import copies the
-           betweenness module's public names (trio + module-level
-           imports) into ``una``, matching upstream semantics.
+           betweenness module's public names (all eight functions +
+           module-level imports) into ``una``, matching upstream
+           semantics.
 
-tools.py   INTERIM surface: ``validate_zonal_ready`` / ``accessibility`` /
-           ``service_area`` / ``alternative_paths`` verbatim (the
-           accessibility task delivered the first three), plus the
-           ``turn_o_scope`` / ``path_generator`` / ``parallel_access``
-           names upstream tools.py re-imports (INTERIM: the facade
-           re-imports only ``parallel_access`` until MADINA_FLOW;
-           ``paralell_betweenness_exposure`` is a fourth upstream
-           re-import that lands then).  ``betweenness`` joins from
-           ``.betweenness`` with MADINA_FLOW, reproducing the upstream
-           tools namespace exactly.
+tools.py   VERBATIM module — the facade file is a module-docstring
+           header followed by the pinned upstream file byte for byte
+           (all five public functions:
+           ``validate_zonal_ready`` / ``accessibility`` /
+           ``service_area`` / ``alternative_paths`` /
+           ``betweenness``, the last delivered by MADINA_FLOW).
+           The header docstring is the only delta.
 
 Everything else — signatures, defaults, validation messages, the 1e-5
 path-acceptance tolerance, heap/set iteration orders, dict insertion
 orders, sort_values("distance") ordering, GeometryCollection assembly
 (whole untrimmed origin/destination segments), the UNSEEDED
-``sample(frac=1)`` origin shuffle, and one_access's exception swallowing
-— is the pinned behavior, verified bitwise against the reference under
-the same interpreter.
+``sample(frac=1)`` origin shuffles, one_access's exception swallowing,
+betweenness's ``knn_weight``/``knn_plateau`` network-attribute clobber
+on every call, the duplicated ``save_gravity_as`` type check, and
+keep_diagnostics joining time/memory diagnostic columns — is the pinned
+behavior, verified bitwise against the reference under the same
+interpreter.
 """
 
 from .betweenness import *  # noqa: F401,F403

@@ -1,0 +1,32 @@
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+            raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+        digest = json.loads(out.read_text())
+        if "scenario_error" in digest:
+>           raise AssertionError(
+                f"{arm}/{scenario} failed inside the scenario:\n"
+                f"{digest['scenario_error'][-2000:]}")
+E           AssertionError: reference/flow_closest_huff failed inside the scenario:
+E           Traceback (most recent call last):
+E             File "/storage/scratch1/1/dsynn6/una-x/tests/madina_api/flow/_flow_scenario.py", line 1262, in main
+E               mutate(digest["state"])
+E             File "/storage/scratch1/1/dsynn6/una-x/tests/madina_api/flow/_flow_scenario.py", line 1204, in _sabotage_split_edge_drop
+E               raise RuntimeError(
+E           RuntimeError: sabotage split_edge_drop: edge row 0 is not a split edge (parent_street_id 0 appears 1x)
+
+tests/madina_api/flow/conftest.py:81: AssertionError
+=========================== short test summary info ============================
+FAILED tests/madina_api/flow/test_flow_surface_parity.py::test_validation_matrix_all_real_errors
+FAILED tests/madina_api/flow/test_flow_surface_parity.py::test_sabotaged_digests_are_selected[split_edge_drop-flow_closest_huff]
+FAILED tests/madina_api/flow/test_flow_surface_parity.py::test_split_edge_drop_is_a_real_split
+3 failed, 24 passed in 225.96s (0:03:45)
+
+[exited with code 0]

@@ -1,18 +1,14 @@
-"""MADINA_ACCESS reflection probe: dump the public surface of one arm's
+"""MADINA_FLOW reflection probe: dump the public surface of one arm's
 ``una`` namespace — the package, ``una.betweenness`` and ``una.tools``
 modules (public names, function signatures via ``inspect.signature``) —
 as a JSON digest.
 
 Executed as a subprocess under the reference venv interpreter (the only
 interpreter where the pinned upstream ``madina`` is importable).  The
-test compares the two arm digests modulo an explicit, ledgered delta
-list — reflection is necessary, not sufficient (dossier 01).
-
-Post-MADINA_FLOW ledger state (see compat una/__init__ ledger): the
-facade una package is COMPLETE — all eight betweenness-module functions
-and all five tools functions are delivered verbatim; both ledgers are
-empty (any name delta at all is a failure).  The signature checks cover
-the full delivered surface.
+test compares the two arm digests — at MADINA_FLOW delivery the facade
+una package is COMPLETE (all eight betweenness-module functions and all
+five tools functions, delivered verbatim), so any name delta at all is
+a failure; reflection is necessary, not sufficient (dossier 01).
 """
 from __future__ import annotations
 

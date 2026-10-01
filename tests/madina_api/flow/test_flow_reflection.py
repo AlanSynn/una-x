@@ -4,44 +4,16 @@ with its exact signature, star-export identity, and the module
 namespaces.
 
 Reflection is necessary but not sufficient (dossier 01); the behavior
-scenarios live in test_access_surface_parity.py.  Post-MADINA_FLOW
-state (see compat una/__init__ ledger): the facade una package is
-COMPLETE — both ledgers below are EMPTY, so any name delta at all
-(reference-only or facade-only) is an unledgered surface change and
-fails.  (At ACCESS delivery these sets still held the five then-
-undelivered betweenness functions + two tools names; MADINA_FLOW
-delivered them and the ledgers retired to empty, per the documented
-shrink-to-empty mechanism.)
+scenarios live in test_flow_surface_parity.py.  At MADINA_FLOW delivery
+(see compat una/__init__ ledger) the facade una package is COMPLETE —
+the parity ledgers in the access/paths suites are EMPTY, and this probe
+carries no ledger at all: any name delta at all fails.
 """
 from __future__ import annotations
 
 import pytest
 
 pytestmark = pytest.mark.madina_api
-
-# ---- ledgered deltas (see module docstring) -------------------------
-REFERENCE_ONLY_UNA_NAMES = set()
-FACADE_ONLY_UNA_NAMES = set()
-REFERENCE_ONLY_TOOLS_NAMES = set()
-FACADE_ONLY_TOOLS_NAMES = set()
-
-BETWEENNESS_FUNCTIONS = (
-    "parallel_betweenness",
-    "one_betweenness_2",
-    "clockwiseangle_and_distance",
-    "betweenness_exposure",
-    "paralell_betweenness_exposure",
-    "get_origin_properties",
-    "one_access",
-    "parallel_access",
-)
-TOOLS_FUNCTIONS = (
-    "validate_zonal_ready",
-    "accessibility",
-    "service_area",
-    "alternative_paths",
-    "betweenness",
-)
 
 
 def _annotation_aliases(sig):
@@ -66,17 +38,20 @@ def test_reflection_matches_pinned_reference(reflection_runner):
     assert facade["identity"]["package_has_path"] is True
 
     rs, fs = ref["surface"], facade["surface"]
-    ref_una = set(rs["una_public"]) - REFERENCE_ONLY_UNA_NAMES
-    fa_una = set(fs["una_public"]) - FACADE_ONLY_UNA_NAMES
-    ref_tools = set(rs["tools_public"]) - REFERENCE_ONLY_TOOLS_NAMES
-    fa_tools = set(fs["tools_public"]) - FACADE_ONLY_TOOLS_NAMES
-
-    assert fa_una == ref_una, (
-        f"unledgered una delta: only-ref={sorted(ref_una - fa_una)} "
-        f"only-facade={sorted(fa_una - ref_una)}")
-    assert fa_tools == ref_tools, (
-        f"unledgered tools delta: only-ref={sorted(ref_tools - fa_tools)} "
-        f"only-facade={sorted(fa_tools - ref_tools)}")
+    # no ledger at the completed delivery: any delta at all fails
+    assert set(fs["una_public"]) == set(rs["una_public"]), (
+        f"unledgered una delta: "
+        f"only-ref={sorted(set(rs['una_public']) - set(fs['una_public']))} "
+        f"only-facade={sorted(set(fs['una_public']) - set(rs['una_public']))}")
+    assert set(fs["tools_public"]) == set(rs["tools_public"]), (
+        f"unledgered tools delta: "
+        f"only-ref={sorted(set(rs['tools_public']) - set(fs['tools_public']))} "
+        f"only-facade={sorted(set(fs['tools_public']) - set(rs['tools_public']))}")
+    assert set(fs["betweenness_public"]) == set(rs["betweenness_public"]), (
+        f"unledgered betweenness-module delta: only-ref="
+        f"{sorted(set(rs['betweenness_public']) - set(fs['betweenness_public']))} "
+        f"only-facade="
+        f"{sorted(set(fs['betweenness_public']) - set(rs['betweenness_public']))}")
 
     # delivered surface is a verbatim port: EXACT equality modulo the
     # documented annotation aliases
@@ -84,16 +59,16 @@ def test_reflection_matches_pinned_reference(reflection_runner):
         ref_sigs = {k: _annotation_aliases(v) for k, v in rs[key].items()}
         fa_sigs = {k: _annotation_aliases(v) for k, v in fs[key].items()}
         assert fa_sigs == ref_sigs, f"{key} differ after alias stripping"
-
-    # the betweenness MODULE namespace (public imports carried by the
-    # verbatim import block) matches modulo the same ledger — the five
-    # undelivered functions are the module's reference-only names too
-    ref_btd = set(rs["betweenness_public"]) - REFERENCE_ONLY_UNA_NAMES
-    fa_btd = set(fs["betweenness_public"]) - FACADE_ONLY_UNA_NAMES
-    assert fa_btd == ref_btd, (
-        f"unledgered betweenness-module delta: "
-        f"only-ref={sorted(ref_btd - fa_btd)} "
-        f"only-facade={sorted(fa_btd - ref_btd)}")
+    # the betweenness signature set is the FULL engine surface
+    assert set(rs["betweenness_functions"]) == {
+        "parallel_betweenness", "one_betweenness_2",
+        "clockwiseangle_and_distance", "betweenness_exposure",
+        "paralell_betweenness_exposure", "get_origin_properties",
+        "one_access", "parallel_access"}
+    assert set(rs["tools_functions"]) == {
+        "validate_zonal_ready", "accessibility", "service_area",
+        "alternative_paths", "betweenness",
+        "paralell_betweenness_exposure"}
 
 
 def test_star_exports_and_submodule_identity(reflection_runner):
@@ -109,9 +84,7 @@ def test_star_exports_and_submodule_identity(reflection_runner):
     # the tools-only names are NOT bound at the una level (the tools
     # surface is reachable only through the submodule), while
     # `betweenness` (submodule binding) and
-    # `paralell_betweenness_exposure` (star export) ARE.  (At ACCESS
-    # delivery all five were False; the two collisions arrived with the
-    # MADINA_FLOW delivery — upstream behaves the same way.)
+    # `paralell_betweenness_exposure` (star export) ARE.
     assert rs["una_level_tools_bindings"] == fs[
         "una_level_tools_bindings"]
     tools_bindings = fs["una_level_tools_bindings"]

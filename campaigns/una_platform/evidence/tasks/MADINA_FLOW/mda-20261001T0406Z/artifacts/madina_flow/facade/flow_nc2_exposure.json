@@ -1,0 +1,145 @@
+{
+ "arm": "facade",
+ "scenario": "flow_nc2_exposure",
+ "seed": 20260930,
+ "state": {
+  "layer_state_equal_across_cores": true,
+  "nc1_edges_structural": {
+   "all_finite": true,
+   "edges_count": 8,
+   "nonzero_edges": 6
+  },
+  "nc1_layers": {
+   "destinations": {
+    "columns": [
+     "weight",
+     "geometry"
+    ],
+    "dtypes": [
+     "float64",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "297573dc6da16e7efa1445d4",
+      "1350f12179e02f14a77311db"
+     ],
+     "weight": [
+      "4000000000000000",
+      "4008000000000000"
+     ]
+    }
+   },
+   "origins": {
+    "columns": [
+     "weight",
+     "geometry",
+     "reach"
+    ],
+    "dtypes": [
+     "float64",
+     "geometry",
+     "float64"
+    ],
+    "index": [
+     0,
+     1,
+     2
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "45afda2c75ea418738e5fb6b",
+      "003c59764374ddffeb26ab7f",
+      "06c9547eaf87c57c004e2be4"
+     ],
+     "reach": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ]
+    }
+   }
+  },
+  "nc1_progress_seen": true,
+  "nc2_edges_structural": {
+   "all_finite": true,
+   "edges_count": 8,
+   "nonzero_edges": 6
+  },
+  "nc2_layers": {
+   "destinations": {
+    "columns": [
+     "weight",
+     "geometry"
+    ],
+    "dtypes": [
+     "float64",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "297573dc6da16e7efa1445d4",
+      "1350f12179e02f14a77311db"
+     ],
+     "weight": [
+      "4000000000000000",
+      "4008000000000000"
+     ]
+    }
+   },
+   "origins": {
+    "columns": [
+     "weight",
+     "geometry",
+     "reach"
+    ],
+    "dtypes": [
+     "float64",
+     "geometry",
+     "float64"
+    ],
+    "index": [
+     0,
+     1,
+     2
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "45afda2c75ea418738e5fb6b",
+      "003c59764374ddffeb26ab7f",
+      "06c9547eaf87c57c004e2be4"
+     ],
+     "reach": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ]
+    }
+   }
+  },
+  "nc2_progress_seen": true,
+  "nondeterminism_note": "exposure engine num_cores>1: origins are distributed through a shared mp queue, so the partition \u2014 and with it the per-edge addition order \u2014 is load-dependent BY CONSTRUCTION and carries no bitwise-stability contract upstream; empirically stable across three retained runs on this fixture (evidence logs/nc2_stability_probe/), so edges are digested structurally only as the conservative choice; layers are per-origin and partition-independent (bitwise)"
+ }
+}

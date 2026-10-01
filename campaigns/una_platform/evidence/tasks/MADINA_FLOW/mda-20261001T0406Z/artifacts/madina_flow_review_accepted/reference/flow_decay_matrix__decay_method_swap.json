@@ -1,0 +1,1078 @@
+{
+ "arm": "reference",
+ "sabotage": "decay_method_swap",
+ "scenario": "flow_decay_matrix",
+ "seed": 20260930,
+ "state": {
+  "cap_differs_from_uncapped": true,
+  "destniation_cap_1": {
+   "betweenness_by_edge": {
+    "0": "3ff0000000000000",
+    "1": "4000000000000000",
+    "2": "4000000000000000",
+    "3": "4010000000000000",
+    "4": "4000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "origin_gdf": {
+    "columns": [
+     "source_layer",
+     "source_id",
+     "type",
+     "weight",
+     "degree",
+     "geometry",
+     "color",
+     "nearest_edge_id",
+     "edge_start_node",
+     "weight_to_start",
+     "edge_end_node",
+     "weight_to_end",
+     "chunck_path_count",
+     "chunck_path_segment_count",
+     "chunck_path_segment_memory",
+     "chunk_scope_node_count",
+     "reach",
+     "gravity",
+     "closest_destination_distance",
+     "furthest_destination_distance",
+     "mean_path_length",
+     "probable_travel_distance",
+     "eligible_destinations",
+     "path_count",
+     "path_segment_count",
+     "path_segment_memory",
+     "scope_node_count",
+     "chunck_count",
+     "memory_stalls"
+    ],
+    "dtypes": [
+     "str",
+     "int32",
+     "str",
+     "float32",
+     "int32",
+     "geometry",
+     "object",
+     "int64",
+     "int64",
+     "float64",
+     "int64",
+     "float64",
+     "object",
+     "object",
+     "object",
+     "object",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64"
+    ],
+    "excluded_time_columns_present": [
+     "destination_discovery_time",
+     "destination_prep_time",
+     "path_generation_time",
+     "chunck_time"
+    ],
+    "index": [
+     9,
+     8,
+     7
+    ],
+    "index_name": "'id'",
+    "stats_columns_present": [
+     "reach",
+     "gravity",
+     "closest_destination_distance",
+     "furthest_destination_distance",
+     "mean_path_length",
+     "probable_travel_distance",
+     "eligible_destinations",
+     "path_count",
+     "path_segment_count",
+     "path_segment_memory",
+     "scope_node_count",
+     "chunck_count",
+     "memory_stalls"
+    ],
+    "values": {
+     "chunck_count": [
+      "3ff0000000000000",
+      "3ff0000000000000",
+      "3ff0000000000000"
+     ],
+     "chunck_path_count": [
+      "[1]",
+      "[2]",
+      "[1]"
+     ],
+     "chunck_path_segment_count": [
+      "[2]",
+      "[6]",
+      "[3]"
+     ],
+     "chunck_path_segment_memory": [
+      "[72]",
+      "[160]",
+      "[80]"
+     ],
+     "chunk_scope_node_count": [
+      "3",
+      "6",
+      "4"
+     ],
+     "closest_destination_distance": [
+      "4059000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "color": [
+      "[86, 5, 255]",
+      "[86, 5, 255]",
+      "[86, 5, 255]"
+     ],
+     "degree": [
+      0,
+      0,
+      0
+     ],
+     "edge_end_node": [
+      5,
+      4,
+      1
+     ],
+     "edge_start_node": [
+      4,
+      1,
+      0
+     ],
+     "eligible_destinations": [
+      "3ff0000000000000",
+      "3ff0000000000000",
+      "3ff0000000000000"
+     ],
+     "furthest_destination_distance": [
+      "4059000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "geometry": [
+      "06c9547eaf87c57c004e2be4",
+      "003c59764374ddffeb26ab7f",
+      "45afda2c75ea418738e5fb6b"
+     ],
+     "gravity": [
+      "3ff4a252eaacc075",
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4"
+     ],
+     "mean_path_length": [
+      "4059000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "memory_stalls": [
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+     ],
+     "nearest_edge_id": [
+      2,
+      1,
+      0
+     ],
+     "path_count": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ],
+     "path_segment_count": [
+      "4000000000000000",
+      "4018000000000000",
+      "4008000000000000"
+     ],
+     "path_segment_memory": [
+      "4052000000000000",
+      "4064000000000000",
+      "4054000000000000"
+     ],
+     "probable_travel_distance": [
+      "4059000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "reach": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "scope_node_count": [
+      "4008000000000000",
+      "4018000000000000",
+      "4010000000000000"
+     ],
+     "source_id": [
+      2,
+      1,
+      0
+     ],
+     "source_layer": [
+      "origins",
+      "origins",
+      "origins"
+     ],
+     "type": [
+      "origin",
+      "origin",
+      "origin"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ],
+     "weight_to_end": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ],
+     "weight_to_start": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ]
+    }
+   },
+   "progress_seen": true
+  },
+  "detour_1_0": {
+   "betweenness_by_edge": {
+    "0": "3ff0000000000000",
+    "1": "4000000000000000",
+    "2": "3ff6666666666667",
+    "3": "400199999999999a",
+    "4": "4004cccccccccccd",
+    "5": "0000000000000000",
+    "6": "40029c591faebe61",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "progress_seen": true
+  },
+  "exponent": {
+   "betweenness_by_edge": {
+    "0": "3efa36e2eb1c432e",
+    "1": "3f0a36e2eb1c432e",
+    "2": "3f127ccf47f7f24b",
+    "3": "3f17bafcaa30cc87",
+    "4": "3f110a137f38c544",
+    "5": "0000000000000000",
+    "6": "3f0e7de8722aff64",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "origin_gdf": {
+    "columns": [
+     "source_layer",
+     "source_id",
+     "type",
+     "weight",
+     "degree",
+     "geometry",
+     "color",
+     "nearest_edge_id",
+     "edge_start_node",
+     "weight_to_start",
+     "edge_end_node",
+     "weight_to_end",
+     "chunck_path_count",
+     "chunck_path_segment_count",
+     "chunck_path_segment_memory",
+     "chunk_scope_node_count",
+     "reach",
+     "gravity",
+     "closest_destination_distance",
+     "furthest_destination_distance",
+     "mean_path_length",
+     "probable_travel_distance",
+     "eligible_destinations",
+     "path_count",
+     "path_segment_count",
+     "path_segment_memory",
+     "scope_node_count",
+     "chunck_count",
+     "memory_stalls"
+    ],
+    "dtypes": [
+     "str",
+     "int32",
+     "str",
+     "float32",
+     "int32",
+     "geometry",
+     "object",
+     "int64",
+     "int64",
+     "float64",
+     "int64",
+     "float64",
+     "object",
+     "object",
+     "object",
+     "object",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64"
+    ],
+    "excluded_time_columns_present": [
+     "destination_discovery_time",
+     "destination_prep_time",
+     "path_generation_time",
+     "chunck_time"
+    ],
+    "index": [
+     9,
+     8,
+     7
+    ],
+    "index_name": "'id'",
+    "stats_columns_present": [
+     "reach",
+     "gravity",
+     "closest_destination_distance",
+     "furthest_destination_distance",
+     "mean_path_length",
+     "probable_travel_distance",
+     "eligible_destinations",
+     "path_count",
+     "path_segment_count",
+     "path_segment_memory",
+     "scope_node_count",
+     "chunck_count",
+     "memory_stalls"
+    ],
+    "values": {
+     "chunck_count": [
+      "3ff0000000000000",
+      "3ff0000000000000",
+      "3ff0000000000000"
+     ],
+     "chunck_path_count": [
+      "[2]",
+      "[3]",
+      "[2]"
+     ],
+     "chunck_path_segment_count": [
+      "[5]",
+      "[9]",
+      "[6]"
+     ],
+     "chunck_path_segment_memory": [
+      "[152]",
+      "[240]",
+      "[160]"
+     ],
+     "chunk_scope_node_count": [
+      "5",
+      "7",
+      "5"
+     ],
+     "closest_destination_distance": [
+      "4059000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "color": [
+      "[86, 5, 255]",
+      "[86, 5, 255]",
+      "[86, 5, 255]"
+     ],
+     "degree": [
+      0,
+      0,
+      0
+     ],
+     "edge_end_node": [
+      5,
+      4,
+      1
+     ],
+     "edge_start_node": [
+      4,
+      1,
+      0
+     ],
+     "eligible_destinations": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "furthest_destination_distance": [
+      "4069000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "geometry": [
+      "06c9547eaf87c57c004e2be4",
+      "003c59764374ddffeb26ab7f",
+      "45afda2c75ea418738e5fb6b"
+     ],
+     "gravity": [
+      "3ff4a252eaacc075",
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4"
+     ],
+     "mean_path_length": [
+      "4063144b41810977",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "memory_stalls": [
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+     ],
+     "nearest_edge_id": [
+      2,
+      1,
+      0
+     ],
+     "path_count": [
+      "4000000000000000",
+      "4008000000000000",
+      "4000000000000000"
+     ],
+     "path_segment_count": [
+      "4014000000000000",
+      "4022000000000000",
+      "4018000000000000"
+     ],
+     "path_segment_memory": [
+      "4063000000000000",
+      "406e000000000000",
+      "4064000000000000"
+     ],
+     "probable_travel_distance": [
+      "3f7e2e367798b861",
+      "3f747ae147ae147c",
+      "3f747ae147ae147c"
+     ],
+     "reach": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "scope_node_count": [
+      "4014000000000000",
+      "401c000000000000",
+      "4014000000000000"
+     ],
+     "source_id": [
+      2,
+      1,
+      0
+     ],
+     "source_layer": [
+      "origins",
+      "origins",
+      "origins"
+     ],
+     "type": [
+      "origin",
+      "origin",
+      "origin"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ],
+     "weight_to_end": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ],
+     "weight_to_start": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ]
+    }
+   },
+   "progress_seen": true
+  },
+  "exponent_differs_from_no_decay": true,
+  "exposure_detour_engages": true,
+  "exposure_penalty_exponent_differs": true,
+  "exposure_penalty_power_differs": true,
+  "no_decay": {
+   "betweenness_by_edge": {
+    "0": "3ff0000000000000",
+    "1": "4000000000000000",
+    "2": "3ff6666666666667",
+    "3": "400199999999999a",
+    "4": "4004cccccccccccd",
+    "5": "0000000000000000",
+    "6": "40029c591faebe61",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "origin_gdf": {
+    "columns": [
+     "source_layer",
+     "source_id",
+     "type",
+     "weight",
+     "degree",
+     "geometry",
+     "color",
+     "nearest_edge_id",
+     "edge_start_node",
+     "weight_to_start",
+     "edge_end_node",
+     "weight_to_end",
+     "chunck_path_count",
+     "chunck_path_segment_count",
+     "chunck_path_segment_memory",
+     "chunk_scope_node_count",
+     "reach",
+     "gravity",
+     "closest_destination_distance",
+     "furthest_destination_distance",
+     "mean_path_length",
+     "probable_travel_distance",
+     "eligible_destinations",
+     "path_count",
+     "path_segment_count",
+     "path_segment_memory",
+     "scope_node_count",
+     "chunck_count",
+     "memory_stalls"
+    ],
+    "dtypes": [
+     "str",
+     "int32",
+     "str",
+     "float32",
+     "int32",
+     "geometry",
+     "object",
+     "int64",
+     "int64",
+     "float64",
+     "int64",
+     "float64",
+     "object",
+     "object",
+     "object",
+     "object",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64"
+    ],
+    "excluded_time_columns_present": [
+     "destination_discovery_time",
+     "destination_prep_time",
+     "path_generation_time",
+     "chunck_time"
+    ],
+    "index": [
+     9,
+     8,
+     7
+    ],
+    "index_name": "'id'",
+    "stats_columns_present": [
+     "reach",
+     "gravity",
+     "closest_destination_distance",
+     "furthest_destination_distance",
+     "mean_path_length",
+     "probable_travel_distance",
+     "eligible_destinations",
+     "path_count",
+     "path_segment_count",
+     "path_segment_memory",
+     "scope_node_count",
+     "chunck_count",
+     "memory_stalls"
+    ],
+    "values": {
+     "chunck_count": [
+      "3ff0000000000000",
+      "3ff0000000000000",
+      "3ff0000000000000"
+     ],
+     "chunck_path_count": [
+      "[2]",
+      "[3]",
+      "[2]"
+     ],
+     "chunck_path_segment_count": [
+      "[5]",
+      "[9]",
+      "[6]"
+     ],
+     "chunck_path_segment_memory": [
+      "[152]",
+      "[240]",
+      "[160]"
+     ],
+     "chunk_scope_node_count": [
+      "5",
+      "7",
+      "5"
+     ],
+     "closest_destination_distance": [
+      "4059000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "color": [
+      "[86, 5, 255]",
+      "[86, 5, 255]",
+      "[86, 5, 255]"
+     ],
+     "degree": [
+      0,
+      0,
+      0
+     ],
+     "edge_end_node": [
+      5,
+      4,
+      1
+     ],
+     "edge_start_node": [
+      4,
+      1,
+      0
+     ],
+     "eligible_destinations": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "furthest_destination_distance": [
+      "4069000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "geometry": [
+      "06c9547eaf87c57c004e2be4",
+      "003c59764374ddffeb26ab7f",
+      "45afda2c75ea418738e5fb6b"
+     ],
+     "gravity": [
+      "3ff4a252eaacc075",
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4"
+     ],
+     "mean_path_length": [
+      "4063144b41810977",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "memory_stalls": [
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+     ],
+     "nearest_edge_id": [
+      2,
+      1,
+      0
+     ],
+     "path_count": [
+      "4000000000000000",
+      "4008000000000000",
+      "4000000000000000"
+     ],
+     "path_segment_count": [
+      "4014000000000000",
+      "4022000000000000",
+      "4018000000000000"
+     ],
+     "path_segment_memory": [
+      "4063000000000000",
+      "406e000000000000",
+      "4064000000000000"
+     ],
+     "probable_travel_distance": [
+      "4063144b41810977",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "reach": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "scope_node_count": [
+      "4014000000000000",
+      "401c000000000000",
+      "4014000000000000"
+     ],
+     "source_id": [
+      2,
+      1,
+      0
+     ],
+     "source_layer": [
+      "origins",
+      "origins",
+      "origins"
+     ],
+     "type": [
+      "origin",
+      "origin",
+      "origin"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ],
+     "weight_to_end": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ],
+     "weight_to_start": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ]
+    }
+   },
+   "progress_seen": true
+  },
+  "penalty_equal_1_5": {
+   "betweenness_by_edge": {
+    "0": "3ff0000000000000",
+    "1": "40032c0a6db53d0f",
+    "2": "4000000000000000",
+    "3": "40044b6d09c23a69",
+    "4": "3ffdcf8c52e1f194",
+    "5": "3fd999999999999b",
+    "6": "40029c591faebe61",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "progress_seen": true
+  },
+  "penalty_exponent_1_5": {
+   "betweenness_by_edge": {
+    "0": "3ff0000000000000",
+    "1": "4002b203077bf4f7",
+    "2": "3ffe6acd52e8cfa6",
+    "3": "4003e4b89ed1131a",
+    "4": "3fff177e0787f068",
+    "5": "3fd84ca75e5d00e0",
+    "6": "40029c591faebe60",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "progress_seen": true
+  },
+  "penalty_power_1_5": {
+   "betweenness_by_edge": {
+    "0": "3ff0000000000000",
+    "1": "4001f68d1260a6c5",
+    "2": "3ffc01f10c4f3594",
+    "3": "4003421bb73c72b8",
+    "4": "4000a045744a1d97",
+    "5": "3fd5537956fcee28",
+    "6": "40029c591faebe61",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "progress_seen": true
+  },
+  "power": {
+   "betweenness_by_edge": {
+    "0": "3fe18fdd6b9604e4",
+    "1": "3ff18fdd6b9604e4",
+    "2": "3feebb20fb32b12e",
+    "3": "3ff663e90f088dbf",
+    "4": "3ff6d49fd8a96cc2",
+    "5": "0000000000000000",
+    "6": "3ff60b67da662afa",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "origin_gdf": {
+    "columns": [
+     "source_layer",
+     "source_id",
+     "type",
+     "weight",
+     "degree",
+     "geometry",
+     "color",
+     "nearest_edge_id",
+     "edge_start_node",
+     "weight_to_start",
+     "edge_end_node",
+     "weight_to_end",
+     "chunck_path_count",
+     "chunck_path_segment_count",
+     "chunck_path_segment_memory",
+     "chunk_scope_node_count",
+     "reach",
+     "gravity",
+     "closest_destination_distance",
+     "furthest_destination_distance",
+     "mean_path_length",
+     "probable_travel_distance",
+     "eligible_destinations",
+     "path_count",
+     "path_segment_count",
+     "path_segment_memory",
+     "scope_node_count",
+     "chunck_count",
+     "memory_stalls"
+    ],
+    "dtypes": [
+     "str",
+     "int32",
+     "str",
+     "float32",
+     "int32",
+     "geometry",
+     "object",
+     "int64",
+     "int64",
+     "float64",
+     "int64",
+     "float64",
+     "object",
+     "object",
+     "object",
+     "object",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64"
+    ],
+    "excluded_time_columns_present": [
+     "destination_discovery_time",
+     "destination_prep_time",
+     "path_generation_time",
+     "chunck_time"
+    ],
+    "index": [
+     9,
+     8,
+     7
+    ],
+    "index_name": "'id'",
+    "stats_columns_present": [
+     "reach",
+     "gravity",
+     "closest_destination_distance",
+     "furthest_destination_distance",
+     "mean_path_length",
+     "probable_travel_distance",
+     "eligible_destinations",
+     "path_count",
+     "path_segment_count",
+     "path_segment_memory",
+     "scope_node_count",
+     "chunck_count",
+     "memory_stalls"
+    ],
+    "values": {
+     "chunck_count": [
+      "3ff0000000000000",
+      "3ff0000000000000",
+      "3ff0000000000000"
+     ],
+     "chunck_path_count": [
+      "[2]",
+      "[3]",
+      "[2]"
+     ],
+     "chunck_path_segment_count": [
+      "[5]",
+      "[9]",
+      "[6]"
+     ],
+     "chunck_path_segment_memory": [
+      "[152]",
+      "[240]",
+      "[160]"
+     ],
+     "chunk_scope_node_count": [
+      "5",
+      "7",
+      "5"
+     ],
+     "closest_destination_distance": [
+      "4059000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "color": [
+      "[86, 5, 255]",
+      "[86, 5, 255]",
+      "[86, 5, 255]"
+     ],
+     "degree": [
+      0,
+      0,
+      0
+     ],
+     "edge_end_node": [
+      5,
+      4,
+      1
+     ],
+     "edge_start_node": [
+      4,
+      1,
+      0
+     ],
+     "eligible_destinations": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "furthest_destination_distance": [
+      "4069000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "geometry": [
+      "06c9547eaf87c57c004e2be4",
+      "003c59764374ddffeb26ab7f",
+      "45afda2c75ea418738e5fb6b"
+     ],
+     "gravity": [
+      "3ff4a252eaacc075",
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4"
+     ],
+     "mean_path_length": [
+      "4063144b41810977",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "memory_stalls": [
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+     ],
+     "nearest_edge_id": [
+      2,
+      1,
+      0
+     ],
+     "path_count": [
+      "4000000000000000",
+      "4008000000000000",
+      "4000000000000000"
+     ],
+     "path_segment_count": [
+      "4014000000000000",
+      "4022000000000000",
+      "4018000000000000"
+     ],
+     "path_segment_memory": [
+      "4063000000000000",
+      "406e000000000000",
+      "4064000000000000"
+     ],
+     "probable_travel_distance": [
+      "405c44bf7895652a",
+      "405b70c9f81a67a6",
+      "405b70c9f81a67a6"
+     ],
+     "reach": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "scope_node_count": [
+      "4014000000000000",
+      "401c000000000000",
+      "4014000000000000"
+     ],
+     "source_id": [
+      2,
+      1,
+      0
+     ],
+     "source_layer": [
+      "origins",
+      "origins",
+      "origins"
+     ],
+     "type": [
+      "origin",
+      "origin",
+      "origin"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ],
+     "weight_to_end": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ],
+     "weight_to_start": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ]
+    }
+   },
+   "progress_seen": true
+  },
+  "power_differs_from_exponent": true
+ }
+}

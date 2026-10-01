@@ -1,0 +1,305 @@
+{
+ "arm": "reference",
+ "sabotage": "detour_swap",
+ "scenario": "flow_lowlevel_engine",
+ "seed": 20260930,
+ "state": {
+  "attribution_note": "pinned upstream degeneracy: path_generator returns TRIMMED paths (interior nodes only) and every street node's nearest_edge_id is 0, so one_betweenness_2's [nearest(first)] + [] + [nearest(last)] attribution lands every path's mass on edge 0 twice; per-OD totals are 2*prob_sum*weight.  Detour ratio ENGAGES in this engine (it filters the path set at betweenness.py:297, so 1.5 admits alternates and the bits move), and the penalty split engages exactly at multi-path (equal branch degrades through float32 only when alternates exist).  What the low-level engine lacks is REAL route attribution \u2014 mass never leaves edge 0 \u2014 which is pinned on the exposure engine, whose wandering_messenger paths carry real edge sequences",
+  "base_nc1": {
+   "betweenness_by_edge": {
+    "0": "4017ffffe0000000",
+    "1": "0000000000000000",
+    "2": "0000000000000000",
+    "3": "0000000000000000",
+    "4": "0000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "network_edge_cols": [
+    "length",
+    "weight",
+    "parent_street_id",
+    "start",
+    "end",
+    "geometry",
+    "color",
+    "betweenness"
+   ],
+   "res_edge_is_network_edges": true,
+   "return_keys": [
+    "edge_gdf"
+   ],
+   "swallowed_destination_errors": 1,
+   "worker_error_markers": 0
+  },
+  "huff_destination_weights": {
+   "betweenness_by_edge": {
+    "0": "401c35f2be1524c7",
+    "1": "0000000000000000",
+    "2": "0000000000000000",
+    "3": "0000000000000000",
+    "4": "0000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "network_edge_cols": [
+    "length",
+    "weight",
+    "parent_street_id",
+    "start",
+    "end",
+    "geometry",
+    "color",
+    "betweenness"
+   ],
+   "res_edge_is_network_edges": true,
+   "return_keys": [
+    "edge_gdf"
+   ],
+   "swallowed_destination_errors": 1,
+   "worker_error_markers": 0
+  },
+  "huff_detour_1_5": {
+   "betweenness_by_edge": {
+    "0": "401c35f2b94857fa",
+    "1": "0000000000000000",
+    "2": "0000000000000000",
+    "3": "0000000000000000",
+    "4": "0000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "network_edge_cols": [
+    "length",
+    "weight",
+    "parent_street_id",
+    "start",
+    "end",
+    "geometry",
+    "color",
+    "betweenness"
+   ],
+   "res_edge_is_network_edges": true,
+   "return_keys": [
+    "edge_gdf"
+   ],
+   "swallowed_destination_errors": 1,
+   "worker_error_markers": 0
+  },
+  "huff_differs": true,
+  "lowlevel_detour_engages": true,
+  "nc2_all_zero": true,
+  "nc2_equals_nc1_bitwise": false,
+  "nc2_silent_zero": {
+   "betweenness_by_edge": {
+    "0": "0000000000000000",
+    "1": "0000000000000000",
+    "2": "0000000000000000",
+    "3": "0000000000000000",
+    "4": "0000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "network_edge_cols": [
+    "length",
+    "weight",
+    "parent_street_id",
+    "start",
+    "end",
+    "geometry",
+    "color",
+    "betweenness"
+   ],
+   "res_edge_is_network_edges": true,
+   "return_keys": [
+    "edge_gdf"
+   ],
+   "swallowed_destination_errors": 0,
+   "worker_error_markers": 2
+  },
+  "one_betweenness_2": {
+   "error": null,
+   "tiny_radius_error": null,
+   "tiny_radius_tracker_all_zero": true,
+   "tracker": {
+    "0": "4018000000000000",
+    "1": "0000000000000000",
+    "2": "0000000000000000",
+    "3": "0000000000000000",
+    "4": "0000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "tracker_types_int_start": true
+  },
+  "penalty_equal_bitwise_differs_from_exponent": false,
+  "penalty_equal_degradation_magnitude": 0.0,
+  "penalty_equal_multi_path": {
+   "betweenness_by_edge": {
+    "0": "4018000000000000",
+    "1": "0000000000000000",
+    "2": "0000000000000000",
+    "3": "0000000000000000",
+    "4": "0000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "network_edge_cols": [
+    "length",
+    "weight",
+    "parent_street_id",
+    "start",
+    "end",
+    "geometry",
+    "color",
+    "betweenness"
+   ],
+   "res_edge_is_network_edges": true,
+   "return_keys": [
+    "edge_gdf"
+   ],
+   "swallowed_destination_errors": 1,
+   "worker_error_markers": 0
+  },
+  "penalty_exponent": {
+   "betweenness_by_edge": {
+    "0": "4018000000000000",
+    "1": "0000000000000000",
+    "2": "0000000000000000",
+    "3": "0000000000000000",
+    "4": "0000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "network_edge_cols": [
+    "length",
+    "weight",
+    "parent_street_id",
+    "start",
+    "end",
+    "geometry",
+    "color",
+    "betweenness"
+   ],
+   "res_edge_is_network_edges": true,
+   "return_keys": [
+    "edge_gdf"
+   ],
+   "swallowed_destination_errors": 1,
+   "worker_error_markers": 0
+  },
+  "penalty_exponent_equals_power_at_multi_path": true,
+  "penalty_exponent_single_path": {
+   "betweenness_by_edge": {
+    "0": "4018000000000000",
+    "1": "0000000000000000",
+    "2": "0000000000000000",
+    "3": "0000000000000000",
+    "4": "0000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "network_edge_cols": [
+    "length",
+    "weight",
+    "parent_street_id",
+    "start",
+    "end",
+    "geometry",
+    "color",
+    "betweenness"
+   ],
+   "res_edge_is_network_edges": true,
+   "return_keys": [
+    "edge_gdf"
+   ],
+   "swallowed_destination_errors": 1,
+   "worker_error_markers": 0
+  },
+  "penalty_moot_at_single_path": false,
+  "penalty_power": {
+   "betweenness_by_edge": {
+    "0": "4018000000000000",
+    "1": "0000000000000000",
+    "2": "0000000000000000",
+    "3": "0000000000000000",
+    "4": "0000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "error": null,
+   "network_edge_cols": [
+    "length",
+    "weight",
+    "parent_street_id",
+    "start",
+    "end",
+    "geometry",
+    "color",
+    "betweenness"
+   ],
+   "res_edge_is_network_edges": true,
+   "return_keys": [
+    "edge_gdf"
+   ],
+   "swallowed_destination_errors": 1,
+   "worker_error_markers": 0
+  },
+  "retention": {
+   "first_call_error": null,
+   "first_call_return_keys": [
+    "edge_gdf",
+    "retained_d_idxs",
+    "retained_distances",
+    "retained_paths"
+   ],
+   "passthrough_betweenness": {
+    "0": "4018000000000000",
+    "1": "0000000000000000",
+    "2": "0000000000000000",
+    "3": "0000000000000000",
+    "4": "0000000000000000",
+    "5": "0000000000000000",
+    "6": "0000000000000000",
+    "7": "0000000000000000"
+   },
+   "passthrough_error": null,
+   "passthrough_reproduces_bits": false,
+   "passthrough_return_keys": [
+    "edge_gdf"
+   ],
+   "retained_d_idxs": {
+    "7": {
+     "10": "4069000000000000",
+     "11": "4069000000000000"
+    },
+    "8": {
+     "10": "4069000000000000",
+     "11": "4069000000000000"
+    },
+    "9": {
+     "10": "4059000000000000",
+     "11": "4069000000000000"
+    }
+   },
+   "retained_distances_empty": true,
+   "retained_paths_empty": true
+  }
+ }
+}
