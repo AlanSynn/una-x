@@ -1,0 +1,35 @@
+{
+  "task": "API_REVIEW",
+  "run_id": "mda-20261001T1215Z",
+  "status": "CLOSED: ACCEPT with three explicitly returned rows. No ignored supported parameter and no superficial alias (verified independently: una tools/paths/betweenness byte-verbatim after headers, zonal bridge equal to upstream modulo exactly ledgered D1-D4, live namespace sets una 0/0 and zonal-package minus ledgered {os,pdk}, all dossier-named parameters exercised, no forwarding shims). Matrix evidence NOT approved as-is -> named rows returned: R1 to the compat namespace owner via the lead (top-level una reexport block missing from compat/madina/__init__.py: upstream 'from .una import *' never landed; 30 upstream top-level names absent incl. 17 functional engine/path names; m.una attribute-chain pattern breaks; docstring 'not present yet' stale), R2 to INVENTORY (api_matrix.json pre-delivery: 18/18 required_unimplemented_or_unverified, tests [] everywhere, M01-M11 unexpanded), R3 to PACKAGE (installed_shim cell unmet; no shim distribution in checkout; deferral structural since PACKAGE depends on this review). M18 is the only family not fully delivered; M01-M17 delivered with real verification evidence, independently spot-verified by reviewer re-runs.",
+  "reviewer": "API_REVIEW task owner (numerical-architect stance, fresh verification, adversarial; not an implementation owner)",
+  "branch": "perf/una-platform",
+  "head_reviewed": "99469d419b12fd37ec718ba8bf9296c5ad8cae8f",
+  "delivered": {
+    "review_report": "campaigns/una_platform/evidence/reviews/api/review_report_api.md (full report: verdict, 18-family matrix, dossier-01 completeness checks incl. mutant forms and required-combination mapping, findings F1-F3/N1-N5, named return-to-owner rows, command log)",
+    "evidence": "campaigns/una_platform/evidence/tasks/API_REVIEW/mda-20261001T1215Z/evidence.json (family-by-family verdicts, checks run with actual commands and outcomes, findings with severities)",
+    "scratch": "campaigns/una_platform/evidence/reviews/api/scratch/api_review_workflows_suite.log (reviewer's own workflows suite run)",
+    "facade_or_source_changes": "NONE (review-only task; source, tests, and other evidence untouched)"
+  },
+  "verification": {
+    "suite_replays": "reviewer-run, all green on the reviewed tree: workflows 35 passed in 174.54 s (alan interpreter, PYTHONHASHSEED=0, per task mandate); zonal 21 passed (100.52 s); paths 19 passed (69.32 s); access 24 passed (105.83 s); flow 27 passed (230.51 s); total 126 passed / 0 failed",
+    "source_claims_reverified": "una/tools.py + una/paths.py + una/betweenness.py bodies byte-equal to .refs/madina_ref after docstring headers (14/0/102 lines); una/workflows.py reverse-D4 independently reconstructed to byte-equality (reversed md5 f5f02b214dd4a6e82a1b41d9b5673f0c == upstream; facade md5 684300bb9fe87cac25519f1e323816ff == receipt); zonal/ 5-module rstrip-diff + AST + docstring audit: residuals exactly headers + D1/D3/D4 + trailing-whitespace normalization",
+    "namespace_verification": "live enumeration in .refs/venv_madina_legacy (upstream) vs alan (facade): compat.madina.una == madina.una exactly (0/0); compat.madina.zonal (package) == upstream minus {os, pdk} (ledgered D3/D4); compat.madina top level missing 30 upstream names (F1)",
+    "mutant_audit": "all four dossier mutants exist and are selected: alpha swap SOURCE-level (workflows knn_alpha_2, selected+integral; ACCESS behavioral alpha_swap); closest-facility direction DIGEST-level (ACCESS reverse_closest_facility) + SOURCE-level flag flip (workflows knn_closest_facility_true); split-edge drop DIGEST-level (FLOW split_edge_drop, guarded); exposure-column omission DIGEST-level (FLOW + WORKFLOWS). No engine-interior direction-reversal source mutant exists (NOTE N2, composite evidence covers dossier intent)",
+    "not_reverified": ["whole-repo regression (relied on MADINA_WORKFLOWS closure run 3: 368 passed / 348 skipped / 0 failed on this exact tree)", "byte reproduction of every retained parity artifact (spot-reads only; WORKFLOWS reviewer had reproduced 34 digests md5-identically)"]
+  },
+  "handoffs": [
+    "R1 -> compat namespace owner (route via campaign lead; unowned seam, no remaining task owns src/urban_network_analysis/compat/madina/__init__.py): add the una star import upstream-style (handle the submodule-attr quirk like the zonal binding restoration; omit pdk deliberately per ledgered D4), fix the stale docstring, pin the top-level namespace in a reflection test, re-run affected suites. GATE: must close before CLOSE claims a complete API matrix or PACKAGE's shim claims top-level drop-in fidelity",
+    "R2 -> INVENTORY (owns evidence/api/**): refresh api_matrix.json — expand M01-M11 per-symbol (defaults, positional/keyword, returns, mutations, errors, schemas, ordering, geometry, optional deps, scenarios, oracle), add tests rows pointing at concrete test ids in the five suites, flip statuses to verified, record M18's split (helpers verified / top-level reexport open per F1)",
+    "R3 -> PACKAGE: installed_shim cell — build and verify the separately installed drop-in shim distribution (never co-installed with upstream), report shim parity separately from facade parity per CONTRACTS.md; until then no drop-in 'import madina' claim is supported anywhere",
+    "campaign lead: 'API parity complete' claims are supported ONLY for the zonal + una.* subpath surface; top-level reexport layer (R1), shim (R3), and matrix (R2) are open rows",
+    "SCI/CACHE/BATCH owners: unaffected by R1 (engine-level surface verified); facade-state snapshots (zonal/adapter.py) verified additive/private"
+  ],
+  "notes": [
+    "verdict basis: the task completion condition explicitly admits ACCEPT when missing mandatory rows are explicitly returned to owners; both MAJOR findings are returned with named rows and gates rather than silently absorbed",
+    "F1 discovered by live namespace enumeration (not by reading claims): upstream 'madina' exposes 30 una-derived top-level names via 'from .una import *'; the facade top level has zero of them; INVENTORY's own M18 semantic note records the upstream layout, so this is a gap against the campaign's recorded census",
+    "m.una attribute availability: upstream 'import madina; madina.una.tools.accessibility(...)' works because the init imports the una submodule; the facade requires an explicit submodule import — same root cause as F1",
+    "session custody: harness moved this session into worktree .claude/worktrees/execution (branch worktree-execution) mid-task; worktree HEAD == reviewed HEAD 99469d4, so reads stayed content-identical; all deliverables written by absolute path into the main checkout and identical copies staged in the worktree",
+    "no pushes, merges, releases, purchases, credential or provider changes; historical evidence untouched; .claude/commands/goal.md preserved unstaged"
+  ]
+}

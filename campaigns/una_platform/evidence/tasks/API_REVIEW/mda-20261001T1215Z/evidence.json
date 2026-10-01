@@ -1,0 +1,127 @@
+{
+  "task": "API_REVIEW",
+  "run_id": "mda-20261001T1215Z",
+  "role": "independent-reviewer (numerical-architect stance; not an implementation owner)",
+  "reviewed_tree": {
+    "repo": "/storage/scratch1/1/dsynn6/una-x",
+    "branch": "perf/una-platform",
+    "head": "99469d419b12fd37ec718ba8bf9296c5ad8cae8f",
+    "dirty_files_at_review": [".claude/commands/goal.md (user file, untouched)"],
+    "upstream_pin": "City-Form-Lab/madina @ 8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6 (.refs/madina_ref)"
+  },
+  "verdict": "ACCEPT with three explicitly returned rows (R1 top-level reexport gap, R2 stale api_matrix, R3 shim deferred to PACKAGE). Matrix evidence NOT approved as-is; all 18 family implementation/verification states assessed individually (see family_matrix).",
+  "completion_condition_assessment": {
+    "no_ignored_supported_parameter": "VERIFIED (byte-verbatim una trio + zonal diff/AST equivalence modulo ledgered D1-D4 + positive parameter exercises across suites; deep sample in report Section 4.1)",
+    "no_superficial_alias": "VERIFIED (live namespace set comparison: una 0/0 vs upstream; zonal package minus ledgered {os,pdk}; no forwarding shims; adapter.py additive and not star-exported)",
+    "matrix_evidence": "NOT APPROVED as-is: api_matrix.json is pre-delivery (18/18 required_unimplemented_or_unverified, tests [] everywhere, M01-M11 expanded_symbols []) -> rows explicitly returned to INVENTORY",
+    "missing_rows_returned": ["R1", "R2", "R3"]
+  },
+  "checks_run": [
+    {
+      "check": "workflows parity suite re-run (mandated driver)",
+      "cmd": "cd /storage/scratch1/1/dsynn6/una-x && PYTHONHASHSEED=0 /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python -m pytest tests/madina_api/workflows/ -v",
+      "outcome": "35 passed in 174.54 s, exit 0",
+      "log": "campaigns/una_platform/evidence/reviews/api/scratch/api_review_workflows_suite.log"
+    },
+    {
+      "check": "zonal/paths/access/flow parity suite re-runs",
+      "cmd": "cd /storage/scratch1/1/dsynn6/una-x && for s in zonal paths access flow; do PYTHONHASHSEED=0 .../envs/alan/bin/python -m pytest tests/madina_api/$s/ -q; done",
+      "outcome": "21 passed (100.52 s); 19 passed (69.32 s); 24 passed (105.83 s); 27 passed (230.51 s); all exit 0. Total across five suites: 126 passed / 0 failed",
+      "log": "task notification output retained in this session; per-suite stdout tails recorded in review report Section 2"
+    },
+    {
+      "check": "byte-verbatim claims for una trio",
+      "cmd": "python: compare facade una/{tools,paths,betweenness}.py bodies (after leading docstring header) to .refs/madina_ref/src/madina/una/*",
+      "outcome": "tools body_equal=True (header 14 lines); paths body_equal=True (no header); betweenness body_equal=True (header 102 lines)"
+    },
+    {
+      "check": "reverse-D4 identity (workflows.py), independent reconstruction",
+      "cmd": "python: strip 106-line header; remove lazy pydeck block in Logger.flow_map_template_1; restore 'import pydeck as pdk' and 'from pydeck.types import String' at module top; compare bytes",
+      "outcome": "byte-equal upstream; reversed md5 f5f02b214dd4a6e82a1b41d9b5673f0c == upstream md5; facade md5 684300bb9fe87cac25519f1e323816ff == MADINA_WORKFLOWS receipt's final md5"
+    },
+    {
+      "check": "zonal bridge delta audit (5 modules)",
+      "cmd": "python difflib raw + rstrip-normalized line diffs vs .refs/madina_ref/src/madina/zonal/*; ast.parse both; non-module docstring constant comparison",
+      "outcome": "after rstrip: residuals = per-module attribution headers + D1 (network_utils .data->np.asarray) + D3 (no USE_PYGEOS write in zonal.py) + D4 (lazy pydeck in zonal.py/utils.py create_map path) exactly as ledgered; docstring constants differ only by stripped trailing whitespace in load_layer/describe/create_graph (NOTE N1)"
+    },
+    {
+      "check": "namespace set comparison (3 levels, 2 interpreters)",
+      "cmd": ".refs/venv_madina_legacy/bin/python (sys.path .refs/madina_ref/src) vs alan env (sys.path src); pub-name sets of madina / sys.modules['madina.zonal'] (package) / madina.una and compat equivalents",
+      "outcome": "una: 0 missing / 0 extra (exact, incl. submodule-attr quirks); zonal package: missing {os, pdk} only (ledgered D3/D4; 0 extra); madina top level: 30 upstream names missing in facade (F1); 0 facade-only extras anywhere",
+      "artifacts": "/tmp/upstream_ns.json /tmp/compat_ns.json /tmp/upstream_ns2.json /tmp/compat_ns2.json (session scratch; sets enumerated in report)"
+    },
+    {
+      "check": "dossier mutants existence, form, selection",
+      "cmd": "reads: SABOTAGE/SABOTAGE_REPLACEMENTS/DIGEST_SABOTAGES registries and mechanisms in all five tests/madina_api/*/_[a-z]*_scenario.py; workflows load_patched_workflows (exactly-once replacement assert, exec clone per arm); selection/integrity tests",
+      "outcome": "alpha=1<->2: SOURCE-level in workflows (knn_alpha_2, selected+integral) + behavioral in ACCESS (alpha_swap); closest-facility direction: DIGEST-level swap in ACCESS (reverse_closest_facility, selected) + SOURCE-level flag flip in workflows (knn_closest_facility_true, selected+integral); split-edge drop: DIGEST-level guarded in FLOW (split_edge_drop, selected); exposure-column omission: DIGEST-level in FLOW + WORKFLOWS (selected). No engine-interior direction-reversal source mutant exists (NOTE N2)"
+    },
+    {
+      "check": "required test combinations mapping",
+      "cmd": "targeted greps + scenario-body reads across the five suites",
+      "outcome": "repeated-same-Zonal (zonal id_semantics, paths edge_cases d, workflows per-row), changed layer weights (zonal two weight_cols, wf_flow_cost_change), clear/reinsert (flow flow_repeats_mutations incl. clear_nodes), mixed IDs (flow mixed origin source layers), no reachable destination (wf_knn_zero_reach, paths iso component + tiny radius, access NaN survival), empty output (paths empty route set schema, access silent-empty + empty-Zonal probes, flow retained_paths=={}), all output names (full frame schema pinned in every digest: columns/dtypes/shape/values; workflows test_every_api_row_covered), invalid arguments (validation scenarios in access/paths/flow + wf_flow_errors + knn guard matrix). No gap"
+    },
+    {
+      "check": "unsupported stubs documentation",
+      "cmd": "grep NotImplementedError in facade zonal/network.py vs upstream; INVENTORY receipt unsupported_stubs list",
+      "outcome": "visualize_graph, _get_nodes_at_geometric/network/bf_distance, scan_for_intersections, fuse_degree_2_nodes raise NotImplementedError exactly as upstream; Layer.set_style AttributeError and d_graph/light_graph prerequisite carried as registered pinned quirks; list matches INVENTORY census; no invented features"
+    },
+    {
+      "check": "shim distribution existence",
+      "cmd": "grep shim/madina in pyproject.toml; ls packaging/; repo grep for shim distribution artifacts",
+      "outcome": "no shim distribution exists in this checkout (F3/R3: deferred PACKAGE item with evidence; PACKAGE objective names 'shim install artifacts' and depends on API_REVIEW+PARITY)"
+    },
+    {
+      "check": "MIT attribution + no runtime upstream dependency",
+      "cmd": "grep attribution strings in compat/madina/**/__init__.py; grep 'import madina|from madina' in src/urban_network_analysis/compat/",
+      "outcome": "attribution present in all three package inits; only upstream-name occurrence is a docstring migration example (una/workflows.py:82); facade-env probes assert no madina* ever enters sys.modules; no runtime dependency"
+    },
+    {
+      "check": "api_matrix.json state (INVENTORY-owned artifact)",
+      "cmd": "python: enumerate families/expanded_symbols/tests/status; read INVENTORY receipt",
+      "outcome": "18 families, all required_unimplemented_or_unverified; expanded_symbols: M01-M11 empty, M12-M17 one name each, M18 70 names; tests [] for all 18; matrix mtime 2026-09-30 predates all five parity deliveries; INVENTORY receipt honestly flags 'source observations only' and 'MADINA_* tasks add scenario rows' -> F2/R2 return-to-INVENTORY"
+    }
+  ],
+  "family_matrix": [
+    {"id": "M01", "symbol": "madina.zonal.Zonal", "delivered": true, "verified_by": "zonal suite 21 passed (reviewer run); diff/AST verbatim modulo ledgered D3/D4; ZONAL reflection artifacts", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M02", "symbol": "Zonal.load_layer", "delivered": true, "verified_by": "zonal suite; RNG-order pin; verbatim modulo ledgered deltas", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M03", "symbol": "Zonal.create_street_network", "delivered": true, "verified_by": "zonal id_semantics scenario (repeated-call network replacement, discard default, parent_street_id)", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M04", "symbol": "Zonal.set_turn_parameters", "delivered": true, "verified_by": "zonal turn_params + paths turn_params scenarios", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M05", "symbol": "Zonal.insert_node", "delivered": true, "verified_by": "zonal insert_multinode_edge (multi-node edge pin, add/remove roundtrip digests); workflows knn_alpha_2 weight_attribute profile split", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M06", "symbol": "Zonal.create_graph", "delivered": true, "verified_by": "zonal/flow scenarios; light/d/od prerequisite quirk pinned", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M07", "symbol": "Zonal.clear_nodes", "delivered": true, "verified_by": "flow flow_repeats_mutations (clear_nodes + reinsert == fresh build)", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M08", "symbol": "Zonal.create_map", "delivered": true, "verified_by": "zonal map_deck (seeded colors + uuid4 control); D4 actionable ImportError", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M09", "symbol": "Zonal.describe", "delivered": true, "verified_by": "zonal describe_output (dead geo_center branch pinned)", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M10", "symbol": "Layer/Layers", "delivered": true, "verified_by": "zonal suite + reflection surface identity; set_style AttributeError registered quirk", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M11", "symbol": "Network", "delivered": true, "verified_by": "zonal suite graph mutation/roundtrips; unsupported stubs match upstream NotImplementedError set exactly", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M12", "symbol": "madina.una.tools.accessibility", "delivered": true, "verified_by": "tools.py byte-verbatim; access suite 24 passed (reviewer run); alpha/beta/knn_weights/knn_plateau/closest_facility/save_*/num_cores/turns exercised; alpha_swap behavioral mutant selected", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M13", "symbol": "madina.una.tools.service_area", "delivered": true, "verified_by": "access service_areas scenario (turn_penalty=True, silent int-miss, negative-radius validation)", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M14", "symbol": "madina.una.tools.alternative_paths", "delivered": true, "verified_by": "paths.py byte-verbatim; paths suite 19 passed (reviewer run); no-hidden-K independent enumeration; empty route set pins", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M15", "symbol": "madina.una.tools.betweenness", "delivered": true, "verified_by": "betweenness.py byte-verbatim; flow suite 27 passed (reviewer run); 4/4 mutants selected", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M16", "symbol": "madina.una.workflows.betweenness_flow_simulation", "delivered": true, "verified_by": "workflows.py reverse-D4 == upstream (reviewer reconstruction); workflows suite 35 passed (reviewer run); 11 scenarios, 5 mutants selected+integral; per-profile CSV defaults", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M17", "symbol": "madina.una.workflows.KNN_accessibility", "delivered": true, "verified_by": "same suite wf_knn_* scenarios; pinned upstream defects (Network_File reload KeyError, zero-reach KeyError 'reach', closest-destination stats UnboundLocalError with healthy Huff mirror)", "verdict": "DELIVERED; matrix row RETURNED (R2)"},
+    {"id": "M18", "symbol": "Public helpers and reexports", "delivered": "PARTIAL", "verified_by": "70 module-qualified helper rows delivered (una namespace 0/0 vs upstream; zonal classes verified); TOP-LEVEL reexport block missing (F1): upstream 'from .una import *' never added to compat/madina/__init__.py; 30 upstream top-level names absent (17 functional + 12 leakage/attr + pdk[D4-correct-to-omit]); m.una attribute unavailable without explicit submodule import; stale docstring 'not present yet'", "verdict": "RETURNED to owners: F1/R1 (top-level reexport completion) + F2/R2 (matrix rows)"}
+  ],
+  "findings": [
+    {"id": "F1", "severity": "MAJOR", "kind": "return_to_owner", "summary": "Top-level reexport block of src/urban_network_analysis/compat/madina/__init__.py never completed after the una delivery; 30 upstream top-level names missing (17 functional engine/path names enumerated in report); m.una attribute-chain usage breaks; docstring stale ('not present yet'). Gap is against INVENTORY's own recorded census note ('madina/__init__: from .zonal import *; from .una import *').", "owner_route": "unowned seam (no remaining task owns compat/madina/__init__.py; MADINA_WORKFLOWS owned una/workflows.py only) -> route via campaign lead; suggested: small completion micro-change + top-level namespace pin test + matrix refresh", "gate": "must close before CLOSE claims a complete API matrix or PACKAGE's shim claims top-level drop-in fidelity"},
+    {"id": "F2", "severity": "MAJOR", "kind": "return_to_owner", "summary": "evidence/api/api_matrix.json stale relative to deliveries: 18/18 families required_unimplemented_or_unverified; tests [] everywhere; M01-M11 expanded_symbols empty. Structural (INVENTORY precedes MADINA_* in the DAG) but unowned downstream; verification evidence exists in the five MADINA_* task dirs.", "owner_route": "INVENTORY (owned_files evidence/api/**): expand M01-M11 per-symbol, add tests rows with concrete test ids, flip statuses, record M18 F1 split"},
+    {"id": "F3", "severity": "BLOCKED_DEFERRED", "kind": "deferred_to_downstream_task", "summary": "installed_shim required check unmet: no shim distribution exists in the checkout (pyproject.toml has no shim/madina packaging; no packaging/ dir). Facade parity verified; shim parity not claimed. CONTRACTS.md requires facade/shim parity reported separately.", "owner_route": "PACKAGE (owns 'shim install artifacts'; depends_on PARITY+API_REVIEW -> deferral is structural, not evasion). CLOSE/PARITY must not represent shim parity as verified before PACKAGE closes it"},
+    {"id": "N1", "severity": "NOTE", "summary": "zonal/ modules are AST/semantically verbatim but not byte-verbatim: trailing whitespace stripped throughout incl. inside three docstrings (load_layer, describe, create_graph). una trio byte-verbatim after headers; workflows byte-exact modulo D4."},
+    {"id": "N2", "severity": "NOTE", "summary": "Dossier mutant forms: alpha swap source-level; closest-facility direction digest-level (ACCESS, honestly labeled) + source-level flag flip (workflows); split-edge drop and exposure-column omission digest-level (guarded, selected). No engine-interior direction-reversal source mutant exists; composite evidence covers the dossier intent; optional strengthening noted."},
+    {"id": "N3", "severity": "NOTE", "summary": "Namespace verification: una 0/0 vs upstream; zonal package minus ledgered {os,pdk}; madina.zonal attribute identity divergence (package vs inner module) ledgered and strictly more capable; top-level gap is F1 only."},
+    {"id": "N4", "severity": "NOTE", "summary": "Whole-repo regression not re-run by this review; relied on MADINA_WORKFLOWS closure run 3 (368 passed / 348 skipped / 0 failed) on this exact tree. Not re-verified by reviewer."},
+    {"id": "N5", "severity": "NOTE", "summary": "Session was moved into harness worktree .claude/worktrees/execution (branch worktree-execution) mid-task; worktree HEAD == reviewed HEAD 99469d4 (same commit, 224-commit history), so post-switch relative reads were content-identical; all review artifacts written by absolute path into the main checkout; suite re-runs executed against the main checkout at HEAD 99469d4."}
+  ],
+  "evidence_base": {
+    "parity_task_evidence_dirs": [
+      "campaigns/una_platform/evidence/tasks/MADINA_ZONAL/mdz-20260930T2124Z/",
+      "campaigns/una_platform/evidence/tasks/MADINA_ACCESS/mda-20261001T0154Z/",
+      "campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/",
+      "campaigns/una_platform/evidence/tasks/MADINA_FLOW/mda-20261001T0406Z/",
+      "campaigns/una_platform/evidence/tasks/MADINA_WORKFLOWS/mda-20261001T1010Z/"
+    ],
+    "reviewer_replays": "five suite re-runs (126 passed / 0 failed), byte-verbatim diffs, reverse-D4 reconstruction, namespace set comparisons, mutant mechanism reads, digest artifact spot-reads",
+    "not_reverified": ["whole-repo regression (relied on WORKFLOWS closure run 3)", "per-digest byte reproduction of all 298 retained workflow artifacts (spot-reads only; the WORKFLOWS reviewer reproduced 34 digests md5-identically)"]
+  },
+  "review_report": "campaigns/una_platform/evidence/reviews/api/review_report_api.md",
+  "scratch": "campaigns/una_platform/evidence/reviews/api/scratch/api_review_workflows_suite.log"
+}
