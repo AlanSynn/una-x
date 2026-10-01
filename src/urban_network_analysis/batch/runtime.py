@@ -62,7 +62,11 @@ job fails its own row loudly through the normal ordering path instead of
 silently killing the inbox feeder thread), and the worker degrades an
 untransportable result (drop the live exception object, then reduce to a
 text-only failure descriptor) so the failure always reaches the
-coordinator with the original type/message.
+coordinator with the original type/message.  Results travel over a
+SYNCHRONOUS channel (``SimpleQueue``): a worker's result put reaches the
+pipe before that worker starts the next job, so an abrupt worker death
+(fault injection, OOM kill) can never truncate an already-completed
+sibling result that the drain-then-raise protocol is owed.
 """
 
 from __future__ import annotations
@@ -264,13 +268,49 @@ def _verify_staged(staging_dir: str,
 # Worker pool (persistent spawn processes, readiness-gated, reaped).
 # ---------------------------------------------------------------------------
 
+class _ResultChannel:
+    """Synchronous worker->coordinator result transport.
+
+    ``multiprocessing.Queue.put`` only hands the object to a feeder
+    thread; the bytes reach the pipe when that thread happens to be
+    scheduled.  A worker that dies abruptly (the tests' fault injection,
+    an OOM kill) before the flush truncates every result still buffered
+    in its process — the closure regression demonstrated a COMPLETED
+    row's result being lost exactly this way, so the crash-resume prefix
+    came back empty.  ``SimpleQueue.put`` pickles and writes the result
+    to the pipe synchronously under a lock (multi-writer safe on POSIX),
+    so once it returns, death cannot lose the result.  ``get`` restores
+    ``Queue``'s timeout semantics via the reader's poll.
+    """
+
+    def __init__(self, ctx):
+        self._q = ctx.SimpleQueue()
+
+    def put(self, obj) -> None:
+        self._q.put(obj)
+
+    def get(self, timeout: Optional[float] = None):
+        if timeout is not None and not self._q._poll(timeout):
+            raise queue.Empty
+        return self._q.get()
+
+    # Queue-compatible teardown surface (``_Pool.cancel`` closes every
+    # channel).  A synchronous transport holds nothing in a buffer, so
+    # there is no feeder thread to join.
+    def close(self) -> None:
+        self._q.close()
+
+    def join_thread(self) -> None:
+        pass
+
+
 class _Pool:
     def __init__(self, size: int, threads_per_worker: int):
         self.size = size
         self.threads_per_worker = threads_per_worker
         self.ctx = mp.get_context("spawn")
         self.inbox = self.ctx.Queue()
-        self.outbox = self.ctx.Queue()
+        self.outbox = _ResultChannel(self.ctx)
         self.ready = self.ctx.Queue()
         self.procs: List[mp.process.BaseProcess] = []
         self.pids: set = set()

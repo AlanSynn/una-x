@@ -182,3 +182,32 @@ def test_checkpoint_identity_binds_the_transport_shim(make_batch, tmp_path,
     with pytest.raises(BatchCheckpointError, match="identity mismatch"):
         p2.RunBatch("accessibility", parallel=True, workers=2,
                     execution=replace(p2.execution, checkpoint=ckpt))
+
+
+# -- synchronous result channel ----------------------------------------------
+
+def _probe_put_then_die(channel):
+    import os
+    channel.put({"completed": True})
+    os._exit(1)          # abrupt death before any further transport
+
+
+def test_result_channel_put_is_synchronous_across_abrupt_death():
+    """``_ResultChannel`` delivers a put even when the worker dies
+    immediately afterwards: the put pickles and writes the result to the
+    pipe synchronously (SimpleQueue), so the abrupt worker deaths used by
+    the fault-injection tests can never truncate an already-completed
+    sibling result.  A feeder-threaded mp.Queue lost exactly this race
+    on a loaded node — the closure regression's crash-resume prefix came
+    back empty because row 0's committed result died in the worker's
+    feeder buffer when row 1's injected fault took the worker down."""
+    import multiprocessing as mp
+    from urban_network_analysis.batch import runtime as rt
+
+    ctx = mp.get_context("fork")
+    channel = rt._ResultChannel(ctx)
+    p = ctx.Process(target=_probe_put_then_die, args=(channel,))
+    p.start()
+    assert channel.get(timeout=30) == {"completed": True}
+    p.join(timeout=10)
+    assert p.exitcode == 1
