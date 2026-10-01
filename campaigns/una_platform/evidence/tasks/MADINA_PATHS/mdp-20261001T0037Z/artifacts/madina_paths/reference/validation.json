@@ -1,0 +1,18 @@
+{
+ "arm": "reference",
+ "scenario": "validation",
+ "seed": 20260930,
+ "state": {
+  "detour_below_one": "ValueError: Parameter 'detour_ratio': Cannot be less than 1. detour_ratio=0.9 was given.",
+  "detour_str": "TypeError: Parameter 'detour_ratio' must be either (<class 'int'>, <class 'float'>). <class 'str'> was given.",
+  "empty_zonal": "AttributeError: 'NoneType' object has no attribute 'nodes'",
+  "no_graph": "UnboundLocalError: cannot access local variable 'neigoboring_nodes' where it is not associated with a value",
+  "no_origins": "ValueError: Parameter 'origin_id': is not for an origin included in the network.",
+  "origin_id_list": "NO_ERROR",
+  "origin_id_str": "TypeError: Parameter 'origin_id' must be <class 'int'> representing an origin id. <class 'str'> was given.",
+  "origin_id_unknown": "ValueError: Parameter 'origin_id': is not for an origin included in the network.",
+  "search_radius_negative": "ValueError: Parameter 'search_radius': Cannot be negative. search_radius=-5 was given.",
+  "search_radius_str": "TypeError: Parameter 'search_radius' must be either (<class 'int'>, <class 'float'>). <class 'str'> was given.",
+  "turn_penalty_str": "TypeError: Parameter 'turn_penalty' must either be a boolean True or False, <class 'str'> was given."
+ }
+}

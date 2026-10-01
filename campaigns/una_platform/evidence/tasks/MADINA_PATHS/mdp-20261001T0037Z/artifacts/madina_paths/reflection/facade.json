@@ -1,0 +1,68 @@
+{
+ "arm": "facade",
+ "identity": {
+  "package_has_path": true
+ },
+ "surface": {
+  "paths_functions": {
+   "angle_deviation_between_two_lines": "(point_sequence, raw_angle=False)",
+   "bfs_path_edges_many_targets_iterative": "(network: urban_network_analysis.compat.madina.zonal.network.Network, o_graph, o_idx, d_idxs, distance_matrix=None, turn_penalty=False, od_scope=None)",
+   "bfs_paths_many_targets_iterative": "(network: urban_network_analysis.compat.madina.zonal.network.Network, o_graph, o_idx, d_idxs, distance_matrix=None, turn_penalty=False, od_scope=None)",
+   "bfs_subgraph_generation": "(o_idx, detour_ratio=1.15, o_graph=None, d_idxs=None, o_scope=None, o_scope_paths=None)",
+   "path_generator": "(network: urban_network_analysis.compat.madina.zonal.network.Network, o_idx, search_radius=800, detour_ratio=1.15, turn_penalty=False)",
+   "turn_o_scope": "(network: urban_network_analysis.compat.madina.zonal.network.Network, o_idx, search_radius: float, detour_ratio: float, turn_penalty=True, o_graph=None, return_paths=True)",
+   "turn_penalty_value": "(network: urban_network_analysis.compat.madina.zonal.network.Network, previous_node, current_node, next_node)",
+   "wandering_messenger": "(network: urban_network_analysis.compat.madina.zonal.network.Network, o_graph, o_idx, d_idxs, distance_matrix=None, turn_penalty=False, od_scope=None)"
+  },
+  "paths_public": [
+   "Network",
+   "angle_deviation_between_two_lines",
+   "bfs_path_edges_many_targets_iterative",
+   "bfs_paths_many_targets_iterative",
+   "bfs_subgraph_generation",
+   "deque",
+   "heappop",
+   "heappush",
+   "math",
+   "nx",
+   "path_generator",
+   "turn_o_scope",
+   "turn_penalty_value",
+   "wandering_messenger"
+  ],
+  "star_exports_are_paths_functions": true,
+  "tools_functions": {
+   "alternative_paths": "(zonal: urban_network_analysis.compat.madina.zonal.zonal.Zonal, origin_id: int, search_radius: float | int, detour_ratio: float | int = 1, turn_penalty: bool = False)"
+  },
+  "tools_public": [
+   "GeometryCollection",
+   "Zonal",
+   "alternative_paths",
+   "gpd",
+   "math",
+   "np",
+   "path_generator",
+   "turn_o_scope"
+  ],
+  "una_paths_is_paths": true,
+  "una_public": [
+   "Network",
+   "angle_deviation_between_two_lines",
+   "bfs_path_edges_many_targets_iterative",
+   "bfs_paths_many_targets_iterative",
+   "bfs_subgraph_generation",
+   "deque",
+   "heappop",
+   "heappush",
+   "math",
+   "nx",
+   "path_generator",
+   "paths",
+   "tools",
+   "turn_o_scope",
+   "turn_penalty_value",
+   "wandering_messenger"
+  ],
+  "una_tools_is_tools": true
+ }
+}

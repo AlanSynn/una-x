@@ -1,0 +1,755 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.4, pytest-9.1.1, pluggy-1.6.0 -- /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python
+cachedir: .pytest_cache
+rootdir: /storage/scratch1/1/dsynn6/una-x
+configfile: pyproject.toml
+collecting ... collected 19 items
+
+tests/madina_api/paths/test_paths_facade_env.py::test_facade_una_importable_without_upstream PASSED [  5%]
+tests/madina_api/paths/test_paths_facade_env.py::test_facade_una_never_imports_upstream_madina PASSED [ 10%]
+tests/madina_api/paths/test_paths_reflection.py::test_reflection_matches_pinned_reference PASSED [ 15%]
+tests/madina_api/paths/test_paths_reflection.py::test_star_exports_and_submodule_identity PASSED [ 21%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[alt_shortest] FAILED [ 26%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[alt_detour] FAILED [ 31%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[turn_params] FAILED [ 36%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[engine_primitives] FAILED [ 42%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[edge_cases] FAILED [ 47%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[validation] FAILED [ 52%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_all_paths_no_hidden_k_limit FAILED [ 57%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[k_limit_paths-alt_detour] FAILED [ 63%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[drop_one_path-alt_detour] FAILED [ 68%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[perturb_distance_bit-alt_shortest] FAILED [ 73%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[drop_geometry_component-alt_shortest] FAILED [ 78%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[flip_turn_distance-turn_params] FAILED [ 84%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[hide_validation_error-validation] FAILED [ 89%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_turn_penalty_changes_distances FAILED [ 94%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_engine_primitives_all_populated FAILED [100%]
+
+=================================== FAILURES ===================================
+_________ test_facade_matches_bridged_reference_bitwise[alt_shortest] __________
+
+scenario = 'alt_shortest'
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+
+    @pytest.mark.parametrize("scenario", SCENARIOS)
+    def test_facade_matches_bridged_reference_bitwise(scenario, arm_runner):
+>       ref_a = arm_runner(scenario, "reference")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'alt_shortest', arm = 'reference', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: reference/alt_shortest produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/reference/alt_shortest.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+__________ test_facade_matches_bridged_reference_bitwise[alt_detour] ___________
+
+scenario = 'alt_detour'
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+
+    @pytest.mark.parametrize("scenario", SCENARIOS)
+    def test_facade_matches_bridged_reference_bitwise(scenario, arm_runner):
+>       ref_a = arm_runner(scenario, "reference")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'alt_detour', arm = 'reference', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: reference/alt_detour produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/reference/alt_detour.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+__________ test_facade_matches_bridged_reference_bitwise[turn_params] __________
+
+scenario = 'turn_params'
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+
+    @pytest.mark.parametrize("scenario", SCENARIOS)
+    def test_facade_matches_bridged_reference_bitwise(scenario, arm_runner):
+>       ref_a = arm_runner(scenario, "reference")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'turn_params', arm = 'reference', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: reference/turn_params produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/reference/turn_params.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+_______ test_facade_matches_bridged_reference_bitwise[engine_primitives] _______
+
+scenario = 'engine_primitives'
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+
+    @pytest.mark.parametrize("scenario", SCENARIOS)
+    def test_facade_matches_bridged_reference_bitwise(scenario, arm_runner):
+>       ref_a = arm_runner(scenario, "reference")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'engine_primitives', arm = 'reference', sabotage = None
+timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: reference/engine_primitives produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/reference/engine_primitives.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+__________ test_facade_matches_bridged_reference_bitwise[edge_cases] ___________
+
+scenario = 'edge_cases'
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+
+    @pytest.mark.parametrize("scenario", SCENARIOS)
+    def test_facade_matches_bridged_reference_bitwise(scenario, arm_runner):
+>       ref_a = arm_runner(scenario, "reference")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'edge_cases', arm = 'reference', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: reference/edge_cases produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/reference/edge_cases.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+__________ test_facade_matches_bridged_reference_bitwise[validation] ___________
+
+scenario = 'validation'
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+
+    @pytest.mark.parametrize("scenario", SCENARIOS)
+    def test_facade_matches_bridged_reference_bitwise(scenario, arm_runner):
+>       ref_a = arm_runner(scenario, "reference")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'validation', arm = 'reference', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: reference/validation produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/reference/validation.json
+E           
+E           stderr:
+E           Traceback (most recent call last):
+E             File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/zonal/network.py", line 98, in add_node_to_graph
+E               if node_idx in graph.graph["added_nodes"]:
+E                              ^^^^^^^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'graph'
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+_______________________ test_all_paths_no_hidden_k_limit _______________________
+
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+
+    def test_all_paths_no_hidden_k_limit(arm_runner):
+        """Completion condition: the engine's route set equals a full
+        independent networkx enumeration of every simple path within the
+        detour bound (interior-projected, dedupe semantics matched), per
+        destination, with bitwise-equal per-route distances; and the public
+        GeoDataFrame materializes exactly that route set (coherence)."""
+>       digest = arm_runner("alt_detour", "facade")["state"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'alt_detour', arm = 'facade', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: facade/alt_detour produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/facade/alt_detour.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+________ test_sabotaged_digests_are_selected[k_limit_paths-alt_detour] _________
+
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+sabotage = 'k_limit_paths', scenario = 'alt_detour'
+
+    @pytest.mark.parametrize("sabotage,scenario", [
+        ("k_limit_paths", "alt_detour"),
+        ("drop_one_path", "alt_detour"),
+        ("perturb_distance_bit", "alt_shortest"),
+        ("drop_geometry_component", "alt_shortest"),
+        ("flip_turn_distance", "turn_params"),
+        ("hide_validation_error", "validation"),
+    ])
+    def test_sabotaged_digests_are_selected(arm_runner, sabotage, scenario):
+        """Comparator sensitivity (EXECUTION.md: a deliberately broken
+        candidate must fail): the mutated digest must differ from the
+        honest reference digest."""
+>       honest = arm_runner(scenario, "reference")["state"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'alt_detour', arm = 'reference', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: reference/alt_detour produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/reference/alt_detour.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+________ test_sabotaged_digests_are_selected[drop_one_path-alt_detour] _________
+
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+sabotage = 'drop_one_path', scenario = 'alt_detour'
+
+    @pytest.mark.parametrize("sabotage,scenario", [
+        ("k_limit_paths", "alt_detour"),
+        ("drop_one_path", "alt_detour"),
+        ("perturb_distance_bit", "alt_shortest"),
+        ("drop_geometry_component", "alt_shortest"),
+        ("flip_turn_distance", "turn_params"),
+        ("hide_validation_error", "validation"),
+    ])
+    def test_sabotaged_digests_are_selected(arm_runner, sabotage, scenario):
+        """Comparator sensitivity (EXECUTION.md: a deliberately broken
+        candidate must fail): the mutated digest must differ from the
+        honest reference digest."""
+>       honest = arm_runner(scenario, "reference")["state"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'alt_detour', arm = 'reference', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: reference/alt_detour produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/reference/alt_detour.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+____ test_sabotaged_digests_are_selected[perturb_distance_bit-alt_shortest] ____
+
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+sabotage = 'perturb_distance_bit', scenario = 'alt_shortest'
+
+    @pytest.mark.parametrize("sabotage,scenario", [
+        ("k_limit_paths", "alt_detour"),
+        ("drop_one_path", "alt_detour"),
+        ("perturb_distance_bit", "alt_shortest"),
+        ("drop_geometry_component", "alt_shortest"),
+        ("flip_turn_distance", "turn_params"),
+        ("hide_validation_error", "validation"),
+    ])
+    def test_sabotaged_digests_are_selected(arm_runner, sabotage, scenario):
+        """Comparator sensitivity (EXECUTION.md: a deliberately broken
+        candidate must fail): the mutated digest must differ from the
+        honest reference digest."""
+>       honest = arm_runner(scenario, "reference")["state"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'alt_shortest', arm = 'reference', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: reference/alt_shortest produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/reference/alt_shortest.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+__ test_sabotaged_digests_are_selected[drop_geometry_component-alt_shortest] ___
+
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+sabotage = 'drop_geometry_component', scenario = 'alt_shortest'
+
+    @pytest.mark.parametrize("sabotage,scenario", [
+        ("k_limit_paths", "alt_detour"),
+        ("drop_one_path", "alt_detour"),
+        ("perturb_distance_bit", "alt_shortest"),
+        ("drop_geometry_component", "alt_shortest"),
+        ("flip_turn_distance", "turn_params"),
+        ("hide_validation_error", "validation"),
+    ])
+    def test_sabotaged_digests_are_selected(arm_runner, sabotage, scenario):
+        """Comparator sensitivity (EXECUTION.md: a deliberately broken
+        candidate must fail): the mutated digest must differ from the
+        honest reference digest."""
+>       honest = arm_runner(scenario, "reference")["state"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'alt_shortest', arm = 'reference', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: reference/alt_shortest produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/reference/alt_shortest.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+_____ test_sabotaged_digests_are_selected[flip_turn_distance-turn_params] ______
+
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+sabotage = 'flip_turn_distance', scenario = 'turn_params'
+
+    @pytest.mark.parametrize("sabotage,scenario", [
+        ("k_limit_paths", "alt_detour"),
+        ("drop_one_path", "alt_detour"),
+        ("perturb_distance_bit", "alt_shortest"),
+        ("drop_geometry_component", "alt_shortest"),
+        ("flip_turn_distance", "turn_params"),
+        ("hide_validation_error", "validation"),
+    ])
+    def test_sabotaged_digests_are_selected(arm_runner, sabotage, scenario):
+        """Comparator sensitivity (EXECUTION.md: a deliberately broken
+        candidate must fail): the mutated digest must differ from the
+        honest reference digest."""
+>       honest = arm_runner(scenario, "reference")["state"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'turn_params', arm = 'reference', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: reference/turn_params produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/reference/turn_params.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+____ test_sabotaged_digests_are_selected[hide_validation_error-validation] _____
+
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+sabotage = 'hide_validation_error', scenario = 'validation'
+
+    @pytest.mark.parametrize("sabotage,scenario", [
+        ("k_limit_paths", "alt_detour"),
+        ("drop_one_path", "alt_detour"),
+        ("perturb_distance_bit", "alt_shortest"),
+        ("drop_geometry_component", "alt_shortest"),
+        ("flip_turn_distance", "turn_params"),
+        ("hide_validation_error", "validation"),
+    ])
+    def test_sabotaged_digests_are_selected(arm_runner, sabotage, scenario):
+        """Comparator sensitivity (EXECUTION.md: a deliberately broken
+        candidate must fail): the mutated digest must differ from the
+        honest reference digest."""
+>       honest = arm_runner(scenario, "reference")["state"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'validation', arm = 'reference', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: reference/validation produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/reference/validation.json
+E           
+E           stderr:
+E           Traceback (most recent call last):
+E             File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/zonal/network.py", line 98, in add_node_to_graph
+E               if node_idx in graph.graph["added_nodes"]:
+E                              ^^^^^^^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'graph'
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+_____________________ test_turn_penalty_changes_distances ______________________
+
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+
+    def test_turn_penalty_changes_distances(arm_runner):
+        """The turn-penalty scenario must show the penalty engaging
+        (distances differ on/off) and the relaxed threshold re-pinned."""
+>       state = arm_runner("turn_params", "facade")["state"]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'turn_params', arm = 'facade', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: facade/turn_params produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/facade/turn_params.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+_____________________ test_engine_primitives_all_populated _____________________
+
+arm_runner = functools.partial(<function run_arm at 0x155546c6f420>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+
+    def test_engine_primitives_all_populated(arm_runner):
+        """Every exported engine primitive was exercised for real: the
+        enumerators returned routes for at least one destination, the
+        distance matrix is populated, and return_paths=False suppresses
+        path recording.  bfs_paths_many_targets_iterative is the pinned
+        exception: the upstream node-based variant returns EMPTY route
+        lists on this fixture while its edge-based sibling enumerates
+        fully — recorded honestly and pinned bitwise by the parity test;
+        here we only assert the keys exist."""
+>       state = arm_runner("engine_primitives", "facade")["state"]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/madina_api/paths/test_paths_surface_parity.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+madina_python = '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python'
+scenario = 'engine_primitives', arm = 'facade', sabotage = None, timeout = 600
+
+    def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
+        out_dir = Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
+        if out.exists():
+            out.unlink()
+        cmd = [madina_python, str(SCENARIO_SCRIPT),
+               "--arm", arm, "--scenario", scenario,
+               "--out", str(out), "--seed", "20260930"]
+        if sabotage:
+            cmd += ["--sabotage", sabotage]
+        env = dict(os.environ, PYTHONHASHSEED="0")
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=timeout, env=env, cwd=str(out_dir))
+        if not out.exists():
+>           raise AssertionError(
+                f"{arm}/{scenario} produced no digest "
+                f"(rc={proc.returncode})\nstdout:\n{proc.stdout[-2000:]}\n"
+                f"stderr:\n{proc.stderr[-2000:]}")
+E           AssertionError: facade/engine_primitives produced no digest (rc=0)
+E           stdout:
+E           digest: campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/artifacts/madina_paths/facade/engine_primitives.json
+E           
+E           stderr:
+
+tests/madina_api/paths/conftest.py:76: AssertionError
+=========================== short test summary info ============================
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[alt_shortest]
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[alt_detour]
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[turn_params]
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[engine_primitives]
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[edge_cases]
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[validation]
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_all_paths_no_hidden_k_limit
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[k_limit_paths-alt_detour]
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[drop_one_path-alt_detour]
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[perturb_distance_bit-alt_shortest]
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[drop_geometry_component-alt_shortest]
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[flip_turn_distance-turn_params]
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[hide_validation_error-validation]
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_turn_penalty_changes_distances
+FAILED tests/madina_api/paths/test_paths_surface_parity.py::test_engine_primitives_all_populated
+======================== 15 failed, 4 passed in 26.93s =========================

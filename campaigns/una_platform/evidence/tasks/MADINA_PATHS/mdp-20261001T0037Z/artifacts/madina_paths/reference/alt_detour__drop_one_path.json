@@ -1,0 +1,240 @@
+{
+ "arm": "reference",
+ "sabotage": "drop_one_path",
+ "scenario": "alt_detour",
+ "seed": 20260930,
+ "state": {
+  "coherence": {
+   "gdf_counts": {
+    "0": 4,
+    "1": 2
+   },
+   "gdf_counts_equal_independent": true,
+   "independent_counts_by_source": {
+    "0": 4,
+    "1": 2
+   }
+  },
+  "engine_d_idxs_order": [
+   10,
+   9
+  ],
+  "engine_equals_independent": true,
+  "engine_per_destination": {
+   "9": {
+    "distances": [
+     "4069000000000000",
+     "4069000000000000",
+     "406e2d7bc01366b8",
+     "407b96bde009b35c"
+    ],
+    "interiors": [
+     [
+      2
+     ],
+     [
+      2,
+      5,
+      4
+     ],
+     [
+      4
+     ],
+     [
+      5
+     ]
+    ],
+    "n_routes": 4
+   },
+   "10": {
+    "distances": [
+     "4059000000000000",
+     "406e2d7bc01366b8"
+    ],
+    "interiors": [
+     [],
+     [
+      5
+     ]
+    ],
+    "n_routes": 2
+   }
+  },
+  "gdf": {
+   "columns": [
+    "destination",
+    "distance",
+    "geometry"
+   ],
+   "crs": "EPSG:3857",
+   "dtypes": [
+    "int32",
+    "float64",
+    "geometry"
+   ],
+   "index": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "index_name": "None",
+   "values": {
+    "destination": [
+     1,
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    "distance": [
+     "4059000000000000",
+     "4069000000000000",
+     "4069000000000000",
+     "406e2d7bc01366b8",
+     "406e2d7bc01366b8"
+    ],
+    "geometry": [
+     {
+      "component_wkb": [
+       "1fc49fd42ce8d94886d4d462",
+       "2dd7bf75fe5ade7ddc4b895d"
+      ],
+      "n_components": 2
+     },
+     {
+      "component_wkb": [
+       "1fc49fd42ce8d94886d4d462",
+       "2dd7bf75fe5ade7ddc4b895d",
+       "280f9c05edc25fd71d8cb188"
+      ],
+      "n_components": 3
+     },
+     {
+      "component_wkb": [
+       "1fc49fd42ce8d94886d4d462",
+       "c7744e0fd5754aeff6c2b0c8",
+       "280f9c05edc25fd71d8cb188"
+      ],
+      "n_components": 3
+     },
+     {
+      "component_wkb": [
+       "1fc49fd42ce8d94886d4d462",
+       "7331aabb4c184631ac146b36",
+       "2dd7bf75fe5ade7ddc4b895d"
+      ],
+      "n_components": 3
+     },
+     {
+      "component_wkb": [
+       "1fc49fd42ce8d94886d4d462",
+       "7331aabb4c184631ac146b36",
+       "280f9c05edc25fd71d8cb188"
+      ],
+      "n_components": 3
+     },
+     {
+      "component_wkb": [
+       "1fc49fd42ce8d94886d4d462",
+       "2dd7bf75fe5ade7ddc4b895d",
+       "7331aabb4c184631ac146b36",
+       "c7744e0fd5754aeff6c2b0c8",
+       "280f9c05edc25fd71d8cb188"
+      ],
+      "n_components": 5
+     }
+    ]
+   }
+  },
+  "independent": {
+   "d_idxs": {
+    "9": "4069000000000000",
+    "10": "4059000000000000"
+   },
+   "d_idxs_order": [
+    10,
+    9
+   ],
+   "full_route_set": [
+    [
+     1,
+     2
+    ],
+    [
+     1,
+     2,
+     2,
+     3
+    ],
+    [
+     1,
+     2,
+     2,
+     5,
+     4,
+     3
+    ],
+    [
+     1,
+     4,
+     3
+    ],
+    [
+     1,
+     5,
+     2
+    ],
+    [
+     1,
+     5,
+     3
+    ]
+   ],
+   "per_destination": {
+    "9": {
+     "distances": [
+      "4069000000000000",
+      "4069000000000000",
+      "406e2d7bc01366b8",
+      "407b96bde009b35c"
+     ],
+     "interiors": [
+      [
+       2
+      ],
+      [
+       2,
+       5,
+       4
+      ],
+      [
+       4
+      ],
+      [
+       5
+      ]
+     ],
+     "n_routes": 4
+    },
+    "10": {
+     "distances": [
+      "4059000000000000",
+      "406e2d7bc01366b8"
+     ],
+     "interiors": [
+      [],
+      [
+       5
+      ]
+     ],
+     "n_routes": 2
+    }
+   },
+   "scope_size": 7
+  }
+ }
+}

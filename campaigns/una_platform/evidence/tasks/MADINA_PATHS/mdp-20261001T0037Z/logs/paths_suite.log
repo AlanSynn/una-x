@@ -1,0 +1,28 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.4, pytest-9.1.1, pluggy-1.6.0 -- /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python
+cachedir: .pytest_cache
+rootdir: /storage/scratch1/1/dsynn6/una-x
+configfile: pyproject.toml
+collecting ... collected 19 items
+
+tests/madina_api/paths/test_paths_facade_env.py::test_facade_una_importable_without_upstream PASSED [  5%]
+tests/madina_api/paths/test_paths_facade_env.py::test_facade_una_never_imports_upstream_madina PASSED [ 10%]
+tests/madina_api/paths/test_paths_reflection.py::test_reflection_matches_pinned_reference PASSED [ 15%]
+tests/madina_api/paths/test_paths_reflection.py::test_star_exports_and_submodule_identity PASSED [ 21%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[alt_shortest] PASSED [ 26%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[alt_detour] PASSED [ 31%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[turn_params] PASSED [ 36%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[engine_primitives] PASSED [ 42%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[edge_cases] PASSED [ 47%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_facade_matches_bridged_reference_bitwise[validation] PASSED [ 52%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_all_paths_no_hidden_k_limit PASSED [ 57%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[k_limit_paths-alt_detour] PASSED [ 63%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[drop_one_path-alt_detour] PASSED [ 68%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[perturb_distance_bit-alt_shortest] PASSED [ 73%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[drop_geometry_component-alt_shortest] PASSED [ 78%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[flip_turn_distance-turn_params] PASSED [ 84%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_sabotaged_digests_are_selected[hide_validation_error-validation] PASSED [ 89%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_turn_penalty_changes_distances PASSED [ 94%]
+tests/madina_api/paths/test_paths_surface_parity.py::test_engine_primitives_all_populated PASSED [100%]
+
+============================= 19 passed in 56.44s ==============================

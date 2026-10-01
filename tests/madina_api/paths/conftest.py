@@ -1,12 +1,10 @@
-"""MADINA_ZONAL compat-suite fixtures.
+"""MADINA_PATHS compat-suite fixtures.
 
 Both parity arms run under the SAME interpreter — the dependency-bridged
 reference venv (venv_madina_legacy), the only environment where the
-pinned upstream ``madina`` is importable and where ``pydeck`` is
-installed for the create_map scenarios — with identically seeded RNGs,
-so digest differences are attributable to the code under test only.
-Digests are bitwise-strict (IEEE-754 bit patterns, WKB hashes, dtypes,
-orderings).
+pinned upstream ``madina`` is importable — so digest differences are
+attributable to the code under test only.  Digests are bitwise-strict
+(IEEE-754 bit patterns, WKB hashes, dtypes, orderings).
 """
 from __future__ import annotations
 
@@ -30,18 +28,11 @@ from _legacy_paths import ARTIFACTS_OUT  # portable-path fix (HARNESS 2026-09-30
 
 MADINA_PYTHON = REPO / ".refs" / "venv_madina_legacy" / "bin" / "python"
 MADINA_REF_SRC = REPO / ".refs" / "madina_ref" / "src"
-SCENARIO_SCRIPT = HERE / "_zonal_scenario.py"
-REFLECT_SCRIPT = HERE / "_zonal_reflection.py"
+SCENARIO_SCRIPT = HERE / "_paths_scenario.py"
+REFLECT_SCRIPT = HERE / "_paths_reflection.py"
 
-SCENARIOS = [
-    "style_colors",
-    "describe_output",
-    "insert_multinode_edge",
-    "id_semantics",
-    "turn_params",
-    "map_deck",
-    "quirks",
-]
+# scenario names live in _paths_scenario.SCENARIO_NAMES (unique module
+# name; `from conftest import ...` collides across non-package test dirs)
 
 
 def pytest_configure(config):
@@ -64,10 +55,9 @@ def madina_python():
 def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict:
     # resolve(): the arm subprocess runs with cwd=out_dir, so a RELATIVE
     # ARTIFACTS_OUT would resolve against that cwd and nest the digest
-    # under a spurious out_dir/campaigns/... tree (same latent defect as
-    # the paths conftest, observed there 2026-10-01; absolute paths had
-    # masked it here).
-    out_dir = (Path(str(ARTIFACTS_OUT)) / "madina_zonal" / arm).resolve()
+    # under a spurious out_dir/campaigns/... tree (observed 2026-10-01);
+    # absolute paths masked this until the retained evidence run.
+    out_dir = (Path(str(ARTIFACTS_OUT)) / "madina_paths" / arm).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
     out = out_dir / f"{scenario}{'__' + sabotage if sabotage else ''}.json"
     if out.exists():
@@ -94,7 +84,7 @@ def run_arm(madina_python, scenario, arm, *, sabotage=None, timeout=600) -> dict
 
 
 def run_reflection(madina_python, arm) -> dict:
-    out_dir = (Path(str(ARTIFACTS_OUT)) / "madina_zonal" / "reflection").resolve()
+    out_dir = (Path(str(ARTIFACTS_OUT)) / "madina_paths" / "reflection").resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
     out = out_dir / f"{arm}.json"
     if out.exists():

@@ -1,0 +1,8 @@
+  /storage/scratch1/1/dsynn6/una-x/src/urban_network_analysis/compat/madina/zonal/zonal.py:134: DeprecationWarning: The 'unary_union' attribute is deprecated, use the 'union_all()' method instead.
+    centroid_point = gdf['geometry'].to_crs("EPSG:4326").unary_union.centroid
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+251 passed, 348 skipped, 2 warnings in 843.54s (0:14:03)
+REGRESSION_EXIT=0
+
+[exited with code 0]
