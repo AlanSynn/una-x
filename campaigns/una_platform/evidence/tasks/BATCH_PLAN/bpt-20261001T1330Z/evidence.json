@@ -1,0 +1,73 @@
+{
+  "run_id": "bpt-20261001T1330Z",
+  "task": "BATCH_PLAN",
+  "environment": {
+    "interpreter": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python",
+    "pytest_env": "PYTHONHASHSEED=0",
+    "worktree": ".claude/worktrees/batch-plan (branch worktree-batch-plan, reset onto perf/una-platform @ 51fdb1f before any work; EnterWorktree had based it on main @ cd957fd)",
+    "refs_note": "worktrees have no .refs/ -> the 12 combined-run skips are exactly that artifact (reviewer confirmed: perf_contract UNA_BASELINE_SRC unset)"
+  },
+  "content_hashes_at_commit_post_review": {
+    "src/urban_network_analysis/batch/__init__.py": "60a2e06da661d3bf612293fdf25370c76015e6238049caa68a02c927a03ad2a7",
+    "src/urban_network_analysis/batch/plan.py": "288ed0020c02a518309d9a09794a91fa8c98176a676aa6013bf0db617b432aa3",
+    "tests/batch/plan/conftest.py": "af21f18442d00f71c86d92e4d6c97a66bc2f9dd3fc6da1746e61e2083b23b522",
+    "tests/batch/plan/test_dependencies.py": "0cee5a403123be13107e6ae24664fc7dfe4b713b6b103a5a99254045d4090a6d",
+    "tests/batch/plan/test_descriptors_and_naming.py": "9e3540d5654061cec158ef2bb03175cf1f1bfc30b8e2f9e492ee6c7dcb4b8ab4",
+    "tests/batch/plan/test_ordered_validation.py": "7ce70e4dfe1d36ce49371e757ce56e69f5431f2d1c5745a49c97b15f54b95c0a",
+    "tests/batch/plan/test_plan_admission.py": "dc149e65cdc84d1f78a3dc4c029f9d478955ec8b32e026ca26b97b66ae1b0b1f",
+    "tests/batch/plan/test_plan_import_hygiene.py": "2f39ebff7ba3853597c380524ff6d01d89925d38e324b433928e86f85048725b",
+    "tests/batch/plan/test_serial_prefix_invariant.py": "179abca324cbf1cbddf9366f84f877243f87c3c705103feec03ec0031c54b349",
+    "evidence/reviews/batch_plan/review_report_batch_plan.md": "see git blob (reviewer-written, committed as-is)"
+  },
+  "commands_and_outcomes": [
+    {
+      "command": "python -m pytest tests/batch/plan/ -q   (alan, PYTHONHASHSEED=0, worktree)",
+      "outcome": "pre-fix: 35 passed / 0 failed in 0.33 s; post-disposition FINAL: 43 passed / 0 failed in 0.86 s"
+    },
+    {
+      "command": "python -m pytest tests/batch/plan/ tests/execution/ tests/perf_contract/ tests/cache/store/ -q",
+      "outcome": "pre-fix: 268 passed / 12 skipped in 58.13 s; post-disposition FINAL: 276 passed / 12 skipped in 36.14 s"
+    },
+    {
+      "command": "scratch mutant battery, 10 mutants (7 original + M8/M9/M10 guarding the review fixes), suite re-run per mutant, restore verified by sha256",
+      "outcome": "10/10 SELECTED; restore byte-identical to pristine 288ed002…",
+      "detail": [
+        "M1 commit_order reversed -> selected (invariant reorder test)",
+        "M2 fold_order reversed -> selected (fold-order test)",
+        "M3 alias detection off -> selected (aliased_settings test)",
+        "M4 stem-overlap always False -> selected (output_conflict tests)",
+        "M5 _canonical without realpath -> selected (symlink resolution test)",
+        "M6 admission always 'worker' -> selected (admission reason tests)",
+        "M7 early-preempt: raise at inspection on first invalid row -> selected (ordered-validation tests)",
+        "M8 observer_points_file dropped from the read set -> selected (observer hazard test; MAJOR-1 regression guard)",
+        "M9 separator-stem containment off -> selected (../evil + sub/evil tests; MINOR-1 regression guard)",
+        "M10 commit truncation at first error removed -> selected (truncation test; MINOR-2 regression guard)"
+      ]
+    },
+    {
+      "command": "ApplyRow-built real Settings probe (pairing-style rows)",
+      "outcome": "planner decisions match the serial loop's semantics; Settings trio defaults are non-empty so a fresh row passes the serial missing-check — parity"
+    },
+    {
+      "command": "independent reviewer's own verification (full log in evidence/reviews/batch_plan/review_report_batch_plan.md)",
+      "outcome": "suites re-run (35/268+12 pre-fix); serial parity vs a REAL RunBatch on the 3x3 smoke fixture; ~4k-stem brute force: no non-prefix stem pair collides under the actual writers; canonicalization attacks (trailing slash, '..', relative, symlink) all collapse to one folder; case-insensitivity proven over-serialization-only; M1+M4 independently re-applied (6 and 5 failures) with byte-identical restore; both dossier mutants confirmed non-vacuous; import-hygiene probe confirmed real; scope audit clean"
+    }
+  ],
+  "dossier_04_mapping": {
+    "step1_snapshot_and_aliasing": "RowDescriptor snapshots decided naming values at the serial boundaries (output-folder precedence, 'Results'->name after the skip gate only) without mutating live Settings; alias detection by object identity BEFORE snapshotting",
+    "step2_dependency_edges": "output_conflict (same canonical folder + prefix-overlapping stems — proven complete for the actual writers), read_write (either direction; five input fields incl. obstacle and observer files; symlink-resolved; case-insensitive), aliased_settings; separator-stem writers are UNCONTAINABLE -> batch-wide serial; skipped/error rows excluded as sources",
+    "step3_ordered_outcomes": "per-row validation held in caller order with serial-exact semantics: ok / skipped (falsy) / error (truthy non-strings, non-string data_folder through both failure transitions, unreadable attributes); planner raises only for the whole-call empty-batch precondition",
+    "step4_admission": "worker only when proven independent AND exact Settings type; uncontained writers force batch-wide serial; everything else serial WITH a reason; independent rows admitted even when neighbors are serialized",
+    "steps5-7": "delivered as the executable specification: ROW_TRANSITIONS (annotated: bind+resolve run for skipped rows too) / BATCH_TRANSITIONS + verify_prefix + BatchPlan.commit_order (truncated at the earliest error)/fold_order; the BATCH_EXEC runtime reproduces these against real workers",
+    "formal_invariant": "verify_prefix implements S_i == C_i after EVERY committed row; tests simulate a correct coordinator (passes) and both dossier mutants (publish-out-of-order, fold-by-completion) — both selected, reviewer confirmed non-vacuous",
+    "failure_ordering": "the serial call aborts at the earliest row-position failure: the plan's commit_order finishes the valid prefix and stops at the first error row (dossier 04 failure ordering)",
+    "timestamps": "output_wStamp rows are NOT serialized for the clock alone (file basenames derive from the stem); the plan notes that the runtime resolves timestamps under its clock discipline and never predicts them",
+    "composite": "batch composite artifacts are coordinator-written after the last commit; the plan notes this explicitly when any row requests composite output; fold order is plan.fold_order (order-sensitive float sum, bit-tested)"
+  },
+  "limitations": [
+    "Planner-only scope: no worker pool, no reorder buffer, no cancellation/checkpoint (BATCH_EXEC). RunBatch(parallel=True) still raises ExecutionNotAdmittedError in this tree — unchanged serial behavior.",
+    "Dependency analysis is deliberately conservative in documented directions: case-insensitive path comparison, stem-prefix output conflicts, and batch-wide serialization under an uncontained (separator-stem) writer. Each can only over-serialize, never corrupt.",
+    "Row-level runtime errors hold the serial abort-at-earliest-failure semantics at PLAN level; the runtime re-implements them for execution-stage failures (dossier 04 failure ordering)."
+  ],
+  "scope_discipline": "New files only: src/urban_network_analysis/batch/{__init__,plan}.py, tests/batch/plan/ (7 files), evidence under campaigns/una_platform/evidence/{reviews/batch_plan,tasks/BATCH_PLAN}/. Test module basenames unique across tests/ (whole-repo collection-collision mode). Scratch battery removed before commit; __pycache__ gitignored and not staged. No pushes, merges to main, releases, purchases, or credential/provider changes."
+}
