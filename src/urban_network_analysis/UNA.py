@@ -12,7 +12,6 @@ from .Execution import (
     RowOutcome,
     admit_execution,
     BackendNotAvailableError,
-    ExecutionNotAdmittedError,
 )
 from .Engines.Flow import Flow
 from .Engines.AggregateFlow import AggregateFlow
@@ -128,13 +127,29 @@ class UNA:
         Args:
             analysis:     "accessibility" or "flow"
             pairing_file: optional path to a .csv / .tsv / .json batch file
-            parallel:     keyword-only (contract §6).  Must stay False in this
-                          build: the parallel batch runtime is a later campaign
-                          task, and requesting it raises the typed
-                          ExecutionNotAdmittedError instead of silently
-                          running serial.
-            workers:      keyword-only.  Recorded in batch_report; on the
-                          serial route workers are not used.
+            parallel:     keyword-only (contract §6).  False (default) runs
+                          the serial route, unchanged and bitwise-identical.
+                          True engages the parallel batch runtime: the
+                          planner (urban_network_analysis.batch.plan) proves
+                          per-row independence, proven-independent rows run
+                          in spawn worker processes with private staging,
+                          and the coordinator commits rows in caller order
+                          so public state and artifacts match the serial
+                          route exactly (dossier 04/05).  Rows that cannot
+                          be proven independent execute serially on this
+                          instance with a recorded reason — parallel=True
+                          never silently runs serial.  Cancellation
+                          (deadline / KeyboardInterrupt / worker loss)
+                          preserves the committed prefix and raises
+                          BatchCancelledError; an in-row failure raises the
+                          same exception type the serial loop would, after
+                          the valid prefix has committed.
+            workers:      keyword-only.  Row-worker process count for the
+                          parallel route (default: cpu_budget from the
+                          effective execution options, else cpu count,
+                          capped by the number of worker-admissible rows).
+                          Recorded in batch_report; on the serial route
+                          workers are not used.
             execution:    keyword-only ExecutionOptions override for this
                           call (default: this instance's ``self.execution``).
                           Admission (backend availability) happens BEFORE any
@@ -165,12 +180,6 @@ class UNA:
                 f"execution must be an ExecutionOptions instance, got "
                 f"{type(requested_execution).__name__}")
         effective = admit_execution(requested_execution)
-        if parallel:
-            raise ExecutionNotAdmittedError(
-                "RunBatch(parallel=True) was requested but the parallel "
-                "batch runtime is not admitted in this build; the serial "
-                "route is parallel=False. Requesting an unadmitted mode "
-                "raises rather than silently running serial.")
         notes = []
         if workers is not None and (
                 not isinstance(workers, int) or isinstance(workers, bool)
@@ -236,6 +245,20 @@ class UNA:
                     f"execution.backend={s.execution.backend!r}, but no "
                     f"qualified capability is registered for this build; "
                     f"forced expert routes never fall back silently.")
+
+        if parallel:
+            # Parallel route (dossier 04/05): all pre-flight has passed —
+            # admission, pairing load, row backends.  The coordinator
+            # plans, dispatches worker rows, and commits in caller order;
+            # it raises like this serial method on failure and sets
+            # self.batch_report only on success.
+            from .batch.runtime import run_batch_parallel
+            run_batch_parallel(
+                self, analysis, workers=workers,
+                requested=requested_execution, effective=effective,
+                script_output_folder=script_output_folder,
+                notes=tuple(notes))
+            return
 
         self.topology.logger.log('RunBatch', f"Running {analysis} — {len(self.projects)} settings", v=1)
 

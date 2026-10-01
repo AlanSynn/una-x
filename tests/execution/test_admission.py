@@ -92,10 +92,26 @@ def _pairing_csv(tmp_path):
     return str(csv)
 
 
-def test_runbatch_parallel_true_raises_before_any_work(project, tmp_path):
-    with pytest.raises(ExecutionNotAdmittedError):
-        project.RunBatch("accessibility", _pairing_csv(tmp_path), parallel=True)
-    assert project.batch_report is None
+def test_runbatch_parallel_true_is_admitted_and_delegates(project, tmp_path,
+                                                          monkeypatch):
+    """BATCH_EXEC staged delivery closed: parallel=True no longer raises
+    the typed unadmitted-mode error — it delegates to the parallel batch
+    runtime after admission.  Observed via a sentinel coordinator (this
+    suite never runs rows to completion); the runtime's own behavior
+    tests live in tests/batch/runtime/."""
+    import urban_network_analysis.batch.runtime as batch_runtime
+
+    seen = {}
+
+    def _sentinel(una, analysis, **kwargs):
+        seen['analysis'] = analysis
+        seen['parallel_requested'] = kwargs['effective'] is not None
+        assert una is project
+
+    monkeypatch.setattr(batch_runtime, "run_batch_parallel", _sentinel)
+    project.RunBatch("accessibility", _pairing_csv(tmp_path), parallel=True)
+    assert seen['analysis'] == "accessibility"
+    assert project.batch_report is None      # sentinel didn't set one
     assert not (tmp_path / "out").exists() or not any((tmp_path / "out").iterdir())
 
 
