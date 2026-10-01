@@ -1,0 +1,83 @@
+{
+  "run_id": "bex-20261001T2100Z",
+  "task": "BATCH_EXEC",
+  "environment": {
+    "interpreter": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python",
+    "python": "3.11.4",
+    "pytest_env": "PYTHONHASHSEED=0",
+    "worktree": ".claude/worktrees/batch-runtime (branch worktree-batch-runtime, base perf/una-platform @ 9e4c832-lineage; implementation commit 0acbb11, closure fix commit 22de446)",
+    "refs_note": "whole-repo closure regressions ran in the MAIN checkout (.refs-equipped); worktree-only suite runs show the .refs-absence skip artifact only for neighbors runs"
+  },
+  "content_hashes_at_commit": {
+    "src/urban_network_analysis/UNA.py": "7ff3116002feb58d636a12ffa40e81b1cafde4cbc967d84180f892be632857bd",
+    "src/urban_network_analysis/batch/__init__.py": "a49d114e16e3ebe6b47b543e3c718635af5a267b435862ac3be7d41936af4456",
+    "src/urban_network_analysis/batch/runtime.py": "25c51e9a7cfd493a79e52498639243371c5ecf157cb41324eb3db65277353541",
+    "src/urban_network_analysis/batch/worker.py": "853f7ca972ba989bcf9d27a7eeec7bcfd7af5abf13ca918186f23b2c0ab9f47d",
+    "src/urban_network_analysis/batch/checkpoint.py": "29ff703d7da36370349711685da38814f6402dc682650d9d3a942ab149900217",
+    "src/urban_network_analysis/batch/report.py": "d857354c9aa9dec7454b91773fb3aad0c9bd0d20fdf327b2ea45c3d7a3c07009",
+    "src/una_batch_worker_main.py": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f",
+    "src/urban_network_analysis/batch/plan.py": "288ed0020c02a518309d9a09794a91fa8c98176a676aa6013bf0db617b432aa3 (byte-unchanged reviewed BATCH_PLAN)",
+    "tests/execution/test_admission.py": "6d0501a2e03dc093760f007dd92e398b7ecbb0f1fa546cb9bd55ed0fba14d7ed",
+    "tests/batch/runtime/conftest.py": "600c92615e96a00fc9eb255f6c316e05a1d2bdf047c3671040673b5c89c1cf27",
+    "tests/batch/runtime/test_runtime_cancellation.py": "387037bb34919df3971d7eb73d68e21b60ec4bca706c596429f59006cb83a901",
+    "tests/batch/runtime/test_runtime_checkpoint.py": "2b33e44e2a775fb28dc094c56946ee2b82e2f8a520beedc22891e9a7c89f9e83",
+    "tests/batch/runtime/test_runtime_composite.py": "318f6a17f064ba077b96d4b92336502f31b30392bfc50f00cf4a6d91c7a8475b",
+    "tests/batch/runtime/test_runtime_ordering.py": "fa188568afe5ca0647f7c78e2ad783c5d7a304153dd65077d0ac83f3e3800b13",
+    "tests/batch/runtime/test_runtime_overlap.py": "38239851deb86c7ff70fa5dfe47c49224c7aa4016d48e9a3bfd92ee08f2a0a55",
+    "tests/batch/runtime/test_runtime_parity.py": "014f654f65909e68007b3c757a9445076a9d55a2e94443b3a7cd3acc58a7b65e",
+    "tests/batch/runtime/test_runtime_report_import.py": "5a6a5c9aa4295bf754e8e6b80d904b3c4bd6b7b0aa125e485955aa710ca4650a",
+    "tests/batch/runtime/test_runtime_transport.py": "57a115feb1be8d883d8b2d45db667ea618d629c37b1c5929877507ad8337deef"
+  },
+  "commands_and_outcomes": [
+    {
+      "command": "python -m pytest tests/batch/runtime/ -q   (alan, PYTHONHASHSEED=0, worktree, final bytes)",
+      "outcome": "45 passed / 0 failed in 203.30 s (run 10; runs 7/8 green on earlier fix states; full history in the untracked evidence copy suite_run*.txt)"
+    },
+    {
+      "command": "python -m pytest tests/ -q   (main checkout, merged tree @ 22de446)",
+      "outcome": "634 passed / 348 skipped / 0 failed in 1610.49 s — closure regression (run 1 on 0acbb11: 631 passed / 2 failed, diagnosed + fixed, see closure_regression.json)"
+    },
+    {
+      "command": "python -m pytest tests/execution/test_admission.py -q   (post-fix spot check)",
+      "outcome": "14 passed"
+    },
+    {
+      "command": "reviewer's own suite run (independent, read-only, pre-fix tree)",
+      "outcome": "33 passed / 176.95 s"
+    },
+    {
+      "command": "spawn-transport empirical probe (CPython 3.11.4 queues.py + abrupt-death child)",
+      "outcome": "Queue.put is feeder-buffered (public-API flushing impossible mid-life: close() terminal, put raises ValueError afterwards, join_thread asserts _closed); SimpleQueue.put sends synchronously under _wlock — basis for the _ResultChannel fix"
+    }
+  ],
+  "mutation_battery": {
+    "protocol": "each mutant applied as an exact unique string replacement to src/urban_network_analysis/batch/runtime.py, selector tests re-run expecting nonzero exit or timeout, original bytes restored and verified byte-identical by sha256",
+    "runs": [
+      {"run": 1, "tree": "post-review (c8fe381f…)", "result": "12/15 SELECTED; survivors M06 (equivalent-by-redundant-cleanup), M14 (selector never verified), M15 (dead code post-MAJOR-1) — each diagnosed and closed", "record": "mutants_run1_survivors.txt"},
+      {"run": 2, "tree": "post-review bytes after retargets", "result": "15/15 SELECTED, byte-identical restore", "record": "mutants_run2_all_selected.txt"},
+      {"run": 3, "tree": "final bytes (25c51e9a…) after the closure fix round; all 15 patterns re-verified unique", "result": "15/15 SELECTED, byte_identical_restore=true", "record": "mutants.json + mutants_run3_finalbytes.txt"}
+    ],
+    "final_selection": [
+      {"id": "M01_unbounded_pending", "selected_by": "test_bounded_pending_dispatch"},
+      {"id": "M02_publish_out_of_order", "selected_by": "test_commit_order_is_caller_order_under_completion_noise"},
+      {"id": "M03_fold_by_completion_order", "selected_by": "test_composite_fold_is_caller_order_under_completion_noise"},
+      {"id": "M04_skip_staged_verification", "selected_by": "test_staged_digest_verification_blocks_publishing"},
+      {"id": "M05_drop_settings_delta", "selected_by": "test_parallel_matches_serial_bitwise[1]"},
+      {"id": "M06_skip_staging_cleanup", "selected_by": "test_deadline_cancel_preserves_prefix_and_reaps_workers (+ observable-prefix)"},
+      {"id": "M07_resume_reruns_everything", "selected_by": "test_completed_batch_rerun_is_idempotent"},
+      {"id": "M08_skip_resume_verification", "selected_by": "test_tampered_artifact_forces_row_rerun"},
+      {"id": "M09_skip_identity_check", "selected_by": "test_identity_mismatch_rejected_not_mixed"},
+      {"id": "M10_drop_nested_guard", "selected_by": "test_nested_parallel_batch_refused"},
+      {"id": "M11_swallow_worker_failure", "selected_by": "test_worker_row_failure_raises_original_exception_after_prefix"},
+      {"id": "M12_never_request_state", "selected_by": "test_parallel_matches_serial_bitwise[1]"},
+      {"id": "M13_deadline_never_fires", "selected_by": "test_deadline_cancel_preserves_prefix_and_reaps_workers"},
+      {"id": "M14_refold_finalized_composite", "selected_by": "test_resume_folds_composite_once_no_duplicate_columns"},
+      {"id": "M15_skipped_row_loses_bind_transition", "selected_by": "test_skipped_row_bind_semantics_match_serial (+ resume-rebinds)"}
+    ]
+  },
+  "review": {
+    "verdict": "ACCEPT-WITH-FINDINGS (1 MAJOR / 6 MINOR / 8 NOTE), reviewer suite green, read-only honored",
+    "report": "reviewer_report.md (verbatim, in the untracked root evidence copy); dispositions incl. the post-review survivor round and the closure-regression fix round in review_dispositions.md"
+  },
+  "raw_evidence_location": "untracked root copy: evidence/tasks/BATCH_EXEC/bex-20261001T2100Z/ (Receipt.json, review_dispositions.md, reviewer_report.md, mutants*.txt/json, file_hashes.txt, suite_run3..10*.txt, closure_regression.txt, closure_regression_run1_2F.txt); this tracked trio mirrors the closure + receipt + evidence records"
+}

@@ -1,0 +1,57 @@
+{
+  "task": "BATCH_EXEC",
+  "campaign": "una-platform-2026-09",
+  "role": "batch-engineer",
+  "worktree": "worktree-batch-runtime (branch worktree-batch-runtime)",
+  "timestamp_utc": "2026-10-01T21:00:00Z",
+  "closure_commit": "perf/una-platform closure commit on the merged tree @ worktree-batch-runtime 22de446 (0acbb11 + closure fix round)",
+  "objective": "Expose actual RunBatch parallelism with bounded reorder staging, deterministic commit, cancellation/checkpoint/resume (dossiers 04+05).",
+  "status": "COMPLETE",
+  "delivers": {
+    "public_surface": "UNA.RunBatch(parallel=True) no longer raises the staged-delivery ExecutionNotAdmittedError; after pre-flight (admission, pairing load, row backends) it delegates to batch.runtime.run_batch_parallel. Serial route untouched (parallel=False is bitwise the prior behavior).",
+    "planner": "batch.plan (reviewed BATCH_PLAN, sha 288ed0020c02a518309d9a09794a91fa8c98176a676aa6013bf0db617b432aa3) is byte-UNCHANGED: row DAG, admission, ordered validation, commit_order semantics, observable-prefix specification.",
+    "runtime": "Greedy bounded dispatch (pending bound = workers + queue_depth) into persistent spawn workers via the stdlib-only shim (thread budgets applied before first heavy import); single commit cursor in caller order; staged speculation under .una-batch-staging-<runid>/rowN published by os.replace at commit; coordinator-side digest verification before publish; settings delta applied identity-preserving at commit; composite folded in plan.fold_order; _check_prefix_decisions (observable-prefix invariant) after EVERY commit class including reuse.",
+    "failure_semantics": "Plan-error and worker-row failures re-raise the serial exception (exact construction via transportable error args; original type/message preserved for unpicklable exceptions) after the valid prefix committed; batch_report stays None on any raise (serial parity); BatchCancelledError carries the prefix outcomes.",
+    "cancellation": "Deadline (budgets work, not spawn readiness), KeyboardInterrupt, worker loss (drain-then-raise: a dead worker's receivable results extend the committed prefix before the cancellation fires); pool reaped, staging removed by the run-level finally (single cleanup owner, ownership-bounded).",
+    "transport": "Results travel over a SYNCHRONOUS channel (_ResultChannel over ctx.SimpleQueue: put pickles and writes to the pipe under a POSIX lock, so an abrupt worker death can never truncate an already-completed sibling result — fixed after closure-regression run 1 demonstrated the feeder-buffer loss). Jobs probe-pickled before dispatch (untransportable job fails its own row loudly); worker degrades untransportable results (drop live exception object; then text-only descriptor); _LockSafe carries engine locks across spawn.",
+    "checkpoint_resume": "Identity = analysis + semantic profile + backend + package code + spawn shim + python/numpy + input digests + per-row canonical Settings closure + plan summary. Only COMMITTED/SKIPPED units reused; artifacts AND capture payloads digest-verified at resume (failing rows dropped and re-run); reused rows carry output_files/manifest; finalized-composite suppression prevents refold; completed rerun rehydrates final state via one private state-only rerun (timings-budgeted), loud failure when rehydration is impossible."
+  },
+  "files": {
+    "src/urban_network_analysis/UNA.py": "staged-delivery flip: parallel branch after pre-flight",
+    "src/urban_network_analysis/batch/__init__.py": "docstring only",
+    "src/urban_network_analysis/batch/runtime.py": "coordinator (new file; final sha256 25c51e9a7cfd493a79e52498639243371c5ecf157cb41324eb3db65277353541 after the closure fix round)",
+    "src/urban_network_analysis/batch/worker.py": "spawn worker (new file)",
+    "src/urban_network_analysis/batch/checkpoint.py": "journal (new file)",
+    "src/urban_network_analysis/batch/report.py": "report/outcome types (new file)",
+    "src/una_batch_worker_main.py": "stdlib-only spawn target (new file, outside the package)",
+    "tests/batch/runtime/": "45 tests across parity/ordering/overlap/cancellation/composite/checkpoint/report-import/transport + conftest",
+    "tests/execution/test_admission.py": "receipt-documented cross-scope minimal edit: parallel=True admission now observable via sentinel coordinator"
+  },
+  "verification": {
+    "runtime_suite": "tests/batch/runtime/: 45 passed / 0 failed on the FINAL bytes (run 10, 203.30 s worktree / run 9 44-test 224.05 s pre-closure-fix; full history in suite_run*.txt).",
+    "reviewer_independent_run": "33 passed / 176.95 s (pre-fix tree, reviewer's own invocation)",
+    "admission_spot_check": "tests/execution/test_admission.py: 14 passed",
+    "mutation_battery": "Run 3 on the FINAL runtime bytes: 15 mutants (dossier 04's two explicit mutants + ordering/verification/resume/cancellation/state-transfer guards), 15/15 SELECTED, byte_identical_restore=true (original=restored sha256 25c51e9a…) — mutants.json + mutants_run3_finalbytes.txt. History: run 1 post-review tree 12/15 (3 survivors diagnosed: M06 equivalent-by-redundant-cleanup; M14 selector never verified; M15 dead code post-MAJOR-1 — fixed, single cleanup owner in the finally, M14 mtime idempotence, M15 dead sub-branch removed + retargeted); run 2 post-review bytes 15/15 (mutants_run2_all_selected.txt); run 3 final bytes after the closure fix round (all 15 patterns re-verified unique against the edited runtime).",
+    "closure_regression": "Whole-repo pytest tests/ in the main checkout on the merged tree (perf/una-platform @ 22de446 = 0acbb11 + closure fix round): 634 passed / 348 skipped / 0 failed in 1610.49 s — delta vs the BATCH_PLAN closure baseline (589 passed / 348 skipped) is exactly the +45 batch/runtime tests; skip count unchanged; zero failures (closure_regression.txt). Run 1 on 0acbb11 was 631 passed / 2 failed (both load-dependent, diagnosed and fixed — see review_dispositions.md 'Closure-regression fix round'; raw output preserved as closure_regression_run1_2F.txt)."
+  },
+  "review": {
+    "verdict": "ACCEPT-WITH-FINDINGS (1 MAJOR / 6 MINOR / 8 NOTE), reviewer suite run green",
+    "dispositions": "review_dispositions.md (same directory): MAJOR-1 + MINOR-1/2/3/4/6 + NOTE-1/3/7/8(partial) FIXED; MINOR-5 documented limitation; NOTE-2/4/5/6 documented; plus the post-review mutation-battery survivor round and the closure-regression fix round (synchronous result transport + load-robust deadline invariant), each with regression tests and battery re-selection",
+    "report": "reviewer_report.md (verbatim)"
+  },
+  "constraints_respected": {
+    "bitparty": "parallel route matches serial bitwise on artifacts, settings identity, topology/engine arrays, flags, fold order (tests compare bytes, not allclose); two documented diagnostic-only deviations (log_list holds last worker log; resumed batches rehydrate via private state-only rerun)",
+    "planner_unchanged": "plan.py sha 288ed002… byte-identical to reviewed BATCH_PLAN",
+    "local_only": "no pushes, no merges to main, no releases, no purchases, no credential/provider changes, no historical evidence touched",
+    "user_files": ".claude/commands/goal.md untouched (dirty/unstaged)"
+  },
+  "limitations": [
+    "Multi-file publication is per-file os.replace at commit (stronger than serial's in-place progressive writes); a hard kill between replaces leaves a partial row visible in the crash window with no journal record — resume re-runs the row and republishes identical bytes. Generation-dir + single-rename protocol deferred (documented).",
+    "Hard parent kill leaves .una-batch-staging-<runid> debris; deliberately not age-swept (a concurrent live run's staging must never be removed). Orderly exits always clean by ownership.",
+    "output_wStamp=True rows embed per-row worker wall-clock in folder NAMES (time-dependent output on both routes; excluded from bitwise claims).",
+    "builtin exception types without transportable args are rebuilt from recorded text (RuntimeError carrying the original type name + message verbatim); transportable args rebuild the exact serial construction.",
+    "Rehydration budget scales with journaled row timings (max(120 s, 2x recorded + 60 s)); a slower re-run than 2x its recorded wall aborts typed with the prefix attached and is retryable.",
+    "A worker killed mid-result-send (outside the fault-injection phases, e.g. SIGKILL inside SimpleQueue.put's pipe write) can strand a partial message for one recv — inherent to any pipe protocol; the injected faults and OOM kills between jobs are covered by the synchronous channel."
+  ],
+  "next": "CACHE_GRAPH (DAG-ready) and/or BATCH_REVIEW (deps BATCH_EXEC+CACHE_GRAPH); DAG continues per TASKS_CLAUDE.yaml."
+}

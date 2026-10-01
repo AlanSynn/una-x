@@ -1,0 +1,30 @@
+{
+  "run_id": "bex-20261001T2100Z",
+  "task": "BATCH_EXEC",
+  "stage": "closure",
+  "what": "Whole-repo regression on the final merged tree (perf/una-platform @ 22de446 = 0acbb11 BATCH_EXEC + 22de446 closure fix round, main checkout, .refs-equipped) after fast-forwarding the worktree branch. Run 1 on 0acbb11 failed 2 tests under shared-node load; both were diagnosed (one runtime defect, one test defect), fixed on the worktree branch with a regression test each, and the branch re-merged ff-only before this run.",
+  "command": "PYTHONHASHSEED=0 /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python -m pytest tests/ -q   (main checkout)",
+  "result": {
+    "passed": 634,
+    "skipped": 348,
+    "failed": 0,
+    "warnings": 2,
+    "duration_s": 1610.49,
+    "exit_code": 0
+  },
+  "delta_vs_baseline": {
+    "baseline": "BATCH_PLAN closure (34d8a96, tree @ 9e4c832): 589 passed / 348 skipped / 0 failed in 1425.16 s",
+    "expected_delta": "+45 batch/runtime tests (44 reviewed + 1 sync-channel probe from the closure fix round), skips unchanged",
+    "observed_delta": "+45 (634 = 589 + 45), skips unchanged at 348, zero failures — matches exactly"
+  },
+  "run1_failures_and_fixes": [
+    "tests/batch/runtime/test_runtime_checkpoint.py::test_crash_resume_completes_and_reuses_committed_rows — runtime defect: mp.Queue.put is feeder-buffered, so a worker completing row 0 and immediately os._exit-ing on row 1's injected startup fault truncated the completed sibling result in the feeder buffer; drain-then-raise can only extend across RECEIVABLE results, so the crash prefix came back empty. Fixed: outbox is now _ResultChannel over ctx.SimpleQueue (put pickles and writes synchronously under a POSIX lock; get(timeout) via reader poll; close/join_thread keep _Pool.cancel's teardown surface). Regression: test_result_channel_put_is_synchronous_across_abrupt_death (fork probe, put -> immediate os._exit -> parent still receives).",
+    "tests/batch/runtime/test_runtime_cancellation.py::test_deadline_cancel_preserves_prefix_and_reaps_workers — test defect: pinned a fixed [0] prefix behind an 8s budget that its own comment admitted must exceed a loaded node's spawn+import+row0; the (correct) empty-prefix cancellation failed the assertion. Fixed: the test now pins the invariant (reported rows == rows whose artifacts reached the public tree) for any prefix, budget 20s, reaping asserted for every worker that entered a cancelled row. M06/M13 mutant selectors preserved (battery run 3 re-verified 15/15 SELECTED)."
+  ],
+  "notes": [
+    "Raw outputs: closure_regression_run1_2F.txt (631 passed / 348 skipped / 2 failed, 1499.35 s) and closure_regression.txt (this run, 634 passed / 26:50), both preserved next to this file in the untracked root evidence copy evidence/tasks/BATCH_EXEC/bex-20261001T2100Z/.",
+    "The 348 skips are the pre-existing baseline skips, unchanged.",
+    "runtime.py re-hashed in the merged tree before the run: sha256 25c51e9a7cfd493a79e52498639243371c5ecf157cb41324eb3db65277353541 (battery-original == battery-restored, run 3); plan.py 288ed002… byte-identical to reviewed BATCH_PLAN; worker.py/checkpoint.py/report.py unchanged from the reviewed fix set.",
+    "No pushes, merges to main, releases, purchases, or credential/provider changes."
+  ]
+}
