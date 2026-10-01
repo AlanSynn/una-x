@@ -1,0 +1,26 @@
+{
+  "run_id": "bpt-20261001T1330Z",
+  "task": "BATCH_PLAN",
+  "stage": "closure",
+  "what": "Whole-repo regression on the final merged tree (perf/una-platform @ 9e4c832, main checkout, .refs-equipped) after fast-forwarding the BATCH_PLAN commit. The batch-plan branch was cut at 51fda1f-lineage (51fdb1f) and rebased onto the CACHE_STORE closure commit 8701fc3 before the ff-merge, so the merged tree is exactly linear: 51fdb1f -> 8701fc3 (CACHE_STORE closure) -> 9e4c832 (BATCH_PLAN).",
+  "command": "PYTHONHASHSEED=0 /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python -m pytest tests/ -q   (main checkout)",
+  "result": {
+    "passed": 589,
+    "skipped": 348,
+    "failed": 0,
+    "warnings": 2,
+    "duration_s": 1425.16,
+    "exit_code": 0
+  },
+  "delta_vs_baseline": {
+    "baseline": "CACHE_STORE closure (8701fc3): 546 passed / 348 skipped / 0 failed in 1462.99 s",
+    "expected_delta": "+43 batch/plan tests, skips unchanged",
+    "observed_delta": "+43 (589 = 546 + 43), skips unchanged at 348, zero failures — matches exactly"
+  },
+  "notes": [
+    "Single clean run; no timeout kill this time (23:45 vs the CACHE_STORE closure's 24:22 under comparable shared-node load).",
+    "The 348 skips are the pre-existing baseline skips (large_e2e historical snapshots and environment-gated suites), unchanged.",
+    "planner hash re-verified in the merged tree before the run: sha256 288ed0020c02a518309d9a09794a91fa8c98176a676aa6013bf0db617b432aa3 (byte-identical to the committed review-verified pristine file).",
+    "No pushes, merges to main, releases, purchases, or credential/provider changes."
+  ]
+}
