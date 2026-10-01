@@ -1,0 +1,80 @@
+{
+ "pinned_fact": "workflows build a Zonal from files and publish FILES; digests cover the output tree + captured errors",
+ "env_marker": {
+  "workflows_file": "workflows.py"
+ },
+ "files": {
+  "origin_record.csv": {
+   "bytes": 252,
+   "frame": {
+    "label": "origin_record.csv",
+    "columns": [
+     "id",
+     "weight",
+     "geometry",
+     "knn_geo_reach",
+     "knn_geo_gravity",
+     "knn_geo_knn_access"
+    ],
+    "dtypes": [
+     "int64",
+     "float64",
+     "str",
+     "float64",
+     "float64",
+     "float64"
+    ],
+    "shape": [
+     3,
+     6
+    ],
+    "time_columns_present": [],
+    "values": {
+     "id": [
+      "int:0",
+      "int:1",
+      "int:2"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ],
+     "geometry": [
+      "1591688aa8ba6d78cae97075778dec53111b031b2782aaa6aa71a8097d540daa",
+      "18b7ea18632e3fa30a4222693d26826979b155b099edc8f0c2ce5d9335d4d3ab",
+      "fd6efd5770419d20484707910d5cd1c07d3171ca62adf2a7a6a72de6d7ae1b0c"
+     ],
+     "knn_geo_reach": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "knn_geo_gravity": [
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4",
+      "3ff4a252eaacc075"
+     ],
+     "knn_geo_knn_access": [
+      "3fe18fdd6b9604e4",
+      "3fe18fdd6b9604e4",
+      "3fe4a252eaacc075"
+     ]
+    }
+   },
+   "md5": "86ea3c56c1222c6cb22bec9b1c93a74b"
+  }
+ },
+ "workflow_error": "KeyError: 'Layer with label streets is already in Zonal object'",
+ "origin_columns": [
+  "id",
+  "weight",
+  "geometry",
+  "knn_geo_reach",
+  "knn_geo_gravity",
+  "knn_geo_knn_access"
+ ],
+ "sabotage": null,
+ "arm": "facade",
+ "scenario": "wf_knn_changes"
+}

@@ -1,0 +1,291 @@
+{
+ "pinned_fact": "workflows build a Zonal from files and publish FILES; digests cover the output tree + captured errors",
+ "env_marker": {
+  "workflows_file": "workflows.py"
+ },
+ "files": {
+  "origin_record.csv": {
+   "bytes": 507,
+   "frame": {
+    "label": "origin_record.csv",
+    "columns": [
+     "id",
+     "weight",
+     "geometry",
+     "knn_a",
+     "knn_a_gravity",
+     "knn_a_knn_access",
+     "knn_b",
+     "knn_b_gravity",
+     "knn_b_knn_access",
+     "total_knn_access",
+     "normalized_knn_access"
+    ],
+    "dtypes": [
+     "int64",
+     "float64",
+     "str",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64"
+    ],
+    "shape": [
+     3,
+     11
+    ],
+    "time_columns_present": [],
+    "values": {
+     "id": [
+      "int:0",
+      "int:1",
+      "int:2"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ],
+     "geometry": [
+      "1591688aa8ba6d78cae97075778dec53111b031b2782aaa6aa71a8097d540daa",
+      "18b7ea18632e3fa30a4222693d26826979b155b099edc8f0c2ce5d9335d4d3ab",
+      "fd6efd5770419d20484707910d5cd1c07d3171ca62adf2a7a6a72de6d7ae1b0c"
+     ],
+     "knn_a": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "knn_a_gravity": [
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4",
+      "3ff4a252eaacc075"
+     ],
+     "knn_a_knn_access": [
+      "3fe18fdd6b9604e4",
+      "3fe18fdd6b9604e4",
+      "3fe4a252eaacc075"
+     ],
+     "knn_b": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "knn_b_gravity": [
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4",
+      "3ff4a252eaacc075"
+     ],
+     "knn_b_knn_access": [
+      "3fe18fdd6b9604e4",
+      "3fe18fdd6b9604e4",
+      "3fe4a252eaacc075"
+     ],
+     "total_knn_access": [
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4",
+      "3ff4a252eaacc075"
+     ],
+     "normalized_knn_access": [
+      "0000000000000000",
+      "0000000000000000",
+      "3ff0000000000000"
+     ]
+    }
+   },
+   "md5": "5f512c1d7629dc01717f2241ec5f565a"
+  },
+  "origin_record.geoJSON": {
+   "bytes": 1295,
+   "frame": {
+    "label": "origin_record.geoJSON",
+    "columns": [
+     "id",
+     "weight",
+     "knn_a",
+     "knn_a_gravity",
+     "knn_a_knn_access",
+     "knn_b",
+     "knn_b_gravity",
+     "knn_b_knn_access",
+     "total_knn_access",
+     "normalized_knn_access",
+     "geometry"
+    ],
+    "dtypes": [
+     "int32",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "geometry"
+    ],
+    "shape": [
+     3,
+     11
+    ],
+    "time_columns_present": [],
+    "values": {
+     "id": [
+      "int:0",
+      "int:1",
+      "int:2"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ],
+     "knn_a": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "knn_a_gravity": [
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4",
+      "3ff4a252eaacc075"
+     ],
+     "knn_a_knn_access": [
+      "3fe18fdd6b9604e4",
+      "3fe18fdd6b9604e4",
+      "3fe4a252eaacc075"
+     ],
+     "knn_b": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "knn_b_gravity": [
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4",
+      "3ff4a252eaacc075"
+     ],
+     "knn_b_knn_access": [
+      "3fe18fdd6b9604e4",
+      "3fe18fdd6b9604e4",
+      "3fe4a252eaacc075"
+     ],
+     "total_knn_access": [
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4",
+      "3ff4a252eaacc075"
+     ],
+     "normalized_knn_access": [
+      "0000000000000000",
+      "0000000000000000",
+      "3ff0000000000000"
+     ],
+     "geometry": [
+      "45afda2c75ea418738e5fb6b9ad0b594a0981859b114b2d1ca012651bac0d394",
+      "003c59764374ddffeb26ab7ff0da9d11e9092c33c7ad41ed14f26c9a833e4c00",
+      "06c9547eaf87c57c004e2be47246367f3daa4dac4f8dd427f55e0c345f540f06"
+     ]
+    }
+   },
+   "md5": "d3167131627475a3853e5711a7520157"
+  },
+  "time_log.csv": {
+   "policy": "structured_only_wall_clock_columns",
+   "row_count": 13,
+   "columns": [
+    "Unnamed: 0",
+    "time",
+    "flow_name",
+    "event",
+    "seconds_elapsed",
+    "cumulative_seconds"
+   ],
+   "events": [
+    [
+     null,
+     "SIMULATION STARTED: VERSION: 0.0.15, RELEASE DATEL 2023-02-16"
+    ],
+    [
+     null,
+     "3.11.4 | packaged by conda-forge | (main, Jun 10 2023, 18:08:17) [GCC 12.2.0]"
+    ],
+    [
+     null,
+     "Dependencies: Geopandas:1.2.0, Shapely:2.1.2, Pandas:3.0.6, Numpy:2.4.6, NetworkX:3.6.1"
+    ],
+    [
+     "knn_a",
+     "network FIle Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "knn_a",
+     "network topology created"
+    ],
+    [
+     "knn_a",
+     "origins file origins.geojson Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "knn_a",
+     "destinations file destinations.geojson Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "knn_a",
+     "Origins and Destinations Inserted."
+    ],
+    [
+     "knn_a",
+     "NetworkX Graphs Created."
+    ],
+    [
+     "knn_a",
+     "accissibility calculated."
+    ],
+    [
+     "knn_b",
+     "Origins and Destinations Inserted."
+    ],
+    [
+     "knn_b",
+     "NetworkX Graphs Created."
+    ],
+    [
+     "knn_b",
+     "accissibility calculated."
+    ]
+   ]
+  }
+ },
+ "workflow_error": null,
+ "guard_probes": {
+  "city_name_required": "ValueError: parameter 'city_name' needs to be specified",
+  "nan_knn_weight": "ValueError: knn_weight should be a list of numerical values like [0.5, 0.25, 0.25]"
+ },
+ "origin_columns": [
+  "id",
+  "weight",
+  "geometry",
+  "knn_a",
+  "knn_a_gravity",
+  "knn_a_knn_access",
+  "knn_b",
+  "knn_b_gravity",
+  "knn_b_knn_access",
+  "total_knn_access",
+  "normalized_knn_access"
+ ],
+ "totals_present": [
+  "normalized_knn_access",
+  "total_knn_access"
+ ],
+ "alpha_sensitivity_error": null,
+ "alpha_999_deterministic_outputs_equal": false,
+ "sabotage": "knn_reach_suffix_drop",
+ "arm": "reference",
+ "scenario": "wf_knn_defaults"
+}

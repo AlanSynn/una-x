@@ -1,0 +1,10 @@
+{
+ "pinned_fact": "workflows build a Zonal from files and publish FILES; digests cover the output tree + captured errors",
+ "env_marker": {
+  "workflows_file": "workflows.py"
+ },
+ "workflow_error": "KeyError: 'reach'",
+ "sabotage": null,
+ "arm": "reference",
+ "scenario": "wf_knn_zero_reach"
+}

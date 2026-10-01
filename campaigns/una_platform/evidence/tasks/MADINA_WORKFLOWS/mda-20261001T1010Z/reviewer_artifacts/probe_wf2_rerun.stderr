@@ -1,0 +1,60 @@
+Traceback (most recent call last):
+  File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/una/betweenness.py", line 858, in betweenness_exposure
+    node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'eligible_destinations_shortest_distance' where it is not associated with a value
+Traceback (most recent call last):
+  File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/una/betweenness.py", line 858, in betweenness_exposure
+    node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'eligible_destinations_shortest_distance' where it is not associated with a value
+Traceback (most recent call last):
+  File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/una/betweenness.py", line 858, in betweenness_exposure
+    node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'eligible_destinations_shortest_distance' where it is not associated with a value
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/una/betweenness.py", line 858, in betweenness_exposure
+    node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'eligible_destinations_shortest_distance' where it is not associated with a value
+  File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/una/betweenness.py", line 858, in betweenness_exposure
+    node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'eligible_destinations_shortest_distance' where it is not associated with a value
+Traceback (most recent call last):
+  File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/una/betweenness.py", line 858, in betweenness_exposure
+    node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'eligible_destinations_shortest_distance' where it is not associated with a value
+Traceback (most recent call last):
+  File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/una/betweenness.py", line 858, in betweenness_exposure
+    node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'eligible_destinations_shortest_distance' where it is not associated with a value
+Traceback (most recent call last):
+  File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/una/betweenness.py", line 858, in betweenness_exposure
+    node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'eligible_destinations_shortest_distance' where it is not associated with a value
+Traceback (most recent call last):
+  File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/una/betweenness.py", line 858, in betweenness_exposure
+    node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'eligible_destinations_shortest_distance' where it is not associated with a value
+Traceback (most recent call last):
+  File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/una/betweenness.py", line 858, in betweenness_exposure
+    node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'eligible_destinations_shortest_distance' where it is not associated with a value
+Traceback (most recent call last):
+  File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/una/betweenness.py", line 858, in betweenness_exposure
+    node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'eligible_destinations_shortest_distance' where it is not associated with a value
+Traceback (most recent call last):
+  File "/storage/scratch1/1/dsynn6/una-x/.refs/madina_ref/src/madina/una/betweenness.py", line 858, in betweenness_exposure
+    node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'eligible_destinations_shortest_distance' where it is not associated with a value

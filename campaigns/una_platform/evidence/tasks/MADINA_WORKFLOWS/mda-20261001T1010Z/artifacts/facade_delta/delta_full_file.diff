@@ -1,0 +1,145 @@
+--- upstream_workflows.py
++++ facade_workflows.py
+@@ -1,3 +1,109 @@
++"""Attributed port of ``madina/una/workflows.py`` @ 8b5c3bd3 (see the
++package __init__ for the delta ledger; D4 applies: pydeck is imported
++lazily inside flow_map_template_1).
++
++Ledgered deltas (the only ones; every other byte matches upstream):
++  D4  ``import pydeck as pdk`` / ``from pydeck.types import String`` are
++      NOT module-top (upstream lines 13/19).  They execute at the top of
++      ``Logger.flow_map_template_1`` (the only consumer) with an
++      actionable ImportError when absent — the reviewed MADINA_ZONAL
++      convention (zonal/utils.py create_deckGL_map).  With pydeck
++      installed the bound objects are identical (sys.modules), so
++      behavior is unchanged; in a pydeck-less environment the module
++      imports and ``Logger``/``betweenness_flow_simulation`` /
++      ``KNN_accessibility`` run, and only map rendering raises.
++
++Pinned workflow-level facts (upstream behavior, carried not fixed —
++parity profiles must reproduce them bitwise; see
++tests/madina_api/workflows and the task evidence):
++  - ``betweenness_flow_simulation`` always calls ``betweenness`` with
++    ``keep_diagnostics=True`` and ``num_cores=min(origin rows,
++    num_cores)``.  With the default ``Closest_destination=True`` the
++    exposure engine's per-origin stats block raises UnboundLocalError
++    (betweenness.py:858-859 read ``eligible_destinations_shortest_
++    distance``, which is assigned ONLY in the Huff branch at :612; the
++    closest-destination branch :582-586 sets
++    ``destination_probabilities=[1]`` without it) AFTER reach/gravity
++    are written; the per-origin handler swallows it, so stats columns
++    (closest_destination_distance, furthest_destination_distance,
++    mean_path_length, probable_travel_distance, eligible_destinations,
++    path_count, ...) stay missing for EVERY origin while edge
++    betweenness still accumulates and the workflow reports success.
++    Empirically the edge record is byte-identical across
++    num_cores in {1, 3} and Turn_Penalty in {0, 30} on the suite
++    fixture (evidence probes 1-2).
++  - ``KNN_accessibility`` rejects ``city_name=None`` even when
++    ``data_folder``/``output_folder`` are explicit (its guard checks
++    only city_name — distinct, shorter ValueError than the flow
++    workflow's).  Its default pairings file is "pairing.csv" (flow's
++    is "pairings.csv"), and it passes
++    ``redundant_edge_treatment='discard'`` explicitly.
++  - ``KNN_accessibility`` CRASHES on a per-row Network_File change:
++    the reload branch calls ``load_layer('streets', ...)`` on a Zonal
++    that already holds that label ->
++    ``KeyError: 'Layer with label streets is already in Zonal
++    object'`` before any row-2 work (row 1's per-pairing
++    origin_record.csv survives; every final output is unreachable).
++    Pinned, not fixed — parity profiles must reproduce it.
++  - A pairing row with no reachable destination (radius below every
++    network path) crashes the KNN workflow with ``KeyError: 'reach'``
++    before ANY output file is written, and an empty pairings table
++    fails at read time with the pandas EmptyDataError.
++  - ``accessibility``'s "equal weight of 1 for all destinations"
++    docstring default does NOT match the observed workflow behavior:
++    with ``Destination_Weight="Count"`` insert_node receives
++    ``weight_attribute=None`` and every destination NODE weight is 1.0
++    (so the hardcoded gravity ``alpha=1`` is bit-inert through that
++    profile), while a real weight attribute engages alpha; the alpha
++    swap is therefore profile-dependent (tests/madina_api/workflows).
++  - The KNN workflow forwards the raw pairing-table cell to
++    ``accessibility(knn_weights=...)``: a bracketed string like
++    "[0.5,0.5]" parses (tools.py str-branch); an empty cell arrives as
++    NaN and raises the verbatim
++    "knn_weight should be a list of numerical values like
++    [0.5, 0.25, 0.25]".
++  - ``Logger.flow_map_template_1`` output HTML is NOT deterministic
++    across runs (same inputs -> different bytes, inside pydeck), so
++    tests pin map presence/size, never content hashes.
++  - ``load_layer`` resets the layer index (zonal.py:89-90), so workflow
++    origin records carry positional ids 0..n-1 regardless of input.
++  - IMPORTING this module writes ``os.environ['USE_PYGEOS'] = '0'``
++    (upstream line 6, carried verbatim): a library-level environment
++    write upstream makes on import.  In-process importers that must
++    keep the process environment pristine (test drivers, embedding
++    applications) should snapshot/restore around the import; parity
++    profiles are unaffected because both arms execute the same write.
++
++Migration examples (upstream Madina -> this facade; the supported
++surface is identical, so migration is the import line plus the
++environment rule):
++  upstream, in an environment with madina installed::
++
++      from madina.una.workflows import (Logger,
++                                       betweenness_flow_simulation,
++                                       KNN_accessibility)
++
++  this facade, in an environment with urban-network-analysis installed::
++
++      from urban_network_analysis.compat.madina.una.workflows import (
++          Logger, betweenness_flow_simulation, KNN_accessibility)
++
++  The pairing CSVs, column names, defaults and output trees are the
++  pinned upstream ones (flow reads "pairings.csv", KNN reads the
++  singular "pairing.csv"; outputs land under the output folder exactly
++  as upstream, including the per-pairing
++  "<Flow_Name>_O(...)_D(...)" directories).  Two environment rules:
++  never install this facade into an environment that also has upstream
++  madina (use the separately installed drop-in shim distribution in an
++  isolated environment instead — it supplies the same ``madina``
++  import paths without overlapping files), and expect the
++  ``USE_PYGEOS`` environment write + the optional pydeck dependency
++  (maps raise the actionable D4 ImportError when pydeck is absent).
++  The pinned upstream behaviors listed above (the KNN Network_File
++  reload crash, the zero-reach ``KeyError: 'reach'`` crash, the
++  closest-destination stats gap) reproduce identically after migration;
++  they are carried, not fixed.
++"""
+ import os
+ import warnings
+ import sys              ## for version
+@@ -10,13 +116,11 @@
+ import geopandas as gpd ## for version
+ import numpy as np      ## for version
+ 
+-import pydeck as pdk
+ import pandas as pd
+ import shapely.geometry as geo
+ 
+ 
+ from datetime import datetime
+-from pydeck.types import String
+ from pathlib import Path
+ from .tools import betweenness, accessibility
+ from ..zonal import Zonal, VERSION, RELEASE_DATE
+@@ -202,6 +306,18 @@
+         dark_mode=True,
+         file_name=None
+         ):
++        # D4: pydeck is an optional dependency; import it only when a map is
++        # actually requested, with an actionable error when absent.
++        try:
++            import pydeck as pdk
++            from pydeck.types import String
++        except ImportError as exc:
++            raise ImportError(
++                "una.workflows.flow_map_template_1 requires the optional "
++                "visualization dependency 'pydeck'. Install it with:  "
++                "pip install pydeck"
++            ) from exc
++
+         predicted_flow_gdf = flow_gdf.copy(deep=True)
+         pdk_layers = []
+ 

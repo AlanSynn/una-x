@@ -1,0 +1,35 @@
+--- upstream_workflows.py
++++ facade_body
+@@ -10,13 +10,11 @@
+ import geopandas as gpd ## for version
+ import numpy as np      ## for version
+ 
+-import pydeck as pdk
+ import pandas as pd
+ import shapely.geometry as geo
+ 
+ 
+ from datetime import datetime
+-from pydeck.types import String
+ from pathlib import Path
+ from .tools import betweenness, accessibility
+ from ..zonal import Zonal, VERSION, RELEASE_DATE
+@@ -202,6 +200,18 @@
+         dark_mode=True,
+         file_name=None
+         ):
++        # D4: pydeck is an optional dependency; import it only when a map is
++        # actually requested, with an actionable error when absent.
++        try:
++            import pydeck as pdk
++            from pydeck.types import String
++        except ImportError as exc:
++            raise ImportError(
++                "una.workflows.flow_map_template_1 requires the optional "
++                "visualization dependency 'pydeck'. Install it with:  "
++                "pip install pydeck"
++            ) from exc
++
+         predicted_flow_gdf = flow_gdf.copy(deep=True)
+         pdk_layers = []
+ 

@@ -1,0 +1,26 @@
+{
+ "module_file": "workflows.py",
+ "public_functions": [
+  "KNN_accessibility",
+  "betweenness_flow_simulation"
+ ],
+ "classes": [
+  "Logger"
+ ],
+ "signature::betweenness_flow_simulation": "(city_name=None, data_folder=None, output_folder=None, pairings_file='pairings.csv', num_cores=8) -> None",
+ "docstring_head::betweenness_flow_simulation": "A workflow to generate trips between pairs of origins and destonations along a network. for detailed description of the workflow, please reference this page: https://madinadocs.readthedocs.io/en/latest/ped_flow.html to learn more about preparing data and constructing a pairing table needed for this workflow",
+ "signature::KNN_accessibility": "(city_name=None, data_folder=None, output_folder=None, pairings_file='pairing.csv', num_cores=8)",
+ "docstring_head::KNN_accessibility": "A workflow to generate accessibility metrics: reach, gravity and KNN access for an origin to all its paired destinations in the pairing table.",
+ "Logger::methods": [
+  "flow_map_template_1",
+  "log",
+  "pairing_end",
+  "simulation_end"
+ ],
+ "signature::Logger.log": "(self, event: str, pairing: pandas.Series = None)",
+ "signature::Logger.pairing_end": "(self, shaqra: <Zonal>, pairing: pandas.Series, save_flow_map=True, save_flow_geoJSON=True, save_flow_csv=False, save_origin_geoJSON=True, save_origin_csv=False, save_diagnostics_map=False)",
+ "signature::Logger.simulation_end": "(self, shaqra: <Zonal>)",
+ "signature::Logger.flow_map_template_1": "(self, flow_gdf, flow_parameter, max_flow=None, dark_mode=True, file_name=None)",
+ "signature::Logger.__init__": "(self, output_folder, pairing_table)",
+ "arm": "facade"
+}

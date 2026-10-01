@@ -1,0 +1,14 @@
+{
+ "upstream_file": ".refs/madina_ref/src/madina/una/workflows.py (madina @ 8b5c3bd3)",
+ "facade_file": "src/urban_network_analysis/compat/madina/una/workflows.py",
+ "header_lines": 106,
+ "body_lines": 569,
+ "upstream_lines": 559,
+ "delta": "EXACTLY the ledgered D4: -2 module-top pydeck imports, +12 lazy-import block at flow_map_template_1 head; the 106-line ledgered module docstring header is the only other delta (upstream has no module docstring). Reverse-D4 body == upstream byte-for-byte: True",
+ "facade_md5": "684300bb9fe87cac25519f1e323816ff",
+ "upstream_md5": "f5f02b214dd4a6e82a1b41d9b5673f0c",
+ "body_reverse_d4_equals_upstream": true,
+ "generator": "campaigns/una_platform/evidence/tasks/MADINA_WORKFLOWS/build_facade.py (HEADER synced to the reviewed header; regeneration asserted byte-identical, regenerated_identical=True, 2026-10-01)",
+ "facade_parses": true,
+ "note": "regenerated 2026-10-01 by refresh_facade_delta.py after the facade header was extended with the pinned workflow-level facts (KNN Network_File reload crash, zero-reach KeyError 'reach' + EmptyDataError, alpha profile split); previous summary's facade_md5 b1dea6a187e4ade958c7c70d42bd386f was the pre-extension header and is superseded"
+}

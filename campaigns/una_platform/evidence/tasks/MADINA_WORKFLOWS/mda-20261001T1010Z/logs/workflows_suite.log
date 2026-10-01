@@ -1,0 +1,44 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.4, pytest-9.1.1, pluggy-1.6.0 -- /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python
+cachedir: .pytest_cache
+rootdir: /storage/scratch1/1/dsynn6/una-x
+configfile: pyproject.toml
+collecting ... collected 35 items
+
+tests/madina_api/workflows/test_workflows_facade_env.py::test_facade_imports_without_pydeck_and_no_upstream_leak PASSED [  2%]
+tests/madina_api/workflows/test_workflows_facade_env.py::test_logger_constructible_without_pydeck PASSED [  5%]
+tests/madina_api/workflows/test_workflows_facade_env.py::test_d4_map_rendering_raises_actionable_importerror PASSED [  8%]
+tests/madina_api/workflows/test_workflows_facade_env.py::test_una_package_lazy_surface[Logger] PASSED [ 11%]
+tests/madina_api/workflows/test_workflows_facade_env.py::test_una_package_lazy_surface[betweenness_flow_simulation] PASSED [ 14%]
+tests/madina_api/workflows/test_workflows_facade_env.py::test_una_package_lazy_surface[KNN_accessibility] PASSED [ 17%]
+tests/madina_api/workflows/test_workflows_reflection.py::test_logger_and_workflow_signatures_match_reference PASSED [ 20%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_reflection_surface_identical PASSED [ 22%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_scenario_bitwise_parity[wf_flow_defaults] PASSED [ 25%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_scenario_bitwise_parity[wf_flow_huff_elastic] PASSED [ 28%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_scenario_bitwise_parity[wf_flow_two_pairings] PASSED [ 31%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_scenario_bitwise_parity[wf_flow_cost_change] PASSED [ 34%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_scenario_bitwise_parity[wf_flow_exposure_row] PASSED [ 37%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_scenario_bitwise_parity[wf_flow_nc3_structural] PASSED [ 40%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_scenario_bitwise_parity[wf_flow_errors] PASSED [ 42%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_scenario_bitwise_parity[wf_knn_defaults] PASSED [ 45%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_scenario_bitwise_parity[wf_knn_weights] PASSED [ 48%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_scenario_bitwise_parity[wf_knn_changes] PASSED [ 51%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_scenario_bitwise_parity[wf_knn_zero_reach] PASSED [ 54%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_csv_defaults_correct_by_profile PASSED [ 57%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_per_row_changes_correct_by_profile PASSED [ 60%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_knn_network_file_change_pinned_crash PASSED [ 62%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_knn_guard_and_valueerror_matrix PASSED [ 65%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_closest_destination_stats_defect_pinned PASSED [ 68%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_huff_profile_has_healthy_stats PASSED [ 71%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_knn_zero_reach_pinned_crash PASSED [ 74%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_alpha_profile_dependence_pinned PASSED [ 77%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_nc3_structural_policy_recorded PASSED [ 80%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_exposure_row_wiring PASSED [ 82%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_every_api_row_covered PASSED [ 85%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_source_mutant_selected_and_integral[flow_elastic_decay_always-wf_flow_huff_elastic] PASSED [ 88%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_source_mutant_selected_and_integral[knn_alpha_2-wf_knn_weights] PASSED [ 91%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_source_mutant_selected_and_integral[knn_closest_facility_true-wf_knn_defaults] PASSED [ 94%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_source_mutant_selected_and_integral[knn_reach_suffix_drop-wf_knn_defaults] PASSED [ 97%]
+tests/madina_api/workflows/test_workflows_surface_parity.py::test_digest_mutant_selected_and_integral PASSED [100%]
+
+======================== 35 passed in 129.32s (0:02:09) ========================

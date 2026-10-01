@@ -49,6 +49,37 @@ tools.py   VERBATIM module — the facade file is a module-docstring
            ``betweenness``, the last delivered by MADINA_FLOW).
            The header docstring is the only delta.
 
+workflows.py  VERBATIM module with exactly one ledgered delta: D4 —
+           upstream imports pydeck at module top (lines 13/19); the
+           facade imports it lazily inside
+           ``Logger.flow_map_template_1`` (the only consumer) with an
+           actionable ImportError, the reviewed MADINA_ZONAL convention
+           (zonal/utils.py create_deckGL_map), so the module imports in
+           a pydeck-less environment.  Delivered by MADINA_WORKFLOWS:
+           ``Logger`` (log / pairing_end / simulation_end /
+           flow_map_template_1), ``betweenness_flow_simulation`` and
+           ``KNN_accessibility``.  The header records the pinned
+           workflow-level facts: the exposure engine's closest-
+           destination stats UnboundLocalError
+           (betweenness.py:858-859 vs the Huff-only assignment at
+           :612) swallowed per-origin after reach/gravity,
+           KNN_accessibility's city_name-only guard (explicit folders
+           alone are rejected) and its broken per-row Network_File
+           reload (KeyError 'Layer with label streets is already in
+           Zonal object'), its singular "pairing.csv" default and
+           explicit ``redundant_edge_treatment='discard'``, the raw
+           pairing-cell ``knn_weights`` forwarding (bracketed string
+           parses, NaN cell raises the verbatim list message), the
+           no-reachable-destination KeyError 'reach' crash, the
+           Count-vs-attribute alpha-inertness profile split, the
+           nondeterministic pydeck HTML bytes, the load_layer
+           positional-id reset visible in workflow outputs, and the
+           module-import ``USE_PYGEOS='0'`` environment write (upstream
+           line 6, carried verbatim — snapshot/restore around in-process
+           imports when the process environment must stay pristine).
+           The facade header also carries the upstream->facade migration
+           examples and the separate-environment shim rule.
+
 Everything else — signatures, defaults, validation messages, the 1e-5
 path-acceptance tolerance, heap/set iteration orders, dict insertion
 orders, sort_values("distance") ordering, GeometryCollection assembly

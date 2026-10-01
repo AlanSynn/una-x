@@ -1,0 +1,15 @@
+{
+"type": "FeatureCollection",
+"name": "betweenness_record",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 0, "length": 100.0, "weight": 100.0, "flow_a": 1.0, "flow_b": 1.0 }, "geometry": { "type": "LineString", "coordinates": [ [ -100.0, 0.0 ], [ 0.0, 0.0 ] ] } },
+{ "type": "Feature", "properties": { "id": 1, "length": 100.0, "weight": 100.0, "flow_a": 1.0, "flow_b": 1.0 }, "geometry": { "type": "LineString", "coordinates": [ [ 0.0, 0.0 ], [ 100.0, 0.0 ] ] } },
+{ "type": "Feature", "properties": { "id": 2, "length": 100.0, "weight": 100.0, "flow_a": 1.5, "flow_b": 1.5 }, "geometry": { "type": "LineString", "coordinates": [ [ 100.0, 0.0 ], [ 100.0, 100.0 ] ] } },
+{ "type": "Feature", "properties": { "id": 3, "length": 100.0, "weight": 100.0, "flow_a": 3.0, "flow_b": 3.0 }, "geometry": { "type": "LineString", "coordinates": [ [ 100.0, 100.0 ], [ 0.0, 100.0 ] ] } },
+{ "type": "Feature", "properties": { "id": 4, "length": 100.0, "weight": 100.0, "flow_a": 1.5, "flow_b": 1.5 }, "geometry": { "type": "LineString", "coordinates": [ [ 0.0, 100.0 ], [ 0.0, 0.0 ] ] } },
+{ "type": "Feature", "properties": { "id": 5, "length": 141.42135623730951, "weight": 141.42135623730951, "flow_a": 0.0, "flow_b": 0.0 }, "geometry": { "type": "LineString", "coordinates": [ [ 0.0, 0.0 ], [ 100.0, 100.0 ] ] } },
+{ "type": "Feature", "properties": { "id": 6, "length": 50.0, "weight": 50.0, "flow_a": 0.0, "flow_b": 0.0 }, "geometry": { "type": "LineString", "coordinates": [ [ 0.0, 100.0 ], [ 0.0, 150.0 ] ] } },
+{ "type": "Feature", "properties": { "id": 7, "length": 100.0, "weight": 100.0, "flow_a": 0.0, "flow_b": 0.0 }, "geometry": { "type": "LineString", "coordinates": [ [ 100.0, 100.0 ], [ 200.0, 100.0 ] ] } }
+]
+}

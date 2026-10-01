@@ -1,0 +1,2 @@
+Flow_Name,Origin_Name,Origin_File,Origin_Weight,Destination_Name,Destination_File,Destination_Weight,Network_File,Network_Cost,Turn_Penalty,Turn_Threshold,Turns,Radius,Beta,KNN_Weight,Plateau
+knn_zero,origins,origins.geojson,Count,destinations,destinations.geojson,Count,streets.geojson,Geometric,0,45,False,10,0.003,"[0.5,0.5]",0

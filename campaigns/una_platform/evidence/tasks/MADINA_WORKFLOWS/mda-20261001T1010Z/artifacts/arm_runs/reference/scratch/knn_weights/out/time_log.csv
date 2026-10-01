@@ -1,0 +1,14 @@
+,time,flow_name,event,seconds_elapsed,cumulative_seconds
+0,2026-10-01 07:31:33.140202,,"SIMULATION STARTED: VERSION: 0.0.15, RELEASE DATEL 2023-02-16",0.0,0.0
+1,2026-10-01 07:31:33.142951,,"3.11.4 | packaged by conda-forge | (main, Jun 10 2023, 18:08:17) [GCC 12.2.0]",0.004353,0.004353
+2,2026-10-01 07:31:33.144920,,"Dependencies: Geopandas:1.2.0, Shapely:2.1.2, Pandas:3.0.6, Numpy:2.4.6, NetworkX:3.6.1",0.0019690000000000003,0.006322
+3,2026-10-01 07:31:33.156154,wgt_a,"network FIle Loaded, Projection: EPSG:3857",0.011233999999999997,0.017556
+4,2026-10-01 07:31:33.177738,wgt_a,network topology created,0.021584000000000002,0.03914
+5,2026-10-01 07:31:33.185250,wgt_a,"origins file origins.geojson Loaded, Projection: EPSG:3857",0.007511999999999998,0.046652
+6,2026-10-01 07:31:33.192555,wgt_a,"destinations file destinations.geojson Loaded, Projection: EPSG:3857",0.007304999999999999,0.053957
+7,2026-10-01 07:31:33.210422,wgt_a,Origins and Destinations Inserted.,0.017867,0.071824
+8,2026-10-01 07:31:33.219943,wgt_a,NetworkX Graphs Created.,0.009521000000000002,0.081345
+9,2026-10-01 07:31:33.280166,wgt_a,accissibility calculated.,0.060223,0.141568
+10,2026-10-01 07:31:33.296913,wgt_b,Origins and Destinations Inserted.,0.016747000000000012,0.158315
+11,2026-10-01 07:31:33.306249,wgt_b,NetworkX Graphs Created.,0.009335999999999983,0.167651
+12,2026-10-01 07:31:33.353434,wgt_b,accissibility calculated.,0.047185000000000005,0.214836

@@ -1,0 +1,22 @@
+{
+ "pinned_fact": "workflows build a Zonal from files and publish FILES; digests cover the output tree + captured errors",
+ "env_marker": {
+  "workflows_file": "workflows.py"
+ },
+ "files": {},
+ "errors": {
+  "noargs": "ValueError: parameter 'city_name' needs to be specified if `data_folder` and `output_folder` are not provided, or provide paths to the `data_folder` and `output_folder`",
+  "missing_data_folder": "FileNotFoundError: [Errno 2] No such file or directory: '<scratch>/flow_errors/data/nope/pairings.csv'",
+  "empty_pairings": "EmptyDataError: No columns to parse from file",
+  "custom_pairings_file": null
+ },
+ "empty_pairings": {
+  "empty_output_files": []
+ },
+ "custom_pairings": {
+  "custom_pairing_dir_present": true
+ },
+ "sabotage": null,
+ "arm": "facade",
+ "scenario": "wf_flow_errors"
+}

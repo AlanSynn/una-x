@@ -1,0 +1,469 @@
+{
+ "pinned_fact": "workflows build a Zonal from files and publish FILES; digests cover the output tree + captured errors",
+ "env_marker": {
+  "workflows_file": "workflows.py"
+ },
+ "files": {
+  "betweenness_record.csv": {
+   "bytes": 429,
+   "md5": "7726c4f3a32f31b328895fd63efaa1a3",
+   "parse_error": "AttributeError: 'str' object has no attribute 'wkb'"
+  },
+  "betweenness_record.geoJSON": {
+   "bytes": 1716,
+   "md5": "41cbac402fe59a5439cc8253f127b056",
+   "frame": {
+    "label": "betweenness_record.geoJSON",
+    "columns": [
+     "id",
+     "length",
+     "weight",
+     "huff_flow",
+     "geometry"
+    ],
+    "dtypes": [
+     "int32",
+     "float64",
+     "float64",
+     "float64",
+     "geometry"
+    ],
+    "shape": [
+     8,
+     5
+    ],
+    "time_columns_present": [],
+    "values": {
+     "id": [
+      "int:0",
+      "int:1",
+      "int:2",
+      "int:3",
+      "int:4",
+      "int:5",
+      "int:6",
+      "int:7"
+     ],
+     "length": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "weight": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "huff_flow": [
+      "3ff0000000000000",
+      "3ff0000000000000",
+      "3ff8000000000000",
+      "4008000000000000",
+      "3ff8000000000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+     ],
+     "geometry": [
+      "c63485a4cde2f9ae5b68989a352766768ceda8c36ad60d4ef4c8e0606c5279ff",
+      "1fc49fd42ce8d94886d4d46289aab590d33ae6ae0d7b65afb3c2c8d473cd5619",
+      "2dd7bf75fe5ade7ddc4b895d22c258c1cb32a6e0bd9b3a7ad6e60a7ec8fb4fe9",
+      "280f9c05edc25fd71d8cb18830958afcc0810cb7aa235b1fb44a98a5e57b7358",
+      "c7744e0fd5754aeff6c2b0c8caebb4a949208074ec07c5a3ba2225cbc0a29084",
+      "7331aabb4c184631ac146b364bb788468d68f67dda4277ded04a5b66de12c797",
+      "8daf83c02b0f915aa774c3bc46610fbb2ea7809f91217685889421893cdda2a8",
+      "2740689bf5a1e1a71873112e8e48f38a9601a6f6a1e562aceff5e5c538575228"
+     ]
+    }
+   }
+  },
+  "huff_flow_O(origins)_D(destinations)/betweenness_record_so_far.geoJSON": {
+   "bytes": 1723,
+   "md5": "aebd52ace8b2b386fb6d84aff7a1892b",
+   "frame": {
+    "label": "huff_flow_O(origins)_D(destinations)/betweenness_record_so_far.geoJSON",
+    "columns": [
+     "id",
+     "length",
+     "weight",
+     "huff_flow",
+     "geometry"
+    ],
+    "dtypes": [
+     "int32",
+     "float64",
+     "float64",
+     "float64",
+     "geometry"
+    ],
+    "shape": [
+     8,
+     5
+    ],
+    "time_columns_present": [],
+    "values": {
+     "id": [
+      "int:0",
+      "int:1",
+      "int:2",
+      "int:3",
+      "int:4",
+      "int:5",
+      "int:6",
+      "int:7"
+     ],
+     "length": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "weight": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "huff_flow": [
+      "3ff0000000000000",
+      "3ff0000000000000",
+      "3ff8000000000000",
+      "4008000000000000",
+      "3ff8000000000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+     ],
+     "geometry": [
+      "c63485a4cde2f9ae5b68989a352766768ceda8c36ad60d4ef4c8e0606c5279ff",
+      "1fc49fd42ce8d94886d4d46289aab590d33ae6ae0d7b65afb3c2c8d473cd5619",
+      "2dd7bf75fe5ade7ddc4b895d22c258c1cb32a6e0bd9b3a7ad6e60a7ec8fb4fe9",
+      "280f9c05edc25fd71d8cb18830958afcc0810cb7aa235b1fb44a98a5e57b7358",
+      "c7744e0fd5754aeff6c2b0c8caebb4a949208074ec07c5a3ba2225cbc0a29084",
+      "7331aabb4c184631ac146b364bb788468d68f67dda4277ded04a5b66de12c797",
+      "8daf83c02b0f915aa774c3bc46610fbb2ea7809f91217685889421893cdda2a8",
+      "2740689bf5a1e1a71873112e8e48f38a9601a6f6a1e562aceff5e5c538575228"
+     ]
+    }
+   }
+  },
+  "huff_flow_O(origins)_D(destinations)/flow_map_dark.html": {
+   "bytes": 14243,
+   "policy": "presence_only_pydeck_nondeterministic"
+  },
+  "huff_flow_O(origins)_D(destinations)/flow_map_light.html": {
+   "bytes": 14262,
+   "policy": "presence_only_pydeck_nondeterministic"
+  },
+  "huff_flow_O(origins)_D(destinations)/origin_record_(origins).geoJSON": {
+   "bytes": 2279,
+   "md5": "e45b841857b11028247e49ddc8c12244",
+   "frame": {
+    "label": "huff_flow_O(origins)_D(destinations)/origin_record_(origins).geoJSON",
+    "columns": [
+     "id",
+     "weight",
+     "huff_flow_source_layer",
+     "huff_flow_type",
+     "huff_flow_weight",
+     "huff_flow_degree",
+     "huff_flow_color",
+     "huff_flow_nearest_edge_id",
+     "huff_flow_edge_start_node",
+     "huff_flow_weight_to_start",
+     "huff_flow_edge_end_node",
+     "huff_flow_weight_to_end",
+     "huff_flow_chunck_time",
+     "huff_flow_chunck_path_count",
+     "huff_flow_chunck_path_segment_count",
+     "huff_flow_chunck_path_segment_memory",
+     "huff_flow_chunk_scope_node_count",
+     "reach_huff_flow",
+     "gravity_huff_flow",
+     "geometry"
+    ],
+    "dtypes": [
+     "int32",
+     "float64",
+     "str",
+     "str",
+     "float64",
+     "int32",
+     "object",
+     "int32",
+     "int32",
+     "float64",
+     "int32",
+     "float64",
+     "object",
+     "object",
+     "object",
+     "object",
+     "object",
+     "float64",
+     "float64",
+     "geometry"
+    ],
+    "shape": [
+     3,
+     20
+    ],
+    "time_columns_present": [
+     "huff_flow_chunck_time"
+    ],
+    "values": {
+     "id": [
+      "int:0",
+      "int:1",
+      "int:2"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ],
+     "huff_flow_source_layer": [
+      "origins",
+      "origins",
+      "origins"
+     ],
+     "huff_flow_type": [
+      "origin",
+      "origin",
+      "origin"
+     ],
+     "huff_flow_weight": [
+      "3ff0000000000000",
+      "3ff0000000000000",
+      "3ff0000000000000"
+     ],
+     "huff_flow_degree": [
+      "int:0",
+      "int:0",
+      "int:0"
+     ],
+     "huff_flow_color": [
+      [
+       "int:86",
+       "int:5",
+       "int:255"
+      ],
+      [
+       "int:86",
+       "int:5",
+       "int:255"
+      ],
+      [
+       "int:86",
+       "int:5",
+       "int:255"
+      ]
+     ],
+     "huff_flow_nearest_edge_id": [
+      "int:0",
+      "int:1",
+      "int:2"
+     ],
+     "huff_flow_edge_start_node": [
+      "int:1",
+      "int:0",
+      "int:2"
+     ],
+     "huff_flow_weight_to_start": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ],
+     "huff_flow_edge_end_node": [
+      "int:0",
+      "int:2",
+      "int:3"
+     ],
+     "huff_flow_weight_to_end": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ],
+     "huff_flow_chunck_path_count": [
+      "nan",
+      "nan",
+      "nan"
+     ],
+     "huff_flow_chunck_path_segment_count": [
+      "nan",
+      "nan",
+      "nan"
+     ],
+     "huff_flow_chunck_path_segment_memory": [
+      "nan",
+      "nan",
+      "nan"
+     ],
+     "huff_flow_chunk_scope_node_count": [
+      "nan",
+      "nan",
+      "nan"
+     ],
+     "reach_huff_flow": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "gravity_huff_flow": [
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4",
+      "3ff4a252eaacc075"
+     ],
+     "geometry": [
+      "45afda2c75ea418738e5fb6b9ad0b594a0981859b114b2d1ca012651bac0d394",
+      "003c59764374ddffeb26ab7ff0da9d11e9092c33c7ad41ed14f26c9a833e4c00",
+      "06c9547eaf87c57c004e2be47246367f3daa4dac4f8dd427f55e0c345f540f06"
+     ]
+    }
+   }
+  },
+  "huff_flow_O(origins)_D(destinations)/time_log.csv": {
+   "bytes": 1159,
+   "policy": "structured_only_wall_clock_columns",
+   "row_count": 10,
+   "columns": [
+    "Unnamed: 0",
+    "time",
+    "flow_name",
+    "event",
+    "seconds_elapsed",
+    "cumulative_seconds"
+   ],
+   "events": [
+    [
+     null,
+     "SIMULATION STARTED: VERSION: 0.0.15, RELEASE DATEL 2023-02-16"
+    ],
+    [
+     null,
+     "3.11.4 | packaged by conda-forge | (main, Jun 10 2023, 18:08:17) [GCC 12.2.0]"
+    ],
+    [
+     null,
+     "Dependencies: Geopandas:1.2.0, Shapely:2.1.2, Pandas:3.0.6, Numpy:2.4.6, NetworkX:3.6.1"
+    ],
+    [
+     null,
+     "network FIle Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "huff_flow",
+     "network topology created"
+    ],
+    [
+     "huff_flow",
+     "origins file origins.geojson Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "huff_flow",
+     "destinations file destinations.geojson Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "huff_flow",
+     "Origins and Destinations Inserted."
+    ],
+    [
+     "huff_flow",
+     "NetworkX Graphs Created."
+    ],
+    [
+     "huff_flow",
+     "Betweenness estimated."
+    ]
+   ]
+  },
+  "time_log.csv": {
+   "bytes": 1230,
+   "policy": "structured_only_wall_clock_columns",
+   "row_count": 11,
+   "columns": [
+    "Unnamed: 0",
+    "time",
+    "flow_name",
+    "event",
+    "seconds_elapsed",
+    "cumulative_seconds"
+   ],
+   "events": [
+    [
+     null,
+     "SIMULATION STARTED: VERSION: 0.0.15, RELEASE DATEL 2023-02-16"
+    ],
+    [
+     null,
+     "3.11.4 | packaged by conda-forge | (main, Jun 10 2023, 18:08:17) [GCC 12.2.0]"
+    ],
+    [
+     null,
+     "Dependencies: Geopandas:1.2.0, Shapely:2.1.2, Pandas:3.0.6, Numpy:2.4.6, NetworkX:3.6.1"
+    ],
+    [
+     null,
+     "network FIle Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "huff_flow",
+     "network topology created"
+    ],
+    [
+     "huff_flow",
+     "origins file origins.geojson Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "huff_flow",
+     "destinations file destinations.geojson Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "huff_flow",
+     "Origins and Destinations Inserted."
+    ],
+    [
+     "huff_flow",
+     "NetworkX Graphs Created."
+    ],
+    [
+     "huff_flow",
+     "Betweenness estimated."
+    ],
+    [
+     "huff_flow",
+     "Output saved"
+    ]
+   ]
+  }
+ },
+ "record_csv_absent_by_default": true,
+ "origin_csv_absent_by_default": true,
+ "origin_geojson_present": true,
+ "flow_maps_present": [
+  "flow_map_dark.html",
+  "flow_map_light.html"
+ ],
+ "workflow_error": null,
+ "sabotage": null,
+ "arm": "reference",
+ "scenario": "wf_flow_defaults"
+}

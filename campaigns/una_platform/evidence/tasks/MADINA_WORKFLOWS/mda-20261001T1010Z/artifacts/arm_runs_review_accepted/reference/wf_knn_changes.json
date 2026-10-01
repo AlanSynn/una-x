@@ -1,0 +1,24 @@
+{
+ "pinned_fact": "workflows build a Zonal from files and publish FILES; digests cover the output tree + captured errors",
+ "env_marker": {
+  "workflows_file": "workflows.py"
+ },
+ "files": {
+  "origin_record.csv": {
+   "bytes": 252,
+   "parse_error": "AttributeError: 'str' object has no attribute 'wkb'"
+  }
+ },
+ "workflow_error": "KeyError: 'Layer with label streets is already in Zonal object'",
+ "origin_columns": [
+  "id",
+  "weight",
+  "geometry",
+  "knn_geo_reach",
+  "knn_geo_gravity",
+  "knn_geo_knn_access"
+ ],
+ "sabotage": null,
+ "arm": "reference",
+ "scenario": "wf_knn_changes"
+}

@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "origin_record",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 0, "weight": 1.0, "wgt_a_reach": 5.0, "wgt_a_gravity": 7.1345512692223441, "wgt_a_knn_access": 0.5488116360940265, "wgt_b_reach": 5.0, "wgt_b_gravity": 7.1345512692223441, "wgt_b_knn_access": 0.5488116360940265, "total_knn_access": 1.097623272188053, "normalized_knn_access": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -50.0, 0.0 ] } },
+{ "type": "Feature", "properties": { "id": 1, "weight": 2.0, "wgt_a_reach": 5.0, "wgt_a_gravity": 7.1345512692223441, "wgt_a_knn_access": 0.5488116360940265, "wgt_b_reach": 5.0, "wgt_b_gravity": 7.1345512692223441, "wgt_b_knn_access": 0.5488116360940265, "total_knn_access": 1.097623272188053, "normalized_knn_access": 0.0 }, "geometry": { "type": "Point", "coordinates": [ 50.0, 0.0 ] } },
+{ "type": "Feature", "properties": { "id": 2, "weight": 1.0, "wgt_a_reach": 5.0, "wgt_a_gravity": 7.90257760757311, "wgt_a_knn_access": 0.64481492838787224, "wgt_b_reach": 5.0, "wgt_b_gravity": 7.90257760757311, "wgt_b_knn_access": 0.64481492838787224, "total_knn_access": 1.2896298567757445, "normalized_knn_access": 1.0 }, "geometry": { "type": "Point", "coordinates": [ 100.0, 50.0 ] } }
+]
+}

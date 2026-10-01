@@ -1,0 +1,14 @@
+{
+ "pinned_fact": "workflows build a Zonal from files and publish FILES; digests cover the output tree + captured errors",
+ "env_marker": {
+  "workflows_file": "workflows.py"
+ },
+ "workflow_error": "TypeError: Parameter 'save_closest_facility_as' must be a string. <class 'NoneType'> was given.",
+ "guard_probes": {
+  "city_name_required": "ValueError: parameter 'city_name' needs to be specified",
+  "nan_knn_weight": "ValueError: knn_weight should be a list of numerical values like [0.5, 0.25, 0.25]"
+ },
+ "sabotage": "knn_closest_facility_true",
+ "arm": "facade",
+ "scenario": "wf_knn_defaults"
+}

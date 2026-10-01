@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "origin_record",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 0, "weight": 1.0, "knn_a": 2.0, "knn_a_gravity": 1.097623272188053, "knn_a_knn_access": 0.5488116360940265, "knn_b": 2.0, "knn_b_gravity": 1.097623272188053, "knn_b_knn_access": 0.5488116360940265, "total_knn_access": 1.097623272188053, "normalized_knn_access": 0.0 }, "geometry": { "type": "Point", "coordinates": [ -50.0, 0.0 ] } },
+{ "type": "Feature", "properties": { "id": 1, "weight": 2.0, "knn_a": 2.0, "knn_a_gravity": 1.097623272188053, "knn_a_knn_access": 0.5488116360940265, "knn_b": 2.0, "knn_b_gravity": 1.097623272188053, "knn_b_knn_access": 0.5488116360940265, "total_knn_access": 1.097623272188053, "normalized_knn_access": 0.0 }, "geometry": { "type": "Point", "coordinates": [ 50.0, 0.0 ] } },
+{ "type": "Feature", "properties": { "id": 2, "weight": 1.0, "knn_a": 2.0, "knn_a_gravity": 1.2896298567757445, "knn_a_knn_access": 0.64481492838787224, "knn_b": 2.0, "knn_b_gravity": 1.2896298567757445, "knn_b_knn_access": 0.64481492838787224, "total_knn_access": 1.2896298567757445, "normalized_knn_access": 1.0 }, "geometry": { "type": "Point", "coordinates": [ 100.0, 50.0 ] } }
+]
+}

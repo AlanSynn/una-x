@@ -1,0 +1,12 @@
+,time,flow_name,event,seconds_elapsed,cumulative_seconds
+0,2026-10-01 06:41:07.533289,,"SIMULATION STARTED: VERSION: 0.0.15, RELEASE DATEL 2023-02-16",0.0,0.0
+1,2026-10-01 06:41:07.536020,,"3.11.4 | packaged by conda-forge | (main, Jun 10 2023, 18:08:17) [GCC 12.2.0]",0.004302,0.004302
+2,2026-10-01 06:41:07.537964,,"Dependencies: Geopandas:1.2.0, Shapely:2.1.2, Pandas:3.0.6, Numpy:2.4.6, NetworkX:3.6.1",0.0019439999999999995,0.006246
+3,2026-10-01 06:41:07.548716,,"network FIle Loaded, Projection: EPSG:3857",0.010752,0.016998
+4,2026-10-01 06:41:07.570758,expo,network topology created,0.022042,0.03904
+5,2026-10-01 06:41:07.578611,expo,"origins file origins.geojson Loaded, Projection: EPSG:3857",0.007852999999999999,0.046893
+6,2026-10-01 06:41:07.585898,expo,"destinations file destinations.geojson Loaded, Projection: EPSG:3857",0.007287000000000002,0.05418
+7,2026-10-01 06:41:07.603996,expo,Origins and Destinations Inserted.,0.018097999999999996,0.072278
+8,2026-10-01 06:41:07.613384,expo,NetworkX Graphs Created.,0.009388000000000007,0.081666
+9,2026-10-01 06:41:08.180245,expo,Betweenness estimated.,0.566861,0.648527
+10,2026-10-01 06:41:08.393668,expo,Output saved,0.21342300000000003,0.86195

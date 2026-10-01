@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>pydeck</title>
+        <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.14.0/dist/maplibre-gl.css" />
+    <script src='https://cdn.jsdelivr.net/npm/@deck.gl/jupyter-widget@~9.3.*/dist/index.js'></script>
+    <link rel="stylesheet" href=https://cdn.jsdelivr.net/npm/@deck.gl/widgets@~9.3.*/dist/stylesheet.css />
+    <style>
+    body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#deck-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+#deck-container canvas {
+  z-index: 1;
+  background: none;
+}
+
+#deck-container .error_text {
+  color: red;
+  background: none;
+  position: absolute;
+  z-index: 100;
+}
+    </style>
+  </head>
+  <body>
+    <div id="deck-container">
+    </div>
+  </body>
+  <script>
+    const container = document.getElementById('deck-container');
+    const jsonInput = {
+  "initialViewState": {
+    "latitude": 0.0005333746999198008,
+    "longitude": 0.00039301293680229056,
+    "zoom": 19
+  },
+  "layers": [
+    {
+      "@@type": "GeoJsonLayer",
+      "data": [
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "1",
+          "__width__": 13.833333333333332,
+          "betweenness": 1.0,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 0,
+          "geometry": {
+            "coordinates": [
+              [
+                -0.0008983152841195213,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ],
+            "type": "LineString"
+          },
+          "length": 100.0,
+          "parent_street_id": 0,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 1,
+          "weight": 100.0
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "1",
+          "__width__": 13.833333333333332,
+          "betweenness": 1.0,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 2,
+          "geometry": {
+            "coordinates": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0008983152841195213,
+                0.0
+              ]
+            ],
+            "type": "LineString"
+          },
+          "length": 100.0,
+          "parent_street_id": 1,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 0,
+          "weight": 100.0
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "1",
+          "__width__": 20.5,
+          "betweenness": 1.5,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 3,
+          "geometry": {
+            "coordinates": [
+              [
+                0.0008983152841195213,
+                0.0
+              ],
+              [
+                0.0008983152841195213,
+                0.0008983152840827179
+              ]
+            ],
+            "type": "LineString"
+          },
+          "length": 100.0,
+          "parent_street_id": 2,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 2,
+          "weight": 100.0
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "3",
+          "__width__": 40.5,
+          "betweenness": 3.0,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 4,
+          "geometry": {
+            "coordinates": [
+              [
+                0.0008983152841195213,
+                0.0008983152840827179
+              ],
+              [
+                0.0,
+                0.0008983152840827179
+              ]
+            ],
+            "type": "LineString"
+          },
+          "length": 100.0,
+          "parent_street_id": 3,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 3,
+          "weight": 100.0
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "1",
+          "__width__": 20.5,
+          "betweenness": 1.5,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 0,
+          "geometry": {
+            "coordinates": [
+              [
+                0.0,
+                0.0008983152840827179
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ],
+            "type": "LineString"
+          },
+          "length": 100.0,
+          "parent_street_id": 4,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 4,
+          "weight": 100.0
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "0",
+          "__width__": 0.5,
+          "betweenness": 0.0,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 3,
+          "geometry": {
+            "coordinates": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0008983152841195213,
+                0.0008983152840827179
+              ]
+            ],
+            "type": "LineString"
+          },
+          "length": 141.4213562373095,
+          "parent_street_id": 5,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 0,
+          "weight": 141.4213562373095
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "0",
+          "__width__": 0.5,
+          "betweenness": 0.0,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 6,
+          "geometry": {
+            "coordinates": [
+              [
+                0.0,
+                0.0008983152840827179
+              ],
+              [
+                0.0,
+                0.0013474729260550703
+              ]
+            ],
+            "type": "LineString"
+          },
+          "length": 50.0,
+          "parent_street_id": 6,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 4,
+          "weight": 50.0
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "0",
+          "__width__": 0.5,
+          "betweenness": 0.0,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 5,
+          "geometry": {
+            "coordinates": [
+              [
+                0.0008983152841195213,
+                0.0008983152840827179
+              ],
+              [
+                0.0017966305682390426,
+                0.0008983152840827179
+              ]
+            ],
+            "type": "LineString"
+          },
+          "length": 100.0,
+          "parent_street_id": 7,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 3,
+          "weight": 100.0
+        }
+      ],
+      "filled": true,
+      "getFillColor": "@@=__color__",
+      "getLineColor": "@@=__color__",
+      "getLineWidth": "@@=__width__",
+      "id": "6d670d90-9f66-47ae-9f77-1c5a828f8864",
+      "opacity": 0.99,
+      "pickable": true,
+      "stroked": true,
+      "wireframe": true
+    },
+    {
+      "@@type": "TextLayer",
+      "background": true,
+      "data": [
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "1",
+          "__width__": 13.833333333333332,
+          "betweenness": 1.0,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 0,
+          "geometry": {
+            "coordinates": [
+              -0.00044915764205976066,
+              0.0
+            ],
+            "type": "Point"
+          },
+          "length": 100.0,
+          "parent_street_id": 0,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 1,
+          "weight": 100.0
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "1",
+          "__width__": 13.833333333333332,
+          "betweenness": 1.0,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 2,
+          "geometry": {
+            "coordinates": [
+              0.00044915764205976066,
+              0.0
+            ],
+            "type": "Point"
+          },
+          "length": 100.0,
+          "parent_street_id": 1,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 0,
+          "weight": 100.0
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "1",
+          "__width__": 20.5,
+          "betweenness": 1.5,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 3,
+          "geometry": {
+            "coordinates": [
+              0.0008983152841195213,
+              0.00044915764204135893
+            ],
+            "type": "Point"
+          },
+          "length": 100.0,
+          "parent_street_id": 2,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 2,
+          "weight": 100.0
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "3",
+          "__width__": 40.5,
+          "betweenness": 3.0,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 4,
+          "geometry": {
+            "coordinates": [
+              0.00044915764205976066,
+              0.0008983152840827179
+            ],
+            "type": "Point"
+          },
+          "length": 100.0,
+          "parent_street_id": 3,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 3,
+          "weight": 100.0
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "1",
+          "__width__": 20.5,
+          "betweenness": 1.5,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 0,
+          "geometry": {
+            "coordinates": [
+              0.0,
+              0.00044915764204135893
+            ],
+            "type": "Point"
+          },
+          "length": 100.0,
+          "parent_street_id": 4,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 4,
+          "weight": 100.0
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "0",
+          "__width__": 0.5,
+          "betweenness": 0.0,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 3,
+          "geometry": {
+            "coordinates": [
+              0.0004491576420597606,
+              0.00044915764204135893
+            ],
+            "type": "Point"
+          },
+          "length": 141.4213562373095,
+          "parent_street_id": 5,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 0,
+          "weight": 141.4213562373095
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "0",
+          "__width__": 0.5,
+          "betweenness": 0.0,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 6,
+          "geometry": {
+            "coordinates": [
+              0.0,
+              0.001122894105068894
+            ],
+            "type": "Point"
+          },
+          "length": 50.0,
+          "parent_street_id": 6,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 4,
+          "weight": 50.0
+        },
+        {
+          "__color__": [
+            249,
+            245,
+            10
+          ],
+          "__text__": "0",
+          "__width__": 0.5,
+          "betweenness": 0.0,
+          "color": [
+            125,
+            125,
+            125
+          ],
+          "end": 5,
+          "geometry": {
+            "coordinates": [
+              0.0013474729261792819,
+              0.0008983152840827179
+            ],
+            "type": "Point"
+          },
+          "length": 100.0,
+          "parent_street_id": 7,
+          "snapped": false,
+          "snapping_distance": 0.0,
+          "start": 3,
+          "weight": 100.0
+        }
+      ],
+      "getAlignmentBaseline": "center",
+      "getAngle": 0,
+      "getBackgroundColor": [
+        0,
+        0,
+        0
+      ],
+      "getColor": "@@=__color__",
+      "getPosition": "@@=geometry.coordinates",
+      "getSize": 3,
+      "getText": "@@=__text__",
+      "getTextAnchor": "middle",
+      "id": "f869134e-0918-4cd4-832f-4d53ef4925d7",
+      "opacity": 1,
+      "pickable": false,
+      "sizeMaxPixels": 18,
+      "sizeUnits": "meters"
+    }
+  ],
+  "mapProvider": "carto",
+  "mapStyle": "https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json",
+  "views": [
+    {
+      "@@type": "MapView",
+      "controller": true
+    }
+  ]
+};
+    const tooltip = {'html': '<b>betweenness:</b> {__text__}', 'style': {'backgroundColor': 'steelblue', 'color': 'white'}};
+    const customLibraries = null;
+    const configuration = null;
+
+    const deckInstance = createDeck({
+                  container,
+      jsonInput,
+      tooltip,
+      customLibraries,
+      configuration,
+          });
+
+  </script>
+</html>

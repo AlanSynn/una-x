@@ -1,0 +1,699 @@
+{
+ "pinned_fact": "workflows build a Zonal from files and publish FILES; digests cover the output tree + captured errors",
+ "env_marker": {
+  "workflows_file": "workflows.py"
+ },
+ "files": {
+  "betweenness_record.csv": {
+   "bytes": 522,
+   "frame": {
+    "label": "betweenness_record.csv",
+    "columns": [
+     "id",
+     "length",
+     "geometry",
+     "weight",
+     "elastic_huff"
+    ],
+    "dtypes": [
+     "int64",
+     "float64",
+     "str",
+     "float64",
+     "float64"
+    ],
+    "shape": [
+     8,
+     5
+    ],
+    "time_columns_present": [],
+    "values": {
+     "id": [
+      "int:0",
+      "int:1",
+      "int:2",
+      "int:3",
+      "int:4",
+      "int:5",
+      "int:6",
+      "int:7"
+     ],
+     "length": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "geometry": [
+      "ad059f481f5f718512133c5e52a095f467d3530842f6afe7af99a943306809ae",
+      "c01c0e77fa84933550b57a0580f9adb1a85989f9b532910189c324c75b8b1fe2",
+      "e423dd68bb4681ea6ef5cb05d4e2718da137d396d99f500f8370dc5713cf4c12",
+      "60a85cd0bbcdec9639ab7a18f122be352a1c578b49b878a45e345fdd4a66da2d",
+      "1f7345b28aadcf78e94125e0e5ae5f20fadcef748dc15567a1c5991ae1ffa57c",
+      "7cf72256bd7a2e9a465a56a4cde3eb09a56fa0903eaf8739c8370c84ff99a096",
+      "b204a7f45393e3899c97ede197589efffe9f81cb8084993a2bacc302ec3da0e9",
+      "c665e5bab6cbc79ab3bd342abe83018036f17eeb26a2dcd5c4e9ed122b50f4d6"
+     ],
+     "weight": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "elastic_huff": [
+      "3fe18fdd6b9604e4",
+      "3fe18fdd6b9604e4",
+      "3fe9064a459241ae",
+      "3ff319182b2162ac",
+      "3feebbc37c46888f",
+      "0000000000000000",
+      "3fea57cc21610756",
+      "0000000000000000"
+     ]
+    }
+   },
+   "md5": "423747b63e4ef3daf86e60d607e3e198"
+  },
+  "betweenness_record.geoJSON": {
+   "bytes": 1833,
+   "frame": {
+    "label": "betweenness_record.geoJSON",
+    "columns": [
+     "id",
+     "length",
+     "weight",
+     "elastic_huff",
+     "geometry"
+    ],
+    "dtypes": [
+     "int32",
+     "float64",
+     "float64",
+     "float64",
+     "geometry"
+    ],
+    "shape": [
+     8,
+     5
+    ],
+    "time_columns_present": [],
+    "values": {
+     "id": [
+      "int:0",
+      "int:1",
+      "int:2",
+      "int:3",
+      "int:4",
+      "int:5",
+      "int:6",
+      "int:7"
+     ],
+     "length": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "weight": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "elastic_huff": [
+      "3fe18fdd6b9604e4",
+      "3fe18fdd6b9604e4",
+      "3fe9064a459241ae",
+      "3ff319182b2162ac",
+      "3feebbc37c46888f",
+      "0000000000000000",
+      "3fea57cc21610756",
+      "0000000000000000"
+     ],
+     "geometry": [
+      "c63485a4cde2f9ae5b68989a352766768ceda8c36ad60d4ef4c8e0606c5279ff",
+      "1fc49fd42ce8d94886d4d46289aab590d33ae6ae0d7b65afb3c2c8d473cd5619",
+      "2dd7bf75fe5ade7ddc4b895d22c258c1cb32a6e0bd9b3a7ad6e60a7ec8fb4fe9",
+      "280f9c05edc25fd71d8cb18830958afcc0810cb7aa235b1fb44a98a5e57b7358",
+      "c7744e0fd5754aeff6c2b0c8caebb4a949208074ec07c5a3ba2225cbc0a29084",
+      "7331aabb4c184631ac146b364bb788468d68f67dda4277ded04a5b66de12c797",
+      "8daf83c02b0f915aa774c3bc46610fbb2ea7809f91217685889421893cdda2a8",
+      "2740689bf5a1e1a71873112e8e48f38a9601a6f6a1e562aceff5e5c538575228"
+     ]
+    }
+   },
+   "md5": "897fd8ef00f0cfb99d4f2a1eb6ae0a4a"
+  },
+  "elastic_huff_O(origins)_D(destinations)/betweenness_record_so_far.geoJSON": {
+   "bytes": 1840,
+   "frame": {
+    "label": "elastic_huff_O(origins)_D(destinations)/betweenness_record_so_far.geoJSON",
+    "columns": [
+     "id",
+     "length",
+     "weight",
+     "elastic_huff",
+     "geometry"
+    ],
+    "dtypes": [
+     "int32",
+     "float64",
+     "float64",
+     "float64",
+     "geometry"
+    ],
+    "shape": [
+     8,
+     5
+    ],
+    "time_columns_present": [],
+    "values": {
+     "id": [
+      "int:0",
+      "int:1",
+      "int:2",
+      "int:3",
+      "int:4",
+      "int:5",
+      "int:6",
+      "int:7"
+     ],
+     "length": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "weight": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "4049000000000000",
+      "4059000000000000"
+     ],
+     "elastic_huff": [
+      "3fe18fdd6b9604e4",
+      "3fe18fdd6b9604e4",
+      "3fe9064a459241ae",
+      "3ff319182b2162ac",
+      "3feebbc37c46888f",
+      "0000000000000000",
+      "3fea57cc21610756",
+      "0000000000000000"
+     ],
+     "geometry": [
+      "c63485a4cde2f9ae5b68989a352766768ceda8c36ad60d4ef4c8e0606c5279ff",
+      "1fc49fd42ce8d94886d4d46289aab590d33ae6ae0d7b65afb3c2c8d473cd5619",
+      "2dd7bf75fe5ade7ddc4b895d22c258c1cb32a6e0bd9b3a7ad6e60a7ec8fb4fe9",
+      "280f9c05edc25fd71d8cb18830958afcc0810cb7aa235b1fb44a98a5e57b7358",
+      "c7744e0fd5754aeff6c2b0c8caebb4a949208074ec07c5a3ba2225cbc0a29084",
+      "7331aabb4c184631ac146b364bb788468d68f67dda4277ded04a5b66de12c797",
+      "8daf83c02b0f915aa774c3bc46610fbb2ea7809f91217685889421893cdda2a8",
+      "2740689bf5a1e1a71873112e8e48f38a9601a6f6a1e562aceff5e5c538575228"
+     ]
+    }
+   },
+   "md5": "5e025a7b0e7b00d99848eb4508990915"
+  },
+  "elastic_huff_O(origins)_D(destinations)/flow_map_dark.html": {
+   "bytes": 14503,
+   "policy": "presence_only_pydeck_nondeterministic"
+  },
+  "elastic_huff_O(origins)_D(destinations)/flow_map_light.html": {
+   "bytes": 14522,
+   "policy": "presence_only_pydeck_nondeterministic"
+  },
+  "elastic_huff_O(origins)_D(destinations)/origin_record_(origins).geoJSON": {
+   "frame": {
+    "label": "elastic_huff_O(origins)_D(destinations)/origin_record_(origins).geoJSON",
+    "columns": [
+     "id",
+     "weight",
+     "elastic_huff_source_layer",
+     "elastic_huff_type",
+     "elastic_huff_weight",
+     "elastic_huff_degree",
+     "elastic_huff_color",
+     "elastic_huff_nearest_edge_id",
+     "elastic_huff_edge_start_node",
+     "elastic_huff_weight_to_start",
+     "elastic_huff_edge_end_node",
+     "elastic_huff_weight_to_end",
+     "elastic_huff_chunck_time",
+     "elastic_huff_chunck_path_count",
+     "elastic_huff_chunck_path_segment_count",
+     "elastic_huff_chunck_path_segment_memory",
+     "elastic_huff_chunk_scope_node_count",
+     "elastic_weight_elastic_huff",
+     "elastic_huff_knn_access",
+     "reach_elastic_huff",
+     "gravity_elastic_huff",
+     "elastic_huff_closest_destination_distance",
+     "elastic_huff_furthest_destination_distance",
+     "elastic_huff_mean_path_length",
+     "elastic_huff_probable_travel_distance",
+     "elastic_huff_eligible_destinations",
+     "elastic_huff_path_count",
+     "elastic_huff_path_segment_count",
+     "elastic_huff_path_segment_memory",
+     "elastic_huff_scope_node_count",
+     "elastic_huff_destination_discovery_time",
+     "elastic_huff_destination_prep_time",
+     "elastic_huff_path_generation_time",
+     "elastic_huff_chunck_count",
+     "elastic_huff_memory_stalls",
+     "geometry"
+    ],
+    "dtypes": [
+     "int32",
+     "float64",
+     "str",
+     "str",
+     "float64",
+     "int32",
+     "object",
+     "int32",
+     "int32",
+     "float64",
+     "int32",
+     "float64",
+     "object",
+     "object",
+     "object",
+     "object",
+     "str",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "float64",
+     "geometry"
+    ],
+    "shape": [
+     3,
+     36
+    ],
+    "time_columns_present": [
+     "elastic_huff_chunck_time",
+     "elastic_huff_destination_discovery_time",
+     "elastic_huff_destination_prep_time",
+     "elastic_huff_path_generation_time"
+    ],
+    "values": {
+     "id": [
+      "int:0",
+      "int:1",
+      "int:2"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ],
+     "elastic_huff_source_layer": [
+      "origins",
+      "origins",
+      "origins"
+     ],
+     "elastic_huff_type": [
+      "origin",
+      "origin",
+      "origin"
+     ],
+     "elastic_huff_weight": [
+      "3ff0000000000000",
+      "3ff0000000000000",
+      "3ff0000000000000"
+     ],
+     "elastic_huff_degree": [
+      "int:0",
+      "int:0",
+      "int:0"
+     ],
+     "elastic_huff_color": [
+      [
+       "int:86",
+       "int:5",
+       "int:255"
+      ],
+      [
+       "int:86",
+       "int:5",
+       "int:255"
+      ],
+      [
+       "int:86",
+       "int:5",
+       "int:255"
+      ]
+     ],
+     "elastic_huff_nearest_edge_id": [
+      "int:0",
+      "int:1",
+      "int:2"
+     ],
+     "elastic_huff_edge_start_node": [
+      "int:1",
+      "int:0",
+      "int:2"
+     ],
+     "elastic_huff_weight_to_start": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ],
+     "elastic_huff_edge_end_node": [
+      "int:0",
+      "int:2",
+      "int:3"
+     ],
+     "elastic_huff_weight_to_end": [
+      "4049000000000000",
+      "4049000000000000",
+      "4049000000000000"
+     ],
+     "elastic_huff_chunck_path_count": [
+      [
+       "int:2"
+      ],
+      [
+       "int:3"
+      ],
+      [
+       "int:2"
+      ]
+     ],
+     "elastic_huff_chunck_path_segment_count": [
+      [
+       "int:6"
+      ],
+      [
+       "int:9"
+      ],
+      [
+       "int:5"
+      ]
+     ],
+     "elastic_huff_chunck_path_segment_memory": [
+      [
+       "int:160"
+      ],
+      [
+       "int:240"
+      ],
+      [
+       "int:152"
+      ]
+     ],
+     "elastic_huff_chunk_scope_node_count": [
+      "5",
+      "7",
+      "5"
+     ],
+     "elastic_weight_elastic_huff": [
+      "3fe18fdd6b9604e4",
+      "3fe18fdd6b9604e4",
+      "3fe4a252eaacc075"
+     ],
+     "elastic_huff_knn_access": [
+      "3fe18fdd6b9604e4",
+      "3fe18fdd6b9604e4",
+      "3fe4a252eaacc075"
+     ],
+     "reach_elastic_huff": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "gravity_elastic_huff": [
+      "3ff18fdd6b9604e4",
+      "3ff18fdd6b9604e4",
+      "3ff4a252eaacc075"
+     ],
+     "elastic_huff_closest_destination_distance": [
+      "4069000000000000",
+      "4069000000000000",
+      "4059000000000000"
+     ],
+     "elastic_huff_furthest_destination_distance": [
+      "4069000000000000",
+      "4069000000000000",
+      "4069000000000000"
+     ],
+     "elastic_huff_mean_path_length": [
+      "4069000000000000",
+      "4069000000000000",
+      "4061d1c8b0b2c662"
+     ],
+     "elastic_huff_probable_travel_distance": [
+      "4069000000000000",
+      "4069000000000000",
+      "4061d1c8b0b2c662"
+     ],
+     "elastic_huff_eligible_destinations": [
+      "4000000000000000",
+      "4000000000000000",
+      "4000000000000000"
+     ],
+     "elastic_huff_path_count": [
+      "4000000000000000",
+      "4008000000000000",
+      "4000000000000000"
+     ],
+     "elastic_huff_path_segment_count": [
+      "4018000000000000",
+      "4022000000000000",
+      "4014000000000000"
+     ],
+     "elastic_huff_path_segment_memory": [
+      "4064000000000000",
+      "406e000000000000",
+      "4063000000000000"
+     ],
+     "elastic_huff_scope_node_count": [
+      "4014000000000000",
+      "401c000000000000",
+      "4014000000000000"
+     ],
+     "elastic_huff_chunck_count": [
+      "3ff0000000000000",
+      "3ff0000000000000",
+      "3ff0000000000000"
+     ],
+     "elastic_huff_memory_stalls": [
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+     ],
+     "geometry": [
+      "45afda2c75ea418738e5fb6b9ad0b594a0981859b114b2d1ca012651bac0d394",
+      "003c59764374ddffeb26ab7ff0da9d11e9092c33c7ad41ed14f26c9a833e4c00",
+      "06c9547eaf87c57c004e2be47246367f3daa4dac4f8dd427f55e0c345f540f06"
+     ]
+    }
+   },
+   "policy": "md5_excluded_wall_clock_columns_in_frame"
+  },
+  "elastic_huff_O(origins)_D(destinations)/time_log.csv": {
+   "policy": "structured_only_wall_clock_columns",
+   "row_count": 10,
+   "columns": [
+    "Unnamed: 0",
+    "time",
+    "flow_name",
+    "event",
+    "seconds_elapsed",
+    "cumulative_seconds"
+   ],
+   "events": [
+    [
+     null,
+     "SIMULATION STARTED: VERSION: 0.0.15, RELEASE DATEL 2023-02-16"
+    ],
+    [
+     null,
+     "3.11.4 | packaged by conda-forge | (main, Jun 10 2023, 18:08:17) [GCC 12.2.0]"
+    ],
+    [
+     null,
+     "Dependencies: Geopandas:1.2.0, Shapely:2.1.2, Pandas:3.0.6, Numpy:2.4.6, NetworkX:3.6.1"
+    ],
+    [
+     null,
+     "network FIle Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "elastic_huff",
+     "network topology created"
+    ],
+    [
+     "elastic_huff",
+     "origins file origins.geojson Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "elastic_huff",
+     "destinations file destinations.geojson Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "elastic_huff",
+     "Origins and Destinations Inserted."
+    ],
+    [
+     "elastic_huff",
+     "NetworkX Graphs Created."
+    ],
+    [
+     "elastic_huff",
+     "Betweenness estimated."
+    ]
+   ]
+  },
+  "time_log.csv": {
+   "policy": "structured_only_wall_clock_columns",
+   "row_count": 11,
+   "columns": [
+    "Unnamed: 0",
+    "time",
+    "flow_name",
+    "event",
+    "seconds_elapsed",
+    "cumulative_seconds"
+   ],
+   "events": [
+    [
+     null,
+     "SIMULATION STARTED: VERSION: 0.0.15, RELEASE DATEL 2023-02-16"
+    ],
+    [
+     null,
+     "3.11.4 | packaged by conda-forge | (main, Jun 10 2023, 18:08:17) [GCC 12.2.0]"
+    ],
+    [
+     null,
+     "Dependencies: Geopandas:1.2.0, Shapely:2.1.2, Pandas:3.0.6, Numpy:2.4.6, NetworkX:3.6.1"
+    ],
+    [
+     null,
+     "network FIle Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "elastic_huff",
+     "network topology created"
+    ],
+    [
+     "elastic_huff",
+     "origins file origins.geojson Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "elastic_huff",
+     "destinations file destinations.geojson Loaded, Projection: EPSG:3857"
+    ],
+    [
+     "elastic_huff",
+     "Origins and Destinations Inserted."
+    ],
+    [
+     "elastic_huff",
+     "NetworkX Graphs Created."
+    ],
+    [
+     "elastic_huff",
+     "Betweenness estimated."
+    ],
+    [
+     "elastic_huff",
+     "Output saved"
+    ]
+   ]
+  }
+ },
+ "workflow_error": null,
+ "origin_columns": [
+  "id",
+  "weight",
+  "elastic_huff_source_layer",
+  "elastic_huff_type",
+  "elastic_huff_weight",
+  "elastic_huff_degree",
+  "elastic_huff_color",
+  "elastic_huff_nearest_edge_id",
+  "elastic_huff_edge_start_node",
+  "elastic_huff_weight_to_start",
+  "elastic_huff_edge_end_node",
+  "elastic_huff_weight_to_end",
+  "elastic_huff_chunck_time",
+  "elastic_huff_chunck_path_count",
+  "elastic_huff_chunck_path_segment_count",
+  "elastic_huff_chunck_path_segment_memory",
+  "elastic_huff_chunk_scope_node_count",
+  "elastic_weight_elastic_huff",
+  "elastic_huff_knn_access",
+  "reach_elastic_huff",
+  "gravity_elastic_huff",
+  "elastic_huff_closest_destination_distance",
+  "elastic_huff_furthest_destination_distance",
+  "elastic_huff_mean_path_length",
+  "elastic_huff_probable_travel_distance",
+  "elastic_huff_eligible_destinations",
+  "elastic_huff_path_count",
+  "elastic_huff_path_segment_count",
+  "elastic_huff_path_segment_memory",
+  "elastic_huff_scope_node_count",
+  "elastic_huff_destination_discovery_time",
+  "elastic_huff_destination_prep_time",
+  "elastic_huff_path_generation_time",
+  "elastic_huff_chunck_count",
+  "elastic_huff_memory_stalls",
+  "geometry"
+ ],
+ "elastic_weight_column_present": true,
+ "stats_columns_present": [
+  "elastic_huff_closest_destination_distance",
+  "elastic_huff_mean_path_length",
+  "elastic_huff_eligible_destinations",
+  "elastic_huff_path_count"
+ ],
+ "reach_gravity_present": [
+  "gravity_elastic_huff",
+  "reach_elastic_huff"
+ ],
+ "sabotage": null,
+ "arm": "facade",
+ "scenario": "wf_flow_huff_elastic"
+}

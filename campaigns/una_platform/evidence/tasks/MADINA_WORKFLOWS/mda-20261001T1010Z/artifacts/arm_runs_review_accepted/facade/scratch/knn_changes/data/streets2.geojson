@@ -1,0 +1,15 @@
+{
+"type": "FeatureCollection",
+"name": "streets2",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
+"features": [
+{ "type": "Feature", "properties": { "id": "S0", "length": 100.0 }, "geometry": { "type": "LineString", "coordinates": [ [ -100.0, 0.0 ], [ 0.0, 0.0 ] ] } },
+{ "type": "Feature", "properties": { "id": "S1", "length": 100.0 }, "geometry": { "type": "LineString", "coordinates": [ [ 0.0, 0.0 ], [ 100.0, 0.0 ] ] } },
+{ "type": "Feature", "properties": { "id": "S2", "length": 100.0 }, "geometry": { "type": "LineString", "coordinates": [ [ 100.0, 0.0 ], [ 100.0, 100.0 ] ] } },
+{ "type": "Feature", "properties": { "id": "S3", "length": 100.0 }, "geometry": { "type": "LineString", "coordinates": [ [ 100.0, 100.0 ], [ 0.0, 100.0 ] ] } },
+{ "type": "Feature", "properties": { "id": "S4", "length": 100.0 }, "geometry": { "type": "LineString", "coordinates": [ [ 0.0, 100.0 ], [ 0.0, 0.0 ] ] } },
+{ "type": "Feature", "properties": { "id": "S5", "length": 100.0 }, "geometry": { "type": "LineString", "coordinates": [ [ 0.0, 0.0 ], [ 100.0, 100.0 ] ] } },
+{ "type": "Feature", "properties": { "id": "S6", "length": 100.0 }, "geometry": { "type": "LineString", "coordinates": [ [ 0.0, 100.0 ], [ 0.0, 150.0 ] ] } },
+{ "type": "Feature", "properties": { "id": "S7", "length": 100.0 }, "geometry": { "type": "LineString", "coordinates": [ [ 100.0, 100.0 ], [ 200.0, 100.0 ] ] } }
+]
+}

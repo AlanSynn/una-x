@@ -1,0 +1,292 @@
+total time | seconds elapsed |                flow_name                 | event
+    0.0000 |        0.000000 |                   ---                    | SIMULATION STARTED: VERSION: 0.0.15, RELEASE DATEL 2023-02-16
+    0.0047 |        0.004678 |                   ---                    | 3.11.4 | packaged by conda-forge | (main, Jun 10 2023, 18:08:17) [GCC 12.2.0]
+    0.0300 |        0.025318 |                   ---                    | Dependencies: Geopandas:1.2.0, Shapely:2.1.2, Pandas:3.0.6, Numpy:2.4.6, NetworkX:3.6.1
+    0.0416 |        0.011564 |                   ---                    | network FIle Loaded, Projection: EPSG:3857
+    0.2021 |        0.160566 |             (1/1) huff_flow              | network topology created
+    0.2106 |        0.008453 |             (1/1) huff_flow              | origins file origins.geojson Loaded, Projection: EPSG:3857
+    0.2181 |        0.007544 |             (1/1) huff_flow              | destinations file destinations.geojson Loaded, Projection: EPSG:3857
+    0.2364 |        0.018231 |             (1/1) huff_flow              | Origins and Destinations Inserted.
+    0.2458 |        0.009482 |             (1/1) huff_flow              | NetworkX Graphs Created.
+CORE: 0: [betweenness_exposure]: error collecting origin statistics origin_idx = 7 , len(processed_origins) = 1, proceeding to next task
+CORE: 0: [betweenness_exposure]: error collecting origin statistics origin_idx = 9 , len(processed_origins) = 2, proceeding to next task
+CORE: 0: [betweenness_exposure]: error collecting origin statistics origin_idx = 8 , len(processed_origins) = 3, proceeding to next task
+Time spent: 1s [Done 3 of 3 origins (100.00%)]    0.8505 |        0.604648 |             (1/1) huff_flow              | Betweenness estimated.
+    1.0686 |        0.218120 |             (1/1) huff_flow              | Output saved
+    1.0774 |        0.008810 |                   ---                    | Simulation Output saved: ALL DONE
+total time | seconds elapsed |                flow_name                 | event
+    0.0000 |        0.000000 |                   ---                    | SIMULATION STARTED: VERSION: 0.0.15, RELEASE DATEL 2023-02-16
+    0.0032 |        0.003200 |                   ---                    | 3.11.4 | packaged by conda-forge | (main, Jun 10 2023, 18:08:17) [GCC 12.2.0]
+    0.0050 |        0.001769 |                   ---                    | Dependencies: Geopandas:1.2.0, Shapely:2.1.2, Pandas:3.0.6, Numpy:2.4.6, NetworkX:3.6.1
+    0.0138 |        0.008879 |                   ---                    | network FIle Loaded, Projection: EPSG:3857
+    0.0348 |        0.020939 |             (1/1) huff_flow              | network topology created
+    0.0427 |        0.007878 |             (1/1) huff_flow              | origins file origins.geojson Loaded, Projection: EPSG:3857
+    0.0500 |        0.007373 |             (1/1) huff_flow              | destinations file destinations.geojson Loaded, Projection: EPSG:3857
+    0.0679 |        0.017867 |             (1/1) huff_flow              | Origins and Destinations Inserted.
+    0.0771 |        0.009157 |             (1/1) huff_flow              | NetworkX Graphs Created.
+CORE: 2: [betweenness_exposure]: error collecting origin statistics origin_idx = 9 , len(processed_origins) = 1, proceeding to next task
+CORE: 0: [betweenness_exposure]: error collecting origin statistics origin_idx = 8 , len(processed_origins) = 1, proceeding to next task
+CORE: 1: [betweenness_exposure]: error collecting origin statistics origin_idx = 7 , len(processed_origins) = 1, proceeding to next task
+Time spent: 1s [Done 3 of 3 origins (100.00%)]    0.6602 |        0.583131 |             (1/1) huff_flow              | Betweenness estimated.
+    0.7348 |        0.074628 |             (1/1) huff_flow              | Output saved
+    0.7439 |        0.009089 |                   ---                    | Simulation Output saved: ALL DONE
+total time | seconds elapsed |                flow_name                 | event
+    0.0000 |        0.000000 |                   ---                    | SIMULATION STARTED: VERSION: 0.0.15, RELEASE DATEL 2023-02-16
+    0.0033 |        0.003262 |                   ---                    | 3.11.4 | packaged by conda-forge | (main, Jun 10 2023, 18:08:17) [GCC 12.2.0]
+    0.0050 |        0.001778 |                   ---                    | Dependencies: Geopandas:1.2.0, Shapely:2.1.2, Pandas:3.0.6, Numpy:2.4.6, NetworkX:3.6.1
+    0.0140 |        0.008945 |                   ---                    | network FIle Loaded, Projection: EPSG:3857
+    0.0350 |        0.021015 |             (1/1) huff_flow              | network topology created
+    0.0431 |        0.008097 |             (1/1) huff_flow              | origins file origins.geojson Loaded, Projection: EPSG:3857
+    0.0505 |        0.007379 |             (1/1) huff_flow              | destinations file destinations.geojson Loaded, Projection: EPSG:3857
+    0.0683 |        0.017788 |             (1/1) huff_flow              | Origins and Destinations Inserted.
+    0.0773 |        0.009038 |             (1/1) huff_flow              | NetworkX Graphs Created.
+CORE: 0: [betweenness_exposure]: error collecting origin statistics origin_idx = 8 , len(processed_origins) = 1, proceeding to next task
+CORE: 1: [betweenness_exposure]: error collecting origin statistics origin_idx = 9 , len(processed_origins) = 1, proceeding to next task
+CORE: 2: [betweenness_exposure]: error collecting origin statistics origin_idx = 7 , len(processed_origins) = 1, proceeding to next task
+Time spent: 1s [Done 3 of 3 origins (100.00%)]    0.6273 |        0.549962 |             (1/1) huff_flow              | Betweenness estimated.
+    0.6989 |        0.071596 |             (1/1) huff_flow              | Output saved
+    0.7075 |        0.008679 |                   ---                    | Simulation Output saved: ALL DONE
+total time | seconds elapsed |                flow_name                 | event
+    0.0000 |        0.000000 |                   ---                    | SIMULATION STARTED: VERSION: 0.0.15, RELEASE DATEL 2023-02-16
+    0.0031 |        0.003135 |                   ---                    | 3.11.4 | packaged by conda-forge | (main, Jun 10 2023, 18:08:17) [GCC 12.2.0]
+    0.0049 |        0.001727 |                   ---                    | Dependencies: Geopandas:1.2.0, Shapely:2.1.2, Pandas:3.0.6, Numpy:2.4.6, NetworkX:3.6.1
+    0.0133 |        0.008411 |                   ---                    | network FIle Loaded, Projection: EPSG:3857
+    0.0339 |        0.020610 |             (1/1) huff_flow              | network topology created
+    0.0417 |        0.007773 |             (1/1) huff_flow              | origins file origins.geojson Loaded, Projection: EPSG:3857
+    0.0489 |        0.007268 |             (1/1) huff_flow              | destinations file destinations.geojson Loaded, Projection: EPSG:3857
+    0.0667 |        0.017763 |             (1/1) huff_flow              | Origins and Destinations Inserted.
+    0.0758 |        0.009135 |             (1/1) huff_flow              | NetworkX Graphs Created.
+CORE: 2: [betweenness_exposure]: error collecting origin statistics origin_idx = 7 , len(processed_origins) = 1, proceeding to next task
+CORE: 0: [betweenness_exposure]: error collecting origin statistics origin_idx = 9 , len(processed_origins) = 1, proceeding to next task
+CORE: 0: [betweenness_exposure]: error collecting origin statistics origin_idx = 8 , len(processed_origins) = 2, proceeding to next task
+Time spent: 1s [Done 3 of 3 origins (100.00%)]    0.6251 |        0.549264 |             (1/1) huff_flow              | Betweenness estimated.
+    0.6993 |        0.074237 |             (1/1) huff_flow              | Output saved
+    0.7084 |        0.009114 |                   ---                    | Simulation Output saved: ALL DONE
+PROBE2_JSON<<<
+[
+ {
+  "tag": "A_tp0_nc1",
+  "error": null,
+  "record_md5": "7726c4f3a32f31b328895fd63efaa1a3",
+  "html_md5s": {
+   "flow_map_dark.html": "57f0c1d9fb88270916fa1f4c8e86fbb0",
+   "flow_map_light.html": "4fdbc30fb1f1239031867a15d6ff40f5"
+  },
+  "record_head": [
+   "id,length,geometry,weight,huff_flow",
+   "0,100.0,\"LINESTRING (-100 0, 0 0)\",100.0,1.0",
+   "1,100.0,\"LINESTRING (0 0, 100 0)\",100.0,1.0"
+  ],
+  "betweenness_col": [
+   [
+    "0",
+    "100.0",
+    "\"LINESTRING (-100 0",
+    " 0 0)\"",
+    "100.0",
+    "1.0"
+   ],
+   [
+    "1",
+    "100.0",
+    "\"LINESTRING (0 0",
+    " 100 0)\"",
+    "100.0",
+    "1.0"
+   ],
+   [
+    "2",
+    "100.0",
+    "\"LINESTRING (100 0",
+    " 100 100)\"",
+    "100.0",
+    "1.5"
+   ],
+   [
+    "3",
+    "100.0",
+    "\"LINESTRING (100 100",
+    " 0 100)\"",
+    "100.0",
+    "3.0"
+   ],
+   [
+    "4",
+    "100.0",
+    "\"LINESTRING (0 100",
+    " 0 0)\"",
+    "100.0",
+    "1.5"
+   ]
+  ]
+ },
+ {
+  "tag": "B_tp30_nc8",
+  "error": null,
+  "record_md5": "7726c4f3a32f31b328895fd63efaa1a3",
+  "html_md5s": {
+   "flow_map_dark.html": "7acfe92a19f778d7ba219d751fb87f0c",
+   "flow_map_light.html": "647b994684124c9538b24314fe52db4c"
+  },
+  "record_head": [
+   "id,length,geometry,weight,huff_flow",
+   "0,100.0,\"LINESTRING (-100 0, 0 0)\",100.0,1.0",
+   "1,100.0,\"LINESTRING (0 0, 100 0)\",100.0,1.0"
+  ],
+  "betweenness_col": [
+   [
+    "0",
+    "100.0",
+    "\"LINESTRING (-100 0",
+    " 0 0)\"",
+    "100.0",
+    "1.0"
+   ],
+   [
+    "1",
+    "100.0",
+    "\"LINESTRING (0 0",
+    " 100 0)\"",
+    "100.0",
+    "1.0"
+   ],
+   [
+    "2",
+    "100.0",
+    "\"LINESTRING (100 0",
+    " 100 100)\"",
+    "100.0",
+    "1.5"
+   ],
+   [
+    "3",
+    "100.0",
+    "\"LINESTRING (100 100",
+    " 0 100)\"",
+    "100.0",
+    "3.0"
+   ],
+   [
+    "4",
+    "100.0",
+    "\"LINESTRING (0 100",
+    " 0 0)\"",
+    "100.0",
+    "1.5"
+   ]
+  ]
+ },
+ {
+  "tag": "C1_tp0_nc8",
+  "error": null,
+  "record_md5": "7726c4f3a32f31b328895fd63efaa1a3",
+  "html_md5s": {
+   "flow_map_dark.html": "a7f0be9df10afa64fd588942a06c9d05",
+   "flow_map_light.html": "4b97ad7bfa5e74ee66cce8a39a6e734e"
+  },
+  "record_head": [
+   "id,length,geometry,weight,huff_flow",
+   "0,100.0,\"LINESTRING (-100 0, 0 0)\",100.0,1.0",
+   "1,100.0,\"LINESTRING (0 0, 100 0)\",100.0,1.0"
+  ],
+  "betweenness_col": [
+   [
+    "0",
+    "100.0",
+    "\"LINESTRING (-100 0",
+    " 0 0)\"",
+    "100.0",
+    "1.0"
+   ],
+   [
+    "1",
+    "100.0",
+    "\"LINESTRING (0 0",
+    " 100 0)\"",
+    "100.0",
+    "1.0"
+   ],
+   [
+    "2",
+    "100.0",
+    "\"LINESTRING (100 0",
+    " 100 100)\"",
+    "100.0",
+    "1.5"
+   ],
+   [
+    "3",
+    "100.0",
+    "\"LINESTRING (100 100",
+    " 0 100)\"",
+    "100.0",
+    "3.0"
+   ],
+   [
+    "4",
+    "100.0",
+    "\"LINESTRING (0 100",
+    " 0 0)\"",
+    "100.0",
+    "1.5"
+   ]
+  ]
+ },
+ {
+  "tag": "C2_tp0_nc8",
+  "error": null,
+  "record_md5": "7726c4f3a32f31b328895fd63efaa1a3",
+  "html_md5s": {
+   "flow_map_dark.html": "dcc90cbc666134bde1ef016248df433b",
+   "flow_map_light.html": "b9ed04ce1b86e94f7542bd1fd59eaa0d"
+  },
+  "record_head": [
+   "id,length,geometry,weight,huff_flow",
+   "0,100.0,\"LINESTRING (-100 0, 0 0)\",100.0,1.0",
+   "1,100.0,\"LINESTRING (0 0, 100 0)\",100.0,1.0"
+  ],
+  "betweenness_col": [
+   [
+    "0",
+    "100.0",
+    "\"LINESTRING (-100 0",
+    " 0 0)\"",
+    "100.0",
+    "1.0"
+   ],
+   [
+    "1",
+    "100.0",
+    "\"LINESTRING (0 0",
+    " 100 0)\"",
+    "100.0",
+    "1.0"
+   ],
+   [
+    "2",
+    "100.0",
+    "\"LINESTRING (100 0",
+    " 100 100)\"",
+    "100.0",
+    "1.5"
+   ],
+   [
+    "3",
+    "100.0",
+    "\"LINESTRING (100 100",
+    " 0 100)\"",
+    "100.0",
+    "3.0"
+   ],
+   [
+    "4",
+    "100.0",
+    "\"LINESTRING (0 100",
+    " 0 0)\"",
+    "100.0",
+    "1.5"
+   ]
+  ]
+ }
+]
+>>>

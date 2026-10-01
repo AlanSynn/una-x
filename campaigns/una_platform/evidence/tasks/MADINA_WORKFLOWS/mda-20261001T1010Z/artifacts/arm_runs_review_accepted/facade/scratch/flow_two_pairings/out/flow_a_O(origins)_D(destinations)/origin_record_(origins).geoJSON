@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "origin_record_(origins)",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 0, "weight": 1.0, "flow_a_source_layer": "origins", "flow_a_type": "origin", "flow_a_weight": 1.0, "flow_a_degree": 0, "flow_a_color": [ 86, 5, 255 ], "flow_a_nearest_edge_id": 0, "flow_a_edge_start_node": 1, "flow_a_weight_to_start": 50.0, "flow_a_edge_end_node": 0, "flow_a_weight_to_end": 50.0, "flow_a_chunck_time": null, "flow_a_chunck_path_count": null, "flow_a_chunck_path_segment_count": null, "flow_a_chunck_path_segment_memory": null, "flow_a_chunk_scope_node_count": null, "reach_flow_a": 2.0, "gravity_flow_a": 1.097623272188053 }, "geometry": { "type": "Point", "coordinates": [ -50.0, 0.0 ] } },
+{ "type": "Feature", "properties": { "id": 1, "weight": 2.0, "flow_a_source_layer": "origins", "flow_a_type": "origin", "flow_a_weight": 1.0, "flow_a_degree": 0, "flow_a_color": [ 86, 5, 255 ], "flow_a_nearest_edge_id": 1, "flow_a_edge_start_node": 0, "flow_a_weight_to_start": 50.0, "flow_a_edge_end_node": 2, "flow_a_weight_to_end": 50.0, "flow_a_chunck_time": null, "flow_a_chunck_path_count": null, "flow_a_chunck_path_segment_count": null, "flow_a_chunck_path_segment_memory": null, "flow_a_chunk_scope_node_count": null, "reach_flow_a": 2.0, "gravity_flow_a": 1.097623272188053 }, "geometry": { "type": "Point", "coordinates": [ 50.0, 0.0 ] } },
+{ "type": "Feature", "properties": { "id": 2, "weight": 1.0, "flow_a_source_layer": "origins", "flow_a_type": "origin", "flow_a_weight": 1.0, "flow_a_degree": 0, "flow_a_color": [ 86, 5, 255 ], "flow_a_nearest_edge_id": 2, "flow_a_edge_start_node": 2, "flow_a_weight_to_start": 50.0, "flow_a_edge_end_node": 3, "flow_a_weight_to_end": 50.0, "flow_a_chunck_time": null, "flow_a_chunck_path_count": null, "flow_a_chunck_path_segment_count": null, "flow_a_chunck_path_segment_memory": null, "flow_a_chunk_scope_node_count": null, "reach_flow_a": 2.0, "gravity_flow_a": 1.2896298567757445 }, "geometry": { "type": "Point", "coordinates": [ 100.0, 50.0 ] } }
+]
+}
