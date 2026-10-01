@@ -1,0 +1,11 @@
+{
+  "closure_of": "CACHE_STORE run cst-20261001T1315Z",
+  "what": "Whole-repo regression on the final merged tree (perf/una-platform @ 51fdb1f, main checkout, .refs-equipped), per the campaign closure gate — the run the receipt deferred to 'the closure commit in the main checkout'.",
+  "command": "PYTHONHASHSEED=0 /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python -m pytest tests/ -q   (from the main checkout; whole-repo collection, never bare pytest)",
+  "outcome": "546 passed / 348 skipped / 0 FAILED / 2 warnings in 1462.99 s (0:24:22), exit code 0.",
+  "delta_vs_prior_closure": "Prior closure (EXECUTION, 5abff34): 444 passed / 348 skipped / 0 failed in 1431.68 s. Delta: +102 passed = exactly the tests/cache/store suite landing with 51fdb1f; skip count unchanged (348); zero failures. The 12 skips that were .refs artifacts in worktrees ran for real here and passed.",
+  "notes": [
+    "First attempt of this regression was killed by its own 45-minute background cap under ~20-load shared-node contention (no output, no repo changes, no partial state: pytest is read-only on the repo and uses tmp dirs); the re-run with a 2-hour cap completed normally in 24:22 — consistent with the prior baseline, the first attempt simply did not finish in its window.",
+    "Merged locally into perf/una-platform via fast-forward from worktree-cache-store @ 51fdb1f. No pushes, merges to main, releases, purchases, or credential/provider changes."
+  ]
+}
