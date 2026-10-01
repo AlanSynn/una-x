@@ -6,6 +6,16 @@ Upstream archived read-only 2026-08-25; this port tracks that exact commit.
 
 DELTA LEDGER (complete list of deviations from the pinned source):
 
+betweenness.py  INTERIM: carries the verbatim module import block and the
+           access-engine trio (``get_origin_properties`` / ``one_access`` /
+           ``parallel_access``, upstream lines 1016-1323) delivered by the
+           accessibility task.  The five betweenness functions
+           (``parallel_betweenness``, ``one_betweenness_2``,
+           ``clockwiseangle_and_distance``, ``betweenness_exposure``,
+           ``paralell_betweenness_exposure``, upstream lines 30-1015) land
+           with MADINA_FLOW extending this same file; until then the
+           ``una`` namespace is missing those five names vs upstream.
+
 paths.py   VERBATIM copy — zero deltas.  The module is pure
            math/collections/heapq/networkx over the already-bridged
            zonal Network (no pandas import); it touches no GeoArray
@@ -13,29 +23,30 @@ paths.py   VERBATIM copy — zero deltas.  The module is pure
            optional dependency, so the D1-D4 zonal bridge has no
            surface here.
 
-__init__.  Upstream star-imports ``.betweenness`` BEFORE ``.paths``.
-           The facade ``betweenness`` module lands with the
-           accessibility/betweenness tasks (the access engine trio
-           ``get_origin_properties`` / ``one_access`` / ``parallel_access``
-           lives there upstream and is needed by ``tools.accessibility``);
-           until then this init carries only the ``paths`` star-import and
-           ``madina.una`` exposes exactly the upstream ``paths`` names.
-           The betweenness line is added by the task that delivers the
-           module — no try/except silence.
+__init__.  Upstream star-imports ``.betweenness`` BEFORE ``.paths``;
+           this init does the same.  The star-import copies the
+           betweenness module's public names (trio + module-level
+           imports) into ``una``, matching upstream semantics.
 
-tools.py   Interim surface: ``alternative_paths`` (the paths-facing
-           materialization upstream keeps in tools.py) plus the
-           ``turn_o_scope`` / ``path_generator`` names upstream tools.py
-           re-imports.  ``validate_zonal_ready`` / ``accessibility`` /
-           ``service_area`` join from ``.accessibility`` and
-           ``betweenness`` from ``.betweenness`` when those modules land,
-           reproducing the upstream tools namespace exactly.
+tools.py   INTERIM surface: ``validate_zonal_ready`` / ``accessibility`` /
+           ``service_area`` / ``alternative_paths`` verbatim (the
+           accessibility task delivered the first three), plus the
+           ``turn_o_scope`` / ``path_generator`` / ``parallel_access``
+           names upstream tools.py re-imports (INTERIM: the facade
+           re-imports only ``parallel_access`` until MADINA_FLOW;
+           ``paralell_betweenness_exposure`` is a fourth upstream
+           re-import that lands then).  ``betweenness`` joins from
+           ``.betweenness`` with MADINA_FLOW, reproducing the upstream
+           tools namespace exactly.
 
 Everything else — signatures, defaults, validation messages, the 1e-5
 path-acceptance tolerance, heap/set iteration orders, dict insertion
 orders, sort_values("distance") ordering, GeometryCollection assembly
-(whole untrimmed origin/destination segments) — is the pinned behavior,
-verified bitwise against the reference under the same interpreter.
+(whole untrimmed origin/destination segments), the UNSEEDED
+``sample(frac=1)`` origin shuffle, and one_access's exception swallowing
+— is the pinned behavior, verified bitwise against the reference under
+the same interpreter.
 """
 
+from .betweenness import *  # noqa: F401,F403
 from .paths import *  # noqa: F401,F403

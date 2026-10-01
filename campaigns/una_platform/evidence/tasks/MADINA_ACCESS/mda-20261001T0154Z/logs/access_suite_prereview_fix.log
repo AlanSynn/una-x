@@ -1,0 +1,33 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.4, pytest-9.1.1, pluggy-1.6.0 -- /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python
+cachedir: .pytest_cache
+rootdir: /storage/scratch1/1/dsynn6/una-x
+configfile: pyproject.toml
+collecting ... collected 24 items
+
+tests/madina_api/access/test_access_facade_env.py::test_facade_imports_without_upstream PASSED [  4%]
+tests/madina_api/access/test_access_reflection.py::test_reflection_matches_pinned_reference PASSED [  8%]
+tests/madina_api/access/test_access_reflection.py::test_star_exports_and_submodule_identity PASSED [ 12%]
+tests/madina_api/access/test_access_surface_parity.py::test_facade_matches_bridged_reference_bitwise[reach_gravity] PASSED [ 16%]
+tests/madina_api/access/test_access_surface_parity.py::test_facade_matches_bridged_reference_bitwise[knn] PASSED [ 20%]
+tests/madina_api/access/test_access_surface_parity.py::test_facade_matches_bridged_reference_bitwise[closest_facility] PASSED [ 25%]
+tests/madina_api/access/test_access_surface_parity.py::test_facade_matches_bridged_reference_bitwise[layer_mutations] PASSED [ 29%]
+tests/madina_api/access/test_access_surface_parity.py::test_facade_matches_bridged_reference_bitwise[service_areas] PASSED [ 33%]
+tests/madina_api/access/test_access_surface_parity.py::test_facade_matches_bridged_reference_bitwise[validation] PASSED [ 37%]
+tests/madina_api/access/test_access_surface_parity.py::test_facade_matches_bridged_reference_bitwise[engine_primitives] PASSED [ 41%]
+tests/madina_api/access/test_access_surface_parity.py::test_facade_matches_bridged_reference_bitwise[node_builder_truncation] PASSED [ 45%]
+tests/madina_api/access/test_access_surface_parity.py::test_completion_condition_closest_facility_direction PASSED [ 50%]
+tests/madina_api/access/test_access_surface_parity.py::test_completion_condition_named_joins_and_return_types PASSED [ 54%]
+tests/madina_api/access/test_access_surface_parity.py::test_completion_condition_exact_numeric_fields PASSED [ 58%]
+tests/madina_api/access/test_access_surface_parity.py::test_engine_primitives_pins PASSED [ 62%]
+tests/madina_api/access/test_access_surface_parity.py::test_validation_matrix_all_real_errors PASSED [ 66%]
+tests/madina_api/access/test_access_surface_parity.py::test_sabotaged_digests_are_selected[alpha_swap-reach_gravity] PASSED [ 70%]
+tests/madina_api/access/test_access_surface_parity.py::test_sabotaged_digests_are_selected[perturb_gravity_bit-reach_gravity] PASSED [ 75%]
+tests/madina_api/access/test_access_surface_parity.py::test_sabotaged_digests_are_selected[skip_shuffle-closest_facility] PASSED [ 79%]
+tests/madina_api/access/test_access_surface_parity.py::test_sabotaged_digests_are_selected[reverse_closest_facility-closest_facility] PASSED [ 83%]
+tests/madina_api/access/test_access_surface_parity.py::test_sabotaged_digests_are_selected[fillna_closest_distance-closest_facility] PASSED [ 87%]
+tests/madina_api/access/test_access_surface_parity.py::test_sabotaged_digests_are_selected[hide_validation_error-validation] PASSED [ 91%]
+tests/madina_api/access/test_access_surface_parity.py::test_skip_shuffle_flips_tie_winner PASSED [ 95%]
+tests/madina_api/access/test_access_surface_parity.py::test_node_builder_truncation_pinned PASSED [100%]
+
+======================== 24 passed in 120.92s (0:02:00) ========================

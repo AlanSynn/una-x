@@ -1,0 +1,17 @@
+        first_processed = state["shuffled_origin_order"][0]
+        first_source = {9: 0, 10: 1, 11: 2}[first_processed]
+        assert cf["1"][0] == first_source and _float(cf["1"][1]) == 200.0
+        # unreachable: iso destination keeps NaN in node gdf AND layer
+>       assert cf["2"] == (None, "7ff8000000000000")
+E       AssertionError: assert [None, '7ff8000000000000'] == (None, '7ff8000000000000')
+E         
+E         Use -v to get more diff
+
+tests/madina_api/access/test_access_surface_parity.py:78: AssertionError
+=========================== short test summary info ============================
+FAILED tests/madina_api/access/test_access_reflection.py::test_reflection_matches_pinned_reference
+FAILED tests/madina_api/access/test_access_reflection.py::test_star_exports_and_submodule_identity
+FAILED tests/madina_api/access/test_access_surface_parity.py::test_completion_condition_closest_facility_direction
+3 failed, 21 passed in 129.19s (0:02:09)
+
+[exited with code 0]

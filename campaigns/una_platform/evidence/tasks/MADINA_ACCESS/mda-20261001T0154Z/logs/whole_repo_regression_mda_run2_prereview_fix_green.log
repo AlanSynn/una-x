@@ -1,0 +1,18 @@
+...........sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 11%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 23%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 35%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 46%]
+sssssssssssssssssssss................................................... [ 58%]
+...........ssssssssssssssssssssssssssssss............................... [ 70%]
+.........................................................ssssssssssss... [ 81%]
+........................................................................ [ 93%]
+.......................................                                  [100%]
+=============================== warnings summary ===============================
+tests/platform_geometry/test_adapter.py::test_snapshot_is_immutable_and_stable
+tests/platform_geometry/test_adapter.py::test_snapshot_survives_facade_mutation
+  /storage/scratch1/1/dsynn6/una-x/src/urban_network_analysis/compat/madina/zonal/zonal.py:134: DeprecationWarning: The 'unary_union' attribute is deprecated, use the 'union_all()' method instead.
+    centroid_point = gdf['geometry'].to_crs("EPSG:4326").unary_union.centroid
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+275 passed, 348 skipped, 2 warnings in 962.77s (0:16:02)
+exit=0

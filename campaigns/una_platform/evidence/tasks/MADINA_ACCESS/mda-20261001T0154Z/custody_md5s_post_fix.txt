@@ -1,0 +1,12 @@
+# post-fix custody md5s (after review M1-M4 dispositions; replaces the pre-review snapshot /tmp/mda_review_snapshot.txt for these files)
+# pre-review md5s: tools 6b041e76708bc5a6f268c69e5c1d42ea __init__ 124d4c94d1037477554aafd902bce889 _access_scenario f8b1d35c... test_access_surface_parity 939db9ce... (see review_report_mda.md Transmission 1)
+49e239ce2ef1bb7bbf2000edaeb7da98  src/urban_network_analysis/compat/madina/una/__init__.py
+6f430dcf505e2259d5385d29f631b00d  src/urban_network_analysis/compat/madina/una/tools.py
+68d910559be9e7ab4b09c0800ea218e2  src/urban_network_analysis/compat/madina/una/betweenness.py
+ba8d262bee5d0bb870375ece27ad2c57  src/urban_network_analysis/compat/madina/una/paths.py
+5d713da353ed24323d49e9e50537b9b7  tests/madina_api/access/_access_reflection.py
+e71691a8c763726f114f06e1de343052  tests/madina_api/access/_access_scenario.py
+009ace2e00f8e0a9034e3f6d777a67d8  tests/madina_api/access/conftest.py
+b3a779a3a96aca1bb4220dc4486b990b  tests/madina_api/access/test_access_facade_env.py
+3272a78cdfa8bee242c465366c0a7114  tests/madina_api/access/test_access_reflection.py
+b2c714669c58ac2f50ad82b4e1b88869  tests/madina_api/access/test_access_surface_parity.py

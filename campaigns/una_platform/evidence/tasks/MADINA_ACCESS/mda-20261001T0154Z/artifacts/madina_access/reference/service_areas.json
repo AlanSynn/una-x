@@ -1,0 +1,599 @@
+{
+ "arm": "reference",
+ "scenario": "service_areas",
+ "seed": 20260930,
+ "state": {
+  "all_origins": {
+   "destinations": {
+    "columns": [
+     "weight",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "297573dc6da16e7efa1445d4",
+      "1350f12179e02f14a77311db"
+     ],
+     "weight": [
+      "4000000000000000",
+      "4008000000000000"
+     ]
+    }
+   },
+   "network_edges": {
+    "columns": [
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "geometry"
+    ],
+    "index": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "index_name": "None",
+    "values": {
+     "geometry": [
+      "e673495bded07e392ac12e4a",
+      "1fc49fd42ce8d94886d4d462",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "280f9c05edc25fd71d8cb188",
+      "8daf83c02b0f915aa774c3bc",
+      "1fc49fd42ce8d94886d4d462",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "280f9c05edc25fd71d8cb188",
+      "8daf83c02b0f915aa774c3bc",
+      "1fc49fd42ce8d94886d4d462",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "280f9c05edc25fd71d8cb188",
+      "8daf83c02b0f915aa774c3bc"
+     ]
+    }
+   },
+   "scope_gdf": {
+    "columns": [
+     "name",
+     "origin_id",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "str",
+     "int32",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "index_name": "None",
+    "values": {
+     "geometry": [
+      "5034e72e417077a5e52a30f1",
+      "45afda2c75ea418738e5fb6b",
+      "d3df1d31807bc0a96c382a7b",
+      "003c59764374ddffeb26ab7f",
+      "d3df1d31807bc0a96c382a7b",
+      "06c9547eaf87c57c004e2be4"
+     ],
+     "name": [
+      "service area border",
+      "origin",
+      "service area border",
+      "origin",
+      "service area border",
+      "origin"
+     ],
+     "origin_id": [
+      0,
+      0,
+      1,
+      1,
+      2,
+      2
+     ]
+    }
+   }
+  },
+  "alt_paths_list_origin": {
+   "error": "ValueError: ('Lengths must match to compare', (3,), (1,))",
+   "gdf": null
+  },
+  "bad_list_error": {
+   "error": "ValueError: some of the indices given in `origin_ids` are not for an origin {999}"
+  },
+  "below_radius_skip": {
+   "destinations": {
+    "columns": [
+     "weight",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "geometry"
+    ],
+    "index": [],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [],
+     "weight": []
+    }
+   },
+   "network_edges": {
+    "columns": [
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "geometry"
+    ],
+    "index": [],
+    "index_name": "None",
+    "values": {
+     "geometry": []
+    }
+   },
+   "scope_gdf": {
+    "columns": [
+     "name",
+     "origin_id",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "float64",
+     "geometry"
+    ],
+    "index": [],
+    "index_name": "None",
+    "values": {
+     "geometry": [],
+     "name": [],
+     "origin_id": []
+    }
+   }
+  },
+  "int_miss_silent": {
+   "destinations": {
+    "columns": [
+     "weight",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "geometry"
+    ],
+    "index": [],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [],
+     "weight": []
+    }
+   },
+   "network_edges": {
+    "columns": [
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "geometry"
+    ],
+    "index": [],
+    "index_name": "None",
+    "values": {
+     "geometry": []
+    }
+   },
+   "scope_gdf": {
+    "columns": [
+     "name",
+     "origin_id",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "float64",
+     "geometry"
+    ],
+    "index": [],
+    "index_name": "None",
+    "values": {
+     "geometry": [],
+     "name": [],
+     "origin_id": []
+    }
+   }
+  },
+  "list_ids": {
+   "destinations": {
+    "columns": [
+     "weight",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "297573dc6da16e7efa1445d4",
+      "1350f12179e02f14a77311db"
+     ],
+     "weight": [
+      "4000000000000000",
+      "4008000000000000"
+     ]
+    }
+   },
+   "network_edges": {
+    "columns": [
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "geometry"
+    ],
+    "index": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "index_name": "None",
+    "values": {
+     "geometry": [
+      "e673495bded07e392ac12e4a",
+      "1fc49fd42ce8d94886d4d462",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "280f9c05edc25fd71d8cb188",
+      "8daf83c02b0f915aa774c3bc",
+      "1fc49fd42ce8d94886d4d462",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "280f9c05edc25fd71d8cb188",
+      "8daf83c02b0f915aa774c3bc",
+      "1fc49fd42ce8d94886d4d462",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "280f9c05edc25fd71d8cb188",
+      "8daf83c02b0f915aa774c3bc"
+     ]
+    }
+   },
+   "scope_gdf": {
+    "columns": [
+     "name",
+     "origin_id",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "str",
+     "int32",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "index_name": "None",
+    "values": {
+     "geometry": [
+      "5034e72e417077a5e52a30f1",
+      "45afda2c75ea418738e5fb6b",
+      "d3df1d31807bc0a96c382a7b",
+      "003c59764374ddffeb26ab7f",
+      "d3df1d31807bc0a96c382a7b",
+      "06c9547eaf87c57c004e2be4"
+     ],
+     "name": [
+      "service area border",
+      "origin",
+      "service area border",
+      "origin",
+      "service area border",
+      "origin"
+     ],
+     "origin_id": [
+      0,
+      0,
+      1,
+      1,
+      2,
+      2
+     ]
+    }
+   }
+  },
+  "single_int_id": {
+   "destinations": {
+    "columns": [
+     "weight",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "297573dc6da16e7efa1445d4",
+      "1350f12179e02f14a77311db"
+     ],
+     "weight": [
+      "4000000000000000",
+      "4008000000000000"
+     ]
+    }
+   },
+   "network_edges": {
+    "columns": [
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "geometry"
+    ],
+    "index": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "index_name": "None",
+    "values": {
+     "geometry": [
+      "e673495bded07e392ac12e4a",
+      "1fc49fd42ce8d94886d4d462",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "280f9c05edc25fd71d8cb188",
+      "8daf83c02b0f915aa774c3bc"
+     ]
+    }
+   },
+   "scope_gdf": {
+    "columns": [
+     "name",
+     "origin_id",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "str",
+     "int32",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1
+    ],
+    "index_name": "None",
+    "values": {
+     "geometry": [
+      "5034e72e417077a5e52a30f1",
+      "45afda2c75ea418738e5fb6b"
+     ],
+     "name": [
+      "service area border",
+      "origin"
+     ],
+     "origin_id": [
+      0,
+      0
+     ]
+    }
+   }
+  },
+  "turn_engages": true,
+  "turn_penalty_variant": {
+   "destinations": {
+    "columns": [
+     "weight",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "297573dc6da16e7efa1445d4",
+      "1350f12179e02f14a77311db"
+     ],
+     "weight": [
+      "4000000000000000",
+      "4008000000000000"
+     ]
+    }
+   },
+   "network_edges": {
+    "columns": [
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "geometry"
+    ],
+    "index": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "index_name": "None",
+    "values": {
+     "geometry": [
+      "e673495bded07e392ac12e4a",
+      "1fc49fd42ce8d94886d4d462",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "280f9c05edc25fd71d8cb188",
+      "8daf83c02b0f915aa774c3bc",
+      "1fc49fd42ce8d94886d4d462",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "280f9c05edc25fd71d8cb188",
+      "8daf83c02b0f915aa774c3bc",
+      "1fc49fd42ce8d94886d4d462",
+      "c7744e0fd5754aeff6c2b0c8",
+      "7331aabb4c184631ac146b36",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "280f9c05edc25fd71d8cb188"
+     ]
+    }
+   },
+   "scope_gdf": {
+    "columns": [
+     "name",
+     "origin_id",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "str",
+     "int32",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "index_name": "None",
+    "values": {
+     "geometry": [
+      "5034e72e417077a5e52a30f1",
+      "45afda2c75ea418738e5fb6b",
+      "d3df1d31807bc0a96c382a7b",
+      "003c59764374ddffeb26ab7f",
+      "d6295dc62387b027474f5f3c",
+      "06c9547eaf87c57c004e2be4"
+     ],
+     "name": [
+      "service area border",
+      "origin",
+      "service area border",
+      "origin",
+      "service area border",
+      "origin"
+     ],
+     "origin_id": [
+      0,
+      0,
+      1,
+      1,
+      2,
+      2
+     ]
+    }
+   }
+  }
+ }
+}

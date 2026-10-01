@@ -5,27 +5,27 @@ EXPLICIT ledgered interim delta.
 
 Reflection is necessary but not sufficient (dossier 01); the behavior
 scenarios live in test_paths_surface_parity.py.  Interim ledgered
-deltas here (see compat una/__init__ ledger; the accessibility and
-betweenness facade modules land with their delivering tasks and these
-lists shrink to empty then):
+deltas here (see compat una/__init__ ledger; the remaining betweenness
+functions land with MADINA_FLOW and these lists shrink to empty then):
+
+Post-ACCESS state (updated at MADINA_ACCESS delivery): the access
+engine trio (get_origin_properties, one_access, parallel_access), the
+submodule binding ``betweenness`` and the betweenness module's own
+public imports (concurrent, futures, getsizeof, gpd, mp, np, os, pd,
+psutil, random, time, Zonal) retired from this ledger — both sides
+carry them now.
 
 una package, reference-only names
-  the upstream betweenness-module star-exports (parallel_betweenness,
+  the five undelivered betweenness functions (parallel_betweenness,
   one_betweenness_2, clockwiseangle_and_distance, betweenness_exposure,
-  paralell_betweenness_exposure, get_origin_properties, one_access,
-  parallel_access) plus the submodule binding ``betweenness`` and the
-  betweenness module's own public imports (concurrent, futures,
-  getsizeof, gpd, mp, np, os, pd, psutil, random, time, Zonal — Zonal
-  reaches una through betweenness.py's ``from ..zonal import Zonal``;
-  the facade paths.py imports Network the same way, which is why
-  Network appears on both sides).
+  paralell_betweenness_exposure).
 una package, facade-only names
   none expected.
 una.tools, reference-only names
-  validate_zonal_ready, accessibility, service_area (accessibility
-  task), betweenness (betweenness task), paralell_betweenness_exposure
-  and parallel_access (upstream tools re-imports them from the
-  betweenness module).
+  betweenness (the fifth upstream tools function, MADINA_FLOW) and
+  paralell_betweenness_exposure (upstream tools re-imports it).
+  validate_zonal_ready, accessibility, service_area and parallel_access
+  retired at MADINA_ACCESS delivery.
 una.tools, facade-only names
   none expected.
 """
@@ -37,19 +37,12 @@ pytestmark = pytest.mark.madina_api
 
 # ---- ledgered interim deltas (see module docstring) -----------------
 REFERENCE_ONLY_UNA_NAMES = {
-    "betweenness",
     "parallel_betweenness", "one_betweenness_2",
     "clockwiseangle_and_distance", "betweenness_exposure",
-    "paralell_betweenness_exposure", "get_origin_properties",
-    "one_access", "parallel_access",
-    "concurrent", "futures", "getsizeof", "gpd", "mp", "np", "os",
-    "pd", "psutil", "random", "time", "Zonal",
+    "paralell_betweenness_exposure",
 }
 FACADE_ONLY_UNA_NAMES = set()
-REFERENCE_ONLY_TOOLS_NAMES = {
-    "validate_zonal_ready", "accessibility", "service_area",
-    "betweenness", "paralell_betweenness_exposure", "parallel_access",
-}
+REFERENCE_ONLY_TOOLS_NAMES = {"betweenness", "paralell_betweenness_exposure"}
 FACADE_ONLY_TOOLS_NAMES = set()
 
 

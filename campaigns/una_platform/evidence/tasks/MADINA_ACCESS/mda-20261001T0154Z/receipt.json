@@ -1,0 +1,44 @@
+{
+  "task": "MADINA_ACCESS",
+  "run_id": "mda-20261001T0154Z",
+  "status": "CLOSED: implementation complete; independent adversarial review ACCEPT (4 MINOR all fixed + dispositioned, 6 NOTE handled — see review_report_mda.md); post-fix suite green (24 passed, 93.99 s, relative artifacts path); whole-repo regression run 1 caught the paths reflection ledger lag (fixed per that file's own anticipated mechanism), run 3 final GREEN 275 passed / 0 failed on the committed tree",
+  "branch": "perf/una-platform",
+  "head_base": "e237039 (MADINA_PATHS)",
+  "delivered": {
+    "facade_source": [
+      "src/urban_network_analysis/compat/madina/una/betweenness.py (NEW: verbatim upstream import block + access trio get_origin_properties/one_access/parallel_access, upstream :1016-1323; md5 68d910559be9e7ab4b09c0800ea218e2)",
+      "src/urban_network_analysis/compat/madina/una/tools.py (extends: validate_zonal_ready/accessibility/service_area verbatim, upstream :10-32/:36-228/:231-351 — reviewer diff-verified 0 diff lines per slice; INTERIM one-name import line, ledgered; review-M1 duplicate mid-file import block removed; md5 6f430dcf505e2259d5385d29f631b00d)",
+      "src/urban_network_analysis/compat/madina/una/__init__.py (star-import 'from .betweenness import *' before paths; ledger rows — review-M3 rewording; pinned-behavior paragraph; md5 49e239ce2ef1bb7bbf2000edaeb7da98)"
+    ],
+    "tests": [
+      "tests/madina_api/access/_access_scenario.py (parity runner: 8 scenarios, 6 sabotages, digest helpers)",
+      "tests/madina_api/access/_access_reflection.py (surface probe)",
+      "tests/madina_api/access/conftest.py (artifacts dirs, arm/reflection runners, .resolve() fix)",
+      "tests/madina_api/access/test_access_surface_parity.py (12 tests: 8 bitwise scenarios, 4 completion-condition, sabotage selection x6, skip-shuffle tie flip, node-builder truncation pin)",
+      "tests/madina_api/access/test_access_reflection.py (2 tests: namespace equality modulo ledger, exact signatures + star-export/submodule identity)",
+      "tests/madina_api/access/test_access_facade_env.py (1 test: alan-interpreter import probe, no madina modules leak)"
+    ],
+    "evidence_dir": "campaigns/una_platform/evidence/tasks/MADINA_ACCESS/mda-20261001T0154Z/ (logs/access_suite.log post-fix retained run; logs/access_suite_prereview_fix.log pre-review-fix run; logs/access_suite_dev_run_failures.log first-run 3 failures retained; logs/whole_repo_regression_mda.log + logs/whole_repo_regression_mda_run1_failed_paths_ledger.log; artifacts/madina_access/{facade,reference,reflection}/ = 24 post-fix digests; artifacts/madina_access_prereview_fix/ = the 24 pre-fix digests; reviewer_artifacts/ = the reviewer's own 24 digests + reflection dumps; review_report_mda.md = archived review; evidence.json + this receipt)"
+  },
+  "verification": {
+    "suite": "post-fix retained run 24 passed in 93.99 s with a relative UNA_LARGE_E2E_ARTIFACTS (conftest .resolve() fix exercised); pre-review-fix retained run 24 passed in 120.92 s preserved as logs/access_suite_prereview_fix.log with its digests at artifacts/madina_access_prereview_fix/; reviewer's own run 24 passed in 125.68 s, all digests byte-identical to the pre-fix retained ones (archived at reviewer_artifacts/)",
+    "parity": "8/8 scenarios bitwise-equal across arms (reference determinism control: both honest reference digests equal)",
+    "sabotages": "6/6 selected (alpha_swap + reverse_closest_facility = dossier MUST-FAIL; skip_shuffle behavioral monkeypatch flips the pinned tie winner; fillna_closest_distance, perturb_gravity_bit, hide_validation_error comparator controls)",
+    "reflection": "facade == reference modulo the ledgered 5+2 reference-only names (MADINA_FLOW retires them); exact signatures after documented annotation-alias stripping; zero facade-only names",
+    "independent_review": "ACCEPT (mda-reviewer agent, fresh context, read-only, adversarial; custody 10/10; report archived verbatim at review_report_mda.md). All 4 MINOR findings FIXED post-review (M1 duplicate import block removed, M2 line citations corrected, M3 ledger row reworded, M4 positive accessibility(turn_penalty=True) added + asserted) and all 6 NOTEs dispositioned in evidence.json independent_review_outcome.findings_and_dispositions; post-fix suite rerun green",
+    "whole_repo_regression": "run 1 (retained: logs/whole_repo_regression_mda_run1_failed_paths_ledger.log, md5 4a732801f14439ac324db8734ffca622): 1 failed / 274 passed — the regression CAUGHT the ACCESS-era una-namespace growth as an unledgered delta in the paths suite's reflection ledger; fixed by the ledger-shrinking mechanism that file's docstring anticipated (no assertion weakened; local verify 2 passed). run 2 (retained: logs/whole_repo_regression_mda_run2_prereview_fix_green.log, md5 797f5f184c2957dc1051ac5e49440c92): 275 passed / 0 failed on the pre-review-fix tree. run 3 (logs/whole_repo_regression_mda.log): GREEN 275 passed / 0 failed on the final post-fix tree — the closure-claim run"
+  },
+  "handoffs": [
+    "MADINA_FLOW: extends una/betweenness.py with the five betweenness functions (upstream :30-1015); tools.py import line then becomes the verbatim two-name form 'from .betweenness import paralell_betweenness_exposure, parallel_access'; the reflection ledger and the INTERIM markers retire; flow-suite mutants (split-edge drop, exposure column) land there",
+    "bug-registry owner: NEW upstream defect 'vectorized_node_edge_builder lexsort truncation' (phantom endpoint labels, false redundant-edge discard of the A-C diagonal, silent empty accessibility scopes) — bounded reproduction in scenario node_builder_truncation, full derivation in evidence.json with reviewer-verified upstream lines (def network_utils.py:80, lexsort :96, dead np.append :123, occurrence loop :128, return :140); not in bug_registry.json @ 11 entries (reviewer-checked); propose BUG-MDZ-NODEBUILDER-LEXSORT-TRUNCATION + corrected_v1 fix candidate",
+    "bug-registry owner (second): alternative_paths(origin_id=[...]) with len(list) != number of origins raises ValueError('Lengths must match to compare') — narrows the paths suite's recorded list-origin acceptance; API_REVIEW informed",
+    "MADINA_WORKFLOWS: closest-facility and service_area now available for workflow assembly; note the num_cores>1 closest-facility dead path (KeyError 'reach') when composing"
+  ],
+  "notes": [
+    "dossier owned_files listed una/accessibility.py — superseded by upstream module structure (no upstream accessibility module); delivery uses upstream filenames, documented in evidence.json delta_ledger",
+    "MADINA_PATHS review N3 strengthening executed: multi-origin list-origin alternative_paths pinned ValueError",
+    "no facade source semantics changed vs upstream anywhere: all deltas are import-order/interim-scope only and ledgered",
+    "one cross-task test file touched by the regression catch: tests/madina_api/paths/test_paths_reflection.py (ledger shrink per its own documented mechanism); recorded in evidence.json whole_repo_regression.fix",
+    "historical evidence untouched; no pushes, merges, releases, purchases, credential or provider changes"
+  ]
+}

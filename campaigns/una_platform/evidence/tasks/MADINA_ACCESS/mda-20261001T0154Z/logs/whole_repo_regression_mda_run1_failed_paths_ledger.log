@@ -1,0 +1,65 @@
+...........sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 11%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 23%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 35%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 46%]
+sssssssssssssssssssss................................................... [ 58%]
+...........ssssssssssssssssssssssssssssss..........................F.... [ 70%]
+.........................................................ssssssssssss... [ 81%]
+........................................................................ [ 93%]
+.......................................                                  [100%]
+=================================== FAILURES ===================================
+___________________ test_reflection_matches_pinned_reference ___________________
+
+reflection_runner = functools.partial(<function run_reflection at 0x15551762a7a0>, '/storage/scratch1/1/dsynn6/una-x/.refs/venv_madina_legacy/bin/python')
+
+    def test_reflection_matches_pinned_reference(reflection_runner):
+        ref = reflection_runner("reference")
+        facade = reflection_runner("facade")
+        assert "surface" in ref and "surface" in facade
+    
+        # both namespaces are packages (una has no star-import shadowing:
+        # madina/__init__ binds una via `from .una import *`, which does
+        # not copy the submodule over the package attribute)
+        assert ref["identity"]["package_has_path"] is True
+        assert facade["identity"]["package_has_path"] is True
+    
+        ref_una, ref_tools, ref_paths_names, ref_paths_sigs, ref_tools_sigs = \
+            _normalized(ref["surface"], False)
+        fa_una, fa_tools, fa_paths_names, fa_paths_sigs, fa_tools_sigs = \
+            _normalized(facade["surface"], True)
+    
+        # the paths module surface is a verbatim port: EXACT equality
+        assert fa_paths_names == ref_paths_names, (
+            f"paths namespace delta: only-ref={sorted(set(ref_paths_names) - set(fa_paths_names))} "
+            f"only-facade={sorted(set(fa_paths_names) - set(ref_paths_names))}")
+        assert fa_paths_sigs == ref_paths_sigs, "paths signatures differ"
+        assert fa_tools_sigs == ref_tools_sigs, "tools signatures differ"
+    
+        # package namespaces equal modulo the interim ledger
+>       assert fa_una == ref_una, (
+            f"unledgered una delta: only-ref={sorted(ref_una - fa_una)} "
+            f"only-facade={sorted(fa_una - ref_una)}")
+E       AssertionError: unledgered una delta: only-ref=[] only-facade=['Zonal', 'betweenness', 'concurrent', 'futures', 'get_origin_properties', 'getsizeof', 'gpd', 'mp', 'np', 'one_access', 'os', 'parallel_access', 'pd', 'psutil', 'random', 'time']
+E       assert {'Network', '...erative', ...} == {'Network', '... 'deque', ...}
+E         
+E         Extra items in the left set:
+E         'os'
+E         'psutil'
+E         'random'
+E         'one_access'
+E         'concurrent'...
+E         
+E         ...Full output truncated (12 lines hidden), use '-vv' to show
+
+tests/madina_api/paths/test_paths_reflection.py:109: AssertionError
+=============================== warnings summary ===============================
+tests/platform_geometry/test_adapter.py::test_snapshot_is_immutable_and_stable
+tests/platform_geometry/test_adapter.py::test_snapshot_survives_facade_mutation
+  /storage/scratch1/1/dsynn6/una-x/src/urban_network_analysis/compat/madina/zonal/zonal.py:134: DeprecationWarning: The 'unary_union' attribute is deprecated, use the 'union_all()' method instead.
+    centroid_point = gdf['geometry'].to_crs("EPSG:4326").unary_union.centroid
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/madina_api/paths/test_paths_reflection.py::test_reflection_matches_pinned_reference
+1 failed, 274 passed, 348 skipped, 2 warnings in 909.61s (0:15:09)
+exit=1

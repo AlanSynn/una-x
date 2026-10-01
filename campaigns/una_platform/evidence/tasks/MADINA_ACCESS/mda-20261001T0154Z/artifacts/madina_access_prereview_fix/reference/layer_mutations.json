@@ -1,0 +1,254 @@
+{
+ "arm": "reference",
+ "scenario": "layer_mutations",
+ "seed": 20260930,
+ "state": {
+  "after_first_save": {
+   "destinations": {
+    "columns": [
+     "weight",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "297573dc6da16e7efa1445d4",
+      "1350f12179e02f14a77311db"
+     ],
+     "weight": [
+      "4000000000000000",
+      "4008000000000000"
+     ]
+    }
+   },
+   "origins": {
+    "columns": [
+     "weight",
+     "geometry",
+     "reach"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "geometry",
+     "float64"
+    ],
+    "index": [
+     0,
+     1,
+     2
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "45afda2c75ea418738e5fb6b",
+      "003c59764374ddffeb26ab7f",
+      "06c9547eaf87c57c004e2be4"
+     ],
+     "reach": [
+      "4014000000000000",
+      "4014000000000000",
+      "4014000000000000"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ]
+    }
+   }
+  },
+  "after_same_name_resave": {
+   "destinations": {
+    "columns": [
+     "weight",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "297573dc6da16e7efa1445d4",
+      "1350f12179e02f14a77311db"
+     ],
+     "weight": [
+      "4000000000000000",
+      "4008000000000000"
+     ]
+    }
+   },
+   "origins": {
+    "columns": [
+     "weight",
+     "geometry",
+     "reach",
+     "grav"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "geometry",
+     "float64",
+     "float64"
+    ],
+    "index": [
+     0,
+     1,
+     2
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "45afda2c75ea418738e5fb6b",
+      "003c59764374ddffeb26ab7f",
+      "06c9547eaf87c57c004e2be4"
+     ],
+     "grav": [
+      "402a000000000000",
+      "402a000000000000",
+      "402a000000000000"
+     ],
+     "reach": [
+      "4014000000000000",
+      "4014000000000000",
+      "4014000000000000"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ]
+    }
+   }
+  },
+  "after_second_name_save": {
+   "destinations": {
+    "columns": [
+     "weight",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "geometry"
+    ],
+    "index": [
+     0,
+     1
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "297573dc6da16e7efa1445d4",
+      "1350f12179e02f14a77311db"
+     ],
+     "weight": [
+      "4000000000000000",
+      "4008000000000000"
+     ]
+    }
+   },
+   "origins": {
+    "columns": [
+     "weight",
+     "geometry",
+     "reach",
+     "grav",
+     "reach2"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": [
+     "float64",
+     "geometry",
+     "float64",
+     "float64",
+     "float64"
+    ],
+    "index": [
+     0,
+     1,
+     2
+    ],
+    "index_name": "'id'",
+    "values": {
+     "geometry": [
+      "45afda2c75ea418738e5fb6b",
+      "003c59764374ddffeb26ab7f",
+      "06c9547eaf87c57c004e2be4"
+     ],
+     "grav": [
+      "402a000000000000",
+      "402a000000000000",
+      "402a000000000000"
+     ],
+     "reach": [
+      "4014000000000000",
+      "4014000000000000",
+      "4014000000000000"
+     ],
+     "reach2": [
+      "4014000000000000",
+      "4014000000000000",
+      "4014000000000000"
+     ],
+     "weight": [
+      "3ff0000000000000",
+      "4000000000000000",
+      "3ff0000000000000"
+     ]
+    }
+   }
+  },
+  "node_columns_final": [
+   "source_layer",
+   "source_id",
+   "type",
+   "weight",
+   "degree",
+   "geometry",
+   "color",
+   "nearest_edge_id",
+   "edge_start_node",
+   "weight_to_start",
+   "edge_end_node",
+   "weight_to_end",
+   "reach",
+   "gravity"
+  ],
+  "origin_layer_index_int": "0",
+  "shuffled_origin_orders": [
+   [
+    9,
+    8,
+    7
+   ],
+   [
+    9,
+    8,
+    7
+   ],
+   [
+    9,
+    8,
+    7
+   ]
+  ]
+ }
+}
