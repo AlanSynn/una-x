@@ -1,0 +1,30 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.4, pytest-9.1.1, pluggy-1.6.0 -- /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python
+cachedir: .pytest_cache
+rootdir: /storage/scratch1/1/dsynn6/una-x
+configfile: pyproject.toml
+collecting ... collected 21 items
+
+tests/madina_api/zonal/test_zonal_facade_env.py::test_d3_import_does_not_mutate_environ PASSED [  4%]
+tests/madina_api/zonal/test_zonal_facade_env.py::test_d4_create_map_importerror_without_pydeck PASSED [  9%]
+tests/madina_api/zonal/test_zonal_facade_env.py::test_namespace_identity_package_restored PASSED [ 14%]
+tests/madina_api/zonal/test_zonal_facade_env.py::test_facade_importable_and_versioned PASSED [ 19%]
+tests/madina_api/zonal/test_zonal_reflection.py::test_reflection_matches_pinned_reference PASSED [ 23%]
+tests/madina_api/zonal/test_zonal_reflection.py::test_version_constants_pinned PASSED [ 28%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_facade_matches_bridged_reference_bitwise[style_colors] PASSED [ 33%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_facade_matches_bridged_reference_bitwise[describe_output] PASSED [ 38%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_facade_matches_bridged_reference_bitwise[insert_multinode_edge] PASSED [ 42%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_facade_matches_bridged_reference_bitwise[id_semantics] PASSED [ 47%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_facade_matches_bridged_reference_bitwise[turn_params] PASSED [ 52%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_facade_matches_bridged_reference_bitwise[map_deck] PASSED [ 57%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_facade_matches_bridged_reference_bitwise[quirks] PASSED [ 61%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_m4_multiple_inserted_nodes_on_one_edge PASSED [ 66%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_sabotaged_digests_are_selected[drop_parent_col-id_semantics] PASSED [ 71%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_sabotaged_digests_are_selected[drop_last_edge-insert_multinode_edge] PASSED [ 76%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_sabotaged_digests_are_selected[swap_default_color-style_colors] PASSED [ 80%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_sabotaged_digests_are_selected[drop_describe_line-describe_output] PASSED [ 85%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_sabotaged_digests_are_selected[flip_turn_threshold-turn_params] PASSED [ 90%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_sabotaged_digests_are_selected[undercount_layers-map_deck] PASSED [ 95%]
+tests/madina_api/zonal/test_zonal_surface_parity.py::test_sabotaged_digests_are_selected[hide_set_style_error-quirks] PASSED [100%]
+
+============================= 21 passed in 57.40s ==============================

@@ -1,0 +1,11 @@
+{
+ "arm": "facade",
+ "scenario": "quirks",
+ "seed": 20260930,
+ "state": {
+  "layers_bad_type": "KeyError: 'Only indices of type string and int are allowed.'",
+  "set_style": "AttributeError: 'Layer' object has no attribute 'default_colors'",
+  "visualize_graph": "NotImplementedError: ",
+  "zonal_bad_key": "KeyError: 'No layer in the Zonal object has the label missing_layer'"
+ }
+}

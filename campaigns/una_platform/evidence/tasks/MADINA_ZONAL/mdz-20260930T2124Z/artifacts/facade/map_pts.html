@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>pydeck</title>
+        <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.14.0/dist/maplibre-gl.css" />
+    <script src='https://cdn.jsdelivr.net/npm/@deck.gl/jupyter-widget@~9.3.*/dist/index.js'></script>
+    <link rel="stylesheet" href=https://cdn.jsdelivr.net/npm/@deck.gl/widgets@~9.3.*/dist/stylesheet.css />
+    <style>
+    body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#deck-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+#deck-container canvas {
+  z-index: 1;
+  background: cornflowerblue;
+}
+
+#deck-container .error_text {
+  color: red;
+  background: cornflowerblue;
+  position: absolute;
+  z-index: 100;
+}
+    </style>
+  </head>
+  <body>
+    <div id="deck-container">
+    </div>
+  </body>
+  <script>
+    const container = document.getElementById('deck-container');
+    const jsonInput = {
+  "initialViewState": {
+    "bearing": 0,
+    "latitude": 0.00044915764204135893,
+    "longitude": 0.0008983152841195212,
+    "maxZoom": 20,
+    "pitch": 0,
+    "zoom": 17
+  },
+  "layers": [
+    {
+      "@@type": "GeoJsonLayer",
+      "data": [
+        {
+          "cat": "a",
+          "color": [
+            164.1876154522439,
+            209.58124049496024,
+            12.710317145875946
+          ],
+          "demand": 3.0,
+          "geometry": {
+            "coordinates": [
+              8.983152841195213e-05,
+              8.983152841191534e-05
+            ],
+            "type": "Point"
+          },
+          "id": 0,
+          "index": 0
+        },
+        {
+          "cat": "b",
+          "color": [
+            180.37286088828267,
+            254.9499686106006,
+            119.0690502499438
+          ],
+          "demand": 1.0,
+          "geometry": {
+            "coordinates": [
+              0.0017067990398270906,
+              0.0008084837556807394
+            ],
+            "type": "Point"
+          },
+          "id": 1,
+          "index": 1
+        },
+        {
+          "cat": "a",
+          "color": [
+            164.1876154522439,
+            209.58124049496024,
+            12.710317145875946
+          ],
+          "demand": null,
+          "geometry": {
+            "coordinates": [
+              0.0005389891704717128,
+              0.0005389891704637631
+            ],
+            "type": "Point"
+          },
+          "id": 2,
+          "index": 2
+        }
+      ],
+      "filled": true,
+      "getFillColor": "@@=color",
+      "getLineColor": "@@=color",
+      "getLineWidth": "@@=__width__",
+      "getRadius": "@@=__radius__",
+      "id": "8c89fe97-e670-b655-3e42-732725896b7a",
+      "opacity": 1,
+      "pickable": true,
+      "stroked": true,
+      "wireframe": true
+    }
+  ],
+  "mapProvider": "carto",
+  "mapStyle": "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+  "views": [
+    {
+      "@@type": "MapView",
+      "controller": true
+    }
+  ]
+};
+    const tooltip = true;
+    const customLibraries = null;
+    const configuration = null;
+
+    const deckInstance = createDeck({
+                  container,
+      jsonInput,
+      tooltip,
+      customLibraries,
+      configuration,
+          });
+
+  </script>
+</html>

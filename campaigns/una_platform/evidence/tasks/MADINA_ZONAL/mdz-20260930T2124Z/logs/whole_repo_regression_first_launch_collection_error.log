@@ -1,0 +1,8 @@
+  /storage/scratch1/1/dsynn6/una-x/tests/platform_geometry/test_zonal_parity.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules
+=========================== short test summary info ============================
+ERROR tests/platform_geometry/test_zonal_parity.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+8 skipped, 1 error in 5.26s
+
+[exited with code 0]

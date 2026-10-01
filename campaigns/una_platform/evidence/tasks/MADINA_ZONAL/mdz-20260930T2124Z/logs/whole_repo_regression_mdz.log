@@ -1,0 +1,10 @@
+whole-repo regression with tests/madina_api/zonal present (post rename-fix):
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+232 passed, 348 skipped, 2 warnings in 786.31s (0:13:06)
+
+[exited with code 0]
+(prior commit-state run: 232 = 211 SCIENCE-S2 green + 21 new zonal tests; 0 failed)
+
+final all-changes rerun (post independent-review fixes: full-digest roundtrips, digest-schema
+index/geometry names, dunder reflection, real dup-label reload, sabotage rename undercount_layers,
+new coverage items): 232 passed, 348 skipped, 0 failed in 784.77s [exit 0]

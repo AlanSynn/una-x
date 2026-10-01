@@ -1,0 +1,97 @@
+{
+ "arm": "facade",
+ "identity": {
+  "attribute_is_package": true
+ },
+ "state": {
+  "Layer": {
+   "__init__": "method:(self, label: str, gdf, show: bool, original_crs: str, file_path: str, default_color=None, **kwargs)",
+   "color_layer": "method:(self, layer_name, color_by_attribute=None, color_method='single_color', color=None)",
+   "set_style": "method:(self, params)"
+  },
+  "Layers": {
+   "__contains__": "method:(self, item)",
+   "__getitem__": "method:(self, item)",
+   "__init__": "method:(self, layers=None)",
+   "__iter__": "method:(self)",
+   "__next__": "method:(self)",
+   "__setitem__": "method:(self, key, value)",
+   "__str__": "method:(self)",
+   "add": "method:(self, layer, pos=None, first=False, before: str = None, after=None)",
+   "get_layer_at_pos": "method:(self, pos: int)",
+   "insert_at": "method:(self, pos: int, layer)",
+   "pos_at_label": "method:(self, label)"
+  },
+  "Network": {
+   "__init__": "method:(self, nodes: geopandas.geodataframe.GeoDataFrame, edges: geopandas.geodataframe.GeoDataFrame, turn_threshold_degree: float, turn_penalty_amount: float, weight_attribute=None, edge_source_layer: str = None)",
+   "add_node_to_graph": "method:(self, graph: networkx.classes.graph.Graph, node_idx)",
+   "create_graph": "method:(self, light_graph=False, d_graph=True, od_graph=False)",
+   "fuse_degree_2_nodes": "method:(self, tolerance_angle)",
+   "network_to_layer": "method:(self)",
+   "remove_node_to_graph": "method:(self, graph: networkx.classes.graph.Graph, node_idx)",
+   "scan_for_intersections": "method:(self, node_snapping_tolerance=1)",
+   "set_node_value": "method:(self, idx, label, new_value)",
+   "update_light_graph": "method:(self, graph: networkx.classes.graph.Graph, add_nodes: list = [], remove_nodes: list = [])",
+   "visualize_graph": "method:(self)"
+  },
+  "Zonal": {
+   "__getitem__": "method:(self, item)",
+   "__init__": "method:(self)",
+   "clear_nodes": "method:(self) -> None",
+   "create_graph": "method:(self, light_graph: bool = True, d_graph: bool = True, od_graph: bool = False) -> None",
+   "create_map": "method:(self, layer_list: list = None, save_as: str = None, basemap: bool = False) -> 'pdk.Deck'",
+   "create_street_network": "method:(self, source_layer: str, weight_attribute: str = None, node_snapping_tolerance: int | float = 0, redundant_edge_treatment: str = 'discard', turn_threshold_degree: int | float = 45, turn_penalty_amount: int | float = 30) -> None",
+   "describe": "method:(self) -> None",
+   "insert_node": "method:(self, layer_name: str, label: str, weight_attribute: str = None) -> None",
+   "load_layer": "method:(self, name: str, source: str | pathlib.Path | geopandas.geodataframe.GeoDataFrame, pos: int = None, first: bool = False, before: str = None, after: str = None) -> None",
+   "set_turn_parameters": "method:(self, turn_threshold_degree: int | float, turn_penalty_amount: int | float) -> None"
+  },
+  "constants": {
+   "DEFAULT_COLORS": "{'streets': [150, 150, 150], 'blocks': [100, 100, 100], 'parcels': [50, 50, 50], 'network_edges': {'__attribute_name__': 'type', 'street': [155, 155, 155], 'project_line': [0, 0, 150], '__other__': [0, 0, 0]}, 'network_nodes': {'__attribute_name__': 'type', 'street_node': [0, 255, 255], 'project_node': [0, 0, 255], 'destination': [239, 89, 128], 'origin': [86, 5, 255], '__other__': [0, 0, 0]}}",
+   "DEFAULT_GEOGRAPHIC_CRS": "'EPSG:4326'",
+   "DEFAULT_PROJECTED_CRS": "'EPSG:3857'",
+   "RELEASE_DATE": "'2023-02-16'",
+   "VERSION": "'0.0.15'"
+  },
+  "module_functions": {
+   "color_gdf": "(gdf, color_by_attribute=None, color_method=None, color=None)",
+   "create_deckGL_map": "(gdf_list=[], centerX=46.6725, centerY=24.7425, basemap=False, zoom=17, filename=None)",
+   "efficient_node_insertion": "(n_node_gdf: geopandas.geodataframe.GeoDataFrame, n_edge_gdf: geopandas.geodataframe.GeoDataFrame, source_gdf: geopandas.geodataframe.GeoDataFrame, layer_name: str, label: str = 'origin', weight_attribute: str = None)",
+   "node_edge_builder": "(geometry_gdf, weight_attribute=None, tolerance=0.0, source_layer: str = None)",
+   "prepare_geometry": "(geometry_gdf: geopandas.geodataframe.GeoDataFrame)"
+  },
+  "module_public": [
+   "DEFAULT_COLORS",
+   "GeoDataFrame",
+   "GeoPandaExtractor",
+   "Layer",
+   "Layers",
+   "Network",
+   "Path",
+   "RELEASE_DATE",
+   "VERSION",
+   "Zonal",
+   "color_gdf",
+   "create_deckGL_map",
+   "efficient_node_insertion",
+   "geo",
+   "gpd",
+   "layer",
+   "network",
+   "network_utils",
+   "node_edge_builder",
+   "np",
+   "nx",
+   "pd",
+   "prepare_geometry",
+   "random",
+   "snap",
+   "split",
+   "tolerance_network_nodes_edges",
+   "utils",
+   "vectorized_node_edge_builder",
+   "warnings",
+   "zonal"
+  ]
+ }
+}

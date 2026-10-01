@@ -1,0 +1,29 @@
+{
+ "arm": "facade",
+ "scenario": "describe_output",
+ "seed": 20260930,
+ "state": {
+  "empty": [
+   "No zonal_layers yet, load a layer using 'load_layer(layer_name, file_path)'",
+   "Geographic center: (None, None)",
+   "No network graph yet. First, insert a layer that contains network segments (streets, sidewalks, ..) and call create_street_network(layer_name,  weight_attribute=None)",
+   "\tThen,  insert origins and destinations using 'insert_nodes(label, layer_name, weight_attribute)'",
+   "\tFinally, when done, create a network by calling 'create_street_network()'"
+  ],
+  "with_layers": [
+   "Layer name           | Visible | projection | rows  | File path           ",
+   "streets              |       1 | EPSG:3857  |     7 | GeoDataFrame        ",
+   "pts                  |       1 | EPSG:3857  |     3 | GeoDataFrame        ",
+   "Geographic center: (0.0008983152841195212, 0.00044915764204135893)",
+   "No network graph yet. First, insert a layer that contains network segments (streets, sidewalks, ..) and call create_street_network(layer_name,  weight_attribute=None)",
+   "\tThen,  insert origins and destinations using 'insert_nodes(label, layer_name, weight_attribute)'",
+   "\tFinally, when done, create a network by calling 'create_street_network()'"
+  ],
+  "with_network": [
+   "Layer name           | Visible | projection | rows  | File path           ",
+   "streets              |       1 | EPSG:3857  |     7 | GeoDataFrame        ",
+   "pts                  |       1 | EPSG:3857  |     3 | GeoDataFrame        ",
+   "Geographic center: (0.0008983152841195212, 0.00044915764204135893)"
+  ]
+ }
+}

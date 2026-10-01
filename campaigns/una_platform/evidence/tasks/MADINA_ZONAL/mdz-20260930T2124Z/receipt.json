@@ -1,0 +1,65 @@
+{
+  "task": "MADINA_ZONAL",
+  "run_id": "mdz-20260930T2124Z",
+  "campaign": "una-platform-2026-09",
+  "date_utc": "2026-09-30",
+  "role": "compatibility-engineer",
+  "branch": "perf/una-platform",
+  "head_at_start": "6c6dc63 (SCIENCE S2); facade source untouched this run",
+  "source_baseline": "src/urban_network_analysis/compat/madina/ delivered by TOPOLOGY (5a227b5, deltas D1-D4); this run adds NO facade source changes — executed coverage only",
+  "pinned_reference": "City-Form-Lab/madina @ 8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6; both parity arms under .refs/venv_madina_legacy (same interpreter, pydeck 0.9.3 present)",
+  "status": "completed",
+  "unit_note": "Zonal-surface parity suite delivered and green (21 passed): 7 bitwise behavior scenarios (reference x2 determinism + facade equality), M4 multi-node-per-edge insertion scenario, 7 sabotage-sensitivity controls, reflection matrix vs pinned upstream with explicit ledgered deltas, D3/D4 facade-env pins. Independent adversarial review (mdz-reviewer2): CHANGES_REQUIRED, 2 MAJOR + 2 MINOR + 5 NOTE — ALL dispositioned fixed (full-digest add/remove roundtrips without restoration claims, evidence count corrected to the retained artifact, real dup-label reload, dossier ownership map + 5 new coverage items, dunder reflection, digest hardening, sabotage rename, wording, error-log retention); post-fix suite re-run green and post-fix whole-repo regression green (232 passed, 0 failed). Whole-repo relaunch history: first launch hit a test-basename collection collision (fixed by renaming the parity module to test_zonal_surface_parity.py), second launch green on the pre-review-fix tree, final launch green on the post-review-fix tree.",
+  "objective": "Implement working Zonal/Layer/Layers/Network behavior, graph mutation, style/map and exact ID/default semantics.",
+  "completion_condition": {
+    "clause": "Reflection and behavior scenarios pass against pinned upstream/reference bridge; random presentation fields controlled, not discarded.",
+    "assessment": "MET. Reflection: class surfaces (Zonal/Layer/Layers/Network methods with exact signatures incl. the reflected dunders), module functions, and version constants match pinned upstream exactly modulo the ledgered D4 annotation; module-namespace delta is exactly the documented ledger sets, verified live in the same process pair. Behavior: 7 scenarios bitwise-equal across arms (floats as IEEE-754 bits, geometry as WKB hashes, dtypes/orderings/strings recorded), reference arm deterministic across two runs, sabotage variants prove the comparator selects mutated state. Random presentation fields CONTROLLED not dropped: seeded layer colors pinned bitwise; pydeck layer uuid4 ids replaced with a seeded generator so ids remain IN the digest and compare across arms; saved HTML sha256 byte-compared. Independent review verdict CHANGES_REQUIRED fully dispositioned (all 9 findings fixed; reviewer's isolated rerun had already reproduced 21 passed + all 23 digests byte-identical); post-fix suite 21 passed, post-fix whole-repo regression 232 passed / 0 failed.",
+    "evidence": [
+      "logs/zonal_suite.log — 21 passed in 58.35s (tests/madina_api/zonal)",
+      "artifacts/{facade,reference,reflection} — the 23 digests written by the retained run",
+      "facade source byte-identical to TOPOLOGY's delivery (no src/ changes this run)"
+    ]
+  },
+  "deliverables": {
+    "new": [
+      "tests/madina_api/zonal/_zonal_scenario.py — 7-scenario bitwise parity runner (style_colors, describe_output, insert_multinode_edge, id_semantics, turn_params, map_deck, quirks) + 7 sabotage mutations + arm dispatch",
+      "tests/madina_api/zonal/_zonal_reflection.py — per-arm public-surface/signature/constant reflection probe",
+      "tests/madina_api/zonal/conftest.py — same-interpreter arm runner under the reference venv, ARTIFACTS_OUT staging, madina_api marker",
+      "tests/madina_api/zonal/test_zonal_surface_parity.py — per-scenario determinism+parity, M4 multi-node-per-edge pin, 7 sabotage-sensitivity tests",
+      "tests/madina_api/zonal/test_zonal_reflection.py — reflection equality modulo explicit ledgered deltas + version pin",
+      "tests/madina_api/zonal/test_zonal_facade_env.py — D3 no-env-mutation, D4 actionable ImportError without pydeck, namespace-identity restore pin, versioned import pin (run under alan; no venv needed)",
+      "campaigns/una_platform/evidence/tasks/MADINA_ZONAL/mdz-20260930T2124Z/ (receipt, evidence.json, zonal_suite.log, 23 retained digests, verbatim independent review report, whole-repo regression logs)"
+    ],
+    "modified": [
+      "NO source changes: src/urban_network_analysis/compat/madina/** untouched (port delivered by TOPOLOGY); this task's deliverable is executed coverage of the remaining Zonal surface"
+    ]
+  },
+  "verification": [
+    {"check": "zonal parity suite", "cmd": "alan python -m pytest tests/madina_api/zonal/ -v", "outcome": "21 passed (58.35 s final run)", "log": "logs/zonal_suite.log"},
+    {"check": "reflection vs pinned upstream (live two-import comparison)", "cmd": "venv python tests/madina_api/zonal/_zonal_reflection.py --arm {reference,facade}", "outcome": "class surfaces identical beyond ledgered D4 annotation; namespace delta exactly the ledger sets; identity quirk confirmed (upstream attribute = inner zonal.py module, compat restores package)", "log": "artifacts/reflection/{reference,facade}.json"},
+    {"check": "M4 precondition (TOPOLOGY handoff)", "cmd": "test_m4_multiple_inserted_nodes_on_one_edge", "outcome": "edge with >=2 inserted nodes produced and pinned (inserted_per_edge {\"0\": 4, \"3\": 2}), provenance columns present; add/remove roundtrips on a street node AND a real inserted node pinned as exact post-roundtrip graph digests — restoration NOT asserted (review finding 1: node counts alone masked real edge/weight corruption; the pinned street-node roundtrip ends with a different edge set, a pinned consequence of insert_node's zero-filled placeholder columns and networkx .copy() sharing graph['added_nodes'])", "log": "artifacts/facade/insert_multinode_edge.json"},
+    {"check": "comparator sensitivity (digest-level mutation controls)", "cmd": "7 sabotage variants", "outcome": "every sabotaged digest differs from honest (no silent comparator). Scope note (review finding 8): these are comparator-sensitivity controls at the digest level, not facade-code mutants; the stronger end-to-end form (monkeypatched facade mutants) lives in TOPOLOGY's suite (tests/platform_geometry/_scenario.py sabotage machinery)", "log": "artifacts/reference/*__*.json"},
+    {"check": "independent adversarial review", "cmd": "mdz-reviewer2 agent (fresh context, read-only) + isolated rerun under its own UNA_LARGE_E2E_ARTIFACTS", "outcome": "CHANGES_REQUIRED (2 MAJOR, 2 MINOR, 5 NOTE) — ALL dispositioned fixed: full-digest roundtrips (F1), evidence count correction to match retained artifact (F2), real dup-label reload + DEFAULT_COLORS count assert (F3), dossier ownership map + 5 new coverage items (F4), dunder reflection (F5), digest hardening (F6), sabotage rename (F7), wording (F8), first-launch error log retention (F9); reviewer confirmed parity discipline, reflection ledger, uuid4 control and reproducibility sound; no src changes required (none made)", "log": "artifacts/independent_review_report.md (verbatim report; dispositions in evidence.json independent_review_outcome)"},
+    {"check": "whole-repo regression", "cmd": "alan python -m pytest tests/ -q", "outcome": "FINAL (post-review-fix tree): 232 passed, 348 skipped, 0 failed (784.77 s, exit 0) — 211 SCIENCE-S2 green + 21 new zonal tests. Relaunch history: first launch collection error (duplicate basename test_zonal_parity.py vs tests/platform_geometry, fixed by renaming this tree's module to test_zonal_surface_parity.py, output retained at logs/whole_repo_regression_first_launch_collection_error.log); second launch 232 passed / 0 failed on the pre-review-fix tree (786.31 s); final launch 232 passed / 0 failed on the post-review-fix tree (784.77 s)", "log": "logs/whole_repo_regression_mdz.log"}
+  ],
+  "limits_and_non_goals": [
+    "una.* APIs (accessibility/paths/betweenness/workflows) out of scope here — MADINA_ACCESS/PATHS/FLOW/WORKFLOWS own them and the corresponding dossier mutants (alpha swap, closest-facility direction, exposure column)",
+    "pydeck absent from the alan env: create_map parity executes only under the reference venv interpreter; D4 keeps the facade actionable without pydeck (executed in facade-env tests)",
+    "scenario fixtures are synthetic deterministic grids (5-11 edges); city-scale workloads arrive with CITIES",
+    "bug_registry.json untouched (outside owned_files); the new color_gdf partial-dict KeyError quirk is recorded for INTEGRATE reconciliation"
+  ],
+  "raw_evidence_retained": [
+    "logs/zonal_suite.log (final 21-pass run)",
+    "logs/whole_repo_regression_mdz.log (all three launch end states incl. the final post-review-fix 232-pass row)",
+    "logs/whole_repo_regression_first_launch_collection_error.log (raw first-launch collection error, review finding 9)",
+    "artifacts/{facade,reference}/*.json (scenario + sabotage digests from the retained run), artifacts/reflection/{reference,facade}.json, artifacts/reference/map_pts.html",
+    "artifacts/independent_review_report.md (verbatim reviewer report)"
+  ],
+  "dirty_user_files_preserved": [".claude/commands/goal.md (untouched, uncommitted)"],
+  "handoff": {
+    "MADINA_ACCESS/MADINA_PATHS": "M4 satisfied: multi-node-per-edge insert_node outputs pinned with provenance columns (nearest_edge_id, edge_start_node/end, weight_to_start/end) — engines may consume them; graph structures light/d/od pinned bitwise",
+    "PACKAGE": "identity decision executed and pinned: compat namespace restores the zonal PACKAGE binding (upstream users see the inner zonal.py module via star-import shadowing); reflection deltas ledgered in test_zonal_reflection.py — the drop-in shim must decide which identity it promises (TOPOLOGY reviewer I6, now with executed evidence)",
+    "INTEGRATE": "new pinned quirk BUG-MDZ-COLORGDF-PARTIAL-DICT-KEYERROR (color_gdf explicit partial color dict raises KeyError on '__other__' lookup) — registry reconciliation; D3/D4 facade-env pins duplicate no TOPOLOGY ledger entries (theirs were code-review claims, these are executed)"
+  },
+  "next_tasks_unlocked": ["MADINA_ACCESS", "MADINA_PATHS (deps MADINA_ZONAL + SCIENCE both complete)"]
+}

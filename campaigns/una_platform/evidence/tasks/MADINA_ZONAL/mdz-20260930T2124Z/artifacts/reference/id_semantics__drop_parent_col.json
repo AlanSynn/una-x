@@ -1,0 +1,437 @@
+{
+ "arm": "reference",
+ "sabotage": "drop_parent_col",
+ "scenario": "id_semantics",
+ "seed": 20260930,
+ "state": {
+  "discard": {
+   "edges": {
+    "active_geometry_name": "'geometry'",
+    "columns": [
+     "length",
+     "weight",
+     "parent_street_id",
+     "start",
+     "end",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": {
+     "end": "int32",
+     "geometry": "geometry",
+     "length": "float64",
+     "parent_street_id": "int64",
+     "start": "int32",
+     "weight": "float64"
+    },
+    "index": [
+     0,
+     2,
+     3,
+     6
+    ],
+    "index_name": "'id'",
+    "values": {
+     "end": [
+      3,
+      4,
+      0,
+      0
+     ],
+     "geometry": [
+      "1fc49fd42ce8d94886d4d462",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "2b406b8afcb013b007f3140c",
+      "ef16b80d365b338443fd46ef"
+     ],
+     "length": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "405427d84f3a2984"
+     ],
+     "parent_street_id": [
+      0,
+      2,
+      3,
+      6
+     ],
+     "start": [
+      0,
+      3,
+      1,
+      2
+     ],
+     "weight": [
+      "4059000000000000",
+      "4056800000000000",
+      "4055400000000000",
+      "4051800000000000"
+     ]
+    }
+   },
+   "nodes": {
+    "active_geometry_name": "'geometry'",
+    "columns": [
+     "source_layer",
+     "source_id",
+     "type",
+     "weight",
+     "degree",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": {
+     "degree": "int32",
+     "geometry": "geometry",
+     "source_id": "int32",
+     "source_layer": "category",
+     "type": "category",
+     "weight": "float32"
+    },
+    "index": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "index_name": "'id'",
+    "values": {
+     "degree": [
+      4,
+      2,
+      2,
+      2,
+      4
+     ],
+     "geometry": [
+      "ef93c98cbe28c31e59face8d",
+      "a9a4e9ed2f0ea4e5e3bab8ea",
+      "84e16aa0b68c05df479e0d85",
+      "53c1d3cbaf2c1dfb41f1f1f9",
+      "ea92519d570ffb60a5d1c240"
+     ],
+     "source_id": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "source_layer": {
+      "categories": [
+       "streets"
+      ],
+      "codes": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     "type": {
+      "categories": [
+       "street_node"
+      ],
+      "codes": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     "weight": [
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+     ]
+    }
+   }
+  },
+  "discard_repeat_equal": true,
+  "discard_weight_shifted": [
+   "405ae00000000000",
+   "4058600000000000",
+   "4057200000000000",
+   "4053600000000000"
+  ],
+  "duplicate_label_error": "KeyError: 'Layer with label l1 is already in Zonal object'",
+  "layers_api": {
+   "contains_label": true,
+   "iter_labels": [
+    "l1",
+    "l2",
+    "l3"
+   ],
+   "labels_by_pos": [
+    "l1",
+    "l2",
+    "l3"
+   ],
+   "order_after_appends": [
+    "l1",
+    "l2",
+    "l3"
+   ],
+   "order_after_first": [
+    "l0",
+    "l1",
+    "l2",
+    "l3"
+   ],
+   "order_after_l1": [
+    "l0",
+    "l1",
+    "lm",
+    "l2",
+    "l3"
+   ],
+   "order_before_l3": [
+    "l0",
+    "l1",
+    "lm",
+    "l2",
+    "ln",
+    "l3"
+   ],
+   "order_pos2": [
+    "l0",
+    "l1",
+    "lp",
+    "lm",
+    "l2",
+    "ln",
+    "l3"
+   ],
+   "pos_of_l3": 2,
+   "setitem_int": {
+    "l2_gone": false,
+    "l9_reachable_by_label": true,
+    "order": [
+     "l0",
+     "<Layer:l9>",
+     "lp",
+     "lm",
+     "l2",
+     "ln",
+     "l3"
+    ]
+   },
+   "setitem_str_label_is_new": true,
+   "str_output": [
+    "",
+    "Position 3 ----- l3",
+    "Position 2 ----- l2",
+    "Position 1 ----- l1"
+   ]
+  },
+  "set_node_value": {
+   "node": 0,
+   "weight": "405ec00000000000"
+  },
+  "split": {
+   "edges": {
+    "active_geometry_name": "'geometry'",
+    "columns": [
+     "length",
+     "weight",
+     "parent_street_id",
+     "start",
+     "end",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": {
+     "end": "int32",
+     "geometry": "geometry",
+     "length": "float64",
+     "parent_street_id": "int64",
+     "start": "int32",
+     "weight": "float64"
+    },
+    "index": [
+     0,
+     2,
+     3,
+     4,
+     6,
+     7,
+     8,
+     9,
+     10
+    ],
+    "index_name": "'id'",
+    "values": {
+     "end": [
+      3,
+      4,
+      0,
+      0,
+      0,
+      5,
+      1,
+      6,
+      2
+     ],
+     "geometry": [
+      "1fc49fd42ce8d94886d4d462",
+      "2dd7bf75fe5ade7ddc4b895d",
+      "2b406b8afcb013b007f3140c",
+      "7331aabb4c184631ac146b36",
+      "ef16b80d365b338443fd46ef",
+      "e84e9537e93f22c0be5340fb",
+      "cec5498fa50155cb45b7446c",
+      "3c2591bfdd4bfa8e34db713d",
+      "2cd722edbe1e41c17bfd3d6a"
+     ],
+     "length": [
+      "4059000000000000",
+      "4059000000000000",
+      "4059000000000000",
+      "4061ad7bc01366b8",
+      "405427d84f3a2984",
+      "4049000000000000",
+      "4049000000000000",
+      "40470c8229f43a41",
+      "40470c8229f43a41"
+     ],
+     "start": [
+      0,
+      3,
+      1,
+      0,
+      2,
+      0,
+      5,
+      0,
+      6
+     ],
+     "weight": [
+      "4059000000000000",
+      "4056800000000000",
+      "4055400000000000",
+      "4054000000000000",
+      "4051800000000000",
+      "4047c00000000000",
+      "4047c00000000000",
+      "4042c00000000000",
+      "4042c00000000000"
+     ]
+    }
+   },
+   "nodes": {
+    "active_geometry_name": "'geometry'",
+    "columns": [
+     "source_layer",
+     "source_id",
+     "type",
+     "weight",
+     "degree",
+     "geometry"
+    ],
+    "crs": "EPSG:3857",
+    "dtypes": {
+     "degree": "int32",
+     "geometry": "geometry",
+     "source_id": "int32",
+     "source_layer": "category",
+     "type": "category",
+     "weight": "float32"
+    },
+    "index": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "index_name": "'id'",
+    "values": {
+     "degree": [
+      4,
+      2,
+      2,
+      2,
+      4,
+      2,
+      2
+     ],
+     "geometry": [
+      "ef93c98cbe28c31e59face8d",
+      "a9a4e9ed2f0ea4e5e3bab8ea",
+      "84e16aa0b68c05df479e0d85",
+      "53c1d3cbaf2c1dfb41f1f1f9",
+      "ea92519d570ffb60a5d1c240",
+      "dedd7aea153fa36b1cdfa033",
+      "38508d2ea1d00159805a653a"
+     ],
+     "source_id": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "source_layer": {
+      "categories": [
+       "streets"
+      ],
+      "codes": [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     "type": {
+      "categories": [
+       "street_node"
+      ],
+      "codes": [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     "weight": [
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+     ]
+    }
+   }
+  },
+  "split_repeat_equal": true,
+  "split_weight_shifted": [
+   "405ae00000000000",
+   "4058600000000000",
+   "4057200000000000",
+   "4055e00000000000",
+   "4053600000000000",
+   "4049a00000000000",
+   "4049a00000000000",
+   "4044a00000000000",
+   "4044a00000000000"
+  ]
+ }
+}
