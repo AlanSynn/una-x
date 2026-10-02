@@ -1,0 +1,35 @@
+{
+  "run_id": "cg-20261002T2025Z",
+  "task": "CACHE_GRAPH",
+  "stage": "closure",
+  "what": "Whole-repo regression on the final merged tree (perf/una-platform @ a95ddfc = 3aa61ec BATCH_EXEC closure + e616326 CACHE_GRAPH implementation + a95ddfc review fix round, main checkout, .refs-equipped) after fast-forwarding the worktree branch. Single run, zero failures — no closure-round diagnosis needed (unlike the BATCH_EXEC closure's run-1).",
+  "command": "PYTHONHASHSEED=0 /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python -m pytest tests/ -q   (main checkout; full raw output preserved as closure_regression.txt)",
+  "result": {
+    "passed": 694,
+    "skipped": 348,
+    "failed": 0,
+    "warnings": 2,
+    "duration_s": 1599.82,
+    "exit_code": 0
+  },
+  "delta_vs_baseline": {
+    "baseline": "BATCH_EXEC closure (3aa61ec, tree @ 22de446): 634 passed / 348 skipped / 0 failed in 1610.49 s",
+    "expected_delta": "+60 tests/cache/invalidation tests (53 from the reviewed e616326 implementation + 7 review-fix regressions), skips unchanged",
+    "observed_delta": "+60 (694 = 634 + 60), skips unchanged at 348, zero failures — matches exactly"
+  },
+  "fix_round_verification_summary": [
+    "tests/cache 162 passed (102 CACHE_STORE store tests + 60 invalidation tests) on the fix-round bytes",
+    "tests/batch 88 passed (RunBatch semantics unchanged)",
+    "tests/execution + tests/platform_geometry 112 passed / 32 skipped — byte-for-byte the e616326 baseline command result",
+    "mutation battery 17/17 SELECTED (11 implementation + 6 fix-round mutants M12-M16b), every restore sha256-verified byte-identical",
+    "probes 4-8 re-verified on the fix-round bytes (probe8 serial store delta (9,6), parallel rows bitwise-equal to uncached anchors; probe5 W3 cold o_access-producers=1 where the reviewer measured 2 on e616326)"
+  ],
+  "notes": [
+    "Raw output: closure_regression.txt (694 passed / 348 skipped / 0 failed, 26:39) preserved in the untracked root evidence copy evidence/tasks/CACHE_GRAPH/cg-20261002T2025Z/.",
+    "The 348 skips are the pre-existing baseline skips, unchanged; the worktree-only 32 platform_geometry .refs-absence skips do not appear here (main checkout is .refs-equipped).",
+    "Reviewed file digests: evidence.json content_hashes_at_commit (11 files, hash-verified against the working tree by content_hash_verification_round2.log); pre-fix e616326 digests preserved in content_hashes_at_e616326_pre_fix for drift archaeology.",
+    "The independent reviewer's verdict (ACCEPT-WITH-FINDINGS on e616326) and every finding disposition are recorded in receipt.json; NOTE-6/ENOENT handoffs to CACHE_STORE/INTEGRATE preserved.",
+    "Next DAG-ready task: BATCH_REVIEW (deps BATCH_EXEC+CACHE_GRAPH, both now closed).",
+    "No pushes, merges to main, releases, purchases, or credential/provider changes."
+  ]
+}
