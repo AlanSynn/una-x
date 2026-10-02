@@ -37,6 +37,9 @@ from ..Logger import Logger
 from ..Topology import Topology, Network, AccessPoints
 from .Base import Base
 from ._ordered_csr import _try_build_ordered_csr
+from .. import __version__ as _PACKAGE_VERSION
+from ..cache import identity as _ckid
+from ..cache.stages import stage_cache_for as _stage_cache_for
 from ._large_access_scratch import (
     _a1_scope_admits,
     _a1_scope_search,
@@ -745,13 +748,72 @@ class Accessibility(Base):
         self.graph_engine = self._build_compact_graph_from_topology(self.topology)
         self.logger.log('Accessibility', "Graph engine initialized", v=1)
     
+    def _o_access_result_keys(self, settings):
+        """(engine_stage_key, o_access_result_key), or (None, None) when the
+        numerical closure is incomplete or a dependency is not
+        canonicalizable (CACHE_GRAPH).
+
+        The engine stage ("una:acc:engine:v1") closes over the network,
+        origins and destinations stage keys — this engine builds its CSR
+        from raw symmetric network weights only (no elevation, no
+        obstacles).  The result stage ("una:acc:o_access:v1") chains the
+        engine key with every decay/search parameter o_access consumes;
+        gravity_growth_rate is over-closed by gravity_decay_constant and
+        gravity_logistic_midpoint.  The calculate_* flags gate only result
+        ASSIGNMENT, not the arithmetic, so they are deliberately not in
+        the key.
+        """
+        topology = self.topology
+        net_key = getattr(topology.network, "_stage_key", None)
+        o_key = getattr(topology.origins, "_stage_key", None)
+        d_key = getattr(topology.destinations, "_stage_key", None)
+        if net_key is None or o_key is None or d_key is None:
+            return None, None
+        try:
+            engine_key = _ckid.stage_key("una:acc:engine:v1", {
+                "network_stage": net_key,
+                "origins_stage": o_key,
+                "destinations_stage": d_key,
+                "env": _ckid.compute_env(
+                    str(getattr(topology, "_stage_profile", "una_legacy")),
+                    _PACKAGE_VERSION),
+            })
+            result_key = _ckid.stage_key("una:acc:o_access:v1", {
+                "engine_stage": engine_key,
+                "gravity_beta": float(settings.gravity_beta),
+                "gravity_plateau": float(settings.gravity_plateau),
+                "gravity_logistic_midpoint": float(settings.gravity_logistic_midpoint),
+                "gravity_decay_constant": float(settings.gravity_decay_constant),
+                "knn_decay": str(settings.knn_decay),
+                "knn_weights": np.asarray(settings.knn_weights, dtype=np.float64),
+                "search_radius": float(settings.search_radius),
+            })
+        except (TypeError, ValueError):
+            # Not canonicalizable -> not cacheable: run the original path.
+            return None, None
+        return engine_key, result_key
+
+    def _compute_o_access(self, settings):
+        """The uncached o_access producer, factored for the stage cache."""
+        d_weights = self.topology.destinations.node_weight
+        reach, gravity_exponential, gravity_logistic, knn_access = \
+            self.graph_engine.o_access(
+                o_idx=None,
+                settings=settings,
+                d_weights=d_weights,
+            )
+        return ({"reach": reach,
+                 "gravity_exponential": gravity_exponential,
+                 "gravity_logistic": gravity_logistic,
+                 "knn_access": knn_access}, None)
+
     def Centrality(
-        self, 
+        self,
         settings: Settings
     )->None:
         """
         Calculate accessibility/centrality metrics for origins.
-        
+
         Args:
             search_radius: Distance threshold for accessibility (network units)
             beta: Distance decay parameter (1.0 = no decay, higher = faster decay)
@@ -761,7 +823,7 @@ class Accessibility(Base):
         """
 
         self.logger.log('Accessibility', f"Calculating centrality with radius (weight) {settings.search_radius}", v=1)
-        
+
         if self.graph_engine is None:
             raise ValueError("Graph engine not initialized. Call _initialize_graph_engine() first.")
 
@@ -769,14 +831,28 @@ class Accessibility(Base):
 
         # self.result_prefix = settings.results_prefix
 
-        d_weights = self.topology.destinations.node_weight
-        # Calculate accessibility metrics
-        reach, gravity_exponential, gravity_logistic, knn_access = self.graph_engine.o_access(
-            o_idx=None,
-            settings = settings,
-            d_weights = d_weights
-        )
-        
+        hit = None
+        _engine_key, result_key = self._o_access_result_keys(settings)
+        if result_key is not None:
+            cache = _stage_cache_for(
+                getattr(self.topology, "cache_options", None))
+            if cache.enabled:
+                arrays, _metadata, hit = cache.arrays_once(
+                    result_key, lambda: self._compute_o_access(settings))
+                reach = arrays["reach"]
+                gravity_exponential = arrays["gravity_exponential"]
+                gravity_logistic = arrays["gravity_logistic"]
+                knn_access = arrays["knn_access"]
+
+        if hit is None:
+            d_weights = self.topology.destinations.node_weight
+            # Calculate accessibility metrics
+            reach, gravity_exponential, gravity_logistic, knn_access = self.graph_engine.o_access(
+                o_idx=None,
+                settings = settings,
+                d_weights = d_weights
+            )
+
         # Store results
         if settings.calculate_reach:
             self.reach = reach
@@ -793,7 +869,15 @@ class Accessibility(Base):
         if settings.calculate_knn_access:
             self.knn_access = knn_access
             self.logger.log('Accessibility', f"KNN access calculated: min={knn_access.min():.2f}, max={knn_access.max():.2f}, mean={knn_access.mean():.2f}", v=2)
-        
+
+        if hit is not None:
+            self.logger.log(
+                'Accessibility',
+                f"o_access restored from stage cache "
+                f"(generation {hit.generation}, {hit.source}).",
+                v=2,
+            )
+
         # return {
         #     'reach': self.reach,
         #     'gravity_exponential': self.gravity_exponential,
