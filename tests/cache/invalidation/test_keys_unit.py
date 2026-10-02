@@ -13,7 +13,8 @@ import pytest
 from urban_network_analysis.cache.identity import (
     IDENTITY_SCHEMA, arrays_digest, compute_env, file_digest, geometry_env,
     stage_key)
-from urban_network_analysis.cache.stages import decode_arrays, encode_arrays
+from urban_network_analysis.cache.stages import (
+    decode_arrays, encode_arrays, StageProduced)
 
 pytestmark = pytest.mark.cache_graph
 
@@ -209,7 +210,11 @@ def test_compute_once_under_threads(tmp_path):
     def worker():
         barrier.wait()
         arrays, _meta, hit = cache.arrays_once(key, produce)
-        results.append((arrays["v"][0], hit is None))
+        # Review MAJOR-1 contract: the caller that ran the producer gets
+        # the StageProduced marker (its arrays are final); served callers
+        # get a StageHit.
+        results.append((arrays["v"][0],
+                        isinstance(hit, StageProduced)))
 
     threads = [threading.Thread(target=worker) for _ in range(4)]
     for t in threads:

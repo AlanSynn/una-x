@@ -39,7 +39,10 @@ from .Base import Base
 from ._ordered_csr import _try_build_ordered_csr
 from .. import __version__ as _PACKAGE_VERSION
 from ..cache import identity as _ckid
-from ..cache.stages import stage_cache_for as _stage_cache_for
+from ..cache.stages import (
+    stage_cache_for as _stage_cache_for,
+    StageProduced as _StageProduced,
+)
 from ._large_access_scratch import (
     _a1_scope_admits,
     _a1_scope_search,
@@ -831,12 +834,17 @@ class Accessibility(Base):
 
         # self.result_prefix = settings.results_prefix
 
+        arrays = None
         hit = None
         _engine_key, result_key = self._o_access_result_keys(settings)
         if result_key is not None:
             cache = _stage_cache_for(
                 getattr(self.topology, "cache_options", None))
             if cache.enabled:
+                # Served or produced-fresh (StageProduced marker): the arrays
+                # are valid either way — recomputing here would double the
+                # dominant stage's work on every cold/invalidated run
+                # (review MAJOR-1).
                 arrays, _metadata, hit = cache.arrays_once(
                     result_key, lambda: self._compute_o_access(settings))
                 reach = arrays["reach"]
@@ -844,7 +852,7 @@ class Accessibility(Base):
                 gravity_logistic = arrays["gravity_logistic"]
                 knn_access = arrays["knn_access"]
 
-        if hit is None:
+        if arrays is None:
             d_weights = self.topology.destinations.node_weight
             # Calculate accessibility metrics
             reach, gravity_exponential, gravity_logistic, knn_access = self.graph_engine.o_access(
@@ -870,7 +878,7 @@ class Accessibility(Base):
             self.knn_access = knn_access
             self.logger.log('Accessibility', f"KNN access calculated: min={knn_access.min():.2f}, max={knn_access.max():.2f}, mean={knn_access.mean():.2f}", v=2)
 
-        if hit is not None:
+        if hit is not None and not isinstance(hit, _StageProduced):
             self.logger.log(
                 'Accessibility',
                 f"o_access restored from stage cache "

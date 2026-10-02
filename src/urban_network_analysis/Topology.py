@@ -672,7 +672,12 @@ class Topology:
             )
 
         # Read the raw point file to recover penalty + direction columns.
-        gdf_raw = self._get_gdf(source_file, keep_columns=None)
+        # Snapshot ONCE (review MINOR-3): the same bytes are hashed into the
+        # snap stage key, decoded here for penalties/directions, and decoded
+        # again inside BuildAccessPoints — hashing one version and decoding
+        # another is the TOCTOU class dossier 06 forbids.
+        snapshot = _read_snapshot(source_file)
+        gdf_raw = _decode_snapshot_gdf(source_file, snapshot, None)
         if penalty_col not in gdf_raw.columns:
             raise ValueError(
                 f"obstacle_points_penalty_column='{penalty_col}' not found in "
@@ -703,6 +708,7 @@ class Topology:
         self.obstacles = self.BuildAccessPoints(
             source_file, cost_attribute=penalty_col, default_cost=0,
             uid_attribute=uid_attribute, label="Obstacle points",
+            snapshot=snapshot,
         )
         self.obstacles.snap_to   = snap_to
         self.obstacles.direction = directions
@@ -976,7 +982,7 @@ class Topology:
             store_zero_penalties=store_zero_penalties,
         )
 
-    def BuildAccessPoints(self, source_file : str, cost_attribute: str = "Count", default_cost: float = 1, uid_attribute: str = None, label: str = "Access points") -> AccessPoints:
+    def BuildAccessPoints(self, source_file : str, cost_attribute: str = "Count", default_cost: float = 1, uid_attribute: str = None, label: str = "Access points", snapshot: bytes = None) -> AccessPoints:
 
 
         """
@@ -1006,10 +1012,10 @@ class Topology:
         #    skipped and the body below is the original uncached path.
         cache = _stage_cache_for(self.cache_options)
         snap_key = None
-        snapshot = None
         if (cache.enabled and self.network is not None
                 and getattr(self.network, "_stage_key", None)):
-            snapshot = _read_snapshot(source_file)
+            if snapshot is None:
+                snapshot = _read_snapshot(source_file)
             snap_key = _ckid.stage_key("una:snap:v1", {
                 "file_sha256": _ckid.file_digest(snapshot),
                 "parent_network_stage": self.network._stage_key,

@@ -206,13 +206,19 @@ def test_warm_run_skips_the_producers(tmp_path, workload, cache_dir,
     run_access(s_warm)
     warm = dict(calls)
 
-    # Cold: 4 layer snapshots hashed (network + 3 point layers), 4 decodes,
-    # one topology build, one o_access compute.  Warm: the producers never
-    # run.  The snapshot READ still happens on warm — a content-addressed
-    # key cannot be computed without reading the bytes it digests; what is
-    # avoided is the decode + topology build + snapping + search work.
+    # Cold: 4 layer snapshots hashed (network + 3 point layers), 5 decodes
+    # (the obstacle layer is decoded twice from the SAME snapshot since the
+    # MINOR-3 unify — once in AddObstacles for penalties/directions, once in
+    # BuildAccessPoints for snapping), one topology build, one o_access
+    # compute.  Warm: the snap/topology/o_access producers never run; the
+    # single remaining decode is AddObstacles deriving obstacle
+    # penalties/directions from the snapshot the key hashes (that read used
+    # to be an untracked raw _get_gdf).  The snapshot READ still happens on
+    # warm — a content-addressed key cannot be computed without reading the
+    # bytes it digests; what is avoided is the decode-heavy topology build +
+    # snapping + search work.
     assert cold["snapshot"] == 4 and warm["snapshot"] == 4
-    assert cold["decode"] == 4 and warm["decode"] == 0
+    assert cold["decode"] == 5 and warm["decode"] == 1
     assert cold["topology"] == 1 and warm["topology"] == 0
     assert cold["o_access"] == 1 and warm["o_access"] == 0
 

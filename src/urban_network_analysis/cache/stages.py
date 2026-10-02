@@ -30,14 +30,14 @@ from __future__ import annotations
 import io
 import threading
 from dataclasses import dataclass
-from typing import Callable, Dict, Mapping, Optional, Tuple
+from typing import Callable, Dict, Mapping, Optional, Tuple, Union
 
 import numpy as np
 
 from ..Execution import CacheOptions
 from .store import ContentStore, StoreHit
 
-__all__ = ["StageCache", "stage_cache_for"]
+__all__ = ["StageCache", "StageHit", "StageProduced", "stage_cache_for"]
 
 
 def encode_arrays(arrays: Mapping[str, Optional[np.ndarray]]) -> Dict[str, bytes]:
@@ -86,6 +86,19 @@ class StageHit:
     source: str  # "memory" | "disk"
 
 
+@dataclass(frozen=True)
+class StageProduced:
+    """Marker returned by ``arrays_once`` when the arrays were computed in
+    THIS call (single-flight owner, or a bounded fallback) instead of being
+    served from the store.  The arrays are valid either way; callers use the
+    marker only to keep "restored from cache" log lines truthful and to skip
+    a redundant recompute (review MAJOR-1)."""
+
+    key: str
+    generation: None = None
+    source: str = "produced"
+
+
 class StageCache:
     """Facade the analysis stack talks to.  ``enabled`` is False iff the
     configured mode is 'off' — then every method degenerates to the
@@ -128,36 +141,50 @@ class StageCache:
                     produce: Callable[[], Tuple[Dict[str, Optional[np.ndarray]],
                                                 Optional[Mapping[str, object]]]]
                     ) -> Tuple[Dict[str, np.ndarray], Optional[Mapping[str, object]],
-                               Optional[StageHit]]:
+                               Union[StageHit, StageProduced]]:
         """``(arrays, metadata, hit)`` for ``key`` with compute-once semantics.
 
-        A cache hit returns the stored arrays with ``hit`` set.  On a miss the
-        single-flight owner runs ``produce()`` exactly once and commits; losers
-        block on the store's per-key lock and re-get the committed generation.
-        If owners cannot commit (payload not representable), the caller's
-        produce result is still returned — the stage simply stays uncached.
+        A cache hit returns the stored arrays with ``hit`` a :StageHit:.
+        On a miss the single-flight owner runs ``produce()`` exactly once and
+        commits; losers block on the store's per-key lock and re-get the
+        committed generation.  The returned ``hit`` is a :StageProduced:
+        marker when the arrays were computed in THIS call — served or
+        produced, the arrays are valid and the caller must not recompute
+        (review MAJOR-1: a cold cached run is the owner's compute, not an
+        uncached fallback).  If owners cannot commit (payload not
+        representable), a bounded loser falls back to its own compute the
+        same way — the stage simply stays uncached.
 
-        Callers must pass a non-empty key and only use this on an enabled
-        facade (``store is not None``); the disabled path is the plain
-        compute at the call site.
+        A per-key wait timeout (store contract: a holder slower than
+        ``wait_timeout_s``) also falls back to a local compute rather than
+        crashing the caller; a second writer can only publish an identical
+        generation (the key closure pins every numerical input), never
+        wrong bits.
         """
+        if not self.enabled:
+            arrays, metadata = produce()
+            return arrays, metadata, StageProduced(key=key)
         spins = 0
         while True:
             hit = self.get_arrays(key)
             if hit is not None:
                 return hit.arrays, hit.metadata, hit
-            with self._store.singleflight(key) as owned:
-                if owned:
+            try:
+                with self._store.singleflight(key) as owned:
+                    if owned:
+                        arrays, metadata = produce()
+                        self.put_arrays(key, arrays, metadata)
+                        return arrays, metadata, StageProduced(key=key)
+                # Loser: the owner finished — its commit should now be visible.
+                spins += 1
+                if spins >= 3:
+                    # Owner(s) could not commit an unrepresentable payload;
+                    # fall back to uncached compute instead of spinning.
                     arrays, metadata = produce()
-                    self.put_arrays(key, arrays, metadata)
-                    return arrays, metadata, None
-            # Loser: the owner finished — its commit should now be visible.
-            spins += 1
-            if spins >= 3:
-                # Owner(s) could not commit an unrepresentable payload; fall
-                # back to uncached compute instead of spinning forever.
+                    return arrays, metadata, StageProduced(key=key)
+            except TimeoutError:
                 arrays, metadata = produce()
-                return arrays, metadata, None
+                return arrays, metadata, StageProduced(key=key)
 
     @property
     def store(self) -> Optional[ContentStore]:
@@ -178,13 +205,20 @@ _REGISTRY: Dict[tuple, StageCache] = {}
 _REGISTRY_LOCK = threading.Lock()
 
 
-def stage_cache_for(options: CacheOptions) -> StageCache:
+_DISABLED_CACHE = StageCache(None)
+
+
+def stage_cache_for(options: Optional[CacheOptions]) -> StageCache:
     """One shared StageCache per distinct CacheOptions tuple (per process).
 
     Sharing matters: single-flight (identical requests compute once) and the
-    hit/miss counters are per-ContentStore.  ``mode='off'`` returns a shared
+    hit/miss counters are per-ContentStore.  ``mode='off'`` — or a ``None``
+    options object (a Topology constructed without ever going through an
+    Add*, hence no applied cache policy; review MINOR-4) — returns a shared
     disabled facade.
     """
+    if options is None:
+        return _DISABLED_CACHE
     key = (options.mode, options.directory, options.max_memory_bytes,
            options.max_disk_bytes, options.verification,
            options.schema_version)

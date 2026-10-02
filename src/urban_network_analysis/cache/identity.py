@@ -209,14 +209,44 @@ def geometry_env(profile: str, package_version: str) -> dict:
     }
 
 
+def _host_cpu_identity() -> dict:
+    """Host CPU model/ISA identity for the compute-env fingerprint (review
+    MINOR-2): llvmlite's codegen targets the host CPU, so a different model
+    or feature set may change JIT bit patterns even under identical library
+    versions.  Module-level so tests can monkeypatch it; best-effort — an
+    unreadable source degrades to a stable "unknown" marker rather than
+    raising (a missing fingerprint must cost hits, never crash a run)."""
+    name = "unknown"
+    try:
+        from llvmlite import binding as _llb
+
+        name = _llb.get_host_cpu_name()
+        if isinstance(name, bytes):
+            name = name.decode("ascii", "replace")
+    except Exception:
+        name = "unknown"
+    model = "unknown"
+    try:
+        with open("/proc/cpuinfo", "r") as fh:
+            for line in fh:
+                if line.startswith("model name"):
+                    model = line.split(":", 1)[1].strip()
+                    break
+    except OSError:
+        model = "unknown"
+    return {"name": str(name), "model": str(model)}
+
+
 def compute_env(profile: str, package_version: str) -> dict:
     """Environment for JIT/compiled numerics: geometry env + the compiler
     stack (numba/llvmlite/scipy) whose version and codegen may change bits
-    (dossier 06: "compiler/math fingerprint when bits may differ")."""
+    (dossier 06: "compiler/math fingerprint when bits may differ") + the
+    host CPU identity feeding that codegen (review MINOR-2)."""
     import llvmlite
     import numba
     env = geometry_env(profile, package_version)
     env["kind"] = "compute"
+    env["cpu"] = _host_cpu_identity()
     env["libs"]["numba"] = numba.__version__
     env["libs"]["llvmlite"] = llvmlite.__version__
     try:

@@ -1,0 +1,160 @@
+{
+  "run_id": "cg-20261002T2025Z",
+  "task": "CACHE_GRAPH",
+  "environment": {
+    "interpreter": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python",
+    "pytest_env": "PYTHONHASHSEED=0",
+    "worktree": ".claude/worktrees/cache-graph (branch worktree-cache-graph; implementation commit e616326 + review fix round commit)",
+    "refs_note": "worktree has no .refs/ -> madina-reference suites skip (32 skips in tests/platform_geometry are exactly that artifact)",
+    "review": "independent reviewer cache-graph-reviewer audited e616326: ACCEPT-WITH-FINDINGS (MAJOR-1, MINOR-2/3/4, NOTE-5/6/7); fix round below closes MAJOR-1 + MINOR-2/3/4 with regression tests and mutants M12-M16; NOTE-5/7 documented, no code change"
+  },
+  "content_hashes_at_commit": {
+    "src/urban_network_analysis/Engines/Accessibility.py": "1dbede2db1696545d34fb158e07241f005adb940fc35758f2e5f347a12b9ee95",
+    "src/urban_network_analysis/Engines/AccessibilityWElevation.py": "efc4dd4a74dc2ec30ff3aeefff3cce7fb41361a75f2d2e04da3af44a39e0df36",
+    "src/urban_network_analysis/Topology.py": "27c0f1424025fdabe22858ee00c6c806531d54b06e2f1169a7c0fd24c0e5cf88",
+    "src/urban_network_analysis/cache/identity.py": "81cd3e09ac06552e081c13378be24a4e1b7369db9ab64b11b96b7f0a5b419230",
+    "src/urban_network_analysis/cache/stages.py": "264c5025ca446acc1708fe51ed6dad3eb8239a9e3ded100f33dcaedadb8063cb",
+    "tests/cache/invalidation/conftest.py": "eb3681c9e7e22e91fff35ea5bab317ca539f58e887789be38a5233bcc4a98f7f",
+    "tests/cache/invalidation/test_dependency_mutations_miss.py": "d6bc40dd46d1734bf5338381b4e0eabe7138d4cd884a411198434a299951b689",
+    "tests/cache/invalidation/test_keys_unit.py": "c9c0fc0c3b219ef2225e511e2c1d957664ed4de10000b5d9544303a13a62b4b0",
+    "tests/cache/invalidation/test_output_only_changes_reuse.py": "784374a7d44dbb9792535a77cf8406b785a3eff7cc42ba0c0d556133f7dfca09",
+    "tests/cache/invalidation/test_parity_safety_engagement.py": "d02b56442696d202b54a7ed8804e4f82f3d1402e75f47a863e880cf94ef7d95b",
+    "tests/cache/invalidation/test_review_fixes.py": "b8d7693ba14ee550f0be4b9ba17cd624ae197c954548569dcef2624b028283b6"
+  },
+  "content_hashes_at_e616326_pre_fix_note": "hashes of the reviewed implementation, before the fix round (for drift archaeology); these files have since been changed by the fix round, so they no longer match the working tree",
+  "content_hashes_at_e616326_pre_fix": {
+    "src/urban_network_analysis/Engines/Accessibility.py": "1f0070422c9fdb9196474ed894bb3583a6f6ae3c6e280676059ca12d8779c916",
+    "src/urban_network_analysis/Engines/AccessibilityWElevation.py": "22965bb960b9fc2f8383e3a35c90a0652d2b8067618b57cd91a663a7baed698d",
+    "src/urban_network_analysis/Topology.py": "98f09f13bd9d45daf463595196574537ba4c5283d0451a508d043fa7a21e88d8",
+    "src/urban_network_analysis/cache/identity.py": "5ab5f535c1ac7349f664d4c3637d53e7c902f0e038e5d928c8a88b567c3bc0bd",
+    "src/urban_network_analysis/cache/stages.py": "e1e484546243e1712762ca1f69873d08b5482efda4f68b39e2a6ec9ed7074e64"
+  },
+  "commands_and_outcomes": [
+    {
+      "command": "python -m pytest tests/cache/ -q  (alan, PYTHONHASHSEED=0, worktree @ e616326)",
+      "outcome": "155 passed / 0 failed in 33.89 s  (suite_cache_all.log; 53 new invalidation tests + 102 CACHE_STORE store tests)"
+    },
+    {
+      "command": "python -m pytest tests/batch/ -q  (worktree @ e616326)",
+      "outcome": "88 passed / 0 failed in 229.82 s  (suite_batch.log)"
+    },
+    {
+      "command": "python -m pytest tests/execution/ tests/platform_geometry/ tests/perf_contract/ -q  (worktree @ e616326)",
+      "outcome": "112 passed / 32 skipped / 0 failed in 32.88 s  (suite_exec_platform.log; skips = .refs-absence artifacts)"
+    },
+    {
+      "command": "probe4: W1 RunAccessibility off/cold/warm artifact parity + verbose log capture  (/tmp/cg_probe4.py)",
+      "outcome": "PROBE4_OK: off==cold==warm bytes (geojson+feather+csv), warm (hits,misses)=(5,0); verbosity-2 run shows 5 hit lines + replayed content-derived log lines"
+    },
+    {
+      "command": "probe5: W3 (92x80, 2560+2560, 8 obstacles) economics with producer counters  (/tmp/cg_probe5.py; probe5_w3_economics.json)",
+      "outcome": "cold 1.087 s (decode 4 / topology 1 / o_access 1) | warm 0.164 s (5/5 disk hits, zero producers) | off 0.651 s — ~4x steady-state row saving"
+    },
+    {
+      "command": "probe6: W1 RunFlow off/cold/warm artifact parity  (/tmp/cg_probe6.py)",
+      "outcome": "PROBE6_OK: 3 files, cold==off and warm==off bytes; warm stats delta (hits,misses)=(5,0)"
+    },
+    {
+      "command": "probe7: W1 RunODM off/cold/warm artifact parity  (/tmp/cg_probe7.py)",
+      "outcome": "PROBE7_OK: off==cold==warm bytes; warm (hits,misses)=(4,0) (topology + origins/destinations/obstacle snaps); OD matrix recomputed every run (OD result stage deferred out of v1 scope). Early KeyError tracebacks in the same log were probe fixture errors (uid/cost columns not in the W1 fixture), reproduced with cache off — pre-existing BuildAccessPoints/AddNetwork behavior, attribution note appended in-log"
+    },
+    {
+      "command": "probe8: RunBatch cached-rows probe — 3 project rows (r350_a, r350_b identical, r900 different search_radius) through the serial route and the parallel route (workers=2, spawn), each compared to an uncached same-route anchor  (/tmp/cg_probe8.py; probe8_batch_cached.log)",
+      "outcome": "PROBE8_OK: serial rows all bitwise==uncached anchor with store delta (hits,misses)=(9,6) = row-a cold (0,5) + row-b warm (5,0) + row-c result-only miss (4,1); parallel rows all bitwise==uncached anchor; committed on-disk stage set = 6 distinct keys (topology + 3 snaps + o_access(r350) + o_access(r900)); parallel-route hit/miss counters are per-worker-process (spawn registries) and intentionally not asserted from the parent"
+    },
+    {
+      "command": "mutation battery  (/tmp/cg_mutbattery.py; mutation_battery.log)",
+      "outcome": "11/11 mutants SELECTED (at least one suite failure each), every restore verified byte-identical by sha256"
+    }
+  ],
+  "review_fix_round_commands_and_outcomes": {
+    "scope": "post-review fix round on top of e616326 (same run_id; *_round2.* logs)",
+    "entries": [
+      {
+        "command": "python -m pytest tests/cache/ -q  (fix round)",
+        "outcome": "162 passed / 0 failed in 16.43 s  (suite_cache_all_round2.log; 155 baseline + 7 new review-fix tests)"
+      },
+      {
+        "command": "python -m pytest tests/batch/ -q  (fix round)",
+        "outcome": "88 passed / 0 failed in 184.64 s  (suite_batch_round2.log; unchanged from baseline)"
+      },
+      {
+        "command": "python -m pytest tests/execution/ tests/platform_geometry/ -q  (fix round, baseline-identical command)",
+        "outcome": "112 passed / 32 skipped / 0 failed in 12.96 s  (suite_exec_platform_round2.log; exactly the e616326 baseline)"
+      },
+      {
+        "command": "probes 4/6/7/8 re-run on the fix round",
+        "outcome": "PROBE4_OK / PROBE6_OK / PROBE7_OK / PROBE8_OK (probe*_round2.log); probe8 serial (9,6) + bitwise-equal parallel rows unchanged; probe5 post-fix: cold 0.946 s o_access-producers=1 (reviewer measured 2 on e616326), warm 0.160 s, off 0.613 s (probe5_w3_economics.json regenerated)"
+      },
+      {
+        "command": "mutation battery round 2 (11 original + 6 fix-round mutants M12-M16b)",
+        "outcome": "17/17 mutants SELECTED, every restore byte-identical (mutation_battery_round2.log; M12/M12b restore the MAJOR-1 double-compute, M13 drops cpu identity, M14 drops the snapshot passthrough, M15 re-breaks stage_cache_for(None), M16 removes the TimeoutError fallback)"
+      },
+      {
+        "command": "content-hash verification of this evidence.json against the working tree (cg_verify_hashes.py)",
+        "outcome": "HASHES_VERIFIED: all 11 current-file hashes match byte-exact; 5 pre-fix hashes validated as well-formed historical digests (content_hash_verification_round2.log)"
+      }
+    ],
+    "suite_expectation_changes": [
+      "test_keys_unit.py::test_compute_once_under_threads now asserts the producing caller received StageProduced (contract MAJOR-1) instead of hit is None",
+      "test_parity_safety_engagement.py::test_warm_run_skips_the_producers now expects cold decodes == 5 (MINOR-3 unification decodes the obstacle snapshot twice from the SAME bytes: penalties in AddObstacles + snapping in BuildAccessPoints) and warm decodes == 1 (the penalties derive from the snapshot each run; that read was previously an untracked raw _get_gdf)"
+    ]
+  },
+  "review_findings_dispositions": {
+    "MAJOR-1_cold_double_compute": "FIXED + regression tests + mutants. arrays_once now returns (arrays, metadata, StageProduced) for in-call computes (owner, bounded-loser fallback, disabled facade, TimeoutError fallback); both engines keep served/produced arrays and only fall back to a direct graph_engine.o_access when the facade could not participate (disabled or key unrepresentable). Regression: test_awe_direct_o_access_off1_cold1_warm0 + plain-engine twin (off=1, cold=1, warm=0 + stats deltas proving engagement); probe5 post-fix o_access-producers=1 on cold. Reviewer measured off=1/cold=2/warm=0 and cold 0.255 s vs off 0.146 s on W1.",
+    "MINOR-2_compute_env_cpu_identity": "FIXED + test + mutant. compute_env pins _host_cpu_identity() (llvmlite host CPU name + /proc/cpuinfo model, OSError-safe, module-level monkeypatchable); geometry_env deliberately unchanged. Regression: test_compute_env_carries_cpu_identity; mutant M13.",
+    "MINOR-3_AddObstacles_two_read_window": "FIXED + test + mutant. AddObstacles snapshots once (_read_snapshot + _decode_snapshot_gdf) and passes the bytes down to BuildAccessPoints via a new trailing snapshot=None kwarg (hashing and decoding can no longer observe different versions; the snapshot read count per run drops from 2 to 1 for the obstacle file). Regression: test_obstacle_file_is_snapshotted_exactly_once_per_run; mutant M14. Suite decode expectations updated (see suite_expectation_changes).",
+    "MINOR-4_stage_cache_for_None": "FIXED + tests + mutant. stage_cache_for(None) returns a shared disabled facade (_DISABLED_CACHE) instead of raising AttributeError; unit + functional policy-less-Topology BuildAccessPoints regressions; mutants M15. A Topology built under an OFF run has no stage keys, so the plain engine's result key is legitimately None there (the functional test builds under disk mode and flips cache_options per leg).",
+    "NOTE-5_label_embedded_log_extras": "DOCUMENTED, no code change (reviewer: cosmetic, replay-only): restored-run replayed log lines may embed label-derived extras; recorded in limitations.",
+    "NOTE-6_timeout_error_propagation": "MITIGATED + test + mutant. arrays_once catches TimeoutError from the singleflight wait and falls back to a local produce (a second writer can only publish an identical generation — the key closure pins every numerical input); regression test_arrays_once_falls_back_to_produce_on_wait_timeout; mutant M16. The ENOENT incident (registry-held store whose root was wiped) remains the documented CACHE_STORE NOTE-6 loud-failure contract; handoff to INTEGRATE/CACHE_STORE stands.",
+    "NOTE-7_harmless_over_closures": "DOCUMENTED, no code change (reviewer: over-closure costs occasional hits, never wrong hits): network_load_nodes and default_cost are pinned in stage keys; recorded in limitations."
+  },
+  "stage_inventory": {
+    "per_AWE_row": "5 stages: una:topology:v1 -> una:snap:v1 (network, origins, destinations, obstacles; snap keys chain parent_network_stage) -> una:awe:engine:v1 -> una:awe:o_access:v1",
+    "plain_engine": "una:acc:engine:v1 / una:acc:o_access:v1 (same shape, no elevation/obstacle deps; obstacles ignored by THIS engine by design)",
+    "expected_miss_signatures": "topology-key deps (network bytes, precision, weight column, semantic profile) -> (0,5); snap deps (layer bytes, uid column) -> (3,2); result-key deps (search_radius, gravity_*, knn_*, elevation flag/penalty, obstacle snap_to/direction) -> (4,1)",
+    "output_only_changes": "output_folder/file_name/wStamp/format flags/csv_delimiter -> (5,0) with new publication settings honored in artifacts",
+    "off_mode": "fully inert: no keys, no reads, no directory; warm==cold==off artifact bytes"
+  },
+  "mutation_battery_detail": {
+    "protocol": "each mutant = one exact unique string replacement in a delivered source file; pytest tests/cache/invalidation/ re-run; file restored and sha256 verified against pristine",
+    "mutants": [
+      {"id": "M1_schema_dropped", "file": "cache/identity.py", "change": "stage_key() ignores schema arg (pins 1)", "selected_by": "schema-bump unit test"},
+      {"id": "M2_array_content_ignored", "file": "cache/identity.py", "change": "arrays_digest hashes static bytes", "selected_by": "ndarray-content sensitivity tests"},
+      {"id": "M3_env_profile_pinned", "file": "cache/identity.py", "change": "env fingerprint profile pinned to una_legacy", "selected_by": "profile-pin unit tests"},
+      {"id": "M4_dtype_guard_off", "file": "cache/stages.py", "change": "object/void dtype guard disabled", "selected_by": "npy refusal tests"},
+      {"id": "M5_off_mode_not_inert", "file": "cache/stages.py", "change": "mode 'off' constructs a store", "selected_by": "off-mode inertness tests"},
+      {"id": "M6_precision_out_of_key", "file": "Topology.py", "change": "network_precision pinned in network stage key", "selected_by": "precision-mutation miss test"},
+      {"id": "M7_dag_chain_broken", "file": "Topology.py", "change": "snap key drops parent_network_stage", "selected_by": "network-bytes mutation test (snap must miss too)"},
+      {"id": "M8_sindex_not_rebuilt", "file": "Topology.py", "change": "restore leaves edge_sindex None", "selected_by": "origins-mutation run (AttributeError)"},
+      {"id": "M9_obstacle_snap_to_out", "file": "Engines/AccessibilityWElevation.py", "change": "obstacle_snap_to pinned in engine key", "selected_by": "obstacle snap_to mutation test"},
+      {"id": "M10_elevation_penalty_out", "file": "Engines/AccessibilityWElevation.py", "change": "elevation_penalty pinned in engine key", "selected_by": "elevation_penalty mutation test"},
+      {"id": "M11_radius_out_of_result_key", "file": "Engines/AccessibilityWElevation.py", "change": "search_radius pinned in result key", "selected_by": "search_radius mutation test"}
+    ]
+  },
+  "safety_properties_tested": [
+    "warm==cold==off exported artifact bytes (geojson/feather/csv) on RunAccessibility, RunFlow, RunODM",
+    "restored CRS byte-stable via projjson (crs.to_json -> CRS.from_json); WKT round-trip demonstrably NOT stable and not used",
+    "WKB payloads stored with per-geometry int64 lengths (bare concatenated blob parses only the first geometry — wrong-hit class closed)",
+    "restored payloads are fresh copies; live-object clobbering (reach/weights/node_weight) cannot poison later runs",
+    "corrupted blob cannot serve a hit (checksum verification recomputes correctly)",
+    "mtime changes and same-bytes-different-path still hit (content-addressed identity)",
+    "unrepresentable payloads (mixed-dimension geoms, missing uid, object dtypes) skip the STORE but still chain _stage_key downstream — a future miss, never a wrong hit",
+    "single-flight compute-once under 4 threads (arrays_once); bounded 3-spin fallback to uncached compute",
+    "off mode creates no directory and shares the historical code path bit-for-bit"
+  ],
+  "limitations": [
+    "OD-matrix (RunODM engine.OD_Matrix) and flow results are not result-cached stages in v1 (explicitly deferred); their topology/snap stages ARE cached and verified",
+    "snapshot bytes are read+hashed every run by design (content-addressed identity); what is avoided is decode/topology-build/snapping/search",
+    "memory-mode stage cache is exercised by tests but campaign economics evidence targets disk mode",
+    "RunBatch rows opt in per-row via settings.execution.cache; batch-level cache semantics were validated by the tests/batch suite (88 passed)",
+    "NOTE-5 (reviewer, cosmetic): restored-run replayed log lines may embed label-derived extras from producer metadata; replay-only, no numerical surface",
+    "NOTE-7 (reviewer, accepted over-closure): network_load_nodes and default_cost are pinned in stage keys though not every pinned value changes produced bits — over-closure costs occasional hits, never serves wrong bits"
+  ],
+  "notes": [
+    "Implementation commit e616326 on worktree-cache-graph; independent reviewer cache-graph-reviewer verdict ACCEPT-WITH-FINDINGS recorded in receipt.json; fix round (this tree) closes MAJOR-1/MINOR-2/MINOR-3/MINOR-4 with tests + mutants M12-M16b, mitigates NOTE-6, documents NOTE-5/NOTE-7.",
+    "INCIDENT (reproduced, explained, probe-fixed; no library change): an early probe8 draft wiped CACHE_DIR between legs while stage_cache_for's process registry still held a live store constructed during a previous leg's stats() call. The store's __init__ (which creates store/locks/tmp/quarantine) never re-runs, put() lazily recreates only its own store/+tmp/ subtrees, so the next single-flight os.link into locks/ failed FileNotFoundError. This is exactly the documented CACHE_STORE NOTE-6 contract: an uncoordinated directory removal racing a live store fails LOUDLY (OSError family) instead of serving wrong data. Verified with syscall tracing (no internal deleter; locks/ inode transitioned to absent) and 3/3 deterministic reproduction on two filesystems. Probe fixed to never wipe the root under a live registry; HANDOFF to INTEGRATE/CACHE_STORE: consider a cheap locks/-existence ensure (or an explicit invalidate-registry-on-root-loss) before _acquire_file_lock if operator workflows wipe cache roots under running processes.",
+    "Whole-repo closure regression runs in the main checkout after the ff-merge and is recorded in the closure commit (closure_regression.json).",
+    "No pushes, merges to main, releases, purchases, or credential/provider changes."
+  ]
+}
