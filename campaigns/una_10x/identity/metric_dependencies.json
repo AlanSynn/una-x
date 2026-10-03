@@ -1,0 +1,414 @@
+{
+  "alias_bindings": {
+    "knn_gravity_beta": {
+      "bound_to": "gravity_beta",
+      "dead_in_fold": true,
+      "shared_slot": [
+        "gravity_beta"
+      ]
+    },
+    "knn_gravity_growth_rate": {
+      "bound_to": "gravity_growth_rate",
+      "dead_in_fold": true,
+      "shared_slot": [
+        "gravity_growth_rate"
+      ]
+    },
+    "knn_gravity_logistic_midpoint": {
+      "bound_to": "gravity_logistic_midpoint",
+      "dead_in_fold": true,
+      "shared_slot": [
+        "gravity_logistic_midpoint"
+      ]
+    },
+    "knn_gravity_plateau": {
+      "bound_to": "gravity_plateau",
+      "dead_in_fold": true,
+      "shared_slot": [
+        "gravity_plateau"
+      ]
+    }
+  },
+  "arms": {
+    "C_trace_and_metric": "route AND metric bundle reused when MetricID matches",
+    "C_trace_only": "route once per distinct query; every job replays its own metric fold from the trace",
+    "law": "arm gains overlap; they are never multiplied"
+  },
+  "call_sites": {
+    "bindings_unanimous": true,
+    "linenos": [
+      395,
+      435,
+      472
+    ],
+    "per_site": {
+      "395": {
+        "cutoff": "cutoff",
+        "d_distance": "d_distance",
+        "d_weights": "d_weights",
+        "gravity_beta": "gravity_beta",
+        "gravity_growth_rate": "gravity_growth_rate",
+        "gravity_logistic_midpoint": "gravity_logistic_midpoint",
+        "gravity_plateau": "gravity_plateau",
+        "knn_decay": "knn_decay",
+        "knn_gravity_beta": "gravity_beta",
+        "knn_gravity_growth_rate": "gravity_growth_rate",
+        "knn_gravity_logistic_midpoint": "gravity_logistic_midpoint",
+        "knn_gravity_plateau": "gravity_plateau",
+        "knn_weights": "knn_weights"
+      },
+      "435": {
+        "cutoff": "cutoff",
+        "d_distance": "d_distance",
+        "d_weights": "d_weights",
+        "gravity_beta": "gravity_beta",
+        "gravity_growth_rate": "gravity_growth_rate",
+        "gravity_logistic_midpoint": "gravity_logistic_midpoint",
+        "gravity_plateau": "gravity_plateau",
+        "knn_decay": "knn_decay",
+        "knn_gravity_beta": "gravity_beta",
+        "knn_gravity_growth_rate": "gravity_growth_rate",
+        "knn_gravity_logistic_midpoint": "gravity_logistic_midpoint",
+        "knn_gravity_plateau": "gravity_plateau",
+        "knn_weights": "knn_weights"
+      },
+      "472": {
+        "cutoff": "cutoff",
+        "d_distance": "d_distance",
+        "d_weights": "d_weights",
+        "gravity_beta": "gravity_beta",
+        "gravity_growth_rate": "gravity_growth_rate",
+        "gravity_logistic_midpoint": "gravity_logistic_midpoint",
+        "gravity_plateau": "gravity_plateau",
+        "knn_decay": "knn_decay",
+        "knn_gravity_beta": "gravity_beta",
+        "knn_gravity_growth_rate": "gravity_growth_rate",
+        "knn_gravity_logistic_midpoint": "gravity_logistic_midpoint",
+        "knn_gravity_plateau": "gravity_plateau",
+        "knn_weights": "knn_weights"
+      }
+    }
+  },
+  "derived_params": {
+    "gravity_growth_rate": {
+      "expression": "settings.gravity_decay_constant / settings.gravity_logistic_midpoint",
+      "identity_rule": "record the quotient's IEEE-754 bits at plan build (or both inputs with identical typed evaluation); a 1-ULP change in either input or in the quotient misses",
+      "inputs": [
+        "gravity_decay_constant",
+        "gravity_logistic_midpoint"
+      ],
+      "kwarg": "gravity_growth_rate",
+      "op": "truediv",
+      "wrapper": "o_access"
+    }
+  },
+  "destination_weight_change": "changed destination weights generally require ALL weighted metrics again but may share routing (TraceID does not embed MetricID)",
+  "fold": {
+    "decorators": [
+      "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+    ],
+    "engine_file": "src/urban_network_analysis/Engines/AccessibilityWElevation.py",
+    "engine_sha256": "efc4dd4a74dc2ec30ff3aeefff3cce7fb41361a75f2d2e04da3af44a39e0df36",
+    "fold_name": "reach_gravity_knn_access",
+    "outputs": [
+      "reach",
+      "gravity_exponential",
+      "gravity_logistic",
+      "knn_access"
+    ],
+    "params": [
+      "d_distance",
+      "d_weights",
+      "cutoff",
+      "gravity_beta",
+      "gravity_plateau",
+      "gravity_logistic_midpoint",
+      "knn_gravity_plateau",
+      "knn_weights",
+      "knn_gravity_beta",
+      "knn_decay",
+      "knn_gravity_logistic_midpoint",
+      "gravity_growth_rate",
+      "knn_gravity_growth_rate"
+    ],
+    "params_dead_in_fold": [
+      "knn_gravity_beta",
+      "knn_gravity_growth_rate",
+      "knn_gravity_logistic_midpoint",
+      "knn_gravity_plateau"
+    ],
+    "per_output": {
+      "gravity_exponential": {
+        "branch_conditions": [],
+        "branches": [
+          {
+            "calls": [
+              "exp",
+              "maximum",
+              "sum",
+              "where"
+            ],
+            "params_read": [
+              "cutoff",
+              "d_distance",
+              "d_weights",
+              "gravity_beta",
+              "gravity_plateau"
+            ],
+            "when": []
+          }
+        ],
+        "calls": [
+          "exp",
+          "maximum",
+          "sum",
+          "where"
+        ],
+        "params_read": [
+          "cutoff",
+          "d_distance",
+          "d_weights",
+          "gravity_beta",
+          "gravity_plateau"
+        ]
+      },
+      "gravity_logistic": {
+        "branch_conditions": [],
+        "branches": [
+          {
+            "calls": [
+              "exp",
+              "sum",
+              "where"
+            ],
+            "params_read": [
+              "cutoff",
+              "d_distance",
+              "d_weights",
+              "gravity_growth_rate",
+              "gravity_logistic_midpoint",
+              "gravity_plateau"
+            ],
+            "when": []
+          }
+        ],
+        "calls": [
+          "exp",
+          "sum",
+          "where"
+        ],
+        "params_read": [
+          "cutoff",
+          "d_distance",
+          "d_weights",
+          "gravity_growth_rate",
+          "gravity_logistic_midpoint",
+          "gravity_plateau"
+        ]
+      },
+      "knn_access": {
+        "branch_conditions": [
+          "knn == 0",
+          "knn_decay == 'exponential'",
+          "knn_decay == 'logistic'"
+        ],
+        "branches": [
+          {
+            "calls": [],
+            "params_read": [],
+            "when": [
+              [
+                "knn == 0",
+                true
+              ]
+            ]
+          },
+          {
+            "calls": [
+              "argsort",
+              "exp",
+              "maximum",
+              "min",
+              "sum",
+              "where"
+            ],
+            "params_read": [
+              "cutoff",
+              "d_distance",
+              "d_weights",
+              "gravity_beta",
+              "gravity_plateau",
+              "knn_decay",
+              "knn_weights"
+            ],
+            "when": [
+              [
+                "knn == 0",
+                false
+              ],
+              [
+                "knn_decay == 'exponential'",
+                true
+              ]
+            ]
+          },
+          {
+            "calls": [
+              "argsort",
+              "exp",
+              "min",
+              "sum",
+              "where"
+            ],
+            "params_read": [
+              "cutoff",
+              "d_distance",
+              "d_weights",
+              "gravity_growth_rate",
+              "gravity_logistic_midpoint",
+              "gravity_plateau",
+              "knn_decay",
+              "knn_weights"
+            ],
+            "when": [
+              [
+                "knn == 0",
+                false
+              ],
+              [
+                "knn_decay == 'exponential'",
+                false
+              ],
+              [
+                "knn_decay == 'logistic'",
+                true
+              ]
+            ]
+          },
+          {
+            "calls": [
+              "argsort",
+              "min",
+              "sum",
+              "where"
+            ],
+            "params_read": [
+              "cutoff",
+              "d_distance",
+              "d_weights",
+              "knn_decay",
+              "knn_weights"
+            ],
+            "when": [
+              [
+                "knn == 0",
+                false
+              ],
+              [
+                "knn_decay == 'exponential'",
+                false
+              ],
+              [
+                "knn_decay == 'logistic'",
+                false
+              ]
+            ]
+          }
+        ],
+        "calls": [
+          "argsort",
+          "exp",
+          "maximum",
+          "min",
+          "sum",
+          "where"
+        ],
+        "params_read": [
+          "cutoff",
+          "d_distance",
+          "d_weights",
+          "gravity_beta",
+          "gravity_growth_rate",
+          "gravity_logistic_midpoint",
+          "gravity_plateau",
+          "knn_decay",
+          "knn_weights"
+        ]
+      },
+      "reach": {
+        "branch_conditions": [],
+        "branches": [
+          {
+            "calls": [
+              "sum",
+              "where"
+            ],
+            "params_read": [
+              "cutoff",
+              "d_distance",
+              "d_weights"
+            ],
+            "when": []
+          }
+        ],
+        "calls": [
+          "sum",
+          "where"
+        ],
+        "params_read": [
+          "cutoff",
+          "d_distance",
+          "d_weights"
+        ]
+      }
+    }
+  },
+  "fold_reuse_policy": {
+    "failed_standalone_fold": "does not block routing reuse; it blocks that finer reuse profile only",
+    "ge_only_extraction": "FORBIDDEN by default: extracting a partial reduction can change reduction bits vs the combined fold (compiler gate); reuse the whole combined metric bundle for identical metric inputs, or prove a same-ordered-plan (IR/assembly + bit evidence on selection boundaries, ties, extremes, every known specialization)",
+    "no_tolerance": "never fix by allclose or 1-ULP tolerance"
+  },
+  "fresh_copy_law": "shared immutable storage is private; each public job receives FRESH correctly typed arrays; mutating one completed row's outputs must not affect any other",
+  "mutation_law": "every recorded dependency (params_read incl. condition_params, derived inputs, plan fields, dtype plan) mutates identity => miss; unread params are characterization-only (poison tests must show no output change)",
+  "numerical_env": {
+    "engine_sha256": "efc4dd4a74dc2ec30ff3aeefff3cce7fb41361a75f2d2e04da3af44a39e0df36",
+    "fold_decorators": [
+      "nb.njit(parallel=NUMBA_PARALLEL, cache=NUMBA_CACHE, nogil=NUMBA_NOGIL, fastmath=NUMBA_FASTMATH)"
+    ],
+    "numba_version": "0.67.0",
+    "numpy_version": "2.4.6"
+  },
+  "plan_fields_per_output": {
+    "gravity_exponential": [
+      "kept distances and weights in ORIGINAL order",
+      "exp(-gravity_beta * maximum(0, d - gravity_plateau))",
+      "sum over kept entries; no reassociation of the sum layout"
+    ],
+    "gravity_logistic": [
+      "kept distances and weights in ORIGINAL order",
+      "growth = wrapper-derived quotient (see derived_params)",
+      "1 - 1/(1 + exp(-growth*(d - plateau - midpoint))); sum unchanged"
+    ],
+    "knn_access": [
+      "argsort over retained distances, default kind: the tie permutation is part of plan identity and is never swapped",
+      "crop k = min(retained count, len(knn_weights))",
+      "branch on knn_decay (condition literals recorded below); each branch's decay form and its params are the AST-recorded reads",
+      "other-KNN branch: coefficients * kept weights, no decay"
+    ],
+    "reach": [
+      "membership: retained = d_distance <= cutoff (bitwise compare)",
+      "weights in ORIGINAL retained order; sum of kept destination weights; result stored via the driver's result-dtype cast"
+    ]
+  },
+  "profile_id": "legacy_default_profile",
+  "profile_invalidation": "changing profile_id invalidates this whole table (dossier 05)",
+  "schema_version": "una-10x-c10-1",
+  "task": "C10",
+  "work_counters": [
+    "folds_done",
+    "folds_reused",
+    "traces_built",
+    "traces_reused",
+    "fresh_copy_ops"
+  ]
+}
