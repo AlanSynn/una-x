@@ -1,0 +1,134 @@
+{
+  "classification": "measured_source_derived_cohort_prototype_not_UNA_end_to_end",
+  "reference_sha": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "boundary": "K prepared-array accessibility metric jobs with distinct beta values; one tape build, all replays and returned arrays included; no GIS, file cache, public batch, exports or JIT",
+  "K": 32,
+  "betas": [
+    0.005,
+    0.007419354838709678,
+    0.009838709677419354,
+    0.012258064516129033,
+    0.014677419354838711,
+    0.017096774193548388,
+    0.019516129032258064,
+    0.021935483870967745,
+    0.02435483870967742,
+    0.026774193548387098,
+    0.029193548387096774,
+    0.031612903225806455,
+    0.03403225806451613,
+    0.03645161290322581,
+    0.038870967741935485,
+    0.04129032258064516,
+    0.04370967741935484,
+    0.046129032258064515,
+    0.04854838709677419,
+    0.05096774193548387,
+    0.053387096774193545,
+    0.05580645161290323,
+    0.058225806451612905,
+    0.06064516129032258,
+    0.06306451612903226,
+    0.06548387096774194,
+    0.06790322580645163,
+    0.0703225806451613,
+    0.07274193548387098,
+    0.07516129032258065,
+    0.07758064516129033,
+    0.08
+  ],
+  "nodes": 8464,
+  "destinations": 2560,
+  "origins": 512,
+  "threads": 4,
+  "radius": 20.0,
+  "input_sha256": "bb913dbbad1dababc0bdaf99698f416f628183ce8c0d44feffcfb422b7a2630b",
+  "raw": [
+    {
+      "rep": 0,
+      "arm": "repeat",
+      "wall_ns": 529930949,
+      "build_tape_ns": null,
+      "tape_bytes": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 0,
+      "arm": "reuse",
+      "wall_ns": 81985466,
+      "build_tape_ns": 18208148,
+      "tape_bytes": 2878680,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 1,
+      "arm": "reuse",
+      "wall_ns": 84615158,
+      "build_tape_ns": 18638108,
+      "tape_bytes": 2878680,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 1,
+      "arm": "repeat",
+      "wall_ns": 479770601,
+      "build_tape_ns": null,
+      "tape_bytes": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 2,
+      "arm": "repeat",
+      "wall_ns": 486717773,
+      "build_tape_ns": null,
+      "tape_bytes": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 2,
+      "arm": "reuse",
+      "wall_ns": 97758497,
+      "build_tape_ns": 20222651,
+      "tape_bytes": 2878680,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 3,
+      "arm": "reuse",
+      "wall_ns": 79207581,
+      "build_tape_ns": 18307768,
+      "tape_bytes": 2878680,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 3,
+      "arm": "repeat",
+      "wall_ns": 524428298,
+      "build_tape_ns": null,
+      "tape_bytes": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 4,
+      "arm": "repeat",
+      "wall_ns": 551679054,
+      "build_tape_ns": null,
+      "tape_bytes": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 4,
+      "arm": "reuse",
+      "wall_ns": 108105803,
+      "build_tape_ns": 20841576,
+      "tape_bytes": 2878680,
+      "all_result_bits_equal": true
+    }
+  ],
+  "derived_medians_s": {
+    "repeat": 0.524428298,
+    "reuse": 0.084615158
+  },
+  "derived_speedup": 6.197805575213841,
+  "file_sha256": "462fed0ac4b0fe246a254cfd2d1ac0427f4914e25db49d7f7dffafbad1c3778f"
+}

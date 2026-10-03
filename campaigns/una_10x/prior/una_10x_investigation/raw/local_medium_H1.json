@@ -1,0 +1,92 @@
+{
+  "reference_source_sha": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "boundary": "prepared CSR and terminal arrays -> four materialized metric arrays; candidate guard/index/all workspaces included; GIS, graph building, exports, process startup and JIT excluded",
+  "classification": "measured_source_derived_component_prototype_not_UNA_end_to_end",
+  "side": 256,
+  "nodes": 65536,
+  "directed_arcs": 261120,
+  "destinations": 65536,
+  "origins": 512,
+  "radius_in_synthetic_cost_units": 4.0,
+  "numba_threads": 1,
+  "numba_effective_threads": 1,
+  "input_sha256": "44d039436fe1620b93222f1c86227b023af0ebb54676223ec35b08c6da98539a",
+  "input_bytes": 7601160,
+  "output_bytes": 16384,
+  "compile_warmup_s": 0.00020314699997925345,
+  "records": [
+    {
+      "rep": 0,
+      "arm": "baseline",
+      "wall_ns": 90421559,
+      "output_bytes_equal": true
+    },
+    {
+      "rep": 0,
+      "arm": "local",
+      "wall_ns": 6565757,
+      "output_bytes_equal": true
+    },
+    {
+      "rep": 1,
+      "arm": "local",
+      "wall_ns": 5486187,
+      "output_bytes_equal": true
+    },
+    {
+      "rep": 1,
+      "arm": "baseline",
+      "wall_ns": 89547038,
+      "output_bytes_equal": true
+    },
+    {
+      "rep": 2,
+      "arm": "baseline",
+      "wall_ns": 89263549,
+      "output_bytes_equal": true
+    },
+    {
+      "rep": 2,
+      "arm": "local",
+      "wall_ns": 6462070,
+      "output_bytes_equal": true
+    },
+    {
+      "rep": 3,
+      "arm": "local",
+      "wall_ns": 5347337,
+      "output_bytes_equal": true
+    },
+    {
+      "rep": 3,
+      "arm": "baseline",
+      "wall_ns": 87827091,
+      "output_bytes_equal": true
+    },
+    {
+      "rep": 4,
+      "arm": "baseline",
+      "wall_ns": 90961644,
+      "output_bytes_equal": true
+    },
+    {
+      "rep": 4,
+      "arm": "local",
+      "wall_ns": 9390403,
+      "output_bytes_equal": true
+    }
+  ],
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "numpy": "2.3.5",
+  "numba": "0.65.1",
+  "cpu_affinity": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "process_rss_after_bytes": 214491136,
+  "memory_peak": "not_sampled",
+  "source_code_sha256": "9d3e3ac3967f43f63df67737ce942f957b20290152b8c42f8c32c1d1f60b2cb7"
+}

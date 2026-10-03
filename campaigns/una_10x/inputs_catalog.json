@@ -1,0 +1,30 @@
+{
+  "status": "source_metadata_only_verify_before_use",
+  "upstream": "City-Form-Lab/urban_network_analysis",
+  "ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+  "files": [
+    {
+      "path": "docs/Boston/20260703_PercLenNetwork_InnerCore.geojson",
+      "git_blob": "77d00e0218af42df0942fbc4dcd6b1242c3b814c",
+      "bytes": 71290787
+    },
+    {
+      "path": "docs/Boston/20260703_PercLenNetwork_InnerCore_3D.geojson",
+      "git_blob": "ac05ba2307ccc55443da51aa5100c03ada4eb751",
+      "bytes": 66301651
+    },
+    {
+      "path": "docs/Boston/Cambridge_building_centroids_pop2020_jobs2023.geojson",
+      "git_blob": "8b7b905c4496eee1f8fb7a4bafc6685ae90627ab",
+      "bytes": 7067757
+    },
+    {
+      "path": "docs/Boston/Cambridge_transit_stations.geojson",
+      "git_blob": "86c015c0442eca121e3fd396ef6d1dac0f6d35d0",
+      "bytes": 169011
+    }
+  ],
+  "actual_target": "unavailable",
+  "second_observed_morphology": "not_selected",
+  "note": "Metadata carried from earlier audited upstream tree. Revalidate URL/ref/blob/license; never infer graph counts from file bytes."
+}

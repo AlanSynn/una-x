@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "primary_sha256": null,
+  "freeze_sha256": null,
+  "measurement_class": "observed_proxy",
+  "pairs": [],
+  "note": "Each pair has id plus A/B records. See tools/gate_10x.py and tests for exact required fields; no prefilled passing results."
+}

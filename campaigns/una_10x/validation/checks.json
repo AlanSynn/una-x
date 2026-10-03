@@ -1,0 +1,8 @@
+{
+  "ok": true,
+  "check_count": 448,
+  "task_count": 30,
+  "dossier_count": 9,
+  "scope": "packet consistency only, not application correctness/performance",
+  "failed_checks": []
+}

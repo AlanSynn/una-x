@@ -1,0 +1,4 @@
+/mnt/data/una_10x_investigation/reuse_probe.py:50: NumbaTypeSafetyWarning: unsafe cast from uint64 to int64. Precision may be lost.
+  r[o],ge[o],gl[o],kn[o]=probe.fold(ds[o],ws[o],cutoff,beta,0.,10.,0.,kw,beta,'logistic',10.,0.1,0.1)
+{"K": 8, "derived_medians_s": {"repeat": 0.134449459, "reuse": 0.037409766}, "derived_speedup": 3.593966853468156}
+{"K": 32, "derived_medians_s": {"repeat": 0.524428298, "reuse": 0.084615158}, "derived_speedup": 6.197805575213841}

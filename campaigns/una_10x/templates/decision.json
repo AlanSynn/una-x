@@ -1,0 +1,13 @@
+{
+  "tenx_status": "target_unmet",
+  "platform_status": "incomplete",
+  "source_sha": null,
+  "claim_scope": null,
+  "gate_record": null,
+  "required_checks": {},
+  "accepted": [],
+  "rejected": [],
+  "unavailable": [],
+  "unverified_claims": [],
+  "merge_disposition": "do_not_merge"
+}

@@ -1,0 +1,61 @@
+Execute the UNA-X 10x campaign, not another planning exercise.
+
+Repository: AlanSynn/una-x
+New development branch: perf/una-10x
+Pinned numerical baseline: 395cdc5f683894b6f2ba460f7dbcefee99981ba3
+Pinned src tree: f1850b77555349666e4a3e16fc090c5cab088008
+Read-only retained platform program: campaigns/una_platform/
+Research prototypes: campaigns/una_10x/prior/una_10x_investigation/
+
+1. Read CLAUDE.md, this file, AUTHORITY.md, EXECUTION.md, CONTRACT.md, SOURCE_AUDIT.md,
+   PLATFORM_CONTINUITY.md and TASKS_CLAUDE.yaml. Read the relevant dossier before each task.
+2. Run the packet-only commands below. A passed validator is NOT application qualification.
+3. Record current HEAD/main/remotes/status and compare runtime content with source_pins.json.
+   Preserve dirty or untracked user work. Create a detached baseline worktree at the pinned
+   SHA and an isolated perf/una-10x integration worktree from current main. Never force a
+   branch name that already exists. Reuse it only when its identity and ownership match.
+   Record publication-only ancestry separately from the numerical baseline.
+4. If runtime main has advanced, do not overwrite it or relax source pins. Compare all changed
+   runtime/dependency/contract files, reconcile the source audit, and regenerate dependent
+   evidence in a versioned run. The old baseline remains the historical comparator; a stronger
+   advanced-main comparator becomes mandatory before any claim against current main.
+5. Audit existing completed platform work and independent open worktrees before assigning
+   ownership. Reuse verified implementations. Do not restart working batch/cache/science code.
+6. Use a fresh run root, e.g. campaign_runs/una_10x/<unique-id>/, outside tracked source and
+   historical evidence. Set separate Numba caches per arm before importing Numba. Never run
+   historical scripts in-place: several overwrite raw files or use process-global settings.
+7. Run the preserved verify_checkout.py against the isolated pinned baseline, under a whole
+   process timeout/RAM supervisor. It is only a first bridge, not the full conformance gate.
+   Expand to adversarial inputs, state traces, profiles and real GIS at S02/H01.
+8. Establish observed-input public-API and public-RunBatch baselines and freeze PRIMARY.json
+   before candidate timing. Primary default: distinct-parameter cohort through RunBatch;
+   secondary: one large local-query RunAccessibility job. Do not tune radius or cohort size
+   after observing candidate ratios. Actual user workload/throughput count is not supplied.
+9. Execute sparse query, trace/reuse and public integration tasks. Perform proofs and L0/L1
+   before medium screens; then installed qualification. Assess flow/native/GPU behind the
+   same reduced-work plan, preserving inherited platform obligations.
+10. Freeze the final candidate and matched baseline configuration. Require the paired median
+    AND preregistered one-sided 95% lower bootstrap bound >=10 for a 10x claim. Protected
+    cases must satisfy BENCHMARKS.md. Every successful job must produce and validate its
+    required outputs; count failures as failures, never as throughput.
+11. Finish with DECISION.md outputs and outstanding platform obligations. Do not call a
+    component ratio, cache-warm identical-answer benchmark, or unmatched-resource result 10x.
+
+Commands from repository root:
+  python3 campaigns/una_10x/tools/validate_packet.py
+  python3 -m unittest discover -s campaigns/una_10x/tests -v
+  python3 campaigns/una_10x/tools/audit_source.py --repo . --out /ABS/NEW/inventory.json
+
+First historical bridge, run in its own budgeted process after S01:
+  python campaigns/una_10x/prior/una_10x_investigation/verify_checkout.py \
+    --repo /ABS/PINNED_BASELINE --out /ABS/NEW/kernel_bridge.json
+
+Do not ask for routine decisions. Missing real workload: use pinned observed proxies and say
+proxy. Missing GPU: mark its hardware validation blocked and continue independent tasks, not
+fallback-only GPU success. Missing independent reviewer: record unavailable, never self-label
+an implementation review independent. Conflicting scientific authority: document the conflict,
+keep the reference route, and finish other independent tasks without guessing new semantics.
+
+No future pushes, main merges, releases, paid compute, credential/provider edits, or destructive
+cleanup are authorized by this command. The user's publication authorization covers this packet
+commit only. Preserve raw evidence bytes and historical campaigns. Do not run broad CI per edit.

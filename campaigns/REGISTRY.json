@@ -1,7 +1,17 @@
 {
-  "schema_version": 1,
-  "active": "campaigns/una_platform",
-  "active_campaign_id": "una-platform-2026-09",
+  "schema_version": 2,
+  "active": "campaigns/una_10x",
+  "active_campaign_id": "una-10x-2026-10",
+  "retained_programs": [
+    {
+      "id": "una-platform-2026-09",
+      "status": "retained_incomplete",
+      "path": "campaigns/una_platform",
+      "snapshot_source_sha": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+      "packet_tree": "c1e4f15813ed66bc6e6053e257afd8a666e512ed",
+      "requirements_still_binding": true
+    }
+  ],
   "historical": [
     {
       "id": "una-cpu-2026-09",
@@ -21,6 +31,6 @@
       "legacy_path_preserved": true
     }
   ],
-  "publication_scope": "packet, archive and routing only; runtime/build/tests/benchmarks/evidence unchanged",
+  "publication_scope": "new 10x packet, preserved research and routing only; runtime/build/tests/benchmarks/previous packets and evidence unchanged",
   "future_auto_publish": false
 }

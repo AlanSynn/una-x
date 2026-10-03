@@ -1,0 +1,101 @@
+[
+  {
+    "case": "local_large_H1",
+    "nodes": 262144,
+    "destinations": 262144,
+    "origins": 512,
+    "threads": 1,
+    "baseline_median_s": 0.373934996,
+    "candidate_median_s": 0.011267048,
+    "component_ratio": 33.18837338759895,
+    "label": "derived_from_measured"
+  },
+  {
+    "case": "local_large_H4",
+    "nodes": 262144,
+    "destinations": 262144,
+    "origins": 512,
+    "threads": 4,
+    "baseline_median_s": 0.109923225,
+    "candidate_median_s": 0.007423693,
+    "component_ratio": 14.807081192608585,
+    "label": "derived_from_measured"
+  },
+  {
+    "case": "local_large_many_origins_H4",
+    "nodes": 262144,
+    "destinations": 262144,
+    "origins": 8192,
+    "threads": 4,
+    "baseline_median_s": 1.715870517,
+    "candidate_median_s": 0.035737006,
+    "component_ratio": 48.013829614042095,
+    "label": "derived_from_measured"
+  },
+  {
+    "case": "local_medium_H1",
+    "nodes": 65536,
+    "destinations": 65536,
+    "origins": 512,
+    "threads": 1,
+    "baseline_median_s": 0.089547038,
+    "candidate_median_s": 0.00646207,
+    "component_ratio": 13.857330236286515,
+    "label": "derived_from_measured"
+  },
+  {
+    "case": "local_medium_H4",
+    "nodes": 65536,
+    "destinations": 65536,
+    "origins": 512,
+    "threads": 4,
+    "baseline_median_s": 0.023910867,
+    "candidate_median_s": 0.003113592,
+    "component_ratio": 7.679511959177696,
+    "label": "derived_from_measured"
+  },
+  {
+    "case": "search_dominated_H1",
+    "nodes": 8464,
+    "destinations": 2560,
+    "origins": 512,
+    "threads": 1,
+    "baseline_median_s": 0.055156292,
+    "candidate_median_s": 0.062428266,
+    "component_ratio": 0.8835147207196176,
+    "label": "derived_from_measured"
+  },
+  {
+    "case": "search_dominated_H4",
+    "nodes": 8464,
+    "destinations": 2560,
+    "origins": 512,
+    "threads": 4,
+    "baseline_median_s": 0.014959747,
+    "candidate_median_s": 0.017852626,
+    "component_ratio": 0.8379577883948277,
+    "label": "derived_from_measured"
+  },
+  {
+    "case": "tiny_H1",
+    "nodes": 100,
+    "destinations": 26,
+    "origins": 14,
+    "threads": 1,
+    "baseline_median_s": 4.3676e-05,
+    "candidate_median_s": 9.5034e-05,
+    "component_ratio": 0.4595828861249658,
+    "label": "derived_from_measured"
+  },
+  {
+    "case": "tiny_H4",
+    "nodes": 100,
+    "destinations": 26,
+    "origins": 14,
+    "threads": 4,
+    "baseline_median_s": 2.596e-05,
+    "candidate_median_s": 7.2078e-05,
+    "component_ratio": 0.3601653763977913,
+    "label": "derived_from_measured"
+  }
+]

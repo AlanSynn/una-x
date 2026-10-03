@@ -1,0 +1,11 @@
+{
+  "classification": "derived_from_measured_component_values",
+  "source": "raw/local_large_many_origins_H4.json",
+  "baseline_s": 1.715870517,
+  "candidate_s": 0.035737006,
+  "component_speedup": 48.01382961404209,
+  "maximum_equal_untouched_service_s_for_10x": 0.1509444952222222,
+  "minimum_fraction_accelerated_for_10x_zero_added_overhead": 0.9191433033085905,
+  "hypothetical_full_speedup_at_fraction_0_95_zero_added_overhead": 14.329528663134703,
+  "real_application_fraction": "unavailable"
+}

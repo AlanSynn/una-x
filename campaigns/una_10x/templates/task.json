@@ -1,0 +1,17 @@
+{
+  "task": null,
+  "status": "pending",
+  "owner": null,
+  "base_sha": null,
+  "result_sha": null,
+  "read_scopes": [],
+  "write_scopes": [],
+  "commands": [],
+  "environment_manifest": null,
+  "workload_manifest": null,
+  "profile": null,
+  "evidence": [],
+  "review": null,
+  "blocker": null,
+  "next_tasks": []
+}

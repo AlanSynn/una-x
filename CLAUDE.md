@@ -1,36 +1,40 @@
-# UNA-X active engineering campaign
+# UNA-X active 10x execution campaign
 
-The active campaign is `campaigns/una_platform/` (ID `una-platform-2026-09`). Read its
-START_HERE.txt, EXECUTION.md, AUTHORITY.md, CONTRACTS.md, NUMERICS.md and TASKS_CLAUDE.yaml
-before work. `/goal` starts this campaign. Execute the tasks rather than returning another plan.
+`/goal` executes `campaigns/una_10x/START_HERE.txt`, ID `una-10x-2026-10`.
+Read its AUTHORITY.md, EXECUTION.md, CONTRACT.md, SOURCE_AUDIT.md,
+PLATFORM_CONTINUITY.md and TASKS_CLAUDE.yaml before implementation. Execute, do not
+return another plan and stop. Develop on `perf/una-10x` and isolated owned worktrees.
 
-Audited baseline: `16bf404d2cc5e776a78dc073c80405f6d186da29`, already containing the two prior
-campaigns' improvements. Madina reference: `City-Form-Lab/madina@8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6`.
-Develop on `perf/una-platform` and isolated reviewed-dependency worktrees. Preserve dirty user files.
+Baseline source: `395cdc5f683894b6f2ba460f7dbcefee99981ba3`, already including earlier
+optimizations, public batch/cache and compiler-contract work. Record runtime drift and
+compare against the strongest actual current-main implementation, never pre-CSR or a
+slow portable oracle. Preserve dirty user work and ongoing independently owned branches.
 
-Required deliverables: complete supported Madina API parity, scientifically justified numerical
-fixes, real AOT native CPU and GPU backends, public parallel RunBatch, safe caches, reliable
-cancellation/recovery, installed multi-city tests and further end-to-end throughput optimization.
-Old campaign bans on GPU/native/public batch/caching/science fixes are superseded. Existing
-runtime functionality must remain intact while the new capability floor is implemented.
+Goal: at least 10x complete installed PUBLIC API throughput with bitwise parity and all
+required artifacts/state. Prior 48x/15.8x numbers are synthetic prepared-array evidence,
+not application wins. Bridge preserved prototypes against actual compiled kernels first.
+Prioritize sparse epoch queries, local destination indexing, ordered routing traces,
+per-metric reuse, immutable residency and PUBLIC RunBatch integration. Retain initial
+trace construction, validation, state rehydration, output and commit costs in the gate.
 
-“Bitparty” means bitwise parity. Separate una_legacy, madina_legacy and corrected_v1. Intentional
-bug-fix deltas use a reviewed corrected oracle; do not claim corrected outputs also reproduce
-erroneous legacy bits. Backend/cache/parallel variants match their selected profile exactly.
-No allclose, reduced precision, route truncation, changed reductions, or different model passed
-as an exact optimization. Madina ALL alternatives are not UNA K-alternatives or aggregate flow.
+The unfinished `campaigns/una_platform/` program is retained, NOT declared complete.
+Madina API parity, justified scientific fixes, substantive native and GPU backends, public
+parallel RunBatch, caches, city-failure diagnosis, cancellation/recovery and installed
+validation remain required. Reuse completed work and record unresolved obligations.
+CPU 10x scope and overall platform qualification are separate dispositions.
 
-GPU/native must execute substantive work. CPU fallback, stubs, simulated GPU runs and detection
-alone do not satisfy those features. Hardware absence is a qualification blocker, not permission
-to mark success. Continue unrelated tasks through explicit blocked receipts. Automatic backend
-selection requires exactness and measured full-region crossover; explicit supported paths may
-remain slower in some domains without being made default.
+Keep una_legacy, madina_legacy and corrected_v1 distinct. No allclose, FP32 substitution,
+rounded exports, reassociation, hidden radius/data/output reduction, or flow-model switch.
+Preserve snapshot relaxation, heap/adjacency/destination order, arithmetic stripes and
+ordered publication. Scientific fixes use reviewed corrected references, not fake legacy
+parity. Native/GPU need real substantive installed execution; fallback/detection/simulation
+is not support. Missing hardware blocks qualification, not unrelated execution.
 
-Use one owner per writable scope, separate independent review, and one exclusive heavy-machine
-lease. Preserve decisive raw evidence, not only hashes. Never overwrite historical evidence or
-load a candidate as its own oracle. The historical large-e2e snapshot is under
-`campaigns/history/una_large_e2e_2026_09/packet/`; its old path remains for legacy links.
+One owner per writable scope and one exclusive heavy-performance owner. Independent review
+is separate from implementation. Preserve decisive raw bytes and counterexamples, not only
+hashes. Never overwrite historical evidence or load the candidate as its own reference.
+The preserved 28-file research packet under campaigns/una_10x/prior is immutable.
 
-This publication authorizes the campaign packet on main only. Future implementation commits
-stay local until separately authorized to push/merge/release. No paid provisioning, credential
-changes, provider reconfiguration, destructive cleanup or historical evidence purge.
+This publication authorization is consumed by the campaign-packet push. Future code pushes,
+main merges, PRs, releases, paid provisioning, credential/provider changes and destructive
+cleanup require a new explicit user instruction. Do not force-update or reset user branches.

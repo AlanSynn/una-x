@@ -1,0 +1,910 @@
+{
+  "schema_version": 1,
+  "campaign": "una-10x-2026-10",
+  "dependency_semantics": {
+    "depends_on": "predecessor must have resolved receipt; rejection/block may permit a documented fallback/decision path",
+    "required_pass": "subset requiring genuine passed implementation/evidence; never satisfy with blocked/rejected",
+    "conditional": "run only after predecessor admission; still produce explicit disposition"
+  },
+  "tasks": [
+    {
+      "id": "S00",
+      "title": "Validate packet and frozen research bytes",
+      "depends_on": [],
+      "required_pass": [],
+      "owner": "coordinator",
+      "reads": [
+        "START_HERE.txt"
+      ],
+      "writes": [
+        "external run root"
+      ],
+      "actions": [
+        "Run packet validator and unittest suite",
+        "Create new run ID; never mutate prior"
+      ],
+      "deliverables": [
+        "packet_validation.json"
+      ],
+      "completion": "Both packet/tool checks pass; no application claim",
+      "conditional": false
+    },
+    {
+      "id": "S01",
+      "title": "Pin source, hardware, owners and retained obligations",
+      "depends_on": [
+        "S00"
+      ],
+      "required_pass": [
+        "S00"
+      ],
+      "owner": "integrator",
+      "reads": [
+        "SOURCE_AUDIT.md",
+        "PLATFORM_CONTINUITY.md",
+        "RESOURCES.md"
+      ],
+      "writes": [
+        "run inventory",
+        "platform_obligations.json"
+      ],
+      "actions": [
+        "Audit current Git identities; create clean baseline and integration worktrees",
+        "Inventory environment, existing branches/reviews, CPU/RAM/device",
+        "Map every unfinished platform task and assign one writable owner"
+      ],
+      "deliverables": [
+        "inventory.json",
+        "source_reconciliation.json",
+        "ownership.json",
+        "platform_obligations.json"
+      ],
+      "completion": "Baseline identity and available resource policy recorded; drift resolved before source edits",
+      "conditional": false
+    },
+    {
+      "id": "S02",
+      "title": "Bridge prototypes to actual compiled references",
+      "depends_on": [
+        "S01"
+      ],
+      "required_pass": [
+        "S01"
+      ],
+      "owner": "parity-engineer",
+      "reads": [
+        "dossiers/01_bridge_and_harness.md",
+        "CONTRACT.md",
+        "VALIDATION.md"
+      ],
+      "writes": [
+        "tests/tenx/bridge",
+        "evidence bridge"
+      ],
+      "actions": [
+        "Run preserved verifier only in clean pinned worktree under supervisor",
+        "Expand compiler/heap/seed/sentinel/fold adversarial checks",
+        "Record every direct-engine vs transcription mismatch, no tolerance"
+      ],
+      "deliverables": [
+        "reference_bridge.json",
+        "counterexamples",
+        "bridge_test.log"
+      ],
+      "completion": "Actual engine/profile bridge passes for admitted domain or explicit failed-domain rejection; no installed claim",
+      "conditional": false
+    },
+    {
+      "id": "H00",
+      "title": "Audit and harden reusable benchmark instrumentation",
+      "depends_on": [
+        "S01"
+      ],
+      "required_pass": [
+        "S01"
+      ],
+      "owner": "harness-engineer",
+      "reads": [
+        "dossiers/01_bridge_and_harness.md",
+        "BENCHMARKS.md"
+      ],
+      "writes": [
+        "benchmarks/una_10x",
+        "tests/tenx/harness"
+      ],
+      "actions": [
+        "Audit current harness repairs; do not replay stale changes",
+        "Enforce true API dispatch/import identity/counts/byte-bounded queues",
+        "Separate diagnostic nested spans, primary wall and post-hash wall"
+      ],
+      "deliverables": [
+        "harness_manifest.json",
+        "negative_test.log"
+      ],
+      "completion": "Harness negative tests prove failures cannot become valid windows",
+      "conditional": false
+    },
+    {
+      "id": "H01",
+      "title": "Validate public chronology and fault recovery",
+      "depends_on": [
+        "S02",
+        "H00"
+      ],
+      "required_pass": [
+        "S02",
+        "H00"
+      ],
+      "owner": "harness-engineer",
+      "reads": [
+        "dossiers/01_bridge_and_harness.md",
+        "VALIDATION.md"
+      ],
+      "writes": [
+        "tests/tenx/public",
+        "external L2 evidence"
+      ],
+      "actions": [
+        "Run current API and batch twice as reference",
+        "Compare ordered commits, artifacts, Settings and failure prefixes",
+        "Kill workers/writers, fill queues, cancel, verify resume and memory sampler"
+      ],
+      "deliverables": [
+        "public_baseline.json",
+        "fault_matrix.json"
+      ],
+      "completion": "Real public access/batch/flow and installed-import assertion behavior established",
+      "conditional": false
+    },
+    {
+      "id": "W00",
+      "title": "Freeze observed workloads and primary comparison",
+      "depends_on": [
+        "H01"
+      ],
+      "required_pass": [
+        "H01"
+      ],
+      "owner": "workload-engineer",
+      "reads": [
+        "WORKLOADS.md",
+        "BENCHMARKS.md",
+        "inputs_catalog.json"
+      ],
+      "writes": [
+        "external data manifests"
+      ],
+      "actions": [
+        "Acquire/pin observed data and inspect CRS/columns without filtering scientific work",
+        "Baseline-only calibrate window size and stage model",
+        "Freeze primary distinct cohort and secondary single, controls and output/cache policy"
+      ],
+      "deliverables": [
+        "PRIMARY.json",
+        "WORKLOADS.json",
+        "baseline_stage_model.json"
+      ],
+      "completion": "Observed workload and denominator frozen before candidate timings; actual target absence explicit",
+      "conditional": false
+    },
+    {
+      "id": "S10",
+      "title": "Prove sparse epoch and destination projection",
+      "depends_on": [
+        "S02",
+        "W00"
+      ],
+      "required_pass": [
+        "S02",
+        "W00"
+      ],
+      "owner": "sparse-engineer",
+      "reads": [
+        "dossiers/02_epoch_sparse_search.md",
+        "dossiers/03_local_destinations_and_dispatch.md"
+      ],
+      "writes": [
+        "sparse proof and tiny tests"
+      ],
+      "actions": [
+        "Prove projection through each seed/pop/row/write",
+        "Prove omitted destinations using stored rounded sentinel",
+        "Review allocation/lifetime/fallback and actual scalar types"
+      ],
+      "deliverables": [
+        "sparse_proof.md",
+        "sparse_admission.json"
+      ],
+      "completion": "Independent proof review accepts narrow admitted domain before implementation",
+      "conditional": false
+    },
+    {
+      "id": "S11",
+      "title": "Implement epoch labels and indexed destination path",
+      "depends_on": [
+        "S10"
+      ],
+      "required_pass": [
+        "S10"
+      ],
+      "owner": "sparse-engineer",
+      "reads": [
+        "dossiers/02_epoch_sparse_search.md",
+        "dossiers/03_local_destinations_and_dispatch.md"
+      ],
+      "writes": [
+        "private sparse kernel",
+        "tests/tenx/sparse"
+      ],
+      "actions": [
+        "Implement exclusive logical-lane arenas and checked epoch counters",
+        "Build reverse index, candidate dedup and original-ID restoration",
+        "Keep original fold and private fallback; no public ODM shrink"
+      ],
+      "deliverables": [
+        "sparse_source_commit.json",
+        "sparse_l0_l1.log"
+      ],
+      "completion": "Bit/state/lifetime and refusal tests pass on actual compiled baseline",
+      "conditional": false
+    },
+    {
+      "id": "S12",
+      "title": "Review sparse public path and conservative dispatch",
+      "depends_on": [
+        "S11",
+        "H01"
+      ],
+      "required_pass": [
+        "S11",
+        "H01"
+      ],
+      "owner": "independent-reviewer",
+      "reads": [
+        "dossiers/03_local_destinations_and_dispatch.md",
+        "VALIDATION.md"
+      ],
+      "writes": [
+        "sparse review",
+        "integrator-only dispatch"
+      ],
+      "actions": [
+        "Review independent immutable diff",
+        "Run tiny/dense and observed L2 with route counters",
+        "Approve route or reject/default-disable with reasons"
+      ],
+      "deliverables": [
+        "sparse_review.json",
+        "sparse_L2.json"
+      ],
+      "completion": "Reviewed sparse route or recorded rejection; no fabricated public win",
+      "conditional": false
+    },
+    {
+      "id": "C10",
+      "title": "Freeze routing and metric identities",
+      "depends_on": [
+        "S02",
+        "W00"
+      ],
+      "required_pass": [
+        "S02",
+        "W00"
+      ],
+      "owner": "cache-engineer",
+      "reads": [
+        "dossiers/04_routing_traces.md",
+        "dossiers/05_metric_reuse.md"
+      ],
+      "writes": [
+        "trace identity spec",
+        "tests/tenx/identity"
+      ],
+      "actions": [
+        "Derive every typed routing dependency and per-metric closure",
+        "Pin schemas, ownership and exact-radius policy",
+        "Mutation/key collision and environment/profile tests"
+      ],
+      "deliverables": [
+        "trace_contract.json",
+        "metric_dependencies.json"
+      ],
+      "completion": "Independent identity review passes; no provenance-as-numerical shortcut",
+      "conditional": false
+    },
+    {
+      "id": "C11",
+      "title": "Implement packed ordered routing traces",
+      "depends_on": [
+        "C10"
+      ],
+      "required_pass": [
+        "C10"
+      ],
+      "owner": "trace-engineer",
+      "reads": [
+        "dossiers/04_routing_traces.md"
+      ],
+      "writes": [
+        "private trace kernel/store facade",
+        "tests/tenx/trace"
+      ],
+      "actions": [
+        "Build bounded origin-major sparse trace preserving original destination IDs",
+        "Replay through same full fold initially",
+        "Counterexample/invalidation/empty/partial/capacity tests"
+      ],
+      "deliverables": [
+        "trace_source_commit.json",
+        "trace_parity.json"
+      ],
+      "completion": "Trace/replay matches full actual per-job results and respects memory",
+      "conditional": false
+    },
+    {
+      "id": "C12",
+      "title": "Qualify independent metric reuse",
+      "depends_on": [
+        "C11",
+        "S02"
+      ],
+      "required_pass": [
+        "C11",
+        "S02"
+      ],
+      "owner": "numerical-engineer",
+      "reads": [
+        "dossiers/05_metric_reuse.md"
+      ],
+      "writes": [
+        "private metric replay plans",
+        "tests/tenx/metrics"
+      ],
+      "actions": [
+        "Implement exact metric-key projection and fresh result ownership",
+        "Characterize split-fold parity across lengths/branches/layouts",
+        "On compiler delta keep full fold or exact characterized plan, no tolerance"
+      ],
+      "deliverables": [
+        "metric_reuse_verdict.json",
+        "metric_compiler_parity.json"
+      ],
+      "completion": "Accepted fine-grained reuse or explicit rejection with safe trace-only continuation",
+      "conditional": false
+    },
+    {
+      "id": "C20",
+      "title": "Add bounded immutable resident trace leases",
+      "depends_on": [
+        "C11",
+        "C12"
+      ],
+      "required_pass": [
+        "C11"
+      ],
+      "owner": "cache-engineer",
+      "reads": [
+        "dossiers/06_cohorts_residency_cache.md",
+        "RESOURCES.md"
+      ],
+      "writes": [
+        "cache integration",
+        "tests/tenx/cache"
+      ],
+      "actions": [
+        "Integrate current ContentStore and single-flight without duplicate compute",
+        "Charge resident decoded arrays and encoded cache together",
+        "Lease/eviction/corruption/owner-death/reset/resume tests"
+      ],
+      "deliverables": [
+        "cache_matrix.json",
+        "resident_memory.json"
+      ],
+      "completion": "Existing durability/invalidation behavior retained, arrays cannot alias mutable public results",
+      "conditional": false
+    },
+    {
+      "id": "C30",
+      "title": "Integrate cohorts into PUBLIC RunBatch",
+      "depends_on": [
+        "C20",
+        "S12"
+      ],
+      "required_pass": [
+        "C20"
+      ],
+      "owner": "batch-engineer",
+      "reads": [
+        "dossiers/06_cohorts_residency_cache.md",
+        "PLATFORM_CONTINUITY.md"
+      ],
+      "writes": [
+        "batch plan/runtime via single owner",
+        "integrator-only UNA dispatch",
+        "tests/tenx/cohort"
+      ],
+      "actions": [
+        "Reuse reviewed platform batch code, form only proven-independent numerical cohorts",
+        "Share preparation/traces while preserving ordered per-row state/artifact commits",
+        "Preserve all K jobs and current hashes/checkpoints/state rehydration"
+      ],
+      "deliverables": [
+        "cohort_source_commit.json",
+        "public_cohort_matrix.json"
+      ],
+      "completion": "Public RunBatch actually shares routing; original serial-prefix and failure behavior pass",
+      "conditional": false
+    },
+    {
+      "id": "C31",
+      "title": "Independent cohort/cache/science boundary review",
+      "depends_on": [
+        "C30"
+      ],
+      "required_pass": [
+        "C30"
+      ],
+      "owner": "independent-reviewer",
+      "reads": [
+        "dossiers/04_routing_traces.md",
+        "dossiers/05_metric_reuse.md",
+        "dossiers/06_cohorts_residency_cache.md",
+        "VALIDATION.md"
+      ],
+      "writes": [
+        "review only"
+      ],
+      "actions": [
+        "Review immutable source and real distinct-row output differences",
+        "Run mixed invalidation, aliases, failed early row, cancellation and resume",
+        "Separate source validation from cache/work counters"
+      ],
+      "deliverables": [
+        "cohort_review.json"
+      ],
+      "completion": "Independent acceptance or concrete no-safe-integration verdict",
+      "conditional": false
+    },
+    {
+      "id": "P00",
+      "title": "Profile residual service and select joint schedule",
+      "depends_on": [
+        "S12",
+        "C31",
+        "W00"
+      ],
+      "required_pass": [
+        "W00"
+      ],
+      "owner": "performance-owner",
+      "reads": [
+        "MODEL.md",
+        "BENCHMARKS.md",
+        "RESOURCES.md"
+      ],
+      "writes": [
+        "screen evidence and configuration"
+      ],
+      "actions": [
+        "Use accepted paths only; compare sparse/trace/metric/integrated ablations",
+        "Measure current Amdahl ceiling, preparation/export/IPC floor and whole-tree memory",
+        "Tune <=4 feasible process/thread/queue/writer configs, protect logical flow stripes"
+      ],
+      "deliverables": [
+        "candidate_register.json",
+        "stage_model.json",
+        "configuration_screen.json"
+      ],
+      "completion": "Measured application coverage justifies next region; no product of overlapping speedups",
+      "conditional": false
+    },
+    {
+      "id": "F00",
+      "title": "Assess flow sparse-output producer and tapes",
+      "depends_on": [
+        "P00"
+      ],
+      "required_pass": [
+        "P00"
+      ],
+      "owner": "flow-engineer",
+      "reads": [
+        "dossiers/07_flow_sparse_producer.md"
+      ],
+      "writes": [
+        "flow admission evidence"
+      ],
+      "actions": [
+        "Measure dense-return/init/packing vs real flow work",
+        "Check exact predecessor and route model requirements",
+        "Decide admission within remaining time/memory budget"
+      ],
+      "deliverables": [
+        "flow_admission.json"
+      ],
+      "completion": "Admit measurable bottleneck or not_admitted with Amdahl/ROI reason",
+      "conditional": true
+    },
+    {
+      "id": "F10",
+      "title": "Implement admitted flow producer or ordered tape",
+      "depends_on": [
+        "F00"
+      ],
+      "required_pass": [],
+      "owner": "flow-engineer",
+      "reads": [
+        "dossiers/07_flow_sparse_producer.md"
+      ],
+      "writes": [
+        "private flow backend",
+        "tests/tenx/flow"
+      ],
+      "actions": [
+        "Only if F00 admitted: implement one sparse-output or tape variant",
+        "Compare exact dist/pred/update order and scientific invariants",
+        "Review or reject on bits/capacity/coverage"
+      ],
+      "deliverables": [
+        "flow_verdict.json"
+      ],
+      "completion": "Qualified implementation or recorded rejection/not_admitted; existing flow unaffected",
+      "conditional": true
+    },
+    {
+      "id": "N00",
+      "title": "Integrate and specialize substantive native backend",
+      "depends_on": [
+        "P00"
+      ],
+      "required_pass": [
+        "P00"
+      ],
+      "owner": "native-engineer",
+      "reads": [
+        "dossiers/08_native_gpu_regions.md",
+        "PLATFORM_CONTINUITY.md"
+      ],
+      "writes": [
+        "native owned scope",
+        "tests/tenx/native"
+      ],
+      "actions": [
+        "Reuse ongoing platform native commits after independent review",
+        "Port reduced-work region not portable slow oracle",
+        "Inspect arithmetic/SIMD and expose real engagement"
+      ],
+      "deliverables": [
+        "native_implementation.json"
+      ],
+      "completion": "Real AOT implementation, bounded exact-domain fallback, or explicit build blocker",
+      "conditional": false
+    },
+    {
+      "id": "N10",
+      "title": "Qualify native region and install cost",
+      "depends_on": [
+        "N00"
+      ],
+      "required_pass": [
+        "N00"
+      ],
+      "owner": "performance-owner",
+      "reads": [
+        "dossiers/08_native_gpu_regions.md",
+        "BENCHMARKS.md"
+      ],
+      "writes": [
+        "native benchmark/review evidence"
+      ],
+      "actions": [
+        "Compare same algorithm current backend vs native under equal C",
+        "Charge conversion/startup/build and test wheel/sdist",
+        "Reject default where no measured full-region benefit"
+      ],
+      "deliverables": [
+        "native_qualification.json"
+      ],
+      "completion": "Actual native bits/engagement/timing/install evidence or blocked qualification",
+      "conditional": false
+    },
+    {
+      "id": "G00",
+      "title": "Select GPU residency region and capabilities",
+      "depends_on": [
+        "P00",
+        "N00"
+      ],
+      "required_pass": [
+        "P00"
+      ],
+      "owner": "gpu-engineer",
+      "reads": [
+        "dossiers/08_native_gpu_regions.md",
+        "PLATFORM_CONTINUITY.md"
+      ],
+      "writes": [
+        "GPU capability/proof spec"
+      ],
+      "actions": [
+        "Audit actual device and retained platform backend work",
+        "Derive exact-profile residency/crossover/memory region",
+        "Record hardware absence and continue buildable implementation work"
+      ],
+      "deliverables": [
+        "gpu_region.json"
+      ],
+      "completion": "A substantive region specified; capability limitations explicit, not fallback-only support",
+      "conditional": false
+    },
+    {
+      "id": "G10",
+      "title": "Implement exact GPU region and ownership",
+      "depends_on": [
+        "G00"
+      ],
+      "required_pass": [
+        "G00"
+      ],
+      "owner": "gpu-engineer",
+      "reads": [
+        "dossiers/08_native_gpu_regions.md"
+      ],
+      "writes": [
+        "GPU owned scope",
+        "tests/tenx/gpu"
+      ],
+      "actions": [
+        "Implement bounded real kernels, owners, sync and cancellation",
+        "Retain trusted math where necessary and original per-output order",
+        "CPU-only tests do not mark hardware validation passed"
+      ],
+      "deliverables": [
+        "gpu_implementation.json"
+      ],
+      "completion": "Substantive device code or explicit external blocker; no simulated success",
+      "conditional": false
+    },
+    {
+      "id": "G11",
+      "title": "Real-device bit parity and end-to-end crossover",
+      "depends_on": [
+        "G10"
+      ],
+      "required_pass": [
+        "G10"
+      ],
+      "owner": "performance-owner",
+      "reads": [
+        "dossiers/08_native_gpu_regions.md",
+        "BENCHMARKS.md"
+      ],
+      "writes": [
+        "GPU qualification evidence"
+      ],
+      "actions": [
+        "Run actual hardware for installed execution and output parity",
+        "Include transfers/conversion/JIT/sync and neighboring service",
+        "Choose CPU when complete GPU region loses"
+      ],
+      "deliverables": [
+        "gpu_qualification.json"
+      ],
+      "completion": "Real hardware qualified or explicit unavailable; performance and capability status separate",
+      "conditional": false
+    },
+    {
+      "id": "X00",
+      "title": "Carry and close inherited platform obligations",
+      "depends_on": [
+        "S01",
+        "H01",
+        "C31",
+        "N10",
+        "G11"
+      ],
+      "required_pass": [
+        "S01",
+        "H01"
+      ],
+      "owner": "integrator",
+      "reads": [
+        "PLATFORM_CONTINUITY.md",
+        "../una_platform/TASKS_CLAUDE.yaml"
+      ],
+      "writes": [
+        "owned platform remediation",
+        "obligation ledger"
+      ],
+      "actions": [
+        "Audit all Madina/science/batch/cache/native/GPU/city-failure/install tasks",
+        "Integrate independently reviewed pending implementations without resetting baseline",
+        "Record incomplete capabilities and genuine incident evidence"
+      ],
+      "deliverables": [
+        "platform_obligations.json",
+        "platform_status.json"
+      ],
+      "completion": "Every inherited obligation has current evidence or explicit unfinished blocker; no waived requirements",
+      "conditional": false
+    },
+    {
+      "id": "I00",
+      "title": "Freeze integrated source and installed package identities",
+      "depends_on": [
+        "P00",
+        "F10",
+        "N10",
+        "G11",
+        "X00"
+      ],
+      "required_pass": [
+        "P00"
+      ],
+      "owner": "integrator",
+      "reads": [
+        "dossiers/09_final_integration.md"
+      ],
+      "writes": [
+        "integration packaging manifests"
+      ],
+      "actions": [
+        "Integrate accepted deltas only; preserve rejected routes/fallback",
+        "Build A/B clean wheels and install outside checkouts",
+        "Pin all modules/binaries/harnesses, check no research runtime imports"
+      ],
+      "deliverables": [
+        "installed_manifest.json",
+        "freeze_candidate.json"
+      ],
+      "completion": "Actual installed candidate and comparator verified; capability gaps retained",
+      "conditional": false
+    },
+    {
+      "id": "V00",
+      "title": "Run final bit/state/artifact/fault gauntlet",
+      "depends_on": [
+        "I00"
+      ],
+      "required_pass": [
+        "I00"
+      ],
+      "owner": "parity-engineer",
+      "reads": [
+        "dossiers/09_final_integration.md",
+        "VALIDATION.md"
+      ],
+      "writes": [
+        "immutable final validation"
+      ],
+      "actions": [
+        "Compare full public calls/commit states/profile bits from installed artifacts",
+        "Run retained capabilities and safe dangerous-input supervision",
+        "Record skipped/unavailable checks as not passed"
+      ],
+      "deliverables": [
+        "bitparity.json",
+        "state_artifact_checks.json",
+        "backend_matrix.json"
+      ],
+      "completion": "All claims admit only passed domains; no known unsafe promoted path",
+      "conditional": false
+    },
+    {
+      "id": "Q00",
+      "title": "Preregister final configuration and claim scope",
+      "depends_on": [
+        "V00"
+      ],
+      "required_pass": [
+        "V00"
+      ],
+      "owner": "performance-owner",
+      "reads": [
+        "BENCHMARKS.md",
+        "DECISION.md"
+      ],
+      "writes": [
+        "final freeze only"
+      ],
+      "actions": [
+        "Bind PRIMARY to immutable candidate/baseline/env/harness configs",
+        "Freeze paired window count, cache regimes, controls, seeds and output policies",
+        "No candidate edits after this without dependency invalidation"
+      ],
+      "deliverables": [
+        "PRIMARY.json",
+        "configuration.json",
+        "freeze.json"
+      ],
+      "completion": "Final measurement plan frozen before any Q10 results",
+      "conditional": false
+    },
+    {
+      "id": "Q10",
+      "title": "Execute full installed 10x confirmation",
+      "depends_on": [
+        "Q00"
+      ],
+      "required_pass": [
+        "Q00"
+      ],
+      "owner": "performance-owner",
+      "reads": [
+        "BENCHMARKS.md",
+        "dossiers/09_final_integration.md"
+      ],
+      "writes": [
+        "raw final windows"
+      ],
+      "actions": [
+        "Run seven paired public windows and prespecified protected cases",
+        "Validate every successful job and retain all raw invalid/valid outcomes",
+        "Compute gate_10x from raw pair records; actual target only when supplied"
+      ],
+      "deliverables": [
+        "paired_samples.json",
+        "gate_10x.json",
+        "raw_index.json"
+      ],
+      "completion": "10x demonstrated at required boundary or explicit target miss; no kernel extrapolation",
+      "conditional": false
+    },
+    {
+      "id": "R00",
+      "title": "Independent final review of source and all claims",
+      "depends_on": [
+        "Q10",
+        "X00"
+      ],
+      "required_pass": [],
+      "owner": "independent-reviewer",
+      "reads": [
+        "dossiers/09_final_integration.md",
+        "DECISION.md"
+      ],
+      "writes": [
+        "final review only"
+      ],
+      "actions": [
+        "Recompute ratios/CI, source/wheel identities and actual engagement",
+        "Audit proof, cache/state/failure invariants and platform gaps",
+        "Review exact immutable commit independently of implementation"
+      ],
+      "deliverables": [
+        "review.json"
+      ],
+      "completion": "Independent disposition or unavailable; no fabricated approval",
+      "conditional": false
+    },
+    {
+      "id": "Z00",
+      "title": "Close with truthfully scoped results and merge manifest",
+      "depends_on": [
+        "R00",
+        "Q10"
+      ],
+      "required_pass": [],
+      "owner": "integrator",
+      "reads": [
+        "DECISION.md",
+        "dossiers/09_final_integration.md"
+      ],
+      "writes": [
+        "final results and local rehearsal"
+      ],
+      "actions": [
+        "Write every required final record including target misses and unresolved capabilities",
+        "Rehearse integration in disposable worktree; record actual checks",
+        "Do not push/merge/release/purge without new authorization"
+      ],
+      "deliverables": [
+        "RESULTS.md",
+        "decision.json",
+        "merge_manifest.json"
+      ],
+      "completion": "Target/status and recommended exact SHA reflect evidence, not ambition",
+      "conditional": false
+    }
+  ]
+}

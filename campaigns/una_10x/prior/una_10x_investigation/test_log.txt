@@ -1,0 +1,7 @@
+/mnt/data/una_10x_investigation/probe.py:209: NumbaWarning: Cannot cache compiled function "local_driver" as it uses dynamic globals (such as ctypes pointers and large global arrays)
+  @nb.njit(parallel=True, **JIT)
+/mnt/data/una_10x_investigation/probe.py:209: NumbaWarning: Cannot cache compiled function "local_driver" as it uses dynamic globals (such as ctypes pointers and large global arrays)
+  @nb.njit(parallel=True, **JIT)
+/mnt/data/una_10x_investigation/probe.py:209: NumbaWarning: Cannot cache compiled function "local_driver" as it uses dynamic globals (such as ctypes pointers and large global arrays)
+  @nb.njit(parallel=True, **JIT)
+{"component_cases_passed": 140, "full_label_cases_passed": 540, "guard_checks": 2, "application_tests": "not_run"}

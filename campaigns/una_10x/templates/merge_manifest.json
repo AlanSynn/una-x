@@ -1,0 +1,18 @@
+{
+  "source_sha": null,
+  "source_tree": null,
+  "target_main_sha": null,
+  "merge_base": null,
+  "rehearsal_sha": null,
+  "included_files": [],
+  "excluded_research_files": [],
+  "wheel_hashes": [],
+  "default_domains": [],
+  "fallback_domains": [],
+  "validation_records": [],
+  "performance_records": [],
+  "independent_review": "unavailable",
+  "ci": "unavailable",
+  "platform_status": "incomplete",
+  "decision": "do_not_merge"
+}

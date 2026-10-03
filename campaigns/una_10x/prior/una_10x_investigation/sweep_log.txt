@@ -1,0 +1,9 @@
+{"component_cases_passed": 140, "full_label_cases_passed": 540, "guard_checks": 2, "application_tests": "not_run"}
+{"case": "tiny_H1.json", "median_ms_derived": {"baseline": 0.043676, "local": 0.095034}, "component_speedup_derived": 0.45958288612496584, "equal_bits": true}
+{"case": "tiny_H4.json", "median_ms_derived": {"baseline": 0.02596, "local": 0.072078}, "component_speedup_derived": 0.3601653763977913, "equal_bits": true}
+{"case": "search_dominated_H1.json", "median_ms_derived": {"baseline": 55.156292, "local": 62.428266}, "component_speedup_derived": 0.8835147207196176, "equal_bits": true}
+{"case": "search_dominated_H4.json", "median_ms_derived": {"baseline": 14.959747, "local": 17.852626}, "component_speedup_derived": 0.8379577883948277, "equal_bits": true}
+{"case": "local_medium_H1.json", "median_ms_derived": {"baseline": 89.547038, "local": 6.46207}, "component_speedup_derived": 13.857330236286515, "equal_bits": true}
+{"case": "local_medium_H4.json", "median_ms_derived": {"baseline": 23.910867, "local": 3.113592}, "component_speedup_derived": 7.679511959177695, "equal_bits": true}
+{"case": "local_large_H1.json", "median_ms_derived": {"baseline": 373.934996, "local": 11.267048}, "component_speedup_derived": 33.18837338759895, "equal_bits": true}
+{"case": "local_large_H4.json", "median_ms_derived": {"baseline": 109.923225, "local": 7.423693}, "component_speedup_derived": 14.807081192608585, "equal_bits": true}

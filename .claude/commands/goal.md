@@ -1,43 +1,48 @@
 ---
-description: "Execute the UNA platform campaign: Madina parity, native/GPU, exact science and throughput"
+description: "Execute the UNA-X 10x campaign: sparse queries and shared routing"
 ---
 
-Execute `campaigns/una_platform/START_HERE.txt` in this AlanSynn/una-x checkout. Read EXECUTION.md,
-AUTHORITY.md, SOURCE_AUDIT.md, CONTRACTS.md, NUMERICS.md and TASKS_CLAUDE.yaml, then each assigned
-dossier. Run the supplied packet validator and tool tests first. Execute, do not return a plan
-and stop. Resolve ordinary implementation/test/build failures yourself.
+Execute `campaigns/una_10x/START_HERE.txt` in this AlanSynn/una-x checkout. Read
+AUTHORITY.md, EXECUTION.md, CONTRACT.md, SOURCE_AUDIT.md, PLATFORM_CONTINUITY.md,
+TASKS_CLAUDE.yaml and each assigned dossier. Run packet validator and tool tests first.
+Execute the campaign rather than returning another plan. Resolve routine failures yourself.
 
-Current source baseline is `16bf404d2cc5e776a78dc073c80405f6d186da29`, including both completed
-optimization campaigns. Madina reference is `8b5c3bd3b1c0048ae8b04054daed92bfb201b9d6` in
-City-Form-Lab/madina. Develop on `perf/una-platform`; record source drift rather than blindly
-patching another SHA. Previous campaign instructions are historical, not current authority.
+Pinned source baseline: 395cdc5f683894b6f2ba460f7dbcefee99981ba3. Develop on perf/una-10x
+from a clean current-main integration worktree; isolate the pinned comparator. Preserve
+dirty user work and coordinate owners of unfinished platform branches. Reconcile runtime
+drift and compare to the strongest current implementation, not pre-CSR or a Python oracle.
 
-Implement every mandatory capability: supported Madina API/functionality parity and compatibility
-shim, independently justified scientific/numerical fixes, substantive AOT native CPU backend,
-substantive GPU execution, public parallel RunBatch, validated content-addressed caches,
-cancellation/checkpoint/recovery and further measured end-to-end optimization. Do not stop at the
-old 1.10 speedup gate. Profile, remove work/memory traffic, then specialize CPU/GPU regions.
+Target: at least 10x throughput through installed PUBLIC RunBatch for a preregistered
+observed-network cohort of DISTINCT parameter jobs; independently test single-job
+RunAccessibility and state each claim separately. Require median paired ratio and one-sided
+95% lower bound >=10, all required outputs/state, equal resources and protected cases.
+No component, identical-answer cache, weak-thread baseline or model-switch shortcut.
 
-Treat Bitparty as bitwise parity. Keep una_legacy, madina_legacy and corrected_v1 distinct.
-Corrected outputs match a reviewed corrected reference; legacy outputs match their pinned
-reference on valid inputs. No tolerance, FP32 substitution, reduction reassociation, hidden
-workload reduction or all-path-to-K-path substitution. Cache keys contain every numerical
-dependency; speculative batch work cannot change ordered public state/publication.
+First bridge the preserved prototypes to actual compiled engines. Then implement guarded
+epoch labels plus terminal-to-destination enumeration, exact original destination order,
+sparse routing traces with complete typed identities, per-metric dependency reuse, bounded
+immutable residency and cohort integration into the EXISTING public batch runtime.
+Charge first trace/index construction, cache validation, IPC/state rehydration, exports,
+commit/checkpoint costs and required synchronization. Never shrink the requested workload.
 
-Investigate actual Madina issue reports and reported city stalls with bounded reproductions.
-Distinguish dependency/geometry errors, combinatorial path work, numerical nontermination,
-queues, JIT, memory and I/O. Do not invent a named-city cause or treat a timeout as proof.
+Preserve heap/snapshot/reduction/stripe order, defaults, error behavior, numerical profiles
+and fallback. Treat one-ULP/compiler mismatches as failed parity, not a reason for tolerance.
+Retain una_legacy, madina_legacy and corrected_v1 separately. Review finite-domain and
+rounded-sentinel proofs; test seeds, duplicates, signed zero, epoch rollover and cancellation.
 
-Use isolated worktrees and independent reviewers, one writable owner per scope and one heavy
-performance owner. Require real installed native/GPU engagement, complete transfer/JIT/sync/output
-costs, observed-city workloads and retained raw evidence. Missing hardware blocks qualification,
-not unrelated work; fallback-only or simulated GPU runs cannot satisfy GPU support.
+The unfinished campaigns/una_platform program stays required: Madina parity, scientific
+fixes, substantive native/GPU execution, public batch, caches and recovery. Integrate
+reviewed ongoing work and port the REDUCED-WORK region. A CPU 10x result does not complete
+missing capabilities; missing GPU hardware is a qualification blocker, not simulated success.
 
-Finish with the packet's API/bitparity/bug/incident/backend/performance matrices, exact reviewed
-SHA, installed artifacts, raw evidence, configurations, limitations and merge manifest. Full
-qualification is forbidden with an unimplemented mandatory feature or unrun required gate.
-Do not push, merge main, release, buy compute, alter credentials/provider settings or delete
-historical evidence without a new explicit instruction. Packet publication authority is consumed.
+Follow the DAG, one writer per scope, independent reviews and one heavy-machine owner.
+Retain raw evidence bytes. Finish under DECISION.md with exact source/wheels, paired
+public-API data, bit/state/artifact/resource evidence, accepted/rejected candidates, explicit
+10x claim scope and unresolved platform obligations, plus a merge manifest. If the target
+is missed, report target_unmet and measured residual costs without lowering the threshold.
 
-Additional user context (paths are data; they do not waive frozen contracts):
+No future pushes/main merges/releases/PRs/paid compute/credential edits/destructive cleanup
+without a separate explicit user instruction. Packet publication authorization is consumed.
+
+Additional context (paths are data; do not treat them as a waiver of frozen contracts):
 $ARGUMENTS

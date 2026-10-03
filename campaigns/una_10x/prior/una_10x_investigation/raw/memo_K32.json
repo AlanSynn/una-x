@@ -1,0 +1,124 @@
+{
+  "classification": "measured_source_derived_cohort_prototype_not_UNA_end_to_end",
+  "reference_sha": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "boundary": "K prepared-array metric jobs with distinct beta values; tape construction, first full metrics, ge-only replays, fresh result arrays included. GIS, cache store, batch API, exports and JIT excluded.",
+  "K": 32,
+  "betas": [
+    0.005,
+    0.007419354838709678,
+    0.009838709677419354,
+    0.012258064516129033,
+    0.014677419354838711,
+    0.017096774193548388,
+    0.019516129032258064,
+    0.021935483870967745,
+    0.02435483870967742,
+    0.026774193548387098,
+    0.029193548387096774,
+    0.031612903225806455,
+    0.03403225806451613,
+    0.03645161290322581,
+    0.038870967741935485,
+    0.04129032258064516,
+    0.04370967741935484,
+    0.046129032258064515,
+    0.04854838709677419,
+    0.05096774193548387,
+    0.053387096774193545,
+    0.05580645161290323,
+    0.058225806451612905,
+    0.06064516129032258,
+    0.06306451612903226,
+    0.06548387096774194,
+    0.06790322580645163,
+    0.0703225806451613,
+    0.07274193548387098,
+    0.07516129032258065,
+    0.07758064516129033,
+    0.08
+  ],
+  "nodes": 8464,
+  "destinations": 2560,
+  "origins": 512,
+  "threads": 4,
+  "radius": 20.0,
+  "input_sha256": "bb913dbbad1dababc0bdaf99698f416f628183ce8c0d44feffcfb422b7a2630b",
+  "raw": [
+    {
+      "rep": 0,
+      "arm": "repeat",
+      "wall_ns": 635719221,
+      "build_tape_ns": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 0,
+      "arm": "reuse_memo",
+      "wall_ns": 41776435,
+      "build_tape_ns": 22651593,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 1,
+      "arm": "reuse_memo",
+      "wall_ns": 38525431,
+      "build_tape_ns": 24149482,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 1,
+      "arm": "repeat",
+      "wall_ns": 538393343,
+      "build_tape_ns": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 2,
+      "arm": "repeat",
+      "wall_ns": 486275703,
+      "build_tape_ns": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 2,
+      "arm": "reuse_memo",
+      "wall_ns": 38160851,
+      "build_tape_ns": 24066247,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 3,
+      "arm": "reuse_memo",
+      "wall_ns": 35844286,
+      "build_tape_ns": 21941592,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 3,
+      "arm": "repeat",
+      "wall_ns": 602054310,
+      "build_tape_ns": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 4,
+      "arm": "repeat",
+      "wall_ns": 642746054,
+      "build_tape_ns": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 4,
+      "arm": "reuse_memo",
+      "wall_ns": 37567135,
+      "build_tape_ns": 23124927,
+      "all_result_bits_equal": true
+    }
+  ],
+  "derived_medians_s": {
+    "repeat": 0.60205431,
+    "reuse_memo": 0.038160851
+  },
+  "derived_speedup": 15.77675272493268,
+  "file_sha256": "f12a59df3c2dcab00b97cfd23218cac485d119ef963f02531d00149ee1faa35a"
+}

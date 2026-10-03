@@ -1,0 +1,100 @@
+{
+  "classification": "measured_source_derived_cohort_prototype_not_UNA_end_to_end",
+  "reference_sha": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "boundary": "K prepared-array metric jobs with distinct beta values; tape construction, first full metrics, ge-only replays, fresh result arrays included. GIS, cache store, batch API, exports and JIT excluded.",
+  "K": 8,
+  "betas": [
+    0.005,
+    0.015714285714285715,
+    0.02642857142857143,
+    0.03714285714285714,
+    0.047857142857142855,
+    0.05857142857142857,
+    0.06928571428571428,
+    0.08
+  ],
+  "nodes": 8464,
+  "destinations": 2560,
+  "origins": 512,
+  "threads": 4,
+  "radius": 20.0,
+  "input_sha256": "bb913dbbad1dababc0bdaf99698f416f628183ce8c0d44feffcfb422b7a2630b",
+  "raw": [
+    {
+      "rep": 0,
+      "arm": "repeat",
+      "wall_ns": 131625737,
+      "build_tape_ns": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 0,
+      "arm": "reuse_memo",
+      "wall_ns": 33972059,
+      "build_tape_ns": 27547788,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 1,
+      "arm": "reuse_memo",
+      "wall_ns": 23795361,
+      "build_tape_ns": 19686236,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 1,
+      "arm": "repeat",
+      "wall_ns": 130991260,
+      "build_tape_ns": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 2,
+      "arm": "repeat",
+      "wall_ns": 126263981,
+      "build_tape_ns": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 2,
+      "arm": "reuse_memo",
+      "wall_ns": 22649285,
+      "build_tape_ns": 18558306,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 3,
+      "arm": "reuse_memo",
+      "wall_ns": 21890177,
+      "build_tape_ns": 18046812,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 3,
+      "arm": "repeat",
+      "wall_ns": 130594480,
+      "build_tape_ns": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 4,
+      "arm": "repeat",
+      "wall_ns": 116320670,
+      "build_tape_ns": null,
+      "all_result_bits_equal": true
+    },
+    {
+      "rep": 4,
+      "arm": "reuse_memo",
+      "wall_ns": 23977624,
+      "build_tape_ns": 18823055,
+      "all_result_bits_equal": true
+    }
+  ],
+  "derived_medians_s": {
+    "repeat": 0.13059448,
+    "reuse_memo": 0.023795361
+  },
+  "derived_speedup": 5.488232769404087,
+  "file_sha256": "f12a59df3c2dcab00b97cfd23218cac485d119ef963f02531d00149ee1faa35a"
+}

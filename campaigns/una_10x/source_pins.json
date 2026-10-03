@@ -1,0 +1,19 @@
+{
+  "repository": "AlanSynn/una-x",
+  "source_sha": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "trees": {
+    "src": "f1850b77555349666e4a3e16fc090c5cab088008",
+    "tests": "407cdce3521342d3ea4476cca07ccbd36e4c2c65",
+    "benchmarks": "f721ae48cd6a612f43512ca8c1538c003349c9c5",
+    "campaigns/una_platform": "c1e4f15813ed66bc6e6053e257afd8a666e512ed"
+  },
+  "files": {
+    "src/urban_network_analysis/Engines/AccessibilityWElevation.py": "0ad34b98917e2f738d7a9365d236f7fa82c944c7",
+    "src/urban_network_analysis/Engines/_large_access_scratch.py": "63905385e767db3ba0212181c7b60a7fa050da15",
+    "src/urban_network_analysis/Engines/AggregateFlow.py": "dab30ab5e130a41c8b5d78efb0d0ba6c8e62dadb",
+    "src/urban_network_analysis/kernels/SPEC.md": "45c58df4008beadf54368302b401f175dc5d1676",
+    "src/urban_network_analysis/cache/stages.py": "a8f9ede3ff6ea155a76afb3cedab7dfad26ee9b4",
+    "src/urban_network_analysis/batch/worker.py": "bc3a39309b284dc914e20a4255a02cde1bac13a1"
+  },
+  "note": "Whole src tree is the numerical source baseline. Packet publication adds no runtime changes. File pins are audit anchors, not complete runtime closure."
+}

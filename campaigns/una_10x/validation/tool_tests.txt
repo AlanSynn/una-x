@@ -1,0 +1,52 @@
+test_both_scopes_require_two_gates (test_tools.CompletionTests.test_both_scopes_require_two_gates) ... ok
+test_missing_gates_refused (test_tools.CompletionTests.test_missing_gates_refused) ... ok
+test_no_merge_ready_without_ci (test_tools.CompletionTests.test_no_merge_ready_without_ci) ... ok
+test_path_traversal (test_tools.CompletionTests.test_path_traversal) ... ok
+test_platform_fake_gpu (test_tools.CompletionTests.test_platform_fake_gpu) ... ok
+test_proxy_not_production (test_tools.CompletionTests.test_proxy_not_production) ... ok
+test_raw_hash_custody (test_tools.CompletionTests.test_raw_hash_custody) ... ok
+test_target_unmet_honest (test_tools.CompletionTests.test_target_unmet_honest) ... ok
+test_true_flag_without_ratio_refused (test_tools.CompletionTests.test_true_flag_without_ratio_refused) ... ok
+test_below_target (test_tools.GateTests.test_below_target) ... ok
+test_bool_time (test_tools.GateTests.test_bool_time) ... ok
+test_duplicate_pairs (test_tools.GateTests.test_duplicate_pairs) ... ok
+test_empty_engagement (test_tools.GateTests.test_empty_engagement) ... ok
+test_failed_jobs (test_tools.GateTests.test_failed_jobs) ... ok
+test_fake_distinct (test_tools.GateTests.test_fake_distinct) ... ok
+test_kernel_boundary (test_tools.GateTests.test_kernel_boundary) ... ok
+test_lower_bound_not_median_alone (test_tools.GateTests.test_lower_bound_not_median_alone) ... ok
+test_mixed_harness (test_tools.GateTests.test_mixed_harness) ... ok
+test_mixed_profiles (test_tools.GateTests.test_mixed_profiles) ... ok
+test_mixed_resources (test_tools.GateTests.test_mixed_resources) ... ok
+test_mutating_wheel (test_tools.GateTests.test_mutating_wheel) ... ok
+test_nan_time (test_tools.GateTests.test_nan_time) ... ok
+test_no_bits (test_tools.GateTests.test_no_bits) ... ok
+test_no_cli_overwrite (test_tools.GateTests.test_no_cli_overwrite) ... ok
+test_no_installed (test_tools.GateTests.test_no_installed) ... ok
+test_no_outputs (test_tools.GateTests.test_no_outputs) ... ok
+test_no_resource (test_tools.GateTests.test_no_resource) ... ok
+test_no_state (test_tools.GateTests.test_no_state) ... ok
+test_over_target (test_tools.GateTests.test_over_target) ... ok
+test_partial_jobs (test_tools.GateTests.test_partial_jobs) ... ok
+test_quantile (test_tools.GateTests.test_quantile) ... ok
+test_seed_reproducible (test_tools.GateTests.test_seed_reproducible) ... ok
+test_synthetic_refused (test_tools.GateTests.test_synthetic_refused) ... ok
+test_too_few_pairs (test_tools.GateTests.test_too_few_pairs) ... ok
+test_unfrozen_refused (test_tools.GateTests.test_unfrozen_refused) ... ok
+test_unknown_source (test_tools.GateTests.test_unknown_source) ... ok
+test_untimed_trace (test_tools.GateTests.test_untimed_trace) ... ok
+test_warm_identical_only (test_tools.GateTests.test_warm_identical_only) ... ok
+test_wrong_api (test_tools.GateTests.test_wrong_api) ... ok
+test_zero_time (test_tools.GateTests.test_zero_time) ... ok
+test_audit_real_git_fixture (test_tools.GitAuditTests.test_audit_real_git_fixture) ... ok
+test_current_packet (test_tools.PacketTests.test_current_packet) ... ok
+test_cycle_refused (test_tools.PacketTests.test_cycle_refused) ... ok
+test_historical_claim_boundary (test_tools.PacketTests.test_historical_claim_boundary) ... ok
+test_prior_manifest (test_tools.PacketTests.test_prior_manifest) ... ok
+test_required_platform_tasks (test_tools.PacketTests.test_required_platform_tasks) ... ok
+test_target_mutation_refused (test_tools.PacketTests.test_target_mutation_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 47 tests in 0.828s
+
+OK

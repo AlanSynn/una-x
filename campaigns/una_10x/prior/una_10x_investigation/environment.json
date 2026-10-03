@@ -1,0 +1,28 @@
+{
+  "cpu_model": [
+    "AMD EPYC 9V74 80-Core Processor"
+  ],
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "python": "3.13.5",
+  "cpu_quota_raw": "400000 100000",
+  "memory_limit_raw": "4294967296",
+  "affinity": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "packages": {
+    "numpy": "2.3.5",
+    "numba": "0.65.1",
+    "llvmlite": "0.47.0",
+    "scipy": "1.17.0",
+    "geopandas": "1.1.2",
+    "psutil": "7.2.2"
+  },
+  "GPU": "not used or benchmarked",
+  "physical_DRAM_bytes": "unavailable",
+  "phase_peak_memory": "unavailable",
+  "measurement_boundary": "source-derived prepared-array prototype, not full UNA"
+}

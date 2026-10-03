@@ -1,0 +1,26 @@
+{
+  "status": "pass",
+  "scope": "packet consistency and utility self-tests only; not application qualification",
+  "check_count": 448,
+  "tasks": 30,
+  "dossiers": 9,
+  "tool_tests": {
+    "run": 47,
+    "passed": 47,
+    "failed": 0,
+    "skipped": 0
+  },
+  "python": "3.13.5",
+  "commands": [
+    "python3 campaigns/una_10x/tools/validate_packet.py",
+    "python3 -m unittest discover -s campaigns/una_10x/tests -v"
+  ],
+  "logs": {
+    "validation/checks.json": "68b81db59c85a52ccd799cb7dd6ff47ba4b96de96b46fc8bb5c04c6af28df491",
+    "validation/tool_tests.txt": "32e7691584451a45a242785377970bf2e005a3c04c771ed6c02675bc5d175e48"
+  },
+  "source_bridge": "not_run_during_packet_authoring",
+  "application_10x": "not_run",
+  "independent_application_review": "unavailable",
+  "prior_files_preserved": 28
+}
