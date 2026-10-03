@@ -1,0 +1,43 @@
+ROW layout start
+{"code": "layout", "compare_outputs": true, "route": "compact_fallback", "refusal": "layout", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 0.33}
+ROW layout start
+{"code": "layout", "compare_outputs": true, "route": "sparse_epoch_a3", "refusal": "", "counters_all_zero": false, "fallback_bitwise_baseline": true, "ok": false, "seconds": 0.3}
+ROW a1_guard start
+{"code": "a1_guard", "compare_outputs": true, "route": "compact_fallback", "refusal": "a1_guard", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 0.04}
+ROW a1_guard start
+{"code": "a1_guard", "compare_outputs": true, "route": "compact_fallback", "refusal": "a1_guard", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 0.05}
+ROW a1_guard start
+{"code": "a1_guard", "compare_outputs": true, "route": "compact_fallback", "refusal": "a1_guard", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 0.08}
+ROW a1_guard start
+{"code": "a1_guard", "compare_outputs": true, "route": "compact_fallback", "refusal": "a1_guard", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 0.05}
+{"code": "a1_guard", "gate_refusal": "a1_guard", "baseline_exception": "TypingError", "sparse_exception": "TypingError", "compare_outputs": "exception-parity", "ok": true, "seconds": 1.44}
+ROW tail start
+{"code": "tail", "compare_outputs": true, "route": "compact_fallback", "refusal": "tail", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 0.0}
+ROW shape start
+{"code": "shape", "compare_outputs": false, "route": "compact_fallback", "refusal": "shape", "counters_all_zero": true, "ok": true, "seconds": 0.0}
+ROW shape start
+{"code": "shape", "compare_outputs": false, "route": "compact_fallback", "refusal": "shape", "counters_all_zero": true, "ok": true, "seconds": 0.0}
+ROW dtype start
+{"code": "dtype", "compare_outputs": true, "route": "compact_fallback", "refusal": "dtype", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 0.05}
+ROW dtype start
+{"code": "dtype", "compare_outputs": true, "route": "compact_fallback", "refusal": "dtype", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 0.04}
+{"code": "values", "compare_outputs": "subprocess", "gate_refusal": "values", "gate_admitted": false, "observation": "NO-TERMINATION-IN-60s for BOTH the sparse route (whose UNCHANGED fallback calls the original driver) and the direct baseline: the ENGINE's staged a3 kernel nonterminates on a NaN seed weight on this graph (pump_attribution.json: a3kernel30-nan-seed TIMEOUT, compact30 terminates, gate refuses 'values' with zero work).  Behavior parity holds (both nonterminate); the module adds no hazard.", "ok": true, "seconds": 60.13}
+{"code": "values", "compare_outputs": "subprocess", "gate_refusal": "values", "gate_admitted": false, "route": "compact_fallback", "refusal": "values", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 5.65}
+{"code": "values", "compare_outputs": "subprocess", "gate_refusal": "values", "gate_admitted": false, "route": "compact_fallback", "refusal": "values", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 3.49}
+ROW values start
+{"code": "values", "compare_outputs": true, "route": "compact_fallback", "refusal": "values", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 0.0}
+ROW values start
+{"code": "values", "compare_outputs": true, "route": "compact_fallback", "refusal": "values", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 0.0}
+ROW values start
+{"code": "values", "compare_outputs": true, "route": "compact_fallback", "refusal": "values", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 0.0}
+ROW values start
+{"code": "values", "compare_outputs": true, "route": "compact_fallback", "refusal": "values", "counters_all_zero": true, "fallback_bitwise_baseline": true, "ok": true, "seconds": 0.0}
+{"code": "sentinel", "cutoff": 1.7976931348623157e+308, "route": "compact_fallback", "refusal": "sentinel", "counters_all_zero": true, "baseline_observation": "terminated", "note": "sparse refuses sentinel BEFORE any sparse work; the UNCHANGED fallback inherits the original driver's huge-cutoff behavior (S10 F3 nontermination family, recorded, engine-owned)", "ok": true}
+{"code": "sentinel", "cutoff": 9007199254740992.0, "route": "compact_fallback", "refusal": "sentinel", "counters_all_zero": true, "baseline_observation": "terminated", "note": "sparse refuses sentinel BEFORE any sparse work; the UNCHANGED fallback inherits the original driver's huge-cutoff behavior (S10 F3 nontermination family, recorded, engine-owned)", "ok": true}
+ROW capacity start
+{"code": "capacity", "compare_outputs": false, "route": "compact_fallback", "refusal": "capacity", "counters_all_zero": true, "ok": true, "seconds": 1.06}
+{"code": "addition_bound", "note": "scan over cutoff magnitudes x edge_max near DBL_MAX: no finite pair passes sentinel (b=fl(1+c)>c) while edge_max+c overflows; code unreachable behind sentinel", "reachable": false, "counterexample": null}
+{"code": "addition_bound-int64-cutoff", "note": "b=fl(1.0+int64(2**62))=4.611686018427388e+18 equals cutoff; sentinel fires; no int64 cutoff overflows the sum", "reachable": false}
+{"code": "threads", "reachable": false, "note": "set_num_threads(0) -> ValueError: The number of threads must be between 1 and 4; pool bound stays >= 1", "bound": 4}
+LATTICE-ROWS 25 NOT-OK 1
+{"code": "layout", "compare_outputs": true, "route": "sparse_epoch_a3", "refusal": "", "counters_all_zero": false, "fallback_bitwise_baseline": true, "ok": false, "seconds": 0.3}

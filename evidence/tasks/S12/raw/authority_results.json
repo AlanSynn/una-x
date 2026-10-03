@@ -1,0 +1,162 @@
+[
+ {
+  "id": "A1-multigraph",
+  "attack": "oracle chain vs baseline vs sparse",
+  "expected_law": "frozen-oracle chain, compiled baseline and sparse route agree bitwise on all four outputs",
+  "status": "PASS",
+  "extra": {
+   "per_field": {
+    "reach": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    },
+    "gravity_exponential": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    },
+    "gravity_logistic": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    },
+    "knn_access": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    }
+   },
+   "route": "sparse_epoch_a3"
+  }
+ },
+ {
+  "id": "A2-signed-zero-boundaries",
+  "attack": "oracle chain vs baseline vs sparse",
+  "expected_law": "frozen-oracle chain, compiled baseline and sparse route agree bitwise on all four outputs",
+  "status": "PASS",
+  "extra": {
+   "per_field": {
+    "reach": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    },
+    "gravity_exponential": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    },
+    "gravity_logistic": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    },
+    "knn_access": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    }
+   },
+   "route": "sparse_epoch_a3"
+  }
+ },
+ {
+  "id": "A3-random-80",
+  "attack": "oracle chain vs baseline vs sparse",
+  "expected_law": "frozen-oracle chain, compiled baseline and sparse route agree bitwise on all four outputs",
+  "status": "PASS",
+  "extra": {
+   "per_field": {
+    "reach": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    },
+    "gravity_exponential": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    },
+    "gravity_logistic": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    },
+    "knn_access": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    }
+   },
+   "route": "sparse_epoch_a3"
+  }
+ },
+ {
+  "id": "B1-kept0-nonempty-cand",
+  "attack": "oracle chain vs baseline vs sparse",
+  "expected_law": "frozen-oracle chain, compiled baseline and sparse route agree bitwise on all four outputs",
+  "status": "PASS",
+  "extra": {
+   "per_field": {
+    "reach": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    },
+    "gravity_exponential": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    },
+    "gravity_logistic": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    },
+    "knn_access": {
+     "vs_baseline": true,
+     "oracle_vs_baseline": true,
+     "sparse_vs_oracle": true
+    }
+   },
+   "route": "sparse_epoch_a3"
+  }
+ },
+ {
+  "id": "B1-zeros",
+  "attack": "kept==0 nonempty-candidates row values",
+  "expected_law": "exact 0.0/0 rows (uninitialized-memory fix class)",
+  "status": "PASS",
+  "extra": {
+   "reach": 0,
+   "grav_u64": "0x0",
+   "knn_u64": "0x0"
+  }
+ },
+ {
+  "id": "B2-float32-seeds",
+  "attack": "float32 o_terminal_weights: original driver compile vs sparse gate",
+  "expected_law": "ENGINE FINDING recorded not patched: original driver TypingError at _large_access_scratch.py:422; sparse refuses a1_guard then the fallback reproduces the crash",
+  "status": "PASS",
+  "extra": {
+   "baseline": [
+    "TypingError",
+    "_large_access_scratch.py (422)"
+   ],
+   "sparse": [
+    "raised",
+    "TypingError"
+   ]
+  }
+ },
+ {
+  "id": "B2-direct",
+  "attack": "minimal P4 reproduction on the ORIGINAL driver alone",
+  "expected_law": "TypingError raised at _large_access_scratch.py:422 (heappush float32/int64 list typing)",
+  "status": "PASS",
+  "extra": {
+   "observed": "TypingError at File \"src/urban_network_analysis/Engines/_large_access_scratch.py\", line 422:"
+  }
+ }
+]

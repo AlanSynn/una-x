@@ -1,0 +1,80 @@
+{
+ "description": "NaN seed weights: (a) tiny ring+chord graph (ptr [0,1,2,4], vec [1,2,0,0], wts [.5,.5,.5,.7], flags all True, cutoff 1.2, ow [[0.0, nan]]) \u2014 original driver, staged a3 kernel, compact kernel, sparse gate, finite control; (b) the 30-node lattice-v2 graph (default_rng(77) ring + 40 random arcs, wts U(0.1,0.8), o [[3,4]], ow [[0.05, nan]], cutoff 1.2) on which the driver was observed nonterminating with unbounded RSS during the lattice probe.  Kernels invoked inside @njit wrappers with per-origin ROW args (engine call shape; passing the 2D block makes o_terminal_weights[0] an array and heapq tuple typing dies regardless of NaN).",
+ "graph": {
+  "ptr": [
+   0,
+   1,
+   2,
+   4
+  ],
+  "vec": [
+   1,
+   2,
+   0,
+   0
+  ],
+  "wts": [
+   0.5,
+   0.5,
+   0.5,
+   0.7
+  ],
+  "flag": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "cutoff": 1.2,
+  "o": [
+   [
+    0,
+    1
+   ]
+  ],
+  "ow_nan": "[[0.0, nan]]"
+ },
+ "graph30": "default_rng(77): ring 0..29 + 40 random arcs, wts U(0.1,0.8), o [[3,4]], ow [[0.05, nan]], cutoff 1.2",
+ "results": [
+  {
+   "probe": "driver-nan-seed",
+   "status": "DONE-driver [1.0]"
+  },
+  {
+   "probe": "a3kernel-nan-seed",
+   "status": "DONE-a3kernel [nan, 0.5, nan]"
+  },
+  {
+   "probe": "compact-nan-seed",
+   "status": "DONE-compact [0.0, nan, 2.2]"
+  },
+  {
+   "probe": "sparse-gate-nan-seed",
+   "status": "DONE-sparse-gate compact_fallback values"
+  },
+  {
+   "probe": "a3kernel-control-finite",
+   "status": "DONE-a3kernel [0.0, 0.1, 0.6]"
+  },
+  {
+   "probe": "driver30-nan-seed",
+   "status": "TIMEOUT-60s (no DONE printed; inner 10s alarm did not fire => noninterruptible native loop)"
+  },
+  {
+   "probe": "a3kernel30-nan-seed",
+   "status": "TIMEOUT-60s (no DONE printed; inner 10s alarm did not fire => noninterruptible native loop)"
+  },
+  {
+   "probe": "compact30-nan-seed",
+   "status": "DONE-compact30 [2.2, 2.2, 0.864044632649644]"
+  },
+  {
+   "probe": "sparse-gate30-nan-seed",
+   "status": "TIMEOUT-60s (no DONE printed; inner 10s alarm did not fire => noninterruptible native loop)"
+  },
+  {
+   "probe": "sparse-gate30-ONLY-no-fallback",
+   "status": "GATE30 (False, 'values', 0)"
+  }
+ ]
+}
