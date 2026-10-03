@@ -1,0 +1,15 @@
+{
+  "files": {
+    "_s10_nan_probe.py": {
+      "command": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python _s10_nan_probe.py",
+      "output_sha256": "4790ed2a35388483f48d35469c1e570230baedf809fe067647f0017aef473064",
+      "sha256": "8a7b1a6027c228dfe9cd67acab5045e5ba49010cc9640c5024afe40292af49a7"
+    },
+    "_s10_nan_probe2.py": {
+      "command": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python _s10_nan_probe2.py",
+      "output_sha256": "3a2e54959f07c639dad3a8c2d6c8995ab0943462b5ab3f1d3fef464862e0d00b",
+      "sha256": "033492ea3873dfc7c6b25c47a61eee7e7921429dc813292be8f52b0b462d7145"
+    }
+  },
+  "task": "S10 sparse projection NaN findings"
+}
