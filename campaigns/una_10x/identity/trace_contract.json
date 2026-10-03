@@ -1,6 +1,6 @@
 {
   "canonical_encoding": {
-    "frame_law": "fields in SCHEMA ORDER (never sorted); str=u64len+utf8; int=8B LE signed; float=8B IEEE-754 bits (bit identity: -0.0 != 0.0, 1-ULP visible); bytes; bool; list=count+ordered frames; field=namelen+name+value; ID=sha256(frame).hexdigest()",
+    "frame_law": "fields in SCHEMA ORDER (never sorted); str=u64len+utf8; int=8B LE signed; float=8B IEEE-754 bits (bit identity: -0.0 != 0.0, 1-ULP visible); bytes; bool; list=count+ordered frames, LIST ONLY (a tuple value is refused); field=namelen+name+value; ID=sha256(frame).hexdigest(); refusal contract: out-of-range ints raise struct.error and unframed types raise TypeError - every encoder refusal is an admission refusal, never a silent wrap",
     "parent_embedding": "child ids embed the parent digest as a hex str field, making composition order explicit"
   },
   "id_fields": {

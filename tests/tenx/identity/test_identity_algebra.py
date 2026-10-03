@@ -178,7 +178,11 @@ def test_provenance_never_enters_identity(b, contract):
     assert base == with_extra
 
 
-def test_handle_law_in_contract(contract):
+def test_handle_law_recorded(contract):
+    # RECORDING check only (review C10-MINOR-1): the law text is pinned
+    # here; behavioral enforcement (handle lifetime, cache-hit refusal on
+    # pointers) lands with the C11/C12 runtime and its own gates.  These
+    # text checks are never counted as runtime law enforcement.
     text = " ".join(contract["laws"])
     assert "handle is not a durable cache identity" in text
     assert "pointer address is not a hash" in text

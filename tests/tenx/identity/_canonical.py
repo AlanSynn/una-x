@@ -10,10 +10,16 @@ Frame law:
   so -0.0 != 0.0 and every 1-ULP change is visible;
 - bytes -> b"b" + u64len + raw
 - bool  -> b"B" + 1 byte
-- list  -> b"L" + u64count + element frames in order
+- list  -> b"L" + u64count + element frames in order; ONLY list — a tuple
+  value is refused (no silent unification of distinct Python types)
 - field -> b"F" + u64 namelen + name + value frame (nested ids embed their
   parent digest as a hex str field, which makes composition order explicit)
 - ID    = sha256(field frame).hexdigest()
+
+Refusal contract: the encoder never wraps silently.  An int outside the
+signed 64-bit range raises struct.error; any unframed type raises
+TypeError.  Every encoder refusal (TypeError/struct.error) is an
+ADMISSION refusal for callers, never truncated or wrapped data.
 """
 import hashlib
 import struct
@@ -35,7 +41,7 @@ def frame(v):
         return b"f" + struct.pack("<d", v)
     if isinstance(v, bytes):
         return b"b" + _u64(len(v)) + v
-    if isinstance(v, (list, tuple)):
+    if isinstance(v, list):
         return (b"L" + _u64(len(v))
                 + b"".join(frame(e) for e in v))
     raise TypeError("unframed type: %r" % (type(v),))

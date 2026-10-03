@@ -193,38 +193,69 @@ def test_membership_boundary_recomputes(driver):
         assert bits(a) != bits(b)
 
 
+def _vec_identity(args):
+    """Plan identity over the full recorded parameter vector.
+
+    Arrays enter as their raw bytes; scalars/strings as typed frames —
+    a 1-ULP change anywhere in the vector flips the identity.
+    """
+    pairs = []
+    for i, v in enumerate(args):
+        if isinstance(v, np.ndarray):
+            pairs.append(("p%d" % i, v.tobytes()))
+        elif isinstance(v, (int, float, str)):
+            pairs.append(("p%d" % i, v))
+        else:
+            raise TypeError(type(v))
+    return canon.identity(pairs)
+
+
 def test_growth_derivation_bit_identity(driver, derivation):
-    """The wrapper's quotient reproduction is bit-identical at plan build."""
-    lhs, rhs = derivation["expression"].split("/")
-    decay, mid = 1.5, 2.0
-    q = decay / mid
-    assert bits(q) == bits(0.75)  # same typed evaluation on this fixture
-    base = driver()
-    same = driver(**{driver.names[11]: q})
-    for a, b in zip(base, same):
-        assert bits(a) == bits(b)
+    """The wrapper's OWN expression decides the plan: the quotient's
+    exact IEEE bits are recorded, so two inputs with the same real
+    quotient but different bits build different plans."""
+    from types import SimpleNamespace as NS
+    expr = derivation["expression"]
+    assert expr.count("/") == 1
+    q_expr = eval(expr, {}, {"settings": NS(
+        gravity_decay_constant=0.3, gravity_logistic_midpoint=0.4)})
+    exact = eval(expr, {}, {"settings": NS(
+        gravity_decay_constant=0.75, gravity_logistic_midpoint=1.0)})
+    # same real quotient (0.75), different IEEE bits
+    assert bits(q_expr) != bits(exact)
+    assert abs(q_expr - exact) <= math.ulp(0.75)
+    # determinism: the same recorded bits give bit-identical fold outputs
+    gname = driver.names[11]
+    a1 = driver(**{gname: q_expr})
+    a2 = driver(**{gname: q_expr})
+    for u, v in zip(a1, a2):
+        assert bits(u) == bits(v)
+    # the recorded growth bits separate plan identities, exactly
+    assert canon.identity([("g", bits(q_expr))]) != \
+        canon.identity([("g", bits(exact))])
 
 
 def test_growth_ulp_miss_is_identity_not_tolerance(facts, driver):
-    """A 1-ULP growth change misses identity; value change is robust-then-
-    asserted at a coarser mutation (never reconciled by tolerance)."""
-    g = driver.defaults[driver.names.index("growth_param"
-                                           if "growth_param"
-                                           in driver.names else
-                                           driver.names[11])]
+    """A 1-ULP growth change misses plan identity even when output bits
+    legitimately coincide; a robust mutation moves the reading outputs
+    (never reconciled by any tolerance)."""
+    gname = driver.names[11]
+    g = driver.defaults[driver.names.index(gname)]
     ulp = math.nextafter(g, math.inf)
-    base = driver()
-    near = driver(**{driver.names[11]: ulp})
-    # identity digest misses even when value bits may coincide
-    d1 = canon.identity([("g", g)])
-    d2 = canon.identity([("g", ulp)])
+    # plan identity over the FULL recorded vector misses on 1 ULP
+    base_vec = _vec_identity(driver.args())
+    near_vec = _vec_identity(driver.args(**{gname: ulp}))
+    assert base_vec != near_vec
+    # value-level law stays: the recorded quotient bits decide
+    d1 = canon.identity([("g", bits(g))])
+    d2 = canon.identity([("g", bits(ulp))])
     assert d1 != d2
-    # robust mutation must move the reading outputs
-    coarse = driver(**{driver.names[11]: g * 2.0})
+    # robust mutation moves every growth-reading output, exactly
+    base = driver()
+    coarse = driver(**{gname: g * 2.0})
     outs = facts["outputs"]
     for j, out in enumerate(outs):
         reads = facts["per_output"][out]["params_read"]
-        gname = driver.names[11]
         if gname in reads:
             assert bits(coarse[j]) != bits(base[j]), out
 

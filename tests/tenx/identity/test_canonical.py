@@ -87,7 +87,15 @@ def test_framed_bytes_roundtrip_exactness():
     assert back == v and canon.bits(v) == canon.frame(v)[1:]
 
 
-@pytest.mark.parametrize("bad", [{1: 2}, None])
+@pytest.mark.parametrize("bad", [{1: 2}, None, 2 ** 64])
 def test_unframed_types_refused(bad):
-    with pytest.raises(TypeError):
+    # 2**64 pins the out-of-range-int refusal: struct.error, never a wrap
+    with pytest.raises((TypeError, struct.error)):
         canon.frame(bad)
+
+
+def test_tuple_value_refused_list_only_law():
+    # canonical list law admits ONLY list; tuple must not silently unify
+    with pytest.raises(TypeError):
+        canon.frame((1.0, 2.0))
+    assert canon.frame([1.0, 2.0]).startswith(b"L")
