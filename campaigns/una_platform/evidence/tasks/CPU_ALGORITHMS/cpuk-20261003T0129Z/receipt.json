@@ -1,0 +1,64 @@
+{
+  "task": "CPU_ALGORITHMS",
+  "run_id": "cpuk-20261003T0129Z",
+  "role": "cpu-engineer",
+  "worktree": ".claude/worktrees/cpu-kernels (branch worktree-cpu-kernels, base e2d790b)",
+  "objective": "Freeze selected algorithm/kernel contracts and canonical corrected reductions for native/GPU ports",
+  "status": "IMPLEMENTATION CLOSED (task-level; campaign REVIEW gate still runs later on the merged tree)",
+  "completion_condition": {
+    "typed_shape_order_ownership_error_specification_stable": "SPEC.md (kernels/SPEC.md) frozen this run: profiles (una_legacy = compiled engine bits incl. fastmath laws; corrected_v1 = binary64 no-reassociation, authority reference/*), route ladder A3->A1->compact, two-phase search schedule with the characterized fast-comparison/heap laws, adjust operand law, reduction plans with the explicit profile split, ownership/scratch/concurrency and work-engagement requirements, typed error contract, port checklist. Corrected twice against evidence during this run (NaN/fold sections rewritten after compiled-engine characterization falsified the pre-characterization text).",
+    "reference_vs_improved_cpu_comparison_attribution_established": "kernels/compacted.py records CPU_LAYOUT candidate C4 (scope_access_compacted_v1) with the paired-alternating speedup medians (W3-4T 0.9895, W3-1T 1.0029, W1-4T 0.8512, W1-1T ~1.1), the bitwise-equality claim, the strictly-less-allocation claim and the BENCHMARKS.md no-default-change disposition, citing run cpul-20261002T2305Z. The arm is conformance-tested bitwise against BOTH the reference oracle and the compiled engines on the whole battery, with honest delegated-route tags on refusals."
+  },
+  "deliverables": [
+    "src/urban_network_analysis/kernels/SPEC.md",
+    "src/urban_network_analysis/kernels/reductions.py",
+    "src/urban_network_analysis/kernels/scope_access.py",
+    "src/urban_network_analysis/kernels/compacted.py",
+    "src/urban_network_analysis/kernels/__init__.py",
+    "tests/cpu_kernels/conftest.py",
+    "tests/cpu_kernels/test_schedule_pinning.py",
+    "tests/cpu_kernels/test_reductions.py",
+    "tests/cpu_kernels/test_improved_arm.py",
+    "tests/cpu_kernels/test_contracts.py"
+  ],
+  "verification": {
+    "suite": "tests/cpu_kernels/",
+    "result": "97 passed / 4 skipped / 0 failed in 7.88 s (green log suite_green.log); schedule-pinning module alone also ran 63 passed / 4 skipped in 9.5 s",
+    "interpreter": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python (Python 3.11.4, numba disk cache warm on repeat runs)",
+    "env": "PYTHONHASHSEED=0, run from the worktree root",
+    "skips": "4 = float32-adversarial driver variants whose guard refusal is asserted separately (weights_f32 forced-fallback seeds run in test_driver_fallback_bitwise)",
+    "bitwise_method": "byte identity via np.ascontiguousarray(a).tobytes() comparisons oracle<->engine on every battery case and route; no allclose anywhere in the suite"
+  },
+  "characterization_facts_pinned": [
+    "Fast comparison laws: compiled scalar a<b executes as not(b<=a), a<=b as not(b<a); NaN-involved comparisons are True. Seed gates, eligibility and improvement all run under this law (NaN seeds pushed, NaN candidates eligible, NaN labels improvable by finite candidates).",
+    "Heap tuple law: a NaN-weight entry compares LESS than every entry (NaN-left True, NaN-right False); finite weights lexicographic with ascending node-id ties (validated byte-equal against the engine heapq on three adversarial sequences).",
+    "Membership exception: the fold's np.where(d <= cutoff) membership did NOT inherit canonicalization - IEEE semantics, NaN distances excluded, closed radius (engine-verified: NaN excluded, d==cutoff kept).",
+    "Fold profile split (REAL delta, not an implementation accident): the compiled fold's aggregate over a computed expression carries LLVM fastmath reassociation NOT reproducible in plain numpy - demonstrated 1-ulp (logistic branch, n=4: engine 0x40170f5f9ced3661 vs numpy 0x40170f5f9ced3660; probe logistic_ulp_probe.txt). una_legacy parity therefore uses the njit(fastmath) transcription (fold_reach_gravity_knn_legacy_plan / _kept_legacy_plan, engine flags parallel=False/cache=True/nogil=True/fastmath=True), pinned bitwise to the engines; the numpy plans are corrected_v1 and are NOT claimed to reproduce legacy bits.",
+    "Dead engine fold parameters: knn_gravity_plateau/knn_gravity_beta/knn_gravity_logistic_midpoint/knn_gravity_growth_rate are read by nothing in the audited body (poison 999 vs -777.5 bit-identical; live gravity_* doubled -> outputs change). Pinned by test.",
+    "Adjust law: builtin min(a, b) = b if b<a else a - min(NaN, x) = NaN, min(x, NaN) = x; signed-zero first-operand rule (row [-0.0,-0.0] weights on a -0.0 label yields -0.0). Plan == engine byte-for-byte.",
+    "Engine nontermination law: NaN on BOTH origin seeds pumps the heap forever (NaN candidate improves any finite label AND any finite candidate improves a NaN label - no monotone potential). Compiled engine _a1_scope_search did not return within 280 s on build_case(5, nan_seed_start=True) (cached-compile kernel; raw evidence engine_nan_seed_nontermination/probe_run.txt, exit=124); the oracle reproduces the oscillation under a bounded pop cap (test_nan_seed_pair_nontermination_bounded, 100k pops). The shared battery EXCLUDES that case; nan_seed_end terminates and stays.",
+    "Type boundaries: float32 origin-terminal weights are refused by the engine guard and ValueError-refused by the oracle (SPEC section 7); float32 EDGE weights are guard-refused into the compact fallback whose kernel compiles (f32 row + f64 seed -> f64) and the oracle mirrors those bits."
+  ],
+  "abi_integration": "tests/cpu_kernels/test_contracts.py binds the frozen plan/stage/profile strings into backends.contracts: KernelInputs accepts them; kernel_inputs_fingerprint covers stage/profile/plan/array identity and deliberately excludes owner (pinned); KernelOutputs complete/incomplete + next_logical_state and duplicate-name gates; KernelCapabilities reference-backend rejection; CapabilityRegistryEntry shape; ExecutionContext post-admission backend gate (reference|native|gpu, auto rejected).",
+  "attribution": {
+    "improved_arm": "scope_access_compacted_v1 (CPU_LAYOUT C4)",
+    "medians": {"W3_medium_proxy_4t": 0.9895, "W3_medium_proxy_1t": 1.0029, "W1_small_genuine_4t": 0.8512, "W1_small_genuine_1t": "approx 1.1, single window"},
+    "disposition": "wall-neutral by the BENCHMARKS.md paired-improvement gate; NOT a default route; kept as the improved-CPU comparison arm and the natural AOT/GPU port shape",
+    "evidence_ref": "campaigns/una_platform/evidence/tasks/CPU_LAYOUT/cpul-20261002T2305Z"
+  },
+  "scope_discipline": "Engines/**, backends/**, reference/** and all other scopes untouched (diff limited to kernels/** + tests/cpu_kernels/** + this evidence tree). The engines were read as the frozen reference and executed as oracles only.",
+  "bans": "No pushes, no merges to main, no releases, no compute purchases, no credential/provider changes, no historical-evidence changes.",
+  "raw_evidence": {
+    "dir": "evidence/tasks/CPU_ALGORITHMS/cpuk-20261003T0129Z (untracked)",
+    "manifest": "manifest.json (sha256, 8 files; machine-verified by _closure_check.py at closure)",
+    "contents": [
+      "suite_green.log",
+      "suite_final.log (pre-commit re-run on the exact committed bytes: 97 passed, 4 skipped, 10.83 s)",
+      "logistic_ulp_probe.txt",
+      "engine_nan_seed_nontermination/probe_run.txt",
+      "probes/ (logistic-ulp, selfloop/leaf mini-cases, engine nontermination, manifest tool)"
+    ],
+    "provenance_note": "During closure the manifest generator was fixed to exclude its own output (the first manifest carried a self-referential sha256 that can never verify); all 7 substantive evidence files were proven byte-stable across the regeneration before it was done."
+  },
+  "dag_next": "NATIVE_CORE (deps CPU_ALGORITHMS) and NATIVE_SIMD become DAG-ready; BATCH_REVIEW completed in parallel this window (independent verdict ACCEPT-WITH-FINDINGS on branch worktree-batch-review @ 7d36360, relayed by the reviewer agent; its dispositions belong to the batch scope owner)."
+}
