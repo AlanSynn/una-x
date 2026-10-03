@@ -156,6 +156,26 @@ def _sp_route_admits(adjacency_pointer, adjacency_vector,
         if type(arr) is not np.ndarray or not arr.flags.c_contiguous:
             return (False, "layout", 0)
 
+    # Rank closure (S12 review F1/F2/F3): the engine gates read terminal
+    # shape[0]/[1] and the fold indexes the destination weight vector as
+    # 1-D, so a degenerate rank either crashes the kernel while the baseline
+    # runs (F1: (D,1) d_weights) or raises IndexError from THIS gate instead
+    # of the baseline's TypingError (F2: 0-d d_weights, F3: 1-D d_terminal_weights).
+    # Refuse the whole class here — before any shape element access, so this
+    # gate itself still raises nothing — and keep every such input on the
+    # unchanged fallback, which is bitwise or exception-parity exact by
+    # construction.
+    if (d_weights.ndim != 1
+            or adjacency_pointer.ndim != 1
+            or adjacency_vector.ndim != 1
+            or adjacency_vector_weights.ndim != 1
+            or adjacynct_vector_network_node.ndim != 1
+            or o_terminal_idxs.ndim != 2
+            or o_terminal_weights.ndim != 2
+            or d_terminal_idxs.ndim != 2
+            or d_terminal_weights.ndim != 2):
+        return (False, "shape", 0)
+
     admitted, max_degree = _a1_scope_admits(
         adjacency_pointer, adjacency_vector, adjacency_vector_weights,
         adjacynct_vector_network_node, o_terminal_idxs, o_terminal_weights,

@@ -142,6 +142,44 @@ def m(c):
     c["ow"] = w
 
 
+# S12 independent-review repair round: rank closure.  A (D,1) destination
+# weight vector crashed the kernel while the baseline ran (F1); 0-d
+# d_weights and 1-D destination-terminal costs raised IndexError from the
+# GATE instead of the baseline's TypingError (F2/F3).  The gate now
+# refuses every degenerate rank as "shape" before any shape-element
+# access; the unchanged fallback is bitwise (F1) or exception (F2/F3)
+# parity.  The three origin/idx classes were already parity-exact via the
+# engine gates and stay pinned to catch regressions.
+@mut("dweights_2d_column", "fallback", "shape")
+def m(c):
+    c["dwt"] = np.ascontiguousarray(c["dwt"][:, None])
+
+
+@mut("dweights_0d", "exception", "shape", compare=False)
+def m(c):
+    c["dwt"] = np.array(0.5)
+
+
+@mut("dterminal_costs_1d", "exception", "shape", compare=False)
+def m(c):
+    c["dw"] = np.ascontiguousarray(c["dw"][:, 0])
+
+
+@mut("dterminal_ids_1d", "exception", "shape", compare=False)
+def m(c):
+    c["d"] = np.ascontiguousarray(c["d"][:, 0])
+
+
+@mut("oseed_weights_1d", "exception", "shape", compare=False)
+def m(c):
+    c["ow"] = np.ascontiguousarray(c["ow"][:, 0])
+
+
+@mut("oterms_1d", "exception", "shape", compare=False)
+def m(c):
+    c["o"] = np.ascontiguousarray(c["o"][:, 0])
+
+
 @pytest.mark.parametrize("name", sorted(MUTATORS))
 def test_gate_and_fallback(name, sp, baseline):
     case = admitted_case("base")
