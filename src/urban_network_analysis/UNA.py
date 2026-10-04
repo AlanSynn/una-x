@@ -384,6 +384,11 @@ class UNA:
         # serve from the run's shared routing trace.  Every refusal
         # falls back to the inner engine unchanged, and the serial route
         # (which never sets _cohort_session) is untouched.
+        # The ``not self.settings.turns`` clause is LOAD-BEARING
+        # (C31-NOTE-3): the trace identity's profile frame asserts turn
+        # semantics "not-present-in-prepared-domain", so a turns-enabled
+        # analysis must never arm the cohort route; the session itself
+        # refuses turns regardless of attachment (defense in depth).
         session = getattr(self, "_cohort_session", None)
         if session is not None and not self.settings.turns:
             from .batch.cohort import CohortGraphEngine

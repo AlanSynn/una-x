@@ -48,10 +48,25 @@ Laws this module keeps (each one traceable to a reviewed gate):
 
 Residency sizing (C20-MAJOR-1 owner task, from RESOURCES.md): the host
 working budget is ``0.60 * available RAM`` at admission; the initial
-trace resident allowance is at most 25% of that budget, split across
-the effective workers so the sum of per-worker decoded arenas stays
-inside the allowance.  The parent derives the per-worker cap once and
-passes it down; workers never re-derive it.
+trace resident allowance is 25% of that budget and the parent derives
+the per-worker cap once as ``max(64 MiB, allowance // workers)`` and
+passes it down; workers never re-derive it.  ENFORCED law (C31-MINOR-1
+repair — the earlier draft's "sum stays inside the allowance" was
+false when the floor binds): the 64 MiB floor is deliberate (tiny
+hosts still cohort), and WHENEVER it binds the per-worker caps sum to
+``64 MiB * workers`` — more than the allowance (16 workers on 4 GiB:
+1 GiB summed against a 614 MiB allowance).  Only when
+``workers * 64 MiB <= allowance`` does the floor never bind and the
+sum stay inside the allowance; the parent publishes the derived split
+as is, without a signal either way.
+
+Corruption visibility (C31-NOTE-2, accepted as designed): a
+checksum-failed store entry is a MISS to this route — the store
+quarantines the damaged bytes and the route transparently rebuilds,
+counted under ``builds`` like any cold build.  The batch report
+cannot distinguish a cold build from a quarantine-rebuild; the
+durable evidence of a corruption event is the store's own
+``quarantine/`` tree.
 """
 
 from __future__ import annotations
@@ -85,9 +100,12 @@ def _producer_sha256() -> str:
 
 
 def per_worker_residency_cap(workers_effective: int) -> int:
-    """RESOURCES.md sizing: 25% of the host working budget
-    (0.60 * available RAM at admission), split across the effective
-    workers.  Floor of 64 MiB total so tiny hosts still cohort."""
+    """RESOURCES.md sizing: ``max(64 MiB, allowance // workers)`` where
+    the allowance is 25% of the host working budget (0.60 * available
+    RAM at admission).  ENFORCED (C31-MINOR-1): the 64 MiB floor is
+    deliberate (tiny hosts still cohort), so whenever it binds the
+    per-worker caps sum to ``64 MiB * workers`` — above the allowance;
+    only ``workers * 64 MiB <= allowance`` keeps the sum inside it."""
     try:
         import psutil
         available = int(psutil.virtual_memory().available)
@@ -235,6 +253,16 @@ class CohortSession:
             return None
 
     def _o_access(self, view, engine, settings, d_weights):
+        # C31-NOTE-3 defense in depth: the trace identity's profile
+        # frame asserts turn semantics "not-present-in-prepared-domain",
+        # so a turns-enabled prepared domain must never mint a cohort
+        # trace — it would bake a false claim into every
+        # identity-derived reuse.  The UNA.py dispatch gate is not the
+        # only guard: a directly-attached session refuses here (counted;
+        # the wrapper falls back to the inner engine bitwise).
+        if getattr(settings, "turns", None):
+            self._refuse("turns_present_in_prepared_domain")
+            return None
         cutoff = settings.search_radius
         # The producer's admission gate demands exact C-contiguous
         # ndarray layouts; the engine's own compact view legitimately

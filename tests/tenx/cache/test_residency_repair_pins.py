@@ -232,3 +232,35 @@ def test_republish_under_live_lease_refuses_divergence(residency):
     finally:
         lease.release()
         gc.collect()
+
+
+def test_republish_encoded_tier_edges_fresh_residency(
+        residency, disk_store, producer_sha):
+    """C20-RV-2 (the C20 re-verify residual): BOTH edges of the
+    divergence law at the encoded store tier alone — a FRESH residency
+    over the same store holds no resident copy.  Divergent bytes refuse
+    with the stored bytes exactly as they were; the SAME bytes
+    republish cleanly (the idempotent cold-start race must never be
+    refused by a future over-strict repair)."""
+    ip, ids, dist = packed_triple(24)
+    meta = meta_for(ip, ids, trace_id="t-enc")
+    key = residency.publish(ip, ids, dist, meta)
+    res2 = TraceResidency(disk_store, max_resident_bytes=MEG,
+                          producer_sha256=producer_sha)
+    assert key not in res2._entries            # encoded tier only
+    before = dict(disk_store.get(key).payload)
+    res2.counters["publish_rejections"] = 0
+    try:
+        res2.publish(ip, ids, dist + 3.0,
+                     meta_for(ip, ids, trace_id="t-enc"))
+        raise AssertionError("encoded-tier divergent republish accepted")
+    except ResidencyError as e:
+        assert "identity violation" in str(e)
+    assert res2.counters["publish_rejections"] == 1
+    after = dict(disk_store.get(key).payload)
+    for name in ("indptr.bin", "destination_ids.bin", "distance_bits.bin"):
+        assert after[name] == before[name]
+    # acceptance edge: identical bytes republish cleanly, one entry
+    key2 = res2.publish(ip, ids, dist, meta_for(ip, ids, trace_id="t-enc"))
+    assert key2 == key
+    assert res2.counters["publishes"] == 1
