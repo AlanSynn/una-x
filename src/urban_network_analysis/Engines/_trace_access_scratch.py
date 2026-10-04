@@ -952,3 +952,148 @@ def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
         reach=reach, gravity_exponential=ge, gravity_logistic=gl,
         knn_access=kn, route="trace_replay", refusal="",
         trace_id=trace.trace_id, folds_done=folds_done)
+
+
+# ============================================================================
+# P03M (dossier 04): the admitted gravity_exponential-only split of the
+# whole-row replay.  The metric field store serves reach /
+# gravity_logistic / knn_access from bit-identical full replays of the
+# SAME typed identity; this path computes ONLY the exponential field.
+#
+# ADMISSION EVIDENCE (parity BEFORE timing, no allclose anywhere): a
+# 6912-case adversarial battery (lengths 0/1/2/3/4/5/8/16/17/64/257,
+# all-ties, boundary == cutoff and nextafter-beyond, zeros/-0.0,
+# tiny/huge magnitudes, 200 production-like slices, the full 32-value
+# frozen-cohort beta ladder) showed ZERO bit divergence between the
+# split kernel and the whole fold's gravity_exponential component; the
+# committed battery below re-proves it on every test run, including
+# float32 metric downcasts, int cutoffs and empty/zero-origin records.
+# NOT claimed: any branch profile other than what the battery covers,
+# or any kernel computing a different component subset.
+# ============================================================================
+_REPLAY_GE_SPLIT_ADMITTED = True
+
+
+@nb.njit(cache=True, nogil=True, parallel=False, fastmath=True)
+def _ge_split_kernel(d_distance, d_weights, cutoff, gravity_beta,
+                     gravity_plateau):
+    """The fold's exponential field as its OWN straight-line compiled
+    body (the exact shape the 6912-case function-level battery proved
+    bit-identical to the fold's component).  Kept a separate njit
+    function — njit-to-njit calls are not auto-inlined, so the
+    reduction compiles in the context that was proven, never inside
+    the driver's loop body (the inlined variant DIVERGED by one ULP
+    on real trace slices; kept as recorded evidence)."""
+    n_reach_filter = np.where(d_distance <= cutoff)[0]
+    n_distances = d_distance[n_reach_filter]
+    n_weights = d_weights[n_reach_filter]
+    return (n_weights / np.exp(
+        gravity_beta * np.maximum(0,
+                                  n_distances - gravity_plateau))).sum()
+
+
+@nb.njit(cache=True, nogil=True, parallel=False)
+def _replay_ge_split_compiled(indptr, ids_all, dist_all, d_weights,
+                              cutoff, gravity_beta, gravity_plateau,
+                              ge):
+    """P03M ge-only driver: the SAME Phase B structural scan as the
+    whole-row driver (identical refusal codes), then one serial loop
+    computing only gravity_exponential through the standalone kernel
+    over operands prepared byte-identically to the whole-row driver
+    (same copies, same order)."""
+    origin_count = indptr.shape[0] - 1
+    for origin in range(origin_count):        # Phase B: full scan
+        lo = indptr[origin]; hi = indptr[origin + 1]
+        if hi < lo:
+            return 1
+        for j in range(lo + 1, hi):
+            if ids_all[j] <= ids_all[j - 1]:
+                return 2
+    for origin in range(origin_count):        # Phase C: ge only
+        lo = indptr[origin]; hi = indptr[origin + 1]
+        cand_ids = ids_all[lo:hi]
+        cand_dist = dist_all[lo:hi].copy()
+        cand_wts = d_weights[cand_ids].copy()
+        ge[origin] = _ge_split_kernel(
+            cand_dist, cand_wts, cutoff, gravity_beta,
+            gravity_plateau)
+    return 0
+
+
+def replay_trace_ge_split(trace, d_weights, gravity_beta,
+                          gravity_plateau, cutoff):
+    """Replay ONLY gravity_exponential from a COMPLETE trace.
+
+    The guard chain is replay_trace's own, byte for byte and in the
+    same order (schema, completeness, typed cutoff bits, weight
+    layout/count/domain, packed structure, content digest) — a cache
+    hit upstream never skips validation, and a corrupt record is
+    refused here exactly as the whole-row path would refuse it.  On
+    success ONLY gravity_exponential is populated (route
+    ``trace_replay_ge_split``): reach / gravity_logistic / knn_access
+    are served from the typed metric field store by the caller and
+    are NEVER fabricated here."""
+    def _refuse(reason):
+        return TraceReplayResult(
+            reach=np.zeros(0), gravity_exponential=np.zeros(0),
+            gravity_logistic=np.zeros(0), knn_access=np.zeros(0),
+            route="trace_replay_refused", refusal=reason,
+            trace_id=trace.trace_id if isinstance(trace, TraceRecord)
+            else "", folds_done=0)
+
+    if not isinstance(trace, TraceRecord):
+        return _refuse("not_a_trace_record")
+    if trace.schema_version != TRACE_SCHEMA_VERSION:
+        return _refuse("trace_schema_mismatch")
+    if not trace.complete:
+        return _refuse("incomplete_trace_not_a_cache_hit")
+
+    cutoff_value = float(cutoff)
+    cutoff_dtype = str(np.dtype(getattr(cutoff, "dtype", type(cutoff))))
+    if np.float64(cutoff_value).tobytes() \
+            != np.float64(trace.cutoff_value).tobytes() or \
+            cutoff_dtype != trace.cutoff_dtype:
+        return _refuse("cutoff_mismatch_with_trace_identity")
+
+    if not (isinstance(d_weights, np.ndarray)
+            and d_weights.ndim == 1):
+        return _refuse("dest_weights_layout")
+    if d_weights.shape[0] != trace.dest_count:
+        return _refuse("dest_count_mismatch")
+    if not np.all(np.isfinite(d_weights)) or \
+            np.any(d_weights < 0.0):
+        return _refuse("dest_weights_value_domain")
+
+    origin_count = trace.origin_count
+    ge = np.empty(origin_count, dtype=np.dtype(trace.metric_dtype))
+    indptr = trace.indptr
+    ids_all = trace.destination_ids
+    dist_all = trace.distance_bits
+
+    if indptr.dtype != np.int64 or ids_all.dtype != np.int64 \
+            or dist_all.dtype != np.float64 \
+            or indptr.shape[0] != origin_count + 1 \
+            or int(indptr[0]) != 0 \
+            or dist_all.shape[0] != ids_all.shape[0] \
+            or int(indptr[-1]) != ids_all.shape[0] \
+            or int(np.diff(indptr).min(initial=0)) < 0:
+        return _refuse("corrupt_trace_structure")
+    if ids_all.shape[0] and (int(ids_all.min()) < 0
+                             or int(ids_all.max()) >= trace.dest_count):
+        return _refuse("corrupt_trace_destination_ids")
+    if hashlib.sha256(indptr.tobytes() + ids_all.tobytes()
+                      + dist_all.tobytes()).hexdigest() \
+            != trace.content_digest:
+        return _refuse("corrupt_trace_content_digest")
+
+    rc = _replay_ge_split_compiled(
+        indptr, ids_all, dist_all, d_weights, cutoff, gravity_beta,
+        gravity_plateau, ge)
+    if rc:
+        return _refuse("corrupt_trace_structure" if rc == _RC_STRUCTURE
+                       else "corrupt_trace_slice_order")
+    return TraceReplayResult(
+        reach=np.zeros(0), gravity_exponential=ge,
+        gravity_logistic=np.zeros(0), knn_access=np.zeros(0),
+        route="trace_replay_ge_split", refusal="",
+        trace_id=trace.trace_id, folds_done=origin_count)

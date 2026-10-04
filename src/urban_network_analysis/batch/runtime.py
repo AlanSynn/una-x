@@ -1311,6 +1311,14 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
             "rows": 0, "builds": 0, "faultins": 0, "resident_hits": 0,
             "singleflight_lost": 0, "replays": 0, "folds_done": 0,
             "build_s": 0.0, "faultin_s": 0.0, "replay_s": 0.0,
+            # P03M typed metric-field reuse (una:metric-id:v2)
+            "metric_field_hits": 0,
+            "metric_split_folds": 0,
+            "metric_field_produced": 0,
+            "metric_copied_bytes": 0,
+            "metric_fallbacks": 0,
+            "metric_errors": 0,
+            "split_s": 0.0,
         }
         refusals: Dict[str, int] = {}
         identities = set()

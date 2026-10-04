@@ -81,7 +81,17 @@ def test_shared_identity_builds_once_and_warm_repeat_serves(
     trace identity (same inputs, same cutoff): exactly one build serves
     the whole cohort; a second RunBatch over the same output folder is
     warm — the persisted cohort store serves every row, nothing builds
-    again, and the artifacts are unchanged."""
+    again, and the artifacts are unchanged.
+
+    P03M expectation change (reason recorded in the P03M verdict
+    receipt): with partial metric reuse the whole-row replay runs once
+    per WORKER PROCESS (its first same-identity row commits the
+    beta-invariant trio), and every later row is served the trio and
+    computes gravity_exponential through the admitted ge-split — the
+    pre-P03M pin ``replays == 4`` asserted the every-row-replays
+    behavior P03M legitimately removes.  The reuse arithmetic is now
+    pinned exactly instead: produced == 3 per replay, hits == 3 per
+    served row, splits == served rows."""
     def extra(i, s):
         s.search_radius = 120          # one identity for the whole cohort
         s.gravity_beta = 0.010 + 0.001 * i   # distinct jobs, shared trace
@@ -94,7 +104,13 @@ def test_shared_identity_builds_once_and_warm_repeat_serves(
     assert cs1["rows"] == 4
     assert cs1["builds"] == 1, cs1     # produce-once per identity
     assert cs1["distinct_trace_identities"] == 1
-    assert cs1["replays"] == 4
+    # P03M partial reuse (see the docstring): one full replay per worker
+    # process, the rest of the cohort served + ge-split
+    assert 1 <= cs1["replays"] <= 2, cs1
+    assert cs1["metric_field_produced"] == 3 * cs1["replays"], cs1
+    assert cs1["metric_field_hits"] == 3 * (4 - cs1["replays"]), cs1
+    assert cs1["metric_split_folds"] == 4 - cs1["replays"], cs1
+    assert cs1["metric_fallbacks"] == 0 and cs1["metric_errors"] == 0
     # every non-owner row was served from the store or the residency
     assert cs1["faultins"] + cs1["resident_hits"] == 3
     assert cs1["refusals"] == {}, cs1["refusals"]
@@ -110,7 +126,10 @@ def test_shared_identity_builds_once_and_warm_repeat_serves(
     p2.RunBatch("accessibility", parallel=True, workers=2)
     cs2 = cohort_summary(p2)
     assert cs2["builds"] == 0, cs2     # nothing is built again
-    assert cs2["replays"] == 4
+    assert 1 <= cs2["replays"] <= 2, cs2   # once per process (P03M)
+    assert cs2["metric_field_produced"] == 3 * cs2["replays"], cs2
+    assert cs2["metric_field_hits"] == 3 * (4 - cs2["replays"]), cs2
+    assert cs2["metric_split_folds"] == 4 - cs2["replays"], cs2
     assert cs2["faultins"] + cs2["resident_hits"] == 4
     assert cs2["refusals"] == {}, cs2["refusals"]
     # warm artifacts unchanged, bitwise

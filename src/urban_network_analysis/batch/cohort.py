@@ -75,13 +75,16 @@ import hashlib
 import os
 import threading
 import time
+from collections import OrderedDict
 from typing import Any, Dict, Optional, Tuple
 
 import numpy as np
 
 from ..cache import identity as _ckid
+from ..Engines import _metric_identity as _mrid
 from ..Engines import _trace_access_scratch as trm
 from ..Execution import CacheOptions
+from .metric_reuse import MetricFieldStore as _MFS
 
 __all__ = ["CohortSession", "CohortGraphEngine",
            "per_worker_residency_cap", "record_meta"]
@@ -158,6 +161,28 @@ class _CohortStores:
 _PROCESS_STORES: Dict[str, _CohortStores] = {}
 _PROCESS_STORES_LOCK = threading.Lock()
 
+# P03M: the metric field store must outlive a single RowJob (the
+# worker builds a fresh CohortSession per row) — one bounded registry
+# per process, same law as the prepared-input registry (_REG_MAX).
+_METRIC_STORE_MAX = 4
+_METRIC_STORES: "OrderedDict[str, _MFS]" = OrderedDict()
+_METRIC_STORES_LOCK = threading.Lock()
+
+
+def _metric_store_for(root: str, cap_bytes: int) -> _MFS:
+    with _METRIC_STORES_LOCK:
+        store = _METRIC_STORES.get(root)
+        if store is None:
+            while len(_METRIC_STORES) >= _METRIC_STORE_MAX:
+                _METRIC_STORES.popitem(last=False)
+                _METRIC_STORES_EVICTED[0] += 1
+            store = _MFS(cap_bytes)
+            _METRIC_STORES[root] = store
+        return store
+
+
+_METRIC_STORES_EVICTED = [0]
+
 
 def _stores_for(root: str, residency_cap_bytes: int) -> _CohortStores:
     with _PROCESS_STORES_LOCK:
@@ -190,9 +215,19 @@ class CohortSession:
             "build_s": 0.0,
             "faultin_s": 0.0,
             "replay_s": 0.0,
+            # P03M typed metric-field reuse (una:metric-id:v2)
+            "metric_field_hits": 0,     # fields served from the store
+            "metric_split_folds": 0,    # admitted ge-only splits run
+            "metric_field_produced": 0, # fields committed from full replays
+            "metric_copied_bytes": 0,   # fresh-copy bytes served on hits
+            "metric_fallbacks": 0,      # split refused -> whole-row path
+            "metric_errors": 0,         # internal: identity/store fault
+            "split_s": 0.0,             # ge-split wall (excluded from replay_s)
         }
+        self._mstore: Any = None     # lazy MetricFieldStore (never transported)
         self.last_trace_id: Optional[str] = None
         self.last_result_key: Optional[str] = None
+        self.last_metric_ids: Optional[dict] = None
 
     # -- per-row attribution -------------------------------------------------
 
@@ -206,7 +241,14 @@ class CohortSession:
                 "replays": c["replays"], "folds_done": c["folds_done"],
                 "refusals": dict(c["refusals"]),
                 "build_s": c["build_s"], "faultin_s": c["faultin_s"],
-                "replay_s": c["replay_s"]}
+                "replay_s": c["replay_s"],
+                "metric_field_hits": c["metric_field_hits"],
+                "metric_split_folds": c["metric_split_folds"],
+                "metric_field_produced": c["metric_field_produced"],
+                "metric_copied_bytes": c["metric_copied_bytes"],
+                "metric_fallbacks": c["metric_fallbacks"],
+                "metric_errors": c["metric_errors"],
+                "split_s": c["split_s"]}
 
     def delta(self, before: dict) -> dict:
         """The counters slice this row produced."""
@@ -229,9 +271,96 @@ class CohortSession:
             "build_s": c["build_s"] - before["build_s"],
             "faultin_s": c["faultin_s"] - before["faultin_s"],
             "replay_s": c["replay_s"] - before["replay_s"],
+            "metric_field_hits":
+                c["metric_field_hits"] - before["metric_field_hits"],
+            "metric_split_folds":
+                c["metric_split_folds"] - before["metric_split_folds"],
+            "metric_field_produced":
+                c["metric_field_produced"]
+                - before["metric_field_produced"],
+            "metric_copied_bytes":
+                c["metric_copied_bytes"] - before["metric_copied_bytes"],
+            "metric_fallbacks":
+                c["metric_fallbacks"] - before["metric_fallbacks"],
+            "metric_errors":
+                c["metric_errors"] - before["metric_errors"],
+            "split_s": c["split_s"] - before["split_s"],
             "trace_id": self.last_trace_id,
             "result_key": self.last_result_key,
+            "metric_ids": dict(self.last_metric_ids)
+            if self.last_metric_ids else None,
         }
+
+    # -- P03M: typed metric-field reuse (una:metric-id:v2) -------------------
+
+    def _metric_ctx(self, rec, d_weights, settings, cutoff):
+        """The row's typed field ids.  Encoding is REFUSED, never
+        coerced (C31-NOTE-1 resolution: no float64 convenience cast
+        anywhere in a reuse identity).  May raise EncodingRefused on
+        a value outside the admitted domain — the caller counts and
+        falls back to the whole-row replay."""
+        growth_rate = (settings.gravity_decay_constant
+                       / settings.gravity_logistic_midpoint)
+        wsha = _mrid.weights_digest(d_weights)
+        kwp = _mrid.array_part(np.asarray(settings.knn_weights))
+        common = dict(
+            trace_id=rec.trace_id, trace_schema=rec.schema_version,
+            cutoff=cutoff, weights_sha=wsha,
+            reach_dtype=str(rec.reach_dtype),
+            metric_dtype=str(rec.metric_dtype),
+            beta=settings.gravity_beta,
+            plateau=settings.gravity_plateau,
+            midpoint=settings.gravity_logistic_midpoint,
+            growth_rate=growth_rate,
+            knn_decay=settings.knn_decay,
+            knn_weights_part=kwp)
+        trio = ("reach", "gravity_logistic", "knn_access")
+        return {"ids": {k: _mrid.metric_field_id(k, **common)
+                        for k in trio},
+                "trio": trio}
+
+    def _metric_store(self):
+        if self._mstore is None:
+            self._mstore = _metric_store_for(self.root,
+                                             self.residency_cap_bytes)
+        return self._mstore
+
+    def _metric_serve(self, ctx):
+        """The trio from the store — fresh writable copies — or None
+        on ANY miss (a partial trio is never a serve; the caller runs
+        the whole-row replay).  Counters count COMPLETED serves only:
+        a partial fetch that falls back never leaves a phantom hit
+        behind.  Never raises."""
+        try:
+            store = self._metric_store()
+            got = {}
+            for kind in ctx["trio"]:
+                a = store.get(ctx["ids"][kind])
+                if a is None:
+                    return None
+                got[kind] = a
+            self.counters["metric_field_hits"] += len(got)
+            self.counters["metric_copied_bytes"] += sum(
+                int(a.nbytes) for a in got.values())
+            return got
+        except Exception:
+            self.counters["metric_errors"] += 1
+            return None
+
+    def _metric_commit(self, ctx, res):
+        """Field entries from a SUCCESSFUL whole-row replay (failed or
+        incomplete outputs never enter the store).  Never raises."""
+        try:
+            store = self._metric_store()
+            n = 0
+            for kind, arr in (("reach", res.reach),
+                              ("gravity_logistic", res.gravity_logistic),
+                              ("knn_access", res.knn_access)):
+                if store.put(ctx["ids"][kind], arr):
+                    n += 1
+            self.counters["metric_field_produced"] += n
+        except Exception:
+            self.counters["metric_errors"] += 1
 
     def _refuse(self, reason: str) -> None:
         self.counters["refusals"][reason] = \
@@ -250,6 +379,7 @@ class CohortSession:
             self._refuse(f"exception:{type(exc).__name__}")
             self.last_trace_id = None
             self.last_result_key = None
+            self.last_metric_ids = None
             return None
 
     def _o_access(self, view, engine, settings, d_weights):
@@ -381,6 +511,42 @@ class CohortSession:
                 if lease is not None:
                     lease.release()
 
+        # P03M: typed metric-field reuse (una:metric-id:v2).  The
+        # worker-local store serves reach / gravity_logistic /
+        # knn_access from bit-identical whole-row replays of the SAME
+        # typed identity; the admitted ge-only split computes the one
+        # field that varies.  ANY failure here — encoding refusal,
+        # store fault, split refusal — falls through to the whole-row
+        # replay below: the route can only save work, never change a
+        # number, and a refused record reaches the same refusal
+        # through the unchanged path.
+        mctx = None
+        try:
+            mctx = self._metric_ctx(rec, d_weights, settings, cutoff)
+            self.last_metric_ids = dict(mctx["ids"])
+        except Exception:
+            self.counters["metric_errors"] += 1
+            mctx = None
+        if mctx is not None and trm._REPLAY_GE_SPLIT_ADMITTED:
+            served = self._metric_serve(mctx)
+            if served is not None:
+                t3 = time.perf_counter()
+                rge = trm.replay_trace_ge_split(
+                    rec, d_weights, settings.gravity_beta,
+                    settings.gravity_plateau, cutoff)
+                self.counters["split_s"] += \
+                    time.perf_counter() - t3
+                if rge.route == "trace_replay_ge_split":
+                    self.counters["metric_split_folds"] += 1
+                    self.counters["folds_done"] += \
+                        int(rge.folds_done)
+                    return (served["reach"],
+                            rge.gravity_exponential,
+                            served["gravity_logistic"],
+                            served["knn_access"])
+                self.counters["metric_fallbacks"] += 1
+                self._refuse(f"ge_split:{rge.refusal}")
+
         # Replay through the engine's own reviewed fold with o_access's
         # EXACT argument threading (raw knn_weights, same division).
         t2 = time.perf_counter()
@@ -400,6 +566,8 @@ class CohortSession:
             return None
         self.counters["replays"] += 1
         self.counters["folds_done"] += int(res.folds_done)
+        if mctx is not None:
+            self._metric_commit(mctx, res)
         return (res.reach, res.gravity_exponential,
                 res.gravity_logistic, res.knn_access)
 
