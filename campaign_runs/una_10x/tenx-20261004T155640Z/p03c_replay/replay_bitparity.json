@@ -1,0 +1,154 @@
+{
+ "islands_declared_from_session": [
+  {
+   "command": "./_py -m pytest tests/batch tests/execution -q",
+   "outcome": "198 passed in 304.20s",
+   "rc": 0,
+   "suite": "tests/batch + tests/execution"
+  },
+  {
+   "command": "./_py -m pytest tests/tenx/cache -q",
+   "outcome": "33 passed in 1.01s",
+   "rc": 0,
+   "suite": "tests/tenx/cache"
+  },
+  {
+   "command": "./_py -m pytest tests/tenx/cohort -q",
+   "outcome": "6 passed in 36.53s",
+   "rc": 0,
+   "suite": "tests/tenx/cohort"
+  },
+  {
+   "command": "./_py -m pytest tests/tenx/identity -q",
+   "outcome": "47 passed in 4.58s",
+   "rc": 0,
+   "suite": "tests/tenx/identity"
+  },
+  {
+   "command": "./_py -m pytest tests/tenx/metrics -q",
+   "outcome": "69 passed in 1.11s",
+   "rc": 0,
+   "suite": "tests/tenx/metrics"
+  },
+  {
+   "command": "./_py -m pytest tests/tenx/sparse -q",
+   "outcome": "74 passed, 1 skipped in 14.73s",
+   "rc": 0,
+   "suite": "tests/tenx/sparse"
+  },
+  {
+   "command": "./_py -m pytest tests/tenx/harness -q",
+   "outcome": "45 passed, 1 skipped in 0.72s",
+   "rc": 0,
+   "suite": "tests/tenx/harness"
+  },
+  {
+   "command": "./_py -m pytest tests/tenx/public -q",
+   "outcome": "3 passed in 5.30s",
+   "rc": 0,
+   "suite": "tests/tenx/public"
+  }
+ ],
+ "islands_now": {
+  "tests/tenx/post_p00": {
+   "rc": 0,
+   "tail": "32 passed in 39.99s",
+   "wall_s": 54.54
+  },
+  "tests/tenx/trace": {
+   "rc": 0,
+   "tail": "55 passed, 2 skipped in 7.19s",
+   "wall_s": 8.75
+  }
+ },
+ "law": "the private compiled whole-row driver must match BOTH references bitwise on every signature \u2014 the preserved pre-P03C Python origin loop AND the original integrated engine driver; refusals must be identical too; NO allclose, tolerance, rounding or reduction reassociation anywhere in this task",
+ "matched_samples": {
+  "compiler_warmup": "jit regime WARM (numba owner-scratch disk cache, tests + smoke preceded this process); the true cold-compile wall is NOT measured or claimed by this document",
+  "configuration_law": "identical configuration: one process, serial compiled kernels (parallel=False everywhere, 1 active thread per replay), the SAME built record and metric bundle per pair, paired alternating repeats, bitwise equality asserted on every pair",
+  "scales": [
+   {
+    "bitwise_assert_per_pair": true,
+    "median_compiled_s": 0.00013180403038859367,
+    "median_python_s": 0.000406638253480196,
+    "median_ratio": 3.085173133790501,
+    "nnz": 218,
+    "origin_count": 17,
+    "pairs": 31,
+    "scale": "S_battery_ring"
+   },
+   {
+    "bitwise_assert_per_pair": true,
+    "median_compiled_s": 0.05066351592540741,
+    "median_python_s": 0.2730302084237337,
+    "median_ratio": 5.389089237819969,
+    "nnz": 156366,
+    "origin_count": 14751,
+    "pairs": 9,
+    "scale": "L_production_like"
+   }
+  ],
+  "threads_active": 1
+ },
+ "schema": "post-p00-replay-bitparity-1",
+ "screen": {
+  "bitwise": {
+   "t_w1t4": {
+    "bitwise_match": true,
+    "mismatched": 0,
+    "n_files": 64
+   },
+   "t_w2t2": {
+    "bitwise_match": true,
+    "mismatched": 0,
+    "n_files": 64
+   },
+   "t_w4t1": {
+    "bitwise_match": true,
+    "mismatched": 0,
+    "n_files": 64
+   },
+   "warm_p03c": {
+    "bitwise_match": true,
+    "mismatched": 0,
+    "n_files": 64
+   }
+  },
+  "index": "P03C H3 required-experiment screen (post_p00 design 03)",
+  "runs": [
+   {
+    "outdir": "/storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261004T155640Z/p03c_replay/out/warm_p03c",
+    "rc": 0,
+    "supervisor_wall_s": 55.521160242147744,
+    "tag": "warm_p03c",
+    "threads_per_worker": 1,
+    "workers": 4
+   },
+   {
+    "outdir": "/storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261004T155640Z/p03c_replay/out/t_w1t4",
+    "rc": 0,
+    "supervisor_wall_s": 62.49465337721631,
+    "tag": "t_w1t4",
+    "threads_per_worker": 4,
+    "workers": 1
+   },
+   {
+    "outdir": "/storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261004T155640Z/p03c_replay/out/t_w2t2",
+    "rc": 0,
+    "supervisor_wall_s": 43.26365975802764,
+    "tag": "t_w2t2",
+    "threads_per_worker": 2,
+    "workers": 2
+   },
+   {
+    "outdir": "/storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261004T155640Z/p03c_replay/out/t_w4t1",
+    "rc": 0,
+    "supervisor_wall_s": 44.73240412399173,
+    "tag": "t_w4t1",
+    "threads_per_worker": 1,
+    "workers": 4
+   }
+  ]
+ },
+ "task": "P03C compiled outer replay",
+ "totals_declared": "559 passed / 4 skipped / 0 failed across the ten suites listed above (post_p00 island re-run in islands_now must agree)"
+}

@@ -733,6 +733,114 @@ def build_trace(o_terminal_idxs, o_terminal_weights,
 # --------------------------------------------------------------------------
 # replay_trace: the same full fold on the trace's retained prefix
 # --------------------------------------------------------------------------
+# P03C (dossier 03, compiled outer replay): the per-origin loop runs as
+# the PRIVATE compiled whole-row driver below; the pre-P03C Python loop
+# is preserved verbatim beside it as the bit-parity comparator.  The
+# module attribute is a private test/evidence seam, not a public
+# selector: nothing in the public API reads or writes it, and only
+# in-process evidence/test harnesses may set it False.
+_REPLAY_COMPILED = True
+
+# Refusal codes shared by both row loops (returned to the facade,
+# which maps them onto the exact pre-P03C refusal reasons).
+_RC_STRUCTURE = 1   # unreachable today: the facade gates indptr first
+_RC_SLICE_ORDER = 2
+
+
+def _replay_rows_python(indptr, ids_all, dist_all, d_weights, cutoff,
+                        gravity_beta, gravity_plateau,
+                        gravity_logistic_midpoint, gravity_growth_rate,
+                        knn_decay, knn_weights, reach, ge, gl, kn):
+    """P03C comparator: the pre-P03C per-origin Python loop, preserved
+    verbatim (the refusal reasons now ride return codes).  NOT a public
+    API; used by the facade when ``_REPLAY_COMPILED`` is False and by
+    the bit-parity / matched-samples evidence."""
+    origin_count = indptr.shape[0] - 1
+    for origin in range(origin_count):
+        sl = slice(int(indptr[origin]), int(indptr[origin + 1]))
+        cand_ids = ids_all[sl]
+        if cand_ids.shape[0] > 1 and int(np.diff(cand_ids).min()) <= 0:
+            return _RC_SLICE_ORDER
+        # Writable working copies before the compiled fold: the fold
+        # sees exactly the S11 argument domain (fresh C-contiguous
+        # writable arrays), and the immutable trace is never aliased
+        # into a callee.
+        cand_dist = np.array(dist_all[sl])
+        cand_wts = np.array(d_weights[cand_ids])
+        reach[origin], ge[origin], gl[origin], kn[origin] = \
+            reach_gravity_knn_access(
+                d_distance=cand_dist,
+                d_weights=cand_wts,
+                cutoff=cutoff,
+                gravity_beta=gravity_beta,
+                gravity_plateau=gravity_plateau,
+                gravity_logistic_midpoint=gravity_logistic_midpoint,
+                gravity_growth_rate=gravity_growth_rate,
+                knn_gravity_plateau=gravity_plateau,
+                knn_weights=knn_weights,
+                knn_gravity_beta=gravity_beta,
+                knn_decay=knn_decay,
+                knn_gravity_logistic_midpoint=(
+                    gravity_logistic_midpoint),
+                knn_gravity_growth_rate=gravity_growth_rate,
+            )
+    return 0
+
+
+@nb.njit(cache=True, nogil=True, parallel=False)
+def _replay_rows_compiled(indptr, ids_all, dist_all, d_weights, cutoff,
+                          gravity_beta, gravity_plateau,
+                          gravity_logistic_midpoint, gravity_growth_rate,
+                          knn_decay, knn_weights, reach, ge, gl, kn):
+    """P03C private compiled whole-row driver (dossier 03, Phase B+C).
+
+    Serial/nogil, one dispatch per replay, no nested prange.  Phase B
+    scans the WHOLE packed structure first — a corrupt later slice
+    refuses before any fold runs, so no partially computed earlier
+    outputs can ever be exposed.  Phase C then runs the ORIGINAL full
+    compiled fold per origin with the exact original arguments and the
+    same fresh per-origin working-copy allocation structure as the
+    Python reference.  No float arithmetic lives at the driver level;
+    the fold keeps its own specialization, flags and cache identity.
+
+    Refusal codes: 0 success, 1 structural (unreachable — the facade
+    gates it), 2 slice-order corruption.
+    """
+    origin_count = indptr.shape[0] - 1
+    # Phase B: checked integer bounds are implied by the facade gates
+    # (0 == indptr[0] == indptr[-1] - nnz, non-negative counts); the
+    # ascending-slice scan is the driver's own last responsible check.
+    for origin in range(origin_count):
+        lo = indptr[origin]
+        hi = indptr[origin + 1]
+        if hi < lo:
+            return 1
+        for j in range(lo + 1, hi):
+            if ids_all[j] <= ids_all[j - 1]:
+                return 2
+    # Phase C: fold per origin (empty slices included — the fold count
+    # still equals all requested origins).  Positional arguments follow
+    # the fold's exact signature: d_distance, d_weights, cutoff,
+    # gravity_beta, gravity_plateau, gravity_logistic_midpoint,
+    # knn_gravity_plateau, knn_weights, knn_gravity_beta, knn_decay,
+    # knn_gravity_logistic_midpoint, gravity_growth_rate,
+    # knn_gravity_growth_rate.
+    for origin in range(origin_count):
+        lo = indptr[origin]
+        hi = indptr[origin + 1]
+        cand_ids = ids_all[lo:hi]
+        cand_dist = dist_all[lo:hi].copy()
+        cand_wts = d_weights[cand_ids].copy()
+        reach[origin], ge[origin], gl[origin], kn[origin] = \
+            reach_gravity_knn_access(
+                cand_dist, cand_wts, cutoff, gravity_beta,
+                gravity_plateau, gravity_logistic_midpoint,
+                gravity_plateau, knn_weights, gravity_beta, knn_decay,
+                gravity_logistic_midpoint, gravity_growth_rate,
+                gravity_growth_rate)
+    return 0
+
+
 def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
                  gravity_logistic_midpoint, gravity_growth_rate,
                  knn_decay, knn_weights, cutoff):
@@ -817,35 +925,29 @@ def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
             != trace.content_digest:
         return _refuse("corrupt_trace_content_digest")
 
-    for origin in range(origin_count):
-        sl = slice(int(indptr[origin]), int(indptr[origin + 1]))
-        cand_ids = ids_all[sl]
-        if cand_ids.shape[0] > 1 and int(np.diff(cand_ids).min()) <= 0:
-            return _refuse("corrupt_trace_slice_order")
-        # Writable working copies before the compiled fold: the fold
-        # sees exactly the S11 argument domain (fresh C-contiguous
-        # writable arrays), and the immutable trace is never aliased
-        # into a callee.
-        cand_dist = np.array(dist_all[sl])
-        cand_wts = np.array(d_weights[cand_ids])
-        reach[origin], ge[origin], gl[origin], kn[origin] = \
-            reach_gravity_knn_access(
-                d_distance=cand_dist,
-                d_weights=cand_wts,
-                cutoff=cutoff,
-                gravity_beta=gravity_beta,
-                gravity_plateau=gravity_plateau,
-                gravity_logistic_midpoint=gravity_logistic_midpoint,
-                gravity_growth_rate=gravity_growth_rate,
-                knn_gravity_plateau=gravity_plateau,
-                knn_weights=knn_weights,
-                knn_gravity_beta=gravity_beta,
-                knn_decay=knn_decay,
-                knn_gravity_logistic_midpoint=(
-                    gravity_logistic_midpoint),
-                knn_gravity_growth_rate=gravity_growth_rate,
-            )
-        folds_done += 1
+    # P03C (dossier 03): the per-origin loop runs as the private
+    # compiled whole-row driver (one dispatch, serial/nogil, full
+    # structural scan before any fold); the preserved Python reference
+    # above serves the bit-parity and matched-samples evidence.  Both
+    # loops return 0, or a refusal code for slice-layout corruption
+    # discovered at this last responsible gate — outputs stay fresh
+    # and are discarded with the refusal exactly as before.
+    if _REPLAY_COMPILED:
+        rc = _replay_rows_compiled(
+            indptr, ids_all, dist_all, d_weights, cutoff, gravity_beta,
+            gravity_plateau, gravity_logistic_midpoint,
+            gravity_growth_rate, knn_decay, knn_weights, reach, ge,
+            gl, kn)
+    else:
+        rc = _replay_rows_python(
+            indptr, ids_all, dist_all, d_weights, cutoff, gravity_beta,
+            gravity_plateau, gravity_logistic_midpoint,
+            gravity_growth_rate, knn_decay, knn_weights, reach, ge,
+            gl, kn)
+    if rc:
+        return _refuse("corrupt_trace_structure" if rc == _RC_STRUCTURE
+                       else "corrupt_trace_slice_order")
+    folds_done = origin_count
     return TraceReplayResult(
         reach=reach, gravity_exponential=ge, gravity_logistic=gl,
         knn_access=kn, route="trace_replay", refusal="",
