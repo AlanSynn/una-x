@@ -223,7 +223,8 @@ def test_oversized_entry_and_owner_death(disk_store, producer_sha):
     del lease
     gc.collect()
     ip2, ids2, dist2 = packed_triple(40)
-    k2 = res.publish(ip2, ids2, dist2, meta_for(ip2, ids2))
+    k2 = res.publish(ip2, ids2, dist2,
+                     meta_for(ip2, ids2, trace_id="tid-2"))
     lease2 = res.acquire(k2)
     assert lease2 is not None
     lease2.release()

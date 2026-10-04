@@ -65,7 +65,7 @@ def test_owner_death_reaps_the_pin(residency):
     del lease
     gc.collect()
     assert residency._entries[key]["pinned"] == 0
-    assert residency.counters["reaped_leases"] == 1
+    assert residency.counters["leases_ended"] == 1
 
 
 def test_digest_bound_at_publish_rejects_disagreement(residency):
