@@ -143,7 +143,11 @@ def test_parallel_run_default_has_no_telemetry(make_batch, tmp_path,
     p.RunBatch("accessibility", parallel=True, workers=1)
     assert telemetry_extra(p) is None
     extra = p.batch_report.extra
-    assert extra == {} or set(extra) == {"cohort"}   # unchanged surface
+    # Expected expectation change (una_10x P02): the prepared route's
+    # counters block joins "cohort" in extra — runtime-only reporting
+    # per the P02 contract (prepared_contract.json @ f139dd3); telemetry
+    # itself remains env-gated and absent here.
+    assert set(extra) <= {"cohort", "preparation"}, set(extra)
     # no telemetry files anywhere under the output tree
     leftovers = [rel for rel in tree_bytes(tmp_path)
                  if "phase_events" in rel]

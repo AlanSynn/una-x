@@ -321,6 +321,16 @@ class UNA:
 
         self.settings.Validation()
 
+        # P02 (una_10x): forward the run-scoped prepared session to the
+        # topology seam BEFORE AddNetwork.  The session is consulted ONLY
+        # at the two Add* preparation sites via topology._prepared_session
+        # — never through cache_options (the engine's RESULT stage reads
+        # that same attribute; injecting there would silently enable
+        # results caching, which P02 forbids).  None on this route (serial
+        # or a detached repeat call): the prepared path is entirely absent.
+        self.topology._prepared_session = getattr(
+            self, "_prepared_session", None)
+
         self.topology.AddNetwork(self.settings)
         self.topology.AddOrigins(self.settings)
         self.topology.AddDestinations(self.settings)

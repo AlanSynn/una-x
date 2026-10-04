@@ -85,22 +85,26 @@ def tree_bytes(root, skip_hidden=False):
 
 def hidden_residue(folder):
     """Hidden runtime dirs that must not linger — everything
-    ``.una-batch*`` EXCEPT the cohort store root (dossier 06), which
-    persists by design and is identity-verified at every reuse.  For
-    completed runs, where row artifacts are expected to exist."""
+    ``.una-batch*`` EXCEPT the persistent store roots (dossier 06 cohort;
+    una_10x P02 prepared route), which persist by design and are
+    identity-verified at every reuse.  For completed runs, where row
+    artifacts are expected to exist."""
     return [n for n in os.listdir(str(folder))
-            if n.startswith(".una-batch") and n != ".una-batch-cohort"]
+            if n.startswith(".una-batch")
+            and n not in (".una-batch-cohort", ".una-batch-prepared")]
 
 
 def runtime_residue(folder):
     """Everything that must NEVER be visible at public paths: row
-    artifacts plus every hidden runtime dir EXCEPT the cohort store
-    root — the cohort route's persistent, content-verified store
-    (dossier 06) deliberately survives clean runs (warm resumes) and
-    aborts alike, and its reuse is identity-verified at every load."""
+    artifacts plus every hidden runtime dir EXCEPT the persistent store
+    roots — the cohort route's and the prepared route's stores
+    (dossier 06; una_10x P02) deliberately survive clean runs (warm
+    resumes) and aborts alike, and their reuse is identity-verified at
+    every load."""
     return [n for n in os.listdir(str(folder))
             if n.startswith("row")
-            or (n.startswith(".una-batch") and n != ".una-batch-cohort")]
+            or (n.startswith(".una-batch")
+                and n not in (".una-batch-cohort", ".una-batch-prepared"))]
 
 
 def values_equal(a, b):

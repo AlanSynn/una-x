@@ -564,7 +564,9 @@ def _job_for(una, plan: BatchPlan, i: int, staging_dir: str, analysis: str,
              script_output_folder: Optional[str],
              need_state: bool,
              cohort_root: Optional[str] = None,
-             cohort_residency_cap_bytes: int = 0) -> RowJob:
+             cohort_residency_cap_bytes: int = 0,
+             prepared_root: Optional[str] = None,
+             prepared_residency_cap_bytes: int = 0) -> RowJob:
     s = una.projects[i]
     # ``inject_specs`` is a test-transport field, not a Settings field: it
     # must never reach the worker's Settings (Validation() rejects unknown
@@ -582,6 +584,8 @@ def _job_for(una, plan: BatchPlan, i: int, staging_dir: str, analysis: str,
         verbosity=0,
         cohort_root=cohort_root,
         cohort_residency_cap_bytes=cohort_residency_cap_bytes,
+        prepared_root=prepared_root,
+        prepared_residency_cap_bytes=prepared_residency_cap_bytes,
     )
 
 
@@ -977,6 +981,24 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
             f"cohort route: {len(dispatchable)} eligible row(s); "
             f"residency cap {cohort_cap} bytes/worker")
 
+    # P02 prepared route (una_10x, prepared_contract.json @ f139dd3):
+    # same eligibility as the cohort route; the prepared-store root is
+    # stable across runs/resumes (warm restarts hit), hidden beside the
+    # cohort root, and identity-verified at every load.  The arena cap
+    # is the SAME C31-MINOR-1 sizing law (defined once in cohort.py,
+    # re-exported by preparation.py).
+    prepared_root = None
+    prepared_cap = 0
+    prepared_rows: Dict[int, dict] = {}
+    if analysis == 'accessibility' and dispatchable:
+        from .preparation import per_worker_residency_cap
+        prepared_root = os.path.join(_public_folder(plan, dispatchable[0]),
+                                     ".una-batch-prepared")
+        prepared_cap = per_worker_residency_cap(workers_effective)
+        notes_runtime.append(
+            f"prepared route: {len(dispatchable)} eligible row(s); "
+            f"arena cap {prepared_cap} bytes/worker")
+
     outcomes: Dict[int, RowOutcome] = {}
     manifests: Dict[int, Tuple[str, ...]] = {}
     bundles: Dict[int, dict] = {}
@@ -1027,7 +1049,9 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                     analysis, script_output_folder,
                     need_state=(j == expected_last),
                     cohort_root=cohort_root,
-                    cohort_residency_cap_bytes=cohort_cap)
+                    cohort_residency_cap_bytes=cohort_cap,
+                    prepared_root=prepared_root,
+                    prepared_residency_cap_bytes=prepared_cap)
                 # Transportability is an admission requirement (see
                 # _job_transport_failure): fail THIS row loudly through the
                 # normal ordering path (earliest failure, prefix
@@ -1118,6 +1142,8 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                             "worker_pid": result.worker_pid}
                     if result.cohort_stats is not None:
                         cohort_rows[i] = result.cohort_stats
+                    if result.prepared is not None:
+                        prepared_rows[i] = result.prepared
                     folded_this_call["value"] = folded_this_call["value"] \
                         or result.capture is not None
                     staging.discard(i)
@@ -1312,12 +1338,50 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
             f"{totals['replays']} replay(s)"
             + (f"; refusals {refusals}" if refusals else ""))
 
+    # P02 prepared aggregation (una_10x, design 02 counters — never
+    # collapsed: cold_build / verified_hit / contention_wait /
+    # fallback_compute / arena_nofit / refusals).  The NF-7 engagement
+    # gate (builds <= distinct identities, equality asserted only when
+    # every contention-fallback counter is zero) is asserted by the
+    # test island, where identities are constructed explicitly; the
+    # report carries the sums it needs.
+    preparation_summary = None
+    if prepared_rows:
+        totals = {
+            "stages": 0, "cold_build": 0, "verified_hit": 0,
+            "contention_wait": 0, "fallback_compute": 0,
+            "arena_nofit": 0, "build_s": 0.0,
+        }
+        refusals = {}
+        for stats in prepared_rows.values():
+            for k in totals:
+                totals[k] += stats.get(k, 0)
+            for k, v in (stats.get("refusals") or {}).items():
+                refusals[k] = refusals.get(k, 0) + v
+        totals["rows"] = len(prepared_rows)
+        totals["refusals"] = refusals
+        totals["per_row"] = {str(i): prepared_rows[i]
+                             for i in sorted(prepared_rows)}
+        totals["store_root"] = prepared_root
+        totals["arena_cap_bytes_per_worker"] = prepared_cap
+        preparation_summary = totals
+        notes_runtime.append(
+            f"prepared route: {len(prepared_rows)} row(s) attempted, "
+            f"{totals['cold_build']} build(s), "
+            f"{totals['verified_hit']} verified hit(s), "
+            f"{totals['contention_wait']} contention wait(s), "
+            f"{totals['fallback_compute']} fallback compute(s)"
+            + (f"; refusals {refusals}" if refusals else ""))
+
     # P01M report attachment: only when telemetry is enabled.  The default
-    # route's ``extra`` stays exactly as before ({} or cohort-only) — the
-    # report surface is unchanged unless the environment opted in.
+    # route's ``extra`` stays as before ({} / cohort-only) plus the P02
+    # preparation block when that route engaged — runtime-only reporting,
+    # never observable serial state.
     extra: Dict[str, Any] = {}
     if cohort_summary is not None:
         extra["cohort"] = cohort_summary
+    if preparation_summary is not None:
+        extra["preparation"] = preparation_summary
     if rec is not None:
         coord_events = rec.events_snapshot()
         worker_events = [e for t in worker_tel.values() for e in t["events"]]
