@@ -1,0 +1,9 @@
+cmd: /storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11 /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/_p00_run_one.py --tree base --mode par --tag a_base_par_w4 --outdir /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261003T1212Z/p00_profile/out/a_base_par_w4 --cold-store 1 --verify 1 --profile 0 --workers 4
+
+stdout:
+    0.0001 |        0.000104 | UNA | UNA instance created. Topology and Settings initialized
+    0.0152 |        0.015064 | RunBatch | Loaded 32 settings from /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv
+run a_base_par_w4 wall 92.114 s | asserts_ok True | bitwise True | tree_rss_MiB 2494.7
+wrote /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261003T1212Z/p00_profile/runs/a_base_par_w4.json
+
+stderr:
