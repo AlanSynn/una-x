@@ -164,8 +164,9 @@ class CheckpointJournal:
         if os.path.exists(self.journal_path):
             raise BatchCheckpointError(
                 f"checkpoint directory {self.directory!r} already holds a "
-                f"journal; resume must go through load_resume() so changed "
-                f"identity is rejected instead of overwritten")
+                f"journal; resume loads it via load() and admits it only "
+                f"through verify_identity() (a changed identity is "
+                f"rejected, never overwritten by a fresh create())")
         doc = {
             "schema_version": JOURNAL_SCHEMA_VERSION,
             "identity": identity,

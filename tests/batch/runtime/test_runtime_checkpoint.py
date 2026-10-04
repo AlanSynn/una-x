@@ -195,7 +195,8 @@ def test_tampered_artifact_forces_row_rerun(make_batch, tmp_path):
     p.RunBatch("accessibility", parallel=True, workers=2,
                execution=replace(p.execution, checkpoint=ckpt))
     good = {n: open(os.path.join(out, n), "rb").read()
-            for n in os.listdir(out)}
+            for n in os.listdir(out)
+            if os.path.isfile(os.path.join(out, n))}
 
     victim = sorted(n for n in good if n.startswith("row0"))[0]
     with open(os.path.join(out, victim), "ab") as f:
@@ -208,7 +209,8 @@ def test_tampered_artifact_forces_row_rerun(make_batch, tmp_path):
     # untouched row stayed reused
     assert open(os.path.join(out, victim), "rb").read() == good[victim]
     assert {n: open(os.path.join(out, n), "rb").read()
-            for n in os.listdir(out)} == good
+            for n in os.listdir(out)
+            if os.path.isfile(os.path.join(out, n))} == good
     assert [r.status for r in p2.batch_report.rows] == ["ran", "ran"]
 
 
@@ -230,7 +232,8 @@ def test_completed_batch_rerun_is_idempotent(make_batch, tmp_path):
     p = make_batch(4, out_folder=out, extra=dup_last_pair)
     p.RunBatch("accessibility", parallel=True, workers=2, execution=opts)
     tree1 = {n: open(os.path.join(out, n), "rb").read()
-             for n in os.listdir(out)}
+             for n in os.listdir(out)
+             if os.path.isfile(os.path.join(out, n))}
     gen1 = p.batch_report.checkpoint_generation
     assert [idx for idx, _ in p.batch_report.serialized] == [2, 3]
 
@@ -239,7 +242,8 @@ def test_completed_batch_rerun_is_idempotent(make_batch, tmp_path):
     rep = p2.batch_report
     # nothing re-executed, nothing rewritten, nothing duplicated
     tree2 = {n: open(os.path.join(out, n), "rb").read()
-             for n in os.listdir(out)}
+             for n in os.listdir(out)
+             if os.path.isfile(os.path.join(out, n))}
     assert tree1 == tree2
     assert rep.workers_effective == 0 and rep.pools == ()
     assert all(r.phase == "COMMITTED" and r.worker_pid == 0
@@ -380,3 +384,148 @@ def test_resume_folds_composite_once_no_duplicate_columns(
     assert comp_after_p3 == comp_after_p2
     assert {f: os.stat(os.path.join(out, f)).st_mtime_ns
             for f in comp_after_p3} == mtimes_p2
+
+
+def test_resume_after_finalize_refolds_full_capture_set(
+        make_batch, smoke_fixture, tmp_path):
+    """BATCH_REVIEW MAJOR-1: a resume that re-runs rows AFTER the prior
+    run had already finalized the composite must re-fold the FULL
+    capture set from the journal bytes in plan.fold_order — never
+    re-finalize from this call's captures alone, which would silently
+    overwrite the published composite with a subset rebuild."""
+    ckpt = str(tmp_path / "ckpt")
+    out = tmp_path / "out"
+
+    def composite(i, s):
+        s.batch_composite_output = True
+
+    from dataclasses import replace
+    p1 = make_batch(3, out_folder=out, extra=composite,
+                    data_dir=_copied_data(smoke_fixture, tmp_path))
+    p1.RunBatch("accessibility", parallel=True, workers=2,
+                execution=replace(p1.execution, checkpoint=ckpt))
+    full_cols = [c for c in p1.composite_result.columns
+                 if c.startswith("knn_access_")]
+    assert full_cols == ["knn_access_row0", "knn_access_row1",
+                         "knn_access_row2"]
+
+    # tamper row 1's CAPTURE payload: resume verification drops row 1
+    # (re-runs it fresh) while rows 0 and 2 reuse their committed units
+    caps = [f for f in os.listdir(os.path.join(ckpt, "captures"))
+            if f.startswith("row1")]
+    assert caps
+    with open(os.path.join(ckpt, "captures", caps[0]), "ab") as f:
+        f.write(b"TAMPERED")
+
+    # serial reference for the same composite batch
+    ser = make_batch(3, out_folder=tmp_path / "ser", extra=composite)
+    ser.RunBatch("accessibility")
+
+    p2 = make_batch(3, out_folder=out, extra=composite,
+                    data_dir=_copied_data(smoke_fixture, tmp_path))
+    p2.RunBatch("accessibility", parallel=True, workers=2,
+                execution=replace(p2.execution, checkpoint=ckpt))
+
+    rep = p2.batch_report
+    assert [r.status for r in rep.rows] == ["ran", "ran", "ran"]
+    # exactly rows 0 and 2 reused (row 1 was dropped by its tampered
+    # capture) — so a single-row subset rebuild is the only way this
+    # composite could ever come out wrong
+    assert any("2 committed row(s) reused" in n
+               for n in rep.notes_runtime)
+    # the re-finalized composite holds the FULL set — all three rows'
+    # journaled payloads in fold order, matching the serial reference
+    # per column (a subset rebuild would hold only row1's column here)
+    comp = p2.composite_result
+    cols = [c for c in comp.columns if c.startswith("knn_access_")]
+    ser_cols = [c for c in ser.composite_result.columns
+                if c.startswith("knn_access_")]
+    assert cols == full_cols == ser_cols
+    import numpy as np
+    for c in cols:
+        assert np.array_equal(np.asarray(comp[c]),
+                              np.asarray(ser.composite_result[c]))
+    # the generation is still finalized exactly once (law retained)
+    import json
+    with open(os.path.join(ckpt, "journal.json"), encoding="utf-8") as f:
+        doc = json.load(f)
+    assert doc["composite"]["phase"] == "finalized"
+
+
+def test_verify_staged_failure_is_integrity_not_cancelled(tmp_path):
+    """BATCH_REVIEW MINOR-2 at the unit level: a digest mismatch on the
+    staged bytes raises BatchCheckpointError — a corruption report —
+    and is NOT a BatchCancelledError (the classes are siblings, so an
+    ``except BatchCancelledError`` handler cannot swallow corruption)."""
+    import hashlib
+
+    from urban_network_analysis.batch import runtime as rt
+    from urban_network_analysis.batch.report import (BatchCancelledError,
+                                                     BatchCheckpointError)
+
+    staging = tmp_path / "staging"
+    staging.mkdir()
+    (staging / "a.txt").write_bytes(b"payload")
+    good = hashlib.sha256(b"payload").hexdigest()
+    files = (("a.txt", 7, good),)
+
+    rt._verify_staged(str(staging), files)          # honest bytes commit
+
+    (staging / "a.txt").write_bytes(b"corrupt!")
+    with pytest.raises(BatchCheckpointError, match="digest verification"):
+        rt._verify_staged(str(staging), files)
+    with pytest.raises(BatchCheckpointError, match="vanished"):
+        rt._verify_staged(str(staging), (("gone.txt", 1, "0" * 64),))
+
+    # the retype is the repair: the classes really are siblings
+    assert not issubclass(BatchCheckpointError, BatchCancelledError)
+    assert not issubclass(BatchCancelledError, BatchCheckpointError)
+
+
+def test_publish_staged_fsyncs_bytes_and_directory(
+        tmp_path, monkeypatch):
+    """BATCH_REVIEW MINOR-4: every published file's bytes are fsynced
+    BEFORE its public name flips (while the bytes still live in
+    staging), and each destination directory is fsynced after the
+    renames it makes durable (best-effort, checkpoint convention)."""
+    import hashlib
+
+    from urban_network_analysis.batch import runtime as rt
+
+    staging = tmp_path / "staging"
+    public = tmp_path / "public"
+    staging.mkdir()
+    sub = staging / "sub"
+    sub.mkdir()
+    (sub / "a.bin").write_bytes(b"AAA")
+    (staging / "b.bin").write_bytes(b"BB")
+    files = (("sub/a.bin", 3, hashlib.sha256(b"AAA").hexdigest()),
+             ("b.bin", 2, hashlib.sha256(b"BB").hexdigest()))
+
+    calls = {"files": [], "dirs": []}
+    real_fsync_file, real_fsync_dir = rt._fsync_file, rt._fsync_dir
+
+    def spy_file(path):
+        assert os.path.exists(path), path   # still in staging at fsync
+        calls["files"].append(path)
+        real_fsync_file(path)
+
+    def spy_dir(path):
+        calls["dirs"].append(path)
+        real_fsync_dir(path)
+
+    monkeypatch.setattr(rt, "_fsync_file", spy_file)
+    monkeypatch.setattr(rt, "_fsync_dir", spy_dir)
+
+    published = rt._publish_staged(str(staging), str(public), files)
+
+    assert sorted(os.path.relpath(p, public) for p in published) == \
+        ["b.bin", "sub/a.bin"]
+    assert (public / "sub" / "a.bin").read_bytes() == b"AAA"
+    assert (public / "b.bin").read_bytes() == b"BB"
+    assert not (staging / "sub" / "a.bin").exists()   # moved, not copied
+    assert sorted(os.path.basename(p) for p in calls["files"]) == \
+        ["a.bin", "b.bin"]
+    # one directory fsync per distinct published directory: sub/ then
+    # public/ (file order), each after the rename it makes durable
+    assert [os.path.basename(d) for d in calls["dirs"]] == ["sub", "public"]

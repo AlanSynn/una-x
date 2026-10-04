@@ -65,6 +65,11 @@ class RowJob:
     need_state: bool                   # carry the rehydration bundle
     verbosity: int = 0
     inject: Optional[Dict[str, str]] = None
+    # Runtime-only cohort route transport (dossier 06, C30): the shared
+    # content-addressed store root for this run.  Never a Settings field
+    # and never observable serial state — exactly like ``staging_dir``.
+    cohort_root: Optional[str] = None
+    cohort_residency_cap_bytes: int = 0
 
 
 @dataclass(frozen=True)
@@ -109,6 +114,11 @@ class RowResult:
     # exception object is not: the parent rebuilds the exact serial
     # construction (type and message, __str__ transformations included).
     error_args: Optional[Tuple[Any, ...]] = None
+    # Cohort route counters slice for this row (dossier 06 charge law:
+    # unique searches vs rows, decodes, folds — runtime-only reporting,
+    # never observable serial state).  None when the row ran without a
+    # cohort session.
+    cohort_stats: Optional[Dict[str, Any]] = None
 
 
 # ---------------------------------------------------------------------------
@@ -288,6 +298,20 @@ def _run_row(job: RowJob) -> RowResult:
 
     una = UNA(verbosity=job.verbosity)
 
+    # Cohort route (C30, dossier 06): attach the run's share session so
+    # the integrator dispatch in RunAccessibility wraps the fresh graph
+    # engine.  Accessibility rows only; the session accumulates across
+    # rows in this worker process (per-process store/residency pair),
+    # and each RowResult carries its per-row counter delta.
+    cohort_stats = None
+    session = None
+    if job.cohort_root and job.analysis == 'accessibility':
+        from .cohort import CohortSession
+        session = CohortSession(job.cohort_root,
+                                job.cohort_residency_cap_bytes)
+        una._cohort_session = session
+        cohort_mark = session.mark()
+
     s = una.settings
     s.__dict__.update(dict(job.settings_state))
 
@@ -326,6 +350,18 @@ def _run_row(job: RowJob) -> RowResult:
         engine = una.accessibility
     timings["run_s"] = time.perf_counter() - t1
     _inject("post_run", job.inject)
+
+    # Detach the cohort wrapper before anything observes or transports
+    # the engine: the rehydration bundle pickles the engine, and the
+    # parent's rehydrated state must be the PLAIN engine — the cohort
+    # route is runtime-only and never observable state.
+    if session is not None:
+        from .cohort import CohortGraphEngine
+        ge = getattr(engine, "graph_engine", None)
+        if isinstance(ge, CohortGraphEngine):
+            engine.graph_engine = ge._inner
+        una._cohort_session = None
+        cohort_stats = session.delta(cohort_mark)
 
     # -- composite capture (the serial loop's capture, on this instance) ---
     capture = None
@@ -380,6 +416,7 @@ def _run_row(job: RowJob) -> RowResult:
         peak_rss_bytes=int(rss),
         worker_pid=os.getpid(),
         timings=timings,
+        cohort_stats=cohort_stats,
     )
 
 

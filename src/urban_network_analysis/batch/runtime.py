@@ -25,7 +25,8 @@ executes every row in **caller order at a single commit cursor**:
 
 At each commit the coordinator: verifies the staged bytes against the
 worker's digests, publishes them by ``os.replace`` (stronger than serial,
-which writes output files in place one by one), applies the row's
+which writes output files in place one by one) with every published byte
+fsynced before its public name flips, applies the row's
 settings delta onto the caller's project object (identity preserved),
 applies the row's observable flags, folds composite capture in
 ``plan.fold_order`` (caller order — the fold is float order-sensitive),
@@ -48,6 +49,11 @@ sequence (log timestamps are not bitwise-comparable anyway), and a
 state-only rerun of the last committed row (a crash destroyed the live
 bundle; the rerun publishes nothing and double-counts nothing — the
 journal's capture payloads, not the rerun, feed the composite fold).
+A resume that re-runs rows AFTER the prior run had already finalized
+the composite re-folds the FULL capture set from the journal bytes in
+``plan.fold_order`` before re-finalizing — never just the re-run rows'
+captures, which would overwrite the published composite with a subset
+rebuild (BATCH_REVIEW MAJOR-1).
 
 Cancellation (deadline, KeyboardInterrupt, worker loss) stops dispatch,
 reaps the pool, removes this run's staging directories by ownership
@@ -92,8 +98,8 @@ from ..Execution import (EffectiveExecution, ExecutionOptions, RowOutcome)
 from .checkpoint import (CheckpointJournal, JournalRow, _canonical,
                          sha256_bytes, sha256_file)
 from .plan import BatchPlan, InvariantViolation, plan_batch
-from .report import (BatchCancelledError, BatchExecutionReport,
-                     RowExecutionOutcome)
+from .report import (BatchCancelledError, BatchCheckpointError,
+                     BatchExecutionReport, RowExecutionOutcome)
 from .worker import (RowJob, RowResult, _unpack_state_bundle)
 
 __all__ = ["run_batch_parallel"]
@@ -238,28 +244,75 @@ class _Staging:
                 pass
 
 
+def _fsync_file(path: str) -> None:
+    """Make a staged file's bytes durable BEFORE its public name flips
+    (an os.replace is atomic for the name, not for unflushed data)."""
+    fd = os.open(path, os.O_RDONLY)
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def _fsync_dir(path: str) -> None:
+    """Best-effort directory fsync (same convention as the checkpoint
+    journal's): some filesystems refuse directory fsync; the rename's
+    durability then rides on the file fsync plus the journal record,
+    which carries every published file's digest for resume
+    verification either way."""
+    try:
+        dfd = os.open(path, os.O_RDONLY)
+    except OSError:
+        return
+    try:
+        os.fsync(dfd)
+    except OSError:
+        pass
+    finally:
+        os.close(dfd)
+
+
 def _publish_staged(staging_dir: str, public_folder: str,
                     files: Tuple[Tuple[str, int, str], ...]) -> Tuple[str, ...]:
+    """Publish staged artifacts by ``os.replace`` — atomic per file
+    (multi-file rows appear file-by-file; the journal record naming the
+    full set is written after, so resume verification never accepts a
+    partially published row).  Every published byte is fsynced before
+    its public name flips, and the destination directory afterwards."""
     published = []
+    dest_dirs = []
     for relpath, _size, _digest in files:
         src = os.path.join(staging_dir, relpath)
         dest = os.path.join(public_folder, relpath)
-        os.makedirs(os.path.dirname(dest) or public_folder, exist_ok=True)
+        d = os.path.dirname(dest) or public_folder
+        os.makedirs(d, exist_ok=True)
+        _fsync_file(src)
         os.replace(src, dest)
         published.append(dest)
+        dest_dirs.append(d)
+    for d in dict.fromkeys(dest_dirs):   # distinct dirs, first-seen order
+        _fsync_dir(d)
     return tuple(sorted(published))
 
 
 def _verify_staged(staging_dir: str,
                    files: Tuple[Tuple[str, int, str], ...]) -> None:
-    """Coordinator-side digest verification of the staged bytes."""
+    """Coordinator-side digest verification of the staged bytes.
+
+    A failure is a COMMIT INTEGRITY error (the worker produced or left
+    corrupt bytes), never a user cancellation — raising
+    :class:`BatchCheckpointError` keeps ``except BatchCancelledError``
+    handlers from swallowing corruption as a benign cancel
+    (BATCH_REVIEW MINOR-2).  The batch still stops: the coordinator's
+    generic failure path cancels dispatch and preserves the committed
+    prefix."""
     for relpath, size, digest in files:
         path = os.path.join(staging_dir, relpath)
         if not os.path.exists(path):
-            raise BatchCancelledError(
+            raise BatchCheckpointError(
                 f"staged artifact {relpath!r} vanished before commit")
         if os.path.getsize(path) != size or sha256_file(path) != digest:
-            raise BatchCancelledError(
+            raise BatchCheckpointError(
                 f"staged artifact {relpath!r} failed digest verification "
                 f"before commit; refusing to publish")
 
@@ -509,7 +562,9 @@ def _npy_bytes(arr: np.ndarray) -> bytes:
 
 def _job_for(una, plan: BatchPlan, i: int, staging_dir: str, analysis: str,
              script_output_folder: Optional[str],
-             need_state: bool) -> RowJob:
+             need_state: bool,
+             cohort_root: Optional[str] = None,
+             cohort_residency_cap_bytes: int = 0) -> RowJob:
     s = una.projects[i]
     # ``inject_specs`` is a test-transport field, not a Settings field: it
     # must never reach the worker's Settings (Validation() rejects unknown
@@ -525,6 +580,8 @@ def _job_for(una, plan: BatchPlan, i: int, staging_dir: str, analysis: str,
         capture=bool(una._composite_active and s.batch_composite_output),
         need_state=need_state,
         verbosity=0,
+        cohort_root=cohort_root,
+        cohort_residency_cap_bytes=cohort_residency_cap_bytes,
     )
 
 
@@ -866,6 +923,31 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
     una._init_batch_compositor()
     folded_this_call = {"value": False}
 
+    # Cohort route (C30, dossier 06): eligible rows are the
+    # proven-independent (worker-admissible) rows of an accessibility
+    # batch.  The shared store root is runtime-only state beside the
+    # first dispatched row's public folder (staging-root convention:
+    # hidden, content-addressed, persists for warm resumes, safe to
+    # delete); the per-worker residency cap comes from RESOURCES.md
+    # sizing via the cohort module.  Grouping itself is runtime-
+    # resolved: workers derive trace identities after the graph build.
+    cohort_root = None
+    cohort_cap = 0
+    cohort_rows: Dict[int, dict] = {}
+    if analysis == 'accessibility' and dispatchable:
+        from .cohort import per_worker_residency_cap
+        # The root is STABLE across runs and resumes (no run id): warm
+        # restarts and exact repeats must hit, and a crashed run's trace
+        # serves the resumed one — identity-verified at every load, so
+        # reuse is always content-proven.  Content addressing + the
+        # single flight make concurrent sharers safe.
+        cohort_root = os.path.join(_public_folder(plan, dispatchable[0]),
+                                   ".una-batch-cohort")
+        cohort_cap = per_worker_residency_cap(workers_effective)
+        notes_runtime.append(
+            f"cohort route: {len(dispatchable)} eligible row(s); "
+            f"residency cap {cohort_cap} bytes/worker")
+
     outcomes: Dict[int, RowOutcome] = {}
     manifests: Dict[int, Tuple[str, ...]] = {}
     bundles: Dict[int, dict] = {}
@@ -911,7 +993,9 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                     una, plan, j, staging.dir_for(
                         j, _public_folder(plan, j)),
                     analysis, script_output_folder,
-                    need_state=(j == expected_last))
+                    need_state=(j == expected_last),
+                    cohort_root=cohort_root,
+                    cohort_residency_cap_bytes=cohort_cap)
                 # Transportability is an admission requirement (see
                 # _job_transport_failure): fail THIS row loudly through the
                 # normal ordering path (earliest failure, prefix
@@ -991,6 +1075,8 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                         una, plan, journal, i, result,
                         _public_folder(plan, i), effective,
                         outcomes, manifests, bundles)
+                    if result.cohort_stats is not None:
+                        cohort_rows[i] = result.cohort_stats
                     folded_this_call["value"] = folded_this_call["value"] \
                         or result.capture is not None
                     staging.discard(i)
@@ -1112,9 +1198,67 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
 
     if not (journal is not None and composite_already_finalized
             and not folded_this_call["value"]):
+        if journal is not None and composite_already_finalized:
+            # BATCH_REVIEW MAJOR-1: this call re-ran rows after the prior
+            # run had already finalized the composite, so the in-memory
+            # accumulator holds only THIS call's captures — finalizing it
+            # would silently overwrite the published composite with a
+            # subset rebuild.  The full capture set lives in the journal
+            # (every commit, worker or parent, journaled its payload, and
+            # resume verified every payload digest): rebuild from those
+            # bytes in plan.fold_order (== commit order, the float
+            # order-sensitive fold order) and finalize that instead.
+            rows = (journal.load() or {}).get("rows", {})
+            captured = []
+            for i in plan.fold_order:
+                meta = (rows.get(str(i)) or {}).get("capture")
+                if not meta:
+                    continue
+                data = journal.read_capture(meta)
+                arr = np.load(io.BytesIO(data), allow_pickle=False)
+                captured.append((meta.get("column", ""), arr,
+                                 meta.get("metric", ""),
+                                 meta.get("join_path")))
+            una._composite_captured = captured
         una._finalize_batch_composite()
     if journal is not None and not composite_already_finalized:
         journal.record_composite_finalized()
+
+    # Cohort aggregation (dossier 06 counters: unique searches vs rows,
+    # store decodes, resident hits, folds, refusals — runtime-resolved
+    # identities grouped here only for reporting).
+    cohort_summary = None
+    if cohort_rows:
+        totals = {
+            "rows": 0, "builds": 0, "faultins": 0, "resident_hits": 0,
+            "singleflight_lost": 0, "replays": 0, "folds_done": 0,
+            "build_s": 0.0, "faultin_s": 0.0, "replay_s": 0.0,
+        }
+        refusals: Dict[str, int] = {}
+        identities = set()
+        for stats in cohort_rows.values():
+            for k in totals:
+                totals[k] += stats.get(k, 0)
+            for k, v in (stats.get("refusals") or {}).items():
+                refusals[k] = refusals.get(k, 0) + v
+            if stats.get("trace_id"):
+                identities.add(stats["trace_id"])
+        totals["refusals"] = refusals
+        totals["distinct_trace_identities"] = len(identities)
+        totals["per_row"] = {str(i): cohort_rows[i]
+                             for i in sorted(cohort_rows)}
+        totals["store_root"] = cohort_root
+        totals["residency_cap_bytes_per_worker"] = cohort_cap
+        cohort_summary = totals
+        notes_runtime.append(
+            f"cohort route: {len(cohort_rows)} row(s) attempted, "
+            f"{totals['builds']} trace build(s) over "
+            f"{totals['distinct_trace_identities']} distinct identit"
+            f"{'y' if totals['distinct_trace_identities'] == 1 else 'ies'}, "
+            f"{totals['faultins']} store decode(s), "
+            f"{totals['resident_hits']} resident hit(s), "
+            f"{totals['replays']} replay(s)"
+            + (f"; refusals {refusals}" if refusals else ""))
 
     una.batch_report = BatchExecutionReport(
         requested=requested,
@@ -1134,6 +1278,8 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
         if journal else None,
         output_manifest={str(i): manifests[i] for i in sorted(manifests)},
         notes_runtime=tuple(notes_runtime),
+        extra={"cohort": cohort_summary} if cohort_summary is not None
+        else {},
     )
 
 

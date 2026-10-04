@@ -13,7 +13,7 @@ import os
 
 import pytest
 
-from conftest import tree_bytes
+from conftest import hidden_residue, runtime_residue, tree_bytes
 
 pytestmark = pytest.mark.batch_runtime
 
@@ -89,7 +89,7 @@ def test_observable_prefix_speculation_is_invisible(
     stems = {n.split(".")[0] for n in os.listdir(out)
              if n.split(".")[0].startswith("row")}
     assert sorted(stems) == ["row0", "row1", "row2", "row3"]
-    assert not [n for n in os.listdir(out) if n.startswith(".una-batch")]
+    assert not hidden_residue(out)
 
 
 def test_plan_error_row_raises_serial_exception_after_prefix(
@@ -183,7 +183,10 @@ def test_staged_digest_verification_blocks_publishing(
         make_batch, tmp_path, monkeypatch):
     """The coordinator re-verifies staged bytes against the worker's
     digests BEFORE publishing — a lying/corrupted result must abort the
-    batch as cancellation, never publish unverified bytes."""
+    batch, never publish unverified bytes.  The failure is a COMMIT
+    INTEGRITY error (BatchCheckpointError, BATCH_REVIEW MINOR-2), not a
+    cancellation: corruption is not the user's cancel request, and
+    ``except BatchCancelledError`` handlers must not swallow it."""
     from dataclasses import replace as dreplace
 
     from urban_network_analysis.batch import runtime as rt
@@ -200,14 +203,21 @@ def test_staged_digest_verification_blocks_publishing(
 
     monkeypatch.setattr(rt._Pool, "recv", recv)
 
-    from urban_network_analysis.batch.report import BatchCancelledError
+    from urban_network_analysis.batch.report import (BatchCancelledError,
+                                                     BatchCheckpointError)
     p = make_batch(2, out_folder=tmp_path / "out")
-    with pytest.raises(BatchCancelledError, match="digest verification"):
+    with pytest.raises(BatchCheckpointError, match="digest verification"):
         p.RunBatch("accessibility", parallel=True, workers=1)
+    # the raise is NOT a cancellation in disguise (sibling classes)
+    try:
+        raise BatchCheckpointError("probe")
+    except BatchCancelledError:
+        raise AssertionError("BatchCheckpointError is-a BatchCancelledError")
+    except BatchCheckpointError:
+        pass
     # nothing was published from the unverified result
     assert not os.path.exists(tmp_path / "out") or \
-        not [n for n in os.listdir(tmp_path / "out")
-             if n.startswith(("row", ".una-batch"))]
+        not runtime_residue(tmp_path / "out")
 
 
 def test_shared_output_name_serializes_and_matches_serial(

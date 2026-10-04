@@ -378,6 +378,19 @@ class UNA:
                 )
             self.accessibility = AccessibilityWElevation(self.topology, self.settings)
 
+        # Integrator-only cohort dispatch (campaign una_10x C30, dossier
+        # 06): a PARALLEL batch worker attaches a runtime-only session;
+        # the fresh graph engine is then wrapped so its o_access may
+        # serve from the run's shared routing trace.  Every refusal
+        # falls back to the inner engine unchanged, and the serial route
+        # (which never sets _cohort_session) is untouched.
+        session = getattr(self, "_cohort_session", None)
+        if session is not None and not self.settings.turns:
+            from .batch.cohort import CohortGraphEngine
+            self.accessibility.graph_engine = CohortGraphEngine(
+                self.accessibility.graph_engine, self.accessibility,
+                session)
+
         self.accessibility.Centrality(self.settings)
 
         self.has_centrality_results = True
