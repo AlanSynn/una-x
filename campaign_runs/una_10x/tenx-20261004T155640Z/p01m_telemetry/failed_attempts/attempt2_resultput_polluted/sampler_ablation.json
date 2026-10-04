@@ -1,0 +1,46 @@
+{
+ "schema": "post-p00-sampler-ablation-1",
+ "design": "positive control: a KNOWN synthetic single-core load runs during load_w4; if the instruments (wall, tree CPU, busy procs, per-row run wall) cannot see it, they cannot attribute P00's variance either",
+ "runs": {
+  "clean_telemetry_off": {
+   "wall_s": 87.4168,
+   "tree_cpu_s": 200.65,
+   "peak_busy_procs": 5
+  },
+  "clean_telemetry_on": {
+   "wall_s": 72.7912,
+   "tree_cpu_s": 197.47,
+   "peak_busy_procs": 5
+  },
+  "injected_load_telemetry_on": {
+   "wall_s": 118.9373,
+   "tree_cpu_s": 256.96,
+   "peak_busy_procs": 6,
+   "spinner": {
+    "pids": [
+     2291141
+    ],
+    "stats": [
+     {
+      "pid": 2291141,
+      "spinner_cpu_s": null
+     }
+    ]
+   }
+  }
+ },
+ "telemetry_overhead_observation": {
+  "wall_off_s": 87.4168,
+  "wall_on_s": 72.7912,
+  "delta_s": -14.626,
+  "law": "single pair; P00 same-config spread is 25-28% (co-tenant load), so this delta is INDICATIVE ONLY and cannot bound overhead tighter than that spread; both runs verified bitwise against the same pin"
+ },
+ "detection": {
+  "wall_growth_s": 46.146,
+  "tree_cpu_growth_s": 59.49,
+  "spinner_cpu_s": [
+   null
+  ]
+ },
+ "instrument_sensitivity": "supported"
+}
