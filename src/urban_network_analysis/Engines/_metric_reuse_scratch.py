@@ -86,6 +86,11 @@ OUTPUT_DEPENDENCIES = {
     },
 }
 
+# knn_decay is deliberately ABSENT: decay-branch agreement is gated
+# explicitly by the knn_branch equality in the knn_access source
+# search below (a branch change must recompute knn even when every
+# scalar agrees); a dead "knn_decay_branch" token here would silently
+# drop that parameter from every dependency list.
 _PARAM_TO_DEP = {
     "cutoff": "membership_cutoff",
     "d_weights": "kept_weights",
@@ -93,7 +98,6 @@ _PARAM_TO_DEP = {
     "gravity_plateau": "gravity_plateau",
     "gravity_logistic_midpoint": "gravity_logistic_midpoint",
     "gravity_growth_rate": "gravity_growth_rate",
-    "knn_decay": "knn_decay_branch",
     "knn_weights": "knn_weights",
 }
 
@@ -224,14 +228,19 @@ def plan_replay(jobs, allow_split):
 
 
 def _job_agrees(a, b, param):
-    """Typed agreement of one metric parameter between two jobs."""
+    """Typed agreement of one metric parameter between two jobs.
+
+    Scalars agree by IEEE-754 bits, not by value equality (C12-NOTE-2
+    repair): -0.0 does not agree with +0.0, consistent with the
+    MetricID's signed-zero law; distinct NaN payloads disagree (no
+    reuse); identical-bit inputs agree.  Vectors agree by shape and
+    bytes.
+    """
     va, vb = a[param], b[param]
-    if param == "knn_decay":
-        return knn_branch(va) == knn_branch(vb)
     if hasattr(va, "__len__") or hasattr(vb, "__len__"):
         ca, cb = np.ascontiguousarray(va), np.ascontiguousarray(vb)
         return ca.shape == cb.shape and ca.tobytes() == cb.tobytes()
-    return float(va) == float(vb)
+    return (np.float64(va).tobytes() == np.float64(vb).tobytes())
 
 
 # ---- C12 generated split-fold variants (do not edit) ----

@@ -178,3 +178,20 @@ def test_work_counters_never_multiply():
     # allow_split=False would run TWO combined folds for the same set
     safe = mrs.plan_replay([a, b, c], allow_split=False)
     assert sum(1 for p in safe if p["mode"] == "full_fold") == 2
+
+
+def test_signed_zero_scalar_blocks_split_reuse():
+    """C12-NOTE-2 repair pin: scalar agreement is IEEE-bit-strict —
+    a cutoff of -0.0 does not agree with +0.0 at split-level reuse
+    (consistent with the MetricID's signed-zero law), so the second
+    job's four outputs are all unsourced and collapse to the full
+    combined fold."""
+    jobs = jobs_two()
+    jobs[0]["cutoff"] = 0.0
+    jobs[1]["cutoff"] = -0.0
+    assert jobs[0]["cutoff"] == jobs[1]["cutoff"]  # value-equal
+    plans = mrs.plan_replay(jobs, allow_split=True)
+    assert plans[0]["metric_id"] != plans[1]["metric_id"]
+    assert plans[1]["mode"] == "full_fold"
+    assert plans[1]["split_folds"] == []
+    assert plans[1]["outputs"] == {}
