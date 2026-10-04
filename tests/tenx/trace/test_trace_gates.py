@@ -37,10 +37,20 @@ METRIC_ONLY = ("gravity_beta", "gravity_plateau",
 
 def forged(tr, rec, **overrides):
     """A record carrying tampered packed arrays (fresh writable
-    copies; the frozen original untouched)."""
+    copies; the frozen original untouched).
+
+    The content digest is RECOMPUTED over the final forged bytes: the
+    structural gates are exercised against a digest-consistent forger
+    (the stronger adversary).  Tampering that leaves a STALE digest is
+    the weaker adversary — pinned separately by the C11-NOTE-4 test.
+    """
     fields = {f.name: getattr(rec, f.name)
               for f in dataclasses.fields(rec)}
     fields.update(overrides)
+    fields["content_digest"] = hashlib.sha256(
+        np.asarray(fields["indptr"]).tobytes()
+        + np.asarray(fields["destination_ids"]).tobytes()
+        + np.asarray(fields["distance_bits"]).tobytes()).hexdigest()
     return tr.TraceRecord(**fields)
 
 

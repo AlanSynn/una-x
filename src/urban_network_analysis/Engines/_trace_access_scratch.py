@@ -266,6 +266,11 @@ class TraceRecord:
     route: str
     refusal: str
     counters: TraceCounters
+    # C11-NOTE-4 (bound at build, verified at every replay gate and at
+    # residency publish/load): sha256 over the packed bytes in layout
+    # order, so a forged bit-flip in a retained record is refused
+    # instead of silently replayed.  Empty for INCOMPLETE records.
+    content_digest: str = ""
 
 
 @dataclass(frozen=True)
@@ -563,7 +568,7 @@ def build_trace(o_terminal_idxs, o_terminal_weights,
             destination_ids=_read_only(np.zeros(0, np.int64)),
             distance_bits=_read_only(np.zeros(0, np.float64)),
             complete=False, route=route, refusal=refusal,
-            counters=counters)
+            counters=counters, content_digest="")
 
     admitted, refusal, max_degree = _sp_route_admits(
         adjacency_pointer, adjacency_vector, adjacency_vector_weights,
@@ -719,7 +724,10 @@ def build_trace(o_terminal_idxs, o_terminal_weights,
         indptr=_read_only(indptr),
         destination_ids=_read_only(destination_ids),
         distance_bits=_read_only(distance_bits),
-        complete=True, route=ROUTE_TRACE, refusal="", counters=counters)
+        complete=True, route=ROUTE_TRACE, refusal="", counters=counters,
+        content_digest=hashlib.sha256(
+            indptr.tobytes() + destination_ids.tobytes()
+            + distance_bits.tobytes()).hexdigest())
 
 
 # --------------------------------------------------------------------------
@@ -801,6 +809,13 @@ def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
     if ids_all.shape[0] and (int(ids_all.min()) < 0
                              or int(ids_all.max()) >= trace.dest_count):
         return _refuse("corrupt_trace_destination_ids")
+    # C11-NOTE-4: the packed bytes must still hash to the digest bound
+    # at build — a forged or bit-flipped retained record is refused
+    # before any fold, never replayed as a cache hit.
+    if hashlib.sha256(indptr.tobytes() + ids_all.tobytes()
+                      + dist_all.tobytes()).hexdigest() \
+            != trace.content_digest:
+        return _refuse("corrupt_trace_content_digest")
 
     for origin in range(origin_count):
         sl = slice(int(indptr[origin]), int(indptr[origin + 1]))
