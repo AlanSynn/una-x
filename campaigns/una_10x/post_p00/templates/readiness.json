@@ -1,0 +1,23 @@
+{
+  "schema": "post-p00-readiness-1",
+  "status": "template_not_executed",
+  "source_sha": null,
+  "profile": null,
+  "candidate_dispositions": {},
+  "independent_reviews": [],
+  "baseline_policy_audit": null,
+  "primary_digest": null,
+  "preparation_counts": null,
+  "trace_counts": null,
+  "metric_counts": null,
+  "memory_record": null,
+  "bitwise_checks": null,
+  "state_artifact_checks": null,
+  "fault_matrix": null,
+  "installed_manifest": null,
+  "full_application_samples": [],
+  "remaining_critical_path": null,
+  "platform_obligations": null,
+  "application_10x": "unavailable",
+  "merge_disposition": "do_not_merge"
+}

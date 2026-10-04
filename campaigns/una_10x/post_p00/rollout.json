@@ -1,0 +1,88 @@
+{
+  "schema": "post-p00-rollout-1",
+  "branch": "perf/una-10x",
+  "checkpoint_commit": "6130769a5751bf7446734dc39b9f8e3763461cfe",
+  "target_speedup": 10,
+  "planning_headroom_speedup": 12,
+  "auto_publish": false,
+  "modify_primary": false,
+  "reset_heavy_budget": false,
+  "runtime_changes_in_publication": false,
+  "application_10x": "not_measured_by_this_amendment",
+  "selected_architecture": "row validation -> input-keyed prepared single-flight -> independent row state -> shared trace -> compiled replay -> typed metric reuse -> unchanged exports -> ordered durable commit",
+  "required_docs": [
+    "AUTHORITY.md",
+    "IMPLEMENTATION_MAP.md",
+    "README.md",
+    "SOURCES.md",
+    "SOURCE_AND_ERRATA.md",
+    "TEST_MATRIX.md",
+    "designs/01_telemetry.md",
+    "designs/02_prepared_bundle.md",
+    "designs/03_compiled_replay.md",
+    "designs/04_metric_reuse.md",
+    "designs/05_receiver_and_durability.md",
+    "designs/06_startup_export_backends.md",
+    "designs/07_measurement_and_gates.md"
+  ],
+  "current_disposition": "resume_existing_campaign; new tasks pending",
+  "guarded_optional_tracks": [
+    "P03M partial metric plans",
+    "P04I bounded receiver",
+    "startup/export/backend alternatives after measured admission"
+  ],
+  "implementation_source_allowed": true,
+  "remote_implementation_publish_allowed": false,
+  "stages": [
+    {
+      "phase": "P01",
+      "goal": "causal telemetry and baseline-policy audit",
+      "tasks": [
+        "P01M",
+        "P01F"
+      ]
+    },
+    {
+      "phase": "P02",
+      "goal": "shared preparation before decode",
+      "tasks": [
+        "P02D",
+        "P02I",
+        "P02R"
+      ]
+    },
+    {
+      "phase": "P03",
+      "goal": "compiled outer replay then typed metric reuse",
+      "tasks": [
+        "P03C",
+        "P03M",
+        "P03R"
+      ]
+    },
+    {
+      "phase": "P04",
+      "goal": "conditionally remove result/commit backpressure",
+      "tasks": [
+        "P04I",
+        "P04R"
+      ]
+    },
+    {
+      "phase": "P05",
+      "goal": "residual-screen and independent readiness before existing installed/final gates",
+      "tasks": [
+        "P05S",
+        "P05R"
+      ]
+    }
+  ],
+  "non_goals": [
+    "rewrite old evidence",
+    "claim 10x from P00",
+    "force-push",
+    "main merge",
+    "PR",
+    "skip platform capabilities"
+  ]
+}
