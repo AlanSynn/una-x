@@ -19,9 +19,15 @@ indices, with complete typed identity and honest status.
   the trace route serves exactly the S11-admitted domain.
 - Trace bytes are honest: ``indptr[O+1]``, ``destination_ids[nnz]``
   int64, ``distance_bits[nnz]`` float64 of the ACTUAL evaluated
-  retained distances, immutable (read-only arrays, frozen record).  No
-  dense O*D or K*O*D intermediate is ever materialized; the tile-local
-  candidate capture is the only temporary and it is measured.
+  retained distances, immutable (read-only arrays, frozen record).  The
+  ONLY temporary is the tile-local candidate capture, exactly
+  ``tile_origins * d_count`` lanes wide (int64 ids + float64 distances
+  + int64 counts) with ``tile_origins`` clamped to
+  ``max(1, min(tile_origins, origin_count))`` — so a caller may raise
+  the tile width up to one tile over all origins (O*D capture), but
+  the default (64) stays bounded independent of O; the capture is
+  measured either way (C11-NOTE-2 law: the bound is the caller's
+  tile_origins, never hidden).
 - Exceeding the trace byte budget marks the record INCOMPLETE and
   selects recompute/streaming — a partial trace can never be published
   as a cache hit and ``replay_trace`` refuses it by status.
@@ -311,6 +317,12 @@ def _reverse_incidence(d_terminal_idxs, node_count):
 # --------------------------------------------------------------------------
 # Producer kernel: the S11 epoch schedule + per-origin capture
 # --------------------------------------------------------------------------
+@nb.njit(
+    parallel=NUMBA_PARALLEL,
+    cache=NUMBA_CACHE,
+    nogil=NUMBA_NOGIL,
+    fastmath=NUMBA_FASTMATH,
+)
 def _tr_epoch_scope_search_tile(
     origin_start,
     o_terminal_idxs,
@@ -565,7 +577,7 @@ def build_trace(o_terminal_idxs, o_terminal_weights,
             ids_bytes=0, dist_bytes=0, metadata_bytes=0, trace_bytes=0,
             tile_temp_bytes=0, stamps_zeroed=0))
 
-    tile_origins = max(1, int(tile_origins))
+    tile_origins = max(1, min(int(tile_origins), origin_count))
     reverse_pointer, reverse_vector = _reverse_incidence(
         d_terminal_idxs, node_count)
 
@@ -611,14 +623,12 @@ def build_trace(o_terminal_idxs, o_terminal_weights,
         tile_ids = np.zeros((tile_len, d_count), dtype=np.int64)
         tile_dist = np.zeros((tile_len, d_count), dtype=np.float64)
         tile_counts = np.zeros(tile_len, dtype=np.int64)
-        tile_reach = np.empty(tile_len, dtype=o_terminal_idxs.dtype)
-        tile_ge = np.empty(tile_len, dtype=adjacency_vector_weights.dtype)
-        tile_gl = np.empty(tile_len, dtype=adjacency_vector_weights.dtype)
-        tile_kn = np.empty(tile_len, dtype=adjacency_vector_weights.dtype)
         lane_counters = np.zeros((lanes, 2), dtype=np.int64)
+        # C11-NOTE-1 repair: the dead per-tile fold-output buffers are
+        # gone (build never runs the metric fold — replay owns it);
+        # only the capture payload is allocated and charged.
         tile_temp = tile_ids.nbytes + tile_dist.nbytes + \
-            tile_counts.nbytes + tile_reach.nbytes + tile_ge.nbytes + \
-            tile_gl.nbytes + tile_kn.nbytes + lane_counters.nbytes
+            tile_counts.nbytes + lane_counters.nbytes
         tile_temp_peak = max(tile_temp_peak, tile_temp + arena_bytes)
 
         _tr_epoch_scope_search_tile(
@@ -724,8 +734,9 @@ def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
     any reuse: an incomplete trace is never a cache hit; an invalid
     metric input is refused even though a trace exists (no invalid
     input becomes successful because an earlier trace hit avoided its
-    validation); the cutoff must be typed-exact against the trace
-    identity; the destination weight vector must match the trace's
+    validation); the cutoff must be typed- and bit-exact against the
+    trace identity (-0.0 is not +0.0); the destination weight vector
+    must match the trace's
     recorded destination count and the dossier-02 value domain.
     """
     def _refuse(reason):
@@ -745,7 +756,11 @@ def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
 
     cutoff_value = float(cutoff)
     cutoff_dtype = str(np.dtype(getattr(cutoff, "dtype", type(cutoff))))
-    if cutoff_value != trace.cutoff_value or \
+    # C11-NOTE-3 repair: the gate is typed- AND bit-exact — IEEE-754
+    # value equality conflates -0.0 with +0.0 (and distinct NaN
+    # payloads), so the cutoff enters by its 8 bytes, never by ==.
+    if np.float64(cutoff_value).tobytes() \
+            != np.float64(trace.cutoff_value).tobytes() or \
             cutoff_dtype != trace.cutoff_dtype:
         return _refuse("cutoff_mismatch_with_trace_identity")
 
