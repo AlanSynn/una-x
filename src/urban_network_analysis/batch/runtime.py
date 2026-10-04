@@ -1351,13 +1351,28 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
             "stages": 0, "cold_build": 0, "verified_hit": 0,
             "contention_wait": 0, "fallback_compute": 0,
             "arena_nofit": 0, "build_s": 0.0,
+            # NR-3 (P02R review): store-level counters ride the per-row
+            # deltas; the contract's corruption_rebuild counter is the
+            # quarantined delta, so rebuilds surface in the report
+            # instead of hiding inside cold_build.
+            "store_hits": 0, "store_misses": 0, "corruption_rebuild": 0,
         }
         refusals = {}
+        identities = 0
         for stats in prepared_rows.values():
             for k in totals:
-                totals[k] += stats.get(k, 0)
+                if k == "corruption_rebuild":
+                    totals[k] += stats.get("store_quarantined", 0)
+                else:
+                    totals[k] += stats.get(k, 0)
+            identities = max(identities,
+                             stats.get("identities", 0))
             for k, v in (stats.get("refusals") or {}).items():
                 refusals[k] = refusals.get(k, 0) + v
+        # NF-7 public checkability (NR-3): totals carry the largest
+        # per-row distinct-identity count; the exact gate stays per-row
+        # (each row's cold_build vs its own identities in per_row).
+        totals["identities"] = identities
         totals["rows"] = len(prepared_rows)
         totals["refusals"] = refusals
         totals["per_row"] = {str(i): prepared_rows[i]
@@ -1371,6 +1386,8 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
             f"{totals['verified_hit']} verified hit(s), "
             f"{totals['contention_wait']} contention wait(s), "
             f"{totals['fallback_compute']} fallback compute(s)"
+            + (f"; {totals['corruption_rebuild']} corruption rebuild(s)"
+               if totals["corruption_rebuild"] else "")
             + (f"; refusals {refusals}" if refusals else ""))
 
     # P01M report attachment: only when telemetry is enabled.  The default

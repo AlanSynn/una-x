@@ -279,6 +279,12 @@ class Topology:
                 # Owner (or bounded fallback): the derivation ran on self
                 # inside _produce; only the observed stage key remains.
                 self.network._stage_key = net_key
+                # NR-1 (P02R review): the uncached path's unconditional
+                # tail line sits below this early return — the owner
+                # stream must carry it too (diagnostic-surface parity;
+                # artifacts were already bitwise).
+                self.logger.log('create topology',
+                                f"edge_list_dict created", v=2)
             return
 
         if cache.enabled:
@@ -523,6 +529,14 @@ class Topology:
             "BuildTopology",
             f"Topology built with {m['n_nodes']} nodes and "
             f"{m['n_edges']} edges.", v=2)
+        if replay_crs_line:
+            # NR-2 (P02R review): the produce path logs this inside
+            # Network.BuildTopology (right after the sindex build), so
+            # the prepared hit replays the FULL produce stream, not
+            # just the section-10 inventory.  The CACHE_GRAPH restore
+            # keeps its historical stream (documented inherited
+            # divergence, C10-C31 bytes).
+            self.logger.log('create topology', f"edge_sindex created", v=2)
         self.logger.log('create topology', "edge_list_dict created", v=2)
         self.logger.log(
             "Network added",
@@ -1286,7 +1300,12 @@ class Topology:
         role = {"Origins": "origins",
                 "Destinations": "destinations"}.get(label)
         if prep is not None and role is None:
-            prep = None  # label outside the v1 admitted roles (counted)
+            # Counters law (P02R NR-7a): refusals are never silent —
+            # count the role before falling back to the current path.
+            # Unreachable in the armed domain (only Origins/Destinations
+            # rows carry a session), but the fallback must stay honest.
+            prep.refuse("role_not_admitted:" + label)
+            prep = None
         snap_key = None
         store_key = None
         if ((prep is not None or cache.enabled) and self.network is not None

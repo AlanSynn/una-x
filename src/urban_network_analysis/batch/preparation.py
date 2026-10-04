@@ -155,7 +155,6 @@ _REG_CLOSED = False
 def _stores_for(root: str, cap: int) -> Stores:
     """Process-wide pair for ``root``; BOUNDED registry (NF-8): the
     oldest root is closed and evicted when the bound is exceeded."""
-    global _REG_CLOSED
     with _REG_LOCK:
         if _REG_CLOSED:
             raise RuntimeError("prepared registry closed (shutdown)")
@@ -216,6 +215,7 @@ class PrepSession:
         }
         self.admitted = True
         self._st: Optional[Stores] = None
+        self._keys: set = set()  # distinct stage identities this row touched
         st = dict(settings_state or {})
         if not root:
             self.refuse("no_root")
@@ -257,21 +257,32 @@ class PrepSession:
 
     def mark(self) -> dict:
         c = self.counters
-        return {"stages": c["stages"], "cold_build": c["cold_build"],
+        m = {"stages": c["stages"], "cold_build": c["cold_build"],
                 "verified_hit": c["verified_hit"],
                 "contention_wait": c["contention_wait"],
                 "fallback_compute": c["fallback_compute"],
                 "arena_nofit": c["arena_nofit"],
                 "refusals": dict(c["refusals"]),
                 "build_s": c["build_s"]}
+        # NR-3 (P02R review): store-level counters ride the same
+        # mark/delta pattern so the run report can surface store
+        # hits/misses and corruption rebuilds (the quarantined delta)
+        # without collapsing the per-stage counters.  A refused session
+        # has no store pair — its delta simply omits these keys.
+        if self.admitted and self.root:
+            st = self.store.stats()
+            m["store_hits"] = st["hits"]
+            m["store_misses"] = st["misses"]
+            m["store_quarantined"] = st["quarantined"]
+        return m
 
     def delta(self, before: dict) -> dict:
         c = self.counters
         rb = before["refusals"]
         ref = {k: v - rb.get(k, 0) for k, v in c["refusals"].items()
                if v - rb.get(k, 0) > 0}
-        return {"root": self.root,
-                "stages": c["stages"] - before["stages"],
+        m = {"root": self.root,
+             "stages": c["stages"] - before["stages"],
                 "cold_build": c["cold_build"] - before["cold_build"],
                 "verified_hit": c["verified_hit"] - before["verified_hit"],
                 "contention_wait":
@@ -281,6 +292,20 @@ class PrepSession:
                 "arena_nofit": c["arena_nofit"] - before["arena_nofit"],
                 "refusals": ref,
                 "build_s": c["build_s"] - before["build_s"]}
+        # NR-3: per-row distinct identities (NF-7's engagement gate is
+        # publicly checkable as per_row cold_build <= per_row identities)
+        # and the row's store-activity deltas (sum across rows is the
+        # run total; a same-process successor row subtracts its own
+        # mark, so shared store instances never double-count).
+        m["identities"] = len(self._keys)
+        if before.get("store_hits") is not None and self.admitted \
+                and self.root:
+            st = self.store.stats()
+            m["store_hits"] = st["hits"] - before["store_hits"]
+            m["store_misses"] = st["misses"] - before["store_misses"]
+            m["store_quarantined"] = \
+                st["quarantined"] - before["store_quarantined"]
+        return m
 
     # -- the seam surface --------------------------------------------------
 
@@ -308,7 +333,8 @@ class Flight:
     fallback_compute (spin-exhaust or wait-timeout: local compute WITHOUT
     commit).  An unrepresentable producer payload — the empty ``({}, None)``
     sentinel the Topology builders return for a stage that cannot be
-    stored, or a TypeError dtype — commits NOTHING and retains NOTHING
+    stored, a TypeError dtype, or a payload whose encode is empty
+    (all-None arrays) — commits NOTHING and retains NOTHING
     (encode_arrays({}) is a valid empty commit: letting it through would
     poison every waiter's restore); waiters spin out to their own
     local compute.  Arena retention on every successful serve is
@@ -330,6 +356,7 @@ class Flight:
         p = self.s.pair()
         store, arena = p.store, p.arena
         c["stages"] += 1
+        self.s._keys.add(key)  # NR-3: per-row distinct-identity count
 
         # Arena hit: fresh copies, never the retained objects (E10).
         got = arena.get(key)
@@ -361,21 +388,28 @@ class Flight:
                         t0 = time.perf_counter()
                         arrays, meta = produce()
                         c["build_s"] += time.perf_counter() - t0
-                        if arrays:
-                            # Empty payload = the producer's "unrepresentable"
-                            # sentinel (Topology returns ({}, None) when the
-                            # stage cannot be stored).  encode_arrays({}) is a
-                            # valid empty commit, so it must be skipped
-                            # EXPLICITLY: a poisoned empty entry would crash
-                            # every waiter's restore.  Waiters spin out to
-                            # their own local compute (fallback_compute).
-                            try:
-                                store.put(key, encode_arrays(arrays),
-                                          metadata=dict(meta or {}))
-                            except TypeError:
-                                pass  # unrepresentable dtype: stays uncached
-                            if not arena.put(key, arrays, dict(meta or {}),
-                                             None):
+                        # NR-5 (P02R review): the commit guard mirrors
+                        # StageCache.put_arrays exactly — encode ONCE,
+                        # commit only a non-empty encode (an empty or
+                        # all-None producer payload stays uncached instead
+                        # of raising out of put()), catch the TypeError
+                        # dtype.  The empty payload is the producer's
+                        # "unrepresentable" sentinel (Topology returns
+                        # ({}, None) when the stage cannot be stored);
+                        # encode_arrays({}) is a valid empty commit, so
+                        # it must be skipped EXPLICITLY: a poisoned empty
+                        # entry would crash every waiter's restore.
+                        # Waiters spin out to their own local compute
+                        # (fallback_compute).
+                        try:
+                            payload = encode_arrays(arrays)
+                        except TypeError:
+                            payload = None  # unrepresentable dtype
+                        if payload:
+                            store.put(key, payload,
+                                      metadata=dict(meta or {}))
+                            if not arena.put(key, arrays,
+                                             dict(meta or {}), None):
                                 c["arena_nofit"] += 1
                         c["cold_build"] += 1
                         return arrays, meta, StageProduced(key=key)

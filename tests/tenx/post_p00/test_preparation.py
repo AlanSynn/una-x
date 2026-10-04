@@ -224,6 +224,64 @@ def test_served_copy_mutation_isolation(tmp_path):
 
 
 # ---------------------------------------------------------------------------
+# NR-4/NR-5 (P02R review): the empty-payload OWNER law, committed as a
+# regression test (its evidence previously lived only in the dev smoke)
+# ---------------------------------------------------------------------------
+
+def _store_manifests(root):
+    out = []
+    for dirpath, _dirs, names in os.walk(os.path.join(str(root), "store")):
+        out.extend(os.path.join(dirpath, n) for n in names
+                   if n == "manifest.json")
+    return out
+
+
+def test_empty_payload_owner_law(tmp_path):
+    """The owner branch commits NOTHING and retains NOTHING for an
+    unrepresentable payload — the ({}, None) sentinel, an all-None
+    encode (NR-5: encode-once guard, no ValueError out of put()), or a
+    TypeError dtype — and a real producer on the same key then builds,
+    commits and serves normally (no poisoned empty entry)."""
+    root = tmp_path / "prep"
+    s = _prep_session(str(root))
+    fl = s.stage_cache("una:topology:v1")
+    k = _key("empty-payload")
+
+    arr, _meta, marker = fl.arrays_once(k, lambda: ({}, None))
+    assert marker.__class__.__name__ == "StageProduced"
+    assert arr == {}
+    assert len(_store_manifests(root)) == 0          # nothing committed
+    assert len(s.pair().arena) == 0                  # nothing retained
+    assert s.counters["cold_build"] == 1
+
+    # all-None dict: the encode drops every entry — stays uncached
+    # (NR-5) instead of raising ValueError out of store.put
+    arr2, _m2, marker2 = fl.arrays_once(
+        _key("empty-payload-2"), lambda: ({"w": None}, {}))
+    assert marker2.__class__.__name__ == "StageProduced"
+    assert len(_store_manifests(root)) == 0
+    assert s.counters["cold_build"] == 2
+
+    # TypeError dtype: stays uncached, never fails the row
+    arr3, _m3, marker3 = fl.arrays_once(
+        _key("empty-payload-3"),
+        lambda: ({"w": np.array([1, 2], dtype=object)}, {}))
+    assert marker3.__class__.__name__ == "StageProduced"
+    assert len(_store_manifests(root)) == 0
+    assert s.counters["cold_build"] == 3
+
+    # a real producer on the FIRST key builds and commits normally
+    good = {"w": np.arange(3, dtype=np.float64)}
+    arr4, _m4, marker4 = fl.arrays_once(k, lambda: (good, {"stage": "t"}))
+    assert marker4.__class__.__name__ == "StageProduced"
+    assert np.array_equal(arr4["w"], good["w"])
+    assert len(_store_manifests(root)) == 1
+    assert len(s.pair().arena) == 1
+    assert s.counters["cold_build"] == 4
+    assert s.counters["fallback_compute"] == 0
+
+
+# ---------------------------------------------------------------------------
 # E6: owner death — waiters complete
 # ---------------------------------------------------------------------------
 
@@ -318,24 +376,34 @@ def test_prepared_hit_replays_log_stream(smoke_fixture, tmp_path):
     t1 = Topology(verbosity=0)
     t1._prepared_session = _prep_session(root)
     t1.AddNetwork(s)
-    owner = [(e["event"], e["details"]) for e in t1.logger.log_list
-             if e["event"] == "Network added"]
+    owner = [(e["event"], e["details"]) for e in t1.logger.log_list]
+
+    # the UNCACHED route's stream (no session at all): the prepared
+    # owner must be byte-identical to it (NR-1 — including the
+    # unconditional tail line that sits below the seam's early return)
+    t0 = Topology(verbosity=0)
+    t0.AddNetwork(s)
+    original = [(e["event"], e["details"]) for e in t0.logger.log_list]
+    assert owner, "owner logged nothing"
+    assert owner == original, (owner, original)
 
     t2 = Topology(verbosity=0)
     t2._prepared_session = _prep_session(root)
     t2.AddNetwork(s)
-    hit = [(e["event"], e["details"]) for e in t2.logger.log_list
-           if e["event"] == "Network added"]
+    hit = [(e["event"], e["details"]) for e in t2.logger.log_list]
 
-    assert owner, "owner logged nothing"
     # the hit stream adds exactly its own v=2 announcement; every other
-    # content-derived line must be byte-identical
+    # content-derived line must be byte-identical — the FULL produce
+    # stream replays (NR-2): the sindex line inside BuildTopology and
+    # the NF-1 CRS line included
     hit_owner = [x for x in hit
                  if not x[1].startswith("Topology restored from cache")]
     assert owner == hit_owner, (owner, hit_owner)
     assert len(hit_owner) == len(hit) - 1
+    assert any(d == "edge_sindex created" for _e, d in hit), hit
     assert any(d.startswith("CRS set to ") for _e, d in hit), hit
-    assert any(d.startswith("Network added from source ") for _e, d in hit)
+    assert any(d.startswith("Network added from source ")
+               for _e, d in hit)
     # counters: t1's session built; t2's session — SAME process, so the
     # same registry Stores pair — served an arena hit (cold_build == 0)
     ses = t2._prepared_session

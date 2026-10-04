@@ -303,8 +303,16 @@ present when the CRS IS defined; the current CACHE_GRAPH restore does NOT
 replay it: NF-1, the prepared restore must replay it — inherited divergence,
 amended per the P02D review), "Network added from source …
 with N edges" (v1, 278/413-416), weight warning (v1, 296-301/417-418),
-empty-removed (v1, 419-423), topology counts (v2, 424-427), "edge_list_dict
-created" (v2, 428).
+empty-removed (v1, 419-423), topology counts (v2, 424-427),
+"edge_sindex created" (v2, emitted inside `Network.BuildTopology`,
+1778 — AMENDED per the P02R review: this line belongs to the inventory;
+the prepared restore replays it (prepared path only — the CACHE_GRAPH
+restore keeps its documented inherited divergence), and the prepared
+OWNER branch must emit it naturally via its `_build_network_from_gdf`
+call), "edge_list_dict created" (v2, 428 — AMENDED per the P02R
+review: the prepared owner branch sits above AddNetwork's unconditional
+tail line, so it must emit this line explicitly before its return to
+keep the produce stream identical to the uncached path).
 Snap stage: "Access points are built from source … with N points" (v1,
 528-531/1061), stored `log_extras` (NaN weight warning v0, fallback warning v1;
 replayed via `_cache_log_replays`, 532-533), hit announcement (v2, 534-538).
