@@ -1,0 +1,156 @@
+{
+  "schema": "una-10x-p04r-review-1",
+  "task": "P04R",
+  "campaign": "una_10x",
+  "reviewed_commit": "00632b73b1409e93b3712588000cf11777c03dad",
+  "receipt_commit": "9d223be65e505bbaaa88c90de9057d595baefea8",
+  "reviewed_files": {
+    "receiver_admission.json": {
+      "blob": "2f426893534a5fd608124560bd8f9921f84e4030",
+      "content_sha256_worktree_equals_blob": "eda91671b119a2e695d7946688b8b857446eab5b36e01d3f5e6288cd53bbf7fd"
+    },
+    "receiver_fault_matrix.json": {
+      "blob": "61ebe10d2a28b973802ea4a8f14435ca15f827f3",
+      "content_sha256_worktree_equals_blob": "a9256830663372312dd40f26c9ecd64fa1d94b8d292e0d3ba7f236cd5c805cfd"
+    },
+    "receiver_verdict.json": {
+      "blob": "481618d4a720f82296d2324533601703b368ef6f",
+      "content_sha256_worktree_equals_blob": "4a14d84c68f2bca8e0ab9c1d14ddc3ece8a75426d5a961ebfd4818bf271b204b"
+    }
+  },
+  "verdict": "ACCEPT_WITH_FINDINGS",
+  "verdict_basis": "The documented P04I non-admission is LAWFUL and SAFE, and this reviewer could not break it. (1) Lawfulness: dossier 05 line 5 admits a receiver change ONLY on material measured result-put/commit backpressure; the P04I receipts take the explicit not_admitted branch; the P04R task text ('Accept or reject candidate, or verify documented non-admission') makes verification a lawful completion. (2) Every decision-run number re-derived independently: my own extraction of the raw m_w4t phase events (own merge/union/interval code, no implementer probe reused) reproduces result_recv 32/0.000359s, dispatch 32/0.000465s, per-row commit max 0.222946s, commit_publish max 0.206187s/sum 4.018985s, commit_staged_verify sum 0.690765s, row-31 put 1.850811s at cpu/wall 0.9824, other-31-puts 0.027301s, union busy 6.043636s of span 25.574542s (idle 0.7637), tail after last recv 0.835738s, pool_close 0.713726s - all matching receiver_admission.json to the printed precision. (3) Backpressure absence re-derived from intervals, not spans: the coordinator's recv blocking is invisible to the result_recv span by construction (runtime.py:1159 recv sits OUTSIDE the span; design-01 comment at runtime.py:1162-1166), so I checked the real criteria: worker puts never block (all 31 non-31 puts are 0.0003-0.0087s; row 31 is main-thread CPU-bound, see reviewer_added_evidence), worst per-row commit 0.2229s < my corrected mean inter-arrival 0.3387s (the receipt's ~0.7s is imprecise but the criterion holds a fortiori at the true margin 1.5x; max single gap 2.807s >> max commit), zero overlap between the row-31 put span and any other put (no SimpleQueue write-lock stall), and workers idle in inbox_get 0.77-3.46s each (unsaturated). No monotone outbox growth is possible: _pending_bound (runtime.py:1493-1496) caps outstanding results at workers+queue_depth, pinned by the passing test_bounded_pending_dispatch. (4) Oversized-state safety - the key adversarial question - answered NO latent gap: dossier 05's credits-before-dispatch law is scoped to the NEW receiver's bounded ready map ('First schedule: one receiver, one commit owner'), and the same dossier explicitly permits 'the original route' for unknown response bounds; on that original route oversized state is handled at BOTH boundaries by committed, currently passing code: dispatch-side probe-pickle _job_transport_failure (runtime.py:1470-1480, called at 1059 before pool.dispatch) fails the row loudly through the normal earliest-failure path, and worker-side _transport_safe (worker.py:553-581) degrades an untransportable RESULT in two loud stages instead of killing a feeder thread; the outbox is a synchronous ctx.SimpleQueue (_ResultChannel, runtime.py:324-357) whose put pickles and writes under a lock before returning, so death after put cannot lose a completed result - pinned by test_result_channel_put_is_synchronous_across_abrupt_death (asserts the delivered payload AND exitcode==1) which I re-ran green. (5) Commit ownership and cancellation/resume semantics: exactly one commit owner (single _commit_worker_row call site at runtime.py:1133 inside the coordinator loop); git diff vs the P00-era tree e7c9eda for runtime.py shows the staged_verify -> publish -> state_apply -> capture_write -> outcome -> journal -> prefix_check statements preserved VERBATIM inside new observation spans (the only +/- lines touching _verify_staged/_publish_staged are re-indentation), and the worker-death drain (runtime.py:1075-1094), _cancel/_close/pool teardown, and recv restructure are behavior-preserving; tests/tenx islands I ran green: transport+cancellation 12 passed, overlap 3 passed, checkpoint/resume 12 passed. (6) Fault matrix soundness: the 7 conditions are the right axes for dossier 05; the 5 'absent' rows are measured and independently reproduced by this review; 'measured_not_backpressure' (row-31 put) is replicated 4/4 with exact max-put facts in all four P01 runs; 'not_applicable_no_receiver' is correct - TEST_MATRIX RX01-RX05 attach to a receiver implementation that does not exist, and the ORIGINAL-route-relevant parts of RX02 (worker death during put, oversized result transport) are already covered by the passing committed tests above. Findings: 0 blocking; 5 non-blocking evidence-hygiene defects/observations in the committed receipt wording/derived numbers (NR-1 inverted nesting description, NR-2 mis-composed p01 other-put sums, NR-3 a false '<0.1s in every run' claim for load_w4, NR-4 imprecise inter-arrival figure, NR-5 unexercised full-pipe stall) - none changes the measured basis or the decision.",
+  "blocking": [],
+  "non_blocking": [
+    {
+      "id": "P04R-NR-1",
+      "file": "campaign_runs/una_10x/tenx-20261004T155640Z/p04i_receiver/receiver_admission.json",
+      "finding": "nested_commit_law states the nesting direction BACKWARDS: it says 'commit(row_id=None) outer spans wrap the per-row commit(row_id=i) child 1:1', but the raw events show the row_id=None spans are the INNER children (opened by _ph(\"commit\") inside _commit_worker_row, runtime.py:606) strictly inside the row_id=i OUTER spans (opened by the loop, runtime.py:1132) - 32/32 contained the other way.",
+      "evidence": "My containment check: row_id=None commits strictly inside row_id=i commits 32/32; outer sum 4.717066 > inner sum 4.716626; union of row_id=i spans = 4.717066. The receipt's cited numbers are all correct; only the direction wording is inverted (it also keys the field name commit_outer_union_sum_s to the inner spans).",
+      "disposition": "wording-only; committed receipt bytes NOT rewritten (receipt immutability); future receipts must state: row_id=i outer wraps row_id=None inner 1:1, and union busy must be computed over all events (as both sides effectively did)"
+    },
+    {
+      "id": "P04R-NR-2",
+      "file": "campaign_runs/una_10x/tenx-20261004T155640Z/p04i_receiver/receiver_admission.json",
+      "finding": "p01_replication.*.other_puts_sum_s for t_w2/t_w4/load_w4 are mis-composed: they are ONE worker FILE's 'rest sum' from the per-file probe _p04i_p01_puts.py (the line whose max row is 31), not the run-level sum of the 31 non-31 puts. At W>1 the probe prints one line per workerpool file and the composer consumed only the row-31 line, silently dropping the other files' puts (and each file's own max put). t_w1 is accidentally exact because it has a single worker file.",
+      "evidence": "Run-level truth from my extraction: t_w1 0.014349 (receipt 0.014349 OK), t_w2 0.010675 (receipt 0.005061), t_w4 0.028154 (receipt 0.005832; the P01 H2 verdict's own 0.0282 for t_w4 matches MY value, not the receipt's), load_w4 0.221945 (receipt 0.074581). Max-put facts (row 31, 1.819377/1.819675/1.840141/1.821544 s, cpu/wall 0.98) are EXACT in all four - the load-bearing replication claim is intact.",
+      "disposition": "superseded numbers; committed receipt bytes NOT rewritten; the corrected run-level values are recorded here and in NR-3"
+    },
+    {
+      "id": "P04R-NR-3",
+      "file": "campaign_runs/una_10x/tenx-20261004T155640Z/p04i_receiver/receiver_admission.json + receiver_fault_matrix.json",
+      "finding": "The derived claim 'all 31 other puts sum < 0.1s in every run' is FALSE for load_w4: true run-level non-31 put sum is 0.221945s (nine puts of ~0.026s each, cpu/wall 0.013-0.387 - short waits behind the committing reader in the deliberately-loaded P01 contention run). It holds for t_w1/t_w2/t_w4 and for the decision run m_w4t (0.027301s).",
+      "evidence": "My per-put extraction of p01m_telemetry/events/load_w4.phase_events.workerpool.*.jsonl; probe output lines in this review's mechanical_checks show the per-file composition error that produced the wrong claim.",
+      "disposition": "immaterial to the decision (load_w4 is a P01 diagnostic contention run, not the P04I decision profile; 0.22s is ~12% of the one dominant put and ~4% of one row's compute) but the sentence is factually wrong as stated; future matrices must scope the claim to run-level sums or exclude load_w4 explicitly"
+    },
+    {
+      "id": "P04R-NR-4",
+      "file": "campaign_runs/una_10x/tenx-20261004T155640Z/p04i_receiver/receiver_admission.json",
+      "finding": "The inter-arrival figure '~0.7s mean inter-arrival' (causal_reasoning #3, fault matrix commit_saturation row) does not reconcile with the raw events: the true mean gap between consecutive result_recv arrivals is 0.338733s (median 0.207383s, max 2.807379s over 31 gaps). No extraction rule I tried (span/32 = 0.799, active-window/31 = 0.339) produces 0.7.",
+      "evidence": "My inter-arrival computation over the 32 result_recv start timestamps in m_w4t.phase_events.coordinator.jsonl.",
+      "disposition": "conclusion UNCHANGED and margin NARROWED honestly: the no-monotone-growth criterion (per-row commit max < mean inter-arrival) still holds at the true numbers (0.222946 < 0.338733, factor 1.52x); future receipts should carry the exact gap statistics"
+    },
+    {
+      "id": "P04R-NR-5",
+      "file": "post_p00/TEST_MATRIX.md RX02 (scope note, no defect in committed bytes)",
+      "finding": "One RX02 condition has no coverage on the ORIGINAL route and no receiver to attach to: a writer BLOCKED on a full OS pipe while holding the SimpleQueue shared write lock (which would stall sibling workers' puts). mp.SimpleQueue is semantically unbounded, so 'full pipe' backpressure is deferred to the OS pipe and the reader's drain rate.",
+      "evidence": "Code read (runtime.py:324-357; SimpleQueue.put pickles outside, writes under _wlock); measured absence in the decision run (zero span-overlap between the row-31 put and any other put; all non-31 puts <= 0.0087s), and small-scale existence under load in P01 load_w4 (~26ms put waits, cpu/wall ~0.013, three orders below row compute).",
+      "disposition": "carried as a register note for any future receiver implementation (its bounded-framed/per-worker lanes are exactly dossier 05's remedy); no action on the not-admitted tree"
+    }
+  ],
+  "reviewer_added_evidence": {
+    "row31_put_attribution_sharpened": "The receipt's attribution_bound claims the 1.85s CPU 'is NOT further attributed (pickle-vs-gc-vs-feeder-marshal is not further separated)'. The raw events DO further separate it: the row-31 result_put span records thread_cpu delta 1.818187s vs process_cpu delta 1.818193s - essentially ALL the CPU burned in the worker's MAIN thread, which is the thread executing _transport_safe's pickle.dumps probe and SimpleQueue.put's synchronous pickle+write. A SimpleQueue has no feeder thread at all, and a blocked main thread would show thread_cpu << process_cpu. This CONFIRMS the receipt's own conclusion (producer-side serialization preceding the queue boundary, unreachable by any receiver-side drain) by stronger evidence than the receipt claimed.",
+    "commit_nesting_union": "True coordinator commit occupancy: union of the 32 row_id=i outer spans = 4.717066s (serial, disjoint); the row_id=None inner spans sum 4.716626s; total union busy over ALL 293 coordinator events = 6.043636s of the 25.574542s span (idle 0.763685) - matching the receipt's 6.044/25.575/0.764.",
+    "end_of_run_timeline": "recv(row 31) at T-0.835752 -> commit(row 31) 0.119122s (T-0.835718..T-0.716595) -> pool_close 0.713726s -> rehydrate 0.000041s -> composite_finalize 0.000006s -> span end: the run tail is pool_close worker reaping, exactly as the receipt states. The 0.222946s max commit belongs to an EARLIER row, not row 31 (row 31's commit is 0.119122s).",
+    "worker_starvation": "inbox_get blocked-wait sums per worker: 3.0656/0.7655/3.4561/3.0580s over 9 gets each - workers idle ~3-13% of the run waiting for dispatch; consistent with no receiver-side saturation and with P01 H1's coordinator+worker oversubscription reading rather than any drain bottleneck."
+  },
+  "mechanical_checks": [
+    {
+      "check": "HEAD and graph pins",
+      "command": "git rev-parse HEAD; git log --format='%H %P' -3; git rev-parse 00632b7^ 9d223be^",
+      "outcome": "HEAD 9d223be65e505bbaaa88c90de9057d595baefea8; 9d223be parent 00632b7; 00632b7 parent 85a83e6fc6f5b0d025d9cf4c8e3a863e155e3467; matches the declared order (85a83e6 P03R closure -> 00632b7 P04I receipts -> 9d223be F00 receipt)"
+    },
+    {
+      "check": "P04I commit contains ONLY the 3 receipt files; tracked tree clean; blobs == worktree bytes",
+      "command": "git show --stat 00632b73b1409e93b3712588000cf11777c03dad; git status --porcelain | grep -v '^??' | wc -l; git cat-file blob <b> | sha256sum per receipt",
+      "outcome": "3 files changed/170 insertions, all under p04i_receiver/; tracked modifications 0; blob-content sha256 equal to worktree files: eda91671b119a2e695d7946688b8b857446eab5b36e01d3f5e6288cd53bbf7fd (admission), a9256830663372312dd40f26c9ecd64fa1d94b8d292e0d3ba7f236cd5c805cfd (fault matrix), 4a14d84c68f2bca8e0ab9c1d14ddc3ece8a75426d5a961ebfd4818bf271b204b (verdict)"
+    },
+    {
+      "check": "Independent re-extraction of ALL decision-run receiver facts from raw m_w4t events",
+      "command": "./_py _p04r_extract.py (own union/interval/merge code) on p03m_metrics/events/m_w4t.phase_events.{coordinator,workerpool.*}.jsonl",
+      "outcome": "result_recv 32 / sum 0.000359s / max 0.000017s; dispatch 32 / 0.000465s; commit rows 32 / max 0.222946s / sum 4.717066s; commit_publish 32 / max 0.206187s / sum 4.018985s; staged_verify sum 0.690765s; union busy 6.043636s / span 25.574542s / idle 0.763685; tail after last recv 0.835738s; pool_close 0.713726s; row-31 put 1.850811s cpu/wall 0.9824; other puts sum 0.027301s max 0.008687s; max-put overlaps [] - ALL match receiver_admission.json to printed precision (except the NR-2/NR-3/NR-4 items, which are P01-corroboration fields and one derived figure, not decision-run fields)"
+    },
+    {
+      "check": "Bitwise + engagement claims of the profile run",
+      "command": "inspect p03m_metrics/runs/m_w4t.json",
+      "outcome": "bitwise_verify.bitwise_match=true, 64/64 files, n_mismatched=0; timing.public_call_wall_s=25.76; telemetry_report.dropped_events=0; engagement_asserts.telemetry_dropped_zero=true; config.workers=4/threads_per_worker=1; commit max_wall 0.222946 matches my extraction"
+    },
+    {
+      "check": "Nesting direction of commit spans",
+      "command": "containment test over m_w4t coordinator commit events + code read runtime.py:606 and runtime.py:1132",
+      "outcome": "32/32 row_id=None spans strictly inside row_id=i spans -> receipt wording inverted (P04R-NR-1); numbers unaffected"
+    },
+    {
+      "check": "P01 H2 citation",
+      "command": "inspect p01m_telemetry/hypothesis_verdicts.json H2_commit_backpressure + re-extract t_w1/t_w2/t_w4/load_w4 workerpool events",
+      "outcome": "state=refuted_at_this_scale confirmed; H2's own numbers (t_w4 max put 1.840141, other sum 0.028154 implied by wall_s_sum 1.868295) match MY extraction; the P04I receipt's p01_replication other-sums for t_w2/t_w4/load_w4 do NOT (P04R-NR-2); max-put facts exact 4/4"
+    },
+    {
+      "check": "Probe bug that produced NR-2",
+      "command": "./_py _p04i_p01_puts.py (run verbatim)",
+      "outcome": "prints one line per worker FILE (t_w2: 2 lines, t_w4: 4 lines, load_w4: 4 lines); receipt values equal the single row-31 line's 'rest sum' (0.005061/0.005832/0.074581), proving the composer took one file's rest sum as the run's sum"
+    },
+    {
+      "check": "Oversized-state laws on the original route (the key P04R action)",
+      "command": "code reads: runtime.py:1470-1480 (_job_transport_failure), runtime.py:1059 call site, runtime.py:1493-1496 (_pending_bound), worker.py:553-581 (_transport_safe), worker.py:641-642 (put bracket), runtime.py:324-357 (_ResultChannel/SimpleQueue); dossier 05 lines 22-37",
+      "outcome": "dossier credits law is scoped to the NEW receiver and explicitly permits 'the original route' for unknown response bounds; original route bounds outstanding results at workers+queue_depth and handles untransportable jobs AND results loudly at both boundaries; no latent correctness gap from not_admitted"
+    },
+    {
+      "check": "Laws pinned by committed tests, re-run by this reviewer",
+      "command": "./_py -m pytest tests/batch/runtime/test_runtime_transport.py tests/batch/runtime/test_runtime_cancellation.py -q; ... tests/batch/runtime/test_runtime_overlap.py -q; ... tests/batch/runtime/test_runtime_checkpoint.py -q",
+      "outcome": "12 passed (46.00s) incl. test_result_channel_put_is_synchronous_across_abrupt_death (asserts delivered payload + exitcode==1 after os._exit(1)), test_unpicklable_payload_reduces_to_text_failure, test_untransportable_job_fails_its_row_loudly, test_worker_death_in_flight_cancels_cleanly; 3 passed (33.45s) incl. test_bounded_pending_dispatch; 12 passed (118.34s) checkpoint/resume"
+    },
+    {
+      "check": "Single commit owner + publication order unchanged vs P00 tree",
+      "command": "grep _commit_worker_row call sites; git diff e7c9edacd7340670b863c2bee16e7feac98044f6 HEAD -- src/urban_network_analysis/batch/runtime.py (hunk review; grep +/- lines for _publish_staged/_verify_staged/os.replace/fsync)",
+      "outcome": "one definition + one call site (runtime.py:1133); only +/- lines touching the publish/verify calls are re-indentation inside new spans; dead-worker drain (runtime.py:1075-1094), _cancel/_close and prefix laws structurally unchanged; worker.py diff = P01M/P02 additive fields + telemetry, pool loop core (sentinel close, outbox.put(_transport_safe(result))) unchanged"
+    },
+    {
+      "check": "Budget arithmetic",
+      "command": "manual recompute",
+      "outcome": "3882.8 + 25.76 = 3908.56 -> receipt's 3908.6 (half-unit rounding, consistent with the F00 receipt's carried 3908.6); 28800.0 - 7200.0 - 3908.6 = 17691.4; matches receiver_verdict.json budget_reconciliation exactly"
+    }
+  ],
+  "contract_deviations": [],
+  "evidence_requirements": [
+    "P04I receipts must remain byte-immutable; the NR-1..NR-4 corrections are recorded HERE and bind future receipts only.",
+    "If any future task re-opens the receiver (P05S register note), the p01_replication block must be recomposed from run-level sums and the inter-arrival figure from exact gap statistics before reuse."
+  ],
+  "unrun_checks": [
+    "Full tests/batch + tests/execution island re-run (198 tests) - only the 4 targeted runtime files (27 tests) were re-run; no drift signal is claimed beyond them.",
+    "A full-pipe stall experiment on the SimpleQueue (artificial non-draining reader) - NR-5 is a code-read + measured-absence finding, not an exercised fault.",
+    "Fresh cohort-scale public re-run - the decision-run facts were re-derived from the raw m_w4t events and run JSON instead; no new heavy walls were charged to the campaign.",
+    "RX01/RX03/RX04 receiver fault tests - attach to a receiver implementation that does not exist (fault matrix's not_applicable row is correct)."
+  ],
+  "walls": {
+    "pytest_transport_cancellation_s": 46.0,
+    "pytest_overlap_s": 33.45,
+    "pytest_checkpoint_s": 118.34,
+    "extraction_probes_and_runs_s": 6.2,
+    "total_measured_invocation_s": 203.99,
+    "charged_budget_impact_s": 0.0,
+    "charging_note": "review walls are island/probe-scale evidence walls, not charged per the fa92dca/958e25b precedent"
+  },
+  "budget_numbers_verified": {
+    "cumulative_before_s": 3882.8,
+    "charged_this_task_s": 25.76,
+    "cumulative_after_s": 3908.6,
+    "sum_check": "3882.8 + 25.76 = 3908.56 -> 3908.6 (consistent with the F00 receipt's carried value)",
+    "budget_total_s": 28800.0,
+    "final_reserve_s": 7200.0,
+    "remaining_before_reserve_s": 17691.4,
+    "recompute": "28800.0 - 7200.0 - 3908.6 = 17691.4 OK"
+  },
+  "reviewer": "p04r-reviewer (fresh-context independent review agent)",
+  "review_date": "2026-10-04"
+}
