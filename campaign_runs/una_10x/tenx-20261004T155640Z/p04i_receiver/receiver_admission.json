@@ -1,0 +1,95 @@
+{
+  "campaign": "una_10x",
+  "causal_reasoning": [
+    "The coordinator never waits on results: 32 result_recv spans total 0.000359s of a 25.575s run (dispatch adds 0.000465s).",
+    "The coordinator is idle 76.4% of the span (union busy 6.044s, nested phases counted once); its per-row commit region is bounded (row commit max 0.2229s, dominated by commit_publish fsync/rename max 0.2062s \u2014 the ORIGINAL publication law, unchanged and not to be weakened).",
+    "Arrival rate keeps up: ~32 results over the active window (~0.7s mean inter-arrival) vs per-row commit max 0.2229s \u2014 no monotone queue growth is possible at this scale; the run tail after the last arrival is only 0.836s (pool_close/rehydrate/composite_finalize).",
+    "The single >1s drain-adjacent cost (row 31's result_put) is producer-side CPU (cpu/wall ~0.98), replicated across four independent runs (P01 t_w1/t_w2/t_w4, P03M m_w4t) and two tree versions; an independent bounded drain receiver acts on the RECEIVER side and cannot reduce producer-side serialization.",
+    "P01 H2_commit_backpressure was already refuted_at_this_scale on the P01 tree; the fresh P03M-tree profile reproduces the same shape (recv ~0.0004s, commit max ~0.22s, one CPU-bound last put), so the refutation holds on the accepted candidate tree, not just the baseline."
+  ],
+  "completion_law": "Causally justified safe candidate or explicit not_admitted; no unbounded queues or weakened fsync \u2014 the explicit not_admitted branch is taken.",
+  "decision": "not_admitted",
+  "dependency_note": "P04I depends_on P03R; this admission profiles the P03M tree (commit e36178e9d08608ace4b06e4eee199f5295cedc62 bytes) and must be committed only after the P03R verdict lands. P04R reviews the documented non-admission.",
+  "measured_receiver_facts": {
+    "commit_outer_union_sum_s": 4.716626,
+    "commit_publish_max_s": 0.206187,
+    "commit_publish_sum_s": 4.018985,
+    "commit_row_max_s": 0.222946,
+    "commit_row_nested_sum_s": 4.717066,
+    "commit_staged_verify_sum_s": 0.690765,
+    "coordinator_idle_fraction": 0.764,
+    "coordinator_span_s": 25.575,
+    "coordinator_union_busy_s": 6.044,
+    "dispatch_total_s": 0.000465,
+    "nested_commit_law": "commit(row_id=None) outer spans wrap the per-row commit(row_id=i) child 1:1; raw sums double-count \u2014 union busy is the coordinator's true occupancy",
+    "post_last_recv_tail_s": 0.836,
+    "result_recv_events": 32,
+    "result_recv_total_s": 0.000359
+  },
+  "producer_side_put_facts": {
+    "attribution_bound": "The recorder measures process-wide CPU ns, so the 1.8-1.9s CPU-bound last-row put is NOT further attributed (pickle probe vs gc inside it vs feeder-thread marshal beside a blocked main thread are indistinguishable here); row artifact bytes are uniform (~3.97 MB x 32 rows), so the isolated cost does not track row output size. This is a producer-side serialization cost that precedes the queue boundary.",
+    "bracket_contents": "worker.py:641-642 \u2014 with prec.phase('result_put'): outbox.put(_transport_safe(result)); _transport_safe is a pickle.dumps probe + the synchronous queue put",
+    "max_put_cpu_over_wall": 0.982,
+    "max_put_row": 31,
+    "max_put_wall_s": 1.850811,
+    "other_puts_sum_s": 0.027301,
+    "p01_replication": {
+      "load_w4": {
+        "max_put_cpu_over_wall": 0.98,
+        "max_put_row": 31,
+        "max_put_wall_s": 1.821544,
+        "other_puts_sum_s": 0.074581
+      },
+      "t_w1": {
+        "max_put_cpu_over_wall": 0.981,
+        "max_put_row": 31,
+        "max_put_wall_s": 1.819377,
+        "other_puts_sum_s": 0.014349
+      },
+      "t_w2": {
+        "max_put_cpu_over_wall": 0.981,
+        "max_put_row": 31,
+        "max_put_wall_s": 1.819675,
+        "other_puts_sum_s": 0.005061
+      },
+      "t_w4": {
+        "max_put_cpu_over_wall": 0.98,
+        "max_put_row": 31,
+        "max_put_wall_s": 1.840141,
+        "other_puts_sum_s": 0.005832
+      }
+    },
+    "puts_total": 32
+  },
+  "profile_run": {
+    "bitwise_vs_p00_pin": {
+      "bitwise_match": true,
+      "got_file_count": 64,
+      "mismatched": [],
+      "n_mismatched": 0,
+      "ref_file_count": 64,
+      "requested": true
+    },
+    "config": "public RunBatch, frozen 32-row cohort, workers=4, threads_per_worker=1, telemetry on",
+    "fresh_cold_stores": true,
+    "public_call_wall_s": 25.76,
+    "run_id": "m_w4t",
+    "tree": "P03M implementation commit e36178e (typed MetricID v2 + admitted ge-split partial reuse)"
+  },
+  "raw_evidence": {
+    "extraction_probes": [
+      "_p04i_timeline.py",
+      "_p04i_p01_puts.py"
+    ],
+    "p01_verdict": "campaign_runs/una_10x/tenx-20261004T155640Z/p01m_telemetry/hypothesis_verdicts.json",
+    "phase_events": "campaign_runs/una_10x/tenx-20261004T155640Z/p03m_metrics/events/m_w4t.phase_events.coordinator.jsonl + 4 workerpool files (UNCOMMITTED per P00 raw-evidence law)"
+  },
+  "schema": "una-10x-receiver-admission-1",
+  "task": "P04I",
+  "what_would_change_the_decision": [
+    "coordinator result_recv walls growing with row count (recv blocking on a saturated consumer)",
+    "per-row commit max exceeding mean inter-arrival time (monotone outbox growth, potential unbounded queue)",
+    "a producer-side put that BLOCKS on the receiver (cpu/wall far below 1) while other workers starve",
+    "commit_publish tail extending past pool_close (publication becoming the run tail)"
+  ]
+}
