@@ -1,0 +1,67 @@
+{
+ "source_sha": "129c53f94e85210b1d4e5bbbc1a9d0d86b34e2e9",
+ "source_tree": "ea872509a05776b7cb5941d671bca04e2fa877e2",
+ "target_main_sha": "c1f8614a2733903b3fa9664579ba2fdce7ef7a74",
+ "merge_base": "c1f8614a2733903b3fa9664579ba2fdce7ef7a74",
+ "rehearsal_sha": "129c53f94e85210b1d4e5bbbc1a9d0d86b34e2e9",
+ "included_files": {
+  "runtime": [
+   "pyproject.toml",
+   "src/urban_network_analysis/Engines/_gpu_fold.py",
+   "src/urban_network_analysis/Engines/_metric_identity.py",
+   "src/urban_network_analysis/Engines/_metric_reuse_scratch.py",
+   "src/urban_network_analysis/Engines/_native/metric_fold.cpp",
+   "src/urban_network_analysis/Engines/_native_fold.py",
+   "src/urban_network_analysis/Engines/_sparse_access_scratch.py",
+   "src/urban_network_analysis/Engines/_trace_access_scratch.py",
+   "src/urban_network_analysis/Topology.py",
+   "src/urban_network_analysis/UNA.py",
+   "src/urban_network_analysis/batch/checkpoint.py",
+   "src/urban_network_analysis/batch/cohort.py",
+   "src/urban_network_analysis/batch/metric_reuse.py",
+   "src/urban_network_analysis/batch/preparation.py",
+   "src/urban_network_analysis/batch/runtime.py",
+   "src/urban_network_analysis/batch/telemetry.py",
+   "src/urban_network_analysis/batch/worker.py",
+   "src/urban_network_analysis/cache/trace_residency.py"
+  ],
+  "diff_stat": "18 files, +5743/-290 (17 src/ + pyproject.toml packaging repair)",
+  "tests": "tests/tenx islands + tests/batch coverage travel with the branch (50-pass identity+public rehearsal subset)",
+  "evidence": "campaign_runs/una_10x/tenx-20261004T155640Z/ committed receipts + campaigns/una_10x/evidence/"
+ },
+ "excluded_research_files": [
+  "q10_windows/runs/*.json + decision.json (P00 raw-evidence law)",
+  "untracked scratch scripts (_*.py) and /tmp frames",
+  "campaigns/history/** archive (preserved unchanged)"
+ ],
+ "wheel_hashes": [
+  "5a7017f71ed1a1d430305b5b6200e812fef2652c4965a8ff3cce44cd1e4e0022",
+  "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1"
+ ],
+ "default_domains": [
+  "public UNA.RunBatch default routes: prepared input-keyed single-flight + compiled outer replay + typed metric reuse; outputs proven bitwise-identical to the preserved Python origin loop (AB A==B==C with forced fallback)"
+ ],
+ "fallback_domains": [
+  "Python origin-loop fallback via _REPLAY_COMPILED=False",
+  "native AOT fold route: explicit option only (N10 REJECT_DEFAULT)",
+  "GPU region: explicit option only on CPU hosts; G11 V100 receipt; production GPU gates remain open"
+ ],
+ "validation_records": [
+  "v00r_validation/bitparity.json",
+  "v00r_validation/state_artifact_checks.json",
+  "v00r_validation/backend_matrix.json",
+  "r00_review/review.json",
+  "z00_close/rehearsal.json"
+ ],
+ "performance_records": [
+  "q10_windows/paired_samples.json",
+  "q10_windows/gate_10x.json",
+  "q10_windows/raw_index.json",
+  "p05s_screen/post_p00_readiness.json (BIND_CANDIDATE)"
+ ],
+ "independent_review": "r00_review/review.json (commit 129c53f94e85210b1d4e5bbbc1a9d0d86b34e2e9): confirmed_target_unmet_and_receipts_consistent, zero discrepancies",
+ "ci": "unavailable (none configured; absent CI is unavailable, never passed)",
+ "platform_status": "incomplete",
+ "decision": "do_not_merge",
+ "drift_note": "this manifest travels in exactly one evidence-only Z00 commit atop the rehearsed tip; the Z00 commit script asserts HEAD:src == 0621e867990c3e623a95ea0991fa272ef931d935 after committing, so runtime bytes are unchanged by it"
+}
