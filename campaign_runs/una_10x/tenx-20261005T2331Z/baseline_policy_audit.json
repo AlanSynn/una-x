@@ -1,7 +1,7 @@
 {
  "schema": "una-10x-baseline-policy-audit-1",
  "run_id": "tenx-20261005T2331Z",
- "status": "source_level_complete_measured_legs_blocked_pending_cluster",
+ "status": "measured_legs_complete_on_local_registered_control_frozen_cohort_replication_open",
  "method": "source read at pinned commits via git objects (no checkout mutation); no measurement run",
  "pins": {
   "baseline_comparator": "395cdc5f683894b6f2ba460f7dbcefee99981ba3 (CPU_ALGORITHMS closure, origin/main ancestry)",
@@ -63,7 +63,7 @@
   "fastest-valid-baseline-configuration measurement"
  ],
  "vehicle_amendment_2026_10_06": {
-  "authority": "direct user instruction 2026-10-06 (verbatim: 'pace 쓰지말고 /ncsa 쓰기, projects 항목 아래에 다 둬서 쉽게 삭제할 수 있도록 할것. ssh delta 로 접속 가능할것임.') — abandon PACE for cluster legs; use NCSA Delta; keep everything under one deletable tree; access via 'ssh delta'",
+  "authority": "direct user instruction 2026-10-06 (verbatim: 'pace \uc4f0\uc9c0\ub9d0\uace0 /ncsa \uc4f0\uae30, projects \ud56d\ubaa9 \uc544\ub798\uc5d0 \ub2e4 \ub46c\uc11c \uc27d\uac8c \uc0ad\uc81c\ud560 \uc218 \uc788\ub3c4\ub85d \ud560\uac83. ssh delta \ub85c \uc811\uc18d \uac00\ub2a5\ud560\uac83\uc784.') \u2014 abandon PACE for cluster legs; use NCSA Delta; keep everything under one deletable tree; access via 'ssh delta'",
   "scope": "reroutes the two WS02 measured legs above and the REPEAT_IDENTICAL negative control from PACE Phoenix to NCSA Delta; frozen P00 evidence, PRIMARY bytes and reference outputs remain where they were produced (PACE run root, maintenance-unreachable until 2026-10-08) and are NOT re-baselined onto Delta",
   "delta_environment_established": {
    "access": "ssh delta -> dt-login03.delta.ncsa.illinois.edu, user dsynn",
@@ -71,26 +71,113 @@
    "repo_identity": "clone of bundles/unax_all.bundle at perf/una-10x 4b680b60378066dbc0d2390e14a79391135b0a57 (P03C head); inputs materialized at docs/Boston/ from upstream c15ebda6981397f46eed5c2d55229f71e57d44fb, all 4 catalog entries hash-object == git_blob and bytes match (ALL_MATCH, 144829206 B total)",
    "stack_pins": "numba 0.67.0 / llvmlite 0.49.0 / numpy 2.4.6 / pyarrow 25.0.1 / pytest 9.1.1 (== local venv-p01m freeze); CPython 3.11.17 on Delta vs 3.11.16 local (micro drift recorded, not reconciled)",
    "proven_jobs": [
-    "association check (sacctmgr show assoc user=dsynn, 2026-10-06): only bicm-delta-gpu (GPU) and noalloc (submission-refused) exist; the no-GPU-jobs rejection ('Jobs requesting no GPU resources must be submitted under CPU type accounts') was observed in the 2026-10-06 pre-compaction session segment — sacctmgr/sbatch output, no sbatch job id retained for it",
-    "22709125: smoke attempt #1, FAILED pre-suite: bare 'python' on the compute node is /usr/bin/python 3.9 without pytest (invocation defect, env python must be used by absolute path) — no suite ran, no campaign evidence",
+    "association check (sacctmgr show assoc user=dsynn, 2026-10-06): only bicm-delta-gpu (GPU) and noalloc (submission-refused) exist; the no-GPU-jobs rejection ('Jobs requesting no GPU resources must be submitted under CPU type accounts') was observed in the 2026-10-06 pre-compaction session segment \u2014 sacctmgr/sbatch output, no sbatch job id retained for it",
+    "22709125: smoke attempt #1, FAILED pre-suite: bare 'python' on the compute node is /usr/bin/python 3.9 without pytest (invocation defect, env python must be used by absolute path) \u2014 no suite ran, no campaign evidence",
     "22708922: gpuA100x4 node runs under -A bicm-delta-gpu --gpus=1 (gpua074, AMD EPYC 7763 64-Core)",
     "22709127: tests/tenx/post_p00/replay -q -> 34 passed, 1 skipped in 27.55s on gpuA100x4 (== local)",
     "22709170: tests/tenx/trace -q -> 55 passed, 2 skipped in 25.94s (== local); numba cache landed in repo campaign_runs/_numba_cache_owner (in-tree)"
    ],
    "accounting_shape": "NO CPU-only account exists on Delta for this user: every compute job must request >=1 GPU and bills the deposited 1500 GPU-hours (association bicm-delta-gpu). CPU-benchmark measured legs will therefore run on GPU nodes using CPU cores with --gpus=1; matched arms share one partition class (gpuA100x4) and an equal frozen CPU budget per designs/07. Surfaced to the user before heavy measured-leg consumption."
   },
-  "measured_legs_status_after_amendment": "routable_ncsa_delta_not_yet_run — no Delta measurement has produced campaign evidence yet; status stays blocked_pending_cluster until the legs actually run",
+  "measured_legs_status_after_amendment": "routable_ncsa_delta_not_yet_run \u2014 no Delta measurement has produced campaign evidence yet; status stays blocked_pending_cluster until the legs actually run",
   "downstream_receipt_note": "p03c/compiled_replay_commit.json 'next' field's PACE framing ('PACE maintenance 2026-10-05..08') is superseded by this amendment; the P03C receipt bytes themselves are not edited",
   "heavy_budget_charged_this_amendment": "0 s campaign budget (environment establishment only; Slurm usage: one 5-min probe, two <25-min-limit smoke jobs, both << 1 min actual wall)"
  },
  "vehicle_amendment_2026_10_06_v2": {
-  "authority": "direct user instruction 2026-10-06 (verbatim: '그냥 로컬에서 cpu 리소스 사용해서 하고 gpu 최적화 일때만 ncsa 쓰도록 하고 진행.') — run CPU-resource campaign work LOCALLY; use NCSA only when doing GPU optimization; proceed",
-  "effect": "supersedes vehicle_amendment_2026_10_06's routing of measured legs to Delta. ALL CPU measured legs (WS02 cold/warm input-cache, REPEAT_IDENTICAL control, fastest-valid-baseline, and the eventual paired protocol) run on the LOCAL host with an equal frozen CPU budget for both arms. The Delta tree /u/dsynn/projects/una-x/ remains set up (verified green) and is RESERVED for the native/GPU platform-continuity duty only — no Delta compute was or will be consumed for CPU legs",
+  "authority": "direct user instruction 2026-10-06 (verbatim: '\uadf8\ub0e5 \ub85c\uceec\uc5d0\uc11c cpu \ub9ac\uc18c\uc2a4 \uc0ac\uc6a9\ud574\uc11c \ud558\uace0 gpu \ucd5c\uc801\ud654 \uc77c\ub54c\ub9cc ncsa \uc4f0\ub3c4\ub85d \ud558\uace0 \uc9c4\ud589.') \u2014 run CPU-resource campaign work LOCALLY; use NCSA only when doing GPU optimization; proceed",
+  "effect": "supersedes vehicle_amendment_2026_10_06's routing of measured legs to Delta. ALL CPU measured legs (WS02 cold/warm input-cache, REPEAT_IDENTICAL control, fastest-valid-baseline, and the eventual paired protocol) run on the LOCAL host with an equal frozen CPU budget for both arms. The Delta tree /u/dsynn/projects/una-x/ remains set up (verified green) and is RESERVED for the native/GPU platform-continuity duty only \u2014 no Delta compute was or will be consumed for CPU legs",
   "local_frozen_manifest_status": {
-   "cohort_manifest.csv": "NOT present locally; frozen pin screen_index.json frozen_manifest_sha256=1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf; bytes live on the PACE tree (campaign_data/inputs/upstream_Boston/Boston/, untracked, candidate_tree.untracked_count=224) — recovery scheduled after PACE maintenance ends 2026-10-08; no beta values are guessed or reconstructed (P01F forbids guessed betas)",
-   "warmup2.csv": "PRESENT locally and verified: sha256 1f45a465fb15741b3f7fa6e5139cf8598ccbe7a6c40a17bf35ea1ec4f3ca2f41 == screen_index.json warmup_manifest_sha256 (frozen first-two-rows warmup manifest) — the local leg runner shakes down against these frozen bytes untimed",
-   "input_files": "Cambridge_building_centroids.geojson + MA_transit_stations.geojson recovered from upstream c15ebda6981397f46eed5c2d55229f71e57d44fb into local campaign_data/inputs/upstream_Boston/Boston/ (blob shas recorded in the P01F leg record); catalog's Cambridge_transit_stations/…_pop2020_jobs2023 files are NOT the cohort pairings (distinct upstream files)"
+   "cohort_manifest.csv": "NOT present locally; frozen pin screen_index.json frozen_manifest_sha256=1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf; bytes live on the PACE tree (campaign_data/inputs/upstream_Boston/Boston/, untracked, candidate_tree.untracked_count=224) \u2014 recovery scheduled after PACE maintenance ends 2026-10-08; no beta values are guessed or reconstructed (P01F forbids guessed betas)",
+   "warmup2.csv": "PRESENT locally and verified: sha256 1f45a465fb15741b3f7fa6e5139cf8598ccbe7a6c40a17bf35ea1ec4f3ca2f41 == screen_index.json warmup_manifest_sha256 (frozen first-two-rows warmup manifest) \u2014 the local leg runner shakes down against these frozen bytes untimed",
+   "input_files": "Cambridge_building_centroids.geojson + MA_transit_stations.geojson recovered from upstream c15ebda6981397f46eed5c2d55229f71e57d44fb into local campaign_data/inputs/upstream_Boston/Boston/ (blob shas recorded in the P01F leg record); catalog's Cambridge_transit_stations/\u2026_pop2020_jobs2023 files are NOT the cohort pairings (distinct upstream files)"
   },
-  "measured_legs_status_after_v2": "blocked_pending_frozen_manifest_recovery (PACE, 2026-10-08) — NOT blocked by cluster availability anymore; local host is the approved vehicle the moment the frozen bytes land"
+  "measured_legs_status_after_v2": "blocked_pending_frozen_manifest_recovery (PACE, 2026-10-08) \u2014 NOT blocked by cluster availability anymore; local host is the approved vehicle the moment the frozen bytes land"
+ },
+ "local_audit_cohort_registration": {
+  "registered": "2026-10-06",
+  "role": "registered audit control cohort \u2014 NEVER a replacement for the frozen primary cohort (designs/07 registered-control law)",
+  "frozen_primary_cohort": {
+   "manifest_sha256": "1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf",
+   "status": "PACE-only; full-byte verification pending recovery probe (cron f7901d26, 2026-10-09 09:23 local)"
+  },
+  "local_audit_manifest": {
+   "path": "campaign_data/inputs/upstream_Boston/Boston/local_audit_manifest.csv",
+   "sha256": "235405de67cf22dc76c3e89bd0c3d198927d0ed0870172a0e86b942fecb8a60a",
+   "bytes": 9647,
+   "lines": 33,
+   "derivation_rule": "np.linspace(0.001, 0.004, 32) gravity_beta values; row template = frozen warmup2.csv row 0; name/output_file_name = cohort_beta_NN (i=0..31)",
+   "anchor_verification": {
+    "law": "no guessed beta values \u2014 generator anchored to observed frozen bytes",
+    "beta_0": "str(float(0.001))=='0.001' \u2014 byte-identity vs frozen warmup2 data row 0: True",
+    "beta_1": "repr(linspace[1])=='0.0010967741935483872' \u2014 byte-identity vs frozen warmup2 data row 1: True",
+    "prefix_preserving": "derived file starts with the frozen warmup2 bytes (header + rows 0-1 byte-identical)"
+   },
+   "varying_columns": [
+    "name",
+    "gravity_beta",
+    "output_file_name"
+   ],
+   "note": "identical-answer reuse is impossible across rows (distinct gravity_beta per job); REPEAT_IDENTICAL control handled separately on the disk-cache leg"
+  },
+  "local_ws02_variant_manifest": {
+   "path": "campaign_data/inputs/upstream_Boston/Boston/local_audit_manifest_disk.csv",
+   "sha256": "dbdb04abb39e7ef3d697fabe7bda5eb7ff93d3c37491e781bdb7b19ea5f6a14e",
+   "bytes": 9698,
+   "derivation_rule": "line-preserving append of execution.cache.mode=disk and execution.cache.directory=<per-arm fresh dir> to every row of local_audit_manifest.csv (row-level stage-cache policy law, Topology.py:188-193)"
+  }
+ },
+ "measured_legs_local_2026_10_06": {
+  "vehicle": "local CPU (user directive 2026-10-06 v2); host 10 logical cores, frozen budget C=4 top (w4 max arm); venv-baseline (py3.11.16, numba 0.67.0, numpy 2.4.6, pyarrow 25.0.1)",
+  "frame": {
+   "tree_head": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+   "tree_dirty": false,
+   "comparator_identity": "395cdc5 = the campaign's frozen numerical comparator"
+  },
+  "jit_regime": "per P00 jit_regime_plan: one untimed 2-row parallel-w4 warmup from frozen warmup2.csv rows, shared fresh NUMBA_CACHE_DIR across all legs; all measured runs warm",
+  "runner": "campaign_runs/una_10x/tenx-20261005T2331Z/p01f/run_baseline_legs.py (timer brackets ONLY the public RunBatch call)",
+  "legs_public_call_wall_s": {
+   "warmup_base_w4_untimed": 19.4986,
+   "localaudit_off_serial_run1": 88.5763,
+   "localaudit_off_serial_run2": 88.8606,
+   "localaudit_off_par_w4_run1": 37.3759,
+   "localaudit_off_par_w4_run2": 35.3169,
+   "localaudit_off_par_w2_run1": 54.7944,
+   "localaudit_ws02_disk_cold": 15.8638,
+   "localaudit_repeat_identical_warm": 10.2037
+  },
+  "records": [
+   "p01f/legs/warmup.json",
+   "p01f/legs/off_serial_run1.json",
+   "p01f/legs/off_serial_run2.json",
+   "p01f/legs/off_par_w4_run1.json",
+   "p01f/legs/off_par_w4_run2.json",
+   "p01f/legs/off_par_w2_run1.json",
+   "p01f/legs/ws02_disk_cold.json",
+   "p01f/legs/repeat_identical_warm.json"
+  ],
+  "determinism": {
+   "law": "bitwise output identity across configurations (per-leg sha256 census, 64 files each, 147829892 B total)",
+   "verdicts": {
+    "serial_run1==serial_run2": true,
+    "serial_run1==par_w4_run1": true,
+    "par_w4_run1==par_w4_run2": true,
+    "serial_run1==par_w2_run1": true,
+    "off==ws02_disk_cold": true,
+    "off==repeat_identical_warm": true
+   }
+  },
+  "cache_engagement": {
+   "row_declared_disk_cache_entries": "0 -> 198 (cold) -> 198 (warm, monotone)",
+   "effective_snapshot_note": "report.effective.options.cache shows call-level default 'off' on disk legs \u2014 the stage-cache policy follows the ROW (Topology.py:188-193); engagement is proven by the row-declared cache-dir census plus the cold->warm wall delta (15.8638s -> 10.2037s)",
+   "zero_failed_rows": "all 8 legs: 32/32 (warmup 2/2) status=ran"
+  },
+  "verdicts": {
+   "fastest_valid_baseline_configuration_local_control": "WS02 strongest-permitted input-cache arm (row-level disk, cold distinct cohort): 15.8638s \u2014 2.2263x faster than the fastest no-cache baseline leg (par w4 run2, 35.3169s)",
+   "repeat_identical_negative_control": "10.2037s (3.4612x vs w4-no-cache); identical-answer hits remain EXCLUDED from the primary public gate (frozen law); this arm bounds repeat-cohort baseline policy only",
+   "frozen_primary_unchanged": "P00 a_base_par_w4 92.1141s (PACE host) remains THE public 10x-gate baseline; local control walls are NOT substitutable (different host)",
+   "local_vs_pace_host_factor": "w4 0.3834x, serial 0.5111x of the PACE walls \u2014 recorded as host-factor transparency, no claims derived",
+   "audit_conclusion": "input caching is a materially faster permitted baseline configuration even on a cold distinct cohort; any candidate-side input reuse must therefore be audited symmetrically (matched-arm law) \u2014 the 10x gate is HARDER than the frozen-primary-only reading"
+  },
+  "status_after": "P01F measured legs completed on the local registered control; frozen-cohort replication remains open (PACE recovery probe cron f7901d26, 2026-10-09)"
  }
 }

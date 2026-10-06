@@ -17,9 +17,27 @@
   "note": "recorded for transparency; NOT silently merged into the ledger \u2014 basis difference left to the performance owner"
  },
  "w00_calibration_receipts": "not present locally; W00 deliverables (PRIMARY.json/WORKLOADS.json/baseline_stage_model.json) live in the remote run root \u2014 any W00 heavy consumption is inside the P00-ledger basis or unknown_pending_remote",
- "remaining_work_budget_seconds": 26576.53,
+ "remaining_work_budget_seconds": 26201.9975,
  "final_reserved_seconds": 7200,
  "reset": false,
- "this_run_consumption_so_far_seconds": 0.0,
- "note": "all values transcribed from committed receipts, not recomputed; ledger only grows"
+ "this_run_consumption_so_far_seconds": 374.5325,
+ "note": "all values transcribed from committed receipts, not recomputed; ledger only grows",
+ "consumption_log_2026_10_06": {
+  "law": "ledger only grows; walls are committed per-leg public_call_wall_s figures",
+  "shakedown_legs_committed_at_85f157f_s": {
+   "shakedown_base_serial_off": 14.8397,
+   "det2": 5.1195,
+   "disk_cold2": 3.3115,
+   "disk_warm2": 0.7716,
+   "sum": 24.0423
+  },
+  "local_measured_legs_s": {
+   "warmup_untimed_duty": 19.4986,
+   "seven_measured_legs_sum": 330.9916,
+   "detail": "see baseline_policy_audit.json measured_legs_local_2026_10_06"
+  },
+  "session_total_s": 374.5325,
+  "cumulative_ledger_s": 2598.0024999999996,
+  "superseded_first_disk_shakedown_attempt": "wall not recorded (superseded pre-record); unquantified residue disclosed"
+ }
 }
