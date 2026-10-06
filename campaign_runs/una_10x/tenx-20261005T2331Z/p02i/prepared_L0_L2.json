@@ -1,0 +1,27 @@
+{
+  "schema": "una-10x-p02i-l0-l2-1",
+  "task": "P02I",
+  "increment": "A",
+  "generated": "2026-10-06",
+  "status": "INCREMENT_A_GREEN_LOCAL",
+  "commands_and_results": [
+    {"cmd": "python -m pytest tests/tenx/post_p00/preparation/ -q", "result": "12 passed in 2.63s (standalone)"},
+    {"cmd": "python -m pytest tests/tenx/post_p00/ -q", "result": "22 passed in 9.89s (combined with P01M telemetry suite)"},
+    {"cmd": "python -m pytest tests/execution -q", "result": "107 passed in 7.88s"},
+    {"cmd": "python -m pytest tests/batch -q", "result": "91 passed in 169.09s"}
+  ],
+  "L0_local_correctness": {
+    "produced_path_identity": "src/ diff vs base d20f5d6 is empty: the produced path cannot have moved; regression receipts replicate P01M (batch 91, execution 107)",
+    "pp01_reader_equivalence": "PASS x3 formats (geojson/feather/parquet) x3 layers: original _get_gdf route vs snapshot/decode route — schema, column order, dtypes, CRS, geometry WKB bytes, index all identical",
+    "state_equivalence": "PASS: AddNetwork produced vs restored over all 11 engine-consumed arrays (bitwise, dtype-pinned) + geometry WKB + CRS PROJJSON + _stage_key + derived-sindex query parity with served-hit proof (stats delta >= 1); AddOrigins/AddDestinations produced vs restored over 5 snap arrays + geometry WKB + CRS + _stage_key with both roles served (stats delta >= 2)",
+    "uid_guard_observable": "PASS: int64 uid served from stage cache on second run; object-dtype uid skips the store (second run misses again, stats window isolated to AddOrigins) and still reproduces exactly — 'miss never wrong hit' confirmed",
+    "toctou_pins": "PASS x3 formats: _read_snapshot == file bytes; file_digest(snapshot) == independent sha256 of file",
+    "corrupt_bytes": "PASS x3 formats: truncated bytes raise on BOTH reader routes (exception CLASSES not pinned — recorded as observation-only)"
+  },
+  "L2_installed_public": {
+    "status": "FORWARD_SCOPE",
+    "note": "installed-wheel public calls are the P05 gate per TEST_MATRIX header; increment A changes no public path so no L2 leg exists yet"
+  },
+  "forward_criteria_note": "regression counts (91/107/22) are this review's actual reruns on the increment-A tree, not carried-forward claims; identity suite (47, numba 0.67.0) receipt from cb023d4 remains valid because no src bytes changed — not re-run here",
+  "heavy_budget_charged": 0
+}

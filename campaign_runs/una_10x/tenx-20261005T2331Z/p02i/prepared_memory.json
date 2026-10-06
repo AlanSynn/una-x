@@ -1,0 +1,16 @@
+{
+  "schema": "una-10x-p02i-memory-1",
+  "task": "P02I",
+  "increment": "A",
+  "generated": "2026-10-06",
+  "status": "NO_RUNTIME_SURFACE_YET",
+  "statement": "Increment A adds no runtime allocation, lease, or payload: there is no prepared store, no worker-local cache, and no lease table in this increment. The produced path's memory behavior is unchanged (src diff empty). These are the memory laws increments B/C must satisfy when the surface exists, recorded now as the design posture:",
+  "memory_laws_for_B_C": {
+    "immutable_leases": "prepared payloads are immutable and shared; leases never expose public mutable aliasing (CLAUDE.md); consumers materialize independent ordinary objects BEFORE leases close (designs/02:103-104)",
+    "per_consumer_copies": "wherever the produced path defensively copies (network.weights from lengths, Topology.py:284), the prepared path hands each consumer its own copy",
+    "budget_respect": "prepared payloads count against execution.memory_limit_bytes / workspace_limit_bytes like every other retained artifact; PP09 (small budget, many distinct roots, eviction with live leases) is the C-increment acceptance fixture",
+    "no_pointer_transport": "GDALDataset/GEOS/STRtree pointers and open native handles are never transported across processes (designs/02:94-95); restored geometries are rebuilt bytes, derived sindex rebuilt per consumer (fixture-proven query parity)",
+    "measurement_duty": "prepared_memory.json gains actual caps/lease measurements in B (worker-local) and C (run-wide): payload sizes for the admitted cohort shapes, lease table overhead, eviction behavior"
+  },
+  "heavy_budget_charged": 0
+}

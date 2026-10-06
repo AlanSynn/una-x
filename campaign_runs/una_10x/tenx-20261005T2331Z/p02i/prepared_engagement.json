@@ -1,0 +1,16 @@
+{
+  "schema": "una-10x-p02i-engagement-1",
+  "task": "P02I",
+  "increment": "A",
+  "generated": "2026-10-06",
+  "engagement": "NONE — by design",
+  "statement": "Increment A lands evidence only. No dispatch change exists: RunAccessibility/Add* call sequences are byte-identical to base d20f5d6, no batch/prepared.py module exists yet, and no public or private admission path consults any prepared store. Every public RunBatch row still re-reads and re-parses all inputs exactly as before — zero behavioral engagement, zero performance claim.",
+  "what_increment_A_proves": {
+    "reader_routes": "the two in-repo reader routes (uncached _get_gdf and snapshot/decode) are frame-identical for .geojson/.feather/.parquet (contract layer 1-2 precondition)",
+    "serializer_coverage": "the existing topology stage-cache serializers round-trip the FULL engine-consumed state surface (audit §4 census) for network and both access-point roles — the errata's 'existence != full state coverage' objection is answered with fixtures for these layers",
+    "identity_guards": "uid-dtype skip-store observable and TOCTOU snapshot pins behave exactly as the contract's invalidation_matrix requires",
+    "supported_formats_evidence": "all three admitted formats now have reader-equivalence conformance evidence; .geojson-first ENGAGEMENT order is unchanged (formats engage as prepared only in increments B/C with per-format fixtures behind them)"
+  },
+  "no_bypass_compliance": "no benchmark-only constructor, no second entrypoint, no public-API reduction; unsupported routes are not routed anywhere new — they run the produced path because nothing else exists",
+  "next": "increment B (worker-local reuse) implements batch/prepared.py + Topology integration behind the private seam prepare_request/acquire_prepared/restore_network/restore_points, gated on these fixtures"
+}
