@@ -1,0 +1,123 @@
+{
+  "schema": "una-10x-p02d-prepared-contract-1",
+  "task": "P02D",
+  "generated": "2026-10-06",
+  "status": "DRAFT_FOR_PROOF_REVIEW",
+  "review_gate": "P02D completes only when prepared_proof_review.json, produced by an independent fresh reviewer (not a fork), ACCEPTs this contract together with prepared_consumer_audit.md BEFORE any implementation code lands.",
+  "post_review": {
+    "verdict": "ACCEPT_WITH_NOTES",
+    "blocking_defects": 0,
+    "reviewed_bytes_sha256": {
+      "prepared_contract.json": "047e507970346c39d92199af45cd147e878ca6df216be5e15e089b79dc0204e5",
+      "prepared_consumer_audit.md": "221baa83c424ea286465d94b1d2822c6f53e589ae05bd026c1c0bf9dd738060c"
+    },
+    "note": "Verdict binds to the pinned bytes above. Reviewer-requested remedies were applied to prepared_consumer_audit.md POST-verdict (section 12): corrected 2.5 weight-fallback prose (unit-weights fallback, default_cost keyed-never-used), annotated the AWE:681 get_obstacle_arc_penalties omission with the forward constraint that obstacle-domain extension re-opens restore validity, corrected three citation imprecisions. This contract's RULES are unchanged; this record is provenance only. Any future edit to rule content re-opens the review gate."
+  },
+  "authority": {
+    "design": "campaigns/una_10x/post_p00/designs/02_prepared_bundle.md",
+    "implementation_map": "campaigns/una_10x/post_p00/IMPLEMENTATION_MAP.md",
+    "errata": "campaigns/una_10x/post_p00/SOURCE_AND_ERRATA.md (E1-E8)",
+    "test_matrix": "campaigns/una_10x/post_p00/TEST_MATRIX.md",
+    "consumer_audit": "campaign_runs/una_10x/tenx-20261005T2331Z/p02d/prepared_consumer_audit.md"
+  },
+  "goal": "Share the per-row source observation/decode/preparation work across the 32-row observed cohort behind a guarded private seam, without changing any public input validation, output bytes, failure order, or timing duty. Targets P00's measured waste: all 79,940,126 input bytes re-read and re-parsed in every one of 32 rows; serial service 75.4220% read_arrow+next+from_wkb.",
+  "non_goals": [
+    "No change to public RunAccessibility/RunBatch behavior for unadmitted inputs (designs/02:13 'API support is not reduced: unadmitted inputs continue down the existing route').",
+    "No compiled replay (P03), no typed MetricID v2 (P03), no drain changes (P04), no gate changes (P05).",
+    "No benchmark-only constructors or bypass paths (IMPLEMENTATION_MAP no-bypass rules: public path only).",
+    "No removal of per-row file validation, error chronology, or exporter duties.",
+    "No engine-internal algorithm changes; AccessibilityWElevation/Centrality semantics untouched."
+  ],
+  "admission_domain": {
+    "initial_formats": [".geojson", ".feather", ".parquet"],
+    "condition": "admit each format ONLY where reader-equivalence fixtures prove it (designs/02:82 'First admit single-file .geojson/.feather/.parquet only where tested'); engagement begins with the observed .geojson cohort shape and extends only on new conformance evidence",
+    "structure": "single-file inputs only; Shapefile/prj/dbf/shx sidecars, archives, GDAL virtual files, mutable GeoDataFrames, custom reader hooks require a complete multi-resource identity and reader proof, otherwise fallback (designs/02:82-85)",
+    "roles": ["network", "origins", "destinations"],
+    "excluded_from_initial_domain": ["obstacles/observers (not in observed cohort; UNA.py:333-334 gate untouched)", "multi-file resources", "mixed-dimension geometry (falls back, not truncates; designs/02:101)", "turns=True rows (C31-NOTE-3 cohort gate clause preserved)"],
+    "data_conditions": "missing columns or nonfinite data keep current validation/failure order; preparation never silently cleans (designs/02:84-85)"
+  },
+  "layers": [
+    {"n": 1, "name": "SourceSnapshot", "content": "exact bytes of one admitted input file, read once (Topology.py:55-61 pattern)", "law": "these are the ONLY bytes hashed and decoded (TOCTOU)"},
+    {"n": 2, "name": "DecodedLayer", "content": "GeoDataFrame decoded from the snapshot by the SAME extension-dispatched reader stack (gpd.read_feather(pa.BufferReader) / read_parquet / gpd.read_file(engine='pyogrio', use_arrow=True), Topology.py:64-78)", "law": "byte-for-byte same reader stack and params as the produced path"},
+    {"n": 3, "name": "NetworkPrepared", "content": "network arrays exactly as AddNetwork writes them (geometry, float64 lengths, float64 weights with bad-weight substitution + pinned warning, CRS as PROJJSON-carrying gdf.crs)", "law": "dead column-loaded node ids (:303-313) may be omitted; BuildTopology-derived arrays (:1590-1623) are the live state"},
+    {"n": 4, "name": "AccessPrepared(role)", "content": "per-role snapped access points exactly as BuildAccessPoints produces them (snap fields, weights, UID, dtypes, ordering)", "law": "snap mechanics, uid dtype guard (:452-462), empty-layer path, and ordering hazards reproduced; role parameter (Origins/Destinations) is part of the key"},
+    {"n": 5, "name": "EnginePrepared", "content": "engine payload reconstruction (worker-local geometry/STRtree once per dependency identity) ONLY when proof permits (designs/02:94-95)", "law": "never transport GDALDataset/GEOS/STRtree pointers or open native handles across processes; increments A-C do not include this layer"},
+    {"n": 6, "name": "PreparedBundle", "content": "the immutable published unit: identity, dependency-identity set, layer payloads, schema tag, producing code closure reference", "law": "published once; consumers lease immutable views and materialize independent ordinary objects (designs/02:103-104)"}
+  ],
+  "identity_and_keys": {
+    "composition": "stage_key closure per cache/identity.py:135 over {file_sha256 of admitted snapshot bytes, params: {reader params implied by extension, producer-read settings: network_weight_column, network_precision, network_load_nodes, origin_weight_column, destination_weight_column, origin_uid_column, destination_id_column, default_cost}, profile: semantic_profile, env: geometry_env(profile, _PACKAGE_VERSION)}, plus preparation schema tag",
+    "over_key_initially": true,
+    "over_key_meaning": "bundle key is derived over the full per-role preparation parameter set (designs/02:11); per-dependency key granularity is a later refinement only after PP04 fixtures pass",
+    "forbidden_identity_inputs": ["file path or mtime", "ndarray address", "float64-coerced reporting keys (E8: result_key coercion fixed in P03 before any metric reuse keys on it)", "network_weight_default (read-never-used, Topology.py:218; absent from :233-244 key)"],
+    "content_truth": "the store does not enforce content-address truth (store-audit); the prepared admission MUST refuse bytes whose hash differs from the identity it claims (refuse-different-bytes, pattern cache/trace_residency.py:257-283)"
+  },
+  "toctou_law": {
+    "statement": "hash the SAME bytes that are decoded, never one version for the key and another for the payload (Topology.py:55-61 dossier-06 note)",
+    "admission": "prepared admission re-verifies snapshot bytes against the claimed identity at lease time; a mismatch is a MISS (rebuild), never a served hit",
+    "hit_chronology": "read/validation/failure chronology is still required on prepared hits (CLAUDE.md; audit section 10): existence checks, decode-or-restore decision, geometry/CRS/weight validations run against the SAME admitted bytes in the produced order"
+  },
+  "state_machine": {
+    "states": ["ABSENT", "BUILDING(owner)", "COMPLETE", "LEASED"],
+    "transitions": "ABSENT -> BUILDING(first consumer AFTER original validations) -> COMPLETE(publish once, atomic tmp->rename+fsync via ContentStore) -> LEASED(consumers hold immutable leases) -> (per-run teardown)",
+    "crash_rule": "crash-orphaned BUILDING is treated as ABSENT on next admission; ContentStore singleflight (cohort budget 600s, matching P00 configuration) covers concurrent build",
+    "lazy_gate": "first-consumer single-flight happens AFTER original validation (designs/02; audit I6): the producing validations run before any lookup, and on hits they re-run"
+  },
+  "chronology": {
+    "produced_path": ["Settings.Validation (pure, Settings.py:480-654)", "AddNetwork existence (:210-211)", "snapshot read", "decode", "geometry-type validation (:255-271)", "AddOrigins existence (:552-553)", "AddDestinations existence (:571-572)", "BuildAccessPoints CRS/weight checks (:1048-1058, :1072-1104)", "engine ctor", "Centrality", "export"],
+    "prepared_hit_path": "identical order; decode replaced by verified restore at the same chronology position; no validation skipped, no failure reordered",
+    "gate_class": "integrity gates fatal only on fixed-input deterministic returns; run-parameter probe returns are data to record"
+  },
+  "restore_validity": {
+    "engine_reads": "every post-construction engine read must hold on the restored path (audit section 4, coordinator-verified): network.{start_nodes, end_nodes, weights, node_points, z}; origins.{edge_start_node, edge_end_node, weight_to_start, weight_to_end, geometry, crs}; destinations.{edge_start_node, edge_end_node, node_weight, weight_to_start, weight_to_end}; per-layer _stage_key (network/origins/destinations/obstacles); topology.{_stage_profile, cache_options, logger}; obstacles identity via get_partial_edge_corrections (AWE:613-744, 837-897, 899-942)",
+    "state_coverage": "a restore that skips a field the engine later reads is a correctness defect; Topology stage-cache serializers are reusable ONLY for the exact state sets fixtures prove (errata: existence != full state coverage)",
+    "export_surface": "exporter columns are ONLY origins geometry + engine arrays; PROJJSON CRS retained (:362-366); reach dtype int64 (WElevation) vs float64 (WTurns) preserved; exact exporter schema and Feather metadata law retained (designs/02:92)"
+  },
+  "mutability_law": {
+    "immutable_internal_leases": "prepared payloads are immutable and shared; leases never expose public mutable aliasing (CLAUDE.md)",
+    "per_consumer_materialization": "on rehydration, independent ordinary objects are materialized BEFORE closing preparation leases; later user mutation of the returned topology must not alter shared payloads or another worker's state (designs/02:103-104)",
+    "defensive_copies_preserved": "wherever the produced path copies (network.weights from lengths, :284), the prepared path hands each consumer its own copy",
+    "cluster_flags": "per-row has_clusters=False reset semantics (:215, :560, :576) preserved on the prepared path",
+    "cache_policy": "cache_options/_stage_profile refreshed from the ROW's settings (:188-193) even on hits"
+  },
+  "api_surface": {
+    "module": "proposed batch/prepared.py (new, preparation-engineer owned) + Topology.py integration points",
+    "private_functions": ["prepare_request(identity_inputs) -> PreparedIdentity", "acquire_prepared(identity) -> lease | MISS", "restore_network(lease, topology) -> populates network state", "restore_points(lease, role, topology) -> populates origins/destinations state"],
+    "ownership": {"preparation_engineer": ["batch/prepared.py", "Topology.py integration"], "integrator": ["UNA.py dispatch only"], "cache_engineer": ["cache store adapter only"]},
+    "no_bypass": "public RunBatch path only; no benchmark-only constructors; cohort seam (_cohort_session, UNA.py:392-397) untouched; serial route untouched",
+    "instrumentation": "opt-in Add*-boundary phase hooks per designs/01 deferred scope (source_decode/topology/snap) ride the existing PhaseRecorder when UNA_BATCH_PHASES=1; no second channel"
+  },
+  "increments": {
+    "A": {"content": "reader/state equivalence fixtures only; NO dispatch change (designs/02)", "acceptance": "PP01 reader equivalence per format + state-equivalence fixtures green; produced-path bytes identical (L0/L2 unchanged)"},
+    "B": {"content": "worker-local reuse (same worker re-prepares once for its rows)", "acceptance": "PP02 (same prep, different beta/paths rows), PP03 (bytes change, same mtime), PP04 (per-dependency invalidation) fixtures green; telemetry shows reuse without schema change"},
+    "C": {"content": "run-wide producer per immutable dependency identity (single-flight)", "acceptance": "PP05 (mutable/unsupported fallback), PP06 (corruption/owner death), PP07 (user mutation isolation), PP08 (mixed rows), PP09 (budget/leases) green; singleflight_not_lost on admitted cohort"},
+    "D": {"content": "engine payload (layer 5) ONLY if justified by measured evidence", "acceptance": "separate conformance proof; excluded from A-C"}
+  },
+  "invalidation_matrix": {
+    "bytes_change_same_mtime": "identity includes file_sha256 -> MISS (PP03)",
+    "param_change": "any producer-read setting change -> MISS (over-key)",
+    "profile_or_env_change": "profile/geometry_env in closure -> MISS",
+    "schema_tag_change": "preparation schema evolution -> MISS; re-put = new generation (ContentStore semantics)",
+    "corruption": "store corruption -> miss + quarantine (ContentStore); refuse-different-bytes at lease time",
+    "uid_dtype_unsupported": "guard attaches key and SKIPS store (miss never wrong hit, :452-462)"
+  },
+  "forbidden": [
+    "pickle from persistent cache (designs/02)",
+    "float64 key coercion or any tolerance/rounding on identity or outputs (CLAUDE.md; E8)",
+    "sharing GDALDataset/GEOS/STRtree/native pointers across processes (designs/02:94-95)",
+    "public mutable aliasing of internal leases (CLAUDE.md)",
+    "reduction/reassociation of work or outputs; hidden work; output truncation for mixed dimensions (designs/02:101)",
+    "skipping or reordering validation/failure chronology on hits (CLAUDE.md)",
+    "idle-relief double counting with preparation relief (CLAUDE.md 10x accounting)"
+  ],
+  "acceptance_checks": {
+    "parity": "bitwise parity per una_legacy/madina_legacy/corrected_v1 on admitted cohort rows; 1-ULP delta rejects the fast domain",
+    "artifacts": "all 64 expected reference artifacts preserved with required values/bytes/metadata",
+    "tests": "tests/tenx/post_p00/preparation suite per TEST_MATRIX PP01-PP09 + regression suites (batch 91, execution 107, tenx subdirs, identity 47 under numba 0.67.0 pin)",
+    "budget": "10x accounting counts preparation relief once; matched resource budgets; no parent import subtraction"
+  },
+  "open_items_for_reviewer": [
+    "RESOLVED at draft+1: engine-read list completeness — coordinator personally read engines/AccessibilityWElevation.py (:613-744, :837-942) and replaced the headline set with the full verified list in audit section 4; reviewer should re-verify against bytes",
+    "RESOLVED at draft+2: Validation mutation list — coordinator read Settings.py:480-654 in full [V]: zero file I/O; mutations are exactly knn_weights (:509-521), flow_gravity_cap (:566), origin_destination_id_column + destination_id_column (:618-619), output_folder (:653-654). None of these enters identity_and_keys.params except destination_id_column, which AddDestinations reads (:568) AFTER Validation mutates it — binding POST-Validation values (chronology rule) is therefore load-bearing and confirmed correct",
+    "RESOLVED at draft+1 by construction: over-key granularity vs E6 — the prepared identity keys ONLY Add*-read preparation params (reader params, weight/uid/default columns, precision, load_nodes, profile, geometry_env); gravity beta/KNN params are engine compute params that enter the engine's own o_access result_key (AWE:837-897), never the prepared key, so per-row beta variation cannot over-invalidate preparation (this is exactly TEST_MATRIX PP02's fixture)"
+  ]
+}
