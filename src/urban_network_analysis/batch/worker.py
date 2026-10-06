@@ -46,6 +46,8 @@ import time
 from dataclasses import dataclass, field
 from typing import Any, Dict, Optional, Tuple
 
+from .telemetry import PhaseRecorder
+
 __all__ = ["RowJob", "RowResult", "pool_main"]
 
 _CHUNK = 1 << 20
@@ -119,6 +121,13 @@ class RowResult:
     # never observable serial state).  None when the row ran without a
     # cohort session.
     cohort_stats: Optional[Dict[str, Any]] = None
+    # P01M diagnostics (post_p00 designs/01): bounded worker phase spans,
+    # populated only when UNA_BATCH_PHASES=1 is inherited by the worker
+    # process.  Default-absent so normal transport/reporting is
+    # unchanged; they ride THIS trusted payload — never a second channel
+    # — and are diagnostics only (never cache/checkpoint identity).
+    phases: Tuple[Dict[str, Any], ...] = ()
+    dropped_events: int = 0
 
 
 # ---------------------------------------------------------------------------
@@ -292,11 +301,16 @@ def _scan_staging(staging_dir: str) -> Tuple[Tuple[str, int, str], ...]:
 
 def _run_row(job: RowJob) -> RowResult:
     """Execute one row exactly as the serial loop would, on a fresh UNA."""
+    # P01M diagnostics: bounded phase spans for this row.  No-op unless
+    # UNA_BATCH_PHASES=1 was inherited through the spawn environment.
+    tele = PhaseRecorder()
     t0 = time.perf_counter()
-    UNA = _load_analysis()
+    with tele.span("bootstrap_import"):
+        UNA = _load_analysis()
     timings = {"import_s": time.perf_counter() - t0}
 
-    una = UNA(verbosity=job.verbosity)
+    with tele.span("una_construct"):
+        una = UNA(verbosity=job.verbosity)
 
     # Cohort route (C30, dossier 06): attach the run's share session so
     # the integrator dispatch in RunAccessibility wraps the fresh graph
@@ -306,48 +320,53 @@ def _run_row(job: RowJob) -> RowResult:
     cohort_stats = None
     session = None
     if job.cohort_root and job.analysis == 'accessibility':
-        from .cohort import CohortSession
-        session = CohortSession(job.cohort_root,
-                                job.cohort_residency_cap_bytes)
-        una._cohort_session = session
-        cohort_mark = session.mark()
+        with tele.span("cohort_attach"):
+            from .cohort import CohortSession
+            session = CohortSession(job.cohort_root,
+                                    job.cohort_residency_cap_bytes)
+            una._cohort_session = session
+            cohort_mark = session.mark()
 
-    s = una.settings
-    s.__dict__.update(dict(job.settings_state))
+    with tele.span("settings_bind"):
+        s = una.settings
+        s.__dict__.update(dict(job.settings_state))
 
-    # -- bind_settings (serial: applies to every row, skipped ones too) ----
-    if not (s.output_folder or '').strip():
-        s.output_folder = job.script_output_folder or \
-            os.path.join(s.data_folder, "Results")
+        # -- bind_settings (serial: applies to every row, skipped ones too) --
+        if not (s.output_folder or '').strip():
+            s.output_folder = job.script_output_folder or \
+                os.path.join(s.data_folder, "Results")
 
-    # Workers only ever receive planner-admitted, validation-ok rows; the
-    # skip gate is re-evaluated anyway so a scheduling bug can never turn a
-    # skipped row into a run (fail loudly instead of writing artifacts).
-    missing = [f for f in ('network_file', 'origins_file', 'destinations_file')
-               if not (getattr(s, f, None) or '').strip()]
-    if missing:
-        raise RuntimeError(
-            f"worker received row {job.row_index} whose required fields are "
-            f"missing: {missing} — the planner routes skipped rows to the "
-            f"coordinator, never here")
+        # Workers only ever receive planner-admitted, validation-ok rows;
+        # the skip gate is re-evaluated anyway so a scheduling bug can
+        # never turn a skipped row into a run (fail loudly instead of
+        # writing artifacts).
+        missing = [f for f in ('network_file', 'origins_file',
+                               'destinations_file')
+                   if not (getattr(s, f, None) or '').strip()]
+        if missing:
+            raise RuntimeError(
+                f"worker received row {job.row_index} whose required fields "
+                f"are missing: {missing} — the planner routes skipped rows "
+                f"to the coordinator, never here")
 
-    # -- substitute_output_name (after the skip gate, serial order) --------
-    if s.output_file_name == "Results":
-        s.output_file_name = s.name
+        # -- substitute_output_name (after the skip gate, serial order) ----
+        if s.output_file_name == "Results":
+            s.output_file_name = s.name
 
-    # -- staging redirect (runtime-only; public value restored below) ------
-    public_output_folder = s.output_folder
-    os.makedirs(job.staging_dir, exist_ok=True)
-    s.output_folder = job.staging_dir
+        # -- staging redirect (runtime-only; public value restored below) --
+        public_output_folder = s.output_folder
+        os.makedirs(job.staging_dir, exist_ok=True)
+        s.output_folder = job.staging_dir
 
     _inject("pre_run", job.inject)
     t1 = time.perf_counter()
-    if job.analysis == 'flow':
-        una.RunFlow()
-        engine = una.flow
-    else:
-        una.RunAccessibility()
-        engine = una.accessibility
+    with tele.span("run"):
+        if job.analysis == 'flow':
+            una.RunFlow()
+            engine = una.flow
+        else:
+            una.RunAccessibility()
+            engine = una.accessibility
     timings["run_s"] = time.perf_counter() - t1
     _inject("post_run", job.inject)
 
@@ -356,37 +375,42 @@ def _run_row(job: RowJob) -> RowResult:
     # parent's rehydrated state must be the PLAIN engine — the cohort
     # route is runtime-only and never observable state.
     if session is not None:
-        from .cohort import CohortGraphEngine
-        ge = getattr(engine, "graph_engine", None)
-        if isinstance(ge, CohortGraphEngine):
-            engine.graph_engine = ge._inner
-        una._cohort_session = None
-        cohort_stats = session.delta(cohort_mark)
+        with tele.span("cohort_detach"):
+            from .cohort import CohortGraphEngine
+            ge = getattr(engine, "graph_engine", None)
+            if isinstance(ge, CohortGraphEngine):
+                engine.graph_engine = ge._inner
+            una._cohort_session = None
+            cohort_stats = session.delta(cohort_mark)
 
     # -- composite capture (the serial loop's capture, on this instance) ---
     capture = None
     if job.capture:
-        una._composite_active = True
-        una._composite_captured = []
-        una._capture_batch_row(s, engine)
-        if una._composite_captured:
-            col_name, arr, metric, join_path = una._composite_captured[0]
-            capture = (col_name, arr, metric, join_path)
+        with tele.span("composite_capture"):
+            una._composite_active = True
+            una._composite_captured = []
+            una._capture_batch_row(s, engine)
+            if una._composite_captured:
+                col_name, arr, metric, join_path = una._composite_captured[0]
+                capture = (col_name, arr, metric, join_path)
 
     # -- rehydration bundle (only for the plan's expected last row) --------
     state_bundle = None
     if job.need_state:
         _inject("pre_state", job.inject)
-        state_bundle = _pack_state_bundle({
-            "analysis": job.analysis,
-            "topology": una.topology,
-            "engine": engine,
-            "has_flow_results": una.has_flow_results,
-            "has_centrality_results": una.has_centrality_results,
-            "resolved_gravity_cap": getattr(una, "resolved_gravity_cap", None),
-            "cap_resolved": getattr(una, "resolved_gravity_cap", None) is not None,
-            "settings_post": vars(s),
-        })
+        with tele.span("state_pack"):
+            state_bundle = _pack_state_bundle({
+                "analysis": job.analysis,
+                "topology": una.topology,
+                "engine": engine,
+                "has_flow_results": una.has_flow_results,
+                "has_centrality_results": una.has_centrality_results,
+                "resolved_gravity_cap": getattr(una, "resolved_gravity_cap",
+                                                None),
+                "cap_resolved": getattr(una, "resolved_gravity_cap",
+                                        None) is not None,
+                "settings_post": vars(s),
+            })
 
     # -- deferred settings delta: the public folder value is what the
     #    serial loop would have left on the object; the staging path must
@@ -396,7 +420,8 @@ def _run_row(job: RowJob) -> RowResult:
 
     timings["stage_scan_s"] = 0.0
     t2 = time.perf_counter()
-    files = _scan_staging(job.staging_dir)
+    with tele.span("stage_scan"):
+        files = _scan_staging(job.staging_dir)
     timings["stage_scan_s"] = time.perf_counter() - t2
 
     rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * 1024
@@ -417,6 +442,8 @@ def _run_row(job: RowJob) -> RowResult:
         worker_pid=os.getpid(),
         timings=timings,
         cohort_stats=cohort_stats,
+        phases=tele.snapshot(),
+        dropped_events=tele.dropped_events,
     )
 
 

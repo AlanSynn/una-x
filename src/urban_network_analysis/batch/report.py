@@ -87,6 +87,12 @@ class RowExecutionOutcome(RowOutcome):
     peak_rss_bytes: Optional[int] = None
     output_files: Tuple[str, ...] = ()
     timings: Dict[str, float] = field(default_factory=dict)
+    # P01M diagnostics (post_p00 designs/01): the row's worker phase
+    # spans and the recorder's dropped-event count.  Empty/0 unless
+    # UNA_BATCH_PHASES=1; diagnostics only, never cache/checkpoint
+    # identity and never primary timing evidence.
+    phases: Tuple[Dict[str, Any], ...] = ()
+    dropped_events: int = 0
 
 
 @dataclass(frozen=True, kw_only=True)

@@ -1,0 +1,17 @@
+{
+  "schema": "una-10x-p01m-sampler-ablation-1",
+  "task": "P01M",
+  "generated": "2026-10-05",
+  "status": "BLOCKED_PENDING_CLUSTER",
+  "blocker": "WS04 sampler-overhead paired controls run on the observed cohort on the cluster host; PACE maintenance 2026-10-05..2026-10-08.",
+  "design_requirements": [
+    "paired ON/OFF controls over identical public windows on the observed cohort",
+    "overhead budget reported separately from primary timing",
+    "a diagnostic run with dropped events cannot prove interval completeness"
+  ],
+  "posture_v1": {
+    "disabled_path": "PhaseRecorder with UNA_BATCH_PHASES unset constructs two empty containers and returns _NULL_SPAN per phase; report schema default-absent (control leg proven in SMOKE_FRAME_LOCAL and tests/tenx/post_p00)",
+    "note": "the local smoke frame's ON wall is not an ablation measurement: different machine, tiny workload"
+  },
+  "heavy_budget_charged": false
+}

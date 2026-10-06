@@ -100,6 +100,7 @@ from .checkpoint import (CheckpointJournal, JournalRow, _canonical,
 from .plan import BatchPlan, InvariantViolation, plan_batch
 from .report import (BatchCancelledError, BatchCheckpointError,
                      BatchExecutionReport, RowExecutionOutcome)
+from .telemetry import PhaseRecorder, opt_span
 from .worker import (RowJob, RowResult, _unpack_state_bundle)
 
 __all__ = ["run_batch_parallel"]
@@ -594,32 +595,37 @@ def _commit_worker_row(una, plan: BatchPlan, journal, i: int,
                        effective: EffectiveExecution,
                        outcomes: Dict[int, RowOutcome],
                        manifests: Dict[int, Tuple[str, ...]],
-                       bundles: Dict[int, dict]) -> None:
-    _verify_staged(result.staging_dir, result.files)
+                       bundles: Dict[int, dict],
+                       tele: Optional[PhaseRecorder] = None) -> None:
+    with opt_span(tele, "staged_verify"):
+        _verify_staged(result.staging_dir, result.files)
     os.makedirs(public_folder, exist_ok=True)
-    published = _publish_staged(result.staging_dir, public_folder,
-                                result.files)
+    with opt_span(tele, "publish"):
+        published = _publish_staged(result.staging_dir, public_folder,
+                                    result.files)
 
-    _apply_settings_delta(una.projects[i], result.settings_post)
-    una.settings = una.projects[i]
-    una.has_flow_results = result.has_flow_results
-    una.has_centrality_results = result.has_centrality_results
-    if result.cap_resolved:
-        una.resolved_gravity_cap = result.resolved_gravity_cap
-    if result.capture is not None:
-        una._composite_captured.append(result.capture)
-    if result.state_bundle is not None:
-        bundles[i] = _unpack_state_bundle(result.state_bundle)
+    with opt_span(tele, "state_delta"):
+        _apply_settings_delta(una.projects[i], result.settings_post)
+        una.settings = una.projects[i]
+        una.has_flow_results = result.has_flow_results
+        una.has_centrality_results = result.has_centrality_results
+        if result.cap_resolved:
+            una.resolved_gravity_cap = result.resolved_gravity_cap
+        if result.capture is not None:
+            una._composite_captured.append(result.capture)
+        if result.state_bundle is not None:
+            bundles[i] = _unpack_state_bundle(result.state_bundle)
 
     capture_meta = None
     if journal is not None and result.capture is not None:
-        capture_meta = {
-            **journal.write_capture(i, result.capture[0],
-                                    _npy_bytes(result.capture[1])),
-            "column": result.capture[0],
-            "metric": result.capture[2],
-            "join_path": result.capture[3],
-        }
+        with opt_span(tele, "composite"):
+            capture_meta = {
+                **journal.write_capture(i, result.capture[0],
+                                        _npy_bytes(result.capture[1])),
+                "column": result.capture[0],
+                "metric": result.capture[2],
+                "join_path": result.capture[3],
+            }
 
     outcomes[i] = RowExecutionOutcome(
         index=i, name=plan.rows[i].row.name, status="ran",
@@ -631,16 +637,20 @@ def _commit_worker_row(una, plan: BatchPlan, journal, i: int,
         worker_pid=result.worker_pid,
         peak_rss_bytes=result.peak_rss_bytes,
         output_files=published,
-        timings=dict(result.timings))
+        timings=dict(result.timings),
+        phases=result.phases,
+        dropped_events=result.dropped_events)
     manifests[i] = published
 
     if journal is not None:
-        _journal_row(journal, i, phase="COMMITTED",
-                     files={rel: {"bytes": size, "sha256": digest}
-                            for rel, size, digest in result.files},
-                     capture=capture_meta,
-                     settings={k: v for k, v in result.settings_post.items()},
-                     timings=dict(result.timings))
+        with opt_span(tele, "journal"):
+            _journal_row(journal, i, phase="COMMITTED",
+                         files={rel: {"bytes": size, "sha256": digest}
+                                for rel, size, digest in result.files},
+                         capture=capture_meta,
+                         settings={k: v for k, v
+                                   in result.settings_post.items()},
+                         timings=dict(result.timings))
     _check_prefix_decisions(plan, i, una, published)
 
 
@@ -953,13 +963,20 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
     bundles: Dict[int, dict] = {}
     buffered: Dict[int, RowResult] = {}
     parent_ran: set = set()
+    # P01M diagnostics: coordinator phase spans + per-row dispatch/recv
+    # transport stamps (H2).  No-op unless UNA_BATCH_PHASES=1; surfaces
+    # in the report's extra — never journal/checkpoint state.
+    tele = PhaseRecorder()
+    dispatch_stamps: Dict[int, int] = {}
+    recv_stamps: Dict[int, int] = {}
     pool = _Pool(workers_effective, effective.options.threads_per_worker)
     pool_started = False
     deadline = None
 
     try:
         if dispatchable:
-            pool.start()
+            with opt_span(tele, "pool_start"):
+                pool.start()
             pool_started = True
             notes_runtime.append(
                 f"row-worker pool: {workers_effective} spawn worker(s) x "
@@ -1006,7 +1023,9 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                         job_id=job.job_id, row_index=j, status="failed",
                         error_type="RuntimeError", error_msg=probe)
                     continue
-                pool.dispatch(job)
+                with opt_span(tele, "dispatch"):
+                    dispatch_stamps[j] = time.monotonic_ns()
+                    pool.dispatch(job)
 
         while cursor < n:
             if deadline is not None and time.monotonic() > deadline:
@@ -1029,6 +1048,7 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                     if drained.row_index in dispatch_set \
                             and drained.row_index not in committed:
                         buffered[drained.row_index] = drained
+                        recv_stamps[drained.row_index] = time.monotonic_ns()
                 dead_seen = True
             if dead_seen and not (cursor in dispatch_set
                                   and cursor in buffered):
@@ -1074,7 +1094,7 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                     _commit_worker_row(
                         una, plan, journal, i, result,
                         _public_folder(plan, i), effective,
-                        outcomes, manifests, bundles)
+                        outcomes, manifests, bundles, tele=tele)
                     if result.cohort_stats is not None:
                         cohort_rows[i] = result.cohort_stats
                     folded_this_call["value"] = folded_this_call["value"] \
@@ -1089,7 +1109,16 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                         "dispatchable rows exist but the worker pool "
                         "never started")
                 try:
+                    # result_recv is a high-frequency wait (one recv tick
+                    # per _TICK_S): accumulated as a total, never a span —
+                    # per-tick spans would flood the bounded buffer and
+                    # evict the commit phases (P01M telemetry laws).
+                    t_wait = time.monotonic_ns()
                     result = pool.recv(timeout=_TICK_S)
+                    tele.accumulate(
+                        "result_recv_wait_ns",
+                        time.monotonic_ns() - t_wait)
+                    recv_stamps[result.row_index] = time.monotonic_ns()
                     if result.row_index in dispatch_set \
                             and result.row_index not in committed:
                         buffered[result.row_index] = result
@@ -1171,7 +1200,8 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
         raise
     finally:
         if pool_started:
-            pool.close()
+            with opt_span(tele, "pool_close"):
+                pool.close()
         # Single cleanup owner: remove this run's staging by ownership on
         # success and cancellation alike (row dirs were discarded at their
         # commits; the per-folder hidden ROOTS remain).
@@ -1179,8 +1209,10 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
 
     # ---- rehydration, composite finalization, report ----------------------
     try:
-        _rehydrate(una, plan, bundles, outcomes, journal, effective,
-                   analysis, script_output_folder, notes_runtime, parent_ran)
+        with opt_span(tele, "rehydrate"):
+            _rehydrate(una, plan, bundles, outcomes, journal, effective,
+                       analysis, script_output_folder, notes_runtime,
+                       parent_ran)
     except BatchCancelledError as exc:
         _attach_rows(exc, outcomes)
         raise
@@ -1278,14 +1310,40 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
         if journal else None,
         output_manifest={str(i): manifests[i] for i in sorted(manifests)},
         notes_runtime=tuple(notes_runtime),
-        extra={"cohort": cohort_summary} if cohort_summary is not None
-        else {},
+        extra=_report_extra(cohort_summary, tele, dispatch_stamps,
+                            recv_stamps),
     )
 
 
 # ---------------------------------------------------------------------------
 # Small helpers shared above.
 # ---------------------------------------------------------------------------
+
+def _report_extra(cohort_summary, tele: PhaseRecorder,
+                  dispatch_stamps: Dict[int, int],
+                  recv_stamps: Dict[int, int]) -> Dict[str, Any]:
+    extra: Dict[str, Any] = {}
+    if cohort_summary is not None:
+        extra["cohort"] = cohort_summary
+    if tele.on:
+        # P01M diagnostics (post_p00 designs/01): coordinator phase spans
+        # and the per-row dispatch/recv transport stamps behind H2.  A
+        # transport-refused row (probe failure) has a dispatch stamp but
+        # never a recv stamp — its entry carries the keys it has.
+        # Diagnostics only — never cache/checkpoint identity, never
+        # primary timing evidence.
+        extra["coordinator_phases"] = list(tele.snapshot())
+        extra["telemetry_dropped_events"] = tele.dropped_events
+        if tele.totals:
+            extra["phase_totals"] = dict(tele.totals)
+        extra["row_transport"] = {
+            str(i): {k: v for k, v in
+                     (("dispatch_mono_ns", dispatch_stamps.get(i)),
+                      ("recv_mono_ns", recv_stamps.get(i)))
+                     if v is not None}
+            for i in sorted(set(dispatch_stamps) | set(recv_stamps))}
+    return extra
+
 
 def _public_folder(plan: BatchPlan, i: int) -> str:
     return plan.rows[i].row.output_folder

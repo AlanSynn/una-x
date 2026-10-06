@@ -1,0 +1,37 @@
+{
+ "schema": "una-10x-primary-identity-check-1",
+ "run_id": "tenx-20261005T2331Z",
+ "status": "local_bytes_verified_remote_bytes_unavailable",
+ "verified_local": {
+  "commit_pins": {
+   "checkpoint_P00": "6130769a5751bf7446734dc39b9f8e3763461cfe \u2014 ancestor of HEAD, cat-file commit OK",
+   "implementation_parent": "e7c9edacd7340670b863c2bee16e7feac98044f6 \u2014 ancestor of HEAD",
+   "comparator": "395cdc5f683894b6f2ba460f7dbcefee99981ba3 \u2014 ancestor of origin/main",
+   "head": "4a5e56f7a64b962c1d11df8f49e30bc636903770 (perf/una-10x)"
+  },
+  "p00_deliverable_sha256": "candidate_register.json/configuration_screen.json/stage_model.json all OK vs p00_receipt.json",
+  "h01_observation_sha256": "cohort_supervisor.json, h01_cohort.json, h01_obs_single.json, public_baseline.json all OK vs evidence/screens/H01-tenx-20261003T1212Z/",
+  "reference_output_manifest_selfcheck": {
+   "file_count": 64,
+   "declared": 64,
+   "byte_sum": 147830672,
+   "declared_bytes": 147830672,
+   "unique_sha256": true
+  },
+  "h01_cohort_run_pair": {
+   "contents_bitwise_identical": true,
+   "run_bytes": 147830672,
+   "job_count": 32,
+   "zero_failed_jobs": true,
+   "ordered_commit_sequences_equal": true,
+   "note": "run1/run2 export dirs differ by minute-timestamp by the existing clock/naming policy (bitwise_normalized.method in h01_cohort.json)"
+  }
+ },
+ "unavailable_pending_remote": {
+  "PRIMARY_json": "W00 wrote it into the remote run root; not in repo or local evidence copy. sha256=null here BY DESIGN until bytes are available",
+  "cohort_csv_uint64_bits": "the actual frozen beta CSV with uint64 bit patterns lives in the remote workload manifests; WORKLOADS.md policy text (32 binary64 linspace .001..(.004)) is the only locally verifiable statement",
+  "reference_output_bytes": "64 files, 147,830,672 B \u2014 hashes pinned in p00_env.json; bytes on PACE scratch, unreachable during maintenance (2026-10-05..08)"
+ },
+ "no_guessed_betas": true,
+ "frozen_primary_untouched": true
+}

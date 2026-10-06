@@ -1,0 +1,69 @@
+{
+  "schema": "una-10x-p01m-receipt-1",
+  "task": "P01M",
+  "title": "Expose causal phase telemetry and test its overhead",
+  "generated": "2026-10-05",
+  "source_base": "perf/una-10x @ 4a5e56f7a64b962c1d11df8f49e30bc636903770 (parent e7c9eda measured-implementation line; checkpoint 6130769a P00 evidence untouched)",
+  "implementation_status": "IMPLEMENTED_AND_TESTED_LOCAL",
+  "verification_status": "LOCAL_SUITES_GREEN; OBSERVED_COHORT_DIAGNOSTICS_BLOCKED_PENDING_CLUSTER",
+  "deliverables_source": {
+    "src/urban_network_analysis/batch/telemetry.py": "3c0e2aa886b75e159e3cb73a8b5b35353af391d33dce9570116d0bd31fb2ee9e",
+    "src/urban_network_analysis/batch/worker.py": "385a6ff15ee7726babfb3e17f144194881b9c2c99a2f0f964dfa07ecb96d30ce",
+    "src/urban_network_analysis/batch/report.py": "ce56ef56cd0efd86bbbd99f7e246d1312ba8a8f1d48acdd9eb94732d80d9f6e4",
+    "src/urban_network_analysis/batch/runtime.py": "bae29c61facd17606edc41e6fba3a7790dc1bd87eb454b4b6056968e6e46fe82",
+    "tests/tenx/post_p00/conftest.py": "a62f0e6c9df124ce376b35b94defa75524ce08a42fe3bc3281bbdf937ed3b3bb",
+    "tests/tenx/post_p00/test_p01m_telemetry.py": "8f6b06d8f0dd4c4772a5c5aef862c10772f96e3c00d06e5675453ee6dd323162"
+  },
+  "deliverables_evidence": {
+    "campaign_runs/una_10x/tenx-20261005T2331Z/p01m/emit_smoke_frame.py": "d761412a7cc326b0c904b049ccbe5e66c25c020fd227f0ccb415cf700570dde4",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/p01m/phase_events.jsonl": "6201afe8e4a9f9331cd84d8f36ce5fc8d93cea776bc35a6203b1ee7b3e21c169",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/p01m/phase_summary.json": "6027507fb57273c325cf85b222e48a23859614ae7256a797bbae22c958402ae5",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/p01m/hypothesis_verdicts.json": "70b123e9c7782829c4d8f4a501a3259d06812008a86af8b213954300b50a3e0b",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/p01m/sampler_ablation.json": "ec974bf003d0a61a013036d1edc7fac20199bf01b30da6f2a6defc20406c5a1c"
+  },
+  "design_laws_honored": {
+    "default_absent_schema": "RowResult/RowExecutionOutcome gain phases: Tuple[Dict] = () and dropped_events: int = 0; report.extra carries telemetry keys only when UNA_BATCH_PHASES=1 (control leg asserted in smoke frame and suite)",
+    "no_second_blocking_channel": "worker spans ride the existing trusted RowResult payload; coordinator spans land in BatchExecutionReport.extra; no new queue, pipe, file, or log write exists on the run path",
+    "bounded_buffers": "MAX_SPANS=64 per recorder; excess increments dropped_events (never grows unbounded); high-frequency coordinator recv ticks are accumulated totals (result_recv_wait_ns), never per-tick spans",
+    "journal_untouched": "JournalRow schema unchanged; end-to-end journal bytes asserted phase-free with telemetry ON (suite test 5)",
+    "clock_domain": "single-host time.monotonic_ns; worker and coordinator epochs independent (documented in phase_summary.json)",
+    "cpu_null_safe": "thread CPU null when platform clock unavailable (null, never zero); process/thread CPU recorded as deltas, nonnegative",
+    "no_per_node_events": "phase spans only; no node/edge instrumentation added",
+    "normal_output_unchanged": "serial route untouched (hasattr phases == False); parallel default-off report identical fields; public timings dict semantics unchanged"
+  },
+  "schema_coverage_vs_designs_01_proposal": {
+    "in_v1": ["phase", "start_mono_ns", "end_mono_ns", "proc_cpu_ns (delta)", "thr_cpu_ns (delta, null-safe)", "side", "row_index", "worker_pid", "dropped_events", "result_recv_wait_ns total", "dispatch/recv per-row mono stamps"],
+    "deferred_with_owner": {
+      "engine_internal_phases (source_decode, topology, snap_origin, snap_destination, engine_build, trace_*, replay, export, staged_hash, input_identity, row_validation)": "preparation owner's opt-in Add*-boundary hooks — separate edit surface per IMPLEMENTATION_MAP; required before H1 causal decomposition",
+      "result_put duration": "cannot ride the result already sent (designs/01); needs per-worker bounded side log increment",
+      "bytes_in/bytes_out, parent_phase_id, absolute CPU endpoints, run_id/arm_sha": "diagnostic-harness scope at H-run time (run/arm identity belongs to the harness wrapper, not the runtime)"
+    }
+  },
+  "test_evidence": {
+    "interpreter": "local venv venv-p01m (python3.11, editable install of this tree; numba PINNED 0.67.0 to match campaigns/una_10x/identity/metric_dependencies.json after 0.68.0 resolution was correctly rejected by test_numerical_env_matches_live_interpreter)",
+    "commands": [
+      {"cmd": "python -m pytest tests/tenx/post_p00/ -q", "result": "10 passed"},
+      {"cmd": "python -m pytest tests/batch/ -q", "result": "91 passed in 193.27s"},
+      {"cmd": "python -m pytest tests/tenx/{cache,cohort,harness,identity,metrics,sparse,trace,public} -q", "result": "33+6+45+1s / 47 / 69 / 74+1s / 55+2s / 3 passed; identity initially 1 failed on numba 0.68.0 (env drift, fixed by pin, not a code regression)"},
+      {"cmd": "python -m pytest tests/execution -q", "result": "107 passed"}
+    ],
+    "note": "tests/tenx as ONE root fails collection with pytest_plugins-in-non-top-level-conftest (pre-existing suite structure; each subdir passes alone) — not caused by P01M"
+  },
+  "smoke_frame": {
+    "frame": "SMOKE_FRAME_LOCAL",
+    "events": 48,
+    "distinct_side_phases": 15,
+    "dropped_events": 0,
+    "control_off_clean": true,
+    "not": "H1/H2/H3 evidence, not primary timing, tiny workload, local host"
+  },
+  "blocked": {
+    "H1_H2_H3_observed_cohort": "PACE maintenance 2026-10-05..08; hypothesis_verdicts.json records unresolved with the exact designed discriminators",
+    "sampler_ablation": "same blocker; sampler_ablation.json records posture + requirements"
+  },
+  "budget": {
+    "heavy_budget_charged_s": 0,
+    "note": "local laptop suite minutes + venv install are development costs outside the campaign's cluster heavy budget (28800s ledger, remaining 26576.53s per budget_reconciliation.json); no cluster allocation was consumed"
+  },
+  "next": "P02D (preparation-engineer design review) is unblocked by this task per DAG; engine-internal phase hooks and result_put side log are pending increments before H-run execution"
+}

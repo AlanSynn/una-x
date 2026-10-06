@@ -1,0 +1,65 @@
+{
+ "schema": "una-10x-baseline-policy-audit-1",
+ "run_id": "tenx-20261005T2331Z",
+ "status": "source_level_complete_measured_legs_blocked_pending_cluster",
+ "method": "source read at pinned commits via git objects (no checkout mutation); no measurement run",
+ "pins": {
+  "baseline_comparator": "395cdc5f683894b6f2ba460f7dbcefee99981ba3 (CPU_ALGORITHMS closure, origin/main ancestry)",
+  "candidate_p00": "e7c9edacd7340670b863c2bee16e7feac98044f6",
+  "current": "4a5e56f7a64b962c1d11df8f49e30bc636903770"
+ },
+ "baseline_cache_regimes_395cdc5": {
+  "options": "Execution.CacheOptions.mode default 'off' (Execution.py:102,109)",
+  "facade": "cache/stages.py StageCache over ContentStore; mode 'off' is fully inert: zero key computation, no directory (stages.py module docstring)",
+  "sites": [
+   {
+    "file": "Topology.py",
+    "line": 226,
+    "stage": "network/topology stage (numerical identity)"
+   },
+   {
+    "file": "Topology.py",
+    "line": 1013,
+    "stage": "snap-stage (snapped point layers; key chains network stage key)"
+   },
+   {
+    "file": "Engines/Accessibility.py",
+    "line": 841,
+    "stage": "o_access RESULT stage cache (dominant-stage work elision on cold/invalidated runs)"
+   },
+   {
+    "file": "Engines/AccessibilityWElevation.py",
+    "line": 930,
+    "stage": "o_access result stage cache (elevation engine)"
+   }
+  ],
+  "aliasing_law": "stage arrays always freshly materialized from bytes; pickle-requiring dtypes refused at put (stages.py docstring)"
+ },
+ "candidate_cache_regimes_e7c9eda_delta": {
+  "delta_files": [
+   "batch/cohort.py (+477)",
+   "cache/trace_residency.py (+504)",
+   "batch/runtime.py (+164)",
+   "batch/worker.py (+37)"
+  ],
+  "cohort_trace_store": "batch/cohort.py:144 _CohortStores.store = ContentStore(CacheOptions(mode='disk',...)) at the .una-batch-cohort root beside row outputs; engages on DEFAULT runs (cohort.py:299-303 comment: trace_id complete without stage-cache keys so the route engages at mode 'off')",
+  "produce_once": "build->publish inside store singleflight (C20-NOTE-2)",
+  "result_key_c31_note_1": "cohort.py:306-320 result_key float64-coerces knn_weights/d_weights \u2014 REPORTING key; must be fixed/versioned before authoritative metric reuse (carried obligation)",
+  "residency": "cache/trace_residency.py decoded-arena LRU with lease pinning (C20), residency caps per RESOURCES.md"
+ },
+ "frozen_primary_policy": {
+  "regime": "cache mode off for BOTH arms (h01_cohort.json effective.options.cache.mode='off' observed on real runs); P00 froze cache-off",
+  "candidate_cohort_route_engagement": "on by design at cache-off (own always-disk store); P00 runs each recorded exactly 1 trace build / 1 C11 identity / 0 refusals => no cross-run warm cohort hits in any P00 window",
+  "cross_run_warm_cohort_hit_policy": "OPEN: candidate's persistent cohort store COULD serve cross-run hits if an output root were reused; frozen primary keeps fresh roots per window so this regime is OUTSIDE the primary; any strongest-policy control must register it explicitly"
+ },
+ "strongest_permitted_input_cache_arm_WS02": {
+  "definition": "baseline CacheOptions.mode='disk' input-stage caching (network+snap sites) + candidate equivalent; separately registered control, NEVER replaces frozen cache-off primary",
+  "measured_legs": "blocked_pending_cluster (PACE quarterly maintenance 2026-10-05..08)",
+  "repeat_identical": "baseline o_access result-stage cache ENABLED as negative control (WORKLOADS.md REPEAT_IDENTICAL); blocked_pending_cluster"
+ },
+ "required_amendments_before_new_candidate_measurements": "none needed for fixed-policy continuation; any strongest-policy claims need PRIMARY_AUDIT_vN registration per designs/07",
+ "blocked_pending_cluster": [
+  "matched cold/warm input-cache policy measurements",
+  "fastest-valid-baseline-configuration measurement"
+ ]
+}

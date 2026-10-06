@@ -1,0 +1,118 @@
+{
+  "control_off": {
+    "rows_dropped_all_zero": true,
+    "rows_phases_all_default": true,
+    "telemetry_keys_in_extra": []
+  },
+  "frame": "SMOKE_FRAME_LOCAL",
+  "monotonic_epoch_note": "monotonic ns, single host, single run; spans from one recorder share one epoch, worker and coordinator epochs are independent (do not subtract across sides)",
+  "phase_totals": {
+    "result_recv_wait_ns": 33326959
+  },
+  "phases": [
+    {
+      "count": 4,
+      "phase": "dispatch",
+      "side": "coordinator",
+      "wall_ns": 201083
+    },
+    {
+      "count": 1,
+      "phase": "pool_close",
+      "side": "coordinator",
+      "wall_ns": 352448458
+    },
+    {
+      "count": 1,
+      "phase": "pool_start",
+      "side": "coordinator",
+      "wall_ns": 211228458
+    },
+    {
+      "count": 4,
+      "phase": "publish",
+      "side": "coordinator",
+      "wall_ns": 1393916
+    },
+    {
+      "count": 1,
+      "phase": "rehydrate",
+      "side": "coordinator",
+      "wall_ns": 48666
+    },
+    {
+      "count": 4,
+      "phase": "staged_verify",
+      "side": "coordinator",
+      "wall_ns": 840667
+    },
+    {
+      "count": 4,
+      "phase": "state_delta",
+      "side": "coordinator",
+      "wall_ns": 566250
+    },
+    {
+      "count": 4,
+      "phase": "bootstrap_import",
+      "side": "worker",
+      "wall_ns": 5197424709
+    },
+    {
+      "count": 4,
+      "phase": "cohort_attach",
+      "side": "worker",
+      "wall_ns": 7625876
+    },
+    {
+      "count": 4,
+      "phase": "cohort_detach",
+      "side": "worker",
+      "wall_ns": 50709
+    },
+    {
+      "count": 4,
+      "phase": "run",
+      "side": "worker",
+      "wall_ns": 778987126
+    },
+    {
+      "count": 4,
+      "phase": "settings_bind",
+      "side": "worker",
+      "wall_ns": 549958
+    },
+    {
+      "count": 4,
+      "phase": "stage_scan",
+      "side": "worker",
+      "wall_ns": 962335
+    },
+    {
+      "count": 1,
+      "phase": "state_pack",
+      "side": "worker",
+      "wall_ns": 23375
+    },
+    {
+      "count": 4,
+      "phase": "una_construct",
+      "side": "worker",
+      "wall_ns": 243209
+    }
+  ],
+  "provenance": {
+    "generator": "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/p01m/emit_smoke_frame.py",
+    "heavy_budget_charged": false,
+    "workload": "frozen 3x3 smoke grid, 4 rows, workers=2"
+  },
+  "row_transport_rows": [
+    "0",
+    "1",
+    "2",
+    "3"
+  ],
+  "run_wall_ns_instrumented": 3565044917,
+  "schema": "una-10x-p01m-phase-summary-1",
+  "telemetry_dropped_events": 0
+}

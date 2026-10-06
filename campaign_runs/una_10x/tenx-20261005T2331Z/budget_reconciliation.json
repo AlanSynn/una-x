@@ -1,0 +1,25 @@
+{
+ "schema": "una-10x-budget-reconciliation-1",
+ "run_id": "tenx-20261005T2331Z",
+ "law": "campaign.json: heavy_budget_seconds=28800, final_reserved_seconds=7200, resume_budget_policy='carry prior usage; do not reset'",
+ "prior_ledger_as_recorded_seconds": 2223.47,
+ "prior_ledger_source": "p00_receipt.json budget block (h01_supervised_walls_s=344.87 + p00_child_process_walls_s=1878.6; 15 charged run ids listed there)",
+ "prior_ledger_components": {
+  "h01_supervised_walls_s": 344.87,
+  "p00_child_process_walls_s": 1878.6
+ },
+ "supervisor_walls_observed_but_not_in_p00_ledger_seconds": {
+  "flow_supervisor": 55.99,
+  "obs_single_supervisor": 16.15,
+  "smoke_supervisor": 32.86,
+  "fault_supervisor": 160.8,
+  "sum": 265.8,
+  "note": "recorded for transparency; NOT silently merged into the ledger \u2014 basis difference left to the performance owner"
+ },
+ "w00_calibration_receipts": "not present locally; W00 deliverables (PRIMARY.json/WORKLOADS.json/baseline_stage_model.json) live in the remote run root \u2014 any W00 heavy consumption is inside the P00-ledger basis or unknown_pending_remote",
+ "remaining_work_budget_seconds": 26576.53,
+ "final_reserved_seconds": 7200,
+ "reset": false,
+ "this_run_consumption_so_far_seconds": 0.0,
+ "note": "all values transcribed from committed receipts, not recomputed; ledger only grows"
+}

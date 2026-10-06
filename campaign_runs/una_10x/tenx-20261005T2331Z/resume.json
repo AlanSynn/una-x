@@ -1,0 +1,101 @@
+{
+ "schema": "post-p00-resume-1",
+ "status": "resumed_lightweight_only_cluster_in_maintenance",
+ "run_id": "tenx-20261005T2331Z",
+ "created_utc": "2026-10-05T23:31:01Z",
+ "checkpoint_commit": "6130769a5751bf7446734dc39b9f8e3763461cfe",
+ "current_source_sha": "4a5e56f7a64b962c1d11df8f49e30bc636903770",
+ "branch": "perf/una-10x",
+ "main_sha": "24be380883485f1d4c71f03eb0f474419869c411",
+ "comparator_sha": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+ "worktree": {
+  "session_root": "/Users/alansynn/orca/workspaces/una-x/main",
+  "git_status": "clean at emit",
+  "all_worktrees": [
+   {
+    "path": "/Users/alansynn/Workspace/una-x",
+    "head": "16bf404",
+    "branch": "main"
+   },
+   {
+    "path": "/Users/alansynn/orca/workspaces/una-x/main",
+    "head": "4a5e56f",
+    "branch": "perf/una-10x"
+   }
+  ],
+  "dirty_or_untracked_preserved": true,
+  "campaign_runs_prior": "campaign_runs/una_10x/tenx-20261003T1212Z/ (P00 evidence bundle synced from remote; p00_profile/ verified below; out/ raw 1.7 GiB NOT present locally \u2014 remote-only)"
+ },
+ "owners": {
+  "note": "single-session execution; independent-reviewer unavailable in-session per AUTHORITY (absent reviewer is unavailable, not self-approved)",
+  "integrator_implementation": "session agent (this run)",
+  "independent_reviewer": "unavailable_pending",
+  "performance_owner": "session agent (same session \u2014 heavy-run exclusivity trivially held during maintenance block)"
+ },
+ "prior_receipts_verified": [
+  {
+   "receipt": "p00_receipt.json",
+   "deliverables": [
+    "candidate_register.json",
+    "configuration_screen.json",
+    "stage_model.json"
+   ],
+   "sha256": "all OK"
+  },
+  {
+   "receipt": "h01_observations_consumed (cohort_supervisor.json, h01_cohort.json, h01_obs_single.json, public_baseline.json)",
+   "sha256": "all OK vs evidence/screens/H01-tenx-20261003T1212Z/"
+  },
+  {
+   "commit_pins": {
+    "6130769 (P00 evidence)": "ancestor of HEAD",
+    "e7c9eda (impl parent)": "ancestor of HEAD",
+    "395cdc5 (comparator)": "ancestor of origin/main"
+   }
+  }
+ ],
+ "local_raw_artifacts_verified": "p00_profile bundle hashes OK; reference outputs (64 files) remote-only, hashes pinned in p00_env.json",
+ "primary_sha256": null,
+ "primary_note": "PRIMARY.json not present in repo or local run-root copy; W00 wrote it into the remote run root (Pace scratch, maintenance-unreachable). Recorded unavailable; verification deferred to P01F with explicit unavailable entries.",
+ "budget": {
+  "law": "campaign.json heavy_budget_seconds=28800, final_reserved_seconds=7200, resume_budget_policy=carry prior usage; NOT reset",
+  "prior_ledger_per_p00_receipt_seconds": 2223.47,
+  "prior_components": {
+   "h01_supervised_walls_s": 344.87,
+   "p00_child_process_walls_s": 1878.6
+  },
+  "observed_but_not_in_p00_ledger_seconds": {
+   "flow_supervisor": 55.99,
+   "obs_single_supervisor": 16.15,
+   "smoke_supervisor": 32.86,
+   "fault_supervisor": 160.8
+  },
+  "basis_note": "P00 receipt ledger counted h01 cohort wall + P00 child walls only; the four additional supervisor walls above are recorded here for transparency, not silently merged into the ledger",
+  "remaining_work_budget_seconds": 26576.53,
+  "w00_calibration_receipts": "not present locally (remote run root); consumption inside prior ledger per P00 receipt or unknown_pending_remote"
+ },
+ "resource_lease": {
+  "state": "unavailable_pace_quarterly_maintenance",
+  "window": "2026-10-05T06:00 local -> 2026-10-08T23:59 local",
+  "observed": "SSH gt-pace-phoenix refused during maintenance banner; heavy runs blocked",
+  "policy": "lightweight code/proof/test work continues; heavy diagnostics blocked_pending_cluster"
+ },
+ "environment_pins_carried": {
+  "baseline_tree": "storage/scratch1/1/dsynn6/una-x-baseline-395cdc5r2 @ 395cdc5 (remote)",
+  "candidate_tree_p00": "storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels @ e7c9eda (remote)",
+  "interpreter": "micromamba alan env python3.11 (remote)",
+  "inputs": "inputs_catalog.json git blobs (Boston geojson, upstream c15ebda) \u2014 present in git objects locally",
+  "reference_outputs": "64 files / 147,830,672 B, hashes in p00_env.json (remote)"
+ },
+ "packet_checks": {
+  "validate_packet": "ok (596 checks)",
+  "validate_post_p00": "ok",
+  "unittest campaigns/una_10x/tests": "47 OK",
+  "unittest campaigns/una_10x/post_p00/tests": "44 OK"
+ },
+ "next_tasks": [
+  "P01F",
+  "P01M"
+ ],
+ "remote_publish_authorized": false
+}

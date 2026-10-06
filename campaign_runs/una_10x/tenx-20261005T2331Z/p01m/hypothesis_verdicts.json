@@ -1,0 +1,28 @@
+{
+  "schema": "una-10x-p01m-hypotheses-1",
+  "task": "P01M",
+  "generated": "2026-10-05",
+  "status": "BLOCKED_PENDING_CLUSTER",
+  "blocker": "PACE quarterly maintenance 2026-10-05..2026-10-08: cluster unreachable; observed-cohort diagnostic runs cannot execute. Local smoke frame (SMOKE_FRAME_LOCAL) proves the emit path only.",
+  "verdict_vocabulary": "designs/01: a telemetry hypothesis is accepted only with matched causal evidence on the observed cohort; until then each stays unresolved",
+  "hypotheses": {
+    "H1_load_parse_contention": {
+      "statement": "Per-row GIS load/parse (pyogrio read_arrow + next + from_wkb) contends across W1/W2/W4 despite spawn-process isolation",
+      "state": "unresolved",
+      "basis": "requires W1/W2/W4 phase runs on the observed 32-job cohort; P00 serial share 75.4220% (E-corrected) motivates it but is not causal proof",
+      "telemetry_now_provides": "worker spans bootstrap_import/una_construct/settings_bind/run/stage_scan + coordinator dispatch/recv stamps; engine-internal source_decode/topology/snap hooks are the preparation owner's pending Add*-boundary increment (not in v1)"
+    },
+    "H2_commit_backpressure": {
+      "statement": "Worker result_put blocks while the coordinator owns the only reader during staged_verify/publish/journal",
+      "state": "unresolved",
+      "basis": "requires aligned worker end-of-export -> put start/end vs coordinator receive/hash/fsync intervals on the observed cohort",
+      "telemetry_now_provides": "coordinator staged_verify/publish/state_delta/journal spans + per-row dispatch_mono_ns/recv_mono_ns stamps + accumulated result_recv_wait_ns total; worker-side result_put duration is deferred (a put duration cannot ride the result already sent — needs the per-worker bounded side log increment)"
+    },
+    "H3_replay_contention": {
+      "statement": "Post-trace replay contends across W1T4/W2T2/W4T1 thread budgets",
+      "state": "unresolved",
+      "basis": "requires the observed cohort at matched thread schedules; P03 compiled replay does not exist yet, so the Python-vs-compiled leg is also pending"
+    }
+  },
+  "heavy_budget_charged": false
+}
