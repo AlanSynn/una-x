@@ -61,5 +61,26 @@
  "blocked_pending_cluster": [
   "matched cold/warm input-cache policy measurements",
   "fastest-valid-baseline-configuration measurement"
- ]
+ ],
+ "vehicle_amendment_2026_10_06": {
+  "authority": "direct user instruction 2026-10-06 (verbatim: 'pace 쓰지말고 /ncsa 쓰기, projects 항목 아래에 다 둬서 쉽게 삭제할 수 있도록 할것. ssh delta 로 접속 가능할것임.') — abandon PACE for cluster legs; use NCSA Delta; keep everything under one deletable tree; access via 'ssh delta'",
+  "scope": "reroutes the two WS02 measured legs above and the REPEAT_IDENTICAL negative control from PACE Phoenix to NCSA Delta; frozen P00 evidence, PRIMARY bytes and reference outputs remain where they were produced (PACE run root, maintenance-unreachable until 2026-10-08) and are NOT re-baselined onto Delta",
+  "delta_environment_established": {
+   "access": "ssh delta -> dt-login03.delta.ncsa.illinois.edu, user dsynn",
+   "single_deletable_tree": "/u/dsynn/projects/una-x/ (repo clone + micromamba 2.9.0 + py3.11.17 env + pip/numba caches + slurm logs; nothing persistent written outside it)",
+   "repo_identity": "clone of bundles/unax_all.bundle at perf/una-10x 4b680b60378066dbc0d2390e14a79391135b0a57 (P03C head); inputs materialized at docs/Boston/ from upstream c15ebda6981397f46eed5c2d55229f71e57d44fb, all 4 catalog entries hash-object == git_blob and bytes match (ALL_MATCH, 144829206 B total)",
+   "stack_pins": "numba 0.67.0 / llvmlite 0.49.0 / numpy 2.4.6 / pyarrow 25.0.1 / pytest 9.1.1 (== local venv-p01m freeze); CPython 3.11.17 on Delta vs 3.11.16 local (micro drift recorded, not reconciled)",
+   "proven_jobs": [
+    "association check (sacctmgr show assoc user=dsynn, 2026-10-06): only bicm-delta-gpu (GPU) and noalloc (submission-refused) exist; the no-GPU-jobs rejection ('Jobs requesting no GPU resources must be submitted under CPU type accounts') was observed in the 2026-10-06 pre-compaction session segment — sacctmgr/sbatch output, no sbatch job id retained for it",
+    "22709125: smoke attempt #1, FAILED pre-suite: bare 'python' on the compute node is /usr/bin/python 3.9 without pytest (invocation defect, env python must be used by absolute path) — no suite ran, no campaign evidence",
+    "22708922: gpuA100x4 node runs under -A bicm-delta-gpu --gpus=1 (gpua074, AMD EPYC 7763 64-Core)",
+    "22709127: tests/tenx/post_p00/replay -q -> 34 passed, 1 skipped in 27.55s on gpuA100x4 (== local)",
+    "22709170: tests/tenx/trace -q -> 55 passed, 2 skipped in 25.94s (== local); numba cache landed in repo campaign_runs/_numba_cache_owner (in-tree)"
+   ],
+   "accounting_shape": "NO CPU-only account exists on Delta for this user: every compute job must request >=1 GPU and bills the deposited 1500 GPU-hours (association bicm-delta-gpu). CPU-benchmark measured legs will therefore run on GPU nodes using CPU cores with --gpus=1; matched arms share one partition class (gpuA100x4) and an equal frozen CPU budget per designs/07. Surfaced to the user before heavy measured-leg consumption."
+  },
+  "measured_legs_status_after_amendment": "routable_ncsa_delta_not_yet_run — no Delta measurement has produced campaign evidence yet; status stays blocked_pending_cluster until the legs actually run",
+  "downstream_receipt_note": "p03c/compiled_replay_commit.json 'next' field's PACE framing ('PACE maintenance 2026-10-05..08') is superseded by this amendment; the P03C receipt bytes themselves are not edited",
+  "heavy_budget_charged_this_amendment": "0 s campaign budget (environment establishment only; Slurm usage: one 5-min probe, two <25-min-limit smoke jobs, both << 1 min actual wall)"
+ }
 }

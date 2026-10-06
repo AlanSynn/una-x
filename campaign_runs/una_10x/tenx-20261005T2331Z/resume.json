@@ -78,7 +78,19 @@
   "state": "unavailable_pace_quarterly_maintenance",
   "window": "2026-10-05T06:00 local -> 2026-10-08T23:59 local",
   "observed": "SSH gt-pace-phoenix refused during maintenance banner; heavy runs blocked",
-  "policy": "lightweight code/proof/test work continues; heavy diagnostics blocked_pending_cluster"
+  "policy": "lightweight code/proof/test work continues; heavy diagnostics blocked_pending_cluster",
+  "lease_amendment_2026_10_06": {
+   "authority": "direct user instruction: use NCSA Delta instead of PACE, everything under one deletable ~/projects tree, reachable as 'ssh delta'",
+   "active_lease": {
+    "state": "available_ncsa_delta",
+    "access": "ssh delta -> dt-login03.delta.ncsa.illinois.edu (user dsynn)",
+    "tree": "/u/dsynn/projects/una-x/ (repo @ perf/una-10x 4b680b6 + env + caches + slurm logs; single deletable root)",
+    "accounting_shape": "GPU-hours association only (bicm-delta-gpu, 1500 GPU-h deposited; no CPU account; noalloc cannot submit) — compute legs request --gpus=1 and use node CPU cores; matched arms pinned to one partition class (gpuA100x4) with an equal frozen CPU budget",
+    "proven": "two smoke suites on gpuA100x4 == local results (replay 34+1skip in 27.55s job 22709127; trace 55+2skip in 25.94s job 22709170); inputs ALL_MATCH vs catalog (144829206 B); numba cache lands in-tree",
+    "amendment_record": "campaign_runs/una_10x/tenx-20261005T2331Z/baseline_policy_audit.json vehicle_amendment_2026_10_06"
+   },
+   "pace_entries_above_retained": "historical; PACE run root (PRIMARY.json, 64 reference outputs, raw out/) stays authoritative for frozen P00 evidence until reachable after 2026-10-08"
+  }
  },
  "environment_pins_carried": {
   "baseline_tree": "storage/scratch1/1/dsynn6/una-x-baseline-395cdc5r2 @ 395cdc5 (remote)",
