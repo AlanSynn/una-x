@@ -1,0 +1,69 @@
+{
+  "schema": "una-10x-p03c-matched-samples-1",
+  "task": "P03C",
+  "generated": "2026-10-06",
+  "claim_disclaimer": "NO performance claim; designs/03: a replay-only win is not the 10x application claim.  Warm-up documents the compiler boundary only.",
+  "matched_resources": {
+    "process": "single interpreter, single thread of replay",
+    "input": "C11 medium ring (seed 23, 40 origins, 100 dests, cutoff 8.0), one producer trace consumed by all arms",
+    "metric_bundle": [
+      1.5,
+      2.0,
+      3.0,
+      0.8,
+      "exponential",
+      "METRIC_PARAMS[4]"
+    ]
+  },
+  "input_identity": {
+    "trace_packed_sha256": "39e13014b2739d707092581a36896d7e90282a99afee2428aaa23ba38eca6b3c",
+    "origin_count": 40,
+    "nnz": 2266,
+    "reach_dtype": "int64",
+    "metric_dtype": "float64"
+  },
+  "dispatch_counts": {
+    "legacy_python_replay": {
+      "fold_dispatcher_calls_per_replay": 40,
+      "equals_origin_count": true,
+      "method": "module-global fold replaced by a counting wrapper; the pure-Python loop re-reads the global each origin; figure snapshotted after the FIRST replay only"
+    },
+    "compiled_driver": {
+      "python_level_dispatches_per_replay": 1,
+      "evidence": "with the trace module's global fold replaced by a poison wrapper, the compiled replay STILL returned the exact bits: the fold is bound inside compiled code; the outer loop makes ONE Python call (the driver) per replay",
+      "poison_patch_survived_bitwise": true
+    }
+  },
+  "copies_per_replay": {
+    "per_origin": "1 fresh C-order distance copy + 1 fresh gathered-weights copy (both arms)",
+    "analytic_float64_bytes": 36256,
+    "note": "identical copy composition by construction; the compiled copies happen inside the nogil driver"
+  },
+  "compiler_warmup_seconds_not_a_claim": {
+    "legacy_first": 2.023039,
+    "legacy_second": 0.000451,
+    "compiled_first_includes_jit": 0.300198,
+    "compiled_second": 0.000303,
+    "numba_cache_dir": "/tmp/una10x_numba_p03c_matched_cold1",
+    "fresh_cache_dir": true
+  },
+  "bitwise_parity": {
+    "reach": {
+      "compiled_eq_legacy": true,
+      "compiled_eq_integrated": true
+    },
+    "gravity_exponential": {
+      "compiled_eq_legacy": true,
+      "compiled_eq_integrated": true
+    },
+    "gravity_logistic": {
+      "compiled_eq_legacy": true,
+      "compiled_eq_integrated": true
+    },
+    "knn_access": {
+      "compiled_eq_legacy": true,
+      "compiled_eq_integrated": true
+    }
+  },
+  "bitwise_parity_all": true
+}

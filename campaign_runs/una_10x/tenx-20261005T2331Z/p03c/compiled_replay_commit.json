@@ -1,0 +1,52 @@
+{
+  "schema": "una-10x-p03c-source-commit-1",
+  "task": "P03C",
+  "generated": "2026-10-06",
+  "base_commit": "a7281c8 (P02R amendment tree; review verdict ACCEPT_WITH_NOTES, 0 blocking)",
+  "src_delta": {
+    "modified": [
+      "src/urban_network_analysis/Engines/_trace_access_scratch.py (+98/-30, sha256 06e39e0628439abbf62df96ad1cc359062393842104f33ff7afccd713afb3ffa): the Python per-origin loop of replay_trace replaced by (1) _trace_slices_ascending — a private compiled structural scan (the exact np.diff(cand_ids).min() <= 0 predicate, integer-only, bounds = the already-gated packed layout); (2) _trace_replay_loop — a private compiled SERIAL NOGIL origin driver calling the ORIGINAL full compiled fold per origin. The facade keeps every guard and its observable order."
+    ],
+    "unchanged": [
+      "src/urban_network_analysis/Engines/AccessibilityWElevation.py (fold + integrated engine untouched; fold decorator still @nb.njit(parallel=False, cache=True, nogil=True, fastmath=True))",
+      "the trace producer kernel, TraceRecord/TraceReplayResult, every refusal string, the public API (private facade, no new public selector)"
+    ]
+  },
+  "design_decisions": {
+    "hoist_legality": "the slice-order check moved from per-origin-lazy to one compiled scan ahead of ANY fold. designs/03 sanctions exactly this when the pre-check work is private and emits no required warnings/errors or public state — the scan reads trace arrays only. Observable behavior preserved: corrupt_trace_slice_order with folds_done 0 and empty outputs (proven at FIRST/MIDDLE/LAST positions on both arms); corrupt later slices can never expose partially computed earlier outputs.",
+    "gate_order_preserved": "structure -> destination ids -> content digest -> slice order -> folds; pinned by a multi-defect test (each gate proven to fire first when its predecessors pass).",
+    "exact_argument_binding": "the driver calls reach_gravity_knn_access positionally in its AWE:73 signature order; the facade's kwarg binding maps to (cand_dist, cand_wts, cutoff, gravity_beta, gravity_plateau, gravity_logistic_midpoint, gravity_plateau, knn_weights, gravity_beta, knn_decay, gravity_logistic_midpoint, gravity_growth_rate, gravity_growth_rate). All scalars forwarded RAW (cutoff keeps its original Python type; knn_decay stays a runtime unicode string) so specializations match the direct Python call.",
+    "working_copy_composition": "per origin: cand_dist = dist_all[lo:hi].copy() and cand_wts = d_weights[ids_all[lo:hi]].copy() — fresh, writable, C-contiguous, dtype-preserving (float32/int64 weights keep their dtype; no coercion), exactly the S11 argument domain; the immutable read-only trace arrays are never aliased into the fold.",
+    "serial_nogil_no_fastmath": "the driver adds NO parallelism (no nested prange, no total-CPU increase — designs/03) and NO fastmath: the fold carries its own compilation flags; this loop adds none. Dispatch-count evidence: 1 Python-level call per replay (poison-patch proof in replay_matched_samples.json) vs origin_count dispatcher calls on the frozen bytes.",
+    "output_casting": "fold results store into preallocated reach/ge/gl/kn arrays typed by the record's reach_dtype/metric_dtype — the same assignment-cast law as the Python loop (int64 reach truncation pinned by fractional-weight fixtures)"
+  },
+  "bitparity_reference": "campaign_runs/una_10x/tenx-20261005T2331Z/p03c/replay_bitparity.json — three arms (frozen pre-change bytes / compiled / integrated engine), all bitwise; the frozen reference is a mechanically-verified byte-identical copy of the pre-change function body",
+  "matched_samples_reference": "campaign_runs/una_10x/tenx-20261005T2331Z/p03c/replay_matched_samples.json — dispatch counts (40 == origins vs 1), copy volume (analytic 36256 B/replay float64, same composition both arms), compiler warm-up recorded separately and explicitly NOT a performance claim (designs/03: a replay-only win is not the 10x application claim). Probe note: arms run in one process, so compiled_first's 0.300 s JIT covers the scan+driver only (the fold's direct-dispatch specialization was compiled during the legacy arm's first replay); the PUBLIC 10x measurement stays at the P05 gate under the frozen policy.",
+  "test_files": {
+    "tests/tenx/post_p00/replay/legacy_replay_reference.py": "87d3e48df6e9d4af82999fb06dcec8f9327768a3ba5996fde7c7190b1393f9cd",
+    "tests/tenx/post_p00/replay/conftest.py": "28efb8d396bad937dd9a35154339a1faf647fe11f86ecaf0d4e9db168acb7a32",
+    "tests/tenx/post_p00/replay/test_replay_bitparity.py": "8b43bd3f7a75e6a0ebba2c4535e533b8fef7e4ed84992ff2526886252ff52c0e",
+    "tests/tenx/post_p00/replay/test_replay_structural_scan.py": "41e8e937df59b52e46b4965f3e01d83086a8e72917a6266a0db99b08c09aa7ea",
+    "tests/tenx/post_p00/replay/test_replay_specializations.py": "d1b2ae81d989df0e504a52d1a82512e512e3d8b1131eb48ee22510f16c67f3f9",
+    "tests/tenx/post_p00/replay/matched_samples_probe.py": "e612583428da70c533202b0ac31661d4be81169fcec1184ca498a79f38338e62",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/p03c/replay_matched_samples.json": "46b0ab2f7c161fab8753261297041ea90b02a3bdbac3942bcb1f386b41e13026"
+  },
+  "environment": "local venv venv-p01m (python3.11, editable install, numba pinned 0.67.0); suite battery under NUMBA_CACHE_DIR=/tmp/una10x_numba_p03c_smoke; probe cold-compile under a declared fresh dir (recorded in replay_matched_samples.json); no cluster allocation consumed; heavy_budget_charged 0",
+  "battery": [
+    {"cmd": "python -m pytest tests/tenx/trace -q", "result": "55 passed, 2 skipped in 24.77s"},
+    {"cmd": "python -m pytest tests/tenx/post_p00 -q", "result": "79 passed, 1 skipped in 36.42s (45 prior + 34 new replay tests; skip = weights_f32 battery case)"},
+    {"cmd": "python -m pytest tests/tenx/cohort -q", "result": "6 passed in 24.10s"},
+    {"cmd": "python -m pytest tests/tenx/metrics -q", "result": "69 passed in 3.95s"},
+    {"cmd": "python -m pytest tests/tenx/identity -q", "result": "47 passed in 2.41s"},
+    {"cmd": "python -m pytest tests/execution -q", "result": "107 passed in 8.66s"},
+    {"cmd": "UNA_PREPARED=0 python -m pytest tests/cache -q", "result": "162 passed in 18.11s"},
+    {"cmd": "python -m pytest tests/batch -q", "result": "91 passed in 185.00s (batch cohort route consumes replay_trace at cohort.py:387)"}
+  ],
+  "environment_defect_observed": {
+    "what": "tests/tenx/sparse hits a NONDETERMINISTIC 'Fatal Python error: Aborted' at the _sp_epoch_scope_search prange-kernel dispatch from a threading.Thread worker (test_sparse_l1_parity.py:123 -> _sparse_access_scratch.py:515); test_sparse_l1_parity.py alone passed 37+1 skip in one run and aborted in two others; the full suite aborted in 3 of 4 runs",
+    "pre_existing_evidence": "REPRODUCED on the PRE-CHANGE tree via a detached worktree at a7281c8 (worktrees /tmp/una_p03c_base and /tmp/una_p03c_base2, both removed after): the same abort in the same file, twice. P03C does not touch _sparse_access_scratch.py or any prange dispatch.",
+    "classification": "pre-existing host/environment defect in the S11 prange-from-thread path (numba threading layer on this macOS host); recorded, not fixed here — out of P03C scope, platform-continuity track"
+  },
+  "next": "P03M (typed MetricID v2; E8 float64 result-key fix first) — depends P03C + P01F; P01F measured legs remain blocked_pending_cluster (PACE maintenance 2026-10-05..08)",
+  "heavy_budget_charged": 0
+}

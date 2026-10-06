@@ -731,6 +731,83 @@ def build_trace(o_terminal_idxs, o_terminal_weights,
 
 
 # --------------------------------------------------------------------------
+# P03C compiled outer replay (campaign una_10x post_p00, designs/03):
+# the Python origin loop is hoisted into one private compiled serial
+# driver without changing the fold.  The producer kernel, every guard,
+# the fold itself (`reach_gravity_knn_access`, unchanged bytes and
+# decorator) and the public surface stay exactly as they were.
+# --------------------------------------------------------------------------
+@nb.njit(
+    cache=NUMBA_CACHE,
+    nogil=NUMBA_NOGIL,
+)
+def _trace_slices_ascending(indptr, ids_all):
+    """Compiled structural scan (designs/03 phase B): every retained
+    slice of length > 1 strictly ascending by ORIGINAL destination id.
+
+    This is the exact predicate the Python loop enforced per origin
+    (``np.diff(cand_ids).min() <= 0`` refusal), hoisted ahead of ANY
+    fold so a corrupt later slice can never expose partially computed
+    earlier outputs.  Integer-only, no arithmetic on payload values;
+    bounds are the already-gated packed layout (indptr[O+1] from 0,
+    non-negative counts, nnz agreement), so no allocation or indexing
+    happens here outside the verified domain.
+    """
+    n_origin = indptr.shape[0] - 1
+    for o in range(n_origin):
+        lo = indptr[o]
+        hi = indptr[o + 1]
+        if hi - lo > 1:
+            prev = ids_all[lo]
+            for j in range(lo + 1, hi):
+                cur = ids_all[j]
+                if cur <= prev:
+                    return False
+                prev = cur
+    return True
+
+
+@nb.njit(
+    cache=NUMBA_CACHE,
+    nogil=NUMBA_NOGIL,
+)
+def _trace_replay_loop(indptr, ids_all, dist_all, d_weights, cutoff,
+                       gravity_beta, gravity_plateau,
+                       gravity_logistic_midpoint, knn_weights, knn_decay,
+                       gravity_growth_rate, reach_out, ge_out, gl_out,
+                       kn_out):
+    """Compiled serial origin loop (designs/03 phase C): the ORIGINAL
+    full compiled fold per origin, called with the exact original
+    argument binding (AWE reach_gravity_knn_access signature order —
+    knn_gravity_plateau/gravity_beta share the gravity values,
+    knn_gravity_logistic_midpoint/growth_rate the logistic ones, all
+    scalars forwarded raw so cutoff/KNN/weight dtypes specialize
+    exactly as the direct Python call did).
+
+    Per-origin working copies match the Python loop's composition:
+    fresh writable C-contiguous distance copy and fresh writable
+    C-contiguous gathered weights — the immutable trace arrays are
+    never aliased into the fold, and the fold sees exactly the S11
+    argument domain.  Serial/nogil by design: no nested prange, no
+    total-CPU increase (designs/03).  fastmath stays OFF here — the
+    fold carries its own compilation flags; this loop adds none.
+    """
+    n_origin = indptr.shape[0] - 1
+    for o in range(n_origin):
+        lo = indptr[o]
+        hi = indptr[o + 1]
+        cand_dist = dist_all[lo:hi].copy()
+        cand_wts = d_weights[ids_all[lo:hi]].copy()
+        reach_out[o], ge_out[o], gl_out[o], kn_out[o] = \
+            reach_gravity_knn_access(
+                cand_dist, cand_wts, cutoff,
+                gravity_beta, gravity_plateau, gravity_logistic_midpoint,
+                gravity_plateau, knn_weights, gravity_beta, knn_decay,
+                gravity_logistic_midpoint, gravity_growth_rate,
+                gravity_growth_rate)
+
+
+# --------------------------------------------------------------------------
 # replay_trace: the same full fold on the trace's retained prefix
 # --------------------------------------------------------------------------
 def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
@@ -786,7 +863,6 @@ def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
     ge = np.empty(origin_count, dtype=np.dtype(trace.metric_dtype))
     gl = np.empty(origin_count, dtype=np.dtype(trace.metric_dtype))
     kn = np.empty(origin_count, dtype=np.dtype(trace.metric_dtype))
-    folds_done = 0
     indptr = trace.indptr
     ids_all = trace.destination_ids
     dist_all = trace.distance_bits
@@ -817,35 +893,27 @@ def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
             != trace.content_digest:
         return _refuse("corrupt_trace_content_digest")
 
-    for origin in range(origin_count):
-        sl = slice(int(indptr[origin]), int(indptr[origin + 1]))
-        cand_ids = ids_all[sl]
-        if cand_ids.shape[0] > 1 and int(np.diff(cand_ids).min()) <= 0:
-            return _refuse("corrupt_trace_slice_order")
-        # Writable working copies before the compiled fold: the fold
-        # sees exactly the S11 argument domain (fresh C-contiguous
-        # writable arrays), and the immutable trace is never aliased
-        # into a callee.
-        cand_dist = np.array(dist_all[sl])
-        cand_wts = np.array(d_weights[cand_ids])
-        reach[origin], ge[origin], gl[origin], kn[origin] = \
-            reach_gravity_knn_access(
-                d_distance=cand_dist,
-                d_weights=cand_wts,
-                cutoff=cutoff,
-                gravity_beta=gravity_beta,
-                gravity_plateau=gravity_plateau,
-                gravity_logistic_midpoint=gravity_logistic_midpoint,
-                gravity_growth_rate=gravity_growth_rate,
-                knn_gravity_plateau=gravity_plateau,
-                knn_weights=knn_weights,
-                knn_gravity_beta=gravity_beta,
-                knn_decay=knn_decay,
-                knn_gravity_logistic_midpoint=(
-                    gravity_logistic_midpoint),
-                knn_gravity_growth_rate=gravity_growth_rate,
-            )
-        folds_done += 1
+    # P03C (designs/03 phases B+C): the per-origin slice-order check
+    # runs as one compiled structural scan ahead of ANY fold — the
+    # same predicate the Python loop enforced lazily per origin, now
+    # hoisted.  All pre-check work is private (trace arrays only, no
+    # warnings, no public state), so the dossier-03-sanctioned hoist
+    # preserves the observable sequence: a corrupt slice still refuses
+    # with `corrupt_trace_slice_order`, zero folds, and no partially
+    # computed earlier outputs can surface.
+    if not _trace_slices_ascending(indptr, ids_all):
+        return _refuse("corrupt_trace_slice_order")
+
+    # One compiled serial/nogil origin loop over the ORIGINAL full
+    # fold with the exact original argument binding; fresh writable
+    # per-origin copies are made inside the driver (the immutable
+    # trace is never aliased into a callee, and the fold still sees
+    # exactly the S11 argument domain).
+    _trace_replay_loop(indptr, ids_all, dist_all, d_weights, cutoff,
+                       gravity_beta, gravity_plateau,
+                       gravity_logistic_midpoint, knn_weights, knn_decay,
+                       gravity_growth_rate, reach, ge, gl, kn)
+    folds_done = origin_count
     return TraceReplayResult(
         reach=reach, gravity_exponential=ge, gravity_logistic=gl,
         knn_access=kn, route="trace_replay", refusal="",

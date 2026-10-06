@@ -1,0 +1,33 @@
+{
+  "schema": "una-10x-p03c-bitparity-1",
+  "task": "P03C",
+  "generated": "2026-10-06",
+  "law": "designs/03: compare bits against BOTH current replay and original integrated engine; run parity before timing; no legacy allclose exception — every comparison is bytewise",
+  "arms": {
+    "A_frozen_current_replay": "legacy_replay_trace — tests/tenx/post_p00/replay/legacy_replay_reference.py, a copy of replay_trace's function body as it existed at commit a7281c8 (pre-P03C). Freeze fidelity verified MECHANICALLY before the src edit: the extracted 5705-char function body (def line through final return) is byte-identical to the live bytes modulo the def name (tool check in session; sha256 87d3e48df6e9d4af82999fb06dcec8f9327768a3ba5996fde7c7190b1393f9cd). DO-NOT-EDIT law in the module docstring.",
+    "B_compiled": "live replay_trace on the P03C tree — compiled structural scan + one serial nogil driver call; guards untouched",
+    "C_integrated_engine": "integrated_scope_access (AccessibilityWElevation, unchanged) via the C11 driver_args binding — the original full engine"
+  },
+  "parity_matrix": {
+    "C11_admitted_battery": "6 admitted CASE_PARAMS cases (base, nan_seed_end, neg_seed, big_seed, same_terminal, zero_cutoff): compiled == frozen legacy == integrated == S11, all four outputs bitwise (tests/tenx/trace/test_replay_matches_baseline_and_s11 now exercises the compiled driver; 55 passed, 2 pre-existing skips)",
+    "decay_branches": "exponential / logistic / other — three-way bitwise on the base case (test_decay_branches_three_way)",
+    "metric_variations": "gravity_beta/plateau/logistic_midpoint/growth_rate variations replayed from one trace — three-way bitwise (test_metric_variations_three_way)",
+    "medium_ring": "40-origin ring (seed 23) — compiled == frozen legacy == integrated bitwise (test_medium_ring_three_way + probe)",
+    "weight_dtype_specializations": "float32 and int64 destination metric weights: compiled == frozen legacy bitwise (integrated driver out of its admitted dtype domain; frozen bytes are the reference); a genuine-difference assertion proves the specializations are real, not silent coercions; int64 reach stays int-domain (designs/03: do not change reach int output into float)",
+    "strided_weights": "non-contiguous stride-2 float64 weights accepted, bitwise equal to compact-vector results on the compiled path",
+    "structural_boundaries": "slice lengths 0/1/2 and SIMD-ish widths 3/7/8/15/16/17/31/32/33/64 accepted bitwise; all-empty trace (4 origins, nnz 0) folds per origin on empty candidates, bitwise",
+    "refusal_parity": "corrupt slice at FIRST/MIDDLE/LAST position (digest honestly rebound to the tampered bytes) refuses corrupt_trace_slice_order with folds_done 0 and four EMPTY outputs on BOTH arms — no partial publication; multi-defect gate order preserved on the compiled path: structure -> destination ids -> content digest -> slice order (each gate proven to fire first when earlier gates are satisfied)",
+    "cutoff_edges": "typed+bit identity gate identical both arms for int 25, np.float32(25.0), nextafter up/down; -0.0 vs +0.0 refusal; +0.0 acceptance bitwise",
+    "scalar_forwarding": "np.float64 cutoff / gravity scalars forwarded raw into the compiled driver specialize identically to the frozen bytes",
+    "mutation_isolation": "compiled outputs are fresh arrays; mutating one replay's outputs affects nothing else; the trace's packed bytes are unchanged by replaying"
+  },
+  "matched_samples_parity": "the committed probe (matched_samples_probe.py) re-asserts compiled == frozen legacy == integrated bitwise on the 40-origin matched trace — bitwise_parity_all true (see replay_matched_samples.json)",
+  "test_results": [
+    {"cmd": "NUMBA_CACHE_DIR=<owner> python -m pytest tests/tenx/post_p00/replay -q", "result": "34 passed, 1 skipped (weights_f32 battery skip)"},
+    {"cmd": "python -m pytest tests/tenx/trace -q", "result": "55 passed, 2 skipped (the pre-existing weights_f32 skips; the whole C11 suite now drives the compiled replay path)"},
+    {"cmd": "python -m pytest tests/tenx/cohort -q", "result": "6 passed (cohort route consumes replay_trace)"},
+    {"cmd": "python -m pytest tests/batch -q", "result": "91 passed (batch cohort route exercises the compiled driver end to end)"}
+  ],
+  "debug_law": "the suite comparator (first_difference) retains the first differing field/origin plus both parties' bits; on this tree it never fired — parity holds everywhere it was asserted",
+  "heavy_budget_charged": 0
+}
