@@ -1,0 +1,67 @@
+{
+ "schema": "una-10x-p01f-shakedown-1",
+ "task": "P01F leg-runner functional shakedown on FROZEN warmup2 bytes",
+ "claim_status": "NOT a performance figure: tags carry 'shakedown'; the walls exist to prove the runner and both cache policies engage correctly on real frozen bytes. Real legs await the frozen 32-job manifest (PACE recovery).",
+ "tree": {
+  "path": "/Users/alansynn/orca/workspaces/una-x/baseline-395cdc5",
+  "head": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "venv": "venv-baseline (python 3.11.16 homebrew, pins == venv-p01m)"
+ },
+ "host_budget_frozen_for_legs": "C=4 (equal both arms when the measured legs run; host = local Mac 8 P-cores/10 logical, 16 GB)",
+ "frozen_bytes_used": {
+  "warmup2.csv sha256": "1f45a465fb15741b3f7fa6e5139cf8598ccbe7a6c40a17bf35ea1ec4f3ca2f41 (= screen_index.json warmup_manifest_sha256, verified in-session)",
+  "derived warmup2_disk.csv": "warmup2 bytes line-preserving + appended execution.cache.mode,execution.cache.directory columns (documented row-level dotted keys, Settings.py:345/349); sha256 00fa4680be95d98853eae2f88c93f3ce63ce9b38b12a404f773645d4dc3b3e7f",
+  "derived warmup2_disk.csv (CONSUMED by both disk legs)": "warmup2 bytes line-preserving + appended execution.cache.mode,execution.cache.directory columns (documented row-level dotted keys, Settings.py:345/349); CONSUMED sha256 9e65d605d065e0ab0465a98d67410c33e72004018020020e89d6a1dec928b1a7 (embeds the arm's cache-dir value; an earlier derivation targeting a superseded cache dir hashed 00fa4680be95d98853eae2f88c93f3ce63ce9b38b12a404f773645d4dc3b3e7f and was never run to a record)"
+ },
+ "legs": {
+  "shakedown_base_serial_off.json": {
+   "tag": "shakedown_base_serial_off",
+   "wall_s": 14.8397,
+   "manifest_sha256": "1f45a465fb15741b3f7fa6e5139cf8598ccbe7a6c40a17bf35ea1ec4f3ca2f41",
+   "tree_head": "395cdc5f6838",
+   "rows": 2,
+   "row_cache_before": null,
+   "row_cache_after": null
+  },
+  "det2.json": {
+   "tag": "shakedown_base_serial_off_det",
+   "wall_s": 5.1195,
+   "manifest_sha256": "1f45a465fb15741b3f7fa6e5139cf8598ccbe7a6c40a17bf35ea1ec4f3ca2f41",
+   "tree_head": "395cdc5f6838",
+   "rows": 2,
+   "row_cache_before": null,
+   "row_cache_after": null
+  },
+  "disk_cold2.json": {
+   "tag": "shakedown_base_serial_disk_cold",
+   "wall_s": 3.3115,
+   "manifest_sha256": "9e65d605d065e0ab0465a98d67410c33e72004018020020e89d6a1dec928b1a7",
+   "tree_head": "395cdc5f6838",
+   "rows": 2,
+   "row_cache_before": 0,
+   "row_cache_after": 48
+  },
+  "disk_warm2.json": {
+   "tag": "shakedown_base_serial_disk_warm",
+   "wall_s": 0.7716,
+   "manifest_sha256": "9e65d605d065e0ab0465a98d67410c33e72004018020020e89d6a1dec928b1a7",
+   "tree_head": "395cdc5f6838",
+   "rows": 2,
+   "row_cache_before": 48,
+   "row_cache_after": 48
+  }
+ },
+ "facts_established": [
+  "runner produces P00-shaped records; outputs land as accessibility_<stamp>/cohort_beta_NN.{feather,geojson} == h01 naming shape",
+  "off-mode determinism: two off-mode runs bitwise-identical outputs (4 files, by basename) on the local frame",
+  "WS02 mechanism located: the stage-cache policy follows the ROW's settings.execution.cache (Topology.py:188-193), not the call-level execution kwarg \u2014 a call-level ExecutionOptions(cache=disk) does NOT engage stage caches on the serial route. The registered WS02 arm therefore declares the policy via the documented row-level dotted keys on a prefix-preserving derived pairing CSV",
+  "row-level disk policy engages: cold leg cache 0 -> 48 entries; warm leg 48 -> 48 with wall 3.31 s -> 0.77 s on the 2-job warmup (engagement proof, not a claim)",
+  "disk-cold outputs bitwise == off-mode outputs (4 files, by basename): the stage-cache restore path preserves bytes on real frozen inputs",
+  "o_access result-stage engagement visible in the warm leg (full-result elision shape = REPEAT_IDENTICAL negative-control mechanism present)"
+ ],
+ "harness_notes": [
+  "pairing rows resolve relative file names from the pairing CSV's own directory (UNA.py RunBatch documented convention) \u2014 manifests must sit in the inputs dir (mirrors PACE layout)",
+  "first disk attempt used the call-level execution kwarg, left the row cache dir uninstrumented (cache_entries_after None) and its failed assert pre-empted JSON writes; superseded by the instrumented reruns above \u2014 nothing from that attempt is committed",
+  "runner reruns into an existing --outdir accumulate files (outdir_existed_before recorded); real legs use fresh dirs per leg"
+ ]
+}

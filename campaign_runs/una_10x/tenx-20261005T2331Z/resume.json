@@ -88,7 +88,16 @@
     "accounting_shape": "GPU-hours association only (bicm-delta-gpu, 1500 GPU-h deposited; no CPU account; noalloc cannot submit) — compute legs request --gpus=1 and use node CPU cores; matched arms pinned to one partition class (gpuA100x4) with an equal frozen CPU budget",
     "proven": "two smoke suites on gpuA100x4 == local results (replay 34+1skip in 27.55s job 22709127; trace 55+2skip in 25.94s job 22709170); inputs ALL_MATCH vs catalog (144829206 B); numba cache lands in-tree",
     "amendment_record": "campaign_runs/una_10x/tenx-20261005T2331Z/baseline_policy_audit.json vehicle_amendment_2026_10_06"
-   },
+  },
+  "lease_amendment_2026_10_06_v2": {
+   "authority": "direct user instruction: run CPU-resource work locally; NCSA only for GPU optimization; proceed",
+   "active_lease": {
+    "state": "local_cpu_host_approved",
+    "vehicle_split": "ALL CPU measured legs + paired protocol run on the local host (equal frozen CPU budget both arms); Delta (/u/dsynn/projects/una-x/, proven green) is RESERVED for the native/GPU platform-continuity duty only",
+    "blocking_item": "frozen cohort_manifest.csv bytes (sha256 1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf) live on the PACE tree; recovery after PACE maintenance ends 2026-10-08",
+    "amendment_record": "campaign_runs/una_10x/tenx-20261005T2331Z/baseline_policy_audit.json vehicle_amendment_2026_10_06_v2"
+   }
+  },
    "pace_entries_above_retained": "historical; PACE run root (PRIMARY.json, 64 reference outputs, raw out/) stays authoritative for frozen P00 evidence until reachable after 2026-10-08"
   }
  },

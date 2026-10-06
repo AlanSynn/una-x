@@ -82,5 +82,15 @@
   "measured_legs_status_after_amendment": "routable_ncsa_delta_not_yet_run — no Delta measurement has produced campaign evidence yet; status stays blocked_pending_cluster until the legs actually run",
   "downstream_receipt_note": "p03c/compiled_replay_commit.json 'next' field's PACE framing ('PACE maintenance 2026-10-05..08') is superseded by this amendment; the P03C receipt bytes themselves are not edited",
   "heavy_budget_charged_this_amendment": "0 s campaign budget (environment establishment only; Slurm usage: one 5-min probe, two <25-min-limit smoke jobs, both << 1 min actual wall)"
+ },
+ "vehicle_amendment_2026_10_06_v2": {
+  "authority": "direct user instruction 2026-10-06 (verbatim: '그냥 로컬에서 cpu 리소스 사용해서 하고 gpu 최적화 일때만 ncsa 쓰도록 하고 진행.') — run CPU-resource campaign work LOCALLY; use NCSA only when doing GPU optimization; proceed",
+  "effect": "supersedes vehicle_amendment_2026_10_06's routing of measured legs to Delta. ALL CPU measured legs (WS02 cold/warm input-cache, REPEAT_IDENTICAL control, fastest-valid-baseline, and the eventual paired protocol) run on the LOCAL host with an equal frozen CPU budget for both arms. The Delta tree /u/dsynn/projects/una-x/ remains set up (verified green) and is RESERVED for the native/GPU platform-continuity duty only — no Delta compute was or will be consumed for CPU legs",
+  "local_frozen_manifest_status": {
+   "cohort_manifest.csv": "NOT present locally; frozen pin screen_index.json frozen_manifest_sha256=1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf; bytes live on the PACE tree (campaign_data/inputs/upstream_Boston/Boston/, untracked, candidate_tree.untracked_count=224) — recovery scheduled after PACE maintenance ends 2026-10-08; no beta values are guessed or reconstructed (P01F forbids guessed betas)",
+   "warmup2.csv": "PRESENT locally and verified: sha256 1f45a465fb15741b3f7fa6e5139cf8598ccbe7a6c40a17bf35ea1ec4f3ca2f41 == screen_index.json warmup_manifest_sha256 (frozen first-two-rows warmup manifest) — the local leg runner shakes down against these frozen bytes untimed",
+   "input_files": "Cambridge_building_centroids.geojson + MA_transit_stations.geojson recovered from upstream c15ebda6981397f46eed5c2d55229f71e57d44fb into local campaign_data/inputs/upstream_Boston/Boston/ (blob shas recorded in the P01F leg record); catalog's Cambridge_transit_stations/…_pop2020_jobs2023 files are NOT the cohort pairings (distinct upstream files)"
+  },
+  "measured_legs_status_after_v2": "blocked_pending_frozen_manifest_recovery (PACE, 2026-10-08) — NOT blocked by cluster availability anymore; local host is the approved vehicle the moment the frozen bytes land"
  }
 }
