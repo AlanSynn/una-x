@@ -29,5 +29,13 @@
     "note": "installed-wheel public calls are the P05 gate per TEST_MATRIX header; the increment-C public-path behavior is exercised locally through the unchanged RunBatch entrypoint (tests/batch 91 green with prepared default-on; singleflight_not_lost fixture drives real worker processes), not yet through an installed wheel"
   },
   "regression_scope_note": "the increment-C diff touches the produced path dispatch (shared produced body behind the flight context manager) and the batch runtime/worker transport, so the full local battery was re-run: post_p00 44 / cache 162 / execution 107 / batch 91 / identity 47 — all green on the same tree",
+  "post_review_amendments": {
+    "review": "prepared_review.json this directory — independent P02R review, verdict ACCEPT_WITH_NOTES, blocking_defects 0, 8 findings (F1-F8); reviewed_bytes pins bind prepared.py 58e7bcfb...",
+    "F1_fixed": "timeout branch was enforced-but-never-executed; new foreign-process-holder fixture executes it AND exposed a real undercount (flight()'s TimeoutError path never counted the cold build it hands out) — fixed in prepared.py (count cold_builds alongside contention_timeouts); fixture pins cold_builds==1 / contention_timeouts==1 / contention_waits==0",
+    "F2_accepted_as_is": "belt refusals count as corruption_rebuilds by design (the digest belt IS a corruption-detection channel); tier2_refusals stays reserved for unrepresentable payloads",
+    "F3_deferred": "one-root-per-run-tree residue guard — P05 hardening per reviewer framing",
+    "battery_rerun_on_amended_tree": "post_p00 45 passed / cache(UNA_PREPARED=0) 162 passed / execution 107 passed / batch+identity 138 passed — all green after the amendment",
+    "superseded_counts": "the commands_and_results block above records the pre-amendment 44-test post_p00 run; post-amendment post_p00 is 45 (the F1 fixture)"
+  },
   "heavy_budget_charged": 0
 }

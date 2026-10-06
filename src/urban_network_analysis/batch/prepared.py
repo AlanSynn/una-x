@@ -924,6 +924,10 @@ def flight(req: Optional[PreparedRequest]) -> Iterator[bool]:
                     _run_counters["contention_waits"] += 1
             yield bool(owned)
     except TimeoutError:
+        # __enter__ raised before yielding, so the success path did not
+        # count this caller: it STILL builds from scratch unserialized —
+        # count the cold build too, or the counters undercount work.
         with _lock:
             _run_counters["contention_timeouts"] += 1
+            _run_counters["cold_builds"] += 1
         yield True

@@ -633,6 +633,61 @@ def test_contention_waits_signature(run_store, smoke_fixture,
     assert dr["contention_timeouts"] == 0
 
 
+def test_contention_timeout_builds_unserialized(run_store, smoke_fixture,
+                                                tmp_path,
+                                                make_prep_settings,
+                                                monkeypatch):
+    """P02R F1: the bounded-wait expiry branch executes.  The store's
+    in-process key lock serializes same-process waiters BEFORE the
+    file-lock wait (unbounded by design), so expiry is reachable only
+    against a live FOREIGN-PROCESS holder: one holds the lock past the
+    (shrunk) budget, the waiter times out, is COUNTED
+    (contention_timeouts, never silent), and builds unserialized rather
+    than spinning (owned=True)."""
+    script = tmp_path / "holder_alive.py"
+    ready = tmp_path / "ready_alive"
+    script.write_text(
+        "import os, sys, time\n"
+        "from urban_network_analysis.Execution import CacheOptions\n"
+        "from urban_network_analysis.cache.store import ContentStore\n"
+        "root, key, ready = sys.argv[1], sys.argv[2], sys.argv[3]\n"
+        "store = ContentStore(CacheOptions(mode='disk', directory=root))\n"
+        "with store.singleflight(key, wait_timeout_s=30.0):\n"
+        "    open(ready, 'w').close()\n"
+        "    time.sleep(1.5)\n",  # stay ALIVE holding: never stale
+        encoding="utf-8")
+    env = dict(os.environ, PYTHONPATH=SRC)
+
+    s = make_prep_settings(smoke_fixture)
+    req = prepared.topology_request(
+        os.path.join(str(smoke_fixture), "network.geojson"), s)
+    assert req is not None
+    monkeypatch.setattr(prepared, "_SINGLEFLIGHT_WAIT_S", 0.2)
+
+    proc = subprocess.Popen(
+        [sys.executable, str(script), run_store, req.key, str(ready)],
+        env=env)
+    deadline = time.monotonic() + 60.0
+    while not ready.exists() and proc.poll() is None:
+        assert time.monotonic() < deadline, "holder never signalled ready"
+        time.sleep(0.01)
+    assert ready.exists() and proc.poll() is None, \
+        "holder must be ALIVE and holding for the expiry to be exercised"
+    time.sleep(0.1)  # holder is confirmed mid-flight; shrink past deadline
+
+    before = _run_counters()
+    try:
+        with prepared.flight(req) as owned:
+            assert owned is True, \
+                "expiry yields the build, never a suppressed rebuild"
+    finally:
+        assert proc.wait(timeout=30) == 0  # holder releases on clean exit
+    dr = _delta_run(before)
+    assert dr["cold_builds"] == 1, "the waiter itself built, unserialized"
+    assert dr["contention_timeouts"] == 1
+    assert dr["contention_waits"] == 0
+
+
 # ── singleflight_not_lost: the cross-process RunBatch claim ─────────────
 
 

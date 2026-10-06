@@ -28,6 +28,25 @@
     "tests/batch/runtime/conftest.py": "1147cddfd6a1b58b78f5ea60b08cbf57d0aa8dad54d2cbc78ecbe74b0b058e23",
     "tests/cache/conftest.py": "7e11045a39c5fcfb85ef41ad5be140bffd561f6195749237c41e6dfa88a9e26c"
   },
+  "post_review_amendment_F1": {
+    "trigger": "P02R verdict ACCEPT_WITH_NOTES (0 blocking) — prepared_review.json this directory; finding F1 (minor): ContentStore.singleflight's bounded-wait expiry branch was enforced but no fixture had executed an actual TimeoutError, and executing it exposed a genuine counter undercount (the __enter__ raise happens BEFORE the first yield, so flight()'s success path never counted the caller)",
+    "fix": [
+      "src/urban_network_analysis/batch/prepared.py: flight()'s except TimeoutError branch now counts cold_builds alongside contention_timeouts — the timed-out caller still builds from scratch unserialized, so the counters undercounted work",
+      "tests/tenx/post_p00/preparation/test_prep_run_singleflight.py: NEW fixture test_contention_timeout_builds_unserialized — a live FOREIGN-PROCESS holder (subprocess owning the lock) is the only way to reach expiry, because the store's in-process _key_lock serializes same-process waiters BEFORE the file-lock wait (unbounded by design); pins cold_builds==1 AND contention_timeouts==1 AND contention_waits==0 (both counters incremented, no false wait)"
+    ],
+    "dispositions": "F1 fixed (this amendment); F2 accepted-as-is (the recorded-digest belt IS a corruption-detection channel — corruption_rebuilds is the honest counter; tier2_refusals stays reserved for unrepresentable payloads); F3 (one-root-per-run-tree residue guard) deferred to P05 hardening per the reviewer's own 'later' framing",
+    "amended_file_hashes": {
+      "src/urban_network_analysis/batch/prepared.py": "11da161713acd5e772077a5078df869647be34af9c1703941e35f1c6c7536134",
+      "tests/tenx/post_p00/preparation/test_prep_run_singleflight.py": "42c696d0a678fc25bdf0ebfa71fed1784d7869d1cb0c1ed30969bf429a28329a"
+    },
+    "reviewed_bytes_unchanged": "deliverable_files above remains the REVIEWED generation's pin set (prepared.py 58e7bcfb..., test 72742140...) — those hashes bind the verdict; this object supersedes only the two files it names",
+    "battery_on_amended_tree": {
+      "post_p00": "45 passed in 21.27s (14 increment-C tests incl. the new F1 fixture)",
+      "cache_UNA_PREPARED_0": "162 passed in 7.08s",
+      "execution": "107 passed in 9.38s",
+      "batch_plus_identity": "138 passed in 183.81s (91 batch + 47 identity)"
+    }
+  },
   "test_file_changes_vs_increment_B": {
     "test_prep_run_singleflight.py": "NEW increment-C acceptance: PP05 (bytes-change never stale-hits tier 2; Polygon error identical attached vs detached; object-uid refused at tier 2 kept at tier 1 + no pickle bytes + no hidden source snapshot by sha256; digest belt supersede + sidecar irrelevance), PP06 (payload tamper -> exactly one counted corruption rebuild then clean re-serve; dead-owner stale lock stolen via pid liveness with contention_timeouts==0), PP07 (in-place user mutation isolated across tiers — store payload re-served unchanged after reset+re-attach), PP08 (mixed identities distinct keys; missing-origins error parity attached vs off with zero store writes), PP09 (1-byte budget: 3 admission refusals + cap-floor empty table + tier-2 serving WITHOUT retaining via promote_skips; lease-never-evicted then LRU eviction after release; attach/detach reuse one process entry + post-detach publish touches no store), deterministic same-process contention signature (cold_builds 1 / contention_waits 1 / timeouts 0), and the cross-process RunBatch singleflight_not_lost claim (6 rows -> cold_builds==3, tier2_publishes==3, paired control reports no prepared surface)",
     "tests/batch/runtime/conftest.py": "residue-guard CLASSIFICATION amendment: .una-batch-prepared joins .una-batch-cohort in the persistent-store exemption (_PERSISTENT_STORES). Rationale: the prepared run store is the same documented class as the cohort store (dossier 06) — deliberately persistent in the public folder tree, identity-verified at every load, safe to delete. The guards still fatal on row artifacts at public paths and on every other .una-batch* dir; the four cancellation/overlap/ordering tests that caught the unexempted store all pass unchanged otherwise",
