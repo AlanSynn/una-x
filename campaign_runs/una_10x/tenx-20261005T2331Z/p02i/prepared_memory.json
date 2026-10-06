@@ -1,23 +1,33 @@
 {
   "schema": "una-10x-p02i-memory-1",
   "task": "P02I",
-  "increment": "B",
+  "increment": "C",
   "generated": "2026-10-05",
-  "status": "WORKER_LOCAL_SURFACE_MEASURED_ON_SMOKE_SHAPES",
-  "surface": "one process-global table (dict) of immutable bundles; payloads are private copies isolated from producing and consuming rows (publish-side AND restore-side copies)",
+  "status": "TABLE_BUDGET_LAWS_MECHANIZED_AND_PINNED; COHORT-SHAPE FIGURES STILL DUE AT MEASURED RUNS",
+  "surface": "per worker: ONE process-global table (dict) of immutable bundles with a BYTE BUDGET (registry accounting), PLUS one run-scoped disk store pair per root (ContentStore + StageCache); payloads are private copies isolated from producing and consuming rows at every tier",
+  "memory_laws_as_implemented_in_C": {
+    "accounting": "_account_bytes is the REGISTRY accounting law — exact for the bulk fields that scale with the layer (ndarray nbytes, pandas deep memory, real WKB bulk via shapely.to_wkb + 64 B/geometry) and a flat 256 B allowance per scalar/list field. It is the TABLE's residency accounting, not a physical-RSS claim; reserving row+receiver bytes against the run budget before dispatch remains the batch runtime's admission duty (designs/02) — the P04 projection seam.",
+    "admission_refusal": "publishes admit through _admit_locked under the budget: replace-same-key accounting, then LRU eviction (min seq) among UNLEASED entries only; refusal keeps the cap floor — an oversized payload is never partially admitted, and the previously admitted generation is restored intact (budget_refusals counter). Fixture-pinned at budget=1: table stays EMPTY while tier 2 still receives every generation.",
+    "lease_law": "bundles carry an in_use credit: +1 on acquire-hit and on tier-2 promotion, -1 in the restore's finally. Eviction NEVER targets a leased entry (fixture-pinned: all-leased table refuses a new identity with evictions 0, keys intact; after release the same publish evicts LRU). Because consumers never hold payload references, an entry popped underneath a restore still restores correctly — no use-after-release.",
+    "serving_never_refused": "a tier-2 promotion that cannot fit even after eviction SERVES WITHOUT RETAINING (promote_skips counter): the produced path would have allocated the same decoded layer anyway, and refusing to serve would force rebuilding data the store already holds. The NO_FIT law (designs/02 'reserve before admission') is an admission law; this is its serving-side complement.",
+    "lru_refresh": "acquire-hit refreshes the bundle's seq (LRU), so a hot identity survives pressure that evicts cold ones.",
+    "process_registry": "_PROCESS_RUN_STORES holds ONE store pair per root; attach/detach cycles reuse the same pair (fixture pins object identity), and the registry's lifetime is the worker process's — workers die with the run, so no unbounded process-global growth (designs/02).",
+    "post_detach_isolation": "a publish while detached writes NOTHING to any store (fixture-pinned by full file-set comparison); the run route is runtime-only.",
+    "default_budget": "256 MiB worker-local table; UNA_PREPARED_BUDGET_BYTES overrides (tests). The RUN store's residency is the disk's own (content-addressed, deletable), matching the cohort store's treatment — disk, not RSS."
+  },
   "measured_on_smoke_shapes": {
-    "probe": "python one-off on tests/execution/fixtures via the public Add* path with UNA_PREPARED=1 (command recorded in git history; figures below are tool output)",
+    "probe": "python one-off on tests/execution/fixtures via the public Add* path (increment-B tree, UNA_PREPARED=1; command recorded in git history; figures below are tool output)",
     "topology_bundle": {"n_edges": 17, "n_nodes": 12, "arrays_total_bytes": 1240, "geometry_wkb_bytes": 697, "input_gdf_memory_bytes": 540, "arrays_breakdown_bytes": {"lengths": 136, "weights": 136, "node_points": 192, "start_nodes": 68, "end_nodes": 68, "degrees": 96, "z": 0, "start_degrees": 136, "end_degrees": 136, "min_degrees": 136, "max_degrees": 136}},
     "snap_bundle_origins": {"n_points": 2, "arrays_total_bytes": 96, "geometry_wkb_bytes": 42, "snapped": true},
     "snap_bundle_destinations": {"n_points": 1, "arrays_total_bytes": 48, "geometry_wkb_bytes": 21, "snapped": true},
-    "reading": "payload size ~= the decoded layer itself (arrays + WKB-equivalent geometry bulk); per-consumer restore copies are the same order again per served row, which is what the produced path allocated anyway (fresh decode per row)"
+    "reading": "payload size ~= the decoded layer itself (arrays + WKB-equivalent geometry bulk); per-consumer restore copies are the same order again per served row, which is what the produced path allocated anyway (fresh decode per row). Increment C does not change payload composition — the same accounting now GATES admission instead of merely observing.",
+    "caveat": "figures were measured on the increment-B tree; payload composition is unchanged in C (same pure builders), but the pinned numbers are B-tree receipts, not C-tree re-measurements"
   },
-  "laws_as_implemented_in_B": {
+  "laws_carried_from_B": {
     "immutable_leases": "payloads are written once at publish (post-success) and never mutated afterwards; bundles are only replaced, never edited",
-    "per_consumer_copies": "every served array/GeoSeries/GeoDataFrame is a fresh copy (PP02 asserts `is not` against the previous row AND the lease payload)",
-    "budget_respect": "the worker-local table is UNBOUNDED in this increment by design: batch cohorts are bounded row sets and the payload is the decoded layer; growth policy/eviction under live leases is increment C's PP09 duty. No execution.memory_limit_bytes accounting is claimed yet — claiming it without a mechanism would be a false receipt",
-    "no_pointer_transport": "worker-local only: nothing crosses a process boundary; geometries travel as live GeoSeries within the process (stage-cache WKB discipline remains for the disk store); derived sindex rebuilt per consumer (PP02/asserted via stage-cache equivalence and query parity in increment A)",
-    "measurement_duty": "cohort-shape payload measurements (the 32-job observed cohort) are due with the P05/P03 measured runs; smoke-shape figures above establish the scaling law (payload ~ decoded layer), not the cohort figure"
+    "per_consumer_copies": "every served array/GeoSeries/GeoDataFrame is a fresh copy (PP02 asserts `is not` against the previous row AND the lease payload; PP07-C re-proves it across tiers including the store)",
+    "no_pointer_transport": "no GDAL/GEOS pointers cross processes; the run tier transports WKB + typed arrays only (allow_pickle=False, pickle-byte scan fixture-pinned); derived sindex rebuilt per consumer",
+    "measurement_duty": "cohort-shape payload measurements (the 32-job observed cohort) are due with the P03/P05 measured runs; smoke-shape figures above establish the scaling law, not the cohort figure"
   },
   "heavy_budget_charged": 0
 }

@@ -1,27 +1,28 @@
 {
   "schema": "una-10x-p02i-engagement-1",
   "task": "P02I",
-  "increment": "B (worker-local reuse) — A was engagement-NONE by design",
+  "increment": "C (run-wide single-flight per immutable dependency identity) — B was worker-local reuse; A was engagement-NONE by design",
   "generated": "2026-10-05",
-  "engagement": "PUBLIC-PATH, DEFAULT-ON, GUARDED",
-  "statement": "Increment B engages the unchanged public path: RunBatch rows call RunAccessibility -> AddNetwork/AddOrigins/AddDestinations exactly as before; inside those calls an admitted .geojson input is now served from a worker-local prepared table after its exact bytes are re-read and re-hashed. No dispatch change, no second entrypoint, no benchmark-only constructor, no public-API reduction (BuildAccessPoints gained a private, default-None `_prepared_req` kwarg used only by the Add* wrappers).",
+  "engagement": "PUBLIC-PATH, DEFAULT-ON, GUARDED, RUN-WIDE",
+  "statement": "Increment C keeps the engagement surface unchanged — still the same AddNetwork/AddOrigins/AddDestinations calls on the unchanged public path — and adds the run-wide tier BEHIND them: all workers of one batch run coordinate through a run-scoped disk store so one decode/build per immutable identity happens per RUN, not per worker. Cross-process single-flight is ContentStore.singleflight (the dossier-06 store used by the cohort route); the batch transport is runtime-only on the trusted RowJob/RowResult payload. No dispatch change beyond what B introduced, no second entrypoint, no benchmark-only constructor, no public-API change.",
+  "run_tier": {
+    "store_root": ".una-batch-prepared beside the FIRST DISPATCHED row's public folder — the C30 cohort-root convention (stable across resumes, safe to delete, identity-verified at every load). Chosen by the coordinator from the plan; carried on RowJob.prepared_root; never a Settings field, never observable serial state.",
+    "transport": "the stage serializers' exact payload format — WKB geometry + .npy typed arrays, allow_pickle=False — built by the SAME pure builders the stage cache uses (_network_stage_payload / _access_points_stage_payload in Topology.py, single source). Metadata gains recorded file_sha256 + prepared:run:v1. A payload that cannot be represented without pickle (object/void uid dtypes, mixed-dimension geometries) is REFUSED at the run tier (counted tier2_refusals) and keeps only its worker-local bundle — other workers recompute it; correctness never depends on the run tier.",
+    "coordination": "flight(req) wraps the produced build: the owner builds INSIDE the lock and commits; losers exit as a counted contention_waits loser and RE-SERVE from the committed generation (re-validation still runs — the chronology law holds on every serve). An owner that commits nothing (refusal / unrepresentable) leaves waiters re-elected by the store; a dead owner's lock is stolen on pid liveness (poll-bounded — the 600 s cohort budget is a deadline, not a spin); a timeout builds unserialized with a contention_timeouts count, never silently.",
+    "two_tier_lookup": "worker-local table first (unchanged B law), then a VERIFIED store read: corruption quarantines and rebuilds (corruption_rebuilds), the recorded-digest belt refuses any generation whose metadata does not match the request digest (the content-addressed key already embeds it — the belt is the store-side truth guard). A run hit is promoted into the worker's table so its remaining rows skip the store read."
+  },
+  "counters": "cold_builds / tier2_hits / tier2_publishes / tier2_refusals / contention_waits / contention_timeouts / corruption_rebuilds / evictions / budget_refusals / promote_skips are DISTINCT counters (design 02: a hit counter alone is not engagement), folded per row via mark()/delta() slices on RowResult.prepared_stats into batch_report.extra[\"prepared\"] with per_row slices + store_root + a notes_runtime summary. Runtime-only reporting, never observable serial state; ABSENT from extra when no row attached (paired control byte-shape preserved).",
   "admission_and_gating": {
-    "formats": ".geojson ONLY in this increment (.geojson-first per contract admission_domain and designs/02); feather/parquet rows are requests==0 and run the produced path (fixture-pinned)",
-    "kill_switch": "UNA_PREPARED=0 disables admission entirely (fixture-pinned: zero requests, produced results unchanged) — the paired-control lever for later measured runs",
-    "scope_guards": "empty layers refused at publish (produced path handles them); a produced failure never publishes; network without a stage identity -> snap layers unadmitted (produced path)",
-    "identity": "closure over snapshot sha256 + producer-read params + profile + env (mirrors una:topology:v1 / una:snap:v1 field-for-field); snap chains parent network stage; path/mtime never consulted (PP03 rewrites bytes under a preserved mtime and must miss)"
+    "formats": ".geojson ONLY (unchanged from B); feather/parquet rows are requests==0 and run the produced path",
+    "kill_switch": "UNA_PREPARED=0 disables admission entirely AND the workers never attach a run store (extra[\"prepared\"] absent, zero store writes) — the paired-control lever for the measured runs",
+    "budget": "UNA_PREPARED_BUDGET_BYTES overrides the worker-local table budget (default 256 MiB). The budget is an ADMISSION law: publishes refuse at the cap floor (never partial admission); serving is never refused — a tier-2 promotion that cannot fit serves WITHOUT retaining (promote_skips)",
+    "identity": "unchanged from B: closure over snapshot sha256 + producer-read params + profile + env; snap chains parent network stage; path/mtime never consulted"
   },
   "what_serving_changes_for_a_row": {
-    "skipped_on_hit": "pyogrio/arrow decode AND the snap sindex/line_locate_point/interpolate work",
-    "still_runs_on_hit": "the per-row file read + sha256 (identity law), geometry validation via the SAME helpers the produced path calls (fail-closed on corrupted payloads, fixture-pinned with produced-identical error text), CRS-vs-network validation, content-derived log replay in produced order",
-    "state_handed_to_consumers": "fresh copies of every array/GeoSeries/GeoDataFrame the produced path would have freshly built; the lease payload is never handed out (publish-side and restore-side copies both fixture-pinned)",
-    "downstream_key_completeness": "prepared publish records the composed una:topology:v1 / una:snap:v1 identity on the object in every path, so engine o_access keys (which chain origins/destinations._stage_key) stay complete regardless of serving path"
+    "unchanged_from_B": "on any served row (worker-local or run-store): the per-row file read + sha256 still run (identity law), geometry/CRS validation still runs via the produced path's own helpers (fail-closed, produced-identical errors), content-derived logs replay in produced order, and every handed-out array/GeoSeries/GeoDataFrame is a fresh copy",
+    "new_in_C": "a row may additionally pay ONE verified store read + decode (first touch in that worker) instead of the pyogrio/arrow decode and snap sindex/line_locate_point/interpolate work; at most one worker per identity pays the full produced build per run"
   },
-  "interaction_with_stage_cache": {
-    "coexistence": "fixture-pinned: prepared serves first (short-circuit), stage-cache counters do not move on prepared-served rows, stage identities identical across serving paths",
-    "stage_conformance_suites": "tests/cache runs with UNA_PREPARED=0 via tests/cache/conftest.py because those suites certify STAGE-cache served-hit observables; prepared semantics live in the preparation suite. Misuse risk: none — prepared-off is the exact pre-B code path"
-  },
-  "measured_public_claim_duty": "no performance claim is filed with this increment; the 10x PUBLIC boundary measurement happens at the P05 gate under the frozen policy with paired controls (kill switch provides the prepared-off arm)",
-  "next": "increment C (run-wide single-flight per immutable dependency identity, PP05-PP09, budget/eviction under live leases)",
+  "measured_public_claim_duty": "no performance claim is filed with this increment; the 10x PUBLIC boundary measurement happens at the P05 gate under the frozen policy with paired controls (kill switch provides the prepared-off arm). The singleflight_not_lost fixture pins the CORRECTNESS claim (6 rows -> 3 builds, P00 measured singleflight_lost=31), not a speedup.",
+  "next": "P02R independent review of the shared preparation increments; then P03 (compiled outer replay, typed MetricID v2 with the E8 float64 result-key fix first)",
   "heavy_budget_charged": 0
 }

@@ -1,12 +1,16 @@
-"""Worker-local prepared-layer reuse — una_10x P02 increment B (private).
+"""Prepared-layer reuse — una_10x P02 increments B+C (private).
 
 Contract: campaigns/una_10x/tenx-20261005T2331Z/p02d/prepared_contract.json
-(increment B: worker-local reuse; increment C adds the run-wide producer).
+(increment B: worker-local reuse; increment C: run-wide producer per
+immutable dependency identity — single-flight).
 
 Scope: ONE process reuses ITS OWN prepared layers across repeated Add*
-calls (batch rows re-loading identical inputs).  There is no cross-process
-coordination, no persistent store and no public API here — this module is
-reached only from Topology.AddNetwork/BuildAccessPoints/Add* internals.
+calls (batch rows re-loading identical inputs), and — increment C — all
+workers of one batch run coordinate through a run-scoped disk store so one
+decode/build per identity happens per RUN, not per worker.  There is no
+public API here — this module is reached only from
+Topology.AddNetwork/BuildAccessPoints/Add* internals and the batch
+worker's attach/detach.
 
 Laws implemented (contract identity_and_keys / toctou_law / mutability_law
 / chronology):
@@ -29,25 +33,43 @@ Laws implemented (contract identity_and_keys / toctou_law / mutability_law
 - Immutable leases: payloads are private copies, isolated from the
   producing row's objects at publish and from every consumer at restore;
   consumers receive fresh copies of each array/DataFrame surface the
-  produced path would have freshly built (fresh mutable outputs).
+  produced path would have freshly built (fresh mutable outputs).  A
+  bundle held for restore carries a lease credit (``in_use``); eviction
+  never drops a leased entry (PP09), and because consumers never hold
+  payload references, an entry popped underneath a restore (the
+  refuse-different-bytes path) still restores correctly — no
+  use-after-release is possible.
 - Engagement is .geojson-first (contract admission_domain, designs/02):
   other formats return MISS and fall through to the produced path
   unchanged.  A produced failure never publishes (payloads are
   post-validation content); empty layers are refused.
 - Kill switch: UNA_PREPARED=0 disables admission entirely (paired-control
   duty); the process-global table is cleared via reset().
-
-Budget note (prepared_memory.json): the worker-local table is unbounded in
-this increment by design — batch cohorts are bounded row sets and payload
-size is the decoded layer itself; growth policy/eviction under live leases
-is increment C's duty (PP09).
+- Run-wide tier (increment C): the attached run store is a disk
+  ContentStore in the run's ``.una-batch-prepared`` directory (beside the
+  first dispatched row's public folder — the C30 cohort-root convention:
+  stable across resumes, safe to delete, identity-verified at every
+  load).  Transport reuses the stage serializers' exact payload format
+  (WKB + ``.npy`` typed arrays, ``allow_pickle=False`` — a payload that
+  cannot be represented without pickle is refused at the run tier and
+  keeps only its worker-local bundle).  Coordination is
+  ``ContentStore.singleflight`` (cohort budget: 600 s), so one worker
+  builds per identity while its losers are served from the committed
+  generation; an owner that dies mid-build leaves a stale lock that is
+  stolen on pid liveness, and a loser whose owner committed nothing is
+  re-elected owner by the store.  The registry of run stores is one
+  process entry per root (``_PROCESS_RUN_STORES``); workers attach once
+  per row and detach before anything is transported (the run route is
+  runtime-only, never observable serial state).
 """
 from __future__ import annotations
 
+import itertools
 import os
 import threading
+from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import Dict, Optional
+from typing import Dict, Iterator, Optional
 
 import geopandas as gpd
 import numpy as np
@@ -57,17 +79,87 @@ from .. import __version__ as _PACKAGE_VERSION
 from ..cache import identity as _ckid
 
 _ENV_FLAG = "UNA_PREPARED"
+_ENV_BUDGET = "UNA_PREPARED_BUDGET_BYTES"
 _SCHEMA_TOPOLOGY = "una:prepared:topology:v1"
 _SCHEMA_SNAP = "una:prepared:snap:v1"
+_SINGLEFLIGHT_WAIT_S = 600.0          # cohort budget: matches P00 config
+
+# Residency guard for the worker-local table (PP09).  This is the
+# REGISTRY accounting law — exact ndarray bytes + pandas deep memory +
+# real WKB bulk — not a claim about physical RSS: reserving against the
+# row budget before admission is the batch runtime's admission duty
+# (designs/02; the projection seam for that is the publish accounting
+# itself).  Override in tests via UNA_PREPARED_BUDGET_BYTES.
+_DEFAULT_TABLE_BUDGET_BYTES = 256 * 1024 * 1024
 
 _lock = threading.Lock()
 _table: Dict[str, "_Bundle"] = {}
+_table_bytes = 0
+_seq = itertools.count()
 _stats: Dict[str, Dict[str, int]] = {
     "topology": {"requests": 0, "hits": 0, "misses": 0, "publishes": 0,
                  "refusals": 0},
     "snap": {"requests": 0, "hits": 0, "misses": 0, "publishes": 0,
              "refusals": 0},
 }
+# Run-tier counters (designs/02: cold build / verified hit / contention
+# / corruption rebuild / refusal are DIFFERENT counters).  Kept separate
+# from the per-layer counters the increment-B fixtures pin.
+_run_counters: Dict[str, int] = {
+    "tier2_hits": 0,          # verified hits served from the run store
+    "tier2_publishes": 0,
+    "tier2_refusals": 0,      # payload not representable / store refused
+    "cold_builds": 0,         # this caller entered the flight as owner
+    "contention_waits": 0,    # loser exits: another holder had committed
+    "contention_timeouts": 0, # bounded wait expired; built unserialized
+    "corruption_rebuilds": 0, # run-store payload damaged; quarantined
+    "evictions": 0,           # LRU evictions from the worker-local table
+    "budget_refusals": 0,     # publish refused: table budget not met
+    "promote_skips": 0,       # tier-2 hit served WITHOUT retaining: budget
+}
+
+# One process-level store pair per run root (the C30 cohort discipline:
+# built once, reused across this worker's rows; the worker process dies
+# with the run, so the pair's lifetime is the run's).
+_PROCESS_RUN_STORES: Dict[str, "_RunStore"] = {}
+_RUN: Optional["_RunStore"] = None
+
+
+class _RunStore:
+    """The attached run-wide tier: disk store + stage-format facade."""
+
+    def __init__(self, root: str) -> None:
+        from ..Execution import CacheOptions
+        from ..cache.store import ContentStore
+        from ..cache.stages import StageCache
+        os.makedirs(root, exist_ok=True)
+        self.root = root
+        self.store = ContentStore(
+            CacheOptions(mode="disk", directory=root))
+        self.stage = StageCache(self.store)
+
+
+def attach_run_store(root: str) -> None:
+    """Attach the run-wide tier for this worker (no-op content when the
+    kill switch is on: callers gate on enabled(), and even a stray attach
+    only builds an empty store — nothing is admitted)."""
+    global _RUN
+    with _lock:
+        rs = _PROCESS_RUN_STORES.get(root)
+        if rs is None:
+            rs = _RunStore(root)
+            _PROCESS_RUN_STORES[root] = rs
+        _RUN = rs
+
+
+def detach_run_store() -> None:
+    """Detach before anything observes or transports this row (the run
+    route is runtime-only).  The process store pair stays for this
+    worker's remaining rows; publishes after detach keep only their
+    worker-local bundle — the run store is never touched post-detach."""
+    global _RUN
+    with _lock:
+        _RUN = None
 
 
 def enabled() -> bool:
@@ -75,18 +167,49 @@ def enabled() -> bool:
     return os.environ.get(_ENV_FLAG, "1") != "0"
 
 
+def _table_budget() -> int:
+    raw = os.environ.get(_ENV_BUDGET)
+    return int(raw) if raw else _DEFAULT_TABLE_BUDGET_BYTES
+
+
 def reset() -> None:
-    """Clear the worker-local table and counters (test isolation)."""
+    """Clear the worker-local table and counters (test isolation).  The
+    attached run store is managed explicitly (attach/detach) and is NOT
+    touched here."""
+    global _table_bytes
     with _lock:
         _table.clear()
+        _table_bytes = 0
         for counters in _stats.values():
             for k in counters:
                 counters[k] = 0
+        for k in _run_counters:
+            _run_counters[k] = 0
 
 
 def stats() -> Dict[str, Dict[str, int]]:
     with _lock:
-        return {layer: dict(counters) for layer, counters in _stats.items()}
+        out = {layer: dict(counters) for layer, counters in _stats.items()}
+        out["run"] = dict(_run_counters)
+        out["table"] = {"entries": len(_table), "bytes": _table_bytes}
+        return out
+
+
+def mark() -> Dict[str, Dict[str, int]]:
+    """Row-start snapshot for the worker's per-row delta (cohort pattern)."""
+    return stats()
+
+
+def delta(before: Dict[str, Dict[str, int]]) -> Dict[str, Dict[str, int]]:
+    """This row's slice of every counter (transported on the RowResult;
+    runtime-only reporting, never observable serial state)."""
+    now = stats()
+    out: Dict[str, Dict[str, int]] = {}
+    for group, counters in now.items():
+        b = before.get(group) or {}
+        out[group] = {k: int(v) - int(b.get(k, 0))
+                      for k, v in counters.items()}
+    return out
 
 
 @dataclass(frozen=True)
@@ -102,14 +225,26 @@ class PreparedRequest:
 
 
 class _Bundle:
-    """Immutable-by-discipline lease payload (private to this module)."""
+    """Immutable-by-discipline lease payload (private to this module).
 
-    __slots__ = ("key", "file_sha256", "payload")
+    ``in_use`` is the live-lease credit (acquire/promote +1, restore
+    finally −1); eviction (PP09) never drops a leased entry.  ``nbytes``
+    is the registry accounting (bulk-exact: arrays, pandas deep memory,
+    real WKB bulk).  ``source`` names the serving tier for the restore
+    marker: ``worker`` or ``run``."""
 
-    def __init__(self, key: str, file_sha256: str, payload: dict) -> None:
+    __slots__ = ("key", "file_sha256", "payload", "source", "in_use",
+                 "nbytes", "seq")
+
+    def __init__(self, key: str, file_sha256: str, payload: dict, *,
+                 source: str = "worker") -> None:
         self.key = key
         self.file_sha256 = file_sha256
         self.payload = payload
+        self.source = source
+        self.in_use = 0
+        self.nbytes = _account_bytes(payload)
+        self.seq = next(_seq)
 
 
 def _admitted(source_file: str) -> bool:
@@ -203,7 +338,9 @@ def acquire(req: PreparedRequest) -> Optional[_Bundle]:
 
     The key already embeds the request digest, so a changed file normally
     misses by construction; the recorded-digest comparison is the
-    contract's store-side truth guard and pops any bundle that fails it."""
+    contract's store-side truth guard and pops any bundle that fails it.
+    A hit takes one lease credit, released by the restore's finally —
+    eviction never targets a leased entry."""
     with _lock:
         bundle = _table.get(req.key)
         if bundle is None:
@@ -211,8 +348,11 @@ def acquire(req: PreparedRequest) -> Optional[_Bundle]:
             return None
         if bundle.file_sha256 != req.file_sha256:
             _table.pop(req.key, None)
+            _table_bytes -= bundle.nbytes
             _stats[req.layer]["refusals"] += 1
             return None
+        bundle.in_use += 1
+        bundle.seq = next(_seq)  # LRU refresh on use
         _stats[req.layer]["hits"] += 1
         return bundle
 
@@ -281,6 +421,15 @@ def restore_topology(topology, req: PreparedRequest, bundle: _Bundle) -> None:
     produced-path state and log chronology, with fresh copies of every
     array (the lease itself is never handed out)."""
     p = bundle.payload
+    try:
+        _restore_topology_into(topology, req, bundle, p)
+    finally:
+        with _lock:
+            bundle.in_use -= 1
+
+
+def _restore_topology_into(topology, req: PreparedRequest,
+                           bundle: _Bundle, p: dict) -> None:
 
     # Chronology 1: geometry validation before any CRS handling, over the
     # stored input frame when carried (or the final geometry — both are
@@ -340,10 +489,11 @@ def restore_topology(topology, req: PreparedRequest, bundle: _Bundle) -> None:
         f"Topology built with {p['n_nodes']} nodes and "
         f"{p['n_edges']} edges.", v=2)
     topology.logger.log('create topology', "edge_list_dict created", v=2)
+    marker = ("worker-local" if bundle.source == "worker" else "run store")
     topology.logger.log(
         "Network added",
         f"Topology restored from prepared layer {req.key[:12]}… "
-        f"(worker-local).", v=2)
+        f"({marker}).", v=2)
 
 
 def restore_access_points(topology, req: PreparedRequest, bundle: _Bundle,
@@ -352,6 +502,17 @@ def restore_access_points(topology, req: PreparedRequest, bundle: _Bundle,
     field set + chronology; per-consumer copies throughout)."""
     from urban_network_analysis.Topology import AccessPoints
     p = bundle.payload
+    try:
+        return _restore_access_points_into(topology, req, bundle, p,
+                                           AccessPoints, label)
+    finally:
+        with _lock:
+            bundle.in_use -= 1
+
+
+def _restore_access_points_into(topology, req: PreparedRequest,
+                                bundle: _Bundle, p: dict,
+                                AccessPoints, label: str) -> "object":
     gdf = (p["input_gdf"].copy(deep=True)
            if p["input_gdf"] is not None else None)
     if gdf is None:
@@ -390,25 +551,104 @@ def restore_access_points(topology, req: PreparedRequest, bundle: _Bundle,
         pt.weight_to_start = p["weight_to_start"].copy()
         pt.weight_to_end = p["weight_to_end"].copy()
     pt._stage_key = p["stage_key"]
+    marker = ("worker-local" if bundle.source == "worker" else "run store")
     topology.logger.log(
         "Build AccessPoints",
         f"Snapped layer restored from prepared layer {req.key[:12]}… "
-        f"(worker-local).", v=2)
+        f"({marker}).", v=2)
     return pt
 
 
 # ── publish (post-success only; payloads are isolated copies) ───────────
 
+def _account_bytes(payload: dict) -> int:
+    """Registry accounting for one bundle (PP09 budget law): exact for
+    the bulk fields that scale with the layer — ndarray ``nbytes``,
+    pandas deep memory, real WKB bulk for geometry — and a flat 256-byte
+    allowance per scalar/list field.  This is the TABLE's residency
+    accounting, not a physical-RSS claim (see the module docstring)."""
+    total = 0
+    for v in payload.values():
+        if v is None:
+            continue
+        if isinstance(v, np.ndarray):
+            total += int(v.nbytes)
+        elif isinstance(v, (pd.Series, pd.DataFrame)):
+            total += int(v.memory_usage(deep=True).sum()
+                         if isinstance(v, pd.DataFrame)
+                         else v.memory_usage(deep=True))
+        elif isinstance(v, (gpd.GeoSeries, gpd.array.GeometryArray)):
+            import shapely
+            wkbs = shapely.to_wkb(np.asarray(v))
+            total += int(sum(len(b) for b in wkbs)) + 64 * len(wkbs)
+        elif isinstance(v, (list, tuple)):
+            total += 256 * max(1, len(v))
+        else:
+            total += 256
+    return total
+
+
+def _admit_locked(req: PreparedRequest, payload: dict, layer: str) -> bool:
+    """Insert one bundle under the table budget (PP09): evict LRU among
+    UNLEASED entries while over budget; refuse (and stay under the cap
+    floor) when even that cannot fit — an oversized payload is never
+    partially admitted.  Caller holds _lock.  Returns True when inserted."""
+    global _table_bytes
+    bundle = _Bundle(req.key, req.file_sha256, payload)
+    old = _table.get(req.key)
+    if old is not None:
+        _table_bytes -= old.nbytes  # replaced (digest-refusal republish)
+    while _table_bytes + bundle.nbytes > _table_budget():
+        candidates = [(b.seq, k) for k, b in _table.items()
+                      if b.in_use == 0 and k != req.key]
+        if not candidates:
+            _run_counters["budget_refusals"] += 1
+            if old is not None:
+                _table[req.key] = old
+                _table_bytes += old.nbytes
+            return False
+        _, victim = min(candidates)
+        _table_bytes -= _table.pop(victim).nbytes
+        _run_counters["evictions"] += 1
+    _table[req.key] = bundle
+    _table_bytes += bundle.nbytes
+    _stats[layer]["publishes"] += 1
+    return True
+
+
+def _publish_to_run_store(req: PreparedRequest, builder) -> None:
+    """Commit the produced state to the attached run store as a
+    stage-format generation (WKB + typed arrays, no pickle).  A payload
+    the format cannot represent is refused with a counter — the layer
+    keeps only its worker-local bundle and other workers recompute it
+    (correctness never depends on the run tier)."""
+    with _lock:
+        run = _RUN
+    if run is None:
+        return
+    built = builder()
+    if built is None:
+        with _lock:
+            _run_counters["tier2_refusals"] += 1
+        return
+    arrays, metadata = built
+    metadata = {**metadata, "file_sha256": req.file_sha256,
+                "prepared": "run:v1"}
+    ok = run.stage.put_arrays(req.key, arrays, metadata)
+    with _lock:
+        _run_counters["tier2_publishes" if ok else "tier2_refusals"] += 1
+
+
 def publish_topology(req: PreparedRequest, net, gdf, *, crs,
                      weight_warning, n_empty_removed, n_nodes, n_edges,
                      n_input_features) -> None:
-    """Publish one topology bundle into the worker-local table.  Called
-    only after the produced path fully succeeded (payloads are
-    post-validation content).  Also records ``net._stage_key`` so
-    dependent snap identities can chain the parent — the pure produced
-    path leaves it unset.  Everything is copied at publish: the producing
-    row keeps mutating its own objects (engine fold) and must never reach
-    lease state."""
+    """Publish one topology bundle into the worker-local table (budget
+    admitted) and the attached run store.  Called only after the produced
+    path fully succeeded (payloads are post-validation content).  Also
+    records ``net._stage_key`` so dependent snap identities can chain the
+    parent — the pure produced path leaves it unset.  Everything is
+    copied at publish: the producing row keeps mutating its own objects
+    (engine fold) and must never reach lease state."""
     payload = {
         "input_gdf": None if gdf is None else gdf.copy(deep=True),
         "geometry": net.geometry.copy(),
@@ -439,9 +679,13 @@ def publish_topology(req: PreparedRequest, net, gdf, *, crs,
             _stats["topology"]["refusals"] += 1
             net._stage_key = req.stage_key
             return
-        _table[req.key] = _Bundle(req.key, req.file_sha256, payload)
-        _stats["topology"]["publishes"] += 1
+        _admit_locked(req, payload, "topology")
         net._stage_key = req.stage_key
+    from urban_network_analysis.Topology import _network_stage_payload
+    _publish_to_run_store(
+        req, lambda: _network_stage_payload(
+            net, gdf, weight_warning=weight_warning,
+            no_crs=(crs is None), crs=crs))
 
 
 def publish_access_points(req: PreparedRequest, pt, *, log_extras,
@@ -478,5 +722,208 @@ def publish_access_points(req: PreparedRequest, pt, *, log_extras,
             payload["edge_end_node"] = pt.edge_end_node.copy()
             payload["weight_to_start"] = pt.weight_to_start.copy()
             payload["weight_to_end"] = pt.weight_to_end.copy()
-        _table[req.key] = _Bundle(req.key, req.file_sha256, payload)
-        _stats["snap"]["publishes"] += 1
+        _admit_locked(req, payload, "snap")
+    from urban_network_analysis.Topology import _access_points_stage_payload
+    _publish_to_run_store(
+        req, lambda: _access_points_stage_payload(
+            pt, n_points=n_points, log_extras=log_extras))
+
+
+# ── run-wide serving (increment C): lookup, decode, single-flight ──────
+
+def _decode_topology_bundle(req: PreparedRequest, arrays: dict,
+                            metadata: dict) -> _Bundle:
+    """Run-store topology generation → lease payload (the B-payload shape
+    the restore path consumes).  Arrays arrive fresh from the store's
+    verified bytes; ``input_gdf`` is not carried by the stage format —
+    the restore validates the stored final geometry (both are
+    post-validation content by construction)."""
+    from pyproj import CRS
+    from urban_network_analysis.Topology import _geoms_from_wkb_payload
+    crs = (CRS.from_json(metadata["crs_projjson"])
+           if metadata.get("crs_projjson") else None)
+    payload = {
+        "input_gdf": None,
+        "geometry": gpd.GeoSeries(
+            _geoms_from_wkb_payload(arrays["geometry_wkb"],
+                                    arrays["geometry_wkb_lens"]),
+            name="geometry", crs=crs),
+        "lengths": arrays["lengths"],
+        "weights": arrays["weights"],
+        "node_points": arrays["node_points"],
+        "start_nodes": arrays.get("start_nodes"),
+        "end_nodes": arrays.get("end_nodes"),
+        "degrees": arrays["degrees"],
+        "z": arrays.get("z"),
+        "start_degrees": arrays["start_degrees"],
+        "end_degrees": arrays["end_degrees"],
+        "min_degrees": arrays["min_degrees"],
+        "max_degrees": arrays["max_degrees"],
+        "crs": crs,
+        "stage_key": req.stage_key,
+        "weight_warning": metadata.get("weight_warning"),
+        "n_empty_removed": int(metadata.get("n_empty_removed") or 0),
+        "n_nodes": int(metadata["n_nodes"]),
+        "n_edges": int(metadata["n_edges"]),
+        "n_input_features": int(metadata["n_input_features"]),
+    }
+    return _Bundle(req.key, req.file_sha256, payload, source="run")
+
+
+def _decode_snap_bundle(req: PreparedRequest, arrays: dict,
+                        metadata: dict) -> _Bundle:
+    """Run-store snap generation → lease payload (same restore contract)."""
+    from pyproj import CRS
+    from urban_network_analysis.Topology import _geoms_from_wkb_payload
+    crs = (CRS.from_json(metadata["crs_projjson"])
+           if metadata.get("crs_projjson") else None)
+    uid_array = arrays.get("uid")
+    uid = (None if uid_array is None
+           else (pd.Series(uid_array) if metadata.get("uid_is_series")
+                 else uid_array))
+    payload = {
+        "input_gdf": None,
+        "geometry": gpd.GeoSeries(
+            _geoms_from_wkb_payload(arrays["geometry_wkb"],
+                                    arrays["geometry_wkb_lens"]),
+            name="geometry", crs=crs),
+        "node_weight": arrays["node_weight"],
+        "uid": uid,
+        "snapped": bool(metadata.get("snapped")),
+        "stage_key": req.stage_key,
+        "n_points": int(metadata["n_points"]),
+        "log_extras": [tuple(x) for x in metadata.get("log_extras", [])],
+    }
+    if payload["snapped"]:
+        payload["nearest_edge_point"] = gpd.array.GeometryArray(
+            _geoms_from_wkb_payload(arrays["nearest_edge_point_wkb"],
+                                    arrays["nearest_edge_point_wkb_lens"]))
+        payload["nearest_edge_id"] = arrays["nearest_edge_id"]
+        payload["edge_start_node"] = arrays["edge_start_node"]
+        payload["edge_end_node"] = arrays["edge_end_node"]
+        payload["weight_to_start"] = arrays["weight_to_start"]
+        payload["weight_to_end"] = arrays["weight_to_end"]
+    return _Bundle(req.key, req.file_sha256, payload, source="run")
+
+
+def _lookup(req: PreparedRequest) -> Optional[_Bundle]:
+    """Two-tier lookup: worker-local lease first, then the attached run
+    store (verified read; corruption quarantines and rebuilds).  A run
+    hit is decoded and PROMOTED into the worker-local table so this
+    worker's remaining rows skip the store read (the promotion takes the
+    lease credit the caller's restore will release).  Retention is
+    budgeted like publish admission: evict unleased entries to make
+    room; when nothing fits, serve WITHOUT retaining — the design's
+    NO_FIT law refuses admission, never serving (the produced path
+    would have allocated this decoded layer anyway)."""
+    global _table_bytes
+    bundle = acquire(req)
+    if bundle is not None:
+        return bundle
+    with _lock:
+        run = _RUN
+    if run is None:
+        return None
+    from ..cache.store import CacheCorruption
+    try:
+        store_hit = run.store.require(req.key)  # verified; raises on damage
+    except KeyError:
+        return None                             # absent: normal miss
+    except CacheCorruption:
+        with _lock:
+            _run_counters["corruption_rebuilds"] += 1
+        run.store.get(req.key)                  # quarantine the generation
+        return None
+    if store_hit.metadata.get("file_sha256") != req.file_sha256:
+        # Belt over the content-addressed key: recorded digest must match
+        # the request (the same refuse-different-bytes law as tier 1).
+        # Nothing is UNREADABLE, so there is nothing to quarantine — the
+        # rebuild's republish supersedes the bogus generation in place.
+        with _lock:
+            _run_counters["corruption_rebuilds"] += 1
+        return None
+    from ..cache.stages import decode_arrays
+    arrays = decode_arrays(store_hit.payload)
+    decode = (_decode_topology_bundle if req.layer == "topology"
+              else _decode_snap_bundle)
+    bundle = decode(req, arrays, dict(store_hit.metadata))
+    with _lock:
+        old = _table.get(req.key)
+        if old is not None:
+            _table_bytes -= old.nbytes
+        while _table_bytes + bundle.nbytes > _table_budget():
+            candidates = [(b.seq, k) for k, b in _table.items()
+                          if b.in_use == 0 and k != req.key]
+            if not candidates:
+                # Serve unretained: pop the key (its old bytes were
+                # already released) and hand the lease straight to the
+                # caller's restore, which releases it as usual.
+                _table.pop(req.key, None)
+                _run_counters["promote_skips"] += 1
+                _run_counters["tier2_hits"] += 1
+                bundle.in_use = 1
+                return bundle
+            _, victim = min(candidates)
+            _table_bytes -= _table.pop(victim).nbytes
+            _run_counters["evictions"] += 1
+        _table[req.key] = bundle
+        _table_bytes += bundle.nbytes
+        bundle.in_use = 1  # handed straight to this caller's restore
+        _run_counters["tier2_hits"] += 1
+    return bundle
+
+
+def served_topology(topology, req: PreparedRequest) -> bool:
+    """Serve one AddNetwork input from either tier; False = build."""
+    bundle = _lookup(req)
+    if bundle is None:
+        return False
+    restore_topology(topology, req, bundle)
+    return True
+
+
+def served_access_points(topology, req: PreparedRequest, *, label: str):
+    """Serve one Add* point input from either tier; None = build."""
+    bundle = _lookup(req)
+    if bundle is None:
+        return None
+    return restore_access_points(topology, req, bundle, label)
+
+
+@contextmanager
+def flight(req: Optional[PreparedRequest]) -> Iterator[bool]:
+    """Run-wide compute-once around the produced build (designs/02: the
+    lazy gate — first-consumer single-flight AFTER the original
+    validation, which ``*_request`` already performed).
+
+    Yields True when the caller builds (owner — or no run tier attached,
+    which degrades to the plain increment-B behavior with ZERO extra
+    lookups); False when another holder committed this identity while we
+    waited — the caller re-serves and returns.  ``req=None`` (unadmitted
+    row) yields True without touching anything.  A waiter whose owner
+    committed nothing (refusal / unrepresentable payload) is re-elected
+    owner by the store.  The wait is bounded by the cohort budget
+    (600 s); on timeout the caller builds unserialized rather than
+    spinning forever (countered, never silent)."""
+    if req is None:
+        yield True
+        return
+    with _lock:
+        run = _RUN
+    if run is None:
+        yield True
+        return
+    try:
+        with run.store.singleflight(req.key,
+                                    wait_timeout_s=_SINGLEFLIGHT_WAIT_S) \
+                as owned:
+            with _lock:
+                if owned:
+                    _run_counters["cold_builds"] += 1
+                else:
+                    _run_counters["contention_waits"] += 1
+            yield bool(owned)
+    except TimeoutError:
+        with _lock:
+            _run_counters["contention_timeouts"] += 1
+        yield True

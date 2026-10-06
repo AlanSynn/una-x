@@ -565,7 +565,8 @@ def _job_for(una, plan: BatchPlan, i: int, staging_dir: str, analysis: str,
              script_output_folder: Optional[str],
              need_state: bool,
              cohort_root: Optional[str] = None,
-             cohort_residency_cap_bytes: int = 0) -> RowJob:
+             cohort_residency_cap_bytes: int = 0,
+             prepared_root: Optional[str] = None) -> RowJob:
     s = una.projects[i]
     # ``inject_specs`` is a test-transport field, not a Settings field: it
     # must never reach the worker's Settings (Validation() rejects unknown
@@ -583,6 +584,7 @@ def _job_for(una, plan: BatchPlan, i: int, staging_dir: str, analysis: str,
         verbosity=0,
         cohort_root=cohort_root,
         cohort_residency_cap_bytes=cohort_residency_cap_bytes,
+        prepared_root=prepared_root,
     )
 
 
@@ -944,6 +946,7 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
     cohort_root = None
     cohort_cap = 0
     cohort_rows: Dict[int, dict] = {}
+    prepared_rows: Dict[int, dict] = {}
     if analysis == 'accessibility' and dispatchable:
         from .cohort import per_worker_residency_cap
         # The root is STABLE across runs and resumes (no run id): warm
@@ -957,6 +960,17 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
         notes_runtime.append(
             f"cohort route: {len(dispatchable)} eligible row(s); "
             f"residency cap {cohort_cap} bytes/worker")
+
+    # Prepared run-wide tier (una_10x P02 increment C): one shared run
+    # store beside the first dispatched row's public folder (the C30
+    # cohort-root convention — stable across resumes, safe to delete,
+    # identity-verified at every load).  Workers attach it per row; the
+    # kill switch (UNA_PREPARED=0) keeps workers from ever creating it,
+    # so the paired control leaves the tree exactly as before.
+    prepared_root = None
+    if dispatchable:
+        prepared_root = os.path.join(_public_folder(plan, dispatchable[0]),
+                                     ".una-batch-prepared")
 
     outcomes: Dict[int, RowOutcome] = {}
     manifests: Dict[int, Tuple[str, ...]] = {}
@@ -1012,7 +1026,8 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                     analysis, script_output_folder,
                     need_state=(j == expected_last),
                     cohort_root=cohort_root,
-                    cohort_residency_cap_bytes=cohort_cap)
+                    cohort_residency_cap_bytes=cohort_cap,
+                    prepared_root=prepared_root)
                 # Transportability is an admission requirement (see
                 # _job_transport_failure): fail THIS row loudly through the
                 # normal ordering path (earliest failure, prefix
@@ -1097,6 +1112,8 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                         outcomes, manifests, bundles, tele=tele)
                     if result.cohort_stats is not None:
                         cohort_rows[i] = result.cohort_stats
+                    if result.prepared_stats is not None:
+                        prepared_rows[i] = result.prepared_stats
                     folded_this_call["value"] = folded_this_call["value"] \
                         or result.capture is not None
                     staging.discard(i)
@@ -1292,6 +1309,34 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
             f"{totals['replays']} replay(s)"
             + (f"; refusals {refusals}" if refusals else ""))
 
+    # Prepared run-wide tier totals (una_10x P02 increment C): folded
+    # like the cohort counters — runtime-only reporting, never observable
+    # serial state.  Absent from `extra` entirely when no row attached a
+    # run store (the paired control's report is byte-shaped as before).
+    prepared_summary = None
+    if prepared_rows:
+        prep_totals: Dict[str, Any] = {}
+        for stats in prepared_rows.values():
+            for group, counters in stats.items():
+                if not isinstance(counters, dict):
+                    continue
+                g = prep_totals.setdefault(group, {})
+                for k, v in counters.items():
+                    g[k] = g.get(k, 0) + int(v)
+        prep_totals["per_row"] = {str(i): prepared_rows[i]
+                                  for i in sorted(prepared_rows)}
+        prep_totals["store_root"] = prepared_root
+        prepared_summary = prep_totals
+        run = prep_totals.get("run", {})
+        notes_runtime.append(
+            f"prepared reuse: {run.get('cold_builds', 0)} cold build(s), "
+            f"{run.get('tier2_hits', 0)} run-store hit(s), "
+            f"{run.get('contention_waits', 0)} contention wait(s)"
+            + (f", {run.get('corruption_rebuilds', 0)} corruption rebuild(s)"
+               if run.get("corruption_rebuilds") else "")
+            + (f", {run.get('tier2_refusals', 0)} run-tier refusal(s)"
+               if run.get("tier2_refusals") else ""))
+
     una.batch_report = BatchExecutionReport(
         requested=requested,
         effective=effective,
@@ -1310,8 +1355,8 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
         if journal else None,
         output_manifest={str(i): manifests[i] for i in sorted(manifests)},
         notes_runtime=tuple(notes_runtime),
-        extra=_report_extra(cohort_summary, tele, dispatch_stamps,
-                            recv_stamps),
+        extra=_report_extra(cohort_summary, prepared_summary, tele,
+                            dispatch_stamps, recv_stamps),
     )
 
 
@@ -1319,12 +1364,14 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
 # Small helpers shared above.
 # ---------------------------------------------------------------------------
 
-def _report_extra(cohort_summary, tele: PhaseRecorder,
+def _report_extra(cohort_summary, prepared_summary, tele: PhaseRecorder,
                   dispatch_stamps: Dict[int, int],
                   recv_stamps: Dict[int, int]) -> Dict[str, Any]:
     extra: Dict[str, Any] = {}
     if cohort_summary is not None:
         extra["cohort"] = cohort_summary
+    if prepared_summary is not None:
+        extra["prepared"] = prepared_summary
     if tele.on:
         # P01M diagnostics (post_p00 designs/01): coordinator phase spans
         # and the per-row dispatch/recv transport stamps behind H2.  A

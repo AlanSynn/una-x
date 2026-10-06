@@ -72,6 +72,11 @@ class RowJob:
     # and never observable serial state — exactly like ``staging_dir``.
     cohort_root: Optional[str] = None
     cohort_residency_cap_bytes: int = 0
+    # Runtime-only prepared run-wide tier (una_10x P02 increment C): the
+    # shared run store root (``.una-batch-prepared`` beside the first
+    # dispatched row's public folder).  Same discipline as cohort_root:
+    # never a Settings field, never observable serial state.
+    prepared_root: Optional[str] = None
 
 
 @dataclass(frozen=True)
@@ -121,6 +126,12 @@ class RowResult:
     # never observable serial state).  None when the row ran without a
     # cohort session.
     cohort_stats: Optional[Dict[str, Any]] = None
+    # Prepared run-wide tier counters slice for this row (una_10x P02
+    # increment C: cold builds vs identities, tier-2 verified hits,
+    # contention waits, corruption rebuilds — runtime-only reporting,
+    # never observable serial state).  None when the row ran without a
+    # prepared run store attached.
+    prepared_stats: Optional[Dict[str, Any]] = None
     # P01M diagnostics (post_p00 designs/01): bounded worker phase spans,
     # populated only when UNA_BATCH_PHASES=1 is inherited by the worker
     # process.  Default-absent so normal transport/reporting is
@@ -327,6 +338,21 @@ def _run_row(job: RowJob) -> RowResult:
             una._cohort_session = session
             cohort_mark = session.mark()
 
+    # Prepared run-wide tier (una_10x P02 increment C): attach the run
+    # store so Add* serving coordinates across this run's workers; the
+    # counters accumulate per worker process and each RowResult carries
+    # its per-row delta.  Gated on the kill switch so the UNA_PREPARED=0
+    # paired control never creates the store directory.
+    prepared_stats = None
+    prepared_attached = False
+    if job.prepared_root:
+        from . import prepared as _prepared_mod
+        if _prepared_mod.enabled():
+            with tele.span("prepared_attach"):
+                _prepared_mod.attach_run_store(job.prepared_root)
+                prepared_mark = _prepared_mod.mark()
+                prepared_attached = True
+
     with tele.span("settings_bind"):
         s = una.settings
         s.__dict__.update(dict(job.settings_state))
@@ -369,6 +395,15 @@ def _run_row(job: RowJob) -> RowResult:
             engine = una.accessibility
     timings["run_s"] = time.perf_counter() - t1
     _inject("post_run", job.inject)
+
+    # Detach the prepared run tier before anything observes or transports
+    # this row: publishes past this point keep only their worker-local
+    # bundle (the run route is runtime-only, never observable state).
+    if prepared_attached:
+        with tele.span("prepared_detach"):
+            from . import prepared as _prepared_mod
+            prepared_stats = _prepared_mod.delta(prepared_mark)
+            _prepared_mod.detach_run_store()
 
     # Detach the cohort wrapper before anything observes or transports
     # the engine: the rehydration bundle pickles the engine, and the
@@ -442,6 +477,7 @@ def _run_row(job: RowJob) -> RowResult:
         worker_pid=os.getpid(),
         timings=timings,
         cohort_stats=cohort_stats,
+        prepared_stats=prepared_stats,
         phases=tele.snapshot(),
         dropped_events=tele.dropped_events,
     )

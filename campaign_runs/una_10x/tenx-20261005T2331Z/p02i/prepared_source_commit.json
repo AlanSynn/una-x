@@ -1,33 +1,45 @@
 {
   "schema": "una-10x-p02i-source-commit-1",
   "task": "P02I",
-  "increment": "A+B",
+  "increment": "A+B+C",
   "generated": "2026-10-05",
-  "base_commit": "5653f21 (P02I increment A commit; contract authority d20f5d68db49900bde876097b72a645cf244f6f2)",
-  "src_delta_vs_increment_A": {
-    "added": ["src/urban_network_analysis/batch/prepared.py (worker-local prepared reuse: request/admission, acquire with refuse-different-bytes, restore with per-consumer copies and produced log chronology, publish with lease isolation; validation helpers moved here verbatim from Topology as the single source shared by both paths)"],
-    "modified": ["src/urban_network_analysis/Topology.py (+115/-44): import of prepared; AddNetwork prepared request/hit/restore before the stage-cache branch with snapshot reuse; publish on both the stage-hit and produce paths; BuildAccessPoints private _prepared_req kwarg + publish on the stage-hit and both produce return sites; AddOrigins/AddDestinations prepared attempt with pinned-snapshot fall-through; geometry validation call sites now call the shared helpers in batch/prepared.py"]
+  "base_commit": "583fcad (P02I increment B commit; contract authority d20f5d68db49900bde876097b72a645cf244f6f2)",
+  "src_delta_vs_increment_B": {
+    "modified": [
+      "src/urban_network_analysis/batch/prepared.py (+509/-... in diff vs 583fcad; module now 929 lines): increment C run-wide tier — _RunStore (disk ContentStore + StageCache facade) with per-root process registry _PROCESS_RUN_STORES and attach/detach; run counters (tier2_hits/tier2_publishes/tier2_refusals/cold_builds/contention_waits/contention_timeouts/corruption_rebuilds/evictions/budget_refusals/promote_skips) kept SEPARATE from the B-pinned per-layer counters; mark()/delta() row slices; table budget law (_admit_locked: exact accounting via _account_bytes, LRU eviction among unleased entries only, refusal keeps the cap floor — never partial admission); stage-format transport via the pure payload builders in Topology (WKB + .npy, allow_pickle=False) with a recorded file_sha256 belt; two-tier _lookup (verified store read, corruption quarantines, digest-mismatch belt refuses, budget-admitted promotion that serves WITHOUT retaining when nothing fits); served_topology/served_access_points; flight(req) None-tolerant single-flight context manager (cohort budget 600 s, pid-liveness stale-lock steal is poll-bounded, re-election on empty commits, TimeoutError countered not silent)",
+      "src/urban_network_analysis/Topology.py (+510/-... mostly re-indentation): pure payload builders _network_stage_payload/_access_points_stage_payload extracted as the single source for store writes and run-tier transport (object/void uid dtypes and mixed-dimension geometries return None — refused, never truncated); AddNetwork restructured so ONE shared produced body serves admitted and unadmitted rows inside a method-level `with _prepared.flight(prep_req) as owned:` (loser re-serves and returns; publish guarded by `if prep_req is not None`; unadmitted/prepared-off rows run flight(None) which yields True with ZERO extra lookups — B fixture counters preserved); AddOrigins/AddDestinations owner builds happen INSIDE the flight block (BuildAccessPoints call only — no body re-indentation), unadmitted rows fall through to the original produced call",
+      "src/urban_network_analysis/batch/worker.py (+36): runtime-only transport — RowJob.prepared_root (never a Settings field, never observable serial state, same discipline as cohort_root), RowResult.prepared_stats, per-row attach (tele span prepared_attach) / delta / detach (prepared_detach) around the row run",
+      "src/urban_network_analysis/batch/runtime.py (+57): prepared_root = .una-batch-prepared beside the FIRST DISPATCHED row's public folder (the C30 cohort-root convention: stable across resumes, safe to delete, identity-verified at every load); per-row prepared_stats fold into report.extra[\"prepared\"] (per-group numeric-leaf sums + per_row slices + store_root) + a notes_runtime line; ABSENT from extra entirely when no row attached (paired control byte-shape preserved)"
+    ],
+    "unchanged": [
+      "src/urban_network_analysis/cache/store.py (sha256 4a3b81e9a7c9f0b084450689416a5746f8db9945168a4ca8cc631071dfb376f7): ContentStore.singleflight/_lock_is_stale/_release_file_lock consumed as-is — no cache-layer change in increment C",
+      "src/urban_network_analysis/batch/cohort.py: untouched"
+    ]
   },
   "deliverable_files": {
-    "src/urban_network_analysis/batch/prepared.py": "7650f3f6989a9c87af82f4ea00aeb6e186b742745006bd2f07889832abaa9882",
-    "src/urban_network_analysis/Topology.py": "347cef915d4f76d0db21f4fc1519e2d6c06c2fcc1b08f53aeca69168a0176655",
-    "tests/tenx/post_p00/preparation/conftest.py": "d3f74e23f4eaa998ae9a58aa2a040d4ba0bdd28e819798beee1d7d86b52471a5",
-    "tests/tenx/post_p00/preparation/test_prep_reader_equivalence.py": "58e124e4c655c9a3ab3c14ca6d479012025a9843ddca6dd75762b33385ba5fdf",
-    "tests/tenx/post_p00/preparation/test_prep_state_equivalence.py": "1887c1559c227c79ec01a2dafadf1b3bcb8b26de5177ba015a18aecd48290971",
+    "src/urban_network_analysis/batch/prepared.py": "58e7bcfba6ca7b23426b36b4ab3569243b33f0fecda0d06276556acc3cabe07d",
+    "src/urban_network_analysis/Topology.py": "c390bc6968f2a8e5648a97dfb0ab9f7f1dcedf498d1e1fb1654e540515eff904",
+    "src/urban_network_analysis/batch/worker.py": "524b30362e5fedba2d5d2944369c737295574877aaaa8496250367cf537847a1",
+    "src/urban_network_analysis/batch/runtime.py": "9cbd3a89d4d737491459c3cb5f00bf22ed3d1bb50dc3a9ab00fd2ca262905f54",
+    "src/urban_network_analysis/cache/store.py": "4a3b81e9a7c9f0b084450689416a5746f8db9945168a4ca8cc631071dfb376f7",
+    "tests/tenx/post_p00/preparation/test_prep_run_singleflight.py": "72742140e3d0ca2b3b378379dc99b911d5ac00aa4faaeb9519e4f5f829fd440d",
     "tests/tenx/post_p00/preparation/test_prep_worker_reuse.py": "7ce9c00856d62eb131037f915131178e5c1cd8d8ae6077fbf5db61d754334e3c",
+    "tests/tenx/post_p00/preparation/conftest.py": "d3f74e23f4eaa998ae9a58aa2a040d4ba0bdd28e819798beee1d7d86b52471a5",
+    "tests/batch/runtime/conftest.py": "1147cddfd6a1b58b78f5ea60b08cbf57d0aa8dad54d2cbc78ecbe74b0b058e23",
     "tests/cache/conftest.py": "7e11045a39c5fcfb85ef41ad5be140bffd561f6195749237c41e6dfa88a9e26c"
   },
-  "test_file_changes_vs_increment_A": {
-    "test_prep_state_equivalence.py": "adds an autouse UNA_PREPARED=0 pin — the module certifies STAGE-cache restore semantics, and the prepared layer (default-on) short-circuits before stage lookups; no assertion changed",
-    "tests/cache/conftest.py": "NEW shared pin for the stage-cache conformance suites (same rationale, module docstring records it)",
-    "test_prep_worker_reuse.py": "NEW increment-B acceptance: PP02/PP03/PP04 + chronology/validation-on-hit + kill switch + .geojson-first admission + stage-cache coexistence"
+  "test_file_changes_vs_increment_B": {
+    "test_prep_run_singleflight.py": "NEW increment-C acceptance: PP05 (bytes-change never stale-hits tier 2; Polygon error identical attached vs detached; object-uid refused at tier 2 kept at tier 1 + no pickle bytes + no hidden source snapshot by sha256; digest belt supersede + sidecar irrelevance), PP06 (payload tamper -> exactly one counted corruption rebuild then clean re-serve; dead-owner stale lock stolen via pid liveness with contention_timeouts==0), PP07 (in-place user mutation isolated across tiers — store payload re-served unchanged after reset+re-attach), PP08 (mixed identities distinct keys; missing-origins error parity attached vs off with zero store writes), PP09 (1-byte budget: 3 admission refusals + cap-floor empty table + tier-2 serving WITHOUT retaining via promote_skips; lease-never-evicted then LRU eviction after release; attach/detach reuse one process entry + post-detach publish touches no store), deterministic same-process contention signature (cold_builds 1 / contention_waits 1 / timeouts 0), and the cross-process RunBatch singleflight_not_lost claim (6 rows -> cold_builds==3, tier2_publishes==3, paired control reports no prepared surface)",
+    "tests/batch/runtime/conftest.py": "residue-guard CLASSIFICATION amendment: .una-batch-prepared joins .una-batch-cohort in the persistent-store exemption (_PERSISTENT_STORES). Rationale: the prepared run store is the same documented class as the cohort store (dossier 06) — deliberately persistent in the public folder tree, identity-verified at every load, safe to delete. The guards still fatal on row artifacts at public paths and on every other .una-batch* dir; the four cancellation/overlap/ordering tests that caught the unexempted store all pass unchanged otherwise",
+    "test_prep_worker_reuse.py / conftest.py / tests/cache/conftest.py": "byte-identical to increment B (hashes above match the B commit's)"
   },
-  "design_decision_layer_chained_identity": "snap identities chain the parent network stage key (mirroring una:snap:v1's parent_network_stage closure), so dependency invalidation is exact per layer: an origins-only param change re-keys origins only (destinations rides, network rides); a network param/bytes change re-keys all three (PP04). Prepared admission records the composed una:topology:v1 / una:snap:v1 identity on the object in EVERY path (including store refusals) — required because engine o_access keys chain origins/destinations._stage_key (Accessibility.py:770-772, AccessibilityWElevation.py:854-856); safe because those keys are only consumed when the engine cache is enabled, in which case the produced path already set the same deterministic key.",
+  "design_decision_promotion_vs_serving": "The design's NO_FIT law ('Reserve ... before admission', designs/02) is an ADMISSION law: publish-side _admit_locked refuses when the budget cannot be met after LRU eviction among unleased entries. Serving is never refused: a tier-2 promotion that cannot fit even after eviction SERVES WITHOUT RETAINING (counted promote_skips) — the produced path would have allocated the same decoded layer anyway, and refusing to serve would force a rebuild of data the store already holds. Fixture-pinned both sides (test_pp09_tiny_budget_refuses_admission_not_serving).",
   "contract_authority": {
     "contract": "campaign_runs/una_10x/tenx-20261005T2331Z/p02d/prepared_contract.json (sha256 8f01b4e3d6ea72ba21e669cc3a83476dca65d9db7d4731dac1a378eb7f75679b, rules unchanged from reviewed bytes 047e5079...; post_review provenance only)",
     "proof_review": "campaign_runs/una_10x/tenx-20261005T2331Z/p02d/prepared_proof_review.json (ACCEPT_WITH_NOTES, 0 blocking)",
     "audit": "campaign_runs/una_10x/tenx-20261005T2331Z/p02d/prepared_consumer_audit.md"
   },
   "environment": "local venv venv-p01m (python3.11, editable install, numba pinned 0.67.0); no cluster allocation consumed; heavy_budget_charged 0",
-  "increments_pending": ["C run-wide single-flight per immutable dependency identity (PP05-PP09, budget/eviction under live leases)"]
+  "increments_pending": [],
+  "next_seam_for_P04": "runtime NO_FIT row admission (reserving row+receiver bytes against the run budget before dispatch) is the projection seam named by designs/02; publish accounting in prepared.py is the instrument it projects. Handoff documented here; P04 owns the runtime change."
 }

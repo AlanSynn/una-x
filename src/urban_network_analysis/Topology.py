@@ -129,6 +129,107 @@ def _cache_log_replays(metadata, logger) -> None:
     for line in metadata.get("log_replay", ()):  # list of [event, details, v]
         logger.log(line[0], line[1], v=int(line[2]))
 
+
+def _network_stage_payload(net, gdf, *, weight_warning, no_crs, crs):
+    """Pure stage-format payload for the post-BuildTopology network state
+    — the SINGLE SOURCE shared by the stage-cache store path
+    (: `_store_network_to_cache` :) and the prepared run-wide tier
+    (batch/prepared.py).  ``(arrays, metadata)``, or None when the state
+    is not representable (mixed-dimension geometries, exotic dtypes): the
+    caller skips storage entirely and a future run recomputes, never
+    hits.  Geometries travel as WKB (IEEE-754 coordinate doubles
+    round-trip exactly)."""
+    wkb, lens, coord_dim = _geoms_to_wkb_payload(net.geometry, "network")
+    if wkb is None:
+        return None
+    arrays = {
+        "geometry_wkb": wkb,
+        "geometry_wkb_lens": lens,
+        "lengths": net.lengths,
+        "weights": net.weights,
+        "node_points": net.node_points,
+        "start_nodes": net.start_nodes,
+        "end_nodes": net.end_nodes,
+        "degrees": net.degrees,
+        "z": net.z,
+        "start_degrees": net.start_degrees,
+        "end_degrees": net.end_degrees,
+        "min_degrees": net.min_degrees,
+        "max_degrees": net.max_degrees,
+    }
+    metadata = {
+        "stage": "una:topology:v1",
+        "n_edges": int(len(net.weights)),
+        "n_nodes": int(net.node_points.shape[0]),
+        "n_input_features": int(len(gdf)),
+        "n_empty_removed": int(len(gdf) - len(net.geometry)),
+        # projjson, not WKT: to_wkt() drops datum-ensemble member ids,
+        # and the loss survives the round-trip into exported feather
+        # geoarrow metadata (observed as an artifact-hash delta).
+        "crs_projjson": crs.to_json() if crs is not None else None,
+        "geom_coord_dim": int(coord_dim),
+        "weight_warning": weight_warning,
+        "no_crs": bool(no_crs),
+    }
+    return arrays, metadata
+
+
+def _access_points_stage_payload(pt, *, n_points, log_extras):
+    """Pure stage-format payload for one snapped point layer (same
+    single-source contract as : `_network_stage_payload` :).  Mixed-
+    dimension geometries, empty layers and non-numeric uid columns are
+    NOT representable (None) — storage is skipped, never a wrong hit."""
+    wkb, lens, coord_dim = _geoms_to_wkb_payload(np.asarray(pt.geometry),
+                                                 "access points")
+    if wkb is None or len(wkb) == 0:
+        return None
+    uid = pt.uid
+    uid_is_series = isinstance(uid, pd.Series)
+    uid_array = None
+    if uid_is_series:
+        # object/void dtypes would need pickle (forbidden); numeric and
+        # unicode dtypes round-trip through .npy byte-exactly.
+        if uid.dtype.kind not in "ifubU":
+            return None
+        uid_array = uid.to_numpy()
+    elif uid is not None:
+        uid_array = np.asarray(uid)
+        if uid_array.dtype.kind not in "ifubU":
+            return None
+    snapped = pt.nearest_edge_id is not None
+    arrays = {
+        "geometry_wkb": wkb,
+        "geometry_wkb_lens": lens,
+        "node_weight": pt.node_weight,
+        "uid": uid_array,  # None -> omitted from the payload
+    }
+    crs = pt.geometry.crs
+    metadata = {
+        "stage": "una:snap:v1",
+        "n_points": int(n_points),
+        "snapped": bool(snapped),
+        "uid_is_series": bool(uid_is_series),
+        "crs_projjson": crs.to_json() if crs is not None else None,
+        "geom_coord_dim": int(coord_dim),
+        "log_extras": [[e, d, int(v)] for (e, d, v) in
+                       (log_extras or [])],
+    }
+    if snapped:
+        pwkb, plens, _pdim = _geoms_to_wkb_payload(
+            np.asarray(pt.nearest_edge_point), "nearest_edge_point")
+        if pwkb is None:
+            return None
+        arrays.update(
+            nearest_edge_point_wkb=pwkb,
+            nearest_edge_point_wkb_lens=plens,
+            nearest_edge_id=pt.nearest_edge_id,
+            edge_start_node=pt.edge_start_node,
+            edge_end_node=pt.edge_end_node,
+            weight_to_start=pt.weight_to_start,
+            weight_to_end=pt.weight_to_end,
+        )
+    return arrays, metadata
+
 ## GLOBAL CONSTANTS ##
 ACCEPTIBLE_GEOMETRY_SOURCES = str|Path|gpd.GeoDataFrame
 
@@ -239,165 +340,143 @@ class Topology:
         net_key = None
         snapshot = None
 
-        # ── prepared worker-local reuse (una_10x P02 increment B):
-        #    .geojson-first admission; identity over the exact file bytes +
-        #    producer-read params + profile + env (never path/mtime).
-        #    Unadmitted routes (disabled, other formats) skip this block
-        #    byte-for-byte and run the produced path below.
+        # ── prepared reuse (una_10x P02 increments B+C): .geojson-first
+        #    admission; identity over the exact file bytes + producer-read
+        #    params + profile + env (never path/mtime).  Serving is
+        #    two-tier — worker-local lease, then the run store (verified
+        #    read) — and the build is single-flighted per identity across
+        #    the run's workers (ContentStore.singleflight, cohort 600 s
+        #    budget).  Unadmitted routes (disabled, other formats) skip
+        #    serving entirely; the flight is None-tolerant so the
+        #    produced path below is ONE shared body for both cases, and
+        #    with no run store attached it degrades to the plain
+        #    increment-B behavior (zero extra lookups).
         prep_req = _prepared.topology_request(source_file, settings)
         if prep_req is not None:
-            bundle = _prepared.acquire(prep_req)
-            if bundle is not None:
-                _prepared.restore_topology(self, prep_req, bundle)
+            if _prepared.served_topology(self, prep_req):
                 return
             snapshot = prep_req.snapshot  # decode the pinned bytes
+        with _prepared.flight(prep_req) as owned:
+            if not owned and _prepared.served_topology(self, prep_req):
+                return  # the owner committed while we waited
+            if cache.enabled:
+                if snapshot is None:
+                    # Snapshot once: the digest that keys the stage is taken
+                    # over the SAME bytes the miss path decodes (dossier 06
+                    # TOCTOU rule).
+                    snapshot = _read_snapshot(source_file)
+                net_key = _ckid.stage_key("una:topology:v1", {
+                    "file_sha256": (prep_req.file_sha256
+                                    if prep_req is not None
+                                    else _ckid.file_digest(snapshot)),
+                    "params": {
+                        "network_weight_column": str(network_cost),
+                        "network_precision": int(settings.network_precision),
+                        "network_load_nodes": bool(settings.network_load_nodes),
+                    },
+                    "profile": str(settings.execution.semantic_profile),
+                    "env": _ckid.geometry_env(
+                        str(settings.execution.semantic_profile),
+                        _PACKAGE_VERSION),
+                })
+                hit = cache.get_arrays(net_key)
+                if hit is not None:
+                    self._restore_network_from_cache(source_file, hit)
+                    if prep_req is not None:
+                        m = hit.metadata
+                        _prepared.publish_topology(
+                            prep_req, self.network, None, crs=self.crs,
+                            weight_warning=m.get("weight_warning"),
+                            n_empty_removed=int(m.get("n_empty_removed") or 0),
+                            n_nodes=int(m["n_nodes"]), n_edges=int(m["n_edges"]),
+                            n_input_features=int(m["n_input_features"]))
+                    return
 
-        if cache.enabled:
-            if snapshot is None:
-                # Snapshot once: the digest that keys the stage is taken over
-                # the SAME bytes the miss path decodes (dossier 06 TOCTOU rule).
-                snapshot = _read_snapshot(source_file)
-            net_key = _ckid.stage_key("una:topology:v1", {
-                "file_sha256": (prep_req.file_sha256
-                                if prep_req is not None
-                                else _ckid.file_digest(snapshot)),
-                "params": {
-                    "network_weight_column": str(network_cost),
-                    "network_precision": int(settings.network_precision),
-                    "network_load_nodes": bool(settings.network_load_nodes),
-                },
-                "profile": str(settings.execution.semantic_profile),
-                "env": _ckid.geometry_env(
-                    str(settings.execution.semantic_profile),
-                    _PACKAGE_VERSION),
-            })
-            hit = cache.get_arrays(net_key)
-            if hit is not None:
-                self._restore_network_from_cache(source_file, hit)
-                if prep_req is not None:
-                    m = hit.metadata
-                    _prepared.publish_topology(
-                        prep_req, self.network, None, crs=self.crs,
-                        weight_warning=m.get("weight_warning"),
-                        n_empty_removed=int(m.get("n_empty_removed") or 0),
-                        n_nodes=int(m["n_nodes"]), n_edges=int(m["n_edges"]),
-                        n_input_features=int(m["n_input_features"]))
-                return
+            if snapshot is not None:
+                gdf = _decode_snapshot_gdf(source_file, snapshot, None)
+                snapshot = None  # decoded — the snapshot bytes are released
+            else:
+                gdf = self._get_gdf(source_file, keep_columns=None)
+            _validate_network_gdf(gdf)
+            self.crs = gdf.crs
+            if self.crs is None:
+                self.logger.log("Network added", "Warning: Network file has no CRS defined.", v=1)
+            else:
+                self.logger.log("Network added", f"CRS set to {self.crs}.", v=2)
+            gdf = gdf.reset_index(drop=True)
+            self.logger.log("Network added", f"Network added from source {source_file}, with {len(gdf)} edges.", v=1)
 
-        if snapshot is not None:
-            gdf = _decode_snapshot_gdf(source_file, snapshot, None)
-            snapshot = None  # decoded — the snapshot bytes are released
-        else:
-            gdf = self._get_gdf(source_file, keep_columns=None)
-        _validate_network_gdf(gdf)
-        self.crs = gdf.crs
-        if self.crs is None:
-            self.logger.log("Network added", "Warning: Network file has no CRS defined.", v=1)
-        else:
-            self.logger.log("Network added", f"CRS set to {self.crs}.", v=2)
-        gdf = gdf.reset_index(drop=True)
-        self.logger.log("Network added", f"Network added from source {source_file}, with {len(gdf)} edges.", v=1)
+            self.network.geometry   = gdf.geometry
+            self.network.lengths    = gdf.geometry.length.values.astype(np.float64)
+            cache_weight_warning = None  # replayed verbatim on cache hits
+            if network_cost == "Geometric":
+                self.network.weights = self.network.lengths.copy()
+            else:
+                weights = gdf[network_cost].values.astype(np.float64)
+                # Guard: NaN or non-positive custom costs would silently
+                # poison Dijkstra (NaN propagates; <=0 is invalid for
+                # shortest paths). Fall back to the segment's geometric
+                # length for those rows and say so loudly.
+                bad = ~np.isfinite(weights) | (weights <= 0.0)
+                if bad.any():
+                    n_bad = int(bad.sum())
+                    bad_rows = np.where(bad)[0][:10].tolist()
+                    weights = np.where(bad, self.network.lengths, weights)
+                    cache_weight_warning = (
+                        f"WARNING: network_weight_column '{network_cost}' has "
+                        f"{n_bad} NaN/non-positive value(s); using geometric "
+                        f"length for those segments (first rows: {bad_rows}"
+                        f"{'…' if n_bad > 10 else ''}).")
+                    self.logger.log("Network added", cache_weight_warning, v=1)
+                self.network.weights = weights
+            has_node_data = False
 
-        self.network.geometry   = gdf.geometry
-        self.network.lengths    = gdf.geometry.length.values.astype(np.float64)
-        cache_weight_warning = None  # replayed verbatim on cache hits
-        if network_cost == "Geometric":
-            self.network.weights = self.network.lengths.copy()
-        else:
-            weights = gdf[network_cost].values.astype(np.float64)
-            # Guard: NaN or non-positive custom costs would silently
-            # poison Dijkstra (NaN propagates; <=0 is invalid for
-            # shortest paths). Fall back to the segment's geometric
-            # length for those rows and say so loudly.
-            bad = ~np.isfinite(weights) | (weights <= 0.0)
-            if bad.any():
-                n_bad = int(bad.sum())
-                bad_rows = np.where(bad)[0][:10].tolist()
-                weights = np.where(bad, self.network.lengths, weights)
-                cache_weight_warning = (
-                    f"WARNING: network_weight_column '{network_cost}' has "
-                    f"{n_bad} NaN/non-positive value(s); using geometric "
-                    f"length for those segments (first rows: {bad_rows}"
-                    f"{'…' if n_bad > 10 else ''}).")
-                self.logger.log("Network added", cache_weight_warning, v=1)
-            self.network.weights = weights
-        has_node_data = False
-        
-        if settings.network_load_nodes:
-            if "_node_start_id" in gdf.columns and "_node_end_id" in gdf.columns:
-                has_node_data = True
-            
-            self.network.start_nodes = gdf["_node_start_id"].values.astype(np.int64) if "_node_start_id" in gdf.columns else None
-            self.network.end_nodes = gdf["_node_end_id"].values.astype(np.int64) if "_node_end_id" in gdf.columns else None
+            if settings.network_load_nodes:
+                if "_node_start_id" in gdf.columns and "_node_end_id" in gdf.columns:
+                    has_node_data = True
 
-            if self.network.start_nodes  is None:
-                has_node_data = False
+                self.network.start_nodes = gdf["_node_start_id"].values.astype(np.int64) if "_node_start_id" in gdf.columns else None
+                self.network.end_nodes = gdf["_node_end_id"].values.astype(np.int64) if "_node_end_id" in gdf.columns else None
 
-        self.network.BuildTopology(discard_redundant_edges=False, precision=settings.network_precision)
+                if self.network.start_nodes  is None:
+                    has_node_data = False
 
-        # self.BuildTurnPenalties( turn_angle_threshold=settings.turn_threshold, turn_penalty=settings.turn_penalty, store_zero_penalties=False)
+            self.network.BuildTopology(discard_redundant_edges=False, precision=settings.network_precision)
 
-        if net_key is not None:
-            self._store_network_to_cache(
-                cache, net_key, gdf,
-                weight_warning=cache_weight_warning,
-                no_crs=(self.crs is None))
-        if prep_req is not None:
-            _prepared.publish_topology(
-                prep_req, self.network, gdf, crs=self.crs,
-                weight_warning=cache_weight_warning,
-                n_empty_removed=int(len(gdf) - len(self.network.geometry)),
-                n_nodes=int(self.network.node_points.shape[0]),
-                n_edges=int(len(self.network.weights)),
-                n_input_features=int(len(gdf)))
+            # self.BuildTurnPenalties( turn_angle_threshold=settings.turn_threshold, turn_penalty=settings.turn_penalty, store_zero_penalties=False)
 
-        self.logger.log('create topology', f"edge_list_dict created", v=2)
+            if net_key is not None:
+                self._store_network_to_cache(
+                    cache, net_key, gdf,
+                    weight_warning=cache_weight_warning,
+                    no_crs=(self.crs is None))
+            if prep_req is not None:
+                _prepared.publish_topology(
+                    prep_req, self.network, gdf, crs=self.crs,
+                    weight_warning=cache_weight_warning,
+                    n_empty_removed=int(len(gdf) - len(self.network.geometry)),
+                    n_nodes=int(self.network.node_points.shape[0]),
+                    n_edges=int(len(self.network.weights)),
+                    n_input_features=int(len(gdf)))
+
+            self.logger.log('create topology', f"edge_list_dict created", v=2)
 
     # ── topology stage store/restore (CACHE_GRAPH) ──────────────────────
 
     def _store_network_to_cache(self, cache, key, gdf, *,
                                 weight_warning, no_crs) -> None:
         """Commit the post-BuildTopology network state as one stage
-        generation.  The stored state is exactly what the uncached path
-        leaves on ``self.network`` — arrays byte-for-byte, geometries via
-        WKB (IEEE-754 coordinate doubles round-trip exactly).  A payload
-        that cannot be represented (mixed-dimension geometries, exotic
-        dtypes) is skipped entirely: a future run recomputes, never hits."""
+        generation (payload built by the shared : `_network_stage_payload`
+        : — the prepared run tier stores the same format).  A payload
+        that cannot be represented is skipped entirely: a future run
+        recomputes, never hits."""
         net = self.network
-        wkb, lens, coord_dim = _geoms_to_wkb_payload(net.geometry, "network")
-        if wkb is None:
+        built = _network_stage_payload(net, gdf, weight_warning=weight_warning,
+                                       no_crs=no_crs, crs=self.crs)
+        if built is None:
             net._stage_key = key  # identity exists; storage skipped
             return
-        arrays = {
-            "geometry_wkb": wkb,
-            "geometry_wkb_lens": lens,
-            "lengths": net.lengths,
-            "weights": net.weights,
-            "node_points": net.node_points,
-            "start_nodes": net.start_nodes,
-            "end_nodes": net.end_nodes,
-            "degrees": net.degrees,
-            "z": net.z,
-            "start_degrees": net.start_degrees,
-            "end_degrees": net.end_degrees,
-            "min_degrees": net.min_degrees,
-            "max_degrees": net.max_degrees,
-        }
-        metadata = {
-            "stage": "una:topology:v1",
-            "n_edges": int(len(net.weights)),
-            "n_nodes": int(net.node_points.shape[0]),
-            "n_input_features": int(len(gdf)),
-            "n_empty_removed": int(len(gdf) - len(net.geometry)),
-            # projjson, not WKT: to_wkt() drops datum-ensemble member ids,
-            # and the loss survives the round-trip into exported feather
-            # geoarrow metadata (observed as an artifact-hash delta).
-            "crs_projjson": self.crs.to_json() if self.crs is not None else None,
-            "geom_coord_dim": int(coord_dim),
-            "weight_warning": weight_warning,
-            "no_crs": bool(no_crs),
-        }
-        cache.put_arrays(key, arrays, metadata)
+        cache.put_arrays(key, built[0], built[1])
         net._stage_key = key
 
     def _restore_network_from_cache(self, source_file, hit) -> None:
@@ -465,64 +544,17 @@ class Topology:
 
     def _store_access_points_to_cache(self, cache, key, pt, *,
                                       n_points, log_extras) -> None:
-        """Commit one snapped point layer.  Mixed-dimension geometries,
-        empty layers and non-numeric uid columns are NOT stored (identity
-        is still recorded on the object, so downstream stage keys stay
-        complete — the store simply skips, and future runs recompute)."""
-        wkb, lens, coord_dim = _geoms_to_wkb_payload(np.asarray(pt.geometry),
-                                                     "access points")
-        if wkb is None or len(wkb) == 0:
+        """Commit one snapped point layer (payload built by the shared
+        : `_access_points_stage_payload` :).  Identity is still recorded
+        on the object when the payload is not representable, so
+        downstream stage keys stay complete — the store simply skips,
+        and future runs recompute."""
+        built = _access_points_stage_payload(pt, n_points=n_points,
+                                             log_extras=log_extras)
+        if built is None:
             pt._stage_key = key
             return
-        uid = pt.uid
-        uid_is_series = isinstance(uid, pd.Series)
-        uid_array = None
-        if uid_is_series:
-            # object/void dtypes would need pickle (forbidden); numeric and
-            # unicode dtypes round-trip through .npy byte-exactly.
-            if uid.dtype.kind not in "ifubU":
-                pt._stage_key = key
-                return
-            uid_array = uid.to_numpy()
-        elif uid is not None:
-            uid_array = np.asarray(uid)
-            if uid_array.dtype.kind not in "ifubU":
-                pt._stage_key = key
-                return
-        snapped = pt.nearest_edge_id is not None
-        arrays = {
-            "geometry_wkb": wkb,
-            "geometry_wkb_lens": lens,
-            "node_weight": pt.node_weight,
-            "uid": uid_array,  # None -> omitted from the payload
-        }
-        crs = pt.geometry.crs
-        metadata = {
-            "stage": "una:snap:v1",
-            "n_points": int(n_points),
-            "snapped": bool(snapped),
-            "uid_is_series": bool(uid_is_series),
-            "crs_projjson": crs.to_json() if crs is not None else None,
-            "geom_coord_dim": int(coord_dim),
-            "log_extras": [[e, d, int(v)] for (e, d, v) in
-                           (log_extras or [])],
-        }
-        if snapped:
-            pwkb, plens, _pdim = _geoms_to_wkb_payload(
-                np.asarray(pt.nearest_edge_point), "nearest_edge_point")
-            if pwkb is None:
-                pt._stage_key = key
-                return
-            arrays.update(
-                nearest_edge_point_wkb=pwkb,
-                nearest_edge_point_wkb_lens=plens,
-                nearest_edge_id=pt.nearest_edge_id,
-                edge_start_node=pt.edge_start_node,
-                edge_end_node=pt.edge_end_node,
-                weight_to_start=pt.weight_to_start,
-                weight_to_end=pt.weight_to_end,
-            )
-        cache.put_arrays(key, arrays, metadata)
+        cache.put_arrays(key, built[0], built[1])
         pt._stage_key = key
 
     def _restore_access_points_from_cache(self, hit, source_file,
@@ -581,29 +613,47 @@ class Topology:
         if not os.path.isfile(source_file):
             raise FileNotFoundError(f"Origins file not found: {source_file}")
 
-        # ── prepared worker-local reuse (una_10x P02 increment B): the
-        #    snap identity chains the parent network stage key; a miss
-        #    falls through to the produced BuildAccessPoints path with the
-        #    already-pinned snapshot bytes (TOCTOU discipline).
+        # ── prepared reuse (una_10x P02 increments B+C): the snap
+        #    identity chains the parent network stage key; serving is
+        #    two-tier (worker lease, then the run store) and the build is
+        #    single-flighted per identity across the run's workers.  A
+        #    miss falls through to the produced BuildAccessPoints path
+        #    with the already-pinned snapshot bytes (TOCTOU discipline).
         prep_req = _prepared.snap_request(self, source_file, cost_attribute,
                                           default_cost, uid_attribute)
         if prep_req is not None:
-            bundle = _prepared.acquire(prep_req)
-            if bundle is not None:
-                self.origins = _prepared.restore_access_points(
-                    self, prep_req, bundle, label="Origins")
-                self.has_clusters = False
-                self.logger.log("Origins added",
-                                f"Origins added from source {source_file}, "
-                                f"with {len(self.origins.geometry)} points.",
-                                v=1)
-                return
+            pt = _prepared.served_access_points(self, prep_req,
+                                                label="Origins")
+            if pt is None:
+                with _prepared.flight(prep_req) as owned:
+                    if not owned:
+                        pt = _prepared.served_access_points(
+                            self, prep_req, label="Origins")
+                    if pt is None:
+                        # owner (or a loser the store re-elected after an
+                        # empty commit): the build runs serialized on the
+                        # per-identity lock
+                        pt = self.BuildAccessPoints(
+                            source_file, cost_attribute, default_cost,
+                            uid_attribute, label="Origins",
+                            snapshot=prep_req.snapshot,
+                            _prepared_req=prep_req)
+            self.origins = pt
+            # Cluster assignments are derived from the loaded layers — a
+            # fresh origins object has no clasters_byId, so any previously
+            # built clusters are invalid. Reset the flag so engines rebuild
+            # them (RunBatch reloads layers per row; without this, row 2+ of
+            # a clustered batch crashes with KeyError on clasters_byId).
+            self.has_clusters = False
+            self.logger.log("Origins added",
+                            f"Origins added from source {source_file}, "
+                            f"with {len(self.origins.geometry)} points.",
+                            v=1)
+            return
 
         self.origins = self.BuildAccessPoints(
             source_file, cost_attribute, default_cost, uid_attribute,
-            label="Origins", snapshot=(prep_req.snapshot
-                                       if prep_req is not None else None),
-            _prepared_req=prep_req)
+            label="Origins", snapshot=None, _prepared_req=None)
         # Cluster assignments are derived from the loaded layers — a fresh
         # origins object has no clasters_byId, so any previously built
         # clusters are invalid. Reset the flag so engines rebuild them
@@ -623,26 +673,36 @@ class Topology:
         if not os.path.isfile(source_file):
             raise FileNotFoundError(f"Destinations file not found: {source_file}")
 
-        # ── prepared worker-local reuse (see AddOrigins).
+        # ── prepared reuse (see AddOrigins): two-tier serving + run-wide
+        #    single-flight around the produced build.
         prep_req = _prepared.snap_request(self, source_file, cost_attribute,
                                           default_cost, uid_attribute)
         if prep_req is not None:
-            bundle = _prepared.acquire(prep_req)
-            if bundle is not None:
-                self.destinations = _prepared.restore_access_points(
-                    self, prep_req, bundle, label="Destinations")
-                self.has_clusters = False
-                self.logger.log(
-                    "Destinations added",
-                    f"Destinations added from source {source_file}, "
-                    f"with {len(self.destinations.geometry)} points.", v=1)
-                return
+            pt = _prepared.served_access_points(self, prep_req,
+                                                label="Destinations")
+            if pt is None:
+                with _prepared.flight(prep_req) as owned:
+                    if not owned:
+                        pt = _prepared.served_access_points(
+                            self, prep_req, label="Destinations")
+                    if pt is None:
+                        # owner (or re-elected loser): build serialized
+                        pt = self.BuildAccessPoints(
+                            source_file, cost_attribute, default_cost,
+                            uid_attribute, label="Destinations",
+                            snapshot=prep_req.snapshot,
+                            _prepared_req=prep_req)
+            self.destinations = pt
+            self.has_clusters = False
+            self.logger.log(
+                "Destinations added",
+                f"Destinations added from source {source_file}, "
+                f"with {len(self.destinations.geometry)} points.", v=1)
+            return
 
         self.destinations = self.BuildAccessPoints(
             source_file, cost_attribute, default_cost, uid_attribute,
-            label="Destinations",
-            snapshot=(prep_req.snapshot if prep_req is not None else None),
-            _prepared_req=prep_req)
+            label="Destinations", snapshot=None, _prepared_req=None)
         # Fresh destinations invalidate previously built clusters (see
         # AddOrigins) — force a rebuild on the next clustered run.
         self.has_clusters = False
