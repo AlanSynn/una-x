@@ -1,27 +1,33 @@
 {
   "schema": "una-10x-p02i-l0-l2-1",
   "task": "P02I",
-  "increment": "A",
-  "generated": "2026-10-06",
-  "status": "INCREMENT_A_GREEN_LOCAL",
+  "increment": "A+B",
+  "generated": "2026-10-05",
+  "status": "INCREMENT_B_GREEN_LOCAL",
   "commands_and_results": [
-    {"cmd": "python -m pytest tests/tenx/post_p00/preparation/ -q", "result": "12 passed in 2.63s (standalone)"},
-    {"cmd": "python -m pytest tests/tenx/post_p00/ -q", "result": "22 passed in 9.89s (combined with P01M telemetry suite)"},
-    {"cmd": "python -m pytest tests/execution -q", "result": "107 passed in 7.88s"},
-    {"cmd": "python -m pytest tests/batch -q", "result": "91 passed in 169.09s"}
+    {"cmd": "python -m pytest tests/tenx/post_p00/preparation/ -q", "result": "20 passed in 3.89s (8 increment-B worker-reuse tests + 12 increment-A)"},
+    {"cmd": "python -m pytest tests/tenx/post_p00/ -q", "result": "30 passed in 10.02s (combined with P01M telemetry suite)"},
+    {"cmd": "python -m pytest tests/cache -q", "result": "162 passed in 8.42s (stage-cache conformance; prepared pinned off by tests/cache/conftest.py — see engagement deliverable)"},
+    {"cmd": "python -m pytest tests/execution -q", "result": "107 passed in 8.84s (ran with prepared DEFAULT-ON on geojson rows — implicit integration coverage)"},
+    {"cmd": "python -m pytest tests/batch -q", "result": "91 passed in 170.22s (prepared default-on)"},
+    {"cmd": "python -m pytest tests/tenx/identity -q", "result": "47 passed in 3.14s — identity-suite receipt RE-ESTABLISHED on the increment-B tree (the increment-A receipt was void once src bytes changed)"}
   ],
   "L0_local_correctness": {
-    "produced_path_identity": "src/ diff vs base d20f5d6 is empty: the produced path cannot have moved; regression receipts replicate P01M (batch 91, execution 107)",
-    "pp01_reader_equivalence": "PASS x3 formats (geojson/feather/parquet) x3 layers: original _get_gdf route vs snapshot/decode route — schema, column order, dtypes, CRS, geometry WKB bytes, index all identical",
-    "state_equivalence": "PASS: AddNetwork produced vs restored over all 11 engine-consumed arrays (bitwise, dtype-pinned) + geometry WKB + CRS PROJJSON + _stage_key + derived-sindex query parity with served-hit proof (stats delta >= 1); AddOrigins/AddDestinations produced vs restored over 5 snap arrays + geometry WKB + CRS + _stage_key with both roles served (stats delta >= 2)",
-    "uid_guard_observable": "PASS: int64 uid served from stage cache on second run; object-dtype uid skips the store (second run misses again, stats window isolated to AddOrigins) and still reproduces exactly — 'miss never wrong hit' confirmed",
-    "toctou_pins": "PASS x3 formats: _read_snapshot == file bytes; file_digest(snapshot) == independent sha256 of file",
-    "corrupt_bytes": "PASS x3 formats: truncated bytes raise on BOTH reader routes (exception CLASSES not pinned — recorded as observation-only)"
+    "pp01_reader_equivalence": "PASS x3 formats (carried from increment A; reader bytes unchanged)",
+    "state_equivalence": "PASS (carried from increment A; stage-cache path pinned via UNA_PREPARED=0 in that module — the prepared layer short-circuits stage lookups when enabled)",
+    "pp02_worker_local_reuse": "PASS: rows over identical inputs are served (topology hits 1->2, snap hits 0->2->4), surfaces bitwise identical (11 network arrays + WKB + CRS + stage keys; 5 snap arrays + WKB + uid + stage keys), row 3 with a DIFFERENT output folder (non-producer-read setting) rides the same identity, and every served array/GeoSeries/GeoDataFrame object is FRESH (not aliased with the previous row or the lease payload)",
+    "pp03_bytes_change_same_mtime": "PASS: network bytes rewritten under a preserved mtime -> identity moves (stage keys differ), topology hit delta 0 (never a stale hit), miss+publish on the new generation, snaps chain the NEW parent (hit delta 0), geometry WKB reflects the new bytes, third row is served from the new generation",
+    "pp04_dependency_invalidation_exact": "PASS: origins weight-column change re-keys ORIGINS ONLY (publishes +1) while network AND destinations stay served (hit deltas +1/+1); network precision change re-keys all three (snaps chain the new parent); origins uid-column change re-keys origins only and exercises the Series-uid path end to end",
+    "validation_on_hit": "PASS: a corrupted network bundle payload raises ValueError with a message BYTE-IDENTICAL to the produced path's raise on the same invalid content; a corrupted snap payload raises the Point-geometry error — hits fail closed through the SAME validation helpers the produced path calls",
+    "log_chronology_on_hit": "PASS: the content-derived fallback warning replays on served rows in produced order (built-line < warning < Origins-added), warning text identical to produced",
+    "kill_switch": "PASS: UNA_PREPARED=0 -> zero prepared requests/hits/publishes, produced results unchanged",
+    "format_admission": "PASS: feather rows never touch the prepared layer (zero requests) and reproduce through the produced path — .geojson-first engagement boundary held",
+    "stage_cache_coexistence": "PASS: with cache on, row 1 populates BOTH stores; row 2 is served by prepared (short-circuit) with ZERO additional stage-cache activity and identical stage identities"
   },
   "L2_installed_public": {
     "status": "FORWARD_SCOPE",
-    "note": "installed-wheel public calls are the P05 gate per TEST_MATRIX header; increment A changes no public path so no L2 leg exists yet"
+    "note": "installed-wheel public calls are the P05 gate per TEST_MATRIX header; the increment-B public-path behavior is exercised locally through the unchanged RunBatch/RunAccessibility entrypoints (tests/batch 91 green with prepared default-on), not yet through an installed wheel"
   },
-  "forward_criteria_note": "regression counts (91/107/22) are this review's actual reruns on the increment-A tree, not carried-forward claims; identity suite (47, numba 0.67.0) receipt from cb023d4 remains valid because no src bytes changed — not re-run here",
+  "regression_scope_note": "the increment-B Topology diff touches the produced path (validation extraction into batch/prepared.py as the single source + prepared integration), so the full local battery was re-run: cache 162 / execution 107 / batch 91 / identity 47 / post_p00 30 — all green on the same tree",
   "heavy_budget_charged": 0
 }

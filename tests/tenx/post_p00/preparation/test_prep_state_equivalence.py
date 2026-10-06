@@ -19,6 +19,16 @@ import pytest
 
 from urban_network_analysis.Topology import Topology
 
+
+@pytest.fixture(autouse=True)
+def _prepared_off(monkeypatch):
+    """This module certifies the STAGE-cache restore path.  The prepared
+    layer (increment B) short-circuits BEFORE stage lookups when enabled,
+    which would starve the served-hit observables below — pin it off for
+    this module's stage-cache evidence."""
+    monkeypatch.setenv("UNA_PREPARED", "0")
+
+
 LAYERS = ("network", "origins", "destinations")
 
 NETWORK_ARRAYS = (

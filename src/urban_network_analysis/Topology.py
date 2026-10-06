@@ -46,6 +46,18 @@ from . import __version__ as _PACKAGE_VERSION
 from .cache import identity as _ckid
 from .cache.stages import stage_cache_for as _stage_cache_for
 
+# Worker-local prepared-layer reuse (una_10x P02 increment B; contract
+# campaigns/una_10x/tenx-20261005T2331Z/p02d/prepared_contract.json).
+# One-way import: prepared reaches back into this module only lazily at
+# call time, never at import time.  The geometry-validation helpers moved
+# verbatim into prepared.py so produced and prepared paths share one
+# source (chronology law).
+from .batch.prepared import (
+    validate_network_gdf as _validate_network_gdf,
+    validate_point_gdf as _validate_point_gdf,
+)
+from .batch import prepared as _prepared
+
 # ─────────────────────────────────────────────────────────────────────────
 # Stage-cache support (CACHE_GRAPH).  All helpers are private; when the
 # run's CacheOptions are mode='off' every call site takes the original
@@ -226,12 +238,29 @@ class Topology:
         cache = _stage_cache_for(self.cache_options)
         net_key = None
         snapshot = None
+
+        # ── prepared worker-local reuse (una_10x P02 increment B):
+        #    .geojson-first admission; identity over the exact file bytes +
+        #    producer-read params + profile + env (never path/mtime).
+        #    Unadmitted routes (disabled, other formats) skip this block
+        #    byte-for-byte and run the produced path below.
+        prep_req = _prepared.topology_request(source_file, settings)
+        if prep_req is not None:
+            bundle = _prepared.acquire(prep_req)
+            if bundle is not None:
+                _prepared.restore_topology(self, prep_req, bundle)
+                return
+            snapshot = prep_req.snapshot  # decode the pinned bytes
+
         if cache.enabled:
-            # Snapshot once: the digest that keys the stage is taken over
-            # the SAME bytes the miss path decodes (dossier 06 TOCTOU rule).
-            snapshot = _read_snapshot(source_file)
+            if snapshot is None:
+                # Snapshot once: the digest that keys the stage is taken over
+                # the SAME bytes the miss path decodes (dossier 06 TOCTOU rule).
+                snapshot = _read_snapshot(source_file)
             net_key = _ckid.stage_key("una:topology:v1", {
-                "file_sha256": _ckid.file_digest(snapshot),
+                "file_sha256": (prep_req.file_sha256
+                                if prep_req is not None
+                                else _ckid.file_digest(snapshot)),
                 "params": {
                     "network_weight_column": str(network_cost),
                     "network_precision": int(settings.network_precision),
@@ -245,6 +274,14 @@ class Topology:
             hit = cache.get_arrays(net_key)
             if hit is not None:
                 self._restore_network_from_cache(source_file, hit)
+                if prep_req is not None:
+                    m = hit.metadata
+                    _prepared.publish_topology(
+                        prep_req, self.network, None, crs=self.crs,
+                        weight_warning=m.get("weight_warning"),
+                        n_empty_removed=int(m.get("n_empty_removed") or 0),
+                        n_nodes=int(m["n_nodes"]), n_edges=int(m["n_edges"]),
+                        n_input_features=int(m["n_input_features"]))
                 return
 
         if snapshot is not None:
@@ -252,23 +289,7 @@ class Topology:
             snapshot = None  # decoded — the snapshot bytes are released
         else:
             gdf = self._get_gdf(source_file, keep_columns=None)
-        invalid_types = gdf.geometry.geom_type[gdf.geometry.geom_type != 'LineString'].unique().tolist()
-        if invalid_types:
-            # geom_type is NaN (a float) for features with missing/null
-            # geometry — cast to str so the message itself never crashes,
-            # and name the null-geometry case explicitly since it is the
-            # most common cause.
-            type_names = ', '.join(
-                'missing/null geometry' if not isinstance(x, str) else x
-                for x in invalid_types)
-            n_null = int(gdf.geometry.isna().sum() + gdf.geometry.is_empty.fillna(False).sum())
-            raise ValueError(
-                f"Network file must contain LineString (line/polyline) geometries, "
-                f"but the file contains: {type_names}"
-                + (f" ({n_null} feature(s) with missing/empty geometry — drop them "
-                   f"before loading)" if n_null else "")
-                + ". Please provide a file with line or polyline geometries."
-            )
+        _validate_network_gdf(gdf)
         self.crs = gdf.crs
         if self.crs is None:
             self.logger.log("Network added", "Warning: Network file has no CRS defined.", v=1)
@@ -321,6 +342,14 @@ class Topology:
                 cache, net_key, gdf,
                 weight_warning=cache_weight_warning,
                 no_crs=(self.crs is None))
+        if prep_req is not None:
+            _prepared.publish_topology(
+                prep_req, self.network, gdf, crs=self.crs,
+                weight_warning=cache_weight_warning,
+                n_empty_removed=int(len(gdf) - len(self.network.geometry)),
+                n_nodes=int(self.network.node_points.shape[0]),
+                n_edges=int(len(self.network.weights)),
+                n_input_features=int(len(gdf)))
 
         self.logger.log('create topology', f"edge_list_dict created", v=2)
 
@@ -551,7 +580,30 @@ class Topology:
 
         if not os.path.isfile(source_file):
             raise FileNotFoundError(f"Origins file not found: {source_file}")
-        self.origins = self.BuildAccessPoints(source_file, cost_attribute, default_cost, uid_attribute, label="Origins")
+
+        # ── prepared worker-local reuse (una_10x P02 increment B): the
+        #    snap identity chains the parent network stage key; a miss
+        #    falls through to the produced BuildAccessPoints path with the
+        #    already-pinned snapshot bytes (TOCTOU discipline).
+        prep_req = _prepared.snap_request(self, source_file, cost_attribute,
+                                          default_cost, uid_attribute)
+        if prep_req is not None:
+            bundle = _prepared.acquire(prep_req)
+            if bundle is not None:
+                self.origins = _prepared.restore_access_points(
+                    self, prep_req, bundle, label="Origins")
+                self.has_clusters = False
+                self.logger.log("Origins added",
+                                f"Origins added from source {source_file}, "
+                                f"with {len(self.origins.geometry)} points.",
+                                v=1)
+                return
+
+        self.origins = self.BuildAccessPoints(
+            source_file, cost_attribute, default_cost, uid_attribute,
+            label="Origins", snapshot=(prep_req.snapshot
+                                       if prep_req is not None else None),
+            _prepared_req=prep_req)
         # Cluster assignments are derived from the loaded layers — a fresh
         # origins object has no clasters_byId, so any previously built
         # clusters are invalid. Reset the flag so engines rebuild them
@@ -570,7 +622,27 @@ class Topology:
 
         if not os.path.isfile(source_file):
             raise FileNotFoundError(f"Destinations file not found: {source_file}")
-        self.destinations = self.BuildAccessPoints(source_file, cost_attribute, default_cost, uid_attribute, label="Destinations")
+
+        # ── prepared worker-local reuse (see AddOrigins).
+        prep_req = _prepared.snap_request(self, source_file, cost_attribute,
+                                          default_cost, uid_attribute)
+        if prep_req is not None:
+            bundle = _prepared.acquire(prep_req)
+            if bundle is not None:
+                self.destinations = _prepared.restore_access_points(
+                    self, prep_req, bundle, label="Destinations")
+                self.has_clusters = False
+                self.logger.log(
+                    "Destinations added",
+                    f"Destinations added from source {source_file}, "
+                    f"with {len(self.destinations.geometry)} points.", v=1)
+                return
+
+        self.destinations = self.BuildAccessPoints(
+            source_file, cost_attribute, default_cost, uid_attribute,
+            label="Destinations",
+            snapshot=(prep_req.snapshot if prep_req is not None else None),
+            _prepared_req=prep_req)
         # Fresh destinations invalidate previously built clusters (see
         # AddOrigins) — force a rebuild on the next clustered run.
         self.has_clusters = False
@@ -982,7 +1054,7 @@ class Topology:
             store_zero_penalties=store_zero_penalties,
         )
 
-    def BuildAccessPoints(self, source_file : str, cost_attribute: str = "Count", default_cost: float = 1, uid_attribute: str = None, label: str = "Access points", snapshot: bytes = None) -> AccessPoints:
+    def BuildAccessPoints(self, source_file : str, cost_attribute: str = "Count", default_cost: float = 1, uid_attribute: str = None, label: str = "Access points", snapshot: bytes = None, _prepared_req=None) -> AccessPoints:
 
 
         """
@@ -1030,32 +1102,23 @@ class Topology:
             })
             hit = cache.get_arrays(snap_key)
             if hit is not None:
-                return self._restore_access_points_from_cache(hit,
-                                                              source_file)
+                pt = self._restore_access_points_from_cache(hit,
+                                                            source_file)
+                if _prepared_req is not None:
+                    m = hit.metadata
+                    _prepared.publish_access_points(
+                        _prepared_req, pt,
+                        log_extras=[tuple(x) for x in
+                                    m.get("log_extras", [])],
+                        n_points=len(pt.geometry))
+                return pt
 
         if snapshot is not None:
             gdf = _decode_snapshot_gdf(source_file, snapshot, None)
             snapshot = None
         else:
             gdf = self._get_gdf(source_file, keep_columns=None)
-        invalid_types = gdf.geometry.geom_type[gdf.geometry.geom_type != 'Point'].unique().tolist()
-        if invalid_types:
-            raise ValueError(
-                f"{label} file must contain Point geometries, "
-                f"but the file contains: {', '.join(invalid_types)}. "
-                f"Please provide a file with point geometries."
-            )
-        if self.crs is not None:
-            if gdf.crs is None:
-                raise ValueError(
-                    f"{label} file has no CRS defined, but network CRS is {self.crs}. "
-                    f"Please assign CRS {self.crs} to the file before loading."
-                )
-            elif not gdf.crs.equals(self.crs):
-                raise ValueError(
-                    f"{label} file CRS ({gdf.crs}) does not match network CRS ({self.crs}). "
-                    f"Please reproject to {self.crs} before loading."
-                )
+        _validate_point_gdf(gdf, label, self.crs)
         gdf = gdf.reset_index(drop=True)
         
         self.logger.log("Build AccessPoints", f"Access points are built from source {source_file}, with {len(gdf)} points.", v=1)  
@@ -1188,6 +1251,10 @@ class Topology:
                 self._store_access_points_to_cache(
                     cache, snap_key, pt,
                     n_points=len(gdf), log_extras=cache_log_extras)
+            if _prepared_req is not None:
+                _prepared.publish_access_points(
+                    _prepared_req, pt, log_extras=cache_log_extras,
+                    n_points=len(gdf))
             return pt
 
         else:
@@ -1197,6 +1264,10 @@ class Topology:
             self._store_access_points_to_cache(
                 cache, snap_key, pt,
                 n_points=len(gdf), log_extras=cache_log_extras)
+        if _prepared_req is not None:
+            _prepared.publish_access_points(
+                _prepared_req, pt, log_extras=cache_log_extras,
+                n_points=len(gdf))
         return pt
 
     def Evaluate(self, raise_on_error: bool = False) -> dict:

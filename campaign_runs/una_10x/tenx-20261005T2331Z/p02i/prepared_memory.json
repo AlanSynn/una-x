@@ -1,16 +1,23 @@
 {
   "schema": "una-10x-p02i-memory-1",
   "task": "P02I",
-  "increment": "A",
-  "generated": "2026-10-06",
-  "status": "NO_RUNTIME_SURFACE_YET",
-  "statement": "Increment A adds no runtime allocation, lease, or payload: there is no prepared store, no worker-local cache, and no lease table in this increment. The produced path's memory behavior is unchanged (src diff empty). These are the memory laws increments B/C must satisfy when the surface exists, recorded now as the design posture:",
-  "memory_laws_for_B_C": {
-    "immutable_leases": "prepared payloads are immutable and shared; leases never expose public mutable aliasing (CLAUDE.md); consumers materialize independent ordinary objects BEFORE leases close (designs/02:103-104)",
-    "per_consumer_copies": "wherever the produced path defensively copies (network.weights from lengths, Topology.py:284), the prepared path hands each consumer its own copy",
-    "budget_respect": "prepared payloads count against execution.memory_limit_bytes / workspace_limit_bytes like every other retained artifact; PP09 (small budget, many distinct roots, eviction with live leases) is the C-increment acceptance fixture",
-    "no_pointer_transport": "GDALDataset/GEOS/STRtree pointers and open native handles are never transported across processes (designs/02:94-95); restored geometries are rebuilt bytes, derived sindex rebuilt per consumer (fixture-proven query parity)",
-    "measurement_duty": "prepared_memory.json gains actual caps/lease measurements in B (worker-local) and C (run-wide): payload sizes for the admitted cohort shapes, lease table overhead, eviction behavior"
+  "increment": "B",
+  "generated": "2026-10-05",
+  "status": "WORKER_LOCAL_SURFACE_MEASURED_ON_SMOKE_SHAPES",
+  "surface": "one process-global table (dict) of immutable bundles; payloads are private copies isolated from producing and consuming rows (publish-side AND restore-side copies)",
+  "measured_on_smoke_shapes": {
+    "probe": "python one-off on tests/execution/fixtures via the public Add* path with UNA_PREPARED=1 (command recorded in git history; figures below are tool output)",
+    "topology_bundle": {"n_edges": 17, "n_nodes": 12, "arrays_total_bytes": 1240, "geometry_wkb_bytes": 697, "input_gdf_memory_bytes": 540, "arrays_breakdown_bytes": {"lengths": 136, "weights": 136, "node_points": 192, "start_nodes": 68, "end_nodes": 68, "degrees": 96, "z": 0, "start_degrees": 136, "end_degrees": 136, "min_degrees": 136, "max_degrees": 136}},
+    "snap_bundle_origins": {"n_points": 2, "arrays_total_bytes": 96, "geometry_wkb_bytes": 42, "snapped": true},
+    "snap_bundle_destinations": {"n_points": 1, "arrays_total_bytes": 48, "geometry_wkb_bytes": 21, "snapped": true},
+    "reading": "payload size ~= the decoded layer itself (arrays + WKB-equivalent geometry bulk); per-consumer restore copies are the same order again per served row, which is what the produced path allocated anyway (fresh decode per row)"
+  },
+  "laws_as_implemented_in_B": {
+    "immutable_leases": "payloads are written once at publish (post-success) and never mutated afterwards; bundles are only replaced, never edited",
+    "per_consumer_copies": "every served array/GeoSeries/GeoDataFrame is a fresh copy (PP02 asserts `is not` against the previous row AND the lease payload)",
+    "budget_respect": "the worker-local table is UNBOUNDED in this increment by design: batch cohorts are bounded row sets and the payload is the decoded layer; growth policy/eviction under live leases is increment C's PP09 duty. No execution.memory_limit_bytes accounting is claimed yet — claiming it without a mechanism would be a false receipt",
+    "no_pointer_transport": "worker-local only: nothing crosses a process boundary; geometries travel as live GeoSeries within the process (stage-cache WKB discipline remains for the disk store); derived sindex rebuilt per consumer (PP02/asserted via stage-cache equivalence and query parity in increment A)",
+    "measurement_duty": "cohort-shape payload measurements (the 32-job observed cohort) are due with the P05/P03 measured runs; smoke-shape figures above establish the scaling law (payload ~ decoded layer), not the cohort figure"
   },
   "heavy_budget_charged": 0
 }

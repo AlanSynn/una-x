@@ -1,16 +1,27 @@
 {
   "schema": "una-10x-p02i-engagement-1",
   "task": "P02I",
-  "increment": "A",
-  "generated": "2026-10-06",
-  "engagement": "NONE — by design",
-  "statement": "Increment A lands evidence only. No dispatch change exists: RunAccessibility/Add* call sequences are byte-identical to base d20f5d6, no batch/prepared.py module exists yet, and no public or private admission path consults any prepared store. Every public RunBatch row still re-reads and re-parses all inputs exactly as before — zero behavioral engagement, zero performance claim.",
-  "what_increment_A_proves": {
-    "reader_routes": "the two in-repo reader routes (uncached _get_gdf and snapshot/decode) are frame-identical for .geojson/.feather/.parquet (contract layer 1-2 precondition)",
-    "serializer_coverage": "the existing topology stage-cache serializers round-trip the FULL engine-consumed state surface (audit §4 census) for network and both access-point roles — the errata's 'existence != full state coverage' objection is answered with fixtures for these layers",
-    "identity_guards": "uid-dtype skip-store observable and TOCTOU snapshot pins behave exactly as the contract's invalidation_matrix requires",
-    "supported_formats_evidence": "all three admitted formats now have reader-equivalence conformance evidence; .geojson-first ENGAGEMENT order is unchanged (formats engage as prepared only in increments B/C with per-format fixtures behind them)"
+  "increment": "B (worker-local reuse) — A was engagement-NONE by design",
+  "generated": "2026-10-05",
+  "engagement": "PUBLIC-PATH, DEFAULT-ON, GUARDED",
+  "statement": "Increment B engages the unchanged public path: RunBatch rows call RunAccessibility -> AddNetwork/AddOrigins/AddDestinations exactly as before; inside those calls an admitted .geojson input is now served from a worker-local prepared table after its exact bytes are re-read and re-hashed. No dispatch change, no second entrypoint, no benchmark-only constructor, no public-API reduction (BuildAccessPoints gained a private, default-None `_prepared_req` kwarg used only by the Add* wrappers).",
+  "admission_and_gating": {
+    "formats": ".geojson ONLY in this increment (.geojson-first per contract admission_domain and designs/02); feather/parquet rows are requests==0 and run the produced path (fixture-pinned)",
+    "kill_switch": "UNA_PREPARED=0 disables admission entirely (fixture-pinned: zero requests, produced results unchanged) — the paired-control lever for later measured runs",
+    "scope_guards": "empty layers refused at publish (produced path handles them); a produced failure never publishes; network without a stage identity -> snap layers unadmitted (produced path)",
+    "identity": "closure over snapshot sha256 + producer-read params + profile + env (mirrors una:topology:v1 / una:snap:v1 field-for-field); snap chains parent network stage; path/mtime never consulted (PP03 rewrites bytes under a preserved mtime and must miss)"
   },
-  "no_bypass_compliance": "no benchmark-only constructor, no second entrypoint, no public-API reduction; unsupported routes are not routed anywhere new — they run the produced path because nothing else exists",
-  "next": "increment B (worker-local reuse) implements batch/prepared.py + Topology integration behind the private seam prepare_request/acquire_prepared/restore_network/restore_points, gated on these fixtures"
+  "what_serving_changes_for_a_row": {
+    "skipped_on_hit": "pyogrio/arrow decode AND the snap sindex/line_locate_point/interpolate work",
+    "still_runs_on_hit": "the per-row file read + sha256 (identity law), geometry validation via the SAME helpers the produced path calls (fail-closed on corrupted payloads, fixture-pinned with produced-identical error text), CRS-vs-network validation, content-derived log replay in produced order",
+    "state_handed_to_consumers": "fresh copies of every array/GeoSeries/GeoDataFrame the produced path would have freshly built; the lease payload is never handed out (publish-side and restore-side copies both fixture-pinned)",
+    "downstream_key_completeness": "prepared publish records the composed una:topology:v1 / una:snap:v1 identity on the object in every path, so engine o_access keys (which chain origins/destinations._stage_key) stay complete regardless of serving path"
+  },
+  "interaction_with_stage_cache": {
+    "coexistence": "fixture-pinned: prepared serves first (short-circuit), stage-cache counters do not move on prepared-served rows, stage identities identical across serving paths",
+    "stage_conformance_suites": "tests/cache runs with UNA_PREPARED=0 via tests/cache/conftest.py because those suites certify STAGE-cache served-hit observables; prepared semantics live in the preparation suite. Misuse risk: none — prepared-off is the exact pre-B code path"
+  },
+  "measured_public_claim_duty": "no performance claim is filed with this increment; the 10x PUBLIC boundary measurement happens at the P05 gate under the frozen policy with paired controls (kill switch provides the prepared-off arm)",
+  "next": "increment C (run-wide single-flight per immutable dependency identity, PP05-PP09, budget/eviction under live leases)",
+  "heavy_budget_charged": 0
 }

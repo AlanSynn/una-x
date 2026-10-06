@@ -1,20 +1,33 @@
 {
   "schema": "una-10x-p02i-source-commit-1",
   "task": "P02I",
-  "increment": "A",
-  "generated": "2026-10-06",
-  "base_commit": "d20f5d68db49900bde876097b72a645cf244f6f2 (P02D accepted contract)",
-  "src_delta_vs_base": "EMPTY — increment A is evidence-only: reader/state equivalence fixtures, no dispatch change, no produced-path code touched (git diff --stat HEAD -- src/ is empty)",
+  "increment": "A+B",
+  "generated": "2026-10-05",
+  "base_commit": "5653f21 (P02I increment A commit; contract authority d20f5d68db49900bde876097b72a645cf244f6f2)",
+  "src_delta_vs_increment_A": {
+    "added": ["src/urban_network_analysis/batch/prepared.py (worker-local prepared reuse: request/admission, acquire with refuse-different-bytes, restore with per-consumer copies and produced log chronology, publish with lease isolation; validation helpers moved here verbatim from Topology as the single source shared by both paths)"],
+    "modified": ["src/urban_network_analysis/Topology.py (+115/-44): import of prepared; AddNetwork prepared request/hit/restore before the stage-cache branch with snapshot reuse; publish on both the stage-hit and produce paths; BuildAccessPoints private _prepared_req kwarg + publish on the stage-hit and both produce return sites; AddOrigins/AddDestinations prepared attempt with pinned-snapshot fall-through; geometry validation call sites now call the shared helpers in batch/prepared.py"]
+  },
   "deliverable_files": {
+    "src/urban_network_analysis/batch/prepared.py": "7650f3f6989a9c87af82f4ea00aeb6e186b742745006bd2f07889832abaa9882",
+    "src/urban_network_analysis/Topology.py": "347cef915d4f76d0db21f4fc1519e2d6c06c2fcc1b08f53aeca69168a0176655",
     "tests/tenx/post_p00/preparation/conftest.py": "d3f74e23f4eaa998ae9a58aa2a040d4ba0bdd28e819798beee1d7d86b52471a5",
     "tests/tenx/post_p00/preparation/test_prep_reader_equivalence.py": "58e124e4c655c9a3ab3c14ca6d479012025a9843ddca6dd75762b33385ba5fdf",
-    "tests/tenx/post_p00/preparation/test_prep_state_equivalence.py": "340cbda520cfce9a8845c45e61e208dcac89d126be3e2df6062076b12dd563b8"
+    "tests/tenx/post_p00/preparation/test_prep_state_equivalence.py": "1887c1559c227c79ec01a2dafadf1b3bcb8b26de5177ba015a18aecd48290971",
+    "tests/tenx/post_p00/preparation/test_prep_worker_reuse.py": "7ce9c00856d62eb131037f915131178e5c1cd8d8ae6077fbf5db61d754334e3c",
+    "tests/cache/conftest.py": "7e11045a39c5fcfb85ef41ad5be140bffd561f6195749237c41e6dfa88a9e26c"
   },
+  "test_file_changes_vs_increment_A": {
+    "test_prep_state_equivalence.py": "adds an autouse UNA_PREPARED=0 pin — the module certifies STAGE-cache restore semantics, and the prepared layer (default-on) short-circuits before stage lookups; no assertion changed",
+    "tests/cache/conftest.py": "NEW shared pin for the stage-cache conformance suites (same rationale, module docstring records it)",
+    "test_prep_worker_reuse.py": "NEW increment-B acceptance: PP02/PP03/PP04 + chronology/validation-on-hit + kill switch + .geojson-first admission + stage-cache coexistence"
+  },
+  "design_decision_layer_chained_identity": "snap identities chain the parent network stage key (mirroring una:snap:v1's parent_network_stage closure), so dependency invalidation is exact per layer: an origins-only param change re-keys origins only (destinations rides, network rides); a network param/bytes change re-keys all three (PP04). Prepared admission records the composed una:topology:v1 / una:snap:v1 identity on the object in EVERY path (including store refusals) — required because engine o_access keys chain origins/destinations._stage_key (Accessibility.py:770-772, AccessibilityWElevation.py:854-856); safe because those keys are only consumed when the engine cache is enabled, in which case the produced path already set the same deterministic key.",
   "contract_authority": {
     "contract": "campaign_runs/una_10x/tenx-20261005T2331Z/p02d/prepared_contract.json (sha256 8f01b4e3d6ea72ba21e669cc3a83476dca65d9db7d4731dac1a378eb7f75679b, rules unchanged from reviewed bytes 047e5079...; post_review provenance only)",
     "proof_review": "campaign_runs/una_10x/tenx-20261005T2331Z/p02d/prepared_proof_review.json (ACCEPT_WITH_NOTES, 0 blocking)",
     "audit": "campaign_runs/una_10x/tenx-20261005T2331Z/p02d/prepared_consumer_audit.md"
   },
   "environment": "local venv venv-p01m (python3.11, editable install, numba pinned 0.67.0); no cluster allocation consumed; heavy_budget_charged 0",
-  "increments_pending": ["B worker-local reuse", "C run-wide single-flight per immutable dependency identity"]
+  "increments_pending": ["C run-wide single-flight per immutable dependency identity (PP05-PP09, budget/eviction under live leases)"]
 }
