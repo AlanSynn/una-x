@@ -1,87 +1,115 @@
 {
-  "schema": "una-10x-budget-reconciliation-1",
-  "run_id": "tenx-20261005T2331Z",
-  "law": "campaign.json: heavy_budget_seconds=28800, final_reserved_seconds=7200, resume_budget_policy='carry prior usage; do not reset'",
-  "prior_ledger_as_recorded_seconds": 2223.47,
-  "prior_ledger_source": "p00_receipt.json budget block (h01_supervised_walls_s=344.87 + p00_child_process_walls_s=1878.6; 15 charged run ids listed there)",
-  "prior_ledger_components": {
-    "h01_supervised_walls_s": 344.87,
-    "p00_child_process_walls_s": 1878.6
+ "schema": "una-10x-budget-reconciliation-1",
+ "run_id": "tenx-20261005T2331Z",
+ "law": "campaign.json: heavy_budget_seconds=28800, final_reserved_seconds=7200, resume_budget_policy='carry prior usage; do not reset'",
+ "prior_ledger_as_recorded_seconds": 2223.47,
+ "prior_ledger_source": "p00_receipt.json budget block (h01_supervised_walls_s=344.87 + p00_child_process_walls_s=1878.6; 15 charged run ids listed there)",
+ "prior_ledger_components": {
+  "h01_supervised_walls_s": 344.87,
+  "p00_child_process_walls_s": 1878.6
+ },
+ "supervisor_walls_observed_but_not_in_p00_ledger_seconds": {
+  "flow_supervisor": 55.99,
+  "obs_single_supervisor": 16.15,
+  "smoke_supervisor": 32.86,
+  "fault_supervisor": 160.8,
+  "sum": 265.8,
+  "note": "recorded for transparency; NOT silently merged into the ledger \u2014 basis difference left to the performance owner"
+ },
+ "w00_calibration_receipts": "not present locally; W00 deliverables (PRIMARY.json/WORKLOADS.json/baseline_stage_model.json) live in the remote run root \u2014 any W00 heavy consumption is inside the P00-ledger basis or unknown_pending_remote",
+ "remaining_work_budget_seconds": 25004.617381,
+ "final_reserved_seconds": 7200,
+ "reset": false,
+ "this_run_consumption_so_far_seconds": 1571.9126186250935,
+ "note": "all values transcribed from committed receipts, not recomputed; ledger only grows",
+ "consumption_log_2026_10_06": {
+  "law": "ledger only grows; walls are committed per-leg public_call_wall_s figures",
+  "shakedown_legs_committed_at_85f157f_s": {
+   "shakedown_base_serial_off": 14.8397,
+   "det2": 5.1195,
+   "disk_cold2": 3.3115,
+   "disk_warm2": 0.7716,
+   "sum": 24.0423
   },
-  "supervisor_walls_observed_but_not_in_p00_ledger_seconds": {
-    "flow_supervisor": 55.99,
-    "obs_single_supervisor": 16.15,
-    "smoke_supervisor": 32.86,
-    "fault_supervisor": 160.8,
-    "sum": 265.8,
-    "note": "recorded for transparency; NOT silently merged into the ledger \u2014 basis difference left to the performance owner"
+  "local_measured_legs_s": {
+   "warmup_untimed_duty": 19.4986,
+   "seven_measured_legs_sum": 330.9916,
+   "detail": "see baseline_policy_audit.json measured_legs_local_2026_10_06"
   },
-  "w00_calibration_receipts": "not present locally; W00 deliverables (PRIMARY.json/WORKLOADS.json/baseline_stage_model.json) live in the remote run root \u2014 any W00 heavy consumption is inside the P00-ledger basis or unknown_pending_remote",
-  "remaining_work_budget_seconds": 25139.061781,
-  "final_reserved_seconds": 7200,
-  "reset": false,
-  "this_run_consumption_so_far_seconds": 1437.4682186250934,
-  "note": "all values transcribed from committed receipts, not recomputed; ledger only grows",
-  "consumption_log_2026_10_06": {
-    "law": "ledger only grows; walls are committed per-leg public_call_wall_s figures",
-    "shakedown_legs_committed_at_85f157f_s": {
-      "shakedown_base_serial_off": 14.8397,
-      "det2": 5.1195,
-      "disk_cold2": 3.3115,
-      "disk_warm2": 0.7716,
-      "sum": 24.0423
-    },
-    "local_measured_legs_s": {
-      "warmup_untimed_duty": 19.4986,
-      "seven_measured_legs_sum": 330.9916,
-      "detail": "see baseline_policy_audit.json measured_legs_local_2026_10_06"
-    },
-    "session_total_s": 1437.4682186250934,
-    "cumulative_ledger_s": 3660.938219,
-    "superseded_first_disk_shakedown_attempt": "wall not recorded (superseded pre-record); unquantified residue disclosed",
-    "p04i_legs_s": {
-      "law": "public_call_wall_s figures transcribed from the four profile console outputs; spy diagnostic legs estimated (no public-call timer, 6-row w2 runs, bounded above at 5s each)",
-      "profile_legs_s": [
-        15.6228,
-        14.6877,
-        15.0288,
-        16.4229
-      ],
-      "profile_legs_sum_s": 61.76219999999999,
-      "spy_diagnostic_legs_est_s": [
-        5.0,
-        5.0
-      ],
-      "p04i_total_s": 71.76219999999999,
-      "verdict": "not_admitted"
-    },
-    "p05s_screen_legs_s": {
-      "law": "walls transcribed from legs/*.json produced by run_screen_leg.py; discarded fires counted separately",
-      "screen_leg_walls_sum_s": 642.0545000000001,
-      "leg_count": 23,
-      "discarded_fire_legs_s": [
-        52.0691,
-        41.8032,
-        39.1601
-      ],
-      "discarded_sum_s": 133.0324,
-      "p05s_total_s": 775.0869
-    },
-    "f00_flow_admission_legs_s": {
-      "law": "walls read back from f00/legs/*.json public_wall_s (the committed evidence is internally consistent: flow_admission.json = leg JSON = console). Agent RELAY drift note: the teammate message quoted leg B as 69.514758 while the committed bytes are 69.51479954179376 (4.2e-5 prose drift; A/C/S0 were 6-dp roundings only). The ledger records the byte values. Shakedown S0 consumed-never-claimed but still ledgered. Host was co-tenanted (loadavg 11.9-25.3) so these walls are NOT frozen benchmark figures - the not_admitted verdict is fraction-based and robust (flow_admission.json observation 1)",
-      "leg_walls_s": {
-        "S0": 7.080076792277396,
-        "A": 69.83623462496325,
-        "B": 69.51479954179376,
-        "C": 69.65550766605884
-      },
-      "f00_total_s": 216.08661862509325,
-      "verdict": "not_admitted (sparse_output_producer + ordered_update_tape)",
-      "evidence": "f00/flow_admission.json sha 54d4ead4a49d464f3e2d2dbcc6299d11063b9df94c67f52be2e1dff78ff2b26e",
-      "commits": [
-        "83f193a",
-        "84e4b25"
-      ]
-    }
+  "session_total_s": 1437.4682186250934,
+  "cumulative_ledger_s": 3660.938219,
+  "superseded_first_disk_shakedown_attempt": "wall not recorded (superseded pre-record); unquantified residue disclosed",
+  "p04i_legs_s": {
+   "law": "public_call_wall_s figures transcribed from the four profile console outputs; spy diagnostic legs estimated (no public-call timer, 6-row w2 runs, bounded above at 5s each)",
+   "profile_legs_s": [
+    15.6228,
+    14.6877,
+    15.0288,
+    16.4229
+   ],
+   "profile_legs_sum_s": 61.76219999999999,
+   "spy_diagnostic_legs_est_s": [
+    5.0,
+    5.0
+   ],
+   "p04i_total_s": 71.76219999999999,
+   "verdict": "not_admitted"
+  },
+  "p05s_screen_legs_s": {
+   "law": "walls transcribed from legs/*.json produced by run_screen_leg.py; discarded fires counted separately",
+   "screen_leg_walls_sum_s": 642.0545000000001,
+   "leg_count": 23,
+   "discarded_fire_legs_s": [
+    52.0691,
+    41.8032,
+    39.1601
+   ],
+   "discarded_sum_s": 133.0324,
+   "p05s_total_s": 775.0869
+  },
+  "f00_flow_admission_legs_s": {
+   "law": "walls read back from f00/legs/*.json public_wall_s (the committed evidence is internally consistent: flow_admission.json = leg JSON = console). Agent RELAY drift note: the teammate message quoted leg B as 69.514758 while the committed bytes are 69.51479954179376 (4.2e-5 prose drift; A/C/S0 were 6-dp roundings only). The ledger records the byte values. Shakedown S0 consumed-never-claimed but still ledgered. Host was co-tenanted (loadavg 11.9-25.3) so these walls are NOT frozen benchmark figures - the not_admitted verdict is fraction-based and robust (flow_admission.json observation 1)",
+   "leg_walls_s": {
+    "S0": 7.080076792277396,
+    "A": 69.83623462496325,
+    "B": 69.51479954179376,
+    "C": 69.65550766605884
+   },
+   "f00_total_s": 216.08661862509325,
+   "verdict": "not_admitted (sparse_output_producer + ordered_update_tape)",
+   "evidence": "f00/flow_admission.json sha 54d4ead4a49d464f3e2d2dbcc6299d11063b9df94c67f52be2e1dff78ff2b26e",
+   "commits": [
+    "83f193a",
+    "84e4b25"
+   ]
   }
+ },
+ "consumption_log_2026_10_07": {
+  "law": "ledger only grows; walls are committed per-leg public_call_wall_s figures",
+  "n00_native_engineering_timed_public_call_legs_s": {
+   "headchain": "65a080e -> 3b55dd2 -> b630674 (all legs at those heads; matrix at 3b55dd28db7d9bcf7a2de444bc5f09e304149570)",
+   "matrix_legs_s": {
+    "L2A1_numba.json": 15.1751,
+    "L1B1_native.json": 12.5244,
+    "L2A2_numba.json": 15.7252,
+    "L1B2_native.json": 16.2113
+   },
+   "matrix_sum_s": 59.636,
+   "void_fire1_gateTrip_leg_s": 17.6834,
+   "void_status": "leg VOID by instrument-pin gate trip (preserved as L2A1_numba.void1_gateTrip.json; unclaimed as evidence, wall claimed in budget)",
+   "prior_shakedown_wire_legs_s": {
+    "sd_n00_numba.json": 15.9176,
+    "sd_n00_native.json": 13.0051,
+    "sd_wire_numba.json": 15.3373,
+    "sd_wire_native.json": 12.865
+   },
+   "prior_legs_sum_s": 57.125,
+   "n00_total_claimed_s": 134.4444,
+   "untimed_host_time_not_claimed": "4 wedged shakedown attempts (engine _cancel queue-wedge, SIGKILLed; task #20) and wedge-diagnosis runs",
+   "co_tenancy_caveat": "NOT frozen figures: n=2/arm matrix under ambient co-tenancy; loadavg gate (<8, 90-min bounded) held 3 legs (L1B1 1 sample/60s, L2A2 1 sample/60s, L1B2 6 samples/360s); in-run 1-min loadavg max L1B1 10.08, L2A2 12.76, L1B2 9.66, L2A1 8.26; L1B2 native 16.2113s fired after gate release from a 12.54 entry reading and is the known anomalous leg - no speed claim rests on it",
+   "headlines": "native==numba bitwise across all 4 matrix legs (64 files / 147829892 B census exact every leg); engagement exactly one native owner dispatch per native leg (origins 14751, tiles 231, candidates 90331, errors 0, last_status 0) and zero report lines on numba controls; impl_pin src byte-identical to e6920bfd70ed6d3801305264d8d1c864d1197b16, tests additive-only, tree clean"
+  },
+  "session_total_s": 1571.9126186250935,
+  "cumulative_ledger_s": 3795.382619
+ }
 }
