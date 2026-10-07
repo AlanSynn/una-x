@@ -1,0 +1,81 @@
+{
+ "schema": "una-10x-p03m-identity-v2-1",
+ "task": "P03M",
+ "generated": "2026-10-06",
+ "metric_id_schema_version": "una-10x-metricid-v2-1",
+ "metric_closure_version": 1,
+ "trace_schema_unchanged": "una-10x-c11-trace-1",
+ "binding_fields": [
+  "metric_id_schema",
+  "closure_version",
+  "trace_id",
+  "trace_schema_version",
+  "output_cast_reach_dtype",
+  "output_cast_metric_dtype",
+  "knn_decay_branch",
+  "profile",
+  "d_weights.dtype",
+  "d_weights.shape",
+  "d_weights.layout",
+  "d_weights.logical_order_bits",
+  "knn_weights.dtype",
+  "knn_weights.shape",
+  "knn_weights.layout",
+  "knn_weights.logical_order_bits",
+  "cutoff.dtype",
+  "cutoff.bits",
+  "gravity_beta.dtype",
+  "gravity_beta.bits",
+  "gravity_plateau.dtype",
+  "gravity_plateau.bits",
+  "gravity_logistic_midpoint.dtype",
+  "gravity_logistic_midpoint.bits",
+  "gravity_growth_rate.dtype",
+  "gravity_growth_rate.bits",
+  "fold_module_sha256",
+  "fold_qualname",
+  "fold_flags_parallel",
+  "fold_flags_cache",
+  "fold_flags_nogil",
+  "fold_flags_fastmath",
+  "numba_version",
+  "llvmlite_version",
+  "numpy_version",
+  "logical_reduction_plan"
+ ],
+ "e8_resolution": {
+  "v1_status": "REPORTING ONLY \u2014 float()-/float64-coercing (dtype-erasing); never consulted for reuse; disclosure wired at cohort.py construction",
+  "witnesses": [
+   {
+    "law": "int cutoff 800 vs float 800.0",
+    "v1_collides": true,
+    "v2_distinguishes": true
+   },
+   {
+    "law": "float32-exact knn_weights values, f32 vs f64",
+    "v1_collides": true,
+    "v2_distinguishes": true
+   }
+  ]
+ },
+ "refusal_enumeration": [
+  "complex dtypes",
+  "object arrays",
+  "non-ndarray weights",
+  "string scalars",
+  "python ints beyond signed 64-bit"
+ ],
+ "live_checks": {
+  "stable_within_process": true,
+  "negative_zero_beta_distinct": true,
+  "nan_payloads_distinct": true,
+  "one_ulp_beta_distinct": true,
+  "dtype_only_dweights_distinct": true,
+  "byteorder_only_distinct": true,
+  "layout_only_distinct": true,
+  "writability_distinct": true,
+  "float16_knn_encodable_distinct": true,
+  "fold_closure_binds_module_bytes": true
+ },
+ "all_checks_pass": true
+}

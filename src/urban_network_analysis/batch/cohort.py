@@ -80,6 +80,7 @@ from typing import Any, Dict, Optional, Tuple
 import numpy as np
 
 from ..cache import identity as _ckid
+from ..Engines import _metric_identity as _mid
 from ..Engines import _trace_access_scratch as trm
 from ..Execution import CacheOptions
 
@@ -193,6 +194,7 @@ class CohortSession:
         }
         self.last_trace_id: Optional[str] = None
         self.last_result_key: Optional[str] = None
+        self.last_metric_id: Optional[str] = None
 
     # -- per-row attribution -------------------------------------------------
 
@@ -231,6 +233,7 @@ class CohortSession:
             "replay_s": c["replay_s"] - before["replay_s"],
             "trace_id": self.last_trace_id,
             "result_key": self.last_result_key,
+            "metric_id": self.last_metric_id,
         }
 
     def _refuse(self, reason: str) -> None:
@@ -250,6 +253,7 @@ class CohortSession:
             self._refuse(f"exception:{type(exc).__name__}")
             self.last_trace_id = None
             self.last_result_key = None
+            self.last_metric_id = None
             return None
 
     def _o_access(self, view, engine, settings, d_weights):
@@ -301,6 +305,16 @@ class CohortSession:
         # complete WITHOUT the stage-cache keys (which only exist when
         # the topology stage cache is enabled — mode 'off' is the
         # default, and the route must engage on default runs).
+        #
+        # E8 (C31 erratum, designs/04): this v1 key float64-coerces
+        # ``d_weights``/``knn_weights`` and float()-coerces every
+        # scalar — dtype-erasing (an int cutoff 800 and a float cutoff
+        # 800.0 collapse; non-float64 weight dtypes lose their type).
+        # The replay consumes the RAW arrays/scalars.  v1 is therefore
+        # a REPORTING key only (``last_result_key`` transport, batch
+        # report); it is NEVER consulted for reuse.  The authoritative
+        # identity is the typed MetricID v2 computed below, whose
+        # binding refuses inputs it cannot encode losslessly.
         try:
             result_key = _ckid.stage_key("una:cohort:o_access:v1", {
                 "trace_id": trace_id,
@@ -380,6 +394,28 @@ class CohortSession:
             finally:
                 if lease is not None:
                     lease.release()
+
+        # MetricID v2 (designs/04): authoritative typed reuse identity
+        # over the REAL replay argument bindings — the record the
+        # replay consumes (trace_id, output casts), raw-typed
+        # d_weights/knn_weights, exact scalar bits, layout
+        # specialization and the fold code closure.  A refusal here is
+        # NOT a route refusal: the row replays exactly as before — it
+        # merely carries no reuse identity (counted).
+        try:
+            self.last_metric_id = _mid.compute_metric_id(
+                rec, d_weights,
+                settings.gravity_beta,
+                settings.gravity_plateau,
+                settings.gravity_logistic_midpoint,
+                settings.gravity_decay_constant
+                / settings.gravity_logistic_midpoint,
+                settings.knn_decay,
+                settings.knn_weights,
+                cutoff)
+        except (TypeError, ValueError):
+            self.last_metric_id = None
+            self._refuse(_mid.METRIC_ID_REFUSAL)
 
         # Replay through the engine's own reviewed fold with o_access's
         # EXACT argument threading (raw knn_weights, same division).

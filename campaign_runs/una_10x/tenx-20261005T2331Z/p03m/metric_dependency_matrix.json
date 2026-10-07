@@ -1,0 +1,245 @@
+{
+ "schema": "una-10x-p03m-dependency-matrix-1",
+ "task": "P03M",
+ "generated": "2026-10-06",
+ "law": "designs/04: admission is a dependency proof; ONE dependency perturbed at a time; predictions derived from the fold source, outcomes bitwise",
+ "case": "C11 battery admitted 'base' case",
+ "rows": [
+  {
+   "dependency": "gravity_beta",
+   "knn_branch": "exponential",
+   "predicted_changed": [
+    "gravity_exponential",
+    "knn_access"
+   ],
+   "empirical_changed": [
+    "gravity_exponential",
+    "knn_access"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:83 (ge), AWE:104 (knn-exp)"
+  },
+  {
+   "dependency": "gravity_plateau",
+   "knn_branch": "exponential",
+   "predicted_changed": [
+    "gravity_exponential",
+    "gravity_logistic",
+    "knn_access"
+   ],
+   "empirical_changed": [
+    "gravity_exponential",
+    "gravity_logistic",
+    "knn_access"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:83/85/104/106"
+  },
+  {
+   "dependency": "gravity_logistic_midpoint",
+   "knn_branch": "exponential",
+   "predicted_changed": [
+    "gravity_logistic"
+   ],
+   "empirical_changed": [
+    "gravity_logistic"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:85/106"
+  },
+  {
+   "dependency": "gravity_growth_rate",
+   "knn_branch": "exponential",
+   "predicted_changed": [
+    "gravity_logistic"
+   ],
+   "empirical_changed": [
+    "gravity_logistic"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:85/106"
+  },
+  {
+   "dependency": "gravity_beta",
+   "knn_branch": "logistic",
+   "predicted_changed": [
+    "gravity_exponential"
+   ],
+   "empirical_changed": [
+    "gravity_exponential"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:83 (ge), AWE:104 (knn-exp)"
+  },
+  {
+   "dependency": "gravity_plateau",
+   "knn_branch": "logistic",
+   "predicted_changed": [
+    "gravity_exponential",
+    "gravity_logistic",
+    "knn_access"
+   ],
+   "empirical_changed": [
+    "gravity_exponential",
+    "gravity_logistic",
+    "knn_access"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:83/85/104/106"
+  },
+  {
+   "dependency": "gravity_logistic_midpoint",
+   "knn_branch": "logistic",
+   "predicted_changed": [
+    "gravity_logistic",
+    "knn_access"
+   ],
+   "empirical_changed": [
+    "gravity_logistic",
+    "knn_access"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:85/106"
+  },
+  {
+   "dependency": "gravity_growth_rate",
+   "knn_branch": "logistic",
+   "predicted_changed": [
+    "gravity_logistic",
+    "knn_access"
+   ],
+   "empirical_changed": [
+    "gravity_logistic",
+    "knn_access"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:85/106"
+  },
+  {
+   "dependency": "gravity_beta",
+   "knn_branch": "other",
+   "predicted_changed": [
+    "gravity_exponential"
+   ],
+   "empirical_changed": [
+    "gravity_exponential"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:83 (ge), AWE:104 (knn-exp)"
+  },
+  {
+   "dependency": "gravity_plateau",
+   "knn_branch": "other",
+   "predicted_changed": [
+    "gravity_exponential",
+    "gravity_logistic"
+   ],
+   "empirical_changed": [
+    "gravity_exponential",
+    "gravity_logistic"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:83/85/104/106"
+  },
+  {
+   "dependency": "gravity_logistic_midpoint",
+   "knn_branch": "other",
+   "predicted_changed": [
+    "gravity_logistic"
+   ],
+   "empirical_changed": [
+    "gravity_logistic"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:85/106"
+  },
+  {
+   "dependency": "gravity_growth_rate",
+   "knn_branch": "other",
+   "predicted_changed": [
+    "gravity_logistic"
+   ],
+   "empirical_changed": [
+    "gravity_logistic"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:85/106"
+  },
+  {
+   "dependency": "d_weights.values(+2.0 all)",
+   "knn_branch": "exponential",
+   "predicted_changed": [
+    "gravity_exponential",
+    "gravity_logistic",
+    "knn_access",
+    "reach"
+   ],
+   "empirical_changed": [
+    "gravity_exponential",
+    "gravity_logistic",
+    "knn_access",
+    "reach"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:75-108 (all fields)"
+  },
+  {
+   "dependency": "knn_weights.values(x2)",
+   "knn_branch": "exponential",
+   "predicted_changed": [
+    "knn_access"
+   ],
+   "empirical_changed": [
+    "knn_access"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:90-108"
+  },
+  {
+   "dependency": "cutoff.membership(midpoint)",
+   "knn_branch": "exponential",
+   "predicted_changed": [
+    "gravity_exponential",
+    "gravity_logistic",
+    "knn_access",
+    "reach"
+   ],
+   "empirical_changed": [
+    "gravity_exponential",
+    "gravity_logistic",
+    "knn_access",
+    "reach"
+   ],
+   "match": true,
+   "fold_source_lines": "AWE:75 (membership filter)",
+   "trace_nnz_a": 5,
+   "trace_nnz_b": 2
+  },
+  {
+   "dependency": "cutoff.dtype_only(int 25 vs float 25.0)",
+   "knn_branch": "exponential",
+   "predicted_changed": "replay_refusal",
+   "empirical_changed": "cutoff_mismatch_with_trace_identity",
+   "match": true,
+   "fold_source_lines": "C11 typed cutoff identity"
+  },
+  {
+   "dependency": "d_weights.byteorder_only(>f8)",
+   "knn_branch": "exponential",
+   "predicted_changed": "numba_TypingError_refusal",
+   "empirical_changed": "numba.core.errors.TypingError",
+   "match": true,
+   "fold_source_lines": "numba dispatcher domain"
+  },
+  {
+   "dependency": "d_weights.zero_sign_bit(+0.0 vs -0.0)",
+   "knn_branch": "exponential",
+   "predicted_changed": "(case-empirical record)",
+   "empirical_changed": [],
+   "match": true,
+   "fold_source_lines": "IEEE-754 sum semantics; MetricID v2 distinguishes the inputs",
+   "note": "identity differs; output bits coincide on this case (zero term absorbed by nonzero partials) \u2014 conservative direction"
+  }
+ ],
+ "all_match": true
+}

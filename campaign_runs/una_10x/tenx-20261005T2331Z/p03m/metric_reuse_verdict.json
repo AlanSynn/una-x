@@ -1,0 +1,45 @@
+{
+ "schema": "una-10x-p03m-partial-plan-verdict-1",
+ "task": "P03M",
+ "generated": "2026-10-06",
+ "law": "designs/04: bit-identical across the admitted signature or the plan is NOT admitted; one ULP rejects the fast domain; keep the full fold",
+ "disposition": {
+  "partial_plans": "admitted at the CORRECTNESS level (all four fields bit-identical to the real fold across the adversarial sweep)",
+  "admission_scope": "this host + compiler identity + the f64-C-contig/python-float/str-branch specialization domain; any fold module byte change re-opens admission (the MetricID v2 fold closure invalidates)",
+  "production_wiring": "NOT landed in this increment: the replay path still runs the full fold every row (zero behavior change); the reuse plan (which fields skip, fresh-output copies, per-metric single-flight, counters) is the next increment with its own tests and review",
+  "performance_claim": "NONE \u2014 designs/04 forbids inferring wall saving from saved fields; any timing is a later measurement under the frozen policy",
+  "c31_note_1_resolution": "E8 closure fixed by demotion: the cohort v1 result_key stays a REPORTING key (coercion disclosed at the construction site, collision witnesses recorded); the authoritative identity is the typed MetricID v2 (refusal-based, no coercion). C12/C31 historic receipts retained untouched; this object appends the new resolution"
+ },
+ "admitted_domain": "replay-admitted candidate slices (finite nonnegative distances <= cutoff, finite nonnegative weights); adversarial lengths, ties, subnormals, cutoff boundaries, sign-split scalars, all three KNN branches, k crops shorter and longer than the slice",
+ "compilation": "reference = the REAL compiled fold (reach_gravity_knn_access, its own module bytes, duplicated knn binding as the replay driver threads it); candidates = per-field standalone njit functions with the fold's own flags (cache, nogil, fastmath; parallel stays False), same 9-parameter binding",
+ "compiler_identity": {
+  "numba_version": "0.67.0",
+  "llvmlite_version": "0.49.0",
+  "numpy_version": "2.4.6"
+ },
+ "admission_scope": "this host, this compiler identity, the f64 C-contiguous slice/weights + python-float scalar + str-branch specialization domain the replay driver threads; a compiler or flag change re-opens the admission (MetricID v2's fold closure invalidates IDs on any module byte change)",
+ "total_fold_evaluations": 294840,
+ "plans": {
+  "reach": {
+   "admitted": true,
+   "cases": 294840,
+   "first_divergence": null
+  },
+  "gravity_exponential": {
+   "admitted": true,
+   "cases": 294840,
+   "first_divergence": null
+  },
+  "gravity_logistic": {
+   "admitted": true,
+   "cases": 294840,
+   "first_divergence": null
+  },
+  "knn_access": {
+   "admitted": true,
+   "cases": 294840,
+   "first_divergence": null
+  }
+ },
+ "decision_rule": "admitted = plan bits == full-fold component bits on EVERY case; any divergence -> keep the full fold for that field"
+}
