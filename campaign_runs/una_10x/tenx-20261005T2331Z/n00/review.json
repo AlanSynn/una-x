@@ -1,0 +1,155 @@
+{
+ "schema": "una-10x-n00r-review-1",
+ "reviewer": "independent-reviewer (p03r-reviewer)",
+ "date": "2026-10-07",
+ "scope": "Independent implementation review of N00 (native trace-producer backend) at HEAD d63652fc6ab445bfd869e2b9f029905c11d82db9 on perf/una-10x (57788a7 ledger commit; implementation chain verified ancestral by reviewer). Evidence root n00/. Reviewer write scope: this file only.",
+ "head_reviewed": "12ffa6b09f7d7cfd61a714e9691bf1006a09eeff",
+ "head_chain_note": "chain 65a080e68db4547112442d76d986871c82eb084b -> 3b55dd28db7d9bcf7a2de444bc5f09e304149570 -> b630674c9c4a82033b7a4851b1dcff018f450e29 -> HEAD verified by reviewer git ancestry checks; impl pin e6920bfd70ed6d3801305264d8d1c864d1197b16 is an ancestor of HEAD with src/ byte-identical and tests/ additive-only",
+ "verdict": "approve_with_notes",
+ "verdict_basis": "Parity law verified at three independent levels: (1) statement-level port analysis numba<->C++ across the tile loop, budget law, counters and record assembly; (2) reviewer's own rerun of the 40-test native suite in venv-n00 (40 passed in 13.87s), plus the implementer's committed console (40 passed in 16.57s); (3) cross-leg bitwise determinism recomputed by reviewer from the four matrix leg JSONs: all four legs (native and numba) carry digest-identical 64-file / 147829892 B required census. Inertness, engagement and anomaly-interpretation laws verified against bytes. Findings F1-F5 below are non-blocking; F1 requires an errata.",
+ "review_questions": {
+  "q1_parity_law": {
+   "verdict": "VERIFIED",
+   "evidence": [
+    "build.py BASE_FLAGS are exactly the declared list (-std=c++17 -O3 -fPIC -shared -ffp-contract=off -fno-fast-math -Wall -Wextra); manifest embeds compiler/flags/digests; test_build_manifest_law asserts no unsafe FP flag and digest freshness (reviewer read bytes + reran).",
+    "Statement-level numba<->C++ agreement confirmed by reviewer across: per-tile epoch restart; two-phase eligibility against the pre-row label snapshot; strict '< cutoff' push gates; py_min=(b<a)?b:a tie law; heap total order via unique node ids; per-origin sorts over unique int64 ids (algorithm-independent); budget ceiling integer identity 16*cand > budget - metadata - indptr_bytes; budget_hit = tile_start + tile_len (triggering tile counts); stamps_zeroed = tiles*lanes*(N+D) synthesis; lane_counters fresh per tile (numba build_trace line-631 per-tile zeros); content_digest over indptr+ids+dist tobytes in layout order.",
+    "Fold deliberately NOT ported and the omission is evidence-backed: probe_order.txt shows numba's argsort tie permutation differs from ALL numpy kinds in 131/200 random trials; replicating it in C++ would freeze compiler behavior. The fold stays numba; no FP reduction exists in the ported region (int64 accumulators only).",
+    "Strongest independent parity evidence: native==numba bitwise at the cohort output boundary (see cross_leg_determinism)."
+   ]
+  },
+  "q2_inertness": {
+   "verdict": "VERIFIED",
+   "evidence": [
+    "cohort.py: _NATIVE_BUILD_HOOK defaults None; call site uses the hook only when not None, else verbatim trm.build_trace; hook exceptions propagate (not swallowed); same build_s timing frame both arms.",
+    "sitecustomize.py: env absent -> single os.environ.get, no imports; \"0\" -> module load without install and without atexit registration (zero report lines on controls); \"1\" -> install + atexit stderr report; entire gated body fail-quiet (never raises out of site initialization).",
+    "Subprocess 4-state test matrix incl. broken-shim never-raise tripwire; driver additionally asserts zero worker reports on numba legs; reviewer confirmed real leg bytes: numba legs una_native_trace_env=0 with zero reports, native legs env=1 with reports; full PYTHONPATH recorded per leg.",
+    "Default route byte-identical: only an explicit opt-in (sitecustomize state \"1\" or runner-side install()) can install the hook."
+   ]
+  },
+  "q3_numba_semantics_fidelity": {
+   "verdict": "VERIFIED",
+   "evidence": [
+    "The native twin replaces ONLY the bounded tile loop. S11 admission gate is trm._sp_route_admits verbatim (refusal counter moves, dispatch counter does not - proven by test_refusal_engagement_counts_refusal_not_dispatch and engagement_demo.txt); trace_id via trm.compute_trace_id; reverse incidence via trm._reverse_incidence; lane sizing via _a1_threads_bound; TraceRecord/TraceCounters fields identical.",
+    "Declared divergence is single and honest: tile_temp_bytes measures each route's own scratch (numba per-tile capture vs native arena high-water); excluded from record_diffs with both figures compared against their own bounds; not part of trace_id or content_digest (decision-insensitive).",
+    "No reduction reassociation or hidden work anywhere in the ported region; all accumulators int64; no FP arithmetic beyond the declared cutoff comparisons and the 1.0+cutoff bound shared by both routes."
+   ]
+  },
+  "q4_engagement_claims": {
+   "verdict": "VERIFIED",
+   "evidence": [
+    "Reviewer recomputed from leg bytes: exactly ONE dispatching process per native leg (dispatches=1, origins=14751, tiles=231, candidates=90331, errors=0, last_status=0); five zero-reports alongside; numba controls carry zero report lines. Single-flight owner law holds.",
+    "Driver keys parsing on the [n00-native-engagement] stderr prefix, asserts wdisp>0 on native and zero reports on numba; arm symmetry cannot be mistaken (UNA_NATIVE_TRACE env + full PYTHONPATH recorded per leg JSON).",
+    "engagement_demo.txt: import-time counters zero; deltas match the record's own numbers; numba route leaves engagement untouched."
+   ]
+  },
+  "q5_L1B2_anomaly": {
+   "verdict": "VERIFIED_HONEST",
+   "evidence": [
+    "Gate law verified from driver bytes + console: pre-leg loadavg is sampled BEFORE the bounded wait; gate threshold 8.0, 60s samples, 90min cap. L1B2 waited 6 samples (360s) from a 12.54 entry reading and fired at 7.94; L1B1 9.04->6.77 (1 sample), L2A2 9.77->6.17 (1 sample), L2A1 fired at 7.85 (0 waits). The 'quiet-window walls' claim holds: every leg spawned below the threshold.",
+    "In-run 1-min loadavg maxima (8.26-12.76) are the legs' own 4 workers + sampler; expected under the pre-leg-only gate ruling.",
+    "n=2 native walls (12.5244, 16.2113) straddle both numba controls (15.1751, 15.7252); the implementer's honest_interpretation claims capability+parity value, not a speed lever, and no speed claim rests on the anomalous leg; the ledger co_tenancy_caveat matches the reviewer's recomputed values exactly.",
+    "Void leg L2A1_numba.void1_gateTrip (17.6834s) correctly excluded from evidence while counted in budget."
+   ]
+  }
+ },
+ "cross_leg_determinism": {
+  "verdict": "VERIFIED (reviewer recomputation from raw output_files)",
+  "files": 64,
+  "bytes": 147829892,
+  "hidden_residue": "43 files / 18046393 B identical all legs (C30 cohort-store law)",
+  "result": "timestamp-normalized digest census identical across L2A1_numba, L1B1_native, L2A2_numba, L1B2_native; native and numba outputs are byte-identical"
+ },
+ "budget_check": {
+  "verdict": "VERIFIED (recomputed in this block)",
+  "matrix_sum_s": 59.636,
+  "void_leg_s": 17.6834,
+  "prior_shakedowns_s": 57.125,
+  "n00_total_claimed_s": 134.4444,
+  "cumulative_ledger_s": 3795.382619,
+  "remaining_work_budget_s": 25004.617381,
+  "note": "59.636 + 17.6834 + 57.125 = 134.4444; 3660.938219 + 134.4444 = 3795.382619; 28800 - 3795.382619 = 25004.617381 - all match ledger commit 57788a7"
+ },
+ "implementation_pin_check": {
+  "verdict": "VERIFIED",
+  "impl_pin": "e6920bfd70ed6d3801305264d8d1c864d1197b16",
+  "is_ancestor_of_head": true,
+  "src_diff_vs_pin": "empty (reviewer git diff)",
+  "tests_delta_vs_pin": "additive-only: A tests/native/test_sitecustomize_optin.py",
+  "wedge_root_cause": "venv-n00 missing pyarrow -> worker row failure -> runtime._cancel queue-wedge (runtime.py:1215/443) - known latent engine defect, task #20, engine scope, correctly NOT fixed inside N00; instruments retained print-only on an already-failing path",
+  "instrument_defect_lifecycle": "exemplary: unpassable first-fire gate (tests byte-identity) amended to additive-only with the void leg preserved; stale parent-side engagement assert failure preserved in shakedowns console before the 0166d65 fix"
+ },
+ "findings": [
+  {
+   "id": "F1",
+   "severity": "evidence-record defect, non-blocking",
+   "requires_errata": true,
+   "finding": "native_implementation.json implementation.files pins native/trace_producer.h at sha256 11cdb972... but the live and committed bytes hash a6897d68... . Git history shows the header was created at a10dd10 with the current bytes and never touched; the 11cdb972 string was added to the evidence JSON in the same campaign commit and never matched any committed byte (a pre-commit draft hash).",
+   "bound": "Non-blocking for parity: the compiled and tested identity is established by build_manifest.json TU digests (bindings.cpp df07db8d7105ab8c3e221ccbe57852a16cbfffc837ab2297211690a5bae7df06, trace_producer.cpp 70fbe3ecb97c6c729782498534bccf04b8783e3ce933519691756ef805ac1ec0) and output cb4cf2580280ffe6db71a11008095716c2323925af87a73baeea3eaeb4a460eb, all re-hashed live by the reviewer; 12 of 13 implementation.files pins match live bytes.",
+   "action": "Errata per the errata-not-edit law; interpolate the correct hash from bytes."
+  },
+  {
+   "id": "F2",
+   "severity": "latent instrument gap, low",
+   "requires_errata": false,
+   "finding": "build.py is_stale() checks the output digest and the two TU digests but NOT native/trace_producer.h; a header edit would neither trigger a rebuild nor appear in the manifest sources.",
+   "bound": "Dormant: the header is untouched since creation (a10dd10) and the current output digest matches; no current evidence is affected.",
+   "action": "Fold the header into the digest freshness check in a future blessed instrument change; no re-open of N00 evidence required."
+  },
+  {
+   "id": "F3",
+   "severity": "cosmetic instrumentation",
+   "requires_errata": false,
+   "finding": "_eng(\"errors\") is never incremented in trace_build_native.py; a run_stream exception propagates without counting. cohort.py does not swallow hook exceptions, so the row/leg fails loudly - no integrity risk; the counter is dead on the error path.",
+   "action": "Optional one-line fix in a future blessed change; not evidence-affecting."
+  },
+  {
+   "id": "F4",
+   "severity": "informational",
+   "requires_errata": false,
+   "finding": "The '6 reports = the pool's worker set over the leg's lifetime' description is loose: the set is every process exposed to PYTHONPATH+UNA_NATIVE_TRACE=1 (parent + 4 workers + one ancillary inheriting the env). Material claims (exactly one owner dispatch, zeros elsewhere, zero reports on controls) are unaffected and verified."
+  },
+  {
+   "id": "F5",
+   "severity": "informational",
+   "requires_errata": false,
+   "finding": "import_s is arm-correlated (numba ~2.79-2.85s vs native ~0.007-0.016s) because sitecustomize state \"1\" pre-imports the engine chain during site init while state \"0\" does not. Both figures sit OUTSIDE the timed wall (the timer brackets only the public RunBatch call) - no matched-arm violation; recorded for transparency."
+  }
+ ],
+ "independent_rerun": {
+  "command": "venv-n00/bin/python -m pytest tests/native -q (per-subdir; conftest pins NUMBA_CACHE_DIR to campaign_runs/_numba_cache_owner and PYTHONDONTWRITEBYTECODE=1)",
+  "result": "40 passed in 13.87s",
+  "implementer_console": "parity_suite_40.txt: 40 passed in 16.57s (36+4 reconciles: 11 bindings + 25 parity + 4 opt-in)",
+  "no_disturbance_proof": "extension .so re-hashed after the rerun and matches the manifest output digest (cb4cf2580280ffe6db71a11008095716c2323925af87a73baeea3eaeb4a460eb) - no rebuild fired, evidence untouched"
+ },
+ "not_run": [
+  "No independent re-run of the timed legs (single exclusive benchmark owner law; reviewer consumed committed leg JSONs/consoles and recomputed all figures from bytes).",
+  "No independent rerun of the full tenx suites (implementer per-subdir consoles committed; trace console 55 passed 2 skipped - the replay skip is the pre-existing disclosed one).",
+  "No speed/ratio adjudication: n=2 co-tenancy legs are not a ratio basis and the implementer claims none."
+ ],
+ "verdict_time_repins": {
+  "head": "d63652fc6ab445bfd869e2b9f029905c11d82db9",
+  "native_extension": "cb4cf2580280ffe6db71a11008095716c2323925af87a73baeea3eaeb4a460eb",
+  "files": {
+   "native/trace_producer.cpp": "70fbe3ecb97c6c729782498534bccf04b8783e3ce933519691756ef805ac1ec0",
+   "native/trace_producer.h": "a6897d680863aae4d34ddc3a9c48feb320530ed544b330aa51a20958537b3437",
+   "native/bindings.cpp": "df07db8d7105ab8c3e221ccbe57852a16cbfffc837ab2297211690a5bae7df06",
+   "native/build.py": "9ce897e70be074cf43de3cc75d7aff4421a9b71b96b86628be3beec1c0720bd3",
+   "native/trace_build_native.py": "5812025ad099ede2bd031fca621debff4aabb7f73172f3c9289e9da539a05662",
+   "native/sitecustomize.py": "c1831b328d97ee91836e045a61346f5fbcadc0f14acb5a5ecdfcdaa7d33315d1",
+   "src/urban_network_analysis/batch/cohort.py": "fb5839b958612abb836e402fbea61dc5a625a2799df9b03e8b738314455591e3",
+   "campaign_runs/una_10x/tenx-20261005T2331Z/n00/instruments/run_legs.py": "b0df6774b4a75776b3bcb5287519286b142585aff98a9522b7b7e40a20a19797",
+   "campaign_runs/una_10x/tenx-20261005T2331Z/n00/instruments/leg_runner.py": "922f68e7539d052c15839261892434c968a49a745096d83e4c8a1b3b26c8a0fa",
+   "campaign_runs/una_10x/tenx-20261005T2331Z/n00/native_implementation.json": "990823992f9bd49a4dc89c75ed0c98904b8a9efa57c1d9723a584ff49bff958b",
+   "campaign_runs/una_10x/tenx-20261005T2331Z/n00/build_manifest.json": "a68e8b9ebe4b039dd0b6292efa15e7a59b001be408dc65f36d1e9637ad1f91b7"
+  },
+  "matrix_leg_jsons": {
+   "L2A1_numba": "b0ba02004e1afeb1fbc340bdeae30de6efed2e4ba8a70963f0467ef984db3f61",
+   "L1B1_native": "6f8d3c8f152744a5ed42b35b0c974a32019c2d9e15891d5e56ad45606c983ded",
+   "L2A2_numba": "c5749fd5c6452fdfb1314fa5d84da3ae271a31b8b1941d1ffc6db6b5756bee75",
+   "L1B2_native": "63e1d63bfbf9f96a1149e1d7295789b480db5e361187fcd708187e3960bd6de9",
+   "L2A1_numba.void1_gateTrip": "293f765db780dcdc0631c621ba4a690c0c8ac064b740eea7071248c0b68454cb"
+  }
+ },
+ "blocking": [],
+ "head_advance_note": "Filing-time head is 12ffa6b09f7d7cfd61a714e9691bf1006a09eeff; the N00 ledger/intake head this review began at was 57788a7. Intake commits landed while the review was in flight (3 in 57788a7..12ffa6b): 12ffa6b G00 intake: gpu_region.json - fold-family region specified, verification-gated parity class (3 blockers), CUDA-class+FP64 requirement, Delta=blocked venue, G10 buildable without hardware; cited shas verified (engine efc4dd4a, reductions 888378fa, una_legacy profile); probes untimed host time; d63652f N10 intake: wheel leg 19.502s + native build 4.0041s charged, cumulative 3818.888719, remaining 24981.111281; 8d49e9d N10: native qualification - installed-wheel leg bitwise (64f/147829892B), C-arm no-lever verdict, numba default retained; FIX inherited wheel-packaging defect (spawn shim force-included at wheel root, latent since 0acbb11); native fresh-build 4.0041s charged. Reviewer assertion AT WRITE TIME: git diff 57788a7..12ffa6b over src/, native/, tests/ is EMPTY, so every implementation byte reviewed and re-pinned in verdict_time_repins is identical at both heads. The range delta is campaign evidence (n10/, g00/), budget_reconciliation.json (cumulative advanced per those intakes - NOT re-verified by this review; N10/G00 are outside the N00R assignment) and pyproject.toml (wheel packaging fix). The verdict binds the implementation bytes, unchanged across the range. Evidence-only intake commits may continue to land after this write; they do not touch the reviewed bytes, and the empty-diff assertion above is the check any later reader can re-run."
+}

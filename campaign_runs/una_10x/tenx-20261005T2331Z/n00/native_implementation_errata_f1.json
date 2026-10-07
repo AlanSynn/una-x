@@ -1,0 +1,15 @@
+{
+ "schema": "una-10x-errata-1",
+ "task": "N00R F1 errata: stale sha pin for native/trace_producer.h in native_implementation.json",
+ "parent_object": "native_implementation.json",
+ "parent_sha256": "990823992f9bd49a4dc89c75ed0c98904b8a9efa57c1d9723a584ff49bff958b",
+ "finding_ref": "n00/review.json finding F1 (p03r-reviewer, approve_with_notes, head_reviewed d63652fc6ab4)",
+ "defect": {
+  "field": "implementation.files['native/trace_producer.h']",
+  "pinned_value": "11cdb97293f08620ce10e5bacbf693a116d4056446892a5acf920737dca077b9",
+  "correct_value": "a6897d680863aae4d34ddc3a9c48feb320530ed544b330aa51a20958537b3437",
+  "verification": "live bytes and committed bytes both hash to the correct value (shasum -a 256 at intake); git history: header created at a10dd10 with current bytes, never modified since - the pinned string was a stale value written into the evidence JSON, not later source drift"
+ },
+ "law": "committed/frozen evidence objects are never edited (M00-F1->Z00 errata precedent); this errata is the correction of record",
+ "downstream_impact": "none found: the build manifest and the N00R independent rerun both digested the live header (rerun re-hashed the produced .so to manifest output digest cb4cf2580280ffe6db71a11008095716c2323925af87a73baeea3eaeb4a460eb); the stale pin did not gate any verdict"
+}
