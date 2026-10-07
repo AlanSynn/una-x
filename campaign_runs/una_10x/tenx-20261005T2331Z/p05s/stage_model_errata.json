@@ -1,0 +1,28 @@
+{
+ "schema": "una-10x-p05s-stage-model-errata-1",
+ "task": "P05R finding R1 (minor): stage-model Amdahl formula figure vs prose mismatch",
+ "generated": "2026-10-07T03:14:11Z",
+ "parent_object": {
+  "file": "p05s/post_p00_stage_model.json",
+  "sha256": "1e8700215a563284576eb598344d51b8f238959afdb53a71e6818f71214ff5bb",
+  "commit": "be8441b",
+  "edited": false,
+  "law": "campaign errata precedent (M00-F1->Z00): reviewed/frozen evidence objects are never edited in place"
+ },
+ "finding_source": {
+  "file": "post_p00_readiness.json",
+  "sha256": "652d2a0f851d9ad37ed3aa7c9d22a3ac351b860353f9b6ef55c1fd807324dd2d",
+  "finding": "R1 (minor, non-blocking)",
+  "verdict_context": "P05R approve_with_notes, 0 blocking"
+ },
+ "defect": "amdahl_accounting.p03b_formula_prediction_vs_observed.formula_wall_ratio_vs_p03a is 1.05764, which corresponds exactly to s=2.0 at f=0.109 (1/(1-f+f/2)); the sibling prose says 'folding 7/8 of an ~11% slice', i.e. s=8. The numeric line and the prose disagree.",
+ "correction": {
+  "f_fold_parent": 0.109,
+  "formula_as_written_s2_prediction": 1.057641,
+  "intended_s8_prediction": 1.10543,
+  "observed_wall_ratio_p03a_vs_full": 1.016606,
+  "observed_source": "p05s/screen_index.json stage_table medians (17.1047 / 16.8253), sha 67b1a4a6b532b14b173d2f07cda767820b6c5aa75004593493f57fc0e5352d55"
+ },
+ "decision_impact": "NONE \u2014 the observed 1.0166 falls below BOTH predictions, so the recorded conclusion ('the fold was not the wall-dominant residual') holds a fortiori under the corrected s=8 figure. P05R graded this minor and decision-insensitive; no gate, binding or register disposition changes.",
+ "disposition": "accepted_erratum; parent object preserved byte-identical"
+}

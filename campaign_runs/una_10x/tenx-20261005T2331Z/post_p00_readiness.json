@@ -1,0 +1,116 @@
+{
+  "schema": "una-10x-post-p00-readiness-1",
+  "task": "P05R: independent readiness review before the original gates (designs/07 deliverable; TASKS_CLAUDE.yaml P05R)",
+  "generated_utc": "2026-10-07T03:10:01Z",
+  "reviewer": {
+    "role": "independent-reviewer",
+    "agent": "p03r-reviewer (same independent reviewer as p03r/replay_metric_review.json 7818f982... and p04r/receiver_review.json faf7936b...)",
+    "independence": "reviewer did not implement P02I/P03C/P03M/P04I/P05S; every figure in this file was recomputed in-session from committed bytes or verified against live source/venv state, never transcribed from implementer prose without re-derivation",
+    "write_scope": "this file only (post-P00 readiness only)",
+    "reviewed_head": "be8441b (perf/una-10x)"
+  },
+  "readiness_verdict": {
+    "verdict": "approve_with_notes",
+    "blocking_count": 0,
+    "binding": "BIND the full accepted stack (P02I + P03C + P03M-A/B + P04I-fix, source state 86e8b0a/be8441b) at the strongest valid measured schedule w4 t1 q64 cache-off as the candidate for the original final gates. Baseline continuation preserved: comparator 395cdc5 stays executable at baseline-395cdc5 (own tree + venv-baseline), P00 parent e7c9eda at parent-e7c9eda. The screen figures are same-host matched-arm SELECTION evidence only; any 10x claim comes exclusively from the original 7-window paired AB/BA protocol (seed 20261003, 20000 bootstrap, median one-sided 95% lower >= 10) against the frozen primary 92.1141s context.",
+    "what_this_is_not": "per designs/07: independent scope review, NOT invented final 10x qualification; no installed parity, no native/GPU capability, and no public boundary figure is established here"
+  },
+  "new_source_sha": {
+    "head": "be8441b",
+    "source_state_note": "the full-stack arm was measured at 86e8b0a with tree_dirty=true (the in-flight p05s evidence itself); verified in-session that git diff 86e8b0a..be8441b touches ZERO src/ or tests/ paths (30 files, all evidence/ledger), so the measured full-arm source is byte-identical to the committed HEAD source",
+    "arm_tree_heads_pinned_in_legs": {
+      "cmp395cdc5": "395cdc5f6838 (clean, venv-baseline -> baseline-395cdc5/src)",
+      "parent": "e7c9edacd734 (clean, venv-parent-e7c9eda -> parent-e7c9eda/src)",
+      "p02": "6fb01d00f4e6 (clean, venv-p02-6fb01d0 -> p02-6fb01d0/src)",
+      "p03a": "4b680b603780 (clean, venv-p03a-4b680b6 -> p03a-4b680b6/src)",
+      "full": "86e8b0a7a8fe (dirty=True; see source_state_note)"
+    },
+    "arm_separation_verified_live": "each arm venv's urban_network_analysis resolves to its OWN worktree's src/ (verified by import in this session); numpy 2.4.6, numba 0.67.0, Python 3.11, package version 2.6.0 uniform across all five"
+  },
+  "candidates": [
+    {"id": "P02I", "disposition": "accepted", "review": "P02R ACCEPT_WITH_NOTES 0 blocking", "measured_wall_effect_vs_parent": 2.1859, "commits": ["583fcad", "6fb01d0"]},
+    {"id": "P03C", "disposition": "accepted", "review": "accepted via P03R-scope review (compiled outer replay verified bitwise)", "measured_wall_effect_vs_p02": 1.0154, "commits": ["4b680b6"]},
+    {"id": "P03M-A/B", "disposition": "accepted", "review": "P03R approve_with_notes 0 blocking; F1/F2 closed at cb7acd5, addendum verdict stands", "measured_wall_effect_vs_p03a": 1.0166, "commits": ["41c2453", "1523ad9", "cb7acd5"]},
+    {"id": "P04I-fix", "disposition": "accepted", "review": "defect found by P04I admission profiling; fix pinned by tests; P04R verified fixed bytes", "commits": ["52dcc20"]},
+    {"id": "P04-receiver", "disposition": "not_admitted", "review": "P04I measured admission (recv_wait 4.41-5.045% ceiling, commit side lower-bounded, pool compute-bound); P04R approve_with_notes VERIFIED the non-admission; errata 93492dc2 responded to F1-F3, decision-insensitive", "commits": []}
+  ],
+  "counters": {
+    "input": {"manifest": "campaign_data/inputs/upstream_Boston/Boston/local_audit_manifest.csv", "manifest_sha256": "235405de67cf22dc76c3e89bd0c3d198927d0ed0870172a0e86b942fecb8a60a", "rows": 32, "zero_failed_jobs": "asserted in all 23 legs"},
+    "preparation_trace": {"required_census_per_leg": "64 files / 147829892 B (P01F-registered local control cohort census), asserted fail-closed in every measured leg", "hidden_residue": "cmp395cdc5: 0 files (pre-C30 tree); parent: 5 files (.una-batch-cohort only); p02/p03a/full: 43 files (cohort store + P02I prepared store) - recorded per leg, never asserted away"},
+    "metric_reuse": {"collapse_full_folds": 4, "split_rows": 28, "split_copies": 84, "registrations": 32, "refusals": 0, "folds_done": 59004, "folds_done_before": 472032, "source": "p04i/receiver_admission_profile.json (post-fix, real cohort)"},
+    "screen_matrix": {"legs": 23, "composition": "5 shakedown + 3 windows x 5 arms round-robin + 3 config legs", "sum_measured_walls_s": 642.0545, "recomputed_independently": true}
+  },
+  "exact_parity": {
+    "per_arm_bitwise_determinism": "all five arms bitwise-identical across shakedown + 3 windows (sha256 per normalized rel path, verified in-session from leg output_files, not from the index prose)",
+    "cross_evidence": "32/32 wiring probe parity on fixed bytes (p03m/metric_reuse_wiring.json d95970e4, cohort.py cc42a937); cohort-route suite tree_bytes pins; frozen primary untouched (primary_identity_check.json: frozen_primary_untouched=true, local bytes verified, remote PRIMARY bytes unavailable pending remote - carried as open item)",
+    "note": "P00 reference output (PACE host) is 64 files / 147830672 B; the local registered control cohort census is 64 files / 147829892 B - different provenance artifacts, both 64 files; replication closure remains open in baseline_policy_audit.json status"
+  },
+  "state_and_fault_coverage": {
+    "receiver_fault_matrix": "not_applicable (no receiver admitted; RX01-RX03 attach to a candidate receiver per designs/05); P04I disposition + P04R verification",
+    "durability_laws": "batch/runtime.py and batch/worker.py byte-verified unchanged since 6fb01d0 (P02I) - C30 checkpoint/fsync/rename/journal and cancellation/resume semantics preserved by construction through the entire accepted stack",
+    "suites_at_head_lineage": "metrics 72, cohort 6, batch/runtime 48 green (implementer-reported at 52dcc20; not re-run by this review)",
+    "validation_chronology": "cache-hit validation law preserved (suite-pinned); no cache arms in this screen (fixed cache-off policy)"
+  },
+  "simultaneous_process_memory": {
+    "law": "designs/07: measured, not derived; psutil 50 ms sampler, peak single + tree",
+    "peak_tree_rss_mib_medians_w4": {"cmp395cdc5": 1979.95, "parent": 1954.02, "p02": 1818.19, "p03a": 1984.72, "full": 1831.44},
+    "config_legs": {"w2t1": 1127.09, "w2t2": 1349.72, "w4t2": 1694.64},
+    "reading": "accepted stack adds no material memory vs parent; all measured schedules fit the host with wide margin"
+  },
+  "baseline_policy_audit": {
+    "receipt": "baseline_policy_audit.json (sha256 c8078f57c133172f6b71d239b7280bc71312939926b77ec01d89c960ece43e6b, status measured_legs_complete_on_local_registered_control_frozen_cohort_replication_open)",
+    "fixed_policy": "cache mode off for BOTH arms is the P00 frozen primary comparison; this entire screen is fixed-policy",
+    "strongest_policy": "WS02 disk-cache control measured locally where feasible; cluster legs blocked_pending_cluster (PACE maintenance 2026-10-05..08) - OPEN obligation, carried below",
+    "labeling_law_honored": "screen improvements are labeled same-host matched-arm fixed-policy figures; no strongest-policy claim is made from this screen"
+  },
+  "remaining_floor": {
+    "budget": {"total_s": 28800, "final_reserved_s": 7200, "prior_ledger_s": 2223.47, "this_run_s": 1221.3816, "cumulative_s": 3444.8516, "remaining_work_s": 25355.1484, "reset": false, "arithmetic_recomputed": true, "p05s_append": "+775.0869 = 642.0545 screen (23 leg walls, sum recomputed exact) + 133.0324 discarded fire legs (52.0691+41.8032+39.1601, recomputed exact)"},
+    "measured_residual_vs_target": "local matched-arm ladder delivers parent->full 2.2564x (median); the local wall floor is quantified in post_p00_stage_model.json's interval-DAG block (bootstrap/4 + singleflight build + per-row residual/4 + bounded commit side); fold is NO LONGER wall-dominant (8x fold cut, wall ~flat, honestly modeled); target_sensitivity block correctly labels 5.4747 as a non-claim number",
+    "platform_obligations_open": [
+      "native/GPU execution and recovery qualification: blocked on missing hardware - qualification blocker, not simulated success",
+      "I00 clean A/B wheels + install outside checkouts: not started (integration packaging)",
+      "V00 final bit/state/artifact/fault gauntlet on the INSTALLED candidate: blocked on I00",
+      "Q00/Q10/R00/Z00 original quality gates: unchanged, run under the original protocol with existing bounds",
+      "WS02 strongest-policy cluster legs + frozen-cohort replication closure: blocked_pending_cluster",
+      "PRIMARY.json and remote reference bytes: unavailable pending remote (local identity verified)"
+    ]
+  },
+  "findings": [
+    {"id": "R1", "severity": "minor", "blocking": false, "class": "arithmetic-internal",
+     "finding": "post_p00_stage_model.json amdahl_accounting.p03b_formula_prediction_vs_observed.formula_wall_ratio_vs_p03a = 1.0576414595452142 corresponds EXACTLY to 1/(1-0.109+0.109/2), i.e. s=2.0, while the same block's prose says 'folding 7/8 of an ~11% slice' (s=8 gives 1.1054304270). The recorded formula figure does not match its own prose.",
+     "decision_impact": "none - the observed 1.0166 is BELOW both predictions, so the recorded honest_reading ('fold was not wall-dominant') holds a fortiori; the conclusion is strengthened, not weakened",
+     "recommended_repair": "amend the figure to 1.10543 (s=8) or state s=2 explicitly in a future evidence touch"},
+    {"id": "R2", "severity": "minor", "blocking": false, "class": "evidence-completeness",
+     "finding": "the inter-arm freeze-parity check ('27 packages', motivated by fire 1's missing venv deps) has no committed receipt - it lives in the commit message and coordination prose only. The observable consequences ARE committed and were independently re-verified in this review: per-leg pins (interpreter, numpy 2.4.6, numba 0.67.0 per arm), bitwise output determinism per arm, and live import resolution showing each venv bound to its own worktree's src/.",
+     "decision_impact": "none - the separation mechanism is verified; but the parity check itself should be a committed receipt before I00 freeze",
+     "recommended_repair": "commit a per-venv pip-freeze diff (or package:version table) as a P05S errata or I00 input"},
+    {"id": "R3", "severity": "minor", "blocking": false, "class": "evidence-completeness",
+     "finding": "the three discarded fire legs (52.0691, 41.8032, 39.1601 s) have no committed leg JSONs (asserts failed: missing venv deps, census-law); their walls exist only in the register/ledger. Additionally the full-arm legs ran tree_dirty=true with only a boolean pin (no porcelain list captured).",
+     "decision_impact": "none - discarded legs are consumed, never claimed, and affect only budget accounting (which reconciles); the dirty-tree risk is closed by the zero-src-diff check between 86e8b0a and be8441b and clean pins on the other four arms",
+     "recommended_repair": "for future fires: commit failed-leg JSONs (they are evidence) and capture git status --porcelain in the leg pin"},
+    {"id": "R4", "severity": "info", "blocking": false, "class": "screen-power",
+     "finding": "config legs other than w4t1 are n=1 single shots; w2t2 (17.1697) vs w4t1 median (16.8253) is a 2% gap inside the observed window spread (16.70-18.60). 'Strongest valid = w4t1' is a selection call consistent with the schedule matched to the stage ladder and with the CPU=4 admitted budget (w4t2's 8 threads measured regression), not a statistically separated ranking.",
+     "decision_impact": "none - the screen selects, the original 7-window paired protocol decides"},
+    {"id": "R5", "severity": "info", "blocking": false, "class": "positive-verification",
+     "finding": "the screen's honesty posture is verified at every audited point: shakedown legs labelled and excluded from medians (sd_parent 64.4178 first-leg warmup visible and consumed, never claimed); P03B's ~1.0x wall effect stated plainly; the stage model cites the P04I errata's 1.22% commit-side correction; w2 variants called 'within noise'; local ratios explicitly NOT claimed against the frozen primary; p02 r3 outlier (22.6749) absorbed by the pre-registered median rather than rerun-selectively (designs/07 'no selective omission' honored)"}
+  ],
+  "checks_performed": [
+    "instrument review: run_screen_leg.py + run_stage_screen.py read in full; hash-verified against stage-model producer pins (cb0ebdb9, 9f84a70b); timer brackets ONLY the public RunBatch call; NUMBA_CACHE_DIR asserted + unique per leg; UNA_BATCH_PHASES popped for timed legs; fresh outdir per leg (outdir_existed_before=True on all 23 - driver pre-creates, honestly recorded); fail-closed asserts: rc, tree_head pin, zero_failed, 64 files/147829892 B, cache-off, config echo; census law excludes dot-prefixed residue but records it per leg",
+    "evidence hashes: screen_index.json, post_p00_stage_model.json, post_p00_configuration_screen.json, post_p00_candidate_register.json all MATCH the pinned sha256; budget_reconciliation.json live bytes == be8441b blob == a3846943 pin",
+    "independent leg recomputation: all 23 leg JSONs re-read; medians (45.157/37.9644/17.3677/17.1047/16.8253), predecessor deltas (2.1859x/1.0154x/1.0166x), full/parent 2.2564x, full/cmp 2.6839x, parent/cmp 1.1895x, sum 642.0545 - ALL recomputed exact from leg bytes",
+    "determinism re-verification: per-arm sha256 census (normalized timestamped folder) identical across shakedown + 3 windows for all five arms - verified from leg output_files directly",
+    "arm separation: each of the five venvs verified live to import its OWN worktree's src/urban_network_analysis; uniform numpy 2.4.6 / numba 0.67.0 / Python 3.11 / pkg 2.6.0; 5 distinct interpreters; manifest sha pinned in every leg",
+    "provenance: git diff 86e8b0a..be8441b = 30 files, ZERO src/tests; arm tree_heads match the pinned ladder; P01F precedent (parent-vs-comparator) handled by re-running the parent arm per designs/07's separate-arms law",
+    "budget arithmetic: 2223.47 + 1221.3816 = 3444.8516 cumulative; 28800 - 3444.8516 = 25355.1484 remaining; 642.0545 + 133.0324 = 775.0869 - all recomputed exact from ledger and leg bytes",
+    "cross-receipts: candidate register dispositions match this reviewer's own P03R/P04R records; engagement counters match p04i profile; stage-model critical path figures match p04i receiver_admission_profile.json (pool_start 0.219, bootstrap 10.5634, residual 44.7758, recv 0.8285, commit 0.0673)"
+  ],
+  "not_run": [
+    "the original final gates (7-window paired AB/BA, 20000 bootstrap; protected tiny/dense/cold tests): P05R binds the candidate for them, never substitutes for them",
+    "metrics/cohort/batch-runtime suites at HEAD: implementer-reported green at 52dcc20; not re-run by this review (heavy-budget discipline; the screen's own fail-closed asserts passed at measurement time)",
+    "RX01-RX03 fault scenarios: no receiver candidate exists",
+    "WS02 cluster legs and remote PRIMARY retrieval: blocked_pending_cluster / remote unavailable",
+    "any GPU/native qualification: missing hardware is a qualification blocker"
+  ],
+  "completion_statement": "Independent readiness disposition is valid per TASKS_CLAUDE.yaml P05R: evidence closure reviewed (all hashes, arithmetic and determinism re-verified from bytes), baseline policy audited (fixed-policy screen; strongest-policy receipts referenced with open cluster legs carried), accepted/rejected deltas enumerated with review dispositions, source owners and tree pins verified, original budget/reserve reconciled without reset, remaining platform obligations carried as explicit blockers. It claims NO final 10x, NO installed parity, and NO absent-capability closure.",
+  "review_file_sha256_self_note": "to be reported by the reviewer after hashing this file on disk (a file cannot contain its own hash)"
+}
