@@ -17,10 +17,10 @@
     "note": "recorded for transparency; NOT silently merged into the ledger \u2014 basis difference left to the performance owner"
   },
   "w00_calibration_receipts": "not present locally; W00 deliverables (PRIMARY.json/WORKLOADS.json/baseline_stage_model.json) live in the remote run root \u2014 any W00 heavy consumption is inside the P00-ledger basis or unknown_pending_remote",
-  "remaining_work_budget_seconds": 25355.1484,
+  "remaining_work_budget_seconds": 25139.061781,
   "final_reserved_seconds": 7200,
   "reset": false,
-  "this_run_consumption_so_far_seconds": 1221.3816000000002,
+  "this_run_consumption_so_far_seconds": 1437.4682186250934,
   "note": "all values transcribed from committed receipts, not recomputed; ledger only grows",
   "consumption_log_2026_10_06": {
     "law": "ledger only grows; walls are committed per-leg public_call_wall_s figures",
@@ -36,8 +36,8 @@
       "seven_measured_legs_sum": 330.9916,
       "detail": "see baseline_policy_audit.json measured_legs_local_2026_10_06"
     },
-    "session_total_s": 1221.3816000000002,
-    "cumulative_ledger_s": 3444.8516,
+    "session_total_s": 1437.4682186250934,
+    "cumulative_ledger_s": 3660.938219,
     "superseded_first_disk_shakedown_attempt": "wall not recorded (superseded pre-record); unquantified residue disclosed",
     "p04i_legs_s": {
       "law": "public_call_wall_s figures transcribed from the four profile console outputs; spy diagnostic legs estimated (no public-call timer, 6-row w2 runs, bounded above at 5s each)",
@@ -66,6 +66,22 @@
       ],
       "discarded_sum_s": 133.0324,
       "p05s_total_s": 775.0869
+    },
+    "f00_flow_admission_legs_s": {
+      "law": "walls read back from f00/legs/*.json public_wall_s (the committed evidence is internally consistent: flow_admission.json = leg JSON = console). Agent RELAY drift note: the teammate message quoted leg B as 69.514758 while the committed bytes are 69.51479954179376 (4.2e-5 prose drift; A/C/S0 were 6-dp roundings only). The ledger records the byte values. Shakedown S0 consumed-never-claimed but still ledgered. Host was co-tenanted (loadavg 11.9-25.3) so these walls are NOT frozen benchmark figures - the not_admitted verdict is fraction-based and robust (flow_admission.json observation 1)",
+      "leg_walls_s": {
+        "S0": 7.080076792277396,
+        "A": 69.83623462496325,
+        "B": 69.51479954179376,
+        "C": 69.65550766605884
+      },
+      "f00_total_s": 216.08661862509325,
+      "verdict": "not_admitted (sparse_output_producer + ordered_update_tape)",
+      "evidence": "f00/flow_admission.json sha 54d4ead4a49d464f3e2d2dbcc6299d11063b9df94c67f52be2e1dff78ff2b26e",
+      "commits": [
+        "83f193a",
+        "84e4b25"
+      ]
     }
   }
 }
