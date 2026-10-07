@@ -2,8 +2,41 @@
 report typed truth — absence where hardware is absent, presence with named
 device identity where it exists — and never claim Metal/MPS as a target."""
 
+import inspect
+from pathlib import Path
+
 import gpu.backends.gpu as gpub
-from gpu.runtime.availability import detect_nvcc, probe_driver
+from gpu.runtime.availability import (detect_nvcc, probe_driver,
+                                      _CU_DEVICE_ATTRIBUTE_CC_MAJOR,
+                                      _CU_DEVICE_ATTRIBUTE_CC_MINOR,
+                                      _MIN_FP64_CAPABILITY)
+
+
+def test_device_name_read_is_narrow_char_not_wchar():
+    # G11 attempt-1 defect (found on the real A100): cuDeviceGetName writes
+    # narrow char bytes; reading them through create_unicode_buffer raised
+    # ValueError("character U+4449564E ...") — "NVID" as one UTF-32 word.
+    # The driver API signature is fixed, so the contract is textual: the
+    # probe must read the name as a byte buffer and decode explicitly.
+    src = inspect.getsource(probe_driver)
+    assert "create_unicode_buffer" not in src
+    assert "create_string_buffer" in src
+    assert ".decode(" in src
+    # No other runtime module may reintroduce a wchar read of driver bytes.
+    for mod in (gpub,):
+        assert "create_unicode_buffer" not in inspect.getsource(mod)
+
+
+def test_fp64_criterion_is_documented_compute_capability():
+    # The FP64 criterion must be the documented compute-capability rule
+    # (CC >= 1.3) read from attributes 75/76 — not an unverified enum value
+    # (the prior constant 13 is KERNEL_EXEC_TIMEOUT in the real enum).
+    assert _CU_DEVICE_ATTRIBUTE_CC_MAJOR == 75
+    assert _CU_DEVICE_ATTRIBUTE_CC_MINOR == 76
+    assert _MIN_FP64_CAPABILITY == (1, 3)
+    src = inspect.getsource(probe_driver)
+    assert "_CU_DEVICE_ATTRIBUTE_CC_MAJOR" in src
+    assert "DOUBLE_PRECISION" not in src
 
 
 def test_probe_reports_typed_truth():

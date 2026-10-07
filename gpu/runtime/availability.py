@@ -33,10 +33,15 @@ _CUDA_DRIVER_CANDIDATES = (
     "nvcuda.dll",     # Windows (ctypes.util finds it via PATH)
 )
 
-# CU_DEVICE_ATTRIBUTE_DOUBLE_PRECISION == 13 (CUDA driver API enum; stable
-# since CUDA 2.x).  Constant recorded here because we load the driver by
-# ctypes and cannot include cuda.h.
-_CU_DEVICE_ATTRIBUTE_DOUBLE_PRECISION = 13
+# CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MAJOR == 75 and ..._MINOR == 76
+# (CUDA driver API enum; stable since CUDA 5.0).  Native FP64 support is a
+# property of compute capability: every CUDA device with CC >= 1.3 has it,
+# and no CC > 1.3 device lacks it (CUDA C Programming Guide, compute
+# capabilities table).  Constants recorded here because we load the driver
+# by ctypes and cannot include cuda.h.
+_CU_DEVICE_ATTRIBUTE_CC_MAJOR = 75
+_CU_DEVICE_ATTRIBUTE_CC_MINOR = 76
+_MIN_FP64_CAPABILITY = (1, 3)
 
 _CU_SUCCESS = 0
 _CU_ERROR_NOT_INITIALIZED = 1
@@ -114,21 +119,32 @@ def probe_driver() -> DriverProbe:
             dev = ctypes.c_int(0)
             if lib.cuDeviceGet(ctypes.byref(dev), ctypes.c_int(i)) != _CU_SUCCESS:
                 continue
-            name_buf = ctypes.create_unicode_buffer(256)
+            # cuDeviceGetName writes narrow char bytes (driver API char*);
+            # reading them through a wchar buffer misdecodes the device
+            # name — U+4449564E on the real A100 ("NVID" as one UTF-32
+            # word).  Read as bytes, decode explicitly.
+            name_buf = ctypes.create_string_buffer(256)
             rc = lib.cuDeviceGetName(name_buf, 256, dev)
             if rc == _CU_SUCCESS:
-                names.append(name_buf.value)
+                names.append(name_buf.value.decode("utf-8", "replace"))
             if i == 0:
-                attr = ctypes.c_int(0)
-                rc = lib.cuDeviceGetAttribute(
-                    ctypes.byref(attr),
-                    ctypes.c_int(_CU_DEVICE_ATTRIBUTE_DOUBLE_PRECISION),
-                    dev)
-                fp64_first = (rc == _CU_SUCCESS and attr.value != 0)
+                major = ctypes.c_int(0)
+                minor = ctypes.c_int(0)
+                rc_maj = lib.cuDeviceGetAttribute(
+                    ctypes.byref(major),
+                    ctypes.c_int(_CU_DEVICE_ATTRIBUTE_CC_MAJOR), dev)
+                rc_min = lib.cuDeviceGetAttribute(
+                    ctypes.byref(minor),
+                    ctypes.c_int(_CU_DEVICE_ATTRIBUTE_CC_MINOR), dev)
+                fp64_first = (
+                    rc_maj == _CU_SUCCESS and rc_min == _CU_SUCCESS
+                    and (major.value, minor.value) >= _MIN_FP64_CAPABILITY)
         if not fp64_first:
             return _driver_result(
                 False, "no_fp64_device",
-                f"devices={names}; FP64 attribute absent on device 0; "
+                f"devices={names}; compute capability below "
+                f"{_MIN_FP64_CAPABILITY[0]}.{_MIN_FP64_CAPABILITY[1]} on "
+                "device 0; "
                 "FP32 substitution is forbidden (dossier 08)",
                 device_count=count.value, fp64_capable=False,
                 names=tuple(names))
