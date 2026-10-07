@@ -20,7 +20,7 @@
   "implementation": {
     "files": {
       "native/trace_producer.h": "11cdb97293f08620ce10e5bacbf693a116d4056446892a5acf920737dca077b9",
-      "native/trace_producer.cpp": "a6897d680863aae4d34ddc3a9c48feb320530ed544b330aa51a20958537b3437",
+      "native/trace_producer.cpp": "70fbe3ecb97c6c729782498534bccf04b8783e3ce933519691756ef805ac1ec0",
       "native/bindings.cpp": "df07db8d7105ab8c3e221ccbe57852a16cbfffc837ab2297211690a5bae7df06",
       "native/build.py": "9ce897e70be074cf43de3cc75d7aff4421a9b71b96b86628be3beec1c0720bd3",
       "native/trace_build_native.py": "5812025ad099ede2bd031fca621debff4aabb7f73172f3c9289e9da539a05662",
@@ -136,7 +136,8 @@
   },
 
   "open_observations": [
-    "tile_temp_bytes semantics differ by declared design: numba charges per-tile capture buffers, native reports its measured arena high-water; counters are measured, not identity-matched (not published by cohort record_meta)",
+    "tile_temp_bytes semantics differ by declared design: numba charges per-tile capture buffers, native reports its measured arena high-water; counters are measured, not identity-matched (not published by cohort record_meta). A post-parity cleanup removed a vestigial per-lane capture buffer from the port (never indexed); the demo's measured scratch dropped exactly by that allocation (57424 -> 56624 bytes) while every output figure stayed identical - the scratch figure is a live measurement, not a constant",
+    "the budget guard's overflow boundary admits a theoretical frame (O*D == 2^59 exactly) where 16*cand_total touches 2^63; unreachable in practice because the candidate capture itself requires memory no host has - noted for completeness, not fixed",
     "the binding's cancel parameter is currently not wired (core call passes nullptr); the capability is exercised at the core ABI level by tests (dossier 08 obligation met at the layer that owns threads)",
     "vectorization_report.txt is a whole-core characterization; the parity-critical loops (heap sift, stamp clears) are byte-addressed int64 work where SIMD lane order cannot alter results - the report documents what clang did, the parity suite proves what it means",
     "tests/native requires venv-n00 (pybind11); on a numba-only host the suite skips cleanly at the pybind11 importorskip while the engine keeps its default route"

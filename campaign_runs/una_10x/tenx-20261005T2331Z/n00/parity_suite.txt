@@ -42,4 +42,4 @@ tests/native/test_native_producer_parity.py::test_budget_exactly_at_boundary PAS
 tests/native/test_native_producer_parity.py::test_admission_refusal_parity PASSED [ 97%]
 tests/native/test_native_producer_parity.py::test_refusal_engagement_counts_refusal_not_dispatch PASSED [100%]
 
-============================== 36 passed in 3.13s ==============================
+============================== 36 passed in 3.21s ==============================

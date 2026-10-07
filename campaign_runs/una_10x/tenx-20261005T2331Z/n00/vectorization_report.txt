@@ -15,14 +15,14 @@ In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/in
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__vector/vector.h:1361:11: remark: loop not vectorized: Loop contains an unsupported terminator [-Rpass-analysis=loop-vectorize]
  1361 |     this->__append(__sz - __cs);
       |           ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:417:25: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
-  417 |             c.lane_cand = 0;
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:415:25: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+  415 |             c.lane_cand = 0;
       |                         ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:408:9: remark: loop not vectorized: Cannot vectorize early exit loop with more than one early exit [-Rpass-analysis=loop-vectorize]
-  408 |         for (int32_t l = 0; l < in->lanes; ++l) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:406:9: remark: loop not vectorized: Cannot vectorize early exit loop with more than one early exit [-Rpass-analysis=loop-vectorize]
+  406 |         for (int32_t l = 0; l < in->lanes; ++l) {
       |         ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:408:9: remark: loop not vectorized: instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:408:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:406:9: remark: loop not vectorized: instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:406:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
 In file included from /Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:24:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/algorithm:1865:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/inplace_merge.h:28:
@@ -47,26 +47,26 @@ In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/in
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/uninitialized_algorithms.h:625:5: remark: vectorized loop (vectorization width: 2, interleaved count: 4) [-Rpass=loop-vectorize]
   625 |     while (__iter != __last) {
       |     ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:450:16: remark: loop not vectorized: Loop contains an unsupported terminator [-Rpass-analysis=loop-vectorize]
-  450 |             th.join();
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:447:16: remark: loop not vectorized: Loop contains an unsupported terminator [-Rpass-analysis=loop-vectorize]
+  447 |             th.join();
       |                ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:449:9: remark: loop not vectorized: Cannot vectorize early exit loop with writes to memory [-Rpass-analysis=loop-vectorize]
-  449 |         for (auto &th : threads) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:446:9: remark: loop not vectorized: Cannot vectorize early exit loop with writes to memory [-Rpass-analysis=loop-vectorize]
+  446 |         for (auto &th : threads) {
       |         ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:449:9: remark: loop not vectorized: instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:449:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:455:5: remark: the cost-model indicates that vectorization is not beneficial [-Rpass-missed=loop-vectorize]
-  455 |     for (int32_t l = 0; l < in->lanes; ++l) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:446:9: remark: loop not vectorized: instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:446:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:452:5: remark: the cost-model indicates that vectorization is not beneficial [-Rpass-missed=loop-vectorize]
+  452 |     for (int32_t l = 0; l < in->lanes; ++l) {
       |     ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:455:5: remark: the cost-model indicates that interleaving is not beneficial [-Rpass-missed=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:489:9: remark: loop not vectorized: Control flow cannot be substituted for a select [-Rpass-analysis=loop-vectorize]
-  489 |         }
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:452:5: remark: the cost-model indicates that interleaving is not beneficial [-Rpass-missed=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:486:9: remark: loop not vectorized: Control flow cannot be substituted for a select [-Rpass-analysis=loop-vectorize]
+  486 |         }
       |         ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:476:5: remark: loop not vectorized: value that could not be identified as reduction is used outside the loop [-Rpass-analysis=loop-vectorize]
-  476 |     for (int64_t o = 0; o < O; ++o) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:473:5: remark: loop not vectorized: value that could not be identified as reduction is used outside the loop [-Rpass-analysis=loop-vectorize]
+  473 |     for (int64_t o = 0; o < O; ++o) {
       |     ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:476:5: remark: loop not vectorized: instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:476:5: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:473:5: remark: loop not vectorized: instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:473:5: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
 In file included from /Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:24:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/algorithm:2063:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/memory:950:
@@ -91,20 +91,20 @@ In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/in
    49 |   for (; __first != __last; ++__first)
       |   ^
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/destroy.h:49:3: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:338:13: remark: loop not vectorized: loop induction variable could not be identified [-Rpass-analysis=loop-vectorize]
-  338 |             while (st.generation.load(std::memory_order_acquire) ==
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:336:13: remark: loop not vectorized: loop induction variable could not be identified [-Rpass-analysis=loop-vectorize]
+  336 |             while (st.generation.load(std::memory_order_acquire) ==
       |             ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:338:13: remark: loop not vectorized: Cannot vectorize early exit loop with more than one early exit [-Rpass-analysis=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:338:13: remark: loop not vectorized: could not determine number of loop iterations [-Rpass-analysis=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:338:13: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:308:21: remark: loop not vectorized: value that could not be identified as reduction is used outside the loop [-Rpass-analysis=loop-vectorize]
-  308 |             int64_t cur = st.scratch_peak.load(
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:336:13: remark: loop not vectorized: Cannot vectorize early exit loop with more than one early exit [-Rpass-analysis=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:336:13: remark: loop not vectorized: could not determine number of loop iterations [-Rpass-analysis=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:336:13: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:306:21: remark: loop not vectorized: value that could not be identified as reduction is used outside the loop [-Rpass-analysis=loop-vectorize]
+  306 |             int64_t cur = st.scratch_peak.load(
       |                     ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:310:13: remark: loop not vectorized: Cannot vectorize uncountable loop [-Rpass-analysis=loop-vectorize]
-  310 |             while (peak > cur &&
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:308:13: remark: loop not vectorized: Cannot vectorize uncountable loop [-Rpass-analysis=loop-vectorize]
+  308 |             while (peak > cur &&
       |             ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:310:13: remark: loop not vectorized: could not determine number of loop iterations [-Rpass-analysis=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:310:13: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:308:13: remark: loop not vectorized: could not determine number of loop iterations [-Rpass-analysis=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:308:13: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
 In file included from /Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:29:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/thread:97:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/thread.h:34:
@@ -125,15 +125,15 @@ In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/in
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__new/allocate.h:61:28: remark: loop not vectorized: call instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
    61 |   return static_cast<_Tp*>(__builtin_operator_new(__size _LIBCPP_ADD_TYPE_DESCRIPTOR(_Tp)));
       |                            ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:218:5: remark: loop not vectorized: Cannot vectorize early exit loop with more than one early exit [-Rpass-analysis=loop-vectorize]
-  218 |     for (int64_t j = 0; j < cand_count; ++j) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:216:5: remark: loop not vectorized: Cannot vectorize early exit loop with more than one early exit [-Rpass-analysis=loop-vectorize]
+  216 |     for (int64_t j = 0; j < cand_count; ++j) {
       |     ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:218:5: remark: loop not vectorized: instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:218:5: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:192:9: remark: loop not vectorized: value that could not be identified as reduction is used outside the loop [-Rpass-analysis=loop-vectorize]
-  192 |         for (int64_t k = in.rev_ptr[tv]; k < in.rev_ptr[tv + 1]; ++k) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:216:5: remark: loop not vectorized: instruction cannot be vectorized [-Rpass-analysis=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:216:5: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:190:9: remark: loop not vectorized: value that could not be identified as reduction is used outside the loop [-Rpass-analysis=loop-vectorize]
+  190 |         for (int64_t k = in.rev_ptr[tv]; k < in.rev_ptr[tv + 1]; ++k) {
       |         ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:192:9: remark: loop not vectorized: Cannot vectorize uncountable loop [-Rpass-analysis=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:190:9: remark: loop not vectorized: Cannot vectorize uncountable loop [-Rpass-analysis=loop-vectorize]
 In file included from /Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:29:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/thread:97:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/thread.h:34:
@@ -148,8 +148,8 @@ In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/in
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__vector/vector.h:407:12: remark: loop not vectorized: cannot identify array bounds [-Rpass-analysis=loop-vectorize]
   407 |     return this->__begin_[__n];
       |            ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:192:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-  192 |         for (int64_t k = in.rev_ptr[tv]; k < in.rev_ptr[tv + 1]; ++k) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:190:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+  190 |         for (int64_t k = in.rev_ptr[tv]; k < in.rev_ptr[tv + 1]; ++k) {
       |         ^
 In file included from /Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:24:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/algorithm:1888:
@@ -164,8 +164,8 @@ In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/in
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:44:7: remark: loop not vectorized: Cannot vectorize early exit loop with more than one early exit [-Rpass-analysis=loop-vectorize]
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:44:7: remark: loop not vectorized: could not determine number of loop iterations [-Rpass-analysis=loop-vectorize]
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:44:7: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:156:9: remark: loop not vectorized: value that could not be identified as reduction is used outside the loop [-Rpass-analysis=loop-vectorize]
-  156 |         for (int64_t i = 0; i < p1 - p0; ++i) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:154:9: remark: loop not vectorized: value that could not be identified as reduction is used outside the loop [-Rpass-analysis=loop-vectorize]
+  154 |         for (int64_t i = 0; i < p1 - p0; ++i) {
       |         ^
 In file included from /Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:29:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/thread:97:
@@ -181,8 +181,8 @@ In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/in
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__vector/vector.h:407:12: remark: loop not vectorized: cannot identify array bounds [-Rpass-analysis=loop-vectorize]
   407 |     return this->__begin_[__n];
       |            ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:156:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-  156 |         for (int64_t i = 0; i < p1 - p0; ++i) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:154:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+  154 |         for (int64_t i = 0; i < p1 - p0; ++i) {
       |         ^
 In file included from /Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:24:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/algorithm:1888:
@@ -197,13 +197,13 @@ In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/in
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:44:7: remark: loop not vectorized: Cannot vectorize early exit loop with more than one early exit [-Rpass-analysis=loop-vectorize]
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:44:7: remark: loop not vectorized: could not determine number of loop iterations [-Rpass-analysis=loop-vectorize]
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:44:7: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:243:6: note: could not determine the original source location for /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sift_down.h:0:0
-  243 | void lane_worker(WorkerCtx *ctx) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:241:6: note: could not determine the original source location for /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sift_down.h:0:0
+  241 | void lane_worker(WorkerCtx *ctx) {
       |      ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:243:6: remark: loop not vectorized: value that could not be identified as reduction is used outside the loop [-Rpass-analysis=loop-vectorize]
-  243 | void lane_worker(WorkerCtx *ctx) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:241:6: remark: loop not vectorized: value that could not be identified as reduction is used outside the loop [-Rpass-analysis=loop-vectorize]
+  241 | void lane_worker(WorkerCtx *ctx) {
       |      ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:243:6: note: could not determine the original source location for /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sift_down.h:0:0
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:241:6: note: could not determine the original source location for /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sift_down.h:0:0
 In file included from /Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:24:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/algorithm:1875:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/make_heap.h:15:
@@ -233,13 +233,13 @@ In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/in
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:44:7: remark: loop not vectorized: Cannot vectorize early exit loop with more than one early exit [-Rpass-analysis=loop-vectorize]
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:44:7: remark: loop not vectorized: could not determine number of loop iterations [-Rpass-analysis=loop-vectorize]
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:44:7: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:243:6: note: could not determine the original source location for /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sift_down.h:0:0
-  243 | void lane_worker(WorkerCtx *ctx) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:241:6: note: could not determine the original source location for /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sift_down.h:0:0
+  241 | void lane_worker(WorkerCtx *ctx) {
       |      ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:243:6: remark: loop not vectorized: value that could not be identified as reduction is used outside the loop [-Rpass-analysis=loop-vectorize]
-  243 | void lane_worker(WorkerCtx *ctx) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:241:6: remark: loop not vectorized: value that could not be identified as reduction is used outside the loop [-Rpass-analysis=loop-vectorize]
+  241 | void lane_worker(WorkerCtx *ctx) {
       |      ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:243:6: note: could not determine the original source location for /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sift_down.h:0:0
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:241:6: note: could not determine the original source location for /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sift_down.h:0:0
 In file included from /Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:24:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/algorithm:1875:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/make_heap.h:15:
@@ -261,22 +261,22 @@ In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/in
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:44:7: remark: loop not vectorized: Cannot vectorize early exit loop with more than one early exit [-Rpass-analysis=loop-vectorize]
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:44:7: remark: loop not vectorized: could not determine number of loop iterations [-Rpass-analysis=loop-vectorize]
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:44:7: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:280:17: remark: loop not vectorized: Cannot vectorize uncountable loop [-Rpass-analysis=loop-vectorize]
-  280 |                 for (int64_t d = 0; d < in.D; ++d) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:278:17: remark: loop not vectorized: Cannot vectorize uncountable loop [-Rpass-analysis=loop-vectorize]
+  278 |                 for (int64_t d = 0; d < in.D; ++d) {
       |                 ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:280:17: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:277:17: remark: loop not vectorized: Cannot vectorize uncountable loop [-Rpass-analysis=loop-vectorize]
-  277 |                 for (int64_t v = 0; v < in.N; ++v) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:278:17: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:275:17: remark: loop not vectorized: Cannot vectorize uncountable loop [-Rpass-analysis=loop-vectorize]
+  275 |                 for (int64_t v = 0; v < in.N; ++v) {
       |                 ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:277:17: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:268:9: remark: loop not vectorized: Cannot vectorize uncountable loop [-Rpass-analysis=loop-vectorize]
-  268 |         for (int64_t d = 0; d < in.D; ++d) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:275:17: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:266:9: remark: loop not vectorized: Cannot vectorize uncountable loop [-Rpass-analysis=loop-vectorize]
+  266 |         for (int64_t d = 0; d < in.D; ++d) {
       |         ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:268:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:265:9: remark: loop not vectorized: Cannot vectorize uncountable loop [-Rpass-analysis=loop-vectorize]
-  265 |         for (int64_t v = 0; v < in.N; ++v) {
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:266:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:263:9: remark: loop not vectorized: Cannot vectorize uncountable loop [-Rpass-analysis=loop-vectorize]
+  263 |         for (int64_t v = 0; v < in.N; ++v) {
       |         ^
-/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:265:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+/Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:263:9: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
 In file included from /Users/alansynn/orca/workspaces/una-x/main/native/trace_producer.cpp:24:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/algorithm:1865:
 In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/inplace_merge.h:28:

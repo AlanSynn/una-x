@@ -46,7 +46,6 @@ struct LaneScratch {
     std::vector<double> row_cost;  /* [max_degree] phase-1 costs     */
     std::vector<int64_t> cand_ids; /* [D] candidate capture          */
     std::vector<int64_t> mark;     /* [D] destination marks (zeroed) */
-    std::vector<double> cand_dist; /* [D] candidate distances        */
     /* This lane's capture output, appended per origin in the lane's
      * execution order; block starts recorded in origin_off. */
     std::vector<int64_t> out_ids;
@@ -58,8 +57,7 @@ struct LaneScratch {
         int64_t i8 = (int64_t)(stamp.size() + touched.size() +
                                row_off.size() + cand_ids.size() +
                                mark.size()) * 8;
-        int64_t f8 = (int64_t)(label.size() + row_cost.size() +
-                               cand_dist.size()) * 8;
+        int64_t f8 = (int64_t)(label.size() + row_cost.size()) * 8;
         int64_t o8 = (int64_t)(out_ids.capacity() +
                                out_dist.capacity()) * 8 +
                      (int64_t)heap.capacity() * 16;
@@ -422,7 +420,6 @@ int una_n00_run_stream(const struct una_n00_input *in,
             c.scratch.row_cost.resize((size_t)deg);
             c.scratch.cand_ids.resize((size_t)in->D);
             c.scratch.mark.resize((size_t)in->D);
-            c.scratch.cand_dist.resize((size_t)in->D);
         }
     } catch (const std::bad_alloc &) {
         std::free(counts);

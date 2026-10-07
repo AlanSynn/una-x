@@ -34,7 +34,7 @@ content_digest=39e13014b2739d707092581a36896d7e90282a99afee2428aaa23ba38eca6b3c
  "origins": 40,
  "stamps_zeroed": 5000,
  "tile_origins": 40,
- "tile_temp_bytes": 57424,
+ "tile_temp_bytes": 56624,
  "tiles": 1,
  "touched_total": 5130,
  "trace_bytes": 36648
