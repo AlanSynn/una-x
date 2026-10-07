@@ -22,31 +22,35 @@ FAIL-CLOSED ORDER (each step refuses before any later step executes):
      gate store does not open the cell: missing store/entry/evidence, or
      evidence bytes changed since the verdict was recorded — G10R F2)
   4. device context port     -> HardwareUnavailable (port not attached)
+  5. device execution        -> K0/K1 on device via the attached port
+     (DeviceRuntime), K2/K3 host tail under the gate-certified tree.
 
-The device launch ABI itself lands with G11 against real CUDA; this build
-ships the fail-closed dispatch order, the bounded tile/staging machinery,
-the host tail plans (K2/K3), and the gate harness.  There is deliberately
-NO host-twin production path: the trusted CPU route lives in
-src/urban_network_analysis and is not invoked from here.
+There is deliberately NO host-twin production path: the trusted CPU route
+lives in src/urban_network_analysis and is not invoked from here.  Records
+carry measured counters only and never claim parity (hardware_validated is
+False by construction — parity is the gate harness's durable verdict).
 """
 
 from __future__ import annotations
 
+import ctypes
 from dataclasses import dataclass
 from typing import Optional, Tuple
 
 import numpy as np
 
 from ..backends.gpu import gate_state
-from ..kernels.host_twins import fold_host_reference
+from ..kernels.host_twins import (argsort_tie_law, fold_host_reference,
+                                  reduce_with)
 from .availability import probe_driver
 from .buffers import require_c_contiguous
-from .errors import HardwareUnavailable, ParityGateNotRun
+from .errors import (HardwareUnavailable, ParityGateNotRun, RegionCanceled)
 
 __all__ = [
     "FoldCell", "FoldRowScalars", "FoldRegionRequest", "CancelFlag",
     "FoldRegionRecord", "execute_fold_region", "plan_tiles",
-    "run_host_stage_composition", "FULL_SERVICE_PHASES",
+    "run_host_stage_composition", "run_device_stage_composition",
+    "FULL_SERVICE_PHASES",
 ]
 
 # Declared service phases in execution order (dossier 08 FULL service model).
@@ -211,11 +215,13 @@ def execute_fold_region(request: FoldRegionRequest,
                         ) -> FoldRegionRecord:
     """Run the fold region under the fail-closed order; refuse otherwise.
 
-    The four refusal steps in the module docstring run in order; any refusal
-    happens before any compute, transfer, or allocation.  With every gate
-    satisfied the device launch ABI is still a G11 deliverable on the
-    qualification host, so this build stops there BY DESIGN (never a silent
-    fallback, never a simulated execution).
+    The refusal steps in the module docstring run in order; any refusal
+    happens before any compute, transfer, or allocation.  ``context`` is
+    the device port (gpu.kernels.device_exec.DeviceRuntime on the
+    qualification host, with the committed .cu compiled and loaded); on a
+    gate-open cell the region executes K0/K1 on the device and K2/K3 on
+    the host under the certified association.  Never a silent fallback,
+    never a simulated execution.
     """
     # 1. request validation
     validate_request(request)
@@ -244,12 +250,144 @@ def execute_fold_region(request: FoldRegionRequest,
     # 4. device context port
     if context is None:
         raise HardwareUnavailable(
-            "no device context port attached (the CUDA context lands with "
-            "G11 qualification wiring on the qualification host)")
-    raise NotImplementedError(
-        "execute_fold_region: device launch wiring is G11's deliverable on "
-        "the qualification host; every gate in front of it is implemented "
-        "and fail-closed in this build")
+            "no device context port attached (attach a DeviceRuntime from "
+            "gpu.kernels.device_exec on the qualification host)")
+    # 5. device execution (G11 wiring): K0/K1 on the device through the
+    # attached port, K2/K3 host tail under the gate-certified association.
+    return run_device_stage_composition(request, context, certified, cancel)
+
+
+_BLOCK = 256   # mirrors UNA_G10_BLOCK_THREADS in fold_kernels.cu
+
+
+def run_device_stage_composition(request: FoldRegionRequest, context,
+                                 certified: str,
+                                 cancel: Optional[CancelFlag] = None,
+                                 ) -> FoldRegionRecord:
+    """Device K0/K1 + host K2/K3 composition through a live device port.
+
+    ``context`` must expose the gate-harness device surface (``identity``,
+    ``h2d``, ``d2h``, ``launch``, ``sync``) — on the qualification host,
+    gpu.kernels.device_exec.DeviceRuntime with the committed .cu compiled
+    and loaded.  The durable gate store has already certified the cell
+    (fail-closed steps 1-4); this function makes NO parity claims of its
+    own: parity is the gate's verdict, so ``hardware_validated`` stays
+    False on the record by construction.  Cancellation is polled only at
+    tile barriers; a canceled region refuses (RegionCanceled), never
+    reports a truncated success.
+    """
+    for attr in ("identity", "h2d", "d2h", "launch", "sync"):
+        if not hasattr(context, attr):
+            raise TypeError(
+                f"device context port lacks {attr!r}; attach a "
+                "gpu.kernels.device_exec.DeviceRuntime")
+    n = len(request.distance_rows)
+    reach = np.empty(n, dtype=np.float64)
+    ge = np.empty(n, dtype=np.float64)
+    gl = np.empty(n, dtype=np.float64)
+    ka = np.empty(n, dtype=np.float64)
+    tiles = plan_tiles(n, request.tile_origins)
+    sc = request.scalars
+    high_water = 0
+    for (s, e) in tiles:
+        if cancel is not None and cancel.canceled():
+            raise RegionCanceled(
+                f"region canceled at tile barrier [{s}, {e}); no partial "
+                "success is reported")
+        for i in range(s, e):
+            (reach[i], ge[i], gl[i], ka[i],
+             row_bytes) = _device_fold_row(
+                context, request.distance_rows[i], request.d_weights, sc,
+                certified)
+            high_water = max(high_water, row_bytes)
+    identity = context.identity
+    return FoldRegionRecord(
+        origins=n, tiles=len(tiles), reach=reach, gravity_exponential=ge,
+        gravity_logistic=gl, knn_access=ka, association=certified,
+        staging_high_water_bytes=high_water,
+        context_kind=(f"device:{identity.name} (cell "
+                      f"{request.cell.cell_id} open via durable gate store)"))
+
+
+def _device_fold_row(ctx, row: np.ndarray, weights: np.ndarray,
+                     sc: FoldRowScalars, certified: str):
+    """One origin row: K0/K1 on device, K2 sort host, knn on device, K3
+    host reduce under ``certified``.  Returns (reach, ge, gl, ka, bytes)."""
+    d = np.ascontiguousarray(row, dtype=np.float64).reshape(1, -1)
+    width = int(d.shape[1])
+    idx_like = np.empty(d.shape, dtype=np.int64)
+    cnt_like = np.empty(1, dtype=np.uint64)
+    dev_dist = ctx.h2d(d)
+    dev_idx = ctx.h2d(idx_like)      # capacity buffer; kernel fills kept
+    dev_cnt = ctx.h2d(cnt_like)
+    ctx.launch("una_g10_fold_compact", (1, 1, 1), (_BLOCK, 1, 1),
+               (dev_dist, ctypes.c_longlong(width),
+                ctypes.c_double(float(sc.cutoff)), dev_idx, dev_cnt))
+    ctx.sync()
+    idx2d = ctx.d2h(dev_idx, idx_like)
+    cnt = int(ctx.d2h(dev_cnt, cnt_like)[0])
+    idx = idx2d[0][:cnt]
+    dn = np.ascontiguousarray(row[idx], dtype=np.float64)
+    wn = np.ascontiguousarray(weights[idx], dtype=np.float64)
+    m = int(dn.shape[0])
+
+    def _elem(kname, params, count):
+        if count == 0:
+            return np.empty(0, dtype=np.float64)
+        dev_out = ctx.h2d(np.empty(count, dtype=np.float64))
+        grid = ((count + _BLOCK - 1) // _BLOCK, 1, 1)
+        ctx.launch(kname, grid, (_BLOCK, 1, 1), tuple(params) + (dev_out,))
+        ctx.sync()
+        return ctx.d2h(dev_out, np.empty(count, dtype=np.float64))
+
+    dev_dn = ctx.h2d(dn) if m else None
+    dev_wn = ctx.h2d(wn) if m else None
+    c_exp = _elem("una_g10_fold_coefficients_exp",
+                  (dev_dn, dev_wn, ctypes.c_longlong(m),
+                   ctypes.c_double(float(sc.gravity_beta)),
+                   ctypes.c_double(float(sc.gravity_plateau))), m)
+    c_log = _elem("una_g10_fold_coefficients_log",
+                  (dev_dn, dev_wn, ctypes.c_longlong(m),
+                   ctypes.c_double(float(sc.gravity_growth_rate)),
+                   ctypes.c_double(float(sc.gravity_plateau)),
+                   ctypes.c_double(float(sc.gravity_logistic_midpoint))), m)
+
+    # K3 host reduces under the gate-certified tree, mirroring
+    # fold_host_reference's composition order exactly (reach first, then
+    # the coefficient reduces; knn special-cases count 0 to constant 0).
+    reach = reduce_with(certified, wn)
+    ge = reduce_with(certified, c_exp)
+    gl = reduce_with(certified, c_log)
+
+    knn = min(m, int(sc.knn_weights.shape[0]))
+    if knn == 0:
+        ka = np.float64(0.0)
+    else:
+        order = argsort_tie_law(dn)
+        dn_s = np.ascontiguousarray(dn[order[:knn]])
+        wn_s = np.ascontiguousarray(wn[order[:knn]])
+        kn = np.ascontiguousarray(sc.knn_weights[:knn])
+        dev_s, dev_ws, dev_kn = ctx.h2d(dn_s), ctx.h2d(wn_s), ctx.h2d(kn)
+        if sc.knn_decay == "exponential":
+            c_knn = _elem("una_g10_fold_knn_coeffs_exp",
+                          (dev_s, dev_ws, dev_kn, ctypes.c_longlong(knn),
+                           ctypes.c_double(float(sc.gravity_beta)),
+                           ctypes.c_double(float(sc.gravity_plateau))), knn)
+        elif sc.knn_decay == "logistic":
+            c_knn = _elem("una_g10_fold_knn_coeffs_log",
+                          (dev_s, dev_ws, dev_kn, ctypes.c_longlong(knn),
+                           ctypes.c_double(float(sc.gravity_growth_rate)),
+                           ctypes.c_double(float(sc.gravity_plateau)),
+                           ctypes.c_double(float(sc.gravity_logistic_midpoint))),
+                          knn)
+        else:
+            c_knn = _elem("una_g10_fold_knn_coeffs_linear",
+                          (dev_ws, dev_kn, ctypes.c_longlong(knn)), knn)
+        ka = reduce_with(certified, c_knn)
+
+    row_bytes = (d.nbytes + idx_like.nbytes + cnt_like.nbytes
+                 + 2 * m * 8 + 5 * max(m, 1) * 8)
+    return reach, ge, gl, ka, row_bytes
 
 
 def run_host_stage_composition(distance_rows, d_weights, scalars,

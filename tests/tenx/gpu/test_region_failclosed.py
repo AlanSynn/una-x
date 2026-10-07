@@ -108,8 +108,13 @@ def test_context_refusal_after_gate(monkeypatch, tmp_path):
         execute_fold_region(request, context=None)
 
 
-def test_all_gates_pass_stop_is_designed_not_fallback(monkeypatch, tmp_path):
+def test_all_gates_pass_executes_through_twin_port(monkeypatch, tmp_path):
+    # G11 wiring: with every fail-closed gate satisfied and a device port
+    # attached, the region EXECUTES (here through the twin runtime, which
+    # is wiring-only silicon; parity vs silicon stays the device gate's
+    # verdict — the record itself makes no parity claims).
     from gpu.backends.gpu import record_gate
+    from test_device_gate_plumbing import _TwinRuntime
     evidence = tmp_path / "evidence.json"
     evidence.write_text('{"fixture": true}\n')
     store = tmp_path / "store.json"
@@ -119,13 +124,21 @@ def test_all_gates_pass_stop_is_designed_not_fallback(monkeypatch, tmp_path):
                         lambda: _FakeProbe(available=True))
     cell = FoldCell(cell_id="gated-cell2", association="seq",
                     bit_validated=True)
-    request = _request(cell=cell)
+    base = _request(cell=cell)
     request = FoldRegionRequest(
-        distance_rows=request.distance_rows, d_weights=request.d_weights,
-        scalars=request.scalars, cell=request.cell,
-        tile_origins=request.tile_origins, gate_store=str(store))
-    with pytest.raises(NotImplementedError, match="G11"):
-        execute_fold_region(request, context=object())
+        distance_rows=base.distance_rows, d_weights=base.d_weights,
+        scalars=base.scalars, cell=base.cell,
+        tile_origins=base.tile_origins, gate_store=str(store))
+    rec = execute_fold_region(request, context=_TwinRuntime())
+    assert rec.origins == 2 and rec.tiles == 1
+    assert rec.association == "seq"
+    assert rec.hardware_validated is False   # records never claim parity
+    assert rec.context_kind.startswith("device:")
+    assert rec.reach.shape == (2,)
+    host = run_host_stage_composition(
+        base.distance_rows, base.d_weights, base.scalars, "seq")
+    for a, b in ((rec.reach, host.reach),):
+        assert a.tobytes() == b.tobytes()
 
 
 def test_tampered_evidence_closes_dispatch(monkeypatch, tmp_path):
