@@ -1,0 +1,13 @@
+# PROVENANCE: transcribed verbatim from the srun console of job 22722850
+# (gpuA100x4, 2026-10-07T13:54Z) by the gpu-engineer agent; script preserved
+# as diag_ctx2.py.
+srun: job 22722850 queued and waiting for resources
+srun: job 22722850 has been allocated resources
+cuInit rc= 0
+cuDeviceGet rc= 0
+PrimaryCtxGetState rc= 0 flags= 0 active= 0
+cuCtxCreate rc= 0 ctx= 0x564ed8fd3250
+CtxGetCurrent rc= 0 cur= 0x564ed8fd3250
+cuMemAlloc(explicit ctx) rc= 0 ptr= 0xaa00000
+cuMemFree rc= 0
+cuCtxDestroy rc= 0

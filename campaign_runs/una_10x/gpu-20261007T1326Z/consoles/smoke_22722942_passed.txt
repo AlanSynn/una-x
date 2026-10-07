@@ -1,0 +1,17 @@
+# PROVENANCE: srun job 22722942 (gpuA100x4, 2026-10-07T14:2xZ), CWD=run dir
+# (NOT repo): urban_network_analysis resolves through the INSTALLED
+# distribution.  Console transcribed from the submission pipe by the
+# gpu-engineer agent; script preserved as wheel_smoke.py.
+# Attempt ledger: 22722921 FAILED (python-list inputs -> numba TypingError;
+#   caller types must be mirrored), 22722934 FAILED (bits matched but the
+#   script itself crashed on a malformed debug print), 22722942 PASSED.
+installed_distribution: urban-network-analysis 2.6.0
+installed_at: /u/dsynn/projects/una-x/env/lib/python3.11/site-packages
+engine_module: urban_network_analysis.Engines.AccessibilityWElevation
+engine_bits_installed: reach 0000000000002640 / ge b8d44d3eda412340 / gl 0000000000002640 / kn 0000000000000040
+engine_bits_gate_certified: (identical, bit-exact, all four outputs)
+bits_match_installed_vs_gate: True
+availability_driver: available=true, devices=[NVIDIA A100-SXM4-40GB], fp64_capable=true, device_count=1
+gate_state: open=true, reason=evidence-verified, association=seq
+SMOKE_PASSED
+srun exit code 0

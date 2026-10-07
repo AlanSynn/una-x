@@ -1,0 +1,382 @@
+{
+  "cell": "una_legacy.fold.default",
+  "mode": "device_gate",
+  "started_utc": "2026-10-07T13:56:14Z",
+  "nvcc": {
+    "on_path": true,
+    "version": "Build cuda_12.9.r12.9/compiler.36037853_0",
+    "path": "/opt/nvidia/hpc_sdk/Linux_x86_64/26.5/cuda/12.9/bin/nvcc"
+  },
+  "device": {
+    "name": "NVIDIA A100-SXM4-40GB",
+    "compute_capability": [
+      8,
+      0
+    ],
+    "sm": "sm_80",
+    "driver_version": [
+      13,
+      2
+    ],
+    "device_index": 0,
+    "context": "cuCtxCreate(flags=0) explicit; the primary context is retained-but-inactive on this node class (cuMemAlloc rc=201), see diag_ctx2.py consoles"
+  },
+  "compile": {
+    "ptx": "fold_kernels_compute_80.ptx",
+    "ptx_sha256": "9ca8f9a6f20f19804915782bb6d10ea32239075c568adf025d7ffee446d93e26",
+    "flags": "-O3 -std=c++17 -prec-sqrt=true -prec-div=true -fmad=false -arch=compute_80 -ptx",
+    "cu_source_sha256": "bf843394f2ecefbf813d31b0537f391e763a1cbaf2b2e45a59347ad1bd4d6344"
+  },
+  "k0_battery": {
+    "big_at_1": {
+      "k0_ok": true,
+      "kept": 7
+    },
+    "big_at_7": {
+      "k0_ok": true,
+      "kept": 7
+    },
+    "big_at_0": {
+      "k0_ok": true,
+      "kept": 7
+    },
+    "tiny_then_big": {
+      "k0_ok": true,
+      "kept": 8
+    },
+    "mixed": {
+      "k0_ok": true,
+      "kept": 6
+    },
+    "k0_random_row_a": {
+      "k0_ok": true,
+      "kept": 211
+    },
+    "k0_random_row_b": {
+      "k0_ok": true,
+      "kept": 813
+    },
+    "k0_nan_inf_mix": {
+      "k0_ok": true,
+      "kept": 4
+    },
+    "k0_all_kept": {
+      "k0_ok": true,
+      "kept": 64
+    }
+  },
+  "exp_boundary": {
+    "all_equal": true,
+    "n": 11
+  },
+  "fold_battery": {
+    "big_at_1": {
+      "leg_a_ok": true,
+      "leg_a_details": {
+        "gravity_exponential": true,
+        "gravity_logistic": true,
+        "knn_access": true
+      },
+      "all_outputs_certified": true,
+      "certified": {
+        "reach": [
+          "seq",
+          "pairwise",
+          "vec8_seq"
+        ],
+        "gravity_exponential": [
+          "seq",
+          "pairwise",
+          "vec8_seq"
+        ],
+        "gravity_logistic": [
+          "seq",
+          "pairwise",
+          "vec8_seq"
+        ],
+        "knn_access": [
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree"
+        ]
+      },
+      "engine_bits": {
+        "reach": "0000000000004043",
+        "gravity_exponential": "0000000000004043",
+        "gravity_logistic": "c4a2d5f5d4643743",
+        "knn_access": "0100000000004043"
+      }
+    },
+    "big_at_7": {
+      "leg_a_ok": true,
+      "leg_a_details": {
+        "gravity_exponential": true,
+        "gravity_logistic": true,
+        "knn_access": true
+      },
+      "all_outputs_certified": true,
+      "certified": {
+        "reach": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec8_seq"
+        ],
+        "gravity_exponential": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec8_seq"
+        ],
+        "gravity_logistic": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ],
+        "knn_access": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ]
+      },
+      "engine_bits": {
+        "reach": "0400000000004043",
+        "gravity_exponential": "0400000000004043",
+        "gravity_logistic": "c2a2d5f5d4643743",
+        "knn_access": "0000000000001040"
+      }
+    },
+    "big_at_0": {
+      "leg_a_ok": true,
+      "leg_a_details": {
+        "gravity_exponential": true,
+        "gravity_logistic": true,
+        "knn_access": true
+      },
+      "all_outputs_certified": true,
+      "certified": {
+        "reach": [
+          "seq",
+          "pairwise",
+          "vec8_seq"
+        ],
+        "gravity_exponential": [
+          "seq",
+          "pairwise",
+          "vec8_seq"
+        ],
+        "gravity_logistic": [
+          "seq",
+          "pairwise",
+          "vec8_seq"
+        ],
+        "knn_access": [
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree"
+        ]
+      },
+      "engine_bits": {
+        "reach": "0000000000004043",
+        "gravity_exponential": "0000000000004043",
+        "gravity_logistic": "c4a2d5f5d4643743",
+        "knn_access": "0100000000004043"
+      }
+    },
+    "tiny_then_big": {
+      "leg_a_ok": true,
+      "leg_a_details": {
+        "gravity_exponential": true,
+        "gravity_logistic": true,
+        "knn_access": true
+      },
+      "all_outputs_certified": true,
+      "certified": {
+        "reach": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ],
+        "gravity_exponential": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ],
+        "gravity_logistic": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ],
+        "knn_access": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ]
+      },
+      "engine_bits": {
+        "reach": "0000000000004043",
+        "gravity_exponential": "0000000000004043",
+        "gravity_logistic": "bda2d5f5d4643743",
+        "knn_access": "000000000000303e"
+      }
+    },
+    "mixed": {
+      "leg_a_ok": true,
+      "leg_a_details": {
+        "gravity_exponential": true,
+        "gravity_logistic": true,
+        "knn_access": true
+      },
+      "all_outputs_certified": true,
+      "certified": {
+        "reach": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ],
+        "gravity_exponential": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ],
+        "gravity_logistic": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ],
+        "knn_access": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ]
+      },
+      "engine_bits": {
+        "reach": "0000c0000000e041",
+        "gravity_exponential": "0000c0000000e041",
+        "gravity_logistic": "b95ceef6d464d741",
+        "knn_access": "0000c0000000d041"
+      }
+    },
+    "cohort": {
+      "leg_a_ok": true,
+      "leg_a_details": {
+        "gravity_exponential": true,
+        "gravity_logistic": true,
+        "knn_access": true
+      },
+      "all_outputs_certified": true,
+      "certified": {
+        "reach": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ],
+        "gravity_exponential": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec8_seq"
+        ],
+        "gravity_logistic": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ],
+        "knn_access": [
+          "seq",
+          "pairwise",
+          "vec2_tree",
+          "vec4_tree",
+          "vec8_tree",
+          "vec16_tree",
+          "vec4_seq",
+          "vec8_seq"
+        ]
+      },
+      "engine_bits": {
+        "reach": "0000000000002640",
+        "gravity_exponential": "b8d44d3eda412340",
+        "gravity_logistic": "0000000000002640",
+        "knn_access": "0000000000000040"
+      }
+    }
+  },
+  "tie_law": {
+    "trials": 64,
+    "mismatches": 0,
+    "numba_version": "0.67.0"
+  },
+  "numba": {
+    "version": "0.67.0"
+  },
+  "finished_utc": "2026-10-07T13:56:18Z",
+  "status": "gate_passed",
+  "gate": "PASSED on real device; evidence recorded in /u/dsynn/projects/una-x/runs/gpu-20261007T1326Z/gate_store.json",
+  "cell_association_recorded": "seq",
+  "association_note": "the store's association is the cohort case's certified gravity_exponential tree (the strongest discriminator); the full per-case/per-output matrix is this evidence file"
+}

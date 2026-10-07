@@ -1,0 +1,11 @@
+{
+  "cells": {
+    "una_legacy.fold.default": {
+      "association": "seq",
+      "bit_validated": true,
+      "evidence_ref": "/u/dsynn/projects/una-x/runs/gpu-20261007T1326Z/gate_evidence.json",
+      "evidence_sha256": "b64f945f5112cf61fd8044e0de399caa09b3c53682f7f9f7691aab5dd461f403",
+      "recorded_utc": "2026-10-07T13:56:18Z"
+    }
+  }
+}

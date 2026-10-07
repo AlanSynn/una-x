@@ -1,0 +1,362 @@
+== STAGE 1: identity ==
+gpua075.delta.ncsa.illinois.edu
+Wed Oct  7 13:35:13 UTC 2026
+-- nvidia-smi -L (inside the job) --
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-c650f56d-da8b-e439-dd3a-668bbd9c4ff8)
+-- nvidia-smi query --
+name, driver_version, compute_cap, memory.total [MiB]
+NVIDIA A100-SXM4-40GB, 595.71.05, 8.0, 40960 MiB
+-- modules --
+
+Currently Loaded Modules:
+  1) libfabric/2.3.1      6) cray-libsci/26.03.0    11) craype-accel-nvidia80
+  2) craype-network-ofi   7) PrgEnv-gnu/8.7.0       12) cue-login-env/1.1
+  3) gcc-native/14        8) cray-dsmml/0.3.1       13) slurm-env/0.1
+  4) craype/2.7.36        9) craype-x86-milan       14) default-rh96
+  5) cray-mpich/9.1.0    10) cudatoolkit/26.5_13.2
+
+ 
+
+-- nvcc under default toolkit --
+/opt/nvidia/hpc_sdk/Linux_x86_64/26.5/cuda/13.2/bin/nvcc
+Cuda compilation tools, release 13.2, V13.2.78
+Build cuda_13.2.r13.2/compiler.37668154_0
+== STAGE 2: host battery (rc 5 expected) ==
+{
+  "status": "host_battery_written",
+  "path": "/u/dsynn/projects/una-x/runs/gpu-20261007T1326Z/host_battery.json",
+  "exit_code": 5,
+  "note": "host half only; no gate verdict \u2014 device half requires real hardware"
+}
+HOST_BATTERY_RC=5
+== STAGE 3: device gate PRIMARY (toolkit 12.9 -> PTX 8.8) ==
+
+The following have been reloaded with a version change:
+  1) cudatoolkit/26.5_13.2 => cudatoolkit/26.5_12.9-unsupported
+
+nvcc now: /opt/nvidia/hpc_sdk/Linux_x86_64/26.5/cuda/12.9/bin/nvcc
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/u/dsynn/projects/una-x/repo/gpu/kernels/validate_device_bits.py", line 655, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/u/dsynn/projects/una-x/repo/gpu/kernels/validate_device_bits.py", line 629, in main
+    probe = probe_driver()
+            ^^^^^^^^^^^^^^
+  File "/u/dsynn/projects/una-x/repo/gpu/runtime/availability.py", line 151, in probe_driver
+    return _driver_result(True, "available",
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _driver_result() got an unexpected keyword argument 'fp64_capable'
+GATE_RC_PRIMARY=1
+GATE_RC_FINAL=1
+== STAGE 5: fresh gate-state read from disk ==
+{
+  "open": false,
+  "reason": "gate store '/u/dsynn/projects/una-x/runs/gpu-20261007T1326Z/gate_store.json' not found",
+  "association": "",
+  "evidence_ref": ""
+}
+== STAGE 6: tests/tenx/gpu on the GPU node ==
+..F.F....................................................F.............. [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+________________________ test_probe_reports_typed_truth ________________________
+
+    def test_probe_reports_typed_truth():
+>       probe = probe_driver()
+                ^^^^^^^^^^^^^^
+
+tests/tenx/gpu/test_availability_failclosed.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def probe_driver() -> DriverProbe:
+        """Probe for a CUDA driver and at least one FP64-capable device.
+    
+        Never raises: every failure mode becomes a typed, reported refusal.
+        """
+        if platform.system() == "Darwin":
+            # Recorded fact (gpu_region.json hardware audit): macOS ships no
+            # CUDA driver; Apple GPUs are explicitly not qualification targets.
+            return _driver_result(
+                False, "no_cuda_driver",
+                "platform=Darwin: no CUDA driver exists for this OS; "
+                "Apple GPU present but not a qualification target")
+    
+        lib = None
+        tried = []
+        for name in _CUDA_DRIVER_CANDIDATES:
+            path = ctypes.util.find_library(name.replace(".so", "")) or name
+            try:
+                lib = ctypes.CDLL(path)
+                tried.append(f"{name}:loaded({path})")
+                break
+            except OSError as exc:
+                tried.append(f"{name}:{exc}")
+                lib = None
+        if lib is None:
+            return _driver_result(False, "no_cuda_driver", "; ".join(tried))
+    
+        try:
+            rc = lib.cuInit(0)
+            if rc != _CU_SUCCESS:
+                return _driver_result(False, "cuInit_failed", f"cuInit rc={rc}")
+            count = ctypes.c_int(0)
+            rc = lib.cuDeviceGetCount(ctypes.byref(count))
+            if rc != _CU_SUCCESS:
+                return _driver_result(False, "cuDeviceGetCount_failed",
+                                      f"rc={rc}")
+            if count.value < 1:
+                return _driver_result(False, "no_cuda_device",
+                                      "cuDeviceGetCount=0")
+            # Enumerate devices; require FP64 on the first device.
+            names = []
+            fp64_first = False
+            for i in range(count.value):
+                dev = ctypes.c_int(0)
+                if lib.cuDeviceGet(ctypes.byref(dev), ctypes.c_int(i)) != _CU_SUCCESS:
+                    continue
+                # cuDeviceGetName writes narrow char bytes (driver API char*);
+                # reading them through a wchar buffer misdecodes the device
+                # name — U+4449564E on the real A100 ("NVID" as one UTF-32
+                # word).  Read as bytes, decode explicitly.
+                name_buf = ctypes.create_string_buffer(256)
+                rc = lib.cuDeviceGetName(name_buf, 256, dev)
+                if rc == _CU_SUCCESS:
+                    names.append(name_buf.value.decode("utf-8", "replace"))
+                if i == 0:
+                    major = ctypes.c_int(0)
+                    minor = ctypes.c_int(0)
+                    rc_maj = lib.cuDeviceGetAttribute(
+                        ctypes.byref(major),
+                        ctypes.c_int(_CU_DEVICE_ATTRIBUTE_CC_MAJOR), dev)
+                    rc_min = lib.cuDeviceGetAttribute(
+                        ctypes.byref(minor),
+                        ctypes.c_int(_CU_DEVICE_ATTRIBUTE_CC_MINOR), dev)
+                    fp64_first = (
+                        rc_maj == _CU_SUCCESS and rc_min == _CU_SUCCESS
+                        and (major.value, minor.value) >= _MIN_FP64_CAPABILITY)
+            if not fp64_first:
+                return _driver_result(
+                    False, "no_fp64_device",
+                    f"devices={names}; compute capability below "
+                    f"{_MIN_FP64_CAPABILITY[0]}.{_MIN_FP64_CAPABILITY[1]} on "
+                    "device 0; "
+                    "FP32 substitution is forbidden (dossier 08)",
+                    device_count=count.value, fp64_capable=False,
+                    names=tuple(names))
+>           return _driver_result(True, "available",
+                                  f"devices={names}",
+                                  device_count=count.value, fp64_capable=True,
+                                  names=tuple(names))
+E                                 TypeError: _driver_result() got an unexpected keyword argument 'fp64_capable'
+
+gpu/runtime/availability.py:151: TypeError
+__________________ test_availability_report_shape_and_honesty __________________
+
+    def test_availability_report_shape_and_honesty():
+>       report = gpub.availability_report()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/tenx/gpu/test_availability_failclosed.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+gpu/backends/gpu.py:271: in availability_report
+    driver = probe_driver()
+             ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def probe_driver() -> DriverProbe:
+        """Probe for a CUDA driver and at least one FP64-capable device.
+    
+        Never raises: every failure mode becomes a typed, reported refusal.
+        """
+        if platform.system() == "Darwin":
+            # Recorded fact (gpu_region.json hardware audit): macOS ships no
+            # CUDA driver; Apple GPUs are explicitly not qualification targets.
+            return _driver_result(
+                False, "no_cuda_driver",
+                "platform=Darwin: no CUDA driver exists for this OS; "
+                "Apple GPU present but not a qualification target")
+    
+        lib = None
+        tried = []
+        for name in _CUDA_DRIVER_CANDIDATES:
+            path = ctypes.util.find_library(name.replace(".so", "")) or name
+            try:
+                lib = ctypes.CDLL(path)
+                tried.append(f"{name}:loaded({path})")
+                break
+            except OSError as exc:
+                tried.append(f"{name}:{exc}")
+                lib = None
+        if lib is None:
+            return _driver_result(False, "no_cuda_driver", "; ".join(tried))
+    
+        try:
+            rc = lib.cuInit(0)
+            if rc != _CU_SUCCESS:
+                return _driver_result(False, "cuInit_failed", f"cuInit rc={rc}")
+            count = ctypes.c_int(0)
+            rc = lib.cuDeviceGetCount(ctypes.byref(count))
+            if rc != _CU_SUCCESS:
+                return _driver_result(False, "cuDeviceGetCount_failed",
+                                      f"rc={rc}")
+            if count.value < 1:
+                return _driver_result(False, "no_cuda_device",
+                                      "cuDeviceGetCount=0")
+            # Enumerate devices; require FP64 on the first device.
+            names = []
+            fp64_first = False
+            for i in range(count.value):
+                dev = ctypes.c_int(0)
+                if lib.cuDeviceGet(ctypes.byref(dev), ctypes.c_int(i)) != _CU_SUCCESS:
+                    continue
+                # cuDeviceGetName writes narrow char bytes (driver API char*);
+                # reading them through a wchar buffer misdecodes the device
+                # name — U+4449564E on the real A100 ("NVID" as one UTF-32
+                # word).  Read as bytes, decode explicitly.
+                name_buf = ctypes.create_string_buffer(256)
+                rc = lib.cuDeviceGetName(name_buf, 256, dev)
+                if rc == _CU_SUCCESS:
+                    names.append(name_buf.value.decode("utf-8", "replace"))
+                if i == 0:
+                    major = ctypes.c_int(0)
+                    minor = ctypes.c_int(0)
+                    rc_maj = lib.cuDeviceGetAttribute(
+                        ctypes.byref(major),
+                        ctypes.c_int(_CU_DEVICE_ATTRIBUTE_CC_MAJOR), dev)
+                    rc_min = lib.cuDeviceGetAttribute(
+                        ctypes.byref(minor),
+                        ctypes.c_int(_CU_DEVICE_ATTRIBUTE_CC_MINOR), dev)
+                    fp64_first = (
+                        rc_maj == _CU_SUCCESS and rc_min == _CU_SUCCESS
+                        and (major.value, minor.value) >= _MIN_FP64_CAPABILITY)
+            if not fp64_first:
+                return _driver_result(
+                    False, "no_fp64_device",
+                    f"devices={names}; compute capability below "
+                    f"{_MIN_FP64_CAPABILITY[0]}.{_MIN_FP64_CAPABILITY[1]} on "
+                    "device 0; "
+                    "FP32 substitution is forbidden (dossier 08)",
+                    device_count=count.value, fp64_capable=False,
+                    names=tuple(names))
+>           return _driver_result(True, "available",
+                                  f"devices={names}",
+                                  device_count=count.value, fp64_capable=True,
+                                  names=tuple(names))
+E                                 TypeError: _driver_result() got an unexpected keyword argument 'fp64_capable'
+
+gpu/runtime/availability.py:151: TypeError
+_________________ test_no_device_refuses_hardware_unavailable __________________
+
+    def test_no_device_refuses_hardware_unavailable():
+        # The REAL probe must refuse on a host without a usable CUDA device —
+        # whatever its typed reason is on that host (macOS: no_cuda_driver;
+        # Delta login node: cuInit_failed rc=100, driver loader but no GPU).
+        from gpu.runtime.availability import probe_driver
+>       probe = probe_driver()
+                ^^^^^^^^^^^^^^
+
+tests/tenx/gpu/test_region_failclosed.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def probe_driver() -> DriverProbe:
+        """Probe for a CUDA driver and at least one FP64-capable device.
+    
+        Never raises: every failure mode becomes a typed, reported refusal.
+        """
+        if platform.system() == "Darwin":
+            # Recorded fact (gpu_region.json hardware audit): macOS ships no
+            # CUDA driver; Apple GPUs are explicitly not qualification targets.
+            return _driver_result(
+                False, "no_cuda_driver",
+                "platform=Darwin: no CUDA driver exists for this OS; "
+                "Apple GPU present but not a qualification target")
+    
+        lib = None
+        tried = []
+        for name in _CUDA_DRIVER_CANDIDATES:
+            path = ctypes.util.find_library(name.replace(".so", "")) or name
+            try:
+                lib = ctypes.CDLL(path)
+                tried.append(f"{name}:loaded({path})")
+                break
+            except OSError as exc:
+                tried.append(f"{name}:{exc}")
+                lib = None
+        if lib is None:
+            return _driver_result(False, "no_cuda_driver", "; ".join(tried))
+    
+        try:
+            rc = lib.cuInit(0)
+            if rc != _CU_SUCCESS:
+                return _driver_result(False, "cuInit_failed", f"cuInit rc={rc}")
+            count = ctypes.c_int(0)
+            rc = lib.cuDeviceGetCount(ctypes.byref(count))
+            if rc != _CU_SUCCESS:
+                return _driver_result(False, "cuDeviceGetCount_failed",
+                                      f"rc={rc}")
+            if count.value < 1:
+                return _driver_result(False, "no_cuda_device",
+                                      "cuDeviceGetCount=0")
+            # Enumerate devices; require FP64 on the first device.
+            names = []
+            fp64_first = False
+            for i in range(count.value):
+                dev = ctypes.c_int(0)
+                if lib.cuDeviceGet(ctypes.byref(dev), ctypes.c_int(i)) != _CU_SUCCESS:
+                    continue
+                # cuDeviceGetName writes narrow char bytes (driver API char*);
+                # reading them through a wchar buffer misdecodes the device
+                # name — U+4449564E on the real A100 ("NVID" as one UTF-32
+                # word).  Read as bytes, decode explicitly.
+                name_buf = ctypes.create_string_buffer(256)
+                rc = lib.cuDeviceGetName(name_buf, 256, dev)
+                if rc == _CU_SUCCESS:
+                    names.append(name_buf.value.decode("utf-8", "replace"))
+                if i == 0:
+                    major = ctypes.c_int(0)
+                    minor = ctypes.c_int(0)
+                    rc_maj = lib.cuDeviceGetAttribute(
+                        ctypes.byref(major),
+                        ctypes.c_int(_CU_DEVICE_ATTRIBUTE_CC_MAJOR), dev)
+                    rc_min = lib.cuDeviceGetAttribute(
+                        ctypes.byref(minor),
+                        ctypes.c_int(_CU_DEVICE_ATTRIBUTE_CC_MINOR), dev)
+                    fp64_first = (
+                        rc_maj == _CU_SUCCESS and rc_min == _CU_SUCCESS
+                        and (major.value, minor.value) >= _MIN_FP64_CAPABILITY)
+            if not fp64_first:
+                return _driver_result(
+                    False, "no_fp64_device",
+                    f"devices={names}; compute capability below "
+                    f"{_MIN_FP64_CAPABILITY[0]}.{_MIN_FP64_CAPABILITY[1]} on "
+                    "device 0; "
+                    "FP32 substitution is forbidden (dossier 08)",
+                    device_count=count.value, fp64_capable=False,
+                    names=tuple(names))
+>           return _driver_result(True, "available",
+                                  f"devices={names}",
+                                  device_count=count.value, fp64_capable=True,
+                                  names=tuple(names))
+E                                 TypeError: _driver_result() got an unexpected keyword argument 'fp64_capable'
+
+gpu/runtime/availability.py:151: TypeError
+=============================== warnings summary ===============================
+tests/tenx/gpu/test_k1_twin.py::test_exp_boundary_values_match_expression_including_overflow
+  /u/dsynn/projects/una-x/repo/gpu/kernels/host_twins.py:96: RuntimeWarning: overflow encountered in exp
+    return wn / np.exp(gravity_beta * t)
+
+tests/tenx/gpu/test_k1_twin.py::test_exp_boundary_values_match_expression_including_overflow
+  /u/dsynn/projects/una-x/repo/tests/tenx/gpu/test_k1_twin.py:43: RuntimeWarning: overflow encountered in exp
+    want = wn / np.exp(np.maximum(0, vals))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/tenx/gpu/test_availability_failclosed.py::test_probe_reports_typed_truth
+FAILED tests/tenx/gpu/test_availability_failclosed.py::test_availability_report_shape_and_honesty
+FAILED tests/tenx/gpu/test_region_failclosed.py::test_no_device_refuses_hardware_unavailable
+3 failed, 70 passed, 2 warnings in 4.49s
+SUITE_RC=1
+== DONE ==
+Wed Oct  7 13:35:32 UTC 2026

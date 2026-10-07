@@ -1,0 +1,15 @@
+# PROVENANCE: transcribed verbatim from the srun console of job 22722809
+# (gpuA100x4, 2026-10-07T13:52Z) by the gpu-engineer agent; script preserved
+# as diag_ctx.py.  Figures match commit 7b877eb message.
+srun: job 22722809 queued and waiting for resources
+srun: job 22722809 has been allocated resources
+cuInit rc= 0
+cuDeviceGet rc= 0 dev= 0
+PrimaryCtxRetain rc= 0 ctx= 0x55ae7f07ef10
+CtxSetCurrent rc= 0
+CtxGetCurrent rc= 0 cur= 0x55ae7f07ef10
+CtxGetDevice rc= 0 device= 0
+cuMemAlloc rc= 201 ptr= 0x0
+cuGetErrorString: b'invalid device context'
+re-setcur rc= 0
+cuMemAlloc retry rc= 201
