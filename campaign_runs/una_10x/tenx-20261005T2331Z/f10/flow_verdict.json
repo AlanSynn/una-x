@@ -1,0 +1,43 @@
+{
+  "schema": "una_10x/f10_flow_verdict/v1",
+  "task": "F10",
+  "task_completion_law": "TASKS_CLAUDE.yaml F10: 'Qualified implementation or recorded rejection/not_admitted; existing flow unaffected'",
+  "disposition": "not_admitted \u2014 not triggered; F00 verdict not_admitted (both candidates), Amdahl ceiling S<=1.134 even at impossible-generous scope; tape admit precondition fails observably",
+  "trigger_status": {
+    "conditional_on": "F00 admitted (TASKS_CLAUDE.yaml F10: 'Only if F00 admitted: implement one sparse-output or tape variant')",
+    "triggered": false,
+    "reason": "F00 flow_admission.json verdict.overall = not_admitted (sparse_output_producer: not_admitted; ordered_update_tape: not_admitted)"
+  },
+  "parent_evidence": {
+    "path": "campaign_runs/una_10x/tenx-20261005T2331Z/f00/flow_admission.json",
+    "sha256": "54d4ead4a49d464f3e2d2dbcc6299d11063b9df94c67f52be2e1dff78ff2b26e",
+    "verdict_custody": [
+      "83f193a (F00 evidence)",
+      "84e4b25 (console custody)",
+      "83a1b10 (intake ledger append)"
+    ]
+  },
+  "implementation_performed": false,
+  "existing_flow_affected": false,
+  "src_or_tests_changes": "none; this file is the only F10 artifact",
+  "route_model_requirements_carried_forward": {
+    "graph_build": "parallel arcs dedup to MIN weight, first-seen id wins ties (AggregateFlow.py:933-942); destination connectors bidirectional (:960-962), origin connectors unidirectional (:989-997)",
+    "csr": "numba build_csr_from_digraph + scipy csr_matrix; reversed CSR = fwd.T.tocsr() (AggregateFlow.py:1045-1049); backward gradients traverse _csr_rev (:1354), forward traverses _csr_fwd (:1549)",
+    "limit_boundary": "limit=_cutoff_for_shortest(search_radius,mode,ratio,buffer)=1575.0 here; scipy 1.17.1 prunes pairs with distance > limit to inf (docstring), so a node at exactly limit stays finite - a producer must reproduce this boundary",
+    "predecessor_tree": "return_predecessors int32; pred arrays drive contamination marking (AggregateFlow.py:253-276) and u-turn exclusion (pred_d[x]==u or pred_o[u]==x, :294-295/:325-326) - equal distances alone do NOT establish an equivalent tree; settled tie order must match scipy's heap exactly (dossier 07 line 13)",
+    "gradient_slice_contract": "per-destination slices of parallel nodes(int64, strictly ascending/unique)/dist(float64)/pred(int32); F2 precondition verified per run (:416-437); returned dtypes verified per call with ruled formula fallback (:1362-1380)",
+    "forward_dense_consumption": "both kernels consume d_o/pred_o as dense global-indexed arrays (baseline full-node reach scan :227-243; F2 local kernel reads d_o[v]/pred_o[v] at global ids :497-521) - a sparse forward producer requires dense rehydration (cost moves) or a kernel-signature change (route-model change)",
+    "export_contract": "edge_id int64 + flow float64 on net.geometry, feather+geojson, byte-stable (Base.py:289-341)"
+  },
+  "amdahl_basis_carried_forward": {
+    "tier3_impossible_generous_f": 0.11790096065756632,
+    "tier3_impossible_generous_S_ceiling": 1.1336595498525843,
+    "kernel_share_of_public_wall": 0.8218746398121068,
+    "note": "figures byte-embedded from the parent evidence object; see parent for tier definitions and measured stage walls"
+  },
+  "restart_conditions": [
+    "re-admission requires a new frozen cell with observed repeated identical OD routing inputs (graph/cost/snap/order/radius/detour/profile + contamination rules) for the tape candidate, or",
+    "a measured flow workload whose dense-return/init/pack share reaches material fraction against a public wall (F00 tier-2 bound says this requires the gradient+forward stages to grow ~10x relative share), or",
+    "a campaign decision to open the OD accumulation kernel family (82.19% of flow wall) as a separate high-risk candidate scope \u2014 not covered by dossier 07's sparse-producer/tape candidates"
+  ]
+}
