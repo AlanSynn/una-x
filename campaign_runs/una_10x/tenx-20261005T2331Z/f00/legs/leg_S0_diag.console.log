@@ -1,0 +1,89 @@
+    0.0001 |        0.000063 | UNA | UNA instance created. Topology and Settings initialized
+    1.9918 |        0.000617 | Network added | Network added from source /tmp/f00_S0/data/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+    2.1110 |        0.003836 | Build AccessPoints | Access points are built from source /tmp/f00_S0/data/f00_origins_fixture.geojson, with 64 points.
+    2.1193 |        0.000562 | Origins added | Origins added from source /tmp/f00_S0/data/f00_origins_fixture.geojson, with 64 points.
+    2.1762 |        0.056879 | Build AccessPoints | Access points are built from source /tmp/f00_S0/data/MA_transit_stations.geojson, with 6919 points.
+    2.2005 |        0.002373 | Destinations added | Destinations added from source /tmp/f00_S0/data/MA_transit_stations.geojson, with 6919 points.
+    2.2006 |        0.000028 | Build clusters | Building clusters with n_clusters=9 and random_state=42.
+    2.2603 |        0.059774 | Build clusters | Clusters built successfully.
+    2.2747 |        0.000027 | UNA Flow | Running Flow with 9 clusters and 9 threads.
+    2.2748 |        0.000062 | AggregateFlow | Centrality run (aggregate_flow, via-arc model): search_radius=1500.0, detour_mode=ratio, ratio=1.05, buffer=100.0, decay=True (method=closest, curve=exponential), path_penalty=logistic, turns=False
+    2.5725 |        0.297693 | AggregateFlow | DiGraph: 49159 net nodes, 6919 dest nodes, 64 origin nodes, 166538 arcs.
+    2.7025 |        0.129993 | AggregateFlow | CSR build: 0.13s (n_arcs=166538)
+    3.6260 |        0.003918 | AggregateFlow | Backward gradients: 6919 destinations in 0.92s (limit=1575).
+    3.6330 |        0.006985 | AggregateFlow | Origin loop: 64 origins across 4 thread(s) (static striped assignment).
+    6.0448 |        2.411749 | AggregateFlow |   origin 1/64 (1.6%, 0/s, ETA 2.5 min)
+    6.0453 |        0.000556 | AggregateFlow |   origin 2/64 (3.1%, 1/s, ETA 1.2 min)
+    6.0464 |        0.001038 | AggregateFlow |   origin 3/64 (4.7%, 1/s, ETA 0.8 min)
+    6.0465 |        0.000183 | AggregateFlow |   origin 4/64 (6.2%, 2/s, ETA 0.6 min)
+    6.0540 |        0.007411 | AggregateFlow |   origin 5/64 (7.8%, 2/s, ETA 0.5 min)
+    6.0548 |        0.000804 | AggregateFlow |   origin 6/64 (9.4%, 2/s, ETA 0.4 min)
+    6.0565 |        0.001788 | AggregateFlow |   origin 7/64 (10.9%, 3/s, ETA 0.3 min)
+    6.0578 |        0.001302 | AggregateFlow |   origin 8/64 (12.5%, 3/s, ETA 0.3 min)
+    6.0628 |        0.005000 | AggregateFlow |   origin 9/64 (14.1%, 4/s, ETA 0.2 min)
+    6.0651 |        0.002210 | AggregateFlow |   origin 10/64 (15.6%, 4/s, ETA 0.2 min)
+    6.0657 |        0.000630 | AggregateFlow |   origin 11/64 (17.2%, 5/s, ETA 0.2 min)
+    6.0670 |        0.001314 | AggregateFlow |   origin 12/64 (18.8%, 5/s, ETA 0.2 min)
+    6.0710 |        0.003968 | AggregateFlow |   origin 13/64 (20.3%, 5/s, ETA 0.2 min)
+    6.0717 |        0.000701 | AggregateFlow |   origin 14/64 (21.9%, 6/s, ETA 0.1 min)
+    6.0744 |        0.002712 | AggregateFlow |   origin 15/64 (23.4%, 6/s, ETA 0.1 min)
+    6.0777 |        0.003363 | AggregateFlow |   origin 16/64 (25.0%, 7/s, ETA 0.1 min)
+    6.0807 |        0.003002 | AggregateFlow |   origin 17/64 (26.6%, 7/s, ETA 0.1 min)
+    6.0817 |        0.000982 | AggregateFlow |   origin 18/64 (28.1%, 7/s, ETA 0.1 min)
+    6.0846 |        0.002846 | AggregateFlow |   origin 19/64 (29.7%, 8/s, ETA 0.1 min)
+    6.0856 |        0.000996 | AggregateFlow |   origin 20/64 (31.2%, 8/s, ETA 0.1 min)
+    6.0888 |        0.003250 | AggregateFlow |   origin 21/64 (32.8%, 9/s, ETA 0.1 min)
+    6.0913 |        0.002503 | AggregateFlow |   origin 22/64 (34.4%, 9/s, ETA 0.1 min)
+    6.0929 |        0.001542 | AggregateFlow |   origin 23/64 (35.9%, 9/s, ETA 0.1 min)
+    6.0939 |        0.001066 | AggregateFlow |   origin 24/64 (37.5%, 10/s, ETA 0.1 min)
+    6.0961 |        0.002168 | AggregateFlow |   origin 25/64 (39.1%, 10/s, ETA 0.1 min)
+    6.0972 |        0.001108 | AggregateFlow |   origin 26/64 (40.6%, 11/s, ETA 0.1 min)
+    6.0997 |        0.002452 | AggregateFlow |   origin 27/64 (42.2%, 11/s, ETA 0.1 min)
+    6.1006 |        0.000907 | AggregateFlow |   origin 28/64 (43.8%, 11/s, ETA 0.1 min)
+    6.1018 |        0.001286 | AggregateFlow |   origin 29/64 (45.3%, 12/s, ETA 0.0 min)
+    6.1050 |        0.003163 | AggregateFlow |   origin 30/64 (46.9%, 12/s, ETA 0.0 min)
+    6.1058 |        0.000803 | AggregateFlow |   origin 31/64 (48.4%, 13/s, ETA 0.0 min)
+    6.1088 |        0.003022 | AggregateFlow |   origin 32/64 (50.0%, 13/s, ETA 0.0 min)
+    6.1104 |        0.001605 | AggregateFlow |   origin 33/64 (51.6%, 13/s, ETA 0.0 min)
+    6.1116 |        0.001136 | AggregateFlow |   origin 34/64 (53.1%, 14/s, ETA 0.0 min)
+    6.1140 |        0.002379 | AggregateFlow |   origin 35/64 (54.7%, 14/s, ETA 0.0 min)
+    6.1164 |        0.002405 | AggregateFlow |   origin 36/64 (56.2%, 14/s, ETA 0.0 min)
+    6.1183 |        0.001889 | AggregateFlow |   origin 37/64 (57.8%, 15/s, ETA 0.0 min)
+    6.1190 |        0.000722 | AggregateFlow |   origin 38/64 (59.4%, 15/s, ETA 0.0 min)
+    6.1216 |        0.002583 | AggregateFlow |   origin 39/64 (60.9%, 16/s, ETA 0.0 min)
+    6.1229 |        0.001298 | AggregateFlow |   origin 40/64 (62.5%, 16/s, ETA 0.0 min)
+    6.1263 |        0.003415 | AggregateFlow |   origin 41/64 (64.1%, 16/s, ETA 0.0 min)
+    6.1272 |        0.000910 | AggregateFlow |   origin 42/64 (65.6%, 17/s, ETA 0.0 min)
+    6.1297 |        0.002554 | AggregateFlow |   origin 43/64 (67.2%, 17/s, ETA 0.0 min)
+    6.1311 |        0.001406 | AggregateFlow |   origin 44/64 (68.8%, 18/s, ETA 0.0 min)
+    6.1356 |        0.004480 | AggregateFlow |   origin 45/64 (70.3%, 18/s, ETA 0.0 min)
+    6.1368 |        0.001169 | AggregateFlow |   origin 46/64 (71.9%, 18/s, ETA 0.0 min)
+    6.1383 |        0.001470 | AggregateFlow |   origin 47/64 (73.4%, 19/s, ETA 0.0 min)
+    6.1429 |        0.004609 | AggregateFlow |   origin 48/64 (75.0%, 19/s, ETA 0.0 min)
+    6.1490 |        0.006114 | AggregateFlow |   origin 49/64 (76.6%, 19/s, ETA 0.0 min)
+    6.1522 |        0.003191 | AggregateFlow |   origin 50/64 (78.1%, 20/s, ETA 0.0 min)
+    6.1528 |        0.000589 | AggregateFlow |   origin 51/64 (79.7%, 20/s, ETA 0.0 min)
+    6.1544 |        0.001671 | AggregateFlow |   origin 52/64 (81.2%, 21/s, ETA 0.0 min)
+    6.1593 |        0.004896 | AggregateFlow |   origin 53/64 (82.8%, 21/s, ETA 0.0 min)
+    6.1631 |        0.003789 | AggregateFlow |   origin 54/64 (84.4%, 21/s, ETA 0.0 min)
+    6.1660 |        0.002886 | AggregateFlow |   origin 55/64 (85.9%, 22/s, ETA 0.0 min)
+    6.1667 |        0.000669 | AggregateFlow |   origin 56/64 (87.5%, 22/s, ETA 0.0 min)
+    6.1692 |        0.002514 | AggregateFlow |   origin 57/64 (89.1%, 22/s, ETA 0.0 min)
+    6.1724 |        0.003229 | AggregateFlow |   origin 58/64 (90.6%, 23/s, ETA 0.0 min)
+    6.1762 |        0.003818 | AggregateFlow |   origin 59/64 (92.2%, 23/s, ETA 0.0 min)
+    6.1775 |        0.001238 | AggregateFlow |   origin 60/64 (93.8%, 24/s, ETA 0.0 min)
+    6.1875 |        0.010067 | AggregateFlow |   origin 61/64 (95.3%, 24/s, ETA 0.0 min)
+    6.1889 |        0.001387 | AggregateFlow |   origin 62/64 (96.9%, 24/s, ETA 0.0 min)
+    6.1915 |        0.002610 | AggregateFlow |   origin 63/64 (98.4%, 25/s, ETA 0.0 min)
+    6.1938 |        0.002223 | AggregateFlow |   origin 64/64 (100.0%, 25/s, ETA 0.0 min)
+    6.1947 |        0.000903 | AggregateFlow | Origin loop: 64 origins in 2.56s (4 thread(s)).
+    6.1947 |        0.000002 | AggregateFlow | [F2] local-overlap route: ok=True slice_max=7017 fast=2141 overflow=0 fallback=0
+    6.1947 |        0.000001 | AggregateFlow | WARNING: 35 OD pair(s) delivered less than their trip volume (worst gap=0.000332). Rerun with verbosity 2 for per-OD detail.
+    6.1949 |        0.000251 | AggregateFlow | Done — max=11.5002, mean=0.0078, nonzero=1978
+    6.3717 |        0.176768 | Flow | Saved feather → /tmp/f00_S0/out/flow_2026-10-06_2325/Results.feather
+    7.1230 |        0.751322 | Flow | Saved GeoJSON → /tmp/f00_S0/out/flow_2026-10-06_2325/Results.geojson
+{
+  "leg": "S0",
+  "mode": "diag",
+  "public_wall_s": 7.080076792277396
+}
