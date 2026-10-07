@@ -1,0 +1,149 @@
+== C0 HEAD re-pin ==
+HEAD: 6621ac72c05fdf51bfda8d779cf0cb154b03c422
+subject: G11 closeout: crossover REFUSED admission on parity (A2 probe-first designed refusal, all 4 widths out-of-domain); GPU total 239s=0.0664 GPU-h
+
+== C1 evidence pin re-hash (live bytes) ==
+f6a1ce16b1655e26f0c3c6d337ebf42ba2adb76eea4f8b092365aba8a5df99b7   gate_store.json
+b64f945f5112cf61fd8044e0de399caa09b3c53682f7f9f7691aab5dd461f403   gate_evidence.json
+5ce54e2b8f71055e6f1387572d3a4d2ee4214915054df4113a3438805d8732df   PREREGISTRATION.md
+633c40a87425bd5d94ca8e9f5edf009f1fe16023b055030fb37c1e232141d6a5   RUN_PLAN.md
+de6e0b3db2fa36b962d84857d9eb0ba6616a3a4496d0762fafc62c433640711a   crossover_driver.py
+556ef4998e9dc3c45e35faed140d35864fb4eda7a073467fcaf892399ecfa2dd   crossover_results.json
+9ca8f9a6f20f19804915782bb6d10ea32239075c568adf025d7ffee446d93e26   fold_kernels_compute_80.ptx
+fd173c3c25b4895d0d3c2917bfa0a3d2c8baedbf298021900902e6884b082ae6   consoles/fd173c3c25b4895d0d3c2917bfa0a3d2c8baedbf298021900902e6884b082ae6.txt
+
+== C1b live vs committed blob (raw bytes) ==
+gpu/runtime/region.py @7d0a946: IDENTICAL (ef2757808231cf9367ad7ee4d2f89720b490b1e076d70bc7a79b55d945f4c20f)
+gpu/kernels/host_twins.py @7d0a946: IDENTICAL (76885820e8d54481e5439c6323b67e60ee8d99b2baedc8f008117ea5b987227f)
+campaign_runs/una_10x/gpu-20261007T1326Z/gate_store.json @6621ac7: IDENTICAL (f6a1ce16b1655e26f0c3c6d337ebf42ba2adb76eea4f8b092365aba8a5df99b7)
+campaign_runs/una_10x/gpu-20261007T1326Z/gate_evidence.json @6621ac7: IDENTICAL (b64f945f5112cf61fd8044e0de399caa09b3c53682f7f9f7691aab5dd461f403)
+campaign_runs/una_10x/gpu-20261007T1326Z/crossover_results.json @6621ac7: IDENTICAL (556ef4998e9dc3c45e35faed140d35864fb4eda7a073467fcaf892399ecfa2dd)
+campaign_runs/una_10x/gpu-20261007T1326Z/crossover_driver.py @6621ac7: IDENTICAL (de6e0b3db2fa36b962d84857d9eb0ba6616a3a4496d0762fafc62c433640711a)
+campaign_runs/una_10x/gpu-20261007T1326Z/PREREGISTRATION.md @6621ac7: IDENTICAL (5ce54e2b8f71055e6f1387572d3a4d2ee4214915054df4113a3438805d8732df)
+
+== C2 gate evidence substance ==
+status: gate_passed | mode: device_gate
+device: {"name": "NVIDIA A100-SXM4-40GB", "compute_capability": [8, 0], "sm": "sm_80", "driver_version": [13, 2]}
+started/finished: 2026-10-07T13:56:14Z 2026-10-07T13:56:18Z
+nvcc: {"on_path": true, "version": "Build cuda_12.9.r12.9/compiler.36037853_0", "path": "/opt/nvidia/hpc_sdk/Linux_x86_64/26.5/cuda/12.9/bin/nvcc"}
+compile flags: "-O3 -std=c++17 -prec-sqrt=true -prec-div=true -fmad=false -arch=compute_80 -ptx"
+k0_battery ok: 9 / 9
+exp_boundary: {"all_equal": true, "n": 11}
+tie_law: {"trials": 64, "mismatches": 0, "numba_version": "0.67.0"}
+  big_at_1       leg_a_ok=True all_cert=True knn_access_cert=['vec2_tree', 'vec4_tree', 'vec8_tree', 'vec16_tree']
+  big_at_7       leg_a_ok=True all_cert=True knn_access_cert=['seq', 'pairwise', 'vec2_tree', 'vec4_tree', 'vec8_tree', 'vec16_tree', 'vec4_seq', 'vec8_seq']
+  big_at_0       leg_a_ok=True all_cert=True knn_access_cert=['vec2_tree', 'vec4_tree', 'vec8_tree', 'vec16_tree']
+  tiny_then_big  leg_a_ok=True all_cert=True knn_access_cert=['seq', 'pairwise', 'vec2_tree', 'vec4_tree', 'vec8_tree', 'vec16_tree', 'vec4_seq', 'vec8_seq']
+  mixed          leg_a_ok=True all_cert=True knn_access_cert=['seq', 'pairwise', 'vec2_tree', 'vec4_tree', 'vec8_tree', 'vec16_tree', 'vec4_seq', 'vec8_seq']
+  cohort         leg_a_ok=True all_cert=True knn_access_cert=['seq', 'pairwise', 'vec2_tree', 'vec4_tree', 'vec8_tree', 'vec16_tree', 'vec4_seq', 'vec8_seq']
+TOTAL cases=6 leg_a_ok=6/6 all_outputs_certified=6/6
+cell_association_recorded: seq
+association_note: the store's association is the cohort case's certified gravity_exponential tree (the strongest discriminator); the full per-case/per-output matrix is this evidence file
+
+== C2b durable store ==
+sha: f6a1ce16b1655e26f0c3c6d337ebf42ba2adb76eea4f8b092365aba8a5df99b7
+single cell: ['una_legacy.fold.default']
+association: seq | bit_validated: True | recorded_utc: 2026-10-07T13:56:18Z
+evidence_sha256 matches live evidence file: True
+admission/crossover/gpu_win tokens in store: (none)
+
+== C3 crossover refusal shape ==
+repo_head: 7d0a946a270ba85d70a39b9849ca0edd03cacfde | job: 22723334 | host: gpua014.delta.ncsa.illinois.edu | numba: 0.67.0 | numpy: 2.4.6 | threads: 1
+ptx pin: 9ca8f9a6f20f19804915782bb6d10ea32239075c568adf025d7ffee446d93e26
+gate_store pin: f6a1ce16b1655e26f0c3c6d337ebf42ba2adb76eea4f8b092365aba8a5df99b7
+top-level 'law': PREREGISTRATION.md Amendment A1
+W=64: in_domain=False skipped=True rep_walls=(0,0) samples=4 sweep_rows=['exponential', 'logistic', 'linear']
+W=4096: in_domain=False skipped=True rep_walls=(0,0) samples=4 sweep_rows=['exponential', 'logistic', 'linear']
+W=65536: in_domain=False skipped=True rep_walls=(0,0) samples=4 sweep_rows=['exponential', 'logistic', 'linear']
+W=262144: in_domain=False skipped=True rep_walls=(0,0) samples=4 sweep_rows=['exponential', 'logistic', 'linear']
+verdict: {"all_widths_in_parity_domain": false, "timed_widths": [], "skipped_widths": ["64", "4096", "65536", "262144"], "timed_comparisons_valid": false, "gpu_median_win_at_every_timed_width": false, "admission_proposed": false}
+sweep (width,decay,output) with NO reproducing tree: [('64', 'exponential', 'gravity_exponential'), ('64', 'linear', 'reach'), ('4096', 'logistic', 'gravity_exponential'), ('262144', 'linear', 'gravity_exponential')]
+
+== C3b BYTE AUDIT, little-endian (tobytes() is LE; v2 '>d' was wrong) ==
+W=64 r 0 gravity_exponential  ref=8.418411843690198          got=8.4184118436902            d_ulp=+1 high7B_equal=True sign_equal=True
+W=64 r 2 gravity_exponential  ref=16.84296579909846          got=16.842965799098465         d_ulp=+1 high7B_equal=True sign_equal=True
+W=64 r 3 gravity_exponential  ref=11.965791275476006         got=11.965791275476004         d_ulp=-1 high7B_equal=True sign_equal=True
+W=64 r 5 gravity_exponential  ref=12.818638425414893         got=12.81863842541489          d_ulp=-1 high7B_equal=True sign_equal=True
+W=4096 r 5 gravity_exponential  ref=816.0136112864053          got=816.0136112864052          d_ulp=-1 high7B_equal=True sign_equal=True
+W=4096 r 6 reach                ref=945.1294806000315          got=945.1294806000316          d_ulp=+1 high7B_equal=True sign_equal=True
+W=4096 r 6 gravity_exponential  ref=778.3377210376916          got=778.3377210376914          d_ulp=-2 high7B_equal=True sign_equal=True
+W=4096 r 6 gravity_logistic     ref=945.1294806000315          got=945.1294806000316          d_ulp=+1 high7B_equal=True sign_equal=True
+W=65536 r 1 gravity_exponential  ref=13418.10264607387          got=13418.102646073872         d_ulp=+1 high7B_equal=True sign_equal=True
+W=65536 r 4 reach                ref=16663.14871462157          got=16663.148714621573         d_ulp=+1 high7B_equal=True sign_equal=True
+W=65536 r 4 gravity_logistic     ref=16663.14871462157          got=16663.148714621573         d_ulp=+1 high7B_equal=True sign_equal=True
+W=65536 r 8 reach                ref=16376.903923622871         got=16376.90392362287          d_ulp=-1 high7B_equal=True sign_equal=True
+W=262144 r 2 gravity_exponential  ref=53886.59541992201          got=53886.595419922            d_ulp=-1 high7B_equal=True sign_equal=True
+W=262144 r 3 reach                ref=65089.97205753934          got=65089.97205753933          d_ulp=-1 high7B_equal=True sign_equal=True
+W=262144 r 3 gravity_logistic     ref=65089.97205753934          got=65089.97205753933          d_ulp=-1 high7B_equal=True sign_equal=True
+W=262144 r 4 gravity_exponential  ref=53797.019353795265         got=53797.01935379527          d_ulp=+1 high7B_equal=True sign_equal=True
+
+== C3c preflight (HOST twin vs engine, no device), LE ==
+exponential  reach                MATCH
+exponential  gravity_exponential  MATCH
+exponential  gravity_logistic     MATCH
+exponential  knn_access           MATCH
+logistic     reach                MATCH
+logistic     gravity_exponential  DIFF d_ulp=+1 high7B_equal=True
+logistic     gravity_logistic     MATCH
+logistic     knn_access           MATCH
+linear       reach                MATCH
+linear       gravity_exponential  MATCH
+linear       gravity_logistic     MATCH
+linear       knn_access           MATCH
+preflight pairs=12 diffs=1
+
+== C3d REDUCTION_TREES mirror (set comparison) ==
+host_twins: ('seq', 'pairwise', 'vec2_tree', 'vec4_tree', 'vec8_tree', 'vec16_tree', 'vec4_seq', 'vec8_seq')
+probe_order cands keys: ['seq', 'pairwise', 'vec2_tree', 'vec4_tree', 'vec8_tree', 'vec4_seq', 'vec8_seq', 'vec16_tree']
+SET-IDENTICAL to host_twins: True (8 keys)
+
+== C3e scalar mirroring + engine fastmath ==
+NUMBA_FASTMATH: True | NUMBA_PARALLEL: False
+engine_call 13 positionals map to params: True (13 params)
+  engine: reach = n_weights.sum()
+  engine: gravity_exponential = (n_weights / np.exp(gravity_beta * np.maximum(0, n_distances - gravity_plateau))).sum()
+  engine: gravity_logistic = (n_weights * (1 - 1 / (1 + np.exp(-gravity_growth_rate * (n_distances - gravity_plateau - gravity_logistic_midpoint))))).sum()
+  engine: return reach, gravity_exponential, gravity_logistic, knn_access
+
+== C5 commit sweep ==
+7b877eb..7d0a946: ['gpu/runtime/region.py', 'tests/tenx/gpu/test_device_region_wiring.py', 'tests/tenx/gpu/test_region_failclosed.py']
+  outside gpu/+tests: (none)
+aa12950..6621ac7 src/ files: (none)
+
+== C6 A2 chronology marks ==
+9afe677 PREREG sha: 988415000bc114c2822b82249a785656aa4f91239893ee62c7130844a1a07a29 | has A1: False | has A2: False
+9afe677 commit: 2026-10-07T10:13:52-04:00
+A2 cites Delta-run tokens: (none)
+A2 cites local-rehearsal figures: ['30/32', 'row 22']
+== pytest: wiring + failclosed (G11R rerun) ==
+..................                                                       [100%]
+18 passed in 0.16s
+== pytest: full local GPU subtree (G11R rerun) ==
+................s....................................................... [ 87%]
+..........                                                               [100%]
+=============================== warnings summary ===============================
+tests/tenx/gpu/test_device_gate_plumbing.py::test_gate_chain_wiring_reaches_passed_store
+tests/tenx/gpu/test_device_gate_plumbing.py::test_gate_chain_refusal_path_records_closed_cell
+tests/tenx/gpu/test_k1_twin.py::test_exp_boundary_values_match_expression_including_overflow
+  /Users/alansynn/orca/workspaces/una-x/main/gpu/kernels/host_twins.py:96: RuntimeWarning: overflow encountered in exp
+    return wn / np.exp(gravity_beta * t)
+
+tests/tenx/gpu/test_k1_twin.py::test_exp_boundary_values_match_expression_including_overflow
+  /Users/alansynn/orca/workspaces/una-x/main/tests/tenx/gpu/test_k1_twin.py:43: RuntimeWarning: overflow encountered in exp
+    want = wn / np.exp(np.maximum(0, vals))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+81 passed, 1 skipped, 4 warnings in 1.76s
+
+== Delta-side chronology (ssh, read-only) ==
+2026-10-07 09:46:00.271765891 -0500 PREREGISTRATION.md
+2026-10-07 09:45:58.451731334 -0500 crossover_driver.py
+2026-10-07 08:56:18.760229538 -0500 gate_store.json
+--- sacct 22723334 ---
+JobID|State|Submit|Start|End|Elapsed|NodeList
+22723334|COMPLETED|2026-10-07T09:46:04|2026-10-07T09:47:05|2026-10-07T09:48:14|00:01:09|gpua014
+22723334.batch|COMPLETED|2026-10-07T09:47:05|2026-10-07T09:47:05|2026-10-07T09:48:14|00:01:09|gpua014
+22723334.extern|COMPLETED|2026-10-07T09:47:05|2026-10-07T09:47:05|2026-10-07T09:48:14|00:01:09|gpua014
+--- live shas ---
+f6a1ce16b1655e26f0c3c6d337ebf42ba2adb76eea4f8b092365aba8a5df99b7  gate_store.json
+5ce54e2b8f71055e6f1387572d3a4d2ee4214915054df4113a3438805d8732df  PREREGISTRATION.md

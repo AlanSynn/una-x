@@ -1,0 +1,137 @@
+{
+ "schema": "una-g11r-review-1",
+ "reviewer": "independent-reviewer",
+ "task": "G11R \u2014 independent review of G11-Delta GPU wiring + crossover refusal",
+ "reviewed_head": "6621ac72c05fdf51bfda8d779cf0cb154b03c422",
+ "wiring_commit": "7d0a946a270ba85d70a39b9849ca0edd03cacfde",
+ "verdict": "approve_with_notes",
+ "counts": {
+  "blocking": 0,
+  "advisory": 1,
+  "informational": 5
+ },
+ "scope_law": "Verdicts here create NO reopening of the CPU verdict (tenx_status=target_unmet at aa12950 stands). All figures below are tool outputs in the cited console or pinned file shas re-hashed from live bytes in the same session.",
+ "console": {
+  "path": "campaign_runs/una_10x/gpu-20261007T1326Z/g11r/reviewer_g11r_console_c57a43d54d7989acdb31094021ecc6170d0cd09c065415e0ad0c2c7f85c59307.txt",
+  "sha256": "c57a43d54d7989acdb31094021ecc6170d0cd09c065415e0ad0c2c7f85c59307",
+  "superseded_drafts": "two earlier reviewer console drafts were deleted before filing: one produced false live-vs-committed 'MISMATCH' lines from a reviewer-side git-show newline strip, one mis-decoded bits() hex as big-endian (tobytes() is little-endian); both were reviewer-side instrument defects, not evidence defects; the filed console is canonical"
+ },
+ "evidence_pins_verified": {
+  "gate_store.json": "f6a1ce16b1655e26f0c3c6d337ebf42ba2adb76eea4f8b092365aba8a5df99b7",
+  "gate_evidence.json": "b64f945f5112cf61fd8044e0de399caa09b3c53682f7f9f7691aab5dd461f403",
+  "PREREGISTRATION.md": "5ce54e2b8f71055e6f1387572d3a4d2ee4214915054df4113a3438805d8732df",
+  "RUN_PLAN.md": "633c40a87425bd5d94ca8e9f5edf009f1fe16023b055030fb37c1e232141d6a5",
+  "crossover_driver.py": "de6e0b3db2fa36b962d84857d9eb0ba6616a3a4496d0762fafc62c433640711a",
+  "crossover_results.json": "556ef4998e9dc3c45e35faed140d35864fb4eda7a073467fcaf892399ecfa2dd",
+  "fold_kernels_compute_80.ptx": "9ca8f9a6f20f19804915782bb6d10ea32239075c568adf025d7ffee446d93e26",
+  "gpu/runtime/region.py@7d0a946": "ef2757808231cf9367ad7ee4d2f89720b490b1e076d70bc7a79b55d945f4c20f (live==blob IDENTICAL)",
+  "gpu/kernels/host_twins.py@7d0a946": "76885820e8d54481e5439c6323b67e60ee8d99b2baedc8f008117ea5b987227f (live==blob IDENTICAL)",
+  "consoles/fd173c3c...txt": "fd173c3c25b4895d0d3c2917bfa0a3d2c8baedbf298021900902e6884b082ae6"
+ },
+ "checks": [
+  {
+   "id": "C1",
+   "claim": "All lead-provided sha pins match live and committed bytes; worktree clean in run dir",
+   "method": "sha256 of live files + git cat-file-equivalent raw git show blob hash; git status --porcelain",
+   "outcome": "PASS \u2014 7 evidence files + region.py + host_twins.py IDENTICAL live vs blob; console fd173c3c pin matches"
+  },
+  {
+   "id": "C2",
+   "claim": "Device gate rc=0 PASSED on A100-SXM4-40GB (gate_store f6a1ce16..., gate_evidence b64f945f...)",
+   "method": "committed gate_evidence.json parsed in console (C2/C2b); Delta live store re-hashed via ssh",
+   "outcome": "PASS as recorded evidence \u2014 status gate_passed, mode device_gate, NVIDIA A100-SXM4-40GB cc(8,0) sm_80 driver(13,2), nvcc 12.9 flags incl -fmad=false -arch=compute_80, k0_battery 9/9, exp_boundary 11/11, tie_law 64/0 (numba 0.67.0), fold battery 6/6 leg_a_ok + 6/6 all_outputs_certified with per-case certified matrices (big_at_1/big_at_0 knn_access certified ONLY under vec*_tree), cell_association_recorded seq, started 13:56:14Z finished 13:56:18Z == store recorded_utc == Delta store mtime 08:56:18 -0500",
+   "reviewer_reliance": "gate NOT re-executed on Delta by reviewer (SU cost); verified as committed-evidence chain + local subtree behavior"
+  },
+  {
+   "id": "C3",
+   "claim": "Crossover REFUSED admission on parity is a designed, genuine refusal \u2014 no false refusal",
+   "method": "driver composition audit + byte-level audit of all 16 recorded probe mismatch samples + tree-sweep methodology + law application",
+   "subchecks": [
+    {
+     "id": "C3.i",
+     "item": "probe composition / scalar mirroring",
+     "outcome": "PASS \u2014 engine_call's 13 positionals map 1:1 onto reach_gravity_knn_access params (zip-all-equal, console C3e); FoldRowScalars carries the same scalar semantics incl knn kernels reusing main gravity scalars; serial engine reference computed untimed; region constructed with association seq == store-recorded association and gate_store path; comparisons are exact float64 bits"
+    },
+    {
+     "id": "C3.ii",
+     "item": "mismatch character (comparison-bug vs rounding signature)",
+     "outcome": "PASS \u2014 all 16 probe samples: d_ulp in {-2,-1,+1}, high 7 bytes equal, sign equal (console C3b; tobytes() hex decoded little-endian). Magnitudes O(10)\u2192O(5e4) growing with W as bounded positive sums. Preflight validates the shared bits() encoding: 11/12 host-twin-vs-engine pairs exact, 1 diff at +1 ulp (console C3c). A comparison/encoding bug would not yield unit-ulp tails with exact matches elsewhere"
+    },
+    {
+     "id": "C3.iii",
+     "item": "tree-sweep methodology",
+     "outcome": "PASS \u2014 REDUCTION_TREES (8 trees) set-identical to n00 probe_order cands keys (console C3d); engine njit has NUMBA_FASTMATH=True (console C3e) so LLVM codegen reduction order is host-specific and need not coincide with any named tree; 4 recorded (width,decay,output) pairs with NO reproducing tree"
+    },
+    {
+     "id": "C3.iv",
+     "item": "in_domain=false follows from preregistered law",
+     "outcome": "PASS \u2014 A2 2(b) requires perfect bit equality across all rows/outputs; recorded genuine bit-inequality => in_domain=false at all 4 widths; timed arms structurally unreachable on refusal (driver continues before pool creation; cpu/gpu rep_walls empty in the recorded artifact); verdict admission_proposed=false; refusal direction conservative (no admission, default CPU, no performance claim)"
+    }
+   ]
+  },
+  {
+   "id": "C4",
+   "claim": "A1+A2 filed BEFORE crossover execution",
+   "method": "Delta stat mtimes + SLURM sacct accounting + committed pre-A1 original + A2 content chronology",
+   "outcome": "PASS with note \u2014 PREREGISTRATION.md mtime 2026-10-07 09:46:00.27 -0500, crossover_driver.py 09:45:58.45; sacct 22723334 Submit 09:46:04, Start 09:47:05, End 09:48:14, COMPLETED, gpua014 (console, Delta section). 9afe677 (committed 10:13:52-04:00=14:13:52Z) contains the prereg ORIGINAL WITHOUT A1/A2 (sha 98841500...), so A1+A2 postdate intake and predate Submit only per Delta-side evidence. A2 content cites zero Delta-run tokens and cites local-rehearsal figures (30/32, row 22) \u2014 consistent with pre-execution authorship. A1's individual filing instant is not separately provable (single-file mtime covers last write)"
+  },
+  {
+   "id": "C5",
+   "claim": "No admission recorded anywhere; gate default CPU; store unchanged",
+   "method": "store parse + token sweep + Delta re-hash + commit-range file sweep",
+   "outcome": "PASS \u2014 store single cell una_legacy.fold.default, association seq, bit_validated true, NO admission/crossover/gpu_win/median tokens; Delta live store sha f6a1ce16... unchanged with mtime == recorded_utc; crossover_results verdict admission_proposed=false; aa12950..6621ac7 contains no src/ change (no CapabilityRegistryEntry/default-dispatch change); wiring commit 7b877eb..7d0a946 touches only gpu/ + tests/"
+  },
+  {
+   "id": "C6",
+   "claim": "Fails-closed contract preserved while wiring real dispatch",
+   "method": "region.py read (7d0a946 bytes) + test reruns",
+   "outcome": "PASS \u2014 refuse ladder steps 1-4 unchanged (validate_request -> HardwareUnavailable probe -> durable gate_state ParityGateNotRun incl evidence-sha re-verify and association match -> port-attr TypeError); the 7b877eb NotImplementedError designed-stop is replaced ONLY by real dispatch via run_device_stage_composition; hardware_validated stays False by construction; wiring tests assert the tampered-evidence close and the all-gates-pass execute path through the twin port with its scope law 'twin-vs-twin prove composition order, not silicon parity'. Reviewer reruns: 18/18 wiring+failclosed; full local GPU subtree 81 passed, 1 skipped"
+  },
+  {
+   "id": "C7",
+   "claim": "Smoke's editable-install disclosure accurately recorded",
+   "method": "RUN_PLAN.md read (633c40a8...)",
+   "outcome": "PASS \u2014 no .whl exists in the Delta tree; installed artifact is urban-network-analysis 2.6.0 EDITABLE install; 9a84517b explicitly NOT claimed as the Delta identity"
+  }
+ ],
+ "findings": [
+  {
+   "id": "F1",
+   "severity": "advisory",
+   "class": "process",
+   "finding": "Crossover executed BEFORE independent review filing; the ruled order was wiring -> review -> crossover. The deviation is fully auditable post-hoc and the outcome conservative, but only review-before-execution bounds the ex-ante risk of a false refusal becoming the recorded outcome. This review found no false refusal (C3), so the recorded outcome stands; the ordering requirement is reinstated for any future run dir"
+  },
+  {
+   "id": "F2",
+   "severity": "informational",
+   "class": "labeling",
+   "finding": "crossover_results.json top-level 'law' says 'PREREGISTRATION.md Amendment A1' while the executed shape and verdict.law are Amendment A2 (driver docstring line 1 likewise cites A1). Downstream readers must cite verdict.law, not the top-level field"
+  },
+  {
+   "id": "F3",
+   "severity": "informational",
+   "class": "wording",
+   "finding": "RUN_PLAN.md:108 characterizes the probe mismatches as '1-ulp reduction-order rounding'; one recorded sample (W=4096 row 6 gravity_exponential) is -2 ulp. 'up to 2 ulp' would be exact"
+  },
+  {
+   "id": "F4",
+   "severity": "informational",
+   "class": "evidence-scope",
+   "finding": "compare() records only the first 4 mismatches per width (driver bad[:4]), so the artifact proves in_domain=false but is not a census of the parity domain; sufficient for the preregistered refusal, insufficient for any future in-domain claim"
+  },
+  {
+   "id": "F5",
+   "severity": "informational",
+   "class": "chronology",
+   "finding": "A1's individual filing instant is not separately provable (see C4); corroborated but not proven to A1 precision"
+  },
+  {
+   "id": "F6",
+   "severity": "informational",
+   "class": "reviewer-posture",
+   "finding": "Reviewer verified the gate and crossover as committed-evidence chains plus local test behavior; neither the Delta gate job nor the Delta crossover was re-executed by the reviewer (GPU SU cost). Numerical re-derivation on this host covers composition/mirroring/encoding, not silicon"
+  }
+ ],
+ "no_reopen": "This verdict does not reopen, revise, or condition the closed CPU campaign verdict (target_unmet, aa12950).",
+ "review_json_sha256": null
+}
