@@ -86,3 +86,37 @@ cell through this import path. SMOKE_PASSED, rc 0.
 Attempt ledger: 22722921 FAILED (list-typed inputs), 22722934 FAILED
 (script crash after the bits check), 22722942 PASSED. Additional
 GPU time: 14+14+14 s = 0.0117 GPU-h. Run total now 0.0472 GPU-h (~0.047 SU).
+
+## Crossover job (planned before firing, per PREREGISTRATION A1+A2)
+
+One job g11-xover on gpuA100x4, --gpus=1, --cpus-per-task=4, cap 00:40:00.
+Both arms in the one job (matched host class/core allocation/I-O root).
+A2 probe-first: timed arms run only at widths inside the cell's engine-bit
+parity domain (recorded on the qualification host); out-of-domain widths are
+a designed refusal recorded with probe + tree-sweep evidence. Planned
+charging: <= 0.5 GPU-h cap; expected ~0.1-0.2 GPU-h. sacct figures to be
+appended at close.
+
+## Crossover job (executed 2026-10-7T14:47Z, job 22723334)
+
+A2 probe-first execution. Console preserved sha-named (consoles/fd173c3c25b4895d0d3c2917bfa0a3d2c8baedbf298021900902e6884b082ae6.txt).
+rc 0; results in crossover_results.json.
+
+Outcome on the qualification host (gpua014, A100, repo head 7d0a946):
+ALL FOUR frozen widths are OUTSIDE the cell's engine-bit-parity domain —
+the region (single certified association seq) vs the installed engine fold
+differs by 1-ulp reduction-order rounding on general rows at every width
+(probe mismatch samples recorded per row/output), and the per-output tree
+sweep shows rows/outputs with NO reproducing tree (e.g. W=64 linear reach,
+W=64 exponential gravity_exponential, W=4096 logistic gravity_exponential,
+W=262144 linear gravity_exponential). Timed arms therefore never ran (A2
+designed refusal); admission is REFUSED on parity grounds regardless of
+performance; the gate default stays CPU; tenx_status remains target_unmet.
+
+The rc=0 gate verdict (battery rows, per-output certified trees) is
+UNAFFECTED: the battery's row set is exactly the certified parity domain.
+
+| stage | job id | elapsed | GPU-h billed |
+|-------|--------|---------|--------------|
+| fold-cell crossover (probe-first) | 22723334 | 00:01:09 | 0.0192 |
+| RUN TOTAL | | | 0.0664 GPU-h (~0.066 SU) |

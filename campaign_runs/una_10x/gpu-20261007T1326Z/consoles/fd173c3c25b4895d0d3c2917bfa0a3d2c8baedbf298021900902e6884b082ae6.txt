@@ -1,0 +1,93 @@
+== identity ==
+gpua014.delta.ncsa.illinois.edu
+Wed Oct  7 14:47:10 UTC 2026
+-- nvidia-smi -L (inside the job) --
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-6661bbf9-e9bc-7ed1-6dc3-9c393dde66ef)
+-- numba / numpy --
+numba 0.67.0 | numpy 2.4.6
+-- engine install --
+urban-network-analysis 2.6.0
+== crossover driver ==
+== pins == {
+ "repo_head": "7d0a946a270ba85d70a39b9849ca0edd03cacfde",
+ "gpu_package": "/u/dsynn/projects/una-x/repo/gpu/__init__.py",
+ "engine_module": "urban_network_analysis.Engines.AccessibilityWElevation",
+ "python": "3.11.17",
+ "numba": "0.67.0",
+ "numpy": "2.4.6",
+ "numba_num_threads": "1",
+ "ptx_sha256": "9ca8f9a6f20f19804915782bb6d10ea32239075c568adf025d7ffee446d93e26",
+ "gate_store_sha256": "f6a1ce16b1655e26f0c3c6d337ebf42ba2adb76eea4f8b092365aba8a5df99b7",
+ "slurm_job_id": "22723334",
+ "hostname": "gpua014.delta.ncsa.illinois.edu",
+ "seed": 20261003,
+ "rows": 32,
+ "reps": 7,
+ "queue_depth": 64,
+ "widths": [
+  64,
+  4096,
+  65536,
+  262144
+ ],
+ "knn_weights": [
+  1.0,
+  0.8928571428571429,
+  0.7857142857142857,
+  0.6785714285714286,
+  0.5714285714285714,
+  0.4642857142857143,
+  0.3571428571428572,
+  0.25
+ ],
+ "groups": [
+  [
+   "exponential",
+   0,
+   11,
+   400.0
+  ],
+  [
+   "logistic",
+   11,
+   22,
+   800.0
+  ],
+  [
+   "linear",
+   22,
+   32,
+   1600.0
+  ]
+ ],
+ "scalars": {
+  "beta": 0.001,
+  "plateau": 0.0,
+  "midpoint": 500.0,
+  "growth": 1.0,
+  "knn_plateau": 0.0,
+  "knn_beta": 0.001
+ }
+}
+== preflight (host twins vs engine, untimed) == {"exponential": true, "logistic": false, "linear": true}
+== W=64: OUT OF PARITY DOMAIN (region/seq vs engine mismatch; sample [(0, 'gravity_exponential', '22d1c1133ad62040', '23d1c1133ad62040'), (2, 'gravity_exponential', '3fc64a9bccd73040', '40c64a9bccd73040'), (3, 'gravity_exponential', 'f7dcad317cee2740', 'f6dcad317cee2740'), (5, 'gravity_exponential', 'd2cf609324a32940', 'd1cf609324a32940')]); timed arms skipped (A2 designed refusal)
+== W=4096: OUT OF PARITY DOMAIN (region/seq vs engine mismatch; sample [(5, 'gravity_exponential', 'bdef3be01b808940', 'bcef3be01b808940'), (6, 'reach', 'd0f41f2d09898d40', 'd1f41f2d09898d40'), (6, 'gravity_exponential', '746016a7b3528840', '726016a7b3528840'), (6, 'gravity_logistic', 'd0f41f2d09898d40', 'd1f41f2d09898d40')]); timed arms skipped (A2 designed refusal)
+== W=65536: OUT OF PARITY DOMAIN (region/seq vs engine mismatch; sample [(1, 'gravity_exponential', '2bad81230d35ca40', '2cad81230d35ca40'), (4, 'reach', '05558a84c945d040', '06558a84c945d040'), (4, 'gravity_logistic', '05558a84c945d040', '06558a84c945d040'), (8, 'reach', '28efc4b373fccf40', '27efc4b373fccf40')]); timed arms skipped (A2 designed refusal)
+== W=262144: OUT OF PARITY DOMAIN (region/seq vs engine mismatch; sample [(2, 'gravity_exponential', '8d14ae0dd34fea40', '8c14ae0dd34fea40'), (3, 'reach', 'a969181b3fc8ef40', 'a869181b3fc8ef40'), (3, 'gravity_logistic', 'a969181b3fc8ef40', 'a869181b3fc8ef40'), (4, 'gravity_exponential', 'b7d98b9ea044ea40', 'b8d98b9ea044ea40')]); timed arms skipped (A2 designed refusal)
+== verdict == {
+ "all_widths_in_parity_domain": false,
+ "timed_widths": [],
+ "skipped_widths": [
+  "64",
+  "4096",
+  "65536",
+  "262144"
+ ],
+ "timed_comparisons_valid": false,
+ "gpu_median_win_at_every_timed_width": false,
+ "admission_proposed": false,
+ "law": "Amendment A2: admission into CapabilityRegistryEntry is PROPOSED only if EVERY frozen width is inside the cell's engine-bit-parity domain (region vs engine bit-equal on all rows/outputs) AND the GPU median-of-7 beats the CPU median-of-7 at every timed width. Out-of-domain widths are a designed refusal recorded with probe evidence; the gate default stays CPU. No 10x claim arises from this crossover."
+}
+RESULTS_WRITTEN /u/dsynn/projects/una-x/runs/gpu-20261007T1326Z/crossover_results.json
+XOVER_RC=0
+Wed Oct  7 14:48:12 UTC 2026
