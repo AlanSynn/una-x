@@ -1,0 +1,45 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /Users/alansynn/orca/workspaces/una-x/venv-n00/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/alansynn/orca/workspaces/una-x/main
+configfile: pyproject.toml
+collecting ... collected 36 items
+
+tests/native/test_native_bindings.py::test_dtype_refused_not_coerced PASSED [  2%]
+tests/native/test_native_bindings.py::test_ndim_refused PASSED           [  5%]
+tests/native/test_native_bindings.py::test_noncontiguous_refused PASSED  [  8%]
+tests/native/test_native_bindings.py::test_shape_crosschecks_refused PASSED [ 11%]
+tests/native/test_native_bindings.py::test_output_ownership_and_read_only PASSED [ 13%]
+tests/native/test_native_bindings.py::test_owner_lifetime_survives_teardown PASSED [ 16%]
+tests/native/test_native_bindings.py::test_core_abi_cancel PASSED        [ 19%]
+tests/native/test_native_bindings.py::test_engagement_real_dispatch_law PASSED [ 22%]
+tests/native/test_native_bindings.py::test_opt_in_install_uninstall PASSED [ 25%]
+tests/native/test_native_bindings.py::test_hook_signature_matches_call_site PASSED [ 27%]
+tests/native/test_native_bindings.py::test_build_manifest_law PASSED     [ 30%]
+tests/native/test_native_producer_parity.py::test_battery_parity[base] PASSED [ 33%]
+tests/native/test_native_producer_parity.py::test_battery_parity[nan_seed_end] PASSED [ 36%]
+tests/native/test_native_producer_parity.py::test_battery_parity[neg_seed] PASSED [ 38%]
+tests/native/test_native_producer_parity.py::test_battery_parity[big_seed] PASSED [ 41%]
+tests/native/test_native_producer_parity.py::test_battery_parity[same_terminal] PASSED [ 44%]
+tests/native/test_native_producer_parity.py::test_battery_parity[zero_cutoff] PASSED [ 47%]
+tests/native/test_native_producer_parity.py::test_battery_parity[weights_f32] PASSED [ 50%]
+tests/native/test_native_producer_parity.py::test_battery_parity_dominated_ties PASSED [ 52%]
+tests/native/test_native_producer_parity.py::test_equal_duplicate_edges PASSED [ 55%]
+tests/native/test_native_producer_parity.py::test_negative_zero_weights PASSED [ 58%]
+tests/native/test_native_producer_parity.py::test_empty_destinations PASSED [ 61%]
+tests/native/test_native_producer_parity.py::test_single_node_no_edges PASSED [ 63%]
+tests/native/test_native_producer_parity.py::test_destination_equals_origin PASSED [ 66%]
+tests/native/test_native_producer_parity.py::test_zero_and_tiny_cutoff PASSED [ 69%]
+tests/native/test_native_producer_parity.py::test_flag_column_false_edges PASSED [ 72%]
+tests/native/test_native_producer_parity.py::test_int64_boundary_indices PASSED [ 75%]
+tests/native/test_native_producer_parity.py::test_unreachable_isolated_nodes PASSED [ 77%]
+tests/native/test_native_producer_parity.py::test_tile_origins_regimes PASSED [ 80%]
+tests/native/test_native_producer_parity.py::test_epoch_rollover_regimes PASSED [ 83%]
+tests/native/test_native_producer_parity.py::test_rollover_with_tiling PASSED [ 86%]
+tests/native/test_native_producer_parity.py::test_budget_exceeded_first_tile PASSED [ 88%]
+tests/native/test_native_producer_parity.py::test_budget_exceeded_mid_stream PASSED [ 91%]
+tests/native/test_native_producer_parity.py::test_budget_exactly_at_boundary PASSED [ 94%]
+tests/native/test_native_producer_parity.py::test_admission_refusal_parity PASSED [ 97%]
+tests/native/test_native_producer_parity.py::test_refusal_engagement_counts_refusal_not_dispatch PASSED [100%]
+
+============================== 36 passed in 3.13s ==============================

@@ -1,0 +1,144 @@
+{
+  "schema": "una-10x-n00-native-implementation-1",
+  "task": "N00: integrate and specialize substantive native backend",
+  "campaign": "campaigns/una_10x",
+  "evidence_dir": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/",
+  "branch": "perf/una-10x",
+  "base_commit": "b98af85b9c529883b8d9fad72440f199f9a75e9c",
+  "verdict": "implemented",
+  "measurement_status": "stubbed_pending_coordination",
+
+  "region": {
+    "chosen": "trace producer: Engines._trace_access_scratch._tr_epoch_scope_search_tile + build_trace's bounded tile loop (build-time serial block; p04i receiver_admission_profile.json: build_s 3.476s wall of a 16.8253s full stack, singleflight first-trace, 3 of 4 workers waiting)",
+    "why_parity_clean": "no FP reductions (all accumulators int64); FP work is single adds/comparisons and Python-semantics min (b<a)?b:a; heap orders (float64,int64) lexicographically over unique node ids (total order); per-origin sorts run over UNIQUE int64 ids (algorithm-independent); NaN/inf never enter (admission gate refuses upstream)",
+    "blocked_regions": {
+      "fold": "bit-exact AOT impossible without freezing compiler codegen: fastmath=True sums are LLVM-VECTORIZED (probe_order.txt: numba_reach matches vec4/vec8/vec16 lane schemes, NOT seq/pairwise, on large-magnitude cases) and knn np.argsort tie permutation is numba-specific (numba/misc/quicksort.py; differs from ALL numpy kinds in 131/200 tie trials). Replicating either would embed current compiler behavior into native source - a reassociation-adjacent freeze the dossier forbids.",
+      "probe_evidence": "instruments/probe_order.py -> probe_order.txt (re-run 2026-10-06, venv-n00, numba 0.67.0)"
+    }
+  },
+
+  "implementation": {
+    "files": {
+      "native/trace_producer.h": "11cdb97293f08620ce10e5bacbf693a116d4056446892a5acf920737dca077b9",
+      "native/trace_producer.cpp": "a6897d680863aae4d34ddc3a9c48feb320530ed544b330aa51a20958537b3437",
+      "native/bindings.cpp": "df07db8d7105ab8c3e221ccbe57852a16cbfffc837ab2297211690a5bae7df06",
+      "native/build.py": "9ce897e70be074cf43de3cc75d7aff4421a9b71b96b86628be3beec1c0720bd3",
+      "native/trace_build_native.py": "5812025ad099ede2bd031fca621debff4aabb7f73172f3c9289e9da539a05662",
+      "native/.gitignore": "_build/ (built extension + manifest live only in the working tree)",
+      "tests/native/conftest.py": "a74e3d29a4a76cbb5c92fe5181d397c10c3e8e44d1ba35ea7b17a4e783cf926b",
+      "tests/native/test_native_producer_parity.py": "0173ccc9689f6b676a3ed1b6f11f6e3561495248ed7b2def9721ab0014d1dcfe",
+      "tests/native/test_native_bindings.py": "7349dfbf266761f68dde111b8093de93086dd8f555c44495c600e582e23eec09",
+      "src/urban_network_analysis/batch/cohort.py": "fb5839b958612abb836e402fbea61dc5a625a2799df9b03e8b738314455591e3"
+    },
+    "src_touch_scope": "cohort.py ONLY: _NATIVE_BUILD_HOOK=None default, install_native_build_hook(), and the build-site indirection (hook(...) if hook is not None else trm.build_trace(...)) - the default CPU/numba route stays bit-identical and default. _trace_access_scratch.py deliberately UNTOUCHED (its bytes are embedded in trace_id and residency producer keys).",
+    "engagement_law": "importing native/trace_build_native.py engages nothing; the ONLY production wiring is trace_build_native.install() swapping the cohort route's hook. _ENGAGEMENT counters advance on REAL dispatches only; admission refusals count separately and never dispatch.",
+    "ownership": "outputs are malloc'd by the core, owned per-array by py::capsule destructors; inputs all const, never written; no global mutable state; scratch per-call, measured high-water in scratch_peak_bytes; exception mapping (bad_alloc/RuntimeError) happens after GIL re-acquire; cancel flag polled at tile barriers (status UNA_N00_CANCELED=3, never a truncated success)."
+  },
+
+  "build": {
+    "compiler": "/usr/bin/clang++",
+    "compile_flags": ["-std=c++17", "-O3", "-fPIC", "-shared", "-ffp-contract=off", "-fno-fast-math", "-Wall", "-Wextra"],
+    "no_fast_math": true,
+    "warnings_at_default_flags": "none (clean -Wall -Wextra build)",
+    "build_manifest_copy": "build_manifest.json (live: native/_build/build_manifest.json; output_sha256 recorded there)",
+    "simd_characterization": "vectorization_report.txt (335364 bytes; -Rpass/-Rpass-missed/-Rpass-analysis=loop-vectorize over the whole core)",
+    "manifest_schema": "una-10x-n00-build-manifest-1"
+  },
+
+  "environment": {
+    "venv": "/Users/alansynn/orca/workspaces/una-x/venv-n00 (dedicated; venv-p01m and frozen arm venvs untouched)",
+    "python": "3.11.16",
+    "numba": "0.67.0",
+    "llvmlite": "0.49.0",
+    "numpy": "2.4.6",
+    "pybind11": "3.1.0",
+    "numba_cache_dir": "campaign_runs/_numba_cache_owner",
+    "pythondontwritebytecode": "1"
+  },
+
+  "parity": {
+    "law": "bit-exact vs the live numba build_trace (numba 0.67.0): trace_id, schema, geometry bytes (indptr/destination_ids array_equal, distance_bits tobytes), content_digest, refusal text, route, and every counter except tile_temp_bytes (each route measures its OWN scratch by declared design; both figures honest, never compared to each other)",
+    "suite": "tests/native (venv-n00, per-directory)",
+    "result": "36 passed",
+    "evidence": "parity_suite.txt (36 PASSED lines)",
+    "coverage": [
+      "battery (7 cases from the single-source cpu_kernels conftest: base, nan_seed_end, neg_seed, big_seed, same_terminal, zero_cutoff, weights_f32) x tile_origins {64,3,1} - includes equal duplicates, ties, self loops, refusals",
+      "equal-weight tie battery (heap total order + min tie law)",
+      "equal duplicate edges (py_min tie law vs Python min)",
+      "-0.0 weights (bit identity of distances)",
+      "empty destinations d_count=0 (zero-length outputs, both tiling regimes)",
+      "single node / zero edges / degenerate CSR",
+      "destination == origin (0.0 distances, sign of zero)",
+      "cutoff 0.0 and tiny cutoff",
+      "flag column with False arcs (a3 tail gate)",
+      "int64 boundary indices (last node ids, pointer tails)",
+      "unreachable isolated nodes (label default on read)",
+      "tile_origins {1,3,64,10000} over 40 origins (partial final tiles, single-origin tiles, giant tile)",
+      "epoch_rollover {1,3} (checked counter, clears BEFORE rollover)",
+      "rollover x tiling compound",
+      "budget: first-tile stop, mid-stream stop at tile_origins=1 (triggering tile counts, budget_hit origin equal), exact-boundary completes / one-byte-less stops (integer identity, no slack)",
+      "admission refusal parity (neg/nan -> identical compact_fallback INCOMPLETE)",
+      "refusal engagement: admission_refusals +1, dispatches unchanged",
+      "bindings: dtype/ndim/contiguity/shape refusals name the offending array (refused, never coerced; zero-length buffers trivially contiguous)",
+      "outputs: OWNDATA False (capsule-owned), wrapper record arrays read-only, owner survives gc teardown",
+      "core ABI cancellation via ctypes (pre-set flag -> rc==status==3, budget_hit stays -1, una_n00_output_free clean)",
+      "engagement real-dispatch law (numba route leaves counters untouched; native dispatch moves them by the record's own numbers)",
+      "opt-in install()/uninstall() wiring + hook signature == build_trace prefix (10 positionals, cutoff last)",
+      "build manifest law (no unsafe FP flag, -ffp-contract=off present, source digests match disk)"
+    ],
+    "brought_up_defects_found_and_fixed": [
+      "operator precedence in the int64-overflow admission check ((int64_t)1 << 59 / O parsed as 1 << (59/O)) - fixed to ((int64_t)1 << 59) / O",
+      "binding fell through to capsule-wrapping on the ERR_ARG path (null pointers -> PyCapsule_New ValueError) - now throws before wrapping; CANCELED mapping added for a total status map",
+      "size-0 numpy arrays carry stride 0 - strict stride check now treats empty buffers as trivially contiguous",
+      "per-lane counters were reset once per worker but fetch_add'ed per tile (multi-tile totals inflated ~19x, e.g. ring_t1 candidates 2266 -> 43282; single-tile configs masked it) - counters now restart per tile; all parity cases pass after the fix"
+    ]
+  },
+
+  "preexisting_suites": {
+    "law": "per-subdir, never combined in one pytest process, venv-p01m (the touched src tree)",
+    "results": [
+      {"suite": "tests/tenx/post_p00/metrics", "result": "72 passed", "evidence": "suite_tests_tenx_post_p00_metrics.txt"},
+      {"suite": "tests/tenx/post_p00/preparation", "result": "35 passed", "evidence": "suite_tests_tenx_post_p00_preparation.txt"},
+      {"suite": "tests/tenx/post_p00/replay", "result": "34 passed, 1 skipped", "evidence": "suite_tests_tenx_post_p00_replay.txt"},
+      {"suite": "tests/tenx/post_p00/test_p01m_telemetry.py", "result": "10 passed", "evidence": "suite_tests_tenx_post_p00_test_p01m_telemetrypy.txt"},
+      {"suite": "tests/tenx/cohort", "result": "6 passed", "evidence": "suite_tests_tenx_cohort.txt"},
+      {"suite": "tests/tenx/trace (extra safety; digest pins, identity, refusals)", "result": "55 passed, 2 skipped", "evidence": "suite_tests_tenx_trace.txt"}
+    ],
+    "all_expected_counts_match": true
+  },
+
+  "engagement_demo": {
+    "instrument": "instruments/engagement_demo.py",
+    "evidence": "engagement_demo.txt",
+    "result": "one real dispatch: dispatches +1, origins +40, tiles +1, candidates +2266 (== record counters); numba route left every counter unchanged; build identity flags recorded in the same output",
+    "digest_of_demo_record": "39e13014b2739d707092581a36896d7e90282a99afee2428aaa23ba38eca6b3c"
+  },
+
+  "phase3_measurement": {
+    "status": "NOT RUN - coordination stub; no timed leg was executed",
+    "timed_leg_seconds_consumed": 0,
+    "coordination": "benchmark host is single-owner; measurement intent filed at measurement_intent.md; timed legs require the team-lead's go before any wall is recorded",
+    "planned_legs": [
+      "L0 cold build+install cost: venv-n00 python native/build.py from clean _build; wall of the compile+stale-check charged to the declared cold boundary (never inside timed legs)",
+      "L1 C-arm build leg: control cohort schedule identical to p05s (w4/t1/q64/cache-off), native hook installed via trace_build_native.install(), timer brackets ONLY the public RunBatch, fresh NUMBA_CACHE_DIR + fresh outdir, PYTHONDONTWRITEBYTECODE=1, census 64 files / 147829892 B, bitwise determinism vs the numba arm's published bytes",
+      "L2 numba control leg (same schedule, hook uninstall()ed) if the current control-cohort wall needs re-bracketing on this host; otherwise reuse the p05s control receipt",
+      "L3 bitwise cross-leg determinism: native-leg trace bytes identical across two legs and equal to the numba route's bytes for the same inputs (content_digest comparison at the cohort boundary)"
+    ],
+    "bitwise_parity_gate": "a timed native leg is only valid if its census and digests match the numba route's; any mismatch voids the leg and the verdict reverts to stub"
+  },
+
+  "constraints_respected": {
+    "campaign_data_untouched": true,
+    "no_pushes_merges_prs_releases": true,
+    "no_paid_compute_no_credential_edits": true,
+    "destructive_cleanup": "none (venv-n00 is a new dedicated tree; _build/ is new; no frozen tree modified)",
+    "src_scope": "cohort.py glue only (opt-in hook, default None)"
+  },
+
+  "open_observations": [
+    "tile_temp_bytes semantics differ by declared design: numba charges per-tile capture buffers, native reports its measured arena high-water; counters are measured, not identity-matched (not published by cohort record_meta)",
+    "the binding's cancel parameter is currently not wired (core call passes nullptr); the capability is exercised at the core ABI level by tests (dossier 08 obligation met at the layer that owns threads)",
+    "vectorization_report.txt is a whole-core characterization; the parity-critical loops (heap sift, stamp clears) are byte-addressed int64 work where SIMD lane order cannot alter results - the report documents what clang did, the parity suite proves what it means",
+    "tests/native requires venv-n00 (pybind11); on a numba-only host the suite skips cleanly at the pybind11 importorskip while the engine keeps its default route"
+  ]
+}

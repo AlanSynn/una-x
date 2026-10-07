@@ -120,6 +120,22 @@ def _producer_sha256() -> str:
     return _PRODUCER_SHA256
 
 
+# N00 (campaign una_10x, dossier 08): optional native trace-build
+# hook.  Default None keeps this route byte-identical to the numba
+# build_trace; only an explicit opt-in (native/trace_build_native
+# .install()) installs anything here.  The hook receives build_trace's
+# exact positional signature and returns a TraceRecord or raises
+# (raising lands in the sparse gate like any cohort failure — counted,
+# fallback unchanged).
+_NATIVE_BUILD_HOOK = None
+
+
+def install_native_build_hook(hook) -> None:
+    """Install (hook callable) or remove (None) the native build hook."""
+    global _NATIVE_BUILD_HOOK
+    _NATIVE_BUILD_HOOK = hook
+
+
 def per_worker_residency_cap(workers_effective: int) -> int:
     """RESOURCES.md sizing: ``max(64 MiB, allowance // workers)`` where
     the allowance is 25% of the host working budget (0.60 * available
@@ -432,14 +448,23 @@ class CohortSession:
                 if rec is None:
                     # Flight owner (or a loser whose owner failed to
                     # commit): build through the engine's own spliced
-                    # producer kernel.
+                    # producer kernel.  The N00 native hook (default
+                    # None) swaps in the AOT producer when explicitly
+                    # installed; the numba call below is the default.
                     t1 = time.perf_counter()
-                    built = trm.build_trace(
-                        o_terminal_idxs, o_terminal_weights,
-                        adjacency_pointer, adjacency_vector,
-                        adjacency_vector_weights, network_node,
-                        d_terminal_idxs, d_terminal_weights,
-                        d_weights, cutoff)
+                    hook = _NATIVE_BUILD_HOOK
+                    built = (hook(o_terminal_idxs, o_terminal_weights,
+                                  adjacency_pointer, adjacency_vector,
+                                  adjacency_vector_weights, network_node,
+                                  d_terminal_idxs, d_terminal_weights,
+                                  d_weights, cutoff)
+                             if hook is not None else
+                             trm.build_trace(
+                                 o_terminal_idxs, o_terminal_weights,
+                                 adjacency_pointer, adjacency_vector,
+                                 adjacency_vector_weights, network_node,
+                                 d_terminal_idxs, d_terminal_weights,
+                                 d_weights, cutoff))
                     self.counters["build_s"] += \
                         time.perf_counter() - t1
                     if not built.complete:

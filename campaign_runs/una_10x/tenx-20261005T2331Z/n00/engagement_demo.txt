@@ -1,0 +1,52 @@
+== import-time engagement (must be the module defaults; the
+   import itself engages nothing beyond loading bytes) ==
+{
+ "admission_refusals": 0,
+ "budget_stops": 0,
+ "candidates": 0,
+ "dispatches": 0,
+ "errors": 0,
+ "last_status": null,
+ "origins": 0,
+ "tiles": 0
+}
+== after ONE real native dispatch ==
+{
+ "admission_refusals": 0,
+ "budget_stops": 0,
+ "candidates": 2266,
+ "dispatches": 1,
+ "errors": 0,
+ "last_status": 0,
+ "origins": 40,
+ "tiles": 1
+}
+== record ==
+route=trace_epoch_a3 complete=True refusal=''
+origin_count=40 dest_count=100
+content_digest=39e13014b2739d707092581a36896d7e90282a99afee2428aaa23ba38eca6b3c
+{
+ "candidates_total": 2266,
+ "dist_bytes": 18128,
+ "ids_bytes": 18128,
+ "indptr_bytes": 328,
+ "metadata_bytes": 64,
+ "origins": 40,
+ "stamps_zeroed": 5000,
+ "tile_origins": 40,
+ "tile_temp_bytes": 57424,
+ "tiles": 1,
+ "touched_total": 5130,
+ "trace_bytes": 36648
+}
+== counter deltas vs the record's own numbers ==
+dispatches_delta=1 (expect 1)
+origins_delta=40 (expect 40)
+tiles_delta=1 (expect 1)
+candidates_delta=2266 (expect 2266)
+== numba route leaves engagement untouched ==
+numba dispatch left every counter unchanged: OK
+== build identity ==
+compiler=/usr/bin/clang++
+compile_flags=-std=c++17 -O3 -fPIC -shared -ffp-contract=off -fno-fast-math -Wall -Wextra
+engagement_module_state_final={"admission_refusals": 0, "budget_stops": 0, "candidates": 2266, "dispatches": 1, "errors": 0, "last_status": 0, "origins": 40, "tiles": 1}
