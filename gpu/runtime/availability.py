@@ -66,11 +66,11 @@ class DriverProbe:
 
 
 def _driver_result(available: bool, reason: str, detail: str,
-                   device_count: int = 0, fp64: bool = False,
+                   device_count: int = 0, fp64_capable: bool = False,
                    names: Tuple[str, ...] = ()) -> DriverProbe:
     return DriverProbe(available=available, reason=reason, detail=detail,
-                       device_count=device_count, fp64_capable=fp64,
-                       device_names=names)
+                       device_count=device_count,
+                       fp64_capable=fp64_capable, device_names=names)
 
 
 def probe_driver() -> DriverProbe:

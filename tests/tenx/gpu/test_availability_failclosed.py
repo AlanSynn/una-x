@@ -12,6 +12,23 @@ from gpu.runtime.availability import (detect_nvcc, probe_driver,
                                       _MIN_FP64_CAPABILITY)
 
 
+def test_driver_result_accepts_both_terminal_branch_kwarg_sets():
+    # G11 attempt-2 defect (found on the real A100): the available and
+    # no_fp64 branches passed fp64_capable=/names= to _driver_result, whose
+    # parameter was named fp64= - unreachable on any host without a device,
+    # so only real hardware could fire it.  Exercise both kwarg sets here.
+    from gpu.runtime.availability import _driver_result
+    ok = _driver_result(True, "available", "devices=('A100',)",
+                        device_count=1, fp64_capable=True,
+                        names=("A100",))
+    assert ok.available is True and ok.fp64_capable is True
+    assert ok.device_names == ("A100",)
+    no64 = _driver_result(False, "no_fp64_device", "detail",
+                          device_count=1, fp64_capable=False,
+                          names=("x",))
+    assert no64.available is False and no64.fp64_capable is False
+
+
 def test_device_name_read_is_narrow_char_not_wchar():
     # G11 attempt-1 defect (found on the real A100): cuDeviceGetName writes
     # narrow char bytes; reading them through create_unicode_buffer raised
