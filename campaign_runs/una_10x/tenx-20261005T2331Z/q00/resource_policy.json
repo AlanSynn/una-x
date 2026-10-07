@@ -1,0 +1,14 @@
+{
+ "schema": "una-10x-q00-resource-policy-1",
+ "workers": 4,
+ "threads_per_worker": 1,
+ "queue_depth": 64,
+ "writer_concurrency": 1,
+ "cache_mode": "off",
+ "row_cache": "none",
+ "numba_cache_dir": "fresh per window per arm (empty arm-specific JIT cache)",
+ "matched_budget": "identical configuration both arms, same host, same schedule",
+ "loadavg_gate": "pre-leg loadavg (1min) < 8.0, 90-min bounded hold; in-run 60s sampler retained per leg",
+ "exclusive_owner": "no campaign-external compute launched during windows; external enterprise co-tenancy handled only by the gate, never killed",
+ "host_ncpu": 10
+}

@@ -1,0 +1,11 @@
+{
+ "schema": "una-10x-q00-cache-policy-1",
+ "regime": "COLD (BENCHMARKS.md regime 4): fresh process per window, empty arm-specific JIT cache (fresh NUMBA_CACHE_DIR), input conversion and final output inside the public call; no result/trace reuse across windows",
+ "cache_mode": "off",
+ "disk_cache_dir": null,
+ "row_cache_dir": null,
+ "initial_trace_cost_included": true,
+ "import_outside_timer": "recorded per leg as timing.import_s; gate wall is the public-call boundary; process-start-to-completion reported in raw records",
+ "cold_boundary_reported": "import_s + public_call_wall_s per leg JSON",
+ "no_same_answer_hits": "cohort rows are distinct jobs (distinct beta values); cache disabled"
+}

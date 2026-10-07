@@ -1,0 +1,15 @@
+{
+ "schema": "una-10x-q00-environment-1",
+ "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+ "numba": "0.67.0",
+ "numpy": "2.4.6",
+ "host": {
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "ncpu": 10
+ },
+ "install_venvs": {
+  "A": "/private/tmp/i00/venv_a/lib/python3.11/site-packages/urban_network_analysis/__init__.py",
+  "B": "/private/tmp/i00/venv_b/lib/python3.11/site-packages/urban_network_analysis/__init__.py"
+ },
+ "venv_provenance": "cp -a venv-p01m, editable uninstalled, wheel installed --no-deps (I00 S30); wheels re-hashed live at Q00"
+}

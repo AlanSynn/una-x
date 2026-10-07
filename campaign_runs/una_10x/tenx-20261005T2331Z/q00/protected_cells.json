@@ -1,0 +1,37 @@
+{
+ "schema": "una-10x-q00-protected-cells-1",
+ "law": "BENCHMARKS.md protected cells: candidate B/A median <= 1.05 and one-sided 95% upper <= 1.10, identical required behavior; failure => refine dispatcher or keep explicit scoped mode (Z00 decision), never blanket default",
+ "pairs": [
+  {
+   "id": "pc1_tiny_gis_beta00",
+   "input": "inputs/pc1_tiny_gis_beta00.csv",
+   "sha256": "0348fcc61c88155bf815ca1683c308024a898a3444d9efbf01845d0eae5b2b59",
+   "class": "tiny GIS (1 job, beta 0.001)"
+  },
+  {
+   "id": "pc2_tiny_gis_beta31",
+   "input": "inputs/pc2_tiny_gis_beta31.csv",
+   "sha256": "c06c10025fcba91d4466a109a6ab1a192d68b1efae3e63aea68f5ef302b84f6d",
+   "class": "tiny GIS (1 job, beta row31)"
+  },
+  {
+   "id": "pc3_search_radius1200",
+   "input": "inputs/pc3_search_radius1200.csv",
+   "sha256": "8079a5e8dd7a5b5f626e909cb3d3019700c72b1c44c77207a605bb920a46a61e",
+   "class": "search-dominated (radius 400 -> 1200)"
+  },
+  {
+   "id": "pc4_search_radius1600",
+   "input": "inputs/pc4_search_radius1600.csv",
+   "sha256": "0fdbbfa2dd7c5ff54a1a2a9dcfea0e124f7535e0e23b03fbd618590539983e7f",
+   "class": "search-dominated (radius 400 -> 1600)"
+  },
+  {
+   "id": "pc5_cold_2row",
+   "input": "inputs/pc5_cold_2row.csv",
+   "sha256": "5fdf7de56a06ca69621709ee1de8345689162f1a6c848cdf200fc6dcef4763a0",
+   "class": "cold process (2 jobs)"
+  }
+ ],
+ "behavior_parity": "per cell: outputs bitwise equal across arms, zero failed jobs"
+}

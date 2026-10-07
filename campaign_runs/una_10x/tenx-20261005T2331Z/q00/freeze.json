@@ -1,0 +1,23 @@
+{
+ "schema": "una-10x-q00-freeze-1",
+ "date": "2026-10-07",
+ "primary_sha256": "777cab1a25a0a01b58c33b979b2a9cfa24930a014a3801d7edebcdfe702eef4b",
+ "configuration_sha256": "2547567693f28d031dfdd0178f5ffe744d4c9872c962ab976f21b808a9e160a5",
+ "policy_digests": {
+  "resource_policy": "ddb82915ab31fc67f29881af6d41a88313678afac5c284cff29c7ca9a07be473",
+  "cache_policy": "48b530406a4b8d4e845f89c826d51fad018eb78bfaf417513cb360d52883bf70",
+  "output_policy": "341e5345d2378cad9f3af53588998d28009005b915215d5cea4549cc4d765167",
+  "environment": "2d4bed148afa2e4d9416602946cc86a8777b94fc9ecfd55b9930dbffad820bd3",
+  "protected_cells": "cafe338a2c73bc141cba3e6369aef99223f4a2a1e73023d2c7f3b46ad8282ae3"
+ },
+ "protected_inputs_sha256": {
+  "pc1_tiny_gis_beta00.csv": "0348fcc61c88155bf815ca1683c308024a898a3444d9efbf01845d0eae5b2b59",
+  "pc2_tiny_gis_beta31.csv": "c06c10025fcba91d4466a109a6ab1a192d68b1efae3e63aea68f5ef302b84f6d",
+  "pc3_search_radius1200.csv": "8079a5e8dd7a5b5f626e909cb3d3019700c72b1c44c77207a605bb920a46a61e",
+  "pc4_search_radius1600.csv": "0fdbbfa2dd7c5ff54a1a2a9dcfea0e124f7535e0e23b03fbd618590539983e7f",
+  "pc5_cold_2row.csv": "5fdf7de56a06ca69621709ee1de8345689162f1a6c848cdf200fc6dcef4763a0"
+ },
+ "no_candidate_edits_after_freeze": "any source/harness/environment change invalidates affected measurements (dossier 07:53, dossier 09)",
+ "disclosure_prior_observations": "co-tenanted verification legs (I00 S40/S41) were observed before this freeze; they are NOT gate windows; the candidate configuration was frozen at P05 admission and unchanged since; baseline-only calibration law satisfied vacuously (window count/cohort fixed by law, no tuning performed)",
+ "generated_by": "q00/generate_q00.py (figures computed from live bytes + committed artifacts)"
+}
