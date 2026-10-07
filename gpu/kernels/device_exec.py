@@ -102,7 +102,9 @@ def _check(rc: int, what: str) -> None:
 class DeviceRuntime:
     """Minimal ctypes CUDA driver-API runtime for the gate kernels.
 
-    Owns: device 0's primary context, module (from PTX), device buffers,
+    Owns: an explicit device-0 context (cuCtxCreate; the primary context
+    is retained-but-inactive on Delta A100 nodes — see __init__), module
+    (from PTX), device buffers,
     H2D/D2H copies, kernel launches, synchronization.  Pure ctypes: the
     kernels come from the committed .cu via nvcc, never from a re-derived
     in-Python reimplementation.
@@ -158,11 +160,18 @@ class DeviceRuntime:
         _check(lib.cuDeviceGetName(name_buf, 256, self._dev),
                "cuDeviceGetName")
 
-        lib.cuDevicePrimaryCtxRetain.argtypes = [
-            ctypes.POINTER(ctypes.c_void_p), ctypes.c_int]
-        _check(lib.cuDevicePrimaryCtxRetain(ctypes.byref(self._ctx),
-                                            self._dev),
-               "cuDevicePrimaryCtxRetain")
+        # Explicit context, not the primary context: on Delta A100 nodes
+        # (driver 595.71.05 / CUDA 13.2, G11 attempt 4) the retained
+        # primary context stays inactive and cuMemAlloc refuses it with
+        # CUDA_ERROR_INVALID_CONTEXT (201) even after a successful
+        # CtxSetCurrent, while a cuCtxCreate(flags=0) context allocates,
+        # frees, and destroys cleanly (diag_ctx2.py, run dir consoles).
+        # The primary context is a convenience, not a contract; the device
+        # driven is the same real device.
+        lib.cuCtxCreate.argtypes = [ctypes.POINTER(ctypes.c_void_p),
+                                    ctypes.c_uint, ctypes.c_int]
+        _check(lib.cuCtxCreate(ctypes.byref(self._ctx), ctypes.c_uint(0),
+                               self._dev), "cuCtxCreate")
         lib.cuCtxSetCurrent.argtypes = [ctypes.c_void_p]
         _check(lib.cuCtxSetCurrent(self._ctx), "cuCtxSetCurrent")
 
@@ -280,9 +289,9 @@ class DeviceRuntime:
                 pass
             self._module = ctypes.c_void_p()
         if self._lib is not None and self._ctx.value:
-            self._lib.cuDevicePrimaryCtxRelease.argtypes = [ctypes.c_int]
+            self._lib.cuCtxDestroy.argtypes = [ctypes.c_void_p]
             try:
-                self._lib.cuDevicePrimaryCtxRelease(self._dev)
+                self._lib.cuCtxDestroy(self._ctx)
             except Exception:  # noqa: BLE001
                 pass
             self._ctx = ctypes.c_void_p()

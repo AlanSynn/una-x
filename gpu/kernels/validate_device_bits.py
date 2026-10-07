@@ -499,6 +499,9 @@ def run_device_gate(cell_id: str, gate_store: str, evidence_path: Path,
             "name": idn.name, "compute_capability": list(idn.compute_capability),
             "sm": idn.sm_name, "driver_version": list(idn.driver_version),
             "device_index": idn.device_index,
+            "context": "cuCtxCreate(flags=0) explicit; the primary context "
+                       "is retained-but-inactive on this node class "
+                       "(cuMemAlloc rc=201), see diag_ctx2.py consoles",
         }
         evidence_path.parent.mkdir(parents=True, exist_ok=True)
         ptx = compile_ptx(_CU_SOURCE, arch, nvcc.detail, evidence_path.parent)
