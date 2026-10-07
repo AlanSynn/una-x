@@ -1,0 +1,212 @@
+{
+  "schema": "una-10x-g00-gpu-region-1",
+  "task": "G00: Select GPU residency region and capabilities",
+  "campaign": "campaigns/una_10x (post_p00)",
+  "run_dir": "campaign_runs/una_10x/tenx-20261005T2331Z/g00/",
+  "owner": "gpu-engineer",
+  "generated_on_branch": "perf/una-10x",
+  "head_at_generation": "57788a77d89d49a1458f64f3f91fa960fa9c5005",
+  "verdict": "region_specified",
+  "completion": "A substantive region specified; capability limitations explicit, not fallback-only support",
+
+  "scope_statement": {
+    "gpu_is": "a retained platform-continuity obligation (PLATFORM_CONTINUITY.md, dossier 08): substantive implementation + installed engagement + real-device bit parity are required for platform_status=qualified.",
+    "gpu_is_not": "a lever claimed for the CPU 10x gate. No GPU figure enters tenx_status. Amdahl ceilings below bound what any GPU region could even theoretically contribute to the cohort wall, and none of them is a measured speedup.",
+    "no_timed_measurement_in_this_task": "G00 is a spec task. No timed measurement was run here; host co-tenancy is therefore recorded as not-applicable to this task's own probes (device-presence probes are load-independent). Every performance figure below is cited from committed evidence with the sha256 computed on those bytes in this task."
+  },
+
+  "hardware_audit": {
+    "this_host_probed": {
+      "method": "system_profiler SPDisplaysDataType + sysctl + python accelerator-stack import probe (probe_accel.py), run in this task",
+      "probe_files": {
+        "displays": "campaign_runs/una_10x/tenx-20261005T2331Z/g00/probe_system_profiler_displays.txt",
+        "accel_stacks": "campaign_runs/una_10x/tenx-20261005T2331Z/g00/probe_accel_out.json",
+        "probe_source": "campaign_runs/una_10x/tenx-20261005T2331Z/g00/probe_accel.py",
+        "python": "/Users/alansynn/orca/workspaces/una-x/venv-p01m/bin/python (3.11.16), PYTHONDONTWRITEBYTECODE=1"
+      },
+      "gpu_present": "Apple M1 Pro integrated GPU, 16 cores, Metal 4 (system_profiler output, probe file above)",
+      "cpu": "Apple M1 Pro arm64, 10 cores (sysctl machdep.cpu.brand_string / hw.ncpu)",
+      "memory": "17179869184 bytes (16 GiB unified, sysctl hw.memsize)",
+      "os": "macOS 26.6.2 (25G83), Darwin 25.6.0",
+      "cuda_device_count": 0,
+      "cuda_class_absent": [
+        "cupy: ModuleNotFoundError (probe_accel_out.json)",
+        "torch: ModuleNotFoundError -> no torch.cuda / no MPS check possible (probe_accel_out.json)",
+        "pycuda: ModuleNotFoundError; jax: ModuleNotFoundError; mlx: ModuleNotFoundError",
+        "nvcc: FileNotFoundError (not on PATH)",
+        "nvidia-smi: FileNotFoundError (not on PATH)"
+      ],
+      "apple_metal_status": "PRESENT but explicitly NOT A QUALIFICATION TARGET. Metal/MPS (and MLX, absent anyway) are not CUDA-class hardware; a vendor API lacking required arithmetic is an unsupported exact domain, not license for FP32 (dossier 08). Metal presence on this host does not satisfy any GPU obligation and must never be recorded as GPU qualification hardware.",
+      "fp64_note": "ASSUMPTION (unverifiable locally, no CUDA runtime present): the planned qualification venue is expected to be CUDA-class with native FP64. FP64 capability of the actual qualification device must be probed and recorded at G11 before any device compile; a device without hardware FP64 cannot host this region at all (FP32 substitution is forbidden)."
+    },
+    "planned_qualification_venue": {
+      "venue": "NCSA Delta (CUDA-class).",
+      "source": "team-lead directive to this task (user-level direction relayed 2026-10); NOT recorded in any committed campaign file at this time (grep for NCSA/Delta over campaigns/una_10x md/json returned no venue record - checked this task).",
+      "status": "CURRENTLY UNAVAILABLE: access is under recovery (GPU-hour account only). Recorded as the planned qualification venue, never as available.",
+      "consequence": "G11 real-device qualification is BLOCKED until Delta access is restored. Hardware absence blocks qualification (G11), never independent CPU/buildable work (G10)."
+    }
+  },
+
+  "retained_platform_backend_audit": {
+    "typed_backend_contract_exists": {
+      "file": "src/urban_network_analysis/backends/contracts.py",
+      "sha256": "f9c0bbe5b04354c67c998411c03c672fe3ac45783cf7e222eac23d5ddab3bb52",
+      "surface": "KernelCapabilities(backend='native'|'gpu', binary_fingerprint, supported_profiles, stage, isa_or_device_requirements, qualified, evidence_ref), CapabilityRegistryEntry(semantic_math_version, workload_features, memory_estimate_bytes, crossover), ExecutionContext(backend post-admission in 'reference'|'native'|'gpu', memory_limit_bytes, workspace_limit_bytes, cancellation). A GPU implementation must populate exactly this contract; a registry entry without qualification evidence chooses trusted reference under auto and never qualifies a forced route."
+    },
+    "admission_law_exists": {
+      "file": "src/urban_network_analysis/Execution.py",
+      "sha256": "9f2bea5876c2e537ff94c81b1a64cf432305c4e535e780fc7dde4e112a651439",
+      "law": "forced backend='gpu' with no qualified capability raises BackendNotAvailableError (Execution.py 'no qualified native/gpu capability entries are registered for this build'). Observed live in committed evidence: p05s/legs/full_w4t1_r3.json effective_snapshot.backend='reference', fallback_reason='no qualified native/gpu capability entries are registered for this build'."
+    },
+    "gpu_backend_implementation_absent": {
+      "fact": "src/urban_network_analysis/backends/ contains only __init__.py + contracts.py; no gpu.py module exists (find src -name 'gpu*.py': empty, run this task); no top-level gpu/ dir exists (ls: No such file or directory, run this task).",
+      "platform_campaign_targets": "campaigns/una_platform/TASKS_CLAUDE.yaml defines the retained GPU surfaces (GPU_DEVICE: backends/gpu.py + gpu/runtime/**; GPU_KERNEL: gpu/kernels/**; GPU_REGION: gpu/regions/**) - none exist yet in this tree. Those task texts are inherited obligations, not receipts."
+    },
+    "native_region_already_owned": {
+      "owner_task": "N00 (gpu-engineer must NOT duplicate it; one writable owner per scope)",
+      "evidence": {
+        "file": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/native_implementation.json",
+        "sha256": "990823992f9bd49a4dc89c75ed0c98904b8a9efa57c1d9723a584ff49bff958b",
+        "verdict": "implemented; C-arm measured (4-leg AB/AB matrix, native==numba bitwise on 64 files per leg)"
+      },
+      "region": "trace producer: Engines._trace_access_scratch._tr_epoch_scope_search_tile + build_trace's bounded tile loop (build-time serial block)",
+      "why_gpu_must_not_take_it": "(1) N00 owns it; (2) its value is capability+parity, not a 10x lever (one shared trace per cohort, native dispatches ONCE per leg); (3) the build is order-critical sequential heap control flow - a device port must reproduce the exact (float64,int64)-lexicographic heap tie law and tile loop to keep distance bits, which is emulation, not acceleration."
+    }
+  },
+
+  "region_selection": {
+    "chosen_region": "Per-origin accessibility fold family inside the compiled outer replay: the four scalar reductions (reach, gravity_exponential, gravity_logistic, knn_access) computed per origin over that origin's reachable-destination prefix.",
+    "exact_profile": "una_legacy (the frozen 10x primary profile; p05s/legs/full_w4t1_r3.json semantic_profile='una_legacy'). corrected_v1/madina_legacy remain distinct references with their own authority; this spec does not touch them.",
+    "production_call_site": {
+      "function": "Engines.AccessibilityWElevation.reach_gravity_knn_access (njit parallel=False, cache=True, nogil=True, fastmath=True); per-origin invocation from the compiled outer replay (P03); per-origin invocation also visible in the characterization oracle at kernels/scope_access.py:461 (fold_reach_gravity_knn_legacy_plan) and kernels/compacted.py:166 (kept-prefix variant).",
+      "engine_file_sha256": "efc4dd4a74dc2ec30ff3aeefff3cce7fb41361a75f2d2e04da3af44a39e0df36 (src/urban_network_analysis/Engines/AccessibilityWElevation.py)",
+      "porting_source": "kernels/reductions.py legacy_fastmath plans (sha256 888378fa1d496de9ba6c74ddd69ec78b5506a0801b8a0b5d84191c4725a139d0) - the declared portable transcription of the engine fold. NOT the plain-numpy plans (they round differently, 1-ulp class, per reductions.py docstrings).",
+      "workload_shape": "32 cohort rows over the Boston InnerCore fixture (local_audit_manifest.csv header row read this task: network 20260703_PercLenNetwork_InnerCore.geojson, origins Cambridge_building_centroids, destinations MA_transit_stations, search_radius 400, knn_weights [1.0], knn_decay logistic, gravity_beta varying per row 0.001 -> ...); 14751 origins x 6919 destinations; folds_done=59004 across the 32 rows (p04i cohort_summary), i.e. 1843.875 folds/row mean (derived)."
+    },
+    "residency_model": {
+      "upload_once_per_prepared_bundle": "immutable trace arrays (per-origin reach CSR: indptr int64, destination ids int64, distances float64, destination weights float64) + per-row fold scalars (cutoff, gravity_beta, gravity_plateau, gravity_logistic_midpoint, gravity_growth_rate, knn_decay selector, knn_weights float64[]). No graph upload: the fold consumes the trace, not the road network.",
+      "compute": "one fold per origin; origins are independent (row-internal), so origin-batch tiles parallelize across device work-groups WITHOUT any inter-origin reduction.",
+      "download": "only the 4 float64 outputs per origin (reach, gravity_exponential, gravity_logistic, knn_access) -> the row's typed metric arrays.",
+      "sync_and_ownership": "synchronize before timing ends or leases are released (dossier 08); double buffers explicitly owned; cancellation polled at tile barriers (N00 precedent: cancel at tile barriers, never a truncated success); bounded queue/tile depths; no pinned-memory aliasing of immutable input leases (immutable internal leases do not permit public mutable aliasing).",
+      "cache_hit_chronology": "read/validation/failure chronology is still required on trace/metric cache hits - a device fold result is a computed value, never a reason to skip row validation."
+    },
+    "memory_region": {
+      "forbidden_pattern": "dense O x D tensors. Arithmetic (this task): 14751 x 6919 x 8 bytes = 816497352 B = 778.7 MiB float64 (int32 variant 408248676 B = 389.3 MiB). Neither may ever be allocated on device or host (dossier 08: 'no dense O*D*jobs tensor').",
+      "actual_payload": "trace-keyed CSR reach lists (bounded by cutoff-radius reachability, not O*D) plus per-origin output columns. Scale anchor (measured, committed): the per-leg cohort store census is 43 files / 18046393 B = 17.21 MiB (n00 phase3_measurement.census.hidden_residue) - a store-root census including metric entries, NOT a single-trace figure; treat it as an order-of-magnitude anchor only.",
+      "budget_rule": "device working set is bounded per tile of origins (tile_origins law inherited from the trace routes); budget is a DECLARED per-profile limit carried in ExecutionContext.memory_limit_bytes/workspace_limit_bytes, with a measured device high-water counter reported per dispatch (precedent: native scratch_peak_bytes). No figure in this spec is a device-memory measurement; none can exist without hardware.",
+      "device_budget_floor_model": "2 x store census = 34.4 MiB is a modeling floor for trace+outputs residency, labeled ASSUMPTION/MODEL, to be replaced by measured high-water at G10/G11."
+    },
+    "crossover_rule": {
+      "law": "CPU vs GPU selection uses validated measured crossover including neighbors (dossier 08). Admission is decided on the COMPLETE service model FULL = prepare + conversion + H2D + launch + kernel + D2H + sync + remaining-service, with cold compile/setup J in its declared cold/warm regime; kernel-only ratios are never promoted (platform SCREEN_GPU completion_condition).",
+      "operator": "device route admits for a (profile, workload-features) cell only if the FULL-service median wall of the complete GPU region <= the strongest matched CPU arm's median wall on identical fixed inputs and identical allowed resource budget; both arms same machine policy, hardware additions recorded separately, never labeled equal-resource.",
+      "recordkeeping": "the measured threshold is written to CapabilityRegistryEntry.crossover with memory_estimate_bytes and evidence_ref; stale/absent entries fail closed to the trusted reference (contracts.py CapabilityRegistryEntry docstring).",
+      "until_real_hardware": "no crossover number exists and none may be simulated. Admission stays closed: forced gpu raises BackendNotAvailableError; auto selects reference. This is the current, observed behavior (p05s effective_snapshot).",
+      "amdahl_context_not_a_claim": {
+        "source_fractions": "p04i/receiver_admission_profile.json (sha256 9e313c914078416a89e676683f2fff47bb3394d5c7a5a651e3f0f024fa9c4c38) cohort_summary: build_s=3.4764489172957838, replay_s=10.758073958102614, against the same leg's timing.public_call_wall_s=16.42290279082954. Cohort median wall 16.8253 s is p05s/screen_index.json (sha256 67b1a4a6b532b14b173d2f07cda767820b6c5aa75004593493f57fc0e5352d55).",
+        "derived_this_task": "build fraction 0.2117; replay fraction 0.6551; Amdahl ceiling if the ENTIRE replay (all folds) went to zero cost = 2.899x; if the build also went to zero = 7.505x - an unreachable bound (folds are real work; the build is already native-owned). These ceilings are arithmetic on cited evidence, not measurements, and are NOT speedup claims.",
+        "conclusion": "even a perfect device fold is bounded < 2.9x on the cohort wall, and GPU work of any kind is outside the CPU 10x accounting (idle/import law unchanged)."
+      }
+    },
+    "alternate_candidate_rejected": {
+      "region": "cohort trace build (N00's region)",
+      "reasons": "already owned by N00 with a measured bit-exact native backend; amortizes to one dispatch per cohort (build fraction 0.2117 of leg wall, ceiling 1.269x alone); sequential priority-queue control flow makes a device port ordered emulation. Amdahl ceiling if build -> 0: 1.2685x (derived above)."
+    },
+    "out_of_scope_regions": {
+      "flow_family": "AggregateFlow OD accumulation kernels + scipy dijkstra traversal. Frozen separately (designs/06: 'Flow remains a separately frozen family; its gains cannot qualify OBS_COHORT'). Parity-blocked for device porting: predecessor-tree tie order must match scipy's heap exactly (f00 route_model_requirements), and the OD accumulators are ordered float64 updates. The 82.19%-of-flow-wall figure (f00/flow_admission.json, sha256 54d4ead4a49d464f3e2d2dbcc6299d11063b9df94c67f52be2e1dff78ff2b26e, amdahl.stage_fractions...od_accumulation_kernels_plus_scatter=0.8218746398121068) is cited to mark where flow time actually binds - it is NOT a GPU opportunity claim.",
+      "fold_neighbors_blocked_the_same_way": "scipy dense-return/init/pack stages and the trace fold: see parity_classification."
+    }
+  },
+
+  "parity_classification": {
+    "law": "bitwise parity mandatory per una_legacy; typed identities include actual dtype/scalar bits; no tolerance, no reduction reassociation, no hidden recompute. A region that cannot guarantee bitwise parity must say so and bound itself to verification-gated roles.",
+    "fold_region_class": "VERIFICATION-GATED (the honest classification of the chosen region):",
+    "blockers_each_independent": [
+      {"blocker": "1. Sum trees: the engine fold compiles with fastmath=True; its .sum() reductions are LLVM-VECTORIZED with reassociation (probe_order.txt: numba_reach matches vec4_tree/vec8_tree/vec16_tree lane schemes, NOT seq/pairwise, on large-magnitude cases). A device parallel sum tree is a different association -> different bits. Dossier 08 forbids changing a reduction because the CPU compiler used a different vector tree, and forbids floating atomics / completion-order sums."},
+      {"blocker": "2. Tie permutation: knn selection uses np.argsort inside numba; its tie order is numba-quick-sort-specific and differs from ALL numpy kinds in 131/200 tie trials (probe_order.txt). Any device sort (radix/bitonic/merge) has its own tie order. Reproducing numba's sequential quicksort tie permutation on a device is ordered emulation."},
+      {"blocker": "3. Transcendentals: np.exp on device (even correctly-rounded libdevice exp) is not bit-identical to the numba/LLVM host exp in general; the logistic/exponential aggregates read exp twice per element. Device math must be independently bit-validated per profile/environment before any device fold (dossier 08: host computes delicate coefficients/transcendentals unless device math is independently bit-validated)."},
+      {"probe_evidence_file": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/probe_order.txt (sha256 c713f8c8b15c2cebf472228d60f3af3fe216b17d938962d8d298b879a31b18cd); same evidence blocked the NATIVE fold port (n00 native_implementation.json blocked_regions.fold) - the GPU port inherits the identical wall."}
+    ],
+    "gate_that_would_open_the_region": {
+      "gate": "device-bit-validation: on the real qualification device, a bit-validation harness must reproduce the pinned legacy fold bits (reach, gravity_exponential, gravity_logistic, knn_access as float64 tobytes) on a characterization battery equal in class to the native suite (big-magnitude seeds for the vectorization classes, dense-tie batteries for the argsort permutation, exp boundary inputs) for the exact workload features of a cell, before that cell may dispatch on device.",
+      "status": "UNRUN - requires real hardware. Until it passes, the fold stays on the trusted CPU route and any device route is refuse-by-admission, not silently degraded.",
+      "not_fallback_only": "this is not a fallback-only posture: G10 ships the full buildable region (kernel sources, buffer ownership, service model, tests, the validation harness command) so that the moment hardware exists, the gate is runnable. What G10 must never do is mark the gate passed without the device."
+    },
+    "sub_regions_safe_by_construction": [
+      "per-origin reach-prefix stream compaction (np.where(d<=cutoff) equivalent): int64 index arithmetic + float64 comparisons only - no rounding, order-preserving -> bit-exact by construction on device.",
+      "elementwise products/gathers feeding the reductions: per-element IEEE ops, association-free -> bit-exact by construction.",
+      "the int64 counter/accumulator work in the trace producer (N00's finding: byte-addressed int64 work where lane order cannot alter results) - belongs to N00's region, listed only to show the audit covered it."
+    ]
+  },
+
+  "hardware_absence_handling": {
+    "g00_continues": "this spec is the buildable implementation work: it fixes the region, kernels, ownership, budgets, crossover operator and validation protocol so G10 can implement without hardware.",
+    "g10_may_proceed": "kernel/device-source authoring, buffer/ownership scaffolding, CPU-only tests (skip-with-hardware_unavailable on device-gated cases), and the unrun validation command are all hardware-independent.",
+    "g11_blocked": "real-device execution, bit parity, crossover measurement and installed engagement are blocked on NCSA Delta access. Missing hardware is a qualification blocker, never simulated success; gpu_qualification.json at G11 must record 'explicit unavailable' unless a device ran.",
+    "capability_limits_explicit": "FP64 required; CUDA-class required (Metal/MPS/MLX are not qualification targets); no FP32 substitution; no atomics/reassociation; completion-order sums forbidden; capability detection or copying through a GPU is not a substantive region (dossier 08)."
+  },
+
+  "g10_handoff": {
+    "owned_scope_hint": "new gpu/ surface per the retained platform layout (backends/gpu.py + gpu/runtime/** + gpu/kernels/** + tests/tenx/gpu), integrated through the single integrator; production src stays untouched until admission law wires a qualified entry.",
+    "kernel_plan": [
+      "K0 compaction kernel: per-origin reach prefix (bit-exact by construction; int64 indices, float64 compares).",
+      "K1 coefficient kernel: per-element decay coefficient arithmetic (exp terms; bit-exact per element, association-free).",
+      "K2 ordered selection: EXACT numba-tie-law argsort emulation (sequential per origin, device-resident or host fallback) - the parity-critical piece; must reproduce probe_order.txt's tie permutation, not a device sort.",
+      "K3 reduction: EXACT fastmath-vector-tree emulation of the four .sum() associations (vec4/vec8/vec16 lane schemes per probe_order.txt classes) OR host-side reduction of per-element products - decided by the bit-validation gate, not by convenience.",
+      "Fallback composition: K0+K1 on device with K2/K3 host-side is itself a legitimate heterogeneous region IF its FULL service wins the crossover; it is not a partial fallback, it is the trusted-math-retained composition designs/06 names ('keep trusted CPU math-sensitive coefficients/folds in a heterogeneous region')."
+    ],
+    "test_frame_rules": [
+      "every device-gated test skips with an explicit hardware_unavailable marker when no device is present; no CPU-only test may mark hardware validation passed (TASKS_CLAUDE.yaml G10).",
+      "the bit-validation harness must be a single named, documented command (unrun), targeting the pinned legacy fold bits from a fresh NUMBA_CACHE_DIR, PYTHONDONTWRITEBYTECODE=1.",
+      "typed identity law in every test: float64/int64 bits compared via tobytes/array_equal; no tolerance anywhere."
+    ],
+    "known_upstream_risks": [
+      "runtime._cancel queue-wedge defect (task #20) applies to any device path that joins backlogged queues on cancel - G10 cancellation must use tile-barrier polling like N00, not the wedged queue join.",
+      "the accessibility engine's bytes are identity-bearing (trace_id/metric_id embed engine bits per the n00 src_touch_scope law) - G10 must not edit engine/trace bytes; the device route enters through the backend contract only."
+    ]
+  },
+
+  "constraints_respected": {
+    "writes": "campaign_runs/una_10x/tenx-20261005T2331Z/g00/ only",
+    "untouched": ["src/**", "native/**", "tests/**", "other campaign_runs dirs", "campaign_data/** (read-only manifest/fixture header reads)"],
+    "no_commit_no_push": true,
+    "venv": "/Users/alansynn/orca/workspaces/una-x/venv-p01m/bin/python (probes only)",
+    "numba_cache": "no numba compilation performed in this task (no engine import); no NUMBA_CACHE_DIR needed",
+    "no_paid_compute": true
+  },
+
+  "assumptions": [
+    "NCSA Delta device class/FP64 capability: assumption from the team-lead directive (venue under recovery); must be probed at G11.",
+    "The cohort fixture dims (14751 origins x 6919 destinations) are taken from the committed f00 workload audit of the SAME three Boston layers the cohort manifest names; per-row origin counts inside the cohort are not re-derived here (folds/row mean 1843.875 from p04i is consistent with varying per-row origin counts).",
+    "Device payload floor (34.4 MiB model) is a modeling figure, not a measurement."
+  ],
+
+  "evidence_index": {
+    "probes_run_this_task": {
+      "campaign_runs/una_10x/tenx-20261005T2331Z/g00/probe_system_profiler_displays.txt": "8de921c3cdbfccd0fbdb552ef4d0db5e44302b6328994d9fea7d0324e135bbad",
+      "campaign_runs/una_10x/tenx-20261005T2331Z/g00/probe_accel_out.json": "b280863ff616da5ba0e1f221b8325529a3d7b9d9b54d1df127345193e06930a0",
+      "campaign_runs/una_10x/tenx-20261005T2331Z/g00/probe_accel.py": "3430ab0e38f8982b99d27e3c12fe985058d047436b5df2b05c1d146df72a6a84"
+    },
+    "committed_files_byte_read_and_hashed_this_task": {
+      "campaign_runs/una_10x/tenx-20261005T2331Z/f00/flow_admission.json": "54d4ead4a49d464f3e2d2dbcc6299d11063b9df94c67f52be2e1dff78ff2b26e",
+      "campaign_runs/una_10x/tenx-20261005T2331Z/n00/probe_order.txt": "c713f8c8b15c2cebf472228d60f3af3fe216b17d938962d8d298b879a31b18cd",
+      "campaign_runs/una_10x/tenx-20261005T2331Z/n00/native_implementation.json": "990823992f9bd49a4dc89c75ed0c98904b8a9efa57c1d9723a584ff49bff958b",
+      "campaign_runs/una_10x/tenx-20261005T2331Z/p04i/receiver_admission_profile.json": "9e313c914078416a89e676683f2fff47bb3394d5c7a5a651e3f0f024fa9c4c38",
+      "campaign_runs/una_10x/tenx-20261005T2331Z/p05s/screen_index.json": "67b1a4a6b532b14b173d2f07cda767820b6c5aa75004593493f57fc0e5352d55",
+      "campaign_runs/una_10x/tenx-20261005T2331Z/p05s/legs/full_w4t1_r3.json": "1fbb09b4293f78ae3f8fda81cecfdbda64ea0504ae0ae88842fa0072daf8d89e",
+      "campaigns/una_10x/PLATFORM_CONTINUITY.md": "4b2acb9ae57e8cf2fba06341294ab3a0525c9d4a104a884e5caf228b794bbbe8",
+      "campaigns/una_10x/dossiers/08_native_gpu_regions.md": "9033c0211e9138c034660bf8d5ad407721242cb1e8dbf033db7c057145d6af44",
+      "campaigns/una_10x/post_p00/designs/06_startup_export_backends.md": "383fb89c90675ad906749a76f530109641811a2680311a74ba4b10324c2253c8",
+      "campaigns/una_10x/TASKS_CLAUDE.yaml": "b8a8e929b323f00cedeb072b4323deaa3e310cd51a5f73f8f09beef993284401",
+      "src/urban_network_analysis/backends/contracts.py": "f9c0bbe5b04354c67c998411c03c672fe3ac45783cf7e222eac23d5ddab3bb52",
+      "src/urban_network_analysis/Execution.py": "9f2bea5876c2e537ff94c81b1a64cf432305c4e535e780fc7dde4e112a651439",
+      "src/urban_network_analysis/Engines/AccessibilityWElevation.py": "efc4dd4a74dc2ec30ff3aeefff3cce7fb41361a75f2d2e04da3af44a39e0df36",
+      "src/urban_network_analysis/kernels/reductions.py": "888378fa1d496de9ba6c74ddd69ec78b5506a0801b8a0b5d84191c4725a139d0"
+    },
+    "negative_claims_verified_by_tool": [
+      "no gpu backend module: find src -name 'gpu*.py' -> empty (this task)",
+      "no gpu/ dir at repo root: ls -> No such file or directory (this task)",
+      "backends/ listing: __init__.py + contracts.py only (this task)",
+      "no NCSA Delta venue record in campaigns/una_10x md/json: grep -l 'Delta' -> only an unrelated 'Deltas' prose hit in S10 review verdict (this task)"
+    ]
+  }
+}

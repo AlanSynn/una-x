@@ -1,0 +1,67 @@
+{
+  "python": {
+    "executable": "/Users/alansynn/orca/workspaces/una-x/venv-p01m/bin/python",
+    "version": "3.11.16",
+    "implementation": "CPython"
+  },
+  "platform": {
+    "system": "Darwin",
+    "release": "25.6.0",
+    "machine": "arm64",
+    "macos_version": "26.6.2"
+  },
+  "accelerator_stacks": {
+    "cupy": {
+      "importable": false,
+      "error_class": "ModuleNotFoundError",
+      "error": "No module named 'cupy'"
+    },
+    "torch_cuda": {
+      "importable": false,
+      "error_class": "ModuleNotFoundError",
+      "error": "No module named 'torch'"
+    },
+    "pycuda": {
+      "importable": false,
+      "error_class": "ModuleNotFoundError",
+      "error": "No module named 'pycuda'"
+    },
+    "jax": {
+      "importable": false,
+      "error_class": "ModuleNotFoundError",
+      "error": "No module named 'jax'"
+    },
+    "torch_mps_check": null,
+    "mlx": {
+      "importable": false,
+      "error_class": "ModuleNotFoundError",
+      "error": "No module named 'mlx'"
+    },
+    "toolchain_nvcc": {
+      "on_path": false,
+      "error": "FileNotFoundError"
+    },
+    "toolchain_nvidia-smi": {
+      "on_path": false,
+      "error": "FileNotFoundError"
+    },
+    "toolchain_metal_completion": {
+      "on_path": false,
+      "error": "FileNotFoundError"
+    }
+  },
+  "compute_stack_in_use": {
+    "numpy": {
+      "importable": true,
+      "version": "2.4.6"
+    },
+    "numba": {
+      "importable": true,
+      "version": "0.67.0"
+    },
+    "scipy": {
+      "importable": true,
+      "version": "1.17.1"
+    }
+  }
+}
