@@ -1,0 +1,20 @@
+{
+ "schema": "una-10x-p05s-head-suites-receipt-errata-1",
+ "task": "Transcription erratum for head_suites_receipt.json (P05R reviewer-found, minor)",
+ "generated": "2026-10-07T03:21:07Z",
+ "parent_object": {
+  "file": "p05s/head_suites_3818e08/head_suites_receipt.json",
+  "sha256_live_recomputed": "1efa261567291fc0e3612c9b390108e4edc74929a3b5d914d094b0bf4771bb2d",
+  "committed_at": "854d1df",
+  "edited": false,
+  "law": "committed evidence bytes stay immutable; corrections are separate errata objects"
+ },
+ "defect": "reviewer_verification.verified hand-quotes the persubdir console sha as a 61-char string (the characters 45 dropped after ...5f56); the same corrupted string appeared in the team-lead's relay message. Corruption entered at receipt transcription, where the sha literal was retyped instead of interpolated from the computed variable.",
+ "authoritative_values_recomputed_now_from_live_bytes": {
+  "headcheck_be8441b_persubdir.log": "3622c5047bc091eb0e752a4f1595fcaa45ac3c435f564563cf6bd8544fa08429",
+  "note": "identical to the receipt's authoritative field consoles.headcheck_be8441b_persubdir.log.sha256, to the preserved /tmp original, and to the reviewer's own verification value"
+ },
+ "custody_impact": "NONE \u2014 the authoritative field was correct; the corrupted string appears only in the prose quote and matched no bytes. Consoles themselves are byte-perfect (reviewer re-verified).",
+ "found_by": "p03r-reviewer (teammate relay, 2026-10-07)",
+ "process_correction": "sha literals are never retyped into prose; every mention interpolates the tool-computed variable (extends the 'sha figures must be tool outputs' law to transcription)."
+}
