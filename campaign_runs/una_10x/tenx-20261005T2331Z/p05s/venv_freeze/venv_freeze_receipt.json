@@ -1,0 +1,63 @@
+{
+ "schema": "una-10x-p05s-venv-freeze-receipt-1",
+ "task": "P05R note R2 closure: per-venv freeze-parity receipts for the screen arms",
+ "generated": "2026-10-07T03:16:12Z",
+ "law": "equal-environment leg of the matched-arm law: the 27 dependency entries must be identical across arms; the single allowed difference is the editable urban_network_analysis pointer, which by design resolves each venv to its OWN worktree (arm separation)",
+ "captured": "pip freeze --all per venv, 2026-10-06, after commit 3818e08",
+ "moving_head_note": "the full arm's editable line pins whatever HEAD is at capture time (3818e08 here). The MEASUREMENT-time source identity is NOT this line: each leg's tree_head pin asserted the arm sha at run time (full arm: 86e8b0a), and P05R closed 86e8b0a->be8441b as evidence-only (zero src/tests diff), so the measured source is the committed source.",
+ "reference_venv": {
+  "name": "venv-p01m (full arm)",
+  "freeze_sha256": "084f3c586e5fe5fcca80f5f45b06d86630b0c8d7613ba6211c88bbf8a928df40",
+  "dependency_entries": 27
+ },
+ "arms": {
+  "cmp__venv-baseline": {
+   "freeze_sha256": "77d3bf4abd502277cdb5b974533707ff6b8b981170a9bacfabbd88a894ddcf34",
+   "entries_total": 28,
+   "dependency_entries": 27,
+   "dependencies_identical_to_reference": true,
+   "dependency_diff": [],
+   "editable_pointer": "-e git+https://github.com/AlanSynn/una-x.git@395cdc5f683894b6f2ba460f7dbcefee99981ba3#egg=urban_network_analysis&subdirectory=../../../../orca/workspaces/una-x/baseline-395cdc5",
+   "points_at_own_worktree": true
+  },
+  "parent__venv-parent-e7c9eda": {
+   "freeze_sha256": "7ecfb69d48e7035d975a2ce36552c948c1ca470dcfef5651728b35975093279e",
+   "entries_total": 28,
+   "dependency_entries": 27,
+   "dependencies_identical_to_reference": true,
+   "dependency_diff": [],
+   "editable_pointer": "-e git+https://github.com/AlanSynn/una-x.git@e7c9edacd7340670b863c2bee16e7feac98044f6#egg=urban_network_analysis&subdirectory=../../../../orca/workspaces/una-x/parent-e7c9eda",
+   "points_at_own_worktree": true
+  },
+  "p02__venv-p02-6fb01d0": {
+   "freeze_sha256": "d6d9f3888f4982194655621791e6ddeb1915dccfadf192e3ce32ba5807384268",
+   "entries_total": 28,
+   "dependency_entries": 27,
+   "dependencies_identical_to_reference": true,
+   "dependency_diff": [],
+   "editable_pointer": "-e git+https://github.com/AlanSynn/una-x.git@6fb01d00f4e6a56a9b55707342a8566c1c493f37#egg=urban_network_analysis&subdirectory=../../../../orca/workspaces/una-x/p02-6fb01d0",
+   "points_at_own_worktree": true
+  },
+  "p03a__venv-p03a-4b680b6": {
+   "freeze_sha256": "cf259bb029ed379f24cead587c56cd0e91435a30c00732baee93f6278a17ddfb",
+   "entries_total": 28,
+   "dependency_entries": 27,
+   "dependencies_identical_to_reference": true,
+   "dependency_diff": [],
+   "editable_pointer": "-e git+https://github.com/AlanSynn/una-x.git@4b680b60378066dbc0d2390e14a79391135b0a57#egg=urban_network_analysis&subdirectory=../../../../orca/workspaces/una-x/p03a-4b680b6",
+   "points_at_own_worktree": true
+  }
+ },
+ "arms_full_reference": {
+  "full__venv-p01m editable_pointer": "-e git+https://github.com/AlanSynn/una-x.git@3818e0803c023670eebf2dbbe91aa3eec19533d9#egg=urban_network_analysis&subdirectory=../../../../orca/workspaces/una-x/main"
+ },
+ "identity_lines": {
+  "cmp__venv-baseline": "3.11.16 2.6.0 /Users/alansynn/orca/workspaces/una-x/baseline-395cdc5/src/urban_network_analysis/__init__.py",
+  "full__venv-p01m": "3.11.16 2.6.0 /Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/__init__.py",
+  "p02__venv-p02-6fb01d0": "3.11.16 2.6.0 /Users/alansynn/orca/workspaces/una-x/p02-6fb01d0/src/urban_network_analysis/__init__.py",
+  "p03a__venv-p03a-4b680b6": "3.11.16 2.6.0 /Users/alansynn/orca/workspaces/una-x/p03a-4b680b6/src/urban_network_analysis/__init__.py",
+  "parent__venv-parent-e7c9eda": "3.11.16 2.6.0 /Users/alansynn/orca/workspaces/una-x/parent-e7c9eda/src/urban_network_analysis/__init__.py"
+ },
+ "identity_law": "each venv's urban_network_analysis resolves to its OWN worktree's src/ (matches P05R live-import check); python 3.11.16 and package 2.6.0 uniform across all five",
+ "conclusion": "ALL FOUR ARMS: dependency sets byte-identical to the reference (27 entries); the only diff per arm is the designed editable pointer to that arm's own worktree at its pinned sha (395cdc5 / e7c9eda / 6fb01d0 / 4b680b6). Equal-environment law satisfied; arm separation by design."
+}
