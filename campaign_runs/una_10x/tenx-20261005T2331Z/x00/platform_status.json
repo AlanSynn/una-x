@@ -2,13 +2,13 @@
   "schema": "una-10x-x00-platform-status-1",
   "task": "X00",
   "generated": "2026-10-07",
-  "author": "integ-audit (integrator)",
+  "author": "integrator-audit",
   "law": "PLATFORM_CONTINUITY.md: publish tenx_status AND platform_status separately; only completion of all mandatory inherited capabilities AND their required hardware/API/scientific gates permits platform_status=qualified; a 10x-only result never marks missing tasks done",
-  "head": "eb9276f5e5d0eb78c2e36203e48b73e4148a9dfc",
+  "head": "d2bd9ce84255cc62b7aff1df36d8a7b4bf96bb0e",
   "branch": "perf/una-10x",
   "obligations_record": {
     "path": "x00/platform_obligations.json",
-    "sha256": "3f8faccc4de8d156a065be80b9659c71d936d204a1e6f57a93da1bfe384eeb41"
+    "sha256": "71438008ada8a60de39e555ea2b9eccc1bee9155e9b13a992d067fca1c355717"
   },
   "tenx_status": {
     "value": "in_progress",

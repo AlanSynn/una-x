@@ -464,7 +464,12 @@ obligations = {
     "schema": "una-10x-x00-platform-obligations-1",
     "task": "X00 Carry and close inherited platform obligations (campaign una_10x post_p00)",
     "generated": GENERATED,
-    "author": "integ-audit (integrator)",
+    "author": "integrator-audit",
+    "provenance_note": "name-prefix collision corrected 2026-10-07: an earlier generation of these files (obligations "
+                       "sha256 3f8faccc4de8d156a065be80b9659c71d936d204a1e6f57a93da1bfe384eeb41, status sha256 "
+                       "fe7de921bacbafa0f8932508598b1df383d2ceae290bd393e050f58e01150ee7) misattributed authorship to "
+                       "'integ-audit', an unrelated teammate (P02D seam auditor) who performed NO X00 work; all X00 work "
+                       "in this chain is integrator-audit's",
     "audit_frame": {
         "head": head,
         "branch": branch,
@@ -527,7 +532,7 @@ status = {
     "schema": "una-10x-x00-platform-status-1",
     "task": "X00",
     "generated": GENERATED,
-    "author": "integ-audit (integrator)",
+    "author": "integrator-audit",
     "law": "PLATFORM_CONTINUITY.md: publish tenx_status AND platform_status separately; only completion of all mandatory "
            "inherited capabilities AND their required hardware/API/scientific gates permits platform_status=qualified; "
            "a 10x-only result never marks missing tasks done",
