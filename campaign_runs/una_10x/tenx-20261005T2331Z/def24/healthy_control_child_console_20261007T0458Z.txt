@@ -1,0 +1,110 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____________________ test_child_healthy_backlog_completes _____________________
+
+make_batch = <function make_batch.<locals>.make at 0x106df5580>
+tmp_path = PosixPath('/private/var/folders/3d/cclyxf1x3bjf_y3pf071s1r00000gr/T/pytest-of-alansynn/pytest-2807/test_child_healthy_backlog_com0')
+
+    def test_child_healthy_backlog_completes(make_batch, tmp_path):
+        if os.environ.get(_GUARD_ENV) != "1":
+            pytest.skip("guarded scenario: runs via _run_child subprocess")
+        from dataclasses import replace
+    
+        out = str(tmp_path / "out")
+    
+        def extra(i, s):
+            # Equal-length prefix-distinct stems (see the runner's
+            # docstring): otherwise the planner's stem-prefix hazard
+            # serializes 60 of these 64 rows and they run in the parent,
+            # where Settings.Validation rejects the test-transport
+            # inject_specs attribute (workers get a stripped state,
+            # runtime.py _snapshot_row/_job_state — the parent path does
+            # not).
+            s.name = f"r{i:02d}"
+            s.inject_specs = _INERT_32K
+    
+        p = make_batch(64, out_folder=out, extra=extra)
+        _dump_after_bound()
+        # Same schedule and payload geometry as the wedge scenarios, minus
+        # the failure: the only delta is the healthy path itself.  All 64
+        # jobs flow through the inbox (~2 MiB) and are fully drained.
+        p.RunBatch("accessibility", parallel=True, workers=1,
+                   execution=replace(p.execution, queue_depth=64))
+        # Happy path unperturbed: report published, every row's artifacts
+        # (<stem>.feather + <stem>.geojson) public under the output folder,
+        # staging fully retired.
+        assert p.batch_report is not None
+        published = {n for n in os.listdir(out) if not n.startswith(".")}
+        assert published == {f"r{i:02d}{ext}" for i in range(64)
+>                            for ext in (".feather", ".geojson")}, \
+            sorted(published)[:8]
+E       AssertionError: missing rows: ['r00', 'r01', 'r02', 'r03', 'r04']
+E       assert set() == {'r00', 'r01'...', 'r05', ...}
+E         
+E         Extra items in the right set:
+E         'r36'
+E         'r50'
+E         'r55'
+E         'r14'
+E         'r53'...
+E         
+E         ...Full output truncated (60 lines hidden), use '-vv' to show
+
+test_runtime_cancel_wedge.py:279: AssertionError
+----------------------------- Captured stderr call -----------------------------
+
+*** CANCEL-WEDGE WATCHDOG: no completion after 60s - dumping all thread stacks ***
+Current thread 0x0000000170923000 (most recent call first):
+  File "/Users/alansynn/orca/workspaces/una-x/main/tests/batch/runtime/test_runtime_cancel_wedge.py", line 165 in _fire
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 982 in run
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 1045 in _bootstrap_inner
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 1002 in _bootstrap
+
+Thread 0x00000001ef45a180 (most recent call first):
+  File "<frozen posixpath>", line 457 in _joinrealpath
+  File "<frozen posixpath>", line 413 in realpath
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/batch/plan.py", line 209 in _canonical
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/batch/plan.py", line 270 in _resolved_input
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/batch/plan.py", line 354 in <genexpr>
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/batch/plan.py", line 354 in <genexpr>
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/batch/plan.py", line 354 in _snapshot_row
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/batch/plan.py", line 415 in <listcomp>
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/batch/plan.py", line 415 in plan_batch
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/batch/runtime.py", line 891 in run_batch_parallel
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/UNA.py", line 256 in RunBatch
+  File "/Users/alansynn/orca/workspaces/una-x/main/tests/batch/runtime/test_runtime_cancel_wedge.py", line 271 in test_child_healthy_backlog_completes
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/main.py", line 384 in _main
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/_pytest/config/__init__.py", line 253 in _console_main
+  File "/Users/alansynn/orca/workspaces/una-x/venv-p01m/lib/python3.11/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+=========================== short test summary info ============================
+FAILED test_runtime_cancel_wedge.py::test_child_healthy_backlog_completes - A...
+1 failed in 13.12s

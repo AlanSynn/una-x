@@ -1,0 +1,31 @@
+{
+ "schema": "una-10x-i00-wheel-census-1",
+ "A_comparator": {
+  "source_rev": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "tree_delta": "pyproject.toml ONLY (force-include packaging parity backport)",
+  "path": "/tmp/i00/dist_a/urban_network_analysis-2.6.0-py3-none-any.whl",
+  "sha256": "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1",
+  "entries": 61,
+  "py_entries": 56,
+  "spawn_shim_at_root": true,
+  "spawn_shim_sha256": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f",
+  "generated_entries": [
+   "urban_network_analysis/_build_info.py"
+  ],
+  "native_or_ext_or_sitecustomize_entries": []
+ },
+ "B_candidate": {
+  "source_rev": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c",
+  "tree_delta": "none (git archive of HEAD)",
+  "path": "/tmp/i00/dist_b/urban_network_analysis-2.6.0-py3-none-any.whl",
+  "sha256": "9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97",
+  "entries": 69,
+  "py_entries": 64,
+  "spawn_shim_at_root": true,
+  "spawn_shim_sha256": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f",
+  "generated_entries": [
+   "urban_network_analysis/_build_info.py"
+  ],
+  "native_or_ext_or_sitecustomize_entries": []
+ }
+}

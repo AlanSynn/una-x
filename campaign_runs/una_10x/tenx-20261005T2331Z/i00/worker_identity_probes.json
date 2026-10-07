@@ -1,0 +1,18 @@
+{
+ "probe_pairing": "/tmp/i00/probe_pairing.csv",
+ "arms": {
+  "a": {
+   "research_imports_before": [],
+   "research_imports_after": [],
+   "spawn_shim": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f",
+   "rows": 2
+  },
+  "b": {
+   "research_imports_before": [],
+   "research_imports_after": [],
+   "spawn_shim": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f",
+   "rows": 2
+  }
+ },
+ "cwd_fix": "probe rows carry absolute data_folder (Settings field, ApplyRow-applied); RunBatch would otherwise anchor relative inputs at the CSV directory (UNA.py:202-226) \u2014 fire-1 + fire-2-attempt-1 lesson; subprocess also runs with cwd=DATAFOLDER"
+}

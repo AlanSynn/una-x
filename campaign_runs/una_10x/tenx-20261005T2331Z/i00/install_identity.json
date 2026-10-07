@@ -1,0 +1,12 @@
+{
+ "a": {
+  "package_file": "/private/tmp/i00/venv_a/lib/python3.11/site-packages/urban_network_analysis/__init__.py",
+  "spawn_shim_file": "/private/tmp/i00/venv_a/lib/python3.11/site-packages/una_batch_worker_main.py",
+  "spawn_shim_sha256_parent_probe": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f"
+ },
+ "b": {
+  "package_file": "/private/tmp/i00/venv_b/lib/python3.11/site-packages/urban_network_analysis/__init__.py",
+  "spawn_shim_file": "/private/tmp/i00/venv_b/lib/python3.11/site-packages/una_batch_worker_main.py",
+  "spawn_shim_sha256_parent_probe": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f"
+ }
+}

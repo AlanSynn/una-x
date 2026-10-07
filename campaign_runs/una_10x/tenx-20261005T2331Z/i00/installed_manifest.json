@@ -1,0 +1,104 @@
+{
+ "schema": "una-10x-i00-installed-manifest-1",
+ "task": "I00 freeze integrated source and installed package identities",
+ "date": "2026-10-07",
+ "head_at_wheel_build": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c",
+ "head_at_manifest_generation": "5e2a0ef25e87e69ef3afed19bc7a1f79dbdddea3",
+ "fire_history": "fire-1 (console_fire1.log): S10-S41 complete incl. both legs; S50 died anchoring probe inputs at /tmp/i00 (RunBatch builds fresh Settings per row, CSV-dir anchoring, UNA.py:202-226). fire-2 attempt 1 (cwd=DATAFOLDER only) failed identically (console_fire2.log). fire-2 attempt 2 (this console): probe rows carry absolute data_folder column; S50+S60 rerun, legs reused from fire-1",
+ "arms": {
+  "A_comparator": {
+   "source_rev": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+   "declared_tree_delta": "pyproject.toml ONLY (force-include packaging parity backport)",
+   "wheel": {
+    "source_rev": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+    "tree_delta": "pyproject.toml ONLY (force-include packaging parity backport)",
+    "path": "/tmp/i00/dist_a/urban_network_analysis-2.6.0-py3-none-any.whl",
+    "sha256": "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1",
+    "entries": 61,
+    "py_entries": 56,
+    "spawn_shim_at_root": true,
+    "spawn_shim_sha256": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f",
+    "generated_entries": [
+     "urban_network_analysis/_build_info.py"
+    ],
+    "native_or_ext_or_sitecustomize_entries": []
+   },
+   "install_venv": "/tmp/i00/venv_a",
+   "parent_probe": {
+    "package_file": "/private/tmp/i00/venv_a/lib/python3.11/site-packages/urban_network_analysis/__init__.py",
+    "spawn_shim_file": "/private/tmp/i00/venv_a/lib/python3.11/site-packages/una_batch_worker_main.py",
+    "spawn_shim_sha256_parent_probe": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f"
+   },
+   "worker_probe": {
+    "research_imports_before": [],
+    "research_imports_after": [],
+    "spawn_shim": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f",
+    "rows": 2
+   },
+   "leg": {
+    "file": "legs/a_installed_comparator.json",
+    "files": 64,
+    "bytes": 147829892,
+    "bitwise_equal_to_n00_L2A1_reference": true,
+    "wall_s": 42.6682,
+    "executable": "/private/tmp/i00/venv_a/bin/python"
+   }
+  },
+  "B_candidate": {
+   "source_rev": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c",
+   "declared_tree_delta": "none (git archive of HEAD)",
+   "wheel": {
+    "source_rev": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c",
+    "tree_delta": "none (git archive of HEAD)",
+    "path": "/tmp/i00/dist_b/urban_network_analysis-2.6.0-py3-none-any.whl",
+    "sha256": "9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97",
+    "entries": 69,
+    "py_entries": 64,
+    "spawn_shim_at_root": true,
+    "spawn_shim_sha256": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f",
+    "generated_entries": [
+     "urban_network_analysis/_build_info.py"
+    ],
+    "native_or_ext_or_sitecustomize_entries": []
+   },
+   "install_venv": "/tmp/i00/venv_b",
+   "parent_probe": {
+    "package_file": "/private/tmp/i00/venv_b/lib/python3.11/site-packages/urban_network_analysis/__init__.py",
+    "spawn_shim_file": "/private/tmp/i00/venv_b/lib/python3.11/site-packages/una_batch_worker_main.py",
+    "spawn_shim_sha256_parent_probe": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f"
+   },
+   "worker_probe": {
+    "research_imports_before": [],
+    "research_imports_after": [],
+    "spawn_shim": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f",
+    "rows": 2
+   },
+   "leg": {
+    "file": "legs/b_installed_candidate.json",
+    "files": 64,
+    "bytes": 147829892,
+    "bitwise_equal_to_n00_L2A1_reference": true,
+    "wall_s": 18.0414,
+    "executable": "/private/tmp/i00/venv_b/bin/python"
+   },
+   "hidden_outputs_note": "43 hidden entries (.una-batch-prepared x38, .una-batch-cohort x5) = candidate preparation-stage artifacts, correctly outside the required census; comparator has none (pre-preparation implementation)"
+  }
+ },
+ "identity_chain": "wheel census shim sha == parent probe sha == runtime journal transport.spawn_shim (real spawn worker), per arm",
+ "worker_identity_probe": {
+  "untimed": true,
+  "checkpointed_2row": true,
+  "policy_note": "timed cohort legs stay frozen-policy checkpoint-free; identity captured by separate disposable probe"
+ },
+ "research_import_scan": "empty in a real batch interpreter, both arms",
+ "co_tenancy": "verification legs ran under external host load (rustc build + enterprise pmd/log sweep) with loadavg gate <8 and in-run walls recorded; NOT gate figures (Q10 measures exclusively)",
+ "in_flight_exclusions": {
+  "tests/batch/runtime/test_runtime_cancel_wedge.py": "committed at 5e2a0ef AFTER fire-1 exported HEAD 1e7237b; tests are unpackaged and outside the frozen wheels; freeze_source stays 1e7237b"
+ },
+ "capability_gaps_retained": [
+  "GPU region: explicit_unavailable (G11); Delta checklist gates any device claim",
+  "native trace producer: retained capability, NOT in default gate stack (N10)",
+  "comparator wedge: DEF-24 fix is candidate-only; baseline cancel semantics as-shipped (A2)",
+  "RES-1 stranded-feeder interpreter-exit seam: recorded, no defect"
+ ]
+}

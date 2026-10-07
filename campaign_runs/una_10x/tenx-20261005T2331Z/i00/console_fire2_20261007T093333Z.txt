@@ -1,0 +1,9 @@
+[2026-10-07T09:33:33Z] S50 begin (cwd-fix probes; legs reused from fire-1)
+WORKER PROBES OK {'a': '037d6c47c7ec', 'b': '037d6c47c7ec'}
+[2026-10-07T09:33:55Z] S50 ok
+[2026-10-07T09:33:55Z] S60 begin
+MANIFESTS OK wheel_source 1e7237bebe8d generation_head 5e2a0ef25e87
+bitwise A: True bitwise B: True
+walls: A 42.6682 B 18.0414
+[2026-10-07T09:33:55Z] S60 ok
+[2026-10-07T09:33:55Z] I00 FIRE-2 COMPLETE rc=0

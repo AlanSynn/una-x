@@ -1,0 +1,15 @@
+{
+ "schema": "una-10x-i00-freeze-candidate-1",
+ "date": "2026-10-07",
+ "freeze_source": {
+  "commit": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c",
+  "branch": "perf/una-10x"
+ },
+ "frozen_identities": {
+  "candidate_wheel_sha256": "9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97",
+  "comparator_wheel_sha256": "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1",
+  "comparator_source_rev": "395cdc5f683894b6f2ba460f7dbcefee99981ba3"
+ },
+ "invalidation_clause": "source/harness/environment changes after this freeze invalidate affected dependent tests/timings (dossier 07:53, dossier 09); prior files are kept, never edited",
+ "next": "V00 gauntlet -> Q00 freeze records -> Q10 seven-pair AB/BA gate (gate_10x.py) -> R00 -> Z00"
+}
