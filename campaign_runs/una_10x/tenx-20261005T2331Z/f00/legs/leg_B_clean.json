@@ -1,0 +1,91 @@
+{
+  "leg": "B",
+  "mode": "clean",
+  "threads_pinned": 4,
+  "numba_cache_dir": "/tmp/f00_B/nbcache",
+  "output_dir": "/tmp/f00_B/out",
+  "data_folder": "/tmp/f00_B/data",
+  "real_data_folder": "/Users/alansynn/orca/workspaces/una-x/main/campaign_data/inputs/upstream_Boston/Boston",
+  "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+  "network_sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+  "origins_fixture": "campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson",
+  "origins_fixture_sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+  "destinations_file": "MA_transit_stations.geojson",
+  "destinations_sha256": "52080688bb2678e169221290e307e5aaef505f537cc0a14be331ec1ee700bab0",
+  "search_radius": 1500,
+  "flow_settings": {
+    "flow_alternative_penalty_factor": 1.01,
+    "flow_compute_node_flow": false,
+    "flow_debug_print_paths": false,
+    "flow_decay": true,
+    "flow_decay_curve": "exponential",
+    "flow_decay_method": "closest",
+    "flow_destination_weights": true,
+    "flow_detour_buffer": 100.0,
+    "flow_detour_mode": "ratio",
+    "flow_detour_ratio": 1.05,
+    "flow_engine": "aggregate_flow",
+    "flow_gravity_cap": 1.0,
+    "flow_k_nearest_destinations": 0,
+    "flow_max_destinations_per_origin": 0,
+    "flow_n_alternatives": 30,
+    "flow_origin_weights": true,
+    "flow_output_routes": false,
+    "flow_path_detour_penalty": "logistic",
+    "flow_return_directional": false,
+    "flow_route_enumeration_beta": 0.0,
+    "flow_route_enumeration_logistic_midpoint": 150.0,
+    "flow_route_id_column": null,
+    "flow_track_obstacle_points_usage": false,
+    "flow_track_origins_per_destination": false
+  },
+  "cache_policy": "off",
+  "semantic_profile": "una_legacy",
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "numba": "0.67.0",
+  "mp_cpu_count": 10,
+  "host_loadavg_1m_at_start": 17.13916015625,
+  "started_utc": "2026-10-07T03:29:38.120180+00:00",
+  "data_folder_symlinks": {
+    "20260703_PercLenNetwork_InnerCore.geojson": "real file (symlink)",
+    "MA_transit_stations.geojson": "real file (symlink)",
+    "Cambridge_building_centroids.geojson": "campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson"
+  },
+  "public_wall_s": 69.51479954179376,
+  "host_loadavg_1m_at_end": 12.0810546875,
+  "finished_utc": "2026-10-07T03:30:47.635614+00:00",
+  "engine_facts": {
+    "engine": "AggregateFlow",
+    "n_network_nodes": 49159,
+    "n_destinations": 6919,
+    "n_origins_virtual": 14751,
+    "csr_nodes_total": 70829,
+    "csr_arcs": 195912,
+    "n_edges_out": 69957,
+    "edge_flow_nonzero": 7259,
+    "f2_stats": {
+      "local_route_ok": true,
+      "local_slice_max": 8853,
+      "fast_calls": 1081504,
+      "overflow_events": 0,
+      "fallback_calls": 0
+    },
+    "assigned_stats": {
+      "no_match": 0,
+      "unreachable": 0
+    },
+    "num_threads_effective": 4
+  },
+  "output_files": {
+    "flow_2026-10-06_2330/Results.feather": {
+      "bytes": 5534922,
+      "sha256": "0a2bc1bd53e86e60acc9d2a20e8c19b7ae42577809fdd40fbfda95378005ef4e"
+    },
+    "flow_2026-10-06_2330/Results.geojson": {
+      "bytes": 21190011,
+      "sha256": "64a11c85926ca1f3b120c4c628da9e4d2fcbe392b863ef8ed6478e86a69266c6"
+    }
+  }
+}

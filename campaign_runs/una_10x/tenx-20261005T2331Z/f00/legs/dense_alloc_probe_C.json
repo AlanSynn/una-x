@@ -1,0 +1,86 @@
+{
+  "leg": "C",
+  "note": "diagnostic allocation/INIT bound at shapes observed in the first persisted scipy calls; totals in the leg record give the full-call walls",
+  "shapes": {
+    "114x70829": {
+      "observed_calls_of_shape": 1,
+      "empty_alloc_s": 5.200039595365524e-06,
+      "full_fill_dist_s": 0.007606091536581516,
+      "full_fill_pred_s": 0.0005411500111222267,
+      "isfinite_one_row_s": 1.3833213597536086e-05,
+      "dense_mb_per_call": 96.894072
+    },
+    "115x70829": {
+      "observed_calls_of_shape": 1,
+      "empty_alloc_s": 2.633221447467804e-06,
+      "full_fill_dist_s": 0.009585616551339627,
+      "full_fill_pred_s": 0.0006802249699831009,
+      "isfinite_one_row_s": 6.471667438745499e-05,
+      "dense_mb_per_call": 97.74402
+    },
+    "117x70829": {
+      "observed_calls_of_shape": 1,
+      "empty_alloc_s": 2.891570329666138e-06,
+      "full_fill_dist_s": 0.009772091545164585,
+      "full_fill_pred_s": 0.0019838000647723676,
+      "isfinite_one_row_s": 2.6491843163967134e-05,
+      "dense_mb_per_call": 99.443916
+    },
+    "118x70829": {
+      "observed_calls_of_shape": 1,
+      "empty_alloc_s": 7.358379662036896e-06,
+      "full_fill_dist_s": 0.010153224971145392,
+      "full_fill_pred_s": 0.0005875583738088608,
+      "isfinite_one_row_s": 9.516719728708267e-06,
+      "dense_mb_per_call": 100.293864
+    },
+    "122x70829": {
+      "observed_calls_of_shape": 1,
+      "empty_alloc_s": 2.450030297040939e-06,
+      "full_fill_dist_s": 0.009463191591203212,
+      "full_fill_pred_s": 0.0006835666485130787,
+      "isfinite_one_row_s": 1.128343865275383e-05,
+      "dense_mb_per_call": 103.693656
+    },
+    "124x70829": {
+      "observed_calls_of_shape": 1,
+      "empty_alloc_s": 3.458373248577118e-06,
+      "full_fill_dist_s": 0.008616908453404903,
+      "full_fill_pred_s": 0.0006485666148364544,
+      "isfinite_one_row_s": 9.591598063707351e-06,
+      "dense_mb_per_call": 105.393552
+    },
+    "126x70829": {
+      "observed_calls_of_shape": 1,
+      "empty_alloc_s": 3.224983811378479e-06,
+      "full_fill_dist_s": 0.008712891582399606,
+      "full_fill_pred_s": 0.000636299978941679,
+      "isfinite_one_row_s": 9.125005453824997e-06,
+      "dense_mb_per_call": 107.093448
+    },
+    "127x70829": {
+      "observed_calls_of_shape": 1,
+      "empty_alloc_s": 3.1000003218650817e-06,
+      "full_fill_dist_s": 0.00914786672219634,
+      "full_fill_pred_s": 0.0006357418373227119,
+      "isfinite_one_row_s": 1.1650007218122483e-05,
+      "dense_mb_per_call": 107.943396
+    },
+    "128x70829": {
+      "observed_calls_of_shape": 1,
+      "empty_alloc_s": 2.341624349355698e-06,
+      "full_fill_dist_s": 0.009648425038903952,
+      "full_fill_pred_s": 0.0006046083755791188,
+      "isfinite_one_row_s": 9.858421981334686e-06,
+      "dense_mb_per_call": 108.793344
+    },
+    "131x70829": {
+      "observed_calls_of_shape": 1,
+      "empty_alloc_s": 2.6667490601539613e-06,
+      "full_fill_dist_s": 0.00896644163876772,
+      "full_fill_pred_s": 0.0007002332247793674,
+      "isfinite_one_row_s": 1.0624993592500687e-05,
+      "dense_mb_per_call": 111.343188
+    }
+  }
+}

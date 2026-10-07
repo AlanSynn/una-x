@@ -1,0 +1,212 @@
+{
+  "leg": "S0",
+  "mode": "diag",
+  "threads_pinned": 4,
+  "numba_cache_dir": "/tmp/f00_S0/nbcache",
+  "output_dir": "/tmp/f00_S0/out",
+  "data_folder": "/tmp/f00_S0/data",
+  "real_data_folder": "/Users/alansynn/orca/workspaces/una-x/main/campaign_data/inputs/upstream_Boston/Boston",
+  "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+  "network_sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+  "origins_fixture": "campaign_runs/una_10x/tenx-20261005T2331Z/f00/legs/S0_origins_64.geojson",
+  "origins_fixture_sha256": "a60f8f8952d0b4f8ebdbe1e098e7565805fee7eefed0a8593a935079c38f89ce",
+  "destinations_file": "MA_transit_stations.geojson",
+  "destinations_sha256": "52080688bb2678e169221290e307e5aaef505f537cc0a14be331ec1ee700bab0",
+  "search_radius": 1500,
+  "flow_settings": {
+    "flow_alternative_penalty_factor": 1.01,
+    "flow_compute_node_flow": false,
+    "flow_debug_print_paths": false,
+    "flow_decay": true,
+    "flow_decay_curve": "exponential",
+    "flow_decay_method": "closest",
+    "flow_destination_weights": true,
+    "flow_detour_buffer": 100.0,
+    "flow_detour_mode": "ratio",
+    "flow_detour_ratio": 1.05,
+    "flow_engine": "aggregate_flow",
+    "flow_gravity_cap": 1.0,
+    "flow_k_nearest_destinations": 0,
+    "flow_max_destinations_per_origin": 0,
+    "flow_n_alternatives": 30,
+    "flow_origin_weights": true,
+    "flow_output_routes": false,
+    "flow_path_detour_penalty": "logistic",
+    "flow_return_directional": false,
+    "flow_route_enumeration_beta": 0.0,
+    "flow_route_enumeration_logistic_midpoint": 150.0,
+    "flow_route_id_column": null,
+    "flow_track_obstacle_points_usage": false,
+    "flow_track_origins_per_destination": false
+  },
+  "cache_policy": "off",
+  "semantic_profile": "una_legacy",
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "numba": "0.67.0",
+  "mp_cpu_count": 10,
+  "started_utc": "2026-10-07T03:25:05.046288+00:00",
+  "data_folder_symlinks": {
+    "20260703_PercLenNetwork_InnerCore.geojson": "real file (symlink)",
+    "MA_transit_stations.geojson": "real file (symlink)",
+    "f00_origins_fixture.geojson": "campaign_runs/una_10x/tenx-20261005T2331Z/f00/legs/S0_origins_64.geojson"
+  },
+  "public_wall_s": 7.080076792277396,
+  "finished_utc": "2026-10-07T03:25:12.126469+00:00",
+  "engine_facts": {
+    "engine": "AggregateFlow",
+    "n_network_nodes": 49159,
+    "n_destinations": 6919,
+    "n_origins_virtual": 64,
+    "csr_nodes_total": 56142,
+    "csr_arcs": 166538,
+    "n_edges_out": 69957,
+    "edge_flow_nonzero": 1978,
+    "f2_stats": {
+      "local_route_ok": true,
+      "local_slice_max": 7017,
+      "fast_calls": 2141,
+      "overflow_events": 0,
+      "fallback_calls": 0
+    },
+    "assigned_stats": {
+      "no_match": 0,
+      "unreachable": 0
+    },
+    "num_threads_effective": 4
+  },
+  "stage_walls_s": {
+    "settings_validation": 0.0001671253703534603,
+    "topology_add_network": 2.0632094591856003,
+    "topology_add_origins": 0.012167667038738728,
+    "topology_add_destinations": 0.08127487497404218,
+    "topology_build_clusters": 0.07422079192474484,
+    "flow_build_digraph": 0.29771074978634715,
+    "flow_build_csr": 0.1299717496149242,
+    "flow_dest_gradients": 0.9234748329035938,
+    "flow_origin_loop": 2.569133209064603,
+    "flow_observer_accum": 1.091696321964264e-05,
+    "export_flow_result": 0.9283423749729991
+  },
+  "stage_order_first8": [
+    "settings_validation",
+    "topology_add_network",
+    "topology_add_origins",
+    "topology_add_destinations",
+    "topology_build_clusters",
+    "flow_build_digraph",
+    "flow_build_csr",
+    "flow_dest_gradients"
+  ],
+  "stage_sum_s": 7.079683751799166,
+  "scipy_summary": {
+    "gradient_calls": 53,
+    "gradient_dense_mb_total": 4661.357975999999,
+    "gradient_s_total": 0.5818253327161074,
+    "forward_calls": 64,
+    "forward_dense_mb_total": 43.117056000000034,
+    "forward_s_total": 0.04228125046938658,
+    "limit_value": 1575.0
+  },
+  "np_pack": {
+    "isfinite_dense": {
+      "calls": 53,
+      "s": 0.08492299495264888,
+      "elems": 388446498
+    },
+    "isfinite_small": {
+      "calls": 0,
+      "s": 0.0,
+      "elems": 0
+    },
+    "where_calls": {
+      "calls": 6919,
+      "s": 0.14346557948738337,
+      "elems": 388446498
+    }
+  },
+  "scipy_calls_first10": [
+    {
+      "s": 0.03653212497010827,
+      "rows": 166,
+      "cols": 56142,
+      "dense_mb": 111.834864,
+      "return_pred": true,
+      "limit": 1575.0
+    },
+    {
+      "s": 0.01711862487718463,
+      "rows": 164,
+      "cols": 56142,
+      "dense_mb": 110.487456,
+      "return_pred": true,
+      "limit": 1575.0
+    },
+    {
+      "s": 0.013450541999191046,
+      "rows": 161,
+      "cols": 56142,
+      "dense_mb": 108.466344,
+      "return_pred": true,
+      "limit": 1575.0
+    },
+    {
+      "s": 0.019290209282189608,
+      "rows": 160,
+      "cols": 56142,
+      "dense_mb": 107.79264,
+      "return_pred": true,
+      "limit": 1575.0
+    },
+    {
+      "s": 0.02959304116666317,
+      "rows": 157,
+      "cols": 56142,
+      "dense_mb": 105.771528,
+      "return_pred": true,
+      "limit": 1575.0
+    },
+    {
+      "s": 0.01983358385041356,
+      "rows": 155,
+      "cols": 56142,
+      "dense_mb": 104.42412,
+      "return_pred": true,
+      "limit": 1575.0
+    },
+    {
+      "s": 0.0839557908475399,
+      "rows": 153,
+      "cols": 56142,
+      "dense_mb": 103.076712,
+      "return_pred": true,
+      "limit": 1575.0
+    },
+    {
+      "s": 0.026902957819402218,
+      "rows": 152,
+      "cols": 56142,
+      "dense_mb": 102.403008,
+      "return_pred": true,
+      "limit": 1575.0
+    },
+    {
+      "s": 0.016166791785508394,
+      "rows": 150,
+      "cols": 56142,
+      "dense_mb": 101.0556,
+      "return_pred": true,
+      "limit": 1575.0
+    },
+    {
+      "s": 0.014713708311319351,
+      "rows": 148,
+      "cols": 56142,
+      "dense_mb": 99.708192,
+      "return_pred": true,
+      "limit": 1575.0
+    }
+  ],
+  "output_files": {}
+}

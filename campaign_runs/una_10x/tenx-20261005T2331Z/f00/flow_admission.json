@@ -1,0 +1,350 @@
+{
+  "task": "F00",
+  "campaign": "campaigns/una_10x",
+  "run_dir": "campaign_runs/una_10x/tenx-20261005T2331Z/f00/",
+  "owner": "flow-engineer",
+  "source_identity": {
+    "branch": "perf/una-10x",
+    "head_at_evidence_generation": "be8441bc0b0d8aad8a4ff4f5d409461903350b9d",
+    "src_changes": "none (git status clean except untracked campaign_data/ and this f00/ dir)",
+    "python": "3.11.16",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "numba": "0.67.0",
+    "venv": "/Users/alansynn/orca/workspaces/una-x/venv-p01m/bin/python"
+  },
+  "verdict": {
+    "sparse_output_producer": "not_admitted",
+    "ordered_update_tape": "not_admitted",
+    "overall": "not_admitted",
+    "completion_criterion": "not_admitted with Amdahl/ROI reason (TASKS_CLAUDE.yaml F00)"
+  },
+  "amdahl": {
+    "denominator_wall_s": 69.65550766605884,
+    "denominator_note": "leg C (diag) public RunFlow wall; clean legs A/B walls 69.8362/69.5148 within 0.462% of it, so diag instrumentation overhead is not material",
+    "stage_fractions_of_public_wall": {
+      "od_accumulation_kernels_plus_scatter (origin loop minus forward scipy)": 0.8218746398121068,
+      "forward scipy dijkstra (traversal + dense return)": 0.10336470942779857,
+      "destination gradient stage (scipy + mask + pack)": 0.01453625122976775,
+      "topology stages": 0.033702366616463204,
+      "export": 0.018402168297889255,
+      "build (digraph+csr)": 0.008091444997636144
+    },
+    "tiers": [
+      {
+        "tier": 1,
+        "what_eliminated": "gradient finite-mask + where-pack + pack-side astype/append residue ONLY (no kernel change, no traversal change)",
+        "f": 0.0051957179043319816,
+        "s_assumed": "unbounded",
+        "S_ceiling": 1.005222854377108,
+        "inputs_s": {
+          "isfinite_s": 0.10392345814034343,
+          "where_s": 0.1373517606407404,
+          "grad_other_s": 0.12063514953479171
+        }
+      },
+      {
+        "tier": 2,
+        "what_eliminated": "tier 1 + ENTIRE gradient scipy call (generous: includes traversal a producer still performs) + probe-bounded forward dense INIT (requires kernel signature change: forward trees are consumed densely)",
+        "f": 0.03175770263954466,
+        "s_assumed": "unbounded",
+        "S_ceiling": 1.0327993341060606,
+        "S_at_s_2.5": 1.019424752899586,
+        "inputs_s": {
+          "grad_scipy_total": 0.6506195906549692,
+          "fwd_init_probe_bound": 1.1995689406943753
+        }
+      },
+      {
+        "tier": 3,
+        "what_eliminated": "IMPOSSIBLE-GENEROUS: tier 1 + all scipy calls INCLUDING the bounded traversal itself",
+        "f": 0.11790096065756632,
+        "s_assumed": "unbounded",
+        "S_ceiling": 1.1336595498525843,
+        "validity": "not achievable by any producer (bounded traversal is real work); shown only as a hard ceiling on the truth"
+      }
+    ],
+    "conclusion": "Even the impossible tier-3 attribution caps the whole sparse-producer family at 1.13x on the OBS_FLOW-scale public wall; the implementable tiers cap it at 1.005x-1.033x (realistic s=2.5: 1.019x). The measurable flow wall is dominated (82.19%) by the OD accumulation kernel, which the dossier's sparse producer does not change; the F2 local-overlap route already serves all 1,081,504 OD calls (fast=1081504, fallback=0, overflow=0). No measurable bottleneck attributable to dense-return/init/packing exists at material fraction."
+  },
+  "tape_roi": {
+    "precondition": "dossier 07 line 23: admit ONLY repeated OD routing inputs identical in graph/cost/snap/order/radius/detour/profile and contamination rules",
+    "intra_run_repeats": "none exist: _precompute_dest_gradients visits each destination exactly once (AggregateFlow.py:1323 while s < n_dest); _process_origins_aggregate visits each origin exactly once (AggregateFlow.py:1529 for o_pos in range(slot, n_origins, n_threads))",
+    "cross_run_repeats": "no frozen consumer: the 10x primary 32-job cohort is accessibility-only (no edge_flow rows); OBS_FLOW (WORKLOADS.md) is a single fixed aggregate-flow configuration through RunFlow/RunBatch, not a repeated-routing parameter family; no flow batch cell exists in this campaign's run evidence (p01-p05 only)",
+    "storage_risk": "dossier 07 line 27: 'Tapes can be larger than recompute; bound by ROI and RAM' - with zero observed repeats the ROI bound is unmeasurable and currently 0/0",
+    "verdict": "not_admitted - admit precondition (observed repetition) fails in every frozen cell; no measurable consumer in scope"
+  },
+  "workload": {
+    "network": {
+      "file": "campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson",
+      "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799",
+      "edges_loaded": 69957
+    },
+    "origins": {
+      "file": "campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson",
+      "sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc",
+      "features_loaded": 14751,
+      "note": "FULL observed layer, verbatim, no fixture derivation for legs A/B/C"
+    },
+    "destinations": {
+      "file": "campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson",
+      "sha256": "52080688bb2678e169221290e307e5aaef505f537cc0a14be331ec1ee700bab0",
+      "features_loaded": 6919
+    },
+    "engine": "aggregate_flow via public UNA.RunFlow()",
+    "settings": {
+      "search_radius": 1500,
+      "detour": "ratio 1.05 / buffer 100",
+      "path_penalty": "logistic midpoint 150",
+      "decay": "closest/exponential",
+      "turns": false,
+      "weights": "unit ('Count' sentinel)",
+      "outputs": "feather+geojson defaults",
+      "threads": "topology.num_threads pinned 4",
+      "cache_policy": "off",
+      "semantic_profile": "una_legacy"
+    },
+    "schedule": "fresh NUMBA_CACHE_DIR + fresh output dir per leg (/tmp/f00_<leg>), PYTHONDONTWRITEBYTECODE=1, timer brackets only project.RunFlow()",
+    "declared_bounded_fixture": "legs/S0_origins_64.geojson (first 64 features of the origins layer, file order) used ONLY by the S0 shakedown leg - consumed, never claimed",
+    "fixture_sha256": "a60f8f8952d0b4f8ebdbe1e098e7565805fee7eefed0a8593a935079c38f89ce"
+  },
+  "timed_legs": {
+    "S0": {
+      "mode": "diag",
+      "origins": 64,
+      "public_wall_s": 7.080076792277396,
+      "loadavg_start": null,
+      "loadavg_end": null,
+      "record": "legs/leg_S0_diag.json",
+      "console": "legs/leg_S0_diag.console.log",
+      "label": "shakedown - consumed, never claimed"
+    },
+    "A": {
+      "mode": "clean",
+      "origins": 14751,
+      "public_wall_s": 69.83623462496325,
+      "loadavg_start": 25.26171875,
+      "loadavg_end": 18.283203125,
+      "record": "legs/leg_A_clean.json",
+      "console": "legs/leg_A_clean.console.log",
+      "label": "timed clean public leg"
+    },
+    "B": {
+      "mode": "clean",
+      "origins": 14751,
+      "public_wall_s": 69.51479954179376,
+      "loadavg_start": 17.13916015625,
+      "loadavg_end": 12.0810546875,
+      "record": "legs/leg_B_clean.json",
+      "console": "legs/leg_B_clean.console.log",
+      "label": "timed clean public leg"
+    },
+    "C": {
+      "mode": "diag",
+      "origins": 14751,
+      "public_wall_s": 69.65550766605884,
+      "loadavg_start": 13.03515625,
+      "loadavg_end": 11.89892578125,
+      "record": "legs/leg_C_diag.json",
+      "console": "legs/leg_C_diag.console.log",
+      "label": "timed diagnostic leg (stage attribution; public wall recorded)"
+    }
+  },
+  "timed_leg_walls_total_s": 216.08661862509325,
+  "stage_decomposition_leg_C": {
+    "settings_validation": 0.00017454195767641068,
+    "topology_add_network": 1.9753879997879267,
+    "topology_add_origins": 0.17648670775815845,
+    "topology_add_destinations": 0.08634704072028399,
+    "topology_build_clusters": 0.10933370795100927,
+    "flow_build_digraph": 0.41606262512505054,
+    "flow_build_csr": 0.14755108393728733,
+    "flow_dest_gradients": 1.0125299589708447,
+    "flow_origin_loop": 64.44801658391953,
+    "flow_observer_accum": 6.700027734041214e-05,
+    "export_flow_result": 1.28181237494573
+  },
+  "stage_sum_s": 69.65376962535083,
+  "scipy_and_pack_leg_C": {
+    "scipy_summary": {
+      "gradient_calls": 77,
+      "gradient_dense_mb_total": 5880.790212000005,
+      "gradient_s_total": 0.6506195906549692,
+      "forward_calls": 14751,
+      "forward_dense_mb_total": 12537.582947995917,
+      "forward_s_total": 7.1999213099479675,
+      "limit_value": 1575.0
+    },
+    "np_pack": {
+      "isfinite_dense": {
+        "calls": 77,
+        "s": 0.10392345814034343,
+        "elems": 490065851
+      },
+      "isfinite_small": {
+        "calls": 0,
+        "s": 0.0,
+        "elems": 0
+      },
+      "where_calls": {
+        "calls": 6919,
+        "s": 0.1373517606407404,
+        "elems": 490065851
+      }
+    },
+    "first_calls": [
+      {
+        "s": 0.04729995783418417,
+        "rows": 131,
+        "cols": 70829,
+        "dense_mb": 111.343188,
+        "return_pred": true,
+        "limit": 1575.0
+      },
+      {
+        "s": 0.014267874881625175,
+        "rows": 128,
+        "cols": 70829,
+        "dense_mb": 108.793344,
+        "return_pred": true,
+        "limit": 1575.0
+      },
+      {
+        "s": 0.013352499809116125,
+        "rows": 127,
+        "cols": 70829,
+        "dense_mb": 107.943396,
+        "return_pred": true,
+        "limit": 1575.0
+      },
+      {
+        "s": 0.012615625280886889,
+        "rows": 126,
+        "cols": 70829,
+        "dense_mb": 107.093448,
+        "return_pred": true,
+        "limit": 1575.0
+      },
+      {
+        "s": 0.029633792117238045,
+        "rows": 124,
+        "cols": 70829,
+        "dense_mb": 105.393552,
+        "return_pred": true,
+        "limit": 1575.0
+      },
+      {
+        "s": 0.03361425036564469,
+        "rows": 122,
+        "cols": 70829,
+        "dense_mb": 103.693656,
+        "return_pred": true,
+        "limit": 1575.0
+      },
+      {
+        "s": 0.018586874939501286,
+        "rows": 118,
+        "cols": 70829,
+        "dense_mb": 100.293864,
+        "return_pred": true,
+        "limit": 1575.0
+      },
+      {
+        "s": 0.01159829180687666,
+        "rows": 117,
+        "cols": 70829,
+        "dense_mb": 99.443916,
+        "return_pred": true,
+        "limit": 1575.0
+      },
+      {
+        "s": 0.012325541116297245,
+        "rows": 115,
+        "cols": 70829,
+        "dense_mb": 97.74402,
+        "return_pred": true,
+        "limit": 1575.0
+      },
+      {
+        "s": 0.011162458453327417,
+        "rows": 114,
+        "cols": 70829,
+        "dense_mb": 96.894072,
+        "return_pred": true,
+        "limit": 1575.0
+      }
+    ]
+  },
+  "dense_init_probe": {
+    "file": "legs/dense_alloc_probe_C.json",
+    "sha256": "ecb7e8f4aac5ac4b35fbca069e11c1782989d704ae3a0e549648970b0e48fa67",
+    "fill_per_source_s_bound": 8.132119454236155e-05,
+    "grad_init_bound_s": 0.5626613450385995,
+    "fwd_init_bound_s": 1.1995689406943753,
+    "status": "diagnostic estimate, not a claimed stage wall"
+  },
+  "engine_facts_leg_C": {
+    "engine": "AggregateFlow",
+    "n_network_nodes": 49159,
+    "n_destinations": 6919,
+    "n_origins_virtual": 14751,
+    "csr_nodes_total": 70829,
+    "csr_arcs": 195912,
+    "n_edges_out": 69957,
+    "edge_flow_nonzero": 7259,
+    "f2_stats": {
+      "local_route_ok": true,
+      "local_slice_max": 8853,
+      "fast_calls": 1081504,
+      "overflow_events": 0,
+      "fallback_calls": 0
+    },
+    "assigned_stats": {
+      "no_match": 0,
+      "unreachable": 0
+    },
+    "num_threads_effective": 4
+  },
+  "route_model_requirements": {
+    "graph_build": "parallel arcs dedup to MIN weight, first-seen id wins ties (AggregateFlow.py:933-942); destination connectors bidirectional (:960-962), origin connectors unidirectional (:989-997)",
+    "csr": "numba build_csr_from_digraph + scipy csr_matrix; reversed CSR = fwd.T.tocsr() (AggregateFlow.py:1045-1049); backward gradients traverse _csr_rev (:1354), forward traverses _csr_fwd (:1549)",
+    "limit_boundary": "limit=_cutoff_for_shortest(search_radius,mode,ratio,buffer)=1575.0 here; scipy 1.17.1 prunes pairs with distance > limit to inf (docstring), so a node at exactly limit stays finite - a producer must reproduce this boundary",
+    "predecessor_tree": "return_predecessors int32; pred arrays drive contamination marking (AggregateFlow.py:253-276) and u-turn exclusion (pred_d[x]==u or pred_o[u]==x, :294-295/:325-326) - equal distances alone do NOT establish an equivalent tree; settled tie order must match scipy's heap exactly (dossier 07 line 13)",
+    "gradient_slice_contract": "per-destination slices of parallel nodes(int64, strictly ascending/unique)/dist(float64)/pred(int32); F2 precondition verified per run (:416-437); returned dtypes verified per call with ruled formula fallback (:1362-1380)",
+    "forward_dense_consumption": "both kernels consume d_o/pred_o as dense global-indexed arrays (baseline full-node reach scan :227-243; F2 local kernel reads d_o[v]/pred_o[v] at global ids :497-521) - a sparse forward producer requires dense rehydration (cost moves) or a kernel-signature change (route-model change)",
+    "export_contract": "edge_id int64 + flow float64 on net.geometry, feather+geojson, byte-stable (Base.py:289-341)"
+  },
+  "parity": {
+    "what_was_compared": "exported flow artifacts of the unchanged route across the three full-scale legs (A clean, B clean repeat, C diag with in-vivo instrumentation): Results.feather + Results.geojson, sha256 + byte size",
+    "result": "ALL IDENTICAL - feather 0a2bc1bd53e86e60acc9d2a20e8c19b7ae42577809fdd40fbfda95378005ef4e (5,534,922 B); geojson 64a11c85926ca1f3b120c4c628da9e4d2fcbe392b863ef8ed6478e86a69266c6 (21,190,011 B); A==B==C",
+    "meaning": "(1) run-to-run determinism of the unchanged route on identical inputs; (2) the diagnostic instrumentation did not alter outputs (in-vivo parity); no candidate producer was executed (admission-only scope), so no candidate-vs-route comparison arises in F00"
+  },
+  "observations": [
+    "host was co-tenanted during legs (loadavg 11.9-25.3 on 10 cores, zoom + other sessions); all four legs shared the same conditions and the clean-leg spread was 0.462%, so fractions are robust to this load; absolute walls are NOT frozen benchmark figures - flow admission only",
+    "chunk count in the gradient stage differs between S0 (53 calls) and C (77 calls): the F3 byte-budget selector shrinks chunks when fixed live base grows (more origin virtual nodes) - consistent with the selector design; numerical output is schedule-independent (byte-identical outputs across scales of origins)",
+    "the measurable flow bottleneck at OBS_FLOW scale is the OD accumulation kernel family (82.19% of wall), already served by the F2 local-overlap route with zero fallbacks; any further work there is a separate high-risk candidate family outside this dossier's sparse-producer/tape candidates",
+    "scipy dense-return traffic measured in-vivo: 5.88 GB (gradient) + 12.54 GB (forward) allocated/scanned per leg; a producer would eliminate the init/pack share of this, bounded in tier 2 above",
+    "/tmp scratch trees /tmp/f00_S0, /tmp/f00_A, /tmp/f00_B, /tmp/f00_C (numba caches + outputs) are this task's own per-leg scratch, removed after evidence generation"
+  ],
+  "instrument_manifest": {
+    "fixture_builder.py": "deterministic bounded-fixture builder (S0 only)",
+    "leg_runner.py": "per-leg public-call runner: clean/diag modes, runtime-only monkeypatch timers, no src/ changes",
+    "dense_alloc_probe.py": "post-leg numpy alloc/fill probe at leg C shapes (diagnostic)",
+    "legs/": "leg records + console custody + S0 fixture + probe output"
+  },
+  "expected_writes": {
+    "this_dir_only": [
+      "campaign_runs/una_10x/tenx-20261005T2331Z/f00/**"
+    ],
+    "scratch": [
+      "/tmp/f00_S0/**",
+      "/tmp/f00_A/**",
+      "/tmp/f00_B/**",
+      "/tmp/f00_C/**"
+    ],
+    "untouched": [
+      "src/**",
+      "tests/**",
+      "campaign_data/**"
+    ]
+  }
+}
