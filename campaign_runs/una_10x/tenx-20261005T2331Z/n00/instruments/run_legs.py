@@ -87,18 +87,33 @@ def _git(*args):
 
 
 def _impl_identity(tree_head):
-    """Content pin of the implementation (ruling: pin e6920bf)."""
+    """Content pin of the implementation (ruling: pin e6920bf).
+
+    Gate semantics (amended after the first firing, 2026-10-07): the
+    ENGINE bytes the legs run live in src/ and must be byte-identical
+    to the pin; tests/ may only GAIN files - the same ruling that pins
+    e6920bf also ORDERS new opt-in tests, so a predicate demanding
+    tests byte-identity is unpassable by construction (the first fire
+    tripped exactly there, on tests/native/test_sitecustomize_optin.py;
+    void leg preserved as L2A1_numba.void1_gateTrip.json).  The native
+    channel is the ruled treatment and is deliberately unchecked here.
+    """
     full = _git("rev-parse", IMPL_PIN + "^{commit}").stdout.strip()
     ancestor = _git("merge-base", "--is-ancestor", IMPL_PIN, tree_head)
-    src_tests_diff = _git("diff", "--stat", IMPL_PIN, tree_head,
-                          "--", "src", "tests")
+    src_diff = _git("diff", "--name-status", IMPL_PIN, tree_head,
+                    "--", "src")
+    tests_diff = _git("diff", "--name-status", IMPL_PIN, tree_head,
+                      "--", "tests")
+    tests_rows = [ln for ln in tests_diff.stdout.splitlines() if ln.strip()]
     src_tests_dirty = _git("status", "--porcelain", "--", "src", "tests")
     return {"pin_prefix": IMPL_PIN,
             "pin_full": full,
             "is_ancestor_of_head": ancestor.returncode == 0,
-            "src_tests_diff_vs_pin": src_tests_diff.stdout.strip(),
-            "src_tests_identical": src_tests_diff.returncode == 0
-            and not src_tests_diff.stdout.strip(),
+            "src_diff_vs_pin": src_diff.stdout.strip(),
+            "src_identical": not src_diff.stdout.strip(),
+            "tests_added": [r for r in tests_rows if r.startswith("A")],
+            "tests_nonadditive": [r for r in tests_rows
+                                  if not r.startswith("A")],
             "src_tests_uncommitted": src_tests_dirty.stdout.strip(),
             "src_tests_working_tree_clean": not src_tests_dirty.stdout.strip()}
 
@@ -241,8 +256,11 @@ def _run_leg(tag, arm, gate=True, timeout_s=LEG_TIMEOUT_S):
     pin = leg["driver_gate"]["impl_pin"]
     assert len(pin["pin_full"]) == 40, (tag, "IMPL_PIN unresolved", pin)
     assert pin["is_ancestor_of_head"], (tag, "IMPL_PIN not ancestor of head")
-    assert pin["src_tests_identical"], \
-        (tag, "src/tests drifted from IMPL_PIN:\n" + pin["src_tests_diff_vs_pin"])
+    assert pin["src_identical"], \
+        (tag, "src drifted from IMPL_PIN:\n" + pin["src_diff_vs_pin"])
+    assert not pin["tests_nonadditive"], \
+        (tag, "tests changed non-additively vs IMPL_PIN:\n"
+         + "\n".join(pin["tests_nonadditive"]))
     assert pin["src_tests_working_tree_clean"], \
         (tag, "uncommitted src/tests changes:\n" + pin["src_tests_uncommitted"])
     assert leg["zero_failed_jobs"], tag
