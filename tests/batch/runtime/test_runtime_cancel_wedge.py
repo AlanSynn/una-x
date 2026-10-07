@@ -22,6 +22,13 @@ is provably mid-flush when cancel() runs.  The scenarios below pin
 that geometry two ways: engine rows whose injected job payloads far
 exceed the pipe buffer, and a raw-bytes unit frame on the pool seam.
 
+Clean-path control: one scenario runs the SAME 64-row + payload
+geometry with NO failure injection and must complete normally —
+the fix provably does not perturb the happy path (cancel() is
+failure-path-only; close() is untouched).  Mirrors the live evidence
+from the campaign triage: a failure-free sibling of the same repro
+completed clean in 25.16 s, rc=0.
+
 The contract under regression, per the runtime's own serial-parity law
 ("a worker row's failure is the serial loop's failure: re-raise the
 original exception, same type/message"):
@@ -49,6 +56,7 @@ import os
 import subprocess
 import sys
 import threading
+import time
 
 import pytest
 
@@ -125,22 +133,42 @@ def test_cancel_returns_with_freshly_killed_readers(tmp_path):
     _run_child("test_child_pool_cancel_backlog_returns", tmp_path)
 
 
+def test_healthy_backlog_completes_normally(tmp_path):
+    """Clean-path control: the same 64-row + 32 KiB-payload geometry
+    with NO failure injection completes normally — every row commits,
+    the report is published, and the child interpreter exits cleanly
+    (no exit-time wedge from the backlog on the healthy path).  Proves
+    the fix does not perturb the happy path.  Rows are named r00..r63
+    (equal-length, prefix-distinct stems) so the planner admits all 64
+    to workers and the inbox genuinely carries the whole ~2 MiB
+    backlog; default row0..row63 names would serialize 60 rows on the
+    engine's stem-prefix hazard and run them in the parent."""
+    _run_child("test_child_healthy_backlog_completes", tmp_path)
+
+
 # ---------------------------------------------------------------------------
 # Child scenarios (skipped in-process; executed via _run_child).
 # ---------------------------------------------------------------------------
 
-def _dump_after_bound():
+def _dump_after_bound(dump_s: float = CHILD_DUMP_S):
     """Forensics-only watchdog: dump every thread stack to stderr once,
     then keep the process alive for the parent's hard kill.  (No
     interrupt_main: signal delivery is thread-luck on macOS and the
     dump is what matters.)"""
     def _fire():
+        # The dump must be PRECEDED by the bound: this thread exists
+        # only for a child that never finishes, so sleep first — an
+        # undelayed dump would fire at test start and masquerade as a
+        # wedge signal in every failing child (it did: preserved console
+        # healthy_control_child_console_20261007T0458Z.txt shows a
+        # spurious "no completion after 60s" inside a 13.12s run).
+        time.sleep(dump_s)
         # sys.__stderr__: the child's pytest captures sys.stderr and
         # only re-emits it on a clean unwind, which is exactly what a
         # wedge never does - write the dump to the real stderr so the
         # parent's kill-report carries it.
         print("\n*** CANCEL-WEDGE WATCHDOG: no completion after "
-              f"{CHILD_DUMP_S:.0f}s - dumping all thread stacks ***",
+              f"{dump_s:.0f}s - dumping all thread stacks ***",
               file=sys.__stderr__, flush=True)
         faulthandler.dump_traceback(file=sys.__stderr__)
         threading.Event().wait(CHILD_BOUND_S)
@@ -150,9 +178,12 @@ def _dump_after_bound():
 
 # Backlog knob: each engine job carries an inert injected spec whose
 # 32 KiB arg rides inside the pickled job (a spec whose phase never
-# fires, so execution is untouched) — with 63 queued jobs the inbox
-# holds ~2 MiB, far beyond the pipe buffer, so the feeder is provably
-# mid-flush at cancel time.
+# fires, so execution is untouched).  Only worker-admitted rows are
+# dispatched to the inbox, and a few such jobs already put queued bytes
+# far beyond the pipe buffer — the wedge scenarios dispatch 3 backlog
+# jobs (~96 KiB) behind the failing row 0, which is what left the feeder
+# provably mid-flush at cancel time (the suite's 2-row tests, well under
+# one pipe buffer, cannot).
 _INERT_32K = [{"phase": "n00_never", "action": "touch",
                "arg": "x" * (32 * 1024)}]
 
@@ -220,3 +251,42 @@ def test_child_pool_cancel_backlog_returns(tmp_path):
     pool.cancel()             # terminates workers, then closes queues
     assert pool.cancelled is True
     assert all(not proc.is_alive() for proc in pool.procs)
+
+
+def test_child_healthy_backlog_completes(make_batch, tmp_path):
+    if os.environ.get(_GUARD_ENV) != "1":
+        pytest.skip("guarded scenario: runs via _run_child subprocess")
+    from dataclasses import replace
+
+    out = str(tmp_path / "out")
+
+    def extra(i, s):
+        # Equal-length prefix-distinct stems (see the runner's
+        # docstring): otherwise the planner's stem-prefix hazard
+        # serializes 60 of these 64 rows and they run in the parent,
+        # where Settings.Validation rejects the test-transport
+        # inject_specs attribute (workers get a stripped state,
+        # runtime.py _snapshot_row/_job_state — the parent path does
+        # not).
+        s.name = f"r{i:02d}"
+        s.inject_specs = _INERT_32K
+
+    p = make_batch(64, out_folder=out, extra=extra)
+    # A healthy 64-row run is quick (observed ~5-8 s warm, one worker)
+    # but must never dump, so arm the forensics watchdog later than the
+    # wedge scenarios' 60 s regardless.
+    _dump_after_bound(dump_s=90.0)
+    # Same schedule and payload geometry as the wedge scenarios, minus
+    # the failure: the only delta is the healthy path itself.  All 64
+    # jobs flow through the inbox (~2 MiB) and are fully drained.
+    p.RunBatch("accessibility", parallel=True, workers=1,
+               execution=replace(p.execution, queue_depth=64))
+    # Happy path unperturbed: report published, every row's artifacts
+    # (<stem>.feather + <stem>.geojson) public under the output folder,
+    # staging fully retired.
+    assert p.batch_report is not None
+    published = {n for n in os.listdir(out) if not n.startswith(".")}
+    assert published == {f"r{i:02d}{ext}" for i in range(64)
+                         for ext in (".feather", ".geojson")}, \
+        sorted(published)[:8]
+    assert not hidden_residue(out)
