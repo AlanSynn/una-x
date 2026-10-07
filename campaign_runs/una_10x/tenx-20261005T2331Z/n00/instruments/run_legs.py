@@ -52,6 +52,15 @@ LOADAVG_GATE = 8.0
 LOADAVG_WAIT_S = 60
 LOADAVG_MAX_WAIT_S = 90 * 60
 
+# Binding implementation pin (team-lead ruling, N00 Phase 3): the
+# native implementation identity is e6920bf.  HEAD has moved past it
+# with the blessed instrument/mechanism commits (59e8d16, 0166d65,
+# f603780), so the leg asserts PIN BY CONTENT: e6920bf must be an
+# ancestor of the running HEAD and the src/ + tests/ trees must be
+# byte-identical to e6920bf (the only allowed delta is the native
+# channel + campaign evidence/instruments).
+IMPL_PIN = "e6920bfd70ed"
+
 # Fail-closed leg cap: a healthy leg is ~20-40 s (p05s walls ~18.6 s).
 # The first shakedown wedged for 13+ min inside the leg process (opaque
 # write-block, 2026-10-07) and silently blocked the whole pipeline -
@@ -70,6 +79,28 @@ LEG_MATRIX = [
 ]
 
 TS = re.compile(r"accessibility_\d{4}-\d{2}-\d{2}_\d{4}")
+
+
+def _git(*args):
+    return subprocess.run(["git", "-C", str(MAIN), *args],
+                          capture_output=True, text=True)
+
+
+def _impl_identity(tree_head):
+    """Content pin of the implementation (ruling: pin e6920bf)."""
+    full = _git("rev-parse", IMPL_PIN + "^{commit}").stdout.strip()
+    ancestor = _git("merge-base", "--is-ancestor", IMPL_PIN, tree_head)
+    src_tests_diff = _git("diff", "--stat", IMPL_PIN, tree_head,
+                          "--", "src", "tests")
+    src_tests_dirty = _git("status", "--porcelain", "--", "src", "tests")
+    return {"pin_prefix": IMPL_PIN,
+            "pin_full": full,
+            "is_ancestor_of_head": ancestor.returncode == 0,
+            "src_tests_diff_vs_pin": src_tests_diff.stdout.strip(),
+            "src_tests_identical": src_tests_diff.returncode == 0
+            and not src_tests_diff.stdout.strip(),
+            "src_tests_uncommitted": src_tests_dirty.stdout.strip(),
+            "src_tests_working_tree_clean": not src_tests_dirty.stdout.strip()}
 
 
 def _census(leg):
@@ -174,6 +205,11 @@ def _run_leg(tag, arm, gate=True, timeout_s=LEG_TIMEOUT_S):
                 json.loads(line.split("] ", 1)[1]))
     leg["engagement"]["workers"] = worker_engagement
     leg["config"]["una_native_trace_env"] = env["UNA_NATIVE_TRACE"]
+    # Ruling addition (blessing message): record the full PYTHONPATH
+    # content per leg so an accidental channel difference can never hide
+    # behind the env var alone.
+    leg["config"]["pythonpath"] = env["PYTHONPATH"]
+    head = _git("rev-parse", "HEAD").stdout.strip()
     required = [f for f in leg["output_files"]
                 if not f["rel"].split("/")[0].startswith(".")]
     hidden = [f for f in leg["output_files"]
@@ -191,10 +227,24 @@ def _run_leg(tag, arm, gate=True, timeout_s=LEG_TIMEOUT_S):
         "gate_enforced": gate,
         "wait_samples": len(waits),
         "waited_s": len(waits) * LOADAVG_WAIT_S,
+        "head": head,
+        "impl_pin": _impl_identity(leg["pins"]["tree_head"]),
     }
     leg_json.write_text(json.dumps(leg, indent=1) + "\n")
 
     assert leg["tag"] == tag, tag
+    # Implementation identity (ruling: the binding pin is e6920bf): the
+    # leg's recorded tree_head must be the running HEAD, e6920bf must be
+    # its ancestor, and src/ + tests/ must be byte-identical to the pin.
+    assert leg["pins"]["tree_head"] and head.startswith(leg["pins"]["tree_head"]), \
+        (tag, leg["pins"]["tree_head"], head)
+    pin = leg["driver_gate"]["impl_pin"]
+    assert len(pin["pin_full"]) == 40, (tag, "IMPL_PIN unresolved", pin)
+    assert pin["is_ancestor_of_head"], (tag, "IMPL_PIN not ancestor of head")
+    assert pin["src_tests_identical"], \
+        (tag, "src/tests drifted from IMPL_PIN:\n" + pin["src_tests_diff_vs_pin"])
+    assert pin["src_tests_working_tree_clean"], \
+        (tag, "uncommitted src/tests changes:\n" + pin["src_tests_uncommitted"])
     assert leg["zero_failed_jobs"], tag
     assert leg["wedge_watchdog"]["clean"], \
         (tag, "wedge dumps fired during a completing leg")
@@ -272,6 +322,7 @@ def main():
     summary = {
         "schema": "una-10x-n00-leg-matrix-1",
         "matrix": LEG_MATRIX,
+        "impl_pin": legs[LEG_MATRIX[0][0]]["driver_gate"]["impl_pin"],
         "walls_s": {t: legs[t]["timing"]["public_call_wall_s"]
                     for t in legs},
         "pre_leg_loadavg": {t: legs[t]["driver_gate"]["pre_leg_loadavg_1m"]

@@ -24,23 +24,34 @@ import os
 
 _STATE = os.environ.get("UNA_NATIVE_TRACE")
 if _STATE is not None:
-    import trace_build_native as _tbn
+    # N00 ruling condition 1 (strict inertness): any failure here must
+    # never raise out of site initialization - a raising sitecustomize
+    # would wedge spawn workers exactly like the pyarrow gap did.  The
+    # bare interpreter continues if site swallows the error, but the
+    # worker would then run the numba route with only a stderr note, so
+    # fail quiet here: the driver's engagement asserts catch a silent
+    # non-install on native legs (zero dispatches voids the leg).
+    try:
+        import trace_build_native as _tbn
 
-    if _STATE == "1":
-        _tbn.install()
+        if _STATE == "1":
+            _tbn.install()
 
-        import atexit
+            import atexit
 
-        @atexit.register
-        def _report_engagement():
-            # Installed workers only: the numba control (state "0") must
-            # carry NO engagement evidence lines at all.  A failure to
-            # report must never mask the worker's real exit status.
-            try:
-                import json
-                import sys
-                print("[n00-native-engagement] "
-                      + json.dumps(_tbn.engagement()),
-                      file=sys.stderr, flush=True)
-            except Exception:
-                pass
+            @atexit.register
+            def _report_engagement():
+                # Installed workers only: the numba control (state "0")
+                # must carry NO engagement evidence lines at all.  A
+                # failure to report must never mask the worker's real
+                # exit status.
+                try:
+                    import json
+                    import sys
+                    print("[n00-native-engagement] "
+                          + json.dumps(_tbn.engagement()),
+                          file=sys.stderr, flush=True)
+                except Exception:
+                    pass
+    except Exception:
+        _tbn = None
