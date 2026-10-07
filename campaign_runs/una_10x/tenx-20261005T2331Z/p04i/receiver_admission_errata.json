@@ -1,0 +1,71 @@
+{
+  "schema": "una-10x-p04i-admission-errata-1",
+  "task": "P04I errata filed against receiver_admission.json (52dcc20 bytes) \u2014 responds to P04R findings F1/F2/F3",
+  "generated": "2026-10-07T02:22:39Z",
+  "parent_files_frozen": {
+    "receiver_admission.json@52dcc20": "eedc1cb71ad7a26a63ce1ff3f857fdea61a172ad2748b6dcd49e6c5672301595",
+    "receiver_verdict.json@52dcc20": "e426c0e3ac2f3e38ce3a9ddc8d78c2a1b89470dc7867ef457d9eaa0c4050c2bf",
+    "note": "P04R verified the non-admission AT these bytes (review faf7936b848060bde2bbcda00c5d7beba955c75dc64fa106af6835c722fef7cf, committed in this change set); the reviewed objects are NOT edited in place \u2014 campaign errata precedent (M00-F1 -> Z00). P05S reads both the parent objects and this erratum."
+  },
+  "review_responded_to": {
+    "file": "p04r/receiver_review.json",
+    "sha256": "faf7936b848060bde2bbcda00c5d7beba955c75dc64fa106af6835c722fef7cf",
+    "verdict": "approve_with_notes"
+  },
+  "F1_commit_side_projection": {
+    "admitted_defect": "receiver_admission.json measurement_reliability claims the commit-side \"projected upper effect still <1% of wall\"; the artifact does not support that phrase.",
+    "recomputed_from_parent_artifact": {
+      "method": "per-phase surviving span mean x row_count (32), the projection the caveat itself prescribes",
+      "per_phase": {
+        "staged_verify": {
+          "count": 11,
+          "surviving_sum_s": 0.050741,
+          "per_span_mean_s": 0.004613,
+          "projected_all_rows_s": 0.14761,
+          "projected_pct_of_wall": 0.8988
+        },
+        "publish": {
+          "count": 10,
+          "surviving_sum_s": 0.00483,
+          "per_span_mean_s": 0.000483,
+          "projected_all_rows_s": 0.015455,
+          "projected_pct_of_wall": 0.0941
+        },
+        "state_delta": {
+          "count": 10,
+          "surviving_sum_s": 0.011693,
+          "per_span_mean_s": 0.001169,
+          "projected_all_rows_s": 0.037417,
+          "projected_pct_of_wall": 0.2278
+        },
+        "composite": {
+          "count": 0,
+          "projected_s": 0.0,
+          "note": "zero surviving spans \u2014 fully evicted, unquantifiable"
+        },
+        "journal": {
+          "count": 0,
+          "projected_s": 0.0,
+          "note": "zero surviving spans \u2014 fully evicted, unquantifiable"
+        }
+      },
+      "projected_total_s": 0.200482,
+      "projected_pct_of_wall": 1.2207,
+      "composite_journal": "zero surviving spans (fully evicted) \u2014 the projected upper is therefore >= the staged_verify+publish+state_delta projection and NOT upper-quantifiable"
+    },
+    "corrected_statement": "commit-side surviving spans sum to 0.067263 s (0.4096% of wall, lower bound); projecting surviving means across all rows gives >=1.2% of wall with composite/journal unquantifiable. DECISION-INSENSITIVE: even the unquantifiable upper stays an order of magnitude below the put side (recv 5.04%, bounded accumulator) and far under any materiality bar for a receiver rearchitecture; not_admitted unchanged."
+  },
+  "F2_ceiling_phrase": {
+    "admitted_defect": "decision_basis says the receiver change \"attacks a <=5% ceiling\"; L4 measured recv_wait at 5.045% of wall \u2014 above 5% \u2014 and the 5% figure is implementer characterization; designs/05 states the materiality criterion QUALITATIVELY with no threshold.",
+    "corrected_statement": "read 'attacks a measured ~5% result-put wait ceiling (4.41-5.05% across legs, bounded accumulator)' and treat materiality as the qualitative designs/05 criterion; the verdict does not rest on any numeric threshold."
+  },
+  "F3_leg_artifacts": {
+    "admitted_defect": "L1-L3 are summary-only legs (console lines; the single --out path was overwritten each run), so 'dropped_events=67 in every leg' is artifact-backed for L4 only.",
+    "corrected_statement": "L4 (post-fix, full artifact) ALONE carries the admission decision: wall 16.4229 s, recv 5.0450%, commit-side surviving 0.41% lower bound, engagement 4+28, census 64 files/147829892 B. L1-L3 corroborate as console-recorded summaries only."
+  },
+  "verdict_impact": "NONE \u2014 not_admitted stands (P04R: verified, decision-insensitive findings, 0 blocking)",
+  "producer_shas": {
+    "receiver_admission_profile.json": "9e313c914078416a89e676683f2fff47bb3394d5c7a5a651e3f0f024fa9c4c38",
+    "p04r_receiver_review.json": "faf7936b848060bde2bbcda00c5d7beba955c75dc64fa106af6835c722fef7cf"
+  }
+}

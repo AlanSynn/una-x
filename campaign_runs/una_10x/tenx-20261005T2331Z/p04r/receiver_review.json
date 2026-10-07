@@ -1,0 +1,119 @@
+{
+  "schema": "una-10x-p04r-receiver-review-1",
+  "task": "P04R: independent review of the P04I documented non-admission (designs/05 receiver question)",
+  "generated_utc": "2026-10-07T02:19:13Z",
+  "reviewer": {
+    "role": "independent-reviewer",
+    "agent": "p03r-reviewer (same independent reviewer as P03R replay_metric_review.json, sha 7818f982a953059b0c1f665a2df492e66d81e9d9806bfd1c62ba0c3fe559e694)",
+    "independence": "reviewer is not the P04I implementer; all figures in this file were recomputed in-session from the pinned artifact bytes or from live source bytes, never transcribed from implementer prose",
+    "write_scope": "this file only"
+  },
+  "review_target": {
+    "declared": "the DOCUMENTED NON-ADMISSION (verdict not_admitted) — per TASKS_CLAUDE.yaml P04R: 'Accept or reject candidate, or verify documented non-admission'; completion: 'Real review of implementation/disposition, not a fictitious passing runtime test'",
+    "p04i_head": "52dcc207aec25841a69cdef8e56036c031664347",
+    "p04i_parent": "cb7acd5 (pre-fix measurement tree for legs L1-L3)",
+    "criterion_quoted": "Admit a receiver change only if post-P02/P03 telemetry shows material result-put/commit backpressure. (campaigns/una_10x/post_p00/designs/05_receiver_and_durability.md)",
+    "completion_criterion_quoted": "Causally justified safe candidate or explicit not_admitted; no unbounded queues or weakened fsync"
+  },
+  "bytes_pinned_and_verified": {
+    "note": "every sha256 below was computed in this session from live bytes at HEAD 52dcc20 and compared against the pins inside the reviewed evidence",
+    "receiver_admission.json": {
+      "sha256": "eedc1cb71ad7a26a63ce1ff3f857fdea61a172ad2748b6dcd49e6c5672301595",
+      "matches_verdict_producer_sha": true
+    },
+    "receiver_admission_profile.py": {
+      "sha256": "6a1b9b110aeebea2927539c8c94b27dda3b8fed10f6bf93c6656ce97d645e9c5",
+      "matches_verdict_producer_sha": true
+    },
+    "receiver_admission_profile.json": {
+      "sha256": "9e313c914078416a89e676683f2fff47bb3394d5c7a5a651e3f0f024fa9c4c38",
+      "matches_verdict_producer_sha": true
+    },
+    "src/urban_network_analysis/batch/cohort.py": {
+      "sha256": "cc42a93722336c039c918a9a00c77853aa3aa38a6b2b8d2826b7f01f66cbaf24",
+      "matches_verdict_producer_sha_and_fix_files_sha256": true
+    },
+    "tests/tenx/cohort/test_cohort_route.py": {
+      "sha256": "ec246c84f414e158c193d9129c7a80b7be6239904f3b014d290be4cc55c659bf",
+      "matches_fix_files_sha256": true
+    },
+    "tests/tenx/post_p00/metrics/test_metric_reuse_wiring.py": {
+      "sha256": "8f99e35e3a35ee3945e3573752ff531bed483a4181c9d8b00a3e8b5144ad2c87",
+      "matches_fix_files_sha256": true
+    },
+    "receiver_verdict.json_as_read": {
+      "sha256": "e426c0e3ac2f3e38ce3a9ddc8d78c2a1b89470dc7867ef457d9eaa0c4050c2bf",
+      "note": "the verdict object records shas of its producers, not of itself; sha taken at read time for custody"
+    }
+  },
+  "checks_performed": [
+    "C1 instrument soundness (receiver_admission_profile.py, 292 lines, read in full): asserts NUMBA_CACHE_DIR and UNA_BATCH_PHASES=1; the timer brackets ONLY the public RunBatch call (BENCHMARKS.md law); recv_wait_s is read from phase_totals['result_recv_wait_ns']/1e9; commit_side_s sums coordinator phase families staged_verify/publish/state_delta/composite/journal; pins tree_head/tree_dirty and emits facts only, verdict kept separate. CORRECT.",
+    "C2 recv_wait is a bounded accumulator, not a span: verified in live source at src/urban_network_analysis/batch/runtime.py:1133-1137 — tele.accumulate('result_recv_wait_ns', ...) brackets pool.recv(timeout=_TICK_S) directly. The admission's RELIABLE grading for this side is structurally justified; the evicting span buffer affects only the commit side, which the admission grades LOWER BOUND. CORRECT.",
+    "C3 L4 artifact reconciliation (receiver_admission_profile.json vs the L4 row in receiver_admission.json): wall 16.42290279082954 s; recv_wait 0.828531083 s = 5.0450% (recorded 5.04); commit_side 0.067263376 s = 0.4096% (recorded 0.41); worker run sum 44.775794956 s = 2.7264x wall (recorded ~2.7x); dropped_events 67; rows 32 all ran, workers_eff 4, not cancelled; tree_head cb7acd5 with tree_dirty=true honestly pinned; manifest local_audit_manifest.csv sha 235405de...; reuse engagement collapse 4 + split 28 = 32 rows, copies 84, registrations 32, refusals 0; folds_done 59004 = 4 collapse rows x 14751 origins exactly (pre-fix 32 x 14751 = 472032 exactly); output census 64 files / 147829892 bytes. ALL RECONCILED.",
+    "C4 commit-side 'projected upper effect still <1% of wall' recomputation from the artifact's surviving coordinator phase families: staged_verify mean 0.0507/11 = 4.6091 ms/row x32 = 0.1475 s (0.898% of wall); publish 0.0048/10 = 0.4800 ms/row x32 = 0.0154 s (0.094%); state_delta 0.0117/10 = 1.1700 ms/row x32 = 0.0374 s (0.228%). Projected surviving-phase total 0.2003 s = 1.220% of wall. The committed artifact does NOT support '<1%': the three surviving families alone project to 1.22%, and the composite/journal coordinator phases have ZERO surviving spans (fully evicted), so their contribution is unprojectable from any committed artifact. See finding F1.",
+    "C5 no-receiver-code evidence: git show 52dcc20 --stat lists 9 files — budget_reconciliation.json, p03m wiring evidence, 4 p04i evidence files, batch/cohort.py, tests/tenx/cohort/test_cohort_route.py, tests/tenx/post_p00/metrics/test_metric_reuse_wiring.py. NO receiver/transport/commit-path source. Additionally batch/runtime.py and batch/worker.py are byte-verified unchanged since 6fb01d0 (P02I): runtime.py 9cbd3a89d4d737491459c3cb5f00bf22ed3d1bb50dc3a9ab00fd2ca262905f54, worker.py 524b30362e5fedba2d5d2944369c737295574877aaaa8496250367cf537847a1. The original sync transport, commit owner, fsync/rename/state/journal sequence and cancellation/resume semantics are unchanged BY CONSTRUCTION, which is the strongest form of 'verify original commit and cancellation/resume semantics' available for a non-admission.",
+    "C6 P04I lifecycle fix review (git show 52dcc20 -- src/urban_network_analysis/batch/cohort.py): the only source change is _metric_store_for(root) — a process-level get-or-create under _METRIC_REUSE_STORES_LOCK, keyed by cohort root, mirroring the existing _stores_for trace-store lifecycle law, plus honest comments recording the observed defect. Instance-member store removed; kill switch (_METRIC_REUSE_ENV) preserved. Minimal, correct, and consistent with the defect provenance in the admission JSON. The re-pinned cohort-route test now asserts reuse-aware accounting (replays == collapse modes; warm run collapses its first row per fresh worker process because the metric store is process-local by design) while keeping builds==0 and bitwise tree equality on the warm pass. No aliasing, no persistence, no public-surface change.",
+    "C7 fault-matrix disposition coherence: TEST_MATRIX RX01 (credit reserve/deadlock), RX02 (oversized last-state, worker death during put), RX03 (receiver exception, staged-byte corruption, fsync/rename/journal failure) attach to a candidate receiver per designs/05. 52dcc20 admits no receiver, so there is no candidate to fault-test; receiver_fault_matrix.json declared not_applicable is the coherent disposition, conditional on this review upholding the non-admission. This review upholds it.",
+    "C8 credits/capacity question (P04R action 'check credits reserve capacity before dispatch including oversized state'): with the receiver not admitted, no credit mechanism exists and none is needed by the original transport — result buffering is the pre-existing C30 in-order buffered dict bounded by row count (32 on this cohort), and the coordinator's recv loop is the P02I-reviewed code. No unbounded queue was introduced; 'no unbounded queues' leg of the completion criterion holds.",
+    "C9 decision-causality audit: grounds (1) recv_wait 4.41/4.64/4.53/5.04% of wall across L1-L4 — the entire recoverable put-side ceiling; (2) commit side lower bound 0.31-0.41%, honestly graded; (3) worker run sum 2.7264x wall at w4 — the pool is compute-bound, so receiver rearchitecture cannot convert waiting into throughput on this host; (4) designs/05 itself flags deadlock/credit/durability risk and conditions admission on MATERIAL backpressure. designs/05 states no numeric threshold; even taking the implementer's own <=5% characterization with the L4 5.045% leg, the put-side ceiling remains ~5% of wall against a rearchitecture carrying the design's flagged failure modes. not_admitted is the design-faithful outcome.",
+    "C10 dirty-tree provenance of L4: L4 measured cb7acd5 + the then-uncommitted cohort.py fix; tree_dirty=true is pinned in the profile artifact and disclosed in the admission JSON leg row. The then-uncommitted fix bytes are byte-identical to the fix now committed at 52dcc20 (cohort.py cc42a937... verified above), so the L4 measurement corresponds to live committed bytes. No provenance gap remains."
+  ],
+  "checks_with_first_divergence": [
+    "D1 (C4): first divergence between the evidence prose and the recomputation — receiver_admission.json measurement_reliability.commit_side_spans states 'projected upper effect still <1% of wall'; recomputed from the same artifact's surviving spans the projection is 1.220% of wall, with composite/journal phases unprojectable (zero surviving spans). Recorded as finding F1. No further divergences found in the admission or verdict objects; every other quantitative figure reconciled exactly (C3)."
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "minor",
+      "blocking": false,
+      "class": "quantitative-claim-accuracy",
+      "finding": "receiver_admission.json claims the commit side's 'projected upper effect still <1% of wall'. The committed artifact does not support this: the three surviving coordinator phase families alone (staged_verify 0.898% + publish 0.094% + state_delta 0.228%) project to 1.220% of wall, and the composite/journal coordinator phases have zero surviving spans (fully evicted among dropped_events=67), so the true projected upper is at least 1.22% plus an unquantifiable remainder, not <1%.",
+      "decision_impact": "none — even at several times 1.22% the commit side remains an order of magnitude below the put-side recv_wait share and cannot alone constitute material backpressure under designs/05; the decision's primary grounds (recv_wait band, compute-bound pool) are unaffected",
+      "recommended_repair": "amend the phrase to 'projected ~1.2% of wall from surviving phase families; composite/journal spans fully evicted and unprojectable' in a future evidence touch, or commit the projection arithmetic as a derived receipt"
+    },
+    {
+      "id": "F2",
+      "severity": "minor",
+      "blocking": false,
+      "class": "characterization-precision",
+      "finding": "decision_basis states the rearchitecture 'attacks a <=5% ceiling' while the L4 leg measured recv_wait at 5.0450% of wall (5.04 recorded) — 0.045pp above the stated ceiling. The 5% figure is also the implementer's own characterization: designs/05 states the criterion qualitatively ('material result-put/commit backpressure') with no numeric threshold.",
+      "decision_impact": "none — both endpoints of the measured band (4.41-5.045%) sit in the same immateriality regime against the design's flagged deadlock/credit/durability risk; the criterion is qualitative and the outcome is not threshold-sensitive at this magnitude",
+      "recommended_repair": "phrase as '~5% ceiling (measured band 4.41-5.05%)' in a future evidence touch"
+    },
+    {
+      "id": "F3",
+      "severity": "minor",
+      "blocking": false,
+      "class": "evidence-completeness",
+      "finding": "Legs L1-L3 (pre-fix, clean cb7acd5) exist only as summary rows in receiver_admission.json; no per-leg span/accumulator dumps are committed for them, and 'dropped_events=67 in every leg' is asserted for all four legs but is artifact-backed only for L4. The console record is the implementer's.",
+      "decision_impact": "none material — L4 alone (artifact-backed, post-fix) shows the same regime as the asserted pre-fix rows, and the pre-fix legs' role is corroboration that the reuse lifecycle fix did not create put-side backpressure; the conclusion is robust with L4 alone",
+      "recommended_repair": "none required for this verdict; for future multi-leg measurements, commit per-leg profile dumps or a console-custody hash so every leg is independently auditable"
+    },
+    {
+      "id": "F4",
+      "severity": "info",
+      "blocking": false,
+      "class": "positive-verification",
+      "finding": "The measurement reliability grading is honest and structurally verified: recv_wait is a true accumulator outside the evicting span buffer (runtime.py:1133-1137), commit_side is declared a LOWER BOUND with the eviction count stated, the timer brackets only the public call, and facts are separated from the verdict in both artifacts. The dirty L4 tree is disclosed in both the profile and the admission row, and the uncommitted fix bytes equal the committed fix bytes.",
+      "decision_impact": "raises confidence in the measured basis"
+    },
+    {
+      "id": "F5",
+      "severity": "info",
+      "blocking": false,
+      "class": "positive-verification",
+      "finding": "The not_admitted disposition is causally complete against the completion criterion: explicit not_admitted on measured telemetry; no receiver code changed so no queue grew and no fsync/durability law was touched; the fault matrix is correctly conditional; the folds_done 8x drop with flat wall is correctly quarantined as P05 sizing input ('open_observation_not_an_admission_input') rather than allowed to leak into the admission decision.",
+      "decision_impact": "supports verdict"
+    }
+  ],
+  "not_run": [
+    "Re-running the four admission profile legs: a heavy-budget production-batch measurement owned by P04I; a reviewer rerun would double-count the campaign's heavy budget without independent instrument value (the instrument and artifact already reconcile exactly). The L4 leg is accepted on its committed artifact.",
+    "RX01/RX02/RX03 fault scenarios: no receiver candidate exists to fault-test; by design these attach to an admitted receiver only.",
+    "Independent re-derivation of L1-L3 recv_wait/commit figures from raw telemetry: no committed per-leg artifacts exist to re-derive from (see F3).",
+    "GPU/native qualification of anything in this scope: out of scope for a receiver-admission review; no performance or installed/native/GPU qualification is established by this review."
+  ],
+  "verdict": "approve_with_notes",
+  "verdict_statement": "The P04I documented non-admission is VERIFIED and STANDS. The disposition is causally justified against designs/05's qualitative materiality criterion: measured put-side recv_wait of 4.41-5.045% of public wall across four legs (the entire recoverable ceiling), an honestly-lower-bounded commit side, and a compute-bound worker pool (run sum 2.73x wall) together show no material result-put/commit backpressure; admitting a single-receiver + reserved-credit rearchitecture against that ceiling would carry the deadlock/credit/durability risk designs/05 itself flags for no material gain. No receiver code changed, so the original commit, cancellation/resume, and durability semantics are preserved by construction (runtime.py/worker.py byte-verified unchanged since P02I), no unbounded queue exists, and the fault matrix's not_applicable disposition is coherent. Findings F1-F3 are minor, non-blocking evidence-precision notes (the '<1% projected upper' phrase recomputes to 1.22% from the artifact's own surviving spans; the '<=5% ceiling' phrasing vs the 5.045% L4 leg; L1-L3 are summary-only legs); none changes the decision. The P04I lifecycle fix itself (process-pinned metric-reuse store) is minimal, correct, and outside the receiver question.",
+  "disposition": "This is an independent reviewer's verification of a documented non-admission. It is NOT a measured 10x claim, NOT a performance qualification, and establishes no public boundary figure. The admission evidence remains a characterization on one 4-worker host against the P01F 32-row control cohort; designs/05's admission question is answered no on this evidence, and the receiver question reopens only if future telemetry shows material backpressure.",
+  "review_file_sha256_self_note": "to be filled by the reviewer's report message after this file is hashed on disk (the file cannot contain its own hash)"
+}
