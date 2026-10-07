@@ -808,36 +808,27 @@ def _trace_replay_loop(indptr, ids_all, dist_all, d_weights, cutoff,
 
 
 # --------------------------------------------------------------------------
-# replay_trace: the same full fold on the trace's retained prefix
+# replay gates (P03M-B factor): the EXACT guard sequence replay_trace
+# enforced, now named so the metric-reuse path can run the identical
+# validation chronology on cache hits without folding.  Refusal strings,
+# order and short-circuits are byte-identical to the pre-factor body.
 # --------------------------------------------------------------------------
-def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
-                 gravity_logistic_midpoint, gravity_growth_rate,
-                 knn_decay, knn_weights, cutoff):
-    """Replay metric jobs from a COMPLETE trace.
+def binding_refusal(trace, d_weights, cutoff):
+    """The job-binding gates (pre-allocation), or None when they pass.
 
-    Fresh per-job arrays (the C10 fresh-copy law).  Guards run BEFORE
-    any reuse: an incomplete trace is never a cache hit; an invalid
-    metric input is refused even though a trace exists (no invalid
-    input becomes successful because an earlier trace hit avoided its
-    validation); the cutoff must be typed- and bit-exact against the
-    trace identity (-0.0 is not +0.0); the destination weight vector
-    must match the trace's
-    recorded destination count and the dossier-02 value domain.
+    An incomplete trace is never a cache hit; an invalid metric input
+    is refused even though a trace exists (no invalid input becomes
+    successful because an earlier trace hit avoided its validation);
+    the cutoff must be typed- and bit-exact against the trace identity
+    (-0.0 is not +0.0); the destination weight vector must match the
+    trace's recorded destination count and the dossier-02 value domain.
     """
-    def _refuse(reason):
-        return TraceReplayResult(
-            reach=np.zeros(0), gravity_exponential=np.zeros(0),
-            gravity_logistic=np.zeros(0), knn_access=np.zeros(0),
-            route="trace_replay_refused", refusal=reason,
-            trace_id=trace.trace_id if isinstance(trace, TraceRecord)
-            else "", folds_done=0)
-
     if not isinstance(trace, TraceRecord):
-        return _refuse("not_a_trace_record")
+        return "not_a_trace_record"
     if trace.schema_version != TRACE_SCHEMA_VERSION:
-        return _refuse("trace_schema_mismatch")
+        return "trace_schema_mismatch"
     if not trace.complete:
-        return _refuse("incomplete_trace_not_a_cache_hit")
+        return "incomplete_trace_not_a_cache_hit"
 
     cutoff_value = float(cutoff)
     cutoff_dtype = str(np.dtype(getattr(cutoff, "dtype", type(cutoff))))
@@ -847,22 +838,23 @@ def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
     if np.float64(cutoff_value).tobytes() \
             != np.float64(trace.cutoff_value).tobytes() or \
             cutoff_dtype != trace.cutoff_dtype:
-        return _refuse("cutoff_mismatch_with_trace_identity")
+        return "cutoff_mismatch_with_trace_identity"
 
     if not (isinstance(d_weights, np.ndarray)
             and d_weights.ndim == 1):
-        return _refuse("dest_weights_layout")
+        return "dest_weights_layout"
     if d_weights.shape[0] != trace.dest_count:
-        return _refuse("dest_count_mismatch")
+        return "dest_count_mismatch"
     if not np.all(np.isfinite(d_weights)) or \
             np.any(d_weights < 0.0):
-        return _refuse("dest_weights_value_domain")
+        return "dest_weights_value_domain"
+    return None
 
+
+def trace_structure_refusal(trace):
+    """The trace-self gates (post-allocation in replay_trace's order),
+    or None when they pass."""
     origin_count = trace.origin_count
-    reach = np.empty(origin_count, dtype=np.dtype(trace.reach_dtype))
-    ge = np.empty(origin_count, dtype=np.dtype(trace.metric_dtype))
-    gl = np.empty(origin_count, dtype=np.dtype(trace.metric_dtype))
-    kn = np.empty(origin_count, dtype=np.dtype(trace.metric_dtype))
     indptr = trace.indptr
     ids_all = trace.destination_ids
     dist_all = trace.distance_bits
@@ -881,17 +873,17 @@ def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
             or dist_all.shape[0] != ids_all.shape[0] \
             or int(indptr[-1]) != ids_all.shape[0] \
             or int(np.diff(indptr).min(initial=0)) < 0:
-        return _refuse("corrupt_trace_structure")
+        return "corrupt_trace_structure"
     if ids_all.shape[0] and (int(ids_all.min()) < 0
                              or int(ids_all.max()) >= trace.dest_count):
-        return _refuse("corrupt_trace_destination_ids")
+        return "corrupt_trace_destination_ids"
     # C11-NOTE-4: the packed bytes must still hash to the digest bound
     # at build — a forged or bit-flipped retained record is refused
     # before any fold, never replayed as a cache hit.
     if hashlib.sha256(indptr.tobytes() + ids_all.tobytes()
                       + dist_all.tobytes()).hexdigest() \
             != trace.content_digest:
-        return _refuse("corrupt_trace_content_digest")
+        return "corrupt_trace_content_digest"
 
     # P03C (designs/03 phases B+C): the per-origin slice-order check
     # runs as one compiled structural scan ahead of ANY fold — the
@@ -902,7 +894,47 @@ def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
     # with `corrupt_trace_slice_order`, zero folds, and no partially
     # computed earlier outputs can surface.
     if not _trace_slices_ascending(indptr, ids_all):
-        return _refuse("corrupt_trace_slice_order")
+        return "corrupt_trace_slice_order"
+    return None
+
+
+# --------------------------------------------------------------------------
+# replay_trace: the same full fold on the trace's retained prefix
+# --------------------------------------------------------------------------
+def replay_trace(trace, d_weights, gravity_beta, gravity_plateau,
+                 gravity_logistic_midpoint, gravity_growth_rate,
+                 knn_decay, knn_weights, cutoff):
+    """Replay metric jobs from a COMPLETE trace.
+
+    Fresh per-job arrays (the C10 fresh-copy law).  Guards run BEFORE
+    any fold — the exact gate sequence lives in ``binding_refusal`` and
+    ``trace_structure_refusal`` (this function's pre-factor body,
+    verbatim).
+    """
+    def _refuse(reason):
+        return TraceReplayResult(
+            reach=np.zeros(0), gravity_exponential=np.zeros(0),
+            gravity_logistic=np.zeros(0), knn_access=np.zeros(0),
+            route="trace_replay_refused", refusal=reason,
+            trace_id=trace.trace_id if isinstance(trace, TraceRecord)
+            else "", folds_done=0)
+
+    refusal = binding_refusal(trace, d_weights, cutoff)
+    if refusal is not None:
+        return _refuse(refusal)
+
+    origin_count = trace.origin_count
+    reach = np.empty(origin_count, dtype=np.dtype(trace.reach_dtype))
+    ge = np.empty(origin_count, dtype=np.dtype(trace.metric_dtype))
+    gl = np.empty(origin_count, dtype=np.dtype(trace.metric_dtype))
+    kn = np.empty(origin_count, dtype=np.dtype(trace.metric_dtype))
+    indptr = trace.indptr
+    ids_all = trace.destination_ids
+    dist_all = trace.distance_bits
+
+    refusal = trace_structure_refusal(trace)
+    if refusal is not None:
+        return _refuse(refusal)
 
     # One compiled serial/nogil origin loop over the ORIGINAL full
     # fold with the exact original argument binding; fresh writable

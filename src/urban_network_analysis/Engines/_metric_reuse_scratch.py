@@ -28,7 +28,10 @@ from pathlib import Path
 import numba as nb
 import numpy as np
 
-from ._trace_access_scratch import _frame, _frame_fields, _identity
+from . import _metric_identity as _mid
+from ._trace_access_scratch import (_frame, _frame_fields, _identity,
+                                    binding_refusal,
+                                    trace_structure_refusal)
 
 # The split folds decorate with the ENGINE'S OWN flags: a different
 # decorator would be a different compiler environment and the
@@ -230,17 +233,37 @@ def plan_replay(jobs, allow_split):
 def _job_agrees(a, b, param):
     """Typed agreement of one metric parameter between two jobs.
 
-    Scalars agree by IEEE-754 bits, not by value equality (C12-NOTE-2
-    repair): -0.0 does not agree with +0.0, consistent with the
-    MetricID's signed-zero law; distinct NaN payloads disagree (no
-    reuse); identical-bit inputs agree.  Vectors agree by shape and
-    bytes.
+    P03M-B hardening (designs/04: the agreement IS the admission): both
+    sides close over the MetricID v2 typed frames — the SAME encoder
+    that mints the authoritative identity, one law no drift.
+
+    * Scalars agree only at equal dtype AND equal bits: -0.0 never
+      agrees with +0.0 (C12-NOTE-2), distinct NaN payloads disagree,
+      and an ``int`` cutoff no longer agrees with the equal-valued
+      ``float`` (the pre-hardening ``np.float64`` coercion collapsed
+      them — the E8 class at split level; the replay refuses that pair
+      as ``cutoff_mismatch_with_trace_identity``).
+    * Arrays agree only at equal dtype (byte order included), shape,
+      layout/writability flags and logical-order bytes — a strided view
+      and its C-contiguous twin DISAGREE (they hit different numba
+      specializations).
+    * Anything either frame refuses to encode counts as disagreement
+      (conservative: no reuse, the full fold decides).
     """
     va, vb = a[param], b[param]
-    if hasattr(va, "__len__") or hasattr(vb, "__len__"):
-        ca, cb = np.ascontiguousarray(va), np.ascontiguousarray(vb)
-        return ca.shape == cb.shape and ca.tobytes() == cb.tobytes()
-    return (np.float64(va).tobytes() == np.float64(vb).tobytes())
+    try:
+        if isinstance(va, np.ndarray) or isinstance(vb, np.ndarray) \
+                or hasattr(va, "__len__") or hasattr(vb, "__len__"):
+            fa, fb = [], []
+            _mid.typed_array_frame(fa, "v", np.asarray(va))
+            _mid.typed_array_frame(fb, "v", np.asarray(vb))
+            return fa == fb
+        sa, sb = [], []
+        _mid.typed_scalar_frame(sa, "v", va)
+        _mid.typed_scalar_frame(sb, "v", vb)
+        return sa == sb
+    except (TypeError, ValueError):
+        return False
 
 
 # ---- C12 generated split-fold variants (do not edit) ----
@@ -290,3 +313,327 @@ def _knn_access_only(d_distance, d_weights, cutoff, gravity_beta, gravity_platea
             knn_access = (knn_coefficients_cropped * n_weights_cropped).sum()
     return knn_access
 # ---- end C12 generated region ----
+
+
+# ===========================================================================
+# P03M-B production executor (designs/04 implementation order 2-5).
+#
+# The C12 planner above is a pure PLANNER; this section owns the
+# worker-local store, the compiled split outer loops and the per-row
+# entry point the cohort route calls.  Laws:
+#
+# * Gates BEFORE any hit: the metric-reuse path runs the EXACT
+#   ``replay_trace`` gate sequence (``binding_refusal`` +
+#   ``trace_structure_refusal``) on every row, bundle hits included —
+#   read/validation/failure chronology survives cache hits.
+# * Bundle mode is gated by MetricID v2 (the authoritative typed
+#   identity).  A bundle hit copies four FRESH per-row public arrays
+#   out of immutable private storage (``register`` normalizes every
+#   stored array to read-only).
+# * Split mode is admitted ONLY inside the probe-admitted signature
+#   domains (tests/tenx/post_p00/metrics/partial_plan_probe.py):
+#   f64 native C-contiguous d_weights/knn_weights and python
+#   int/float scalars.  Anything else — and any fold-module byte
+#   change via the v2 fold closure — falls back to the full fold.
+# * Four unsourced outputs collapse to ONE full fold (the C12
+#   collapse law): the caller's existing ``replay_trace`` path runs.
+# * Failed or refused rows NEVER register (failed outputs stay out
+#   of the store).
+# * Distinct counters: bundle hits, split rows, copied fields, split
+#   folds, collapses, domain refusals, gate refusals, registrations,
+#   evictions (designs/04: hit/miss/produced/copy/trace counters are
+#   distinct).
+# ===========================================================================
+ALL_OUTS = ("reach", "gravity_exponential", "gravity_logistic",
+            "knn_access")
+
+# The reuse-mode labels the cohort route reports per row.
+REUSE_MODE_BUNDLE = "metric_reuse_bundle"
+REUSE_MODE_SPLIT = "metric_reuse_split"
+
+
+@nb.njit(
+    cache=NUMBA_CACHE,
+    nogil=NUMBA_NOGIL,
+)
+def _trace_replay_loop_reach(indptr, ids_all, dist_all, d_weights, cutoff,
+                             gravity_beta, gravity_plateau,
+                             gravity_logistic_midpoint, knn_weights,
+                             knn_decay, gravity_growth_rate, reach_out):
+    """Split outer loop (designs/04 step 3): the admitted
+    ``_reach_only`` extraction per origin, composed exactly like
+    ``_trace_replay_loop`` — same fresh per-origin working copies, the
+    same duplicated 13-parameter binding, the engine's own flags (the
+    loop adds none).  Serial/nogil: no nested prange, no total-CPU
+    increase."""
+    n_origin = indptr.shape[0] - 1
+    for o in range(n_origin):
+        lo = indptr[o]
+        hi = indptr[o + 1]
+        cand_dist = dist_all[lo:hi].copy()
+        cand_wts = d_weights[ids_all[lo:hi]].copy()
+        reach_out[o] = _reach_only(
+            cand_dist, cand_wts, cutoff,
+            gravity_beta, gravity_plateau, gravity_logistic_midpoint,
+            gravity_plateau, knn_weights, gravity_beta, knn_decay,
+            gravity_logistic_midpoint, gravity_growth_rate,
+            gravity_growth_rate)
+
+
+@nb.njit(
+    cache=NUMBA_CACHE,
+    nogil=NUMBA_NOGIL,
+)
+def _trace_replay_loop_ge(indptr, ids_all, dist_all, d_weights, cutoff,
+                          gravity_beta, gravity_plateau,
+                          gravity_logistic_midpoint, knn_weights,
+                          knn_decay, gravity_growth_rate, ge_out):
+    n_origin = indptr.shape[0] - 1
+    for o in range(n_origin):
+        lo = indptr[o]
+        hi = indptr[o + 1]
+        cand_dist = dist_all[lo:hi].copy()
+        cand_wts = d_weights[ids_all[lo:hi]].copy()
+        ge_out[o] = _gravity_exponential_only(
+            cand_dist, cand_wts, cutoff,
+            gravity_beta, gravity_plateau, gravity_logistic_midpoint,
+            gravity_plateau, knn_weights, gravity_beta, knn_decay,
+            gravity_logistic_midpoint, gravity_growth_rate,
+            gravity_growth_rate)
+
+
+@nb.njit(
+    cache=NUMBA_CACHE,
+    nogil=NUMBA_NOGIL,
+)
+def _trace_replay_loop_gl(indptr, ids_all, dist_all, d_weights, cutoff,
+                          gravity_beta, gravity_plateau,
+                          gravity_logistic_midpoint, knn_weights,
+                          knn_decay, gravity_growth_rate, gl_out):
+    n_origin = indptr.shape[0] - 1
+    for o in range(n_origin):
+        lo = indptr[o]
+        hi = indptr[o + 1]
+        cand_dist = dist_all[lo:hi].copy()
+        cand_wts = d_weights[ids_all[lo:hi]].copy()
+        gl_out[o] = _gravity_logistic_only(
+            cand_dist, cand_wts, cutoff,
+            gravity_beta, gravity_plateau, gravity_logistic_midpoint,
+            gravity_plateau, knn_weights, gravity_beta, knn_decay,
+            gravity_logistic_midpoint, gravity_growth_rate,
+            gravity_growth_rate)
+
+
+@nb.njit(
+    cache=NUMBA_CACHE,
+    nogil=NUMBA_NOGIL,
+)
+def _trace_replay_loop_knn(indptr, ids_all, dist_all, d_weights, cutoff,
+                           gravity_beta, gravity_plateau,
+                           gravity_logistic_midpoint, knn_weights,
+                           knn_decay, gravity_growth_rate, kn_out):
+    n_origin = indptr.shape[0] - 1
+    for o in range(n_origin):
+        lo = indptr[o]
+        hi = indptr[o + 1]
+        cand_dist = dist_all[lo:hi].copy()
+        cand_wts = d_weights[ids_all[lo:hi]].copy()
+        kn_out[o] = _knn_access_only(
+            cand_dist, cand_wts, cutoff,
+            gravity_beta, gravity_plateau, gravity_logistic_midpoint,
+            gravity_plateau, knn_weights, gravity_beta, knn_decay,
+            gravity_logistic_midpoint, gravity_growth_rate,
+            gravity_growth_rate)
+
+
+_SPLIT_LOOPS = {
+    "reach": _trace_replay_loop_reach,
+    "gravity_exponential": _trace_replay_loop_ge,
+    "gravity_logistic": _trace_replay_loop_gl,
+    "knn_access": _trace_replay_loop_knn,
+}
+
+_SPLIT_OUT_DTYPE_FIELD = {
+    "reach": "reach_dtype",
+    "gravity_exponential": "metric_dtype",
+    "gravity_logistic": "metric_dtype",
+    "knn_access": "metric_dtype",
+}
+
+
+def split_domain_admitted(d_weights, gravity_beta, gravity_plateau,
+                          gravity_logistic_midpoint, gravity_growth_rate,
+                          knn_weights, cutoff):
+    """True only inside the probe-admitted specialization domains:
+    f64 native-byte-order C-contiguous ``d_weights``/``knn_weights``
+    and python ``int``/``float`` scalars (the int form covers the REAL
+    Settings signature: ``search_radius: int``, ``gravity_plateau:
+    int``, ``gravity_logistic_midpoint: int``).  Numpy scalar types,
+    other dtypes, non-contiguous or read-only views stay OUTSIDE and
+    take the full fold."""
+    for a in (d_weights, knn_weights):
+        if not (isinstance(a, np.ndarray) and a.ndim == 1
+                and a.dtype == np.float64 and a.flags.c_contiguous):
+            return False
+    for s in (cutoff, gravity_beta, gravity_plateau,
+              gravity_logistic_midpoint, gravity_growth_rate):
+        if type(s) not in (int, float):
+            return False
+    return True
+
+
+def binding_job(d_weights, gravity_beta, gravity_plateau,
+                gravity_logistic_midpoint, gravity_growth_rate,
+                knn_decay, knn_weights, cutoff):
+    """The per-row metric binding dict the store's agreement checks
+    consume (exactly the ``_PARAM_TO_DEP`` parameter names plus the
+    branch selector)."""
+    return {"cutoff": cutoff, "d_weights": d_weights,
+            "gravity_beta": gravity_beta,
+            "gravity_plateau": gravity_plateau,
+            "gravity_logistic_midpoint": gravity_logistic_midpoint,
+            "gravity_growth_rate": gravity_growth_rate,
+            "knn_decay": knn_decay, "knn_weights": knn_weights}
+
+
+class MetricReuseStore:
+    """Worker-local bounded canonical store (designs/04 step 5: the
+    WORKER-LOCAL reuse arm — no cross-worker sharing, so no trace-store
+    lock is ever held and no lease protocol is needed).  Entries are
+    (trace_id, binding, immutable private output copies) keyed by the
+    typed MetricID v2; eviction is LRU by entry count.  Handouts are
+    always fresh copies; stored arrays are normalized read-only.
+    No persistence, no disk, process lifetime only."""
+
+    def __init__(self, max_entries: int = 32):
+        self._entries = {}
+        self._order = []
+        self._max = max(1, int(max_entries))
+        self.evictions = 0
+
+    def __len__(self):
+        return len(self._order)
+
+    def lookup(self, metric_id):
+        """LRU-touched entry for the typed MetricID, or None."""
+        entry = self._entries.get(metric_id)
+        if entry is not None:
+            self._order.remove(metric_id)
+            self._order.append(metric_id)
+        return entry
+
+    def entries_for_trace(self, trace_id):
+        """Canonical entries for ONE trace, insertion (first-arrival)
+        order — the C12 canonical-source rule."""
+        return [self._entries[m] for m in self._order
+                if self._entries[m]["trace_id"] == trace_id]
+
+    def register(self, metric_id, trace_id, job, outs):
+        """Store PRIVATE immutable copies of one canonical row's four
+        outputs.  A repeated MetricID is a no-op (the first-arrival
+        canonical stays).  Raises nothing."""
+        if metric_id in self._entries:
+            return
+        stored = {}
+        for name in ALL_OUTS:
+            arr = np.array(outs[name], copy=True)
+            arr.flags.writeable = False
+            stored[name] = arr
+        self._entries[metric_id] = {"trace_id": trace_id, "job": dict(job),
+                                    "outs": stored}
+        self._order.append(metric_id)
+        while len(self._order) > self._max:
+            evicted = self._order.pop(0)
+            del self._entries[evicted]
+            self.evictions += 1
+
+
+def row_replay(store, trace, metric_id, d_weights, gravity_beta,
+               gravity_plateau, gravity_logistic_midpoint,
+               gravity_growth_rate, knn_decay, knn_weights, cutoff,
+               counters):
+    """The production per-row metric-reuse entry point.
+
+    Returns ``(outs_tuple, mode)`` with four FRESH public arrays when
+    the row is served from the store (bundle or split), or None to run
+    the caller's full ``replay_trace`` path unchanged.  The EXACT
+    replay gates run BEFORE any hit; refused rows are counted and fall
+    through.  ``counters`` is the caller's flat dict; every increment
+    uses ``setdefault`` so partial integrations stay honest.
+    """
+    def _bump(key, n=1):
+        counters[key] = counters.get(key, 0) + n
+
+    # 1. Gates first — the identical validation chronology on cache
+    #    hits (designs/04: validation still runs for every row).
+    refusal = binding_refusal(trace, d_weights, cutoff)
+    if refusal is None:
+        refusal = trace_structure_refusal(trace)
+    if refusal is not None:
+        _bump("reuse_refusals")
+        return None
+
+    # 2. Bundle mode: the authoritative MetricID v2 hit.
+    entry = store.lookup(metric_id)
+    if entry is not None:
+        if entry["trace_id"] != trace.trace_id:
+            # Defensive: v2 binds the trace id, so this cannot happen;
+            # refuse rather than trust (fail-safe, counted).
+            _bump("reuse_refusals")
+            return None
+        _bump("reuse_bundle_hits")
+        outs = tuple(entry["outs"][f].copy() for f in ALL_OUTS)
+        return outs, REUSE_MODE_BUNDLE
+
+    # 3. Split mode: admitted-signature rows only.
+    if not split_domain_admitted(d_weights, gravity_beta, gravity_plateau,
+                                 gravity_logistic_midpoint,
+                                 gravity_growth_rate, knn_weights, cutoff):
+        _bump("reuse_split_domain_refused")
+        return None
+
+    job = binding_job(d_weights, gravity_beta, gravity_plateau,
+                      gravity_logistic_midpoint, gravity_growth_rate,
+                      knn_decay, knn_weights, cutoff)
+    deps = output_dependencies(knn_decay)
+    branch = knn_branch(knn_decay)
+    candidates = store.entries_for_trace(trace.trace_id)
+    sources = {}
+    for out in ALL_OUTS:
+        need = set(deps[out])
+        for cand in candidates:
+            if out == "knn_access" and \
+                    knn_branch(cand["job"]["knn_decay"]) != branch:
+                continue
+            # Membership/distances/casts come from the shared trace
+            # (same trace_id); the agreement check covers the map's
+            # PARAMETER deps for this output (cutoff/weights/scalars).
+            if all(_job_agrees(job, cand["job"], p)
+                   for p in _PARAM_TO_DEP if _PARAM_TO_DEP[p] in need):
+                sources[out] = cand
+                break
+    unsourced = [f for f in ALL_OUTS if f not in sources]
+    if len(unsourced) == len(ALL_OUTS):
+        # Nothing to reuse: ONE full combined fold (the collapse law),
+        # not four extractions.
+        _bump("reuse_collapse_full_folds")
+        return None
+
+    outs = {}
+    for out in unsourced:
+        arr = np.empty(trace.origin_count,
+                       dtype=np.dtype(getattr(
+                           trace, _SPLIT_OUT_DTYPE_FIELD[out])))
+        _SPLIT_LOOPS[out](trace.indptr, trace.destination_ids,
+                          trace.distance_bits, d_weights, cutoff,
+                          gravity_beta, gravity_plateau,
+                          gravity_logistic_midpoint, knn_weights,
+                          knn_decay, gravity_growth_rate, arr)
+        outs[out] = arr
+        _bump("reuse_split_folds")
+    for out, cand in sources.items():
+        outs[out] = cand["outs"][out].copy()
+        _bump("reuse_split_copies")
+    _bump("reuse_split_rows")
+    return (outs["reach"], outs["gravity_exponential"],
+            outs["gravity_logistic"], outs["knn_access"]), REUSE_MODE_SPLIT

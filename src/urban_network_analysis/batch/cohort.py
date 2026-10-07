@@ -81,6 +81,7 @@ import numpy as np
 
 from ..cache import identity as _ckid
 from ..Engines import _metric_identity as _mid
+from ..Engines import _metric_reuse_scratch as _mre
 from ..Engines import _trace_access_scratch as trm
 from ..Execution import CacheOptions
 
@@ -88,6 +89,25 @@ __all__ = ["CohortSession", "CohortGraphEngine",
            "per_worker_residency_cap", "record_meta"]
 
 _SCHEMA_VERSION = trm.TRACE_SCHEMA_VERSION
+
+# P03M-B metric-reuse counters (distinct hit/miss/produced/copy/fold
+# accounting, designs/04).  mark()/delta() snapshot and slice exactly
+# these keys.
+_REUSE_COUNTER_KEYS = (
+    "reuse_bundle_hits",       # MetricID v2 hit: four fresh copies, zero folds
+    "reuse_split_rows",        # served by split mode (some fields reused)
+    "reuse_split_copies",      # fields copied from a canonical entry
+    "reuse_split_folds",       # fields computed by an admitted split fold
+    "reuse_collapse_full_folds",  # nothing reusable -> the full fold path
+    "reuse_split_domain_refused",  # outside the admitted specialization
+    "reuse_refusals",          # gates refused / defensive bundle mismatch
+    "reuse_registrations",     # canonical rows stored
+)
+
+# Worker-local metric reuse kill switch (P02I UNA_PREPARED precedent):
+# UNA_METRIC_REUSE=0 keeps the route on the plain replay path with the
+# store disabled — the pre-P03M-B behavior, counted.
+_METRIC_REUSE_ENV = "UNA_METRIC_REUSE"
 
 _PRODUCER_SHA256 = hashlib.sha256(
     open(trm.__file__, "rb").read()).hexdigest()
@@ -192,16 +212,26 @@ class CohortSession:
             "faultin_s": 0.0,
             "replay_s": 0.0,
         }
+        for _k in _REUSE_COUNTER_KEYS:
+            self.counters[_k] = 0
         self.last_trace_id: Optional[str] = None
         self.last_result_key: Optional[str] = None
         self.last_metric_id: Optional[str] = None
+        # P03M-B: worker-local metric-reuse store (designs/04 step 5's
+        # worker-local arm; process lifetime, no persistence, bounded
+        # LRU).  The kill switch keeps the plain replay path.
+        self.reuse_enabled = os.environ.get(_METRIC_REUSE_ENV, "1") \
+            not in ("0", "false", "False")
+        self._reuse = (_mre.MetricReuseStore() if self.reuse_enabled
+                       else None)
+        self.last_reuse_mode: Optional[str] = None
 
     # -- per-row attribution -------------------------------------------------
 
     def mark(self) -> dict:
         """Snapshot the accumulators before a row (cheap deep-enough)."""
         c = self.counters
-        return {"rows": c["rows_attempted"], "builds": c["builds"],
+        snap = {"rows": c["rows_attempted"], "builds": c["builds"],
                 "faultins": c["faultins"],
                 "resident_hits": c["resident_hits"],
                 "singleflight_lost": c["singleflight_lost"],
@@ -209,6 +239,9 @@ class CohortSession:
                 "refusals": dict(c["refusals"]),
                 "build_s": c["build_s"], "faultin_s": c["faultin_s"],
                 "replay_s": c["replay_s"]}
+        for _k in _REUSE_COUNTER_KEYS:
+            snap[_k] = c[_k]
+        return snap
 
     def delta(self, before: dict) -> dict:
         """The counters slice this row produced."""
@@ -217,7 +250,7 @@ class CohortSession:
         refusals = {k: v - ref_before.get(k, 0)
                     for k, v in c["refusals"].items()
                     if v - ref_before.get(k, 0) > 0}
-        return {
+        d = {
             "root": self.root,
             "rows": c["rows_attempted"] - before["rows"],
             "builds": c["builds"] - before["builds"],
@@ -234,7 +267,13 @@ class CohortSession:
             "trace_id": self.last_trace_id,
             "result_key": self.last_result_key,
             "metric_id": self.last_metric_id,
+            "reuse_mode": self.last_reuse_mode,
+            "reuse_evictions":
+                (self._reuse.evictions if self._reuse is not None else 0),
         }
+        for _k in _REUSE_COUNTER_KEYS:
+            d[_k] = c[_k] - before[_k]
+        return d
 
     def _refuse(self, reason: str) -> None:
         self.counters["refusals"][reason] = \
@@ -254,6 +293,7 @@ class CohortSession:
             self.last_trace_id = None
             self.last_result_key = None
             self.last_metric_id = None
+            self.last_reuse_mode = None
             return None
 
     def _o_access(self, view, engine, settings, d_weights):
@@ -417,6 +457,54 @@ class CohortSession:
             self.last_metric_id = None
             self._refuse(_mid.METRIC_ID_REFUSAL)
 
+        # P03M-B (designs/04 implementation order 2-5): consult the
+        # worker-local metric-reuse store BEFORE the full replay.  The
+        # reuse path runs the EXACT replay gates first (validation
+        # chronology on hits), serves bundle/split hits as four FRESH
+        # per-row arrays, and returns None for anything it will not
+        # serve — the code below then runs exactly as before.  A reuse
+        # hit never changes a number: bundle = the identical typed
+        # binding (MetricID v2); split = probe-admitted bit-identical
+        # extractions over the same trace.  Refusals are counted,
+        # never silent; failures land in the sparse gate above.
+        job = None
+        if self._reuse is not None and self.last_metric_id is not None:
+            job = _mre.binding_job(
+                d_weights, settings.gravity_beta,
+                settings.gravity_plateau,
+                settings.gravity_logistic_midpoint,
+                settings.gravity_decay_constant
+                / settings.gravity_logistic_midpoint,
+                settings.knn_decay, settings.knn_weights, cutoff)
+            self.last_reuse_mode = None
+            try:
+                served = _mre.row_replay(
+                    self._reuse, rec, self.last_metric_id,
+                    job["d_weights"], job["gravity_beta"],
+                    job["gravity_plateau"],
+                    job["gravity_logistic_midpoint"],
+                    job["gravity_growth_rate"], job["knn_decay"],
+                    job["knn_weights"], job["cutoff"], self.counters)
+            except Exception as exc:
+                served = None
+                self._refuse(f"metric_reuse:{type(exc).__name__}")
+            if served is not None:
+                outs, mode = served
+                if mode == _mre.REUSE_MODE_SPLIT:
+                    # A split-served row is a distinct MetricID: it
+                    # becomes canonical for later rows (its outputs are
+                    # the admitted bit-identical extractions).  Failed
+                    # rows never reach this line.
+                    try:
+                        self._reuse.register(
+                            self.last_metric_id, trace_id, job,
+                            dict(zip(_mre.ALL_OUTS, outs)))
+                        self.counters["reuse_registrations"] += 1
+                    except Exception:
+                        self._refuse("metric_reuse_register")
+                self.last_reuse_mode = mode
+                return outs
+
         # Replay through the engine's own reviewed fold with o_access's
         # EXACT argument threading (raw knn_weights, same division).
         t2 = time.perf_counter()
@@ -436,8 +524,21 @@ class CohortSession:
             return None
         self.counters["replays"] += 1
         self.counters["folds_done"] += int(res.folds_done)
-        return (res.reach, res.gravity_exponential,
+        outs = (res.reach, res.gravity_exponential,
                 res.gravity_logistic, res.knn_access)
+        if self._reuse is not None and job is not None:
+            # Canonical registration of a full-fold row (its four
+            # outputs are the reference bits for later bundle/split
+            # hits).  register() takes private copies; the arrays
+            # returned below stay the row's own fresh outputs.
+            try:
+                self._reuse.register(
+                    self.last_metric_id, trace_id, job,
+                    dict(zip(_mre.ALL_OUTS, outs)))
+                self.counters["reuse_registrations"] += 1
+            except Exception:
+                self._refuse("metric_reuse_register")
+        return outs
 
     @staticmethod
     def _rebuild(residency, key, lease) -> Optional[trm.TraceRecord]:

@@ -1,0 +1,477 @@
+{
+  "schema": "una-10x-p03mb-metric-reuse-wiring-1",
+  "task": "P03M-B wiring evidence: production row_replay over the frozen-cohort shape; correctness receipt only",
+  "generated": "2026-10-07T00:59:26.405280+00:00",
+  "law": [
+    "bitwise parity per una_legacy profile: every reuse-served row must equal a direct replay_trace of the same binding, byte for byte, on all four fold outputs",
+    "gates-before-hit: binding + trace-structure validation ran on EVERY row including reuse rows (reuse_refusals would count any crossing); failed outputs are never registered",
+    "fresh handouts: store entries are read-only; served arrays are copies (pinned by tests/tenx/post_p00/metrics/test_metric_reuse_wiring.py)",
+    "distinct counters: bundle hits / split rows / split copies / split folds / collapse / domain refusals / registrations are measured separately, never inferred"
+  ],
+  "cohort_shape": {
+    "mirror_of": "campaign_data/inputs/upstream_Boston/Boston/warmup2.csv (P00 checkpoint committed bytes): 32 rows, shared network/origins/destinations, only gravity_beta varies; knn_decay='logistic'",
+    "note": "scalar MAGNITUDES are the C11 battery case values; this object is the executor correctness receipt for the cohort SHAPE, not a re-measurement of the frozen cohort",
+    "rows": 32,
+    "knn_decay": "logistic",
+    "gravity_beta": "linspace(0.001, 0.004, 32) float",
+    "gravity_plateau": 0,
+    "gravity_plateau_type": "int",
+    "gravity_logistic_midpoint": 500,
+    "gravity_logistic_midpoint_type": "int",
+    "gravity_growth_rate": 0.8,
+    "search_radius_cutoff": 400,
+    "search_radius_cutoff_type": "int",
+    "d_weights": "f64 C-contiguous (admitted domain)"
+  },
+  "measured": {
+    "reuse_collapse_full_folds": 1,
+    "reuse_split_rows": 31,
+    "reuse_split_copies": 93,
+    "reuse_split_folds": 31,
+    "reuse_bundle_hits": 0,
+    "reuse_registrations": "cohort-layer counter; probe-level equivalent = store census below",
+    "reuse_refusals": 0,
+    "reuse_split_domain_refused": 0,
+    "store_entries_after": 32,
+    "store_evictions": 0,
+    "split_repeated_count_per_row": "gravity_exponential is the only fold repeated on a split row (1 of 4 outputs); the other 3 outputs are copies"
+  },
+  "parity": {
+    "rows_checked": 32,
+    "rows_with_full_bitwise_parity": 32,
+    "per_row": [
+      {
+        "row": 0,
+        "beta": 0.001,
+        "metric_id": "56db3df4efb96a8db6e7f4711569ee83c9092a372dda11f07dad56ace92f7f84",
+        "mode": "full_fold_first",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 1,
+        "beta": 0.0010967741935483872,
+        "metric_id": "e3420cd96e660e2214b3a2046dbe3566d70ef654bf692600976b9e59aa12c909",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 2,
+        "beta": 0.0011935483870967741,
+        "metric_id": "48b35e5ddd8ce308a7fed67eb606a35e85957d954b9ed3772bec88be0981b144",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 3,
+        "beta": 0.0012903225806451613,
+        "metric_id": "56ccc3528f9bc3d377caa9f4cf665d2267c0f1949a53340ef2b6012bb939e3c2",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 4,
+        "beta": 0.0013870967741935485,
+        "metric_id": "18245e91e25a0d6c316f2019185e49f61e705b8b71473a8019f03fcd61101d7f",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 5,
+        "beta": 0.0014838709677419356,
+        "metric_id": "8c5c6d084fd1f7f19f41fb21e4c3c50986ccfb97bab1472df29007d9b4735035",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 6,
+        "beta": 0.0015806451612903226,
+        "metric_id": "9813a43e90b18843bb0344de1e1b71365c5b35a0588f169d76669e4f4f97a89c",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 7,
+        "beta": 0.0016774193548387097,
+        "metric_id": "b4b1c9b3388caf62f5dde0b0e8a523964dba0657e55ed812720dd209d016d785",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 8,
+        "beta": 0.0017741935483870969,
+        "metric_id": "f51d5b4e8ad8a8431f23b0b2b78b92a3680065a7372e3ab617a06cbe76fc67a9",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 9,
+        "beta": 0.0018709677419354838,
+        "metric_id": "0047376a183ec646256b98d9df08d4fc31095ce77b6c4d405f1ceac0ce0a2913",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 10,
+        "beta": 0.001967741935483871,
+        "metric_id": "a19898b7cbcdfa748899e505805d359e17c472c8c94810a7e95ed51cdbad5d1a",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 11,
+        "beta": 0.002064516129032258,
+        "metric_id": "16c705c137b4f80c9d5a0f4dcbaaecd1cb9c0282d03511140d5f905912e12efd",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 12,
+        "beta": 0.002161290322580645,
+        "metric_id": "818c01a14e8ffd3c05ee4536c337eebe3b2455f4372fdad2865abd0377b4e127",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 13,
+        "beta": 0.0022580645161290325,
+        "metric_id": "94bb05a6c957b0c8e3b70ca4e1c22cc9d4d902724336133d12743f9af3b85773",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 14,
+        "beta": 0.0023548387096774194,
+        "metric_id": "67a910a46ba11cf395881ab079eab01d0908a5f86a025c442e34c8c42f14e1e2",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 15,
+        "beta": 0.0024516129032258064,
+        "metric_id": "2cf9aed7c4f96a18abb8fd7845821d5ac95d210e95e53954db95b95b22907ee6",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 16,
+        "beta": 0.0025483870967741937,
+        "metric_id": "2422ec6930c85c68903444bb87ed28608f440fd9a8d9f4151b8197074b47be67",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 17,
+        "beta": 0.0026451612903225807,
+        "metric_id": "d1db70f1f31cb480d66a5501daf86bb783ef855b69c1804dc687edb534deeedc",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 18,
+        "beta": 0.0027419354838709676,
+        "metric_id": "fb3ea2d7c0b7f72401286167b9b94b48919b83a9cd47bd92161cecb114d3cf80",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 19,
+        "beta": 0.002838709677419355,
+        "metric_id": "c7d29f4d09195c2aeaf57ffb7880fac0c6ba2485b599fdbd1d5980e9cc4b5103",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 20,
+        "beta": 0.002935483870967742,
+        "metric_id": "015a24242635ad2175b671e630b119ea3fe930d6267b1aaa1230e3e120db269c",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 21,
+        "beta": 0.003032258064516129,
+        "metric_id": "615d93049cb0ff6814ee29676fe9f30699c6f3f9380429bc6b6458625dace26f",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 22,
+        "beta": 0.0031290322580645163,
+        "metric_id": "c4b3714981ba54aa6a32de98e4fe1d94793e97ebc34d4e2d0c28daac0363ac5d",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 23,
+        "beta": 0.0032258064516129032,
+        "metric_id": "a6b58d2be324fe7e925ce5edf108921c7eadc5b5de1fe2f322774877b3b6d881",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 24,
+        "beta": 0.00332258064516129,
+        "metric_id": "4c9e2aca26b958aef0892104731ec0d844f34bc14f968289c5115796cad5c246",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 25,
+        "beta": 0.0034193548387096775,
+        "metric_id": "e0244347219e619851c9fc3703273f764d6facc307b1ca0a747f206d016e4c29",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 26,
+        "beta": 0.0035161290322580645,
+        "metric_id": "11450dc692890cfe2e28a067dc8d9b16ec64a1d0be00ed26fcfbed3ed11c9bd7",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 27,
+        "beta": 0.0036129032258064514,
+        "metric_id": "26d64ec2fcfa92fa1fd2e0da4d18e3e10fac9a913f7831b891f2fb45168c4d33",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 28,
+        "beta": 0.003709677419354839,
+        "metric_id": "d7165c9a2f0c1d187052adbfc5c62b7039f557a8f4feed2e19f1733f8f3e4627",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 29,
+        "beta": 0.0038064516129032258,
+        "metric_id": "bf04487c9ca5b8e01ba0dc29db456c61d7453ba54d09634b8f30a2470d8d4503",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 30,
+        "beta": 0.0039032258064516127,
+        "metric_id": "623eb4b9f6d05c373da716e929d2164da27bcf46fbc95809e6e4827b725f83d2",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      },
+      {
+        "row": 31,
+        "beta": 0.004,
+        "metric_id": "674763a976e9ba8ef51394640153412c6088b90c66e116562c1cccc2aeba8047",
+        "mode": "metric_reuse_split",
+        "bitwise_parity_vs_direct_replay": {
+          "reach": true,
+          "gravity_exponential": true,
+          "gravity_logistic": true,
+          "knn_access": true
+        },
+        "all_fields_parity": true
+      }
+    ]
+  },
+  "identities": {
+    "python": "3.11.16",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "numba": "0.67.0",
+    "numpy": "2.4.6",
+    "producer_shas": {
+      "Engines/_trace_access_scratch.py": "2c7e3ad779efe845f14e6467545d5f13a40566791b594f882421c3f7ff4da8a2",
+      "Engines/_metric_reuse_scratch.py": "94556ae573850572e6257ca6ca3b7823e47944cb808e098f41c8a39dfb91d0bc",
+      "Engines/_metric_identity.py": "376286c3fa1e823e7bf1ad39998c3dbda648f111ebee283c03e32c4f496e2ddf",
+      "batch/cohort.py": "f709936ee616245cd7113e01b8d900afe887b8910baa1cd339694870f77b3c25"
+    }
+  },
+  "disposition": {
+    "correctness": "RECEIPT ESTABLISHED: 1 full fold + 31 split rows, every row bitwise-equal to its direct replay, gates run on every row, fresh handouts",
+    "performance_claim": "NONE \u2014 designs/04 forbids inferring wall saving from saved fields; any 10x contribution is a later measurement under the frozen policy (tools/gate_10x.py, seed 20261003)"
+  }
+}

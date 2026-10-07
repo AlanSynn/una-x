@@ -234,6 +234,64 @@ def _bundle_grid():
     return grid
 
 
+def _case_slices_int_cutoff():
+    """The INTEGER-cutoff adversarial slices: the REAL cohort signature
+    carries ``Settings.search_radius: int`` (the frozen/audit manifests
+    hold search_radius=400), so the int-cutoff specialization is the
+    production domain the split plans must be admitted on.  Membership
+    boundaries land on integer distances exactly; everything else
+    mirrors the float sweep."""
+    rng = np.random.default_rng(20261007)
+    cases = []
+    for n in [0, 1, 2, 3, 4, 7, 8, 15, 16, 17, 31, 32, 33, 63, 64, 65,
+              127, 128, 129, 255, 256, 257]:
+        dist = rng.uniform(0.0, 399.0, n)
+        cases.append((dist, 400))          # int cutoff (Settings int)
+    ties = np.array([1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 3.0, 3.0])
+    cases.append((ties, 400))
+    sub = np.array([5e-324, 1e-320, 2.2250738585072014e-308, 1.0,
+                    1.7976931348623157e308 / 4], dtype=np.float64)
+    cases.append((sub, 400))
+    # distances EXACTLY at the integer cutoff and one-ULP below it
+    bnd = np.array([0.0, -0.0, 200.0, 400.0,
+                    399.99999999999994, 400.0])
+    cases.append((bnd, 400))
+    near = 400.0 - np.abs(rng.normal(0, 1e-12, 64))
+    near = np.clip(near, 0.0, 400.0)
+    cases.append((near, 400))
+    return cases
+
+
+def _bundle_grid_int_scalars():
+    """Scalar bundles over the ACTUAL Settings types on the frozen
+    cohort: gravity_plateau int (default 0), gravity_logistic_midpoint
+    int (500), gravity_beta float, growth float (true division of the
+    float decay constant by the int midpoint).  Integer plateau/midpoint
+    change the fold's SPECIALIZATION (int64 arguments) even where the
+    numeric promotion matches — bit identity is measured, never
+    inferred."""
+    betas = [0.0, -0.0, 1e-12, 0.001, 1.5, 4.0, 1e6]
+    plateaus = [0, 2, 24]                  # int (Settings int)
+    mids = [3, 500]                        # int (Settings int)
+    growths = [0.0, 1e-12, 0.8, 1e6]
+    decays = ["exponential", "logistic", "other"]
+    kws = [
+        np.array([1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]),
+        np.array([2.0, 1.0]),                   # k crop shorter than slice
+        np.array([1.0] * 10 + [2.0]),           # k crop longer than slice
+    ]
+    grid = []
+    for beta in betas:
+        for plateau in plateaus:
+            for mid_ in mids:
+                for growth in growths:
+                    for decay in decays:
+                        for kw in kws:
+                            grid.append((beta, plateau, mid_, growth,
+                                         decay, kw))
+    return grid
+
+
 FIELDS = ("reach", "gravity_exponential", "gravity_logistic",
           "knn_access")
 PLANS = {"reach": plan_reach,
@@ -242,20 +300,12 @@ PLANS = {"reach": plan_reach,
          "knn_access": plan_knn_access}
 
 
-def main(out_path):
-    assert len(sys.argv) == 2, "usage: probe.py <out.json>"
-    import os
-    assert os.environ.get("NUMBA_CACHE_DIR"), \
-        "NUMBA_CACHE_DIR must be pinned for this probe"
-
-    # The reference is the REAL compiled fold (its own module bytes),
-    # called with the same duplicated-binding convention the replay
-    # driver uses (knn scalar slots carry the main scalars).  No
-    # transcription sits between the plan and the production fold.
+def _run_sweep(slices, bundles, verdicts):
+    """One full sweep; returns the fold-evaluation count.  Reference =
+    the REAL compiled fold with the duplicated knn binding the replay
+    driver threads."""
     from urban_network_analysis.Engines.AccessibilityWElevation import (
         reach_gravity_knn_access as real_fold)
-    import numba
-    import llvmlite
 
     def full_fold(dist, d_weights, cutoff, beta, plateau, mid_, growth,
                   decay, kw):
@@ -268,15 +318,12 @@ def main(out_path):
         ("decaying", np.concatenate(
             [np.ones(129), np.full(129, 1e-8)])),
     ]
-
-    verdicts = {f: {"admitted": True, "cases": 0,
-                    "first_divergence": None} for f in FIELDS}
     total = 0
-    for dist, cutoff in _case_slices():
+    for dist, cutoff in slices:
         n = dist.shape[0]
         for wname, pool in weights_pool:
             d_weights = pool[:n].copy()
-            for bundle in _bundle_grid():
+            for bundle in bundles:
                 beta, plateau, mid_, growth, decay, kw = bundle
                 r, ge, gl, kn = full_fold(
                     dist, d_weights, cutoff, beta, plateau, mid_,
@@ -306,7 +353,31 @@ def main(out_path):
                                 "plan_bits":
                                     np.asarray(got).tobytes().hex(),
                             }
-                    verdicts[field]["cases"] += 1
+                verdicts[field]["cases"] += 1
+    return total
+
+
+def main(out_path):
+    assert len(sys.argv) == 2, "usage: probe.py <out.json>"
+    import os
+    assert os.environ.get("NUMBA_CACHE_DIR"), \
+        "NUMBA_CACHE_DIR must be pinned for this probe"
+
+    import numba
+    import llvmlite
+
+    # Sweep 1: python-float scalar signature (the increment-A domain).
+    verdicts_float = {f: {"admitted": True, "cases": 0,
+                          "first_divergence": None} for f in FIELDS}
+    total_float = _run_sweep(_case_slices(), _bundle_grid(),
+                             verdicts_float)
+
+    # Sweep 2: the ACTUAL cohort signature — int search_radius /
+    # int plateau / int midpoint (Settings types), float beta/growth.
+    verdicts_int = {f: {"admitted": True, "cases": 0,
+                        "first_divergence": None} for f in FIELDS}
+    total_int = _run_sweep(_case_slices_int_cutoff(),
+                           _bundle_grid_int_scalars(), verdicts_int)
 
     out = {
         "schema": "una-10x-p03m-partial-plan-verdict-1",
@@ -318,20 +389,36 @@ def main(out_path):
         "disposition": {
             "partial_plans": "admitted at the CORRECTNESS level (all "
                              "four fields bit-identical to the real "
-                             "fold across the adversarial sweep)",
+                             "fold across BOTH admitted-signature "
+                             "sweeps)",
+            "admitted_signatures": [
+                "python-float scalars + f64 C-contiguous "
+                "distances/weights (increment A)",
+                "int search_radius/plateau/midpoint (Settings types, "
+                "the real cohort signature) + float beta/growth + f64 "
+                "C-contiguous distances/weights (this extension; "
+                "int64 arguments change the SPECIALIZATION, so "
+                "bit identity is measured, never inferred)",
+            ],
             "admission_scope": "this host + compiler identity + the "
-                               "f64-C-contig/python-float/str-branch "
-                               "specialization domain; any fold module "
-                               "byte change re-opens admission (the "
-                               "MetricID v2 fold closure invalidates)",
-            "production_wiring": "NOT landed in this increment: the "
-                                 "replay path still runs the full "
-                                 "fold every row (zero behavior "
-                                 "change); the reuse plan (which "
-                                 "fields skip, fresh-output copies, "
-                                 "per-metric single-flight, counters) "
-                                 "is the next increment with its own "
-                                 "tests and review",
+                               "two enumerated scalar/array "
+                               "specialization domains; any fold "
+                               "module byte change re-opens admission "
+                               "(the MetricID v2 fold closure "
+                               "invalidates); OTHER scalar types "
+                               "(numpy scalars, bools) and other "
+                               "array dtypes/layouts stay OUTSIDE "
+                               "the split domain and take the full "
+                               "fold",
+            "production_wiring": "the reuse executor lands in the "
+                                 "same increment family (P03M-B): "
+                                 "worker-local bounded store, bundle "
+                                 "mode gated by MetricID v2, split "
+                                 "mode gated by these admissions, "
+                                 "full-fold fallback, distinct "
+                                 "counters; performance claim stays "
+                                 "NONE until a frozen-policy "
+                                 "measurement",
             "performance_claim": "NONE — designs/04 forbids inferring "
                                  "wall saving from saved fields; any "
                                  "timing is a later measurement under "
@@ -352,9 +439,10 @@ def main(out_path):
         "admitted_domain": "replay-admitted candidate slices (finite "
                            "nonnegative distances <= cutoff, finite "
                            "nonnegative weights); adversarial lengths, "
-                           "ties, subnormals, cutoff boundaries, "
-                           "sign-split scalars, all three KNN branches, "
-                           "k crops shorter and longer than the slice",
+                           "ties, subnormals, cutoff boundaries (int "
+                           "and float), sign-split scalars, all three "
+                           "KNN branches, k crops shorter and longer "
+                           "than the slice",
         "compilation": "reference = the REAL compiled fold "
                        "(reach_gravity_knn_access, its own module "
                        "bytes, duplicated knn binding as the replay "
@@ -367,23 +455,32 @@ def main(out_path):
             "llvmlite_version": llvmlite.__version__,
             "numpy_version": np.__version__,
         },
-        "admission_scope": "this host, this compiler identity, the "
-                           "f64 C-contiguous slice/weights + python-float "
-                           "scalar + str-branch specialization domain the "
-                           "replay driver threads; a compiler or flag "
-                           "change re-opens the admission (MetricID v2's "
-                           "fold closure invalidates IDs on any module "
-                           "byte change)",
-        "total_fold_evaluations": total,
-        "plans": verdicts,
+        "total_fold_evaluations": total_float + total_int,
+        "sweeps": {
+            "float_python_signature": {
+                "total_fold_evaluations": total_float,
+                "plans": verdicts_float,
+            },
+            "int_cohort_signature": {
+                "signature": "cutoff/plateau/midpoint python int; "
+                             "beta/growth python float; d_weights/"
+                             "knn_weights f64 C-contiguous; str "
+                             "branch",
+                "total_fold_evaluations": total_int,
+                "plans": verdicts_int,
+            },
+        },
         "decision_rule": "admitted = plan bits == full-fold component "
-                         "bits on EVERY case; any divergence -> keep "
-                         "the full fold for that field",
+                         "bits on EVERY case of the signature's sweep; "
+                         "any divergence -> keep the full fold for "
+                         "that field/signature",
     }
     Path(out_path).write_text(json.dumps(out, indent=1) + "\n")
-    admitted = [f for f in FIELDS if verdicts[f]["admitted"]]
-    print(f"PROBE OK cases={total} admitted_fields={admitted or 'NONE'} "
-          f"-> {out_path}")
+    admitted_f = [f for f in FIELDS if verdicts_float[f]["admitted"]]
+    admitted_i = [f for f in FIELDS if verdicts_int[f]["admitted"]]
+    print(f"PROBE OK cases={total_float + total_int} "
+          f"admitted_float={admitted_f or 'NONE'} "
+          f"admitted_int={admitted_i or 'NONE'} -> {out_path}")
 
 
 if __name__ == "__main__":
