@@ -17,10 +17,10 @@
   "note": "recorded for transparency; NOT silently merged into the ledger \u2014 basis difference left to the performance owner"
  },
  "w00_calibration_receipts": "not present locally; W00 deliverables (PRIMARY.json/WORKLOADS.json/baseline_stage_model.json) live in the remote run root \u2014 any W00 heavy consumption is inside the P00-ledger basis or unknown_pending_remote",
- "remaining_work_budget_seconds": 25004.617381,
+ "remaining_work_budget_seconds": 24981.111281,
  "final_reserved_seconds": 7200,
  "reset": false,
- "this_run_consumption_so_far_seconds": 1571.9126186250935,
+ "this_run_consumption_so_far_seconds": 1595.4187186250936,
  "note": "all values transcribed from committed receipts, not recomputed; ledger only grows",
  "consumption_log_2026_10_06": {
   "law": "ledger only grows; walls are committed per-leg public_call_wall_s figures",
@@ -109,7 +109,17 @@
    "co_tenancy_caveat": "NOT frozen figures: n=2/arm matrix under ambient co-tenancy; loadavg gate (<8, 90-min bounded) held 3 legs (L1B1 1 sample/60s, L2A2 1 sample/60s, L1B2 6 samples/360s); in-run 1-min loadavg max L1B1 10.08, L2A2 12.76, L1B2 9.66, L2A1 8.26; L1B2 native 16.2113s fired after gate release from a 12.54 entry reading and is the known anomalous leg - no speed claim rests on it",
    "headlines": "native==numba bitwise across all 4 matrix legs (64 files / 147829892 B census exact every leg); engagement exactly one native owner dispatch per native leg (origins 14751, tiles 231, candidates 90331, errors 0, last_status 0) and zero report lines on numba controls; impl_pin src byte-identical to e6920bfd70ed6d3801305264d8d1c864d1197b16, tests additive-only, tree clean"
   },
-  "session_total_s": 1571.9126186250935,
-  "cumulative_ledger_s": 3795.382619
+  "session_total_s": 1595.4187186250936,
+  "cumulative_ledger_s": 3818.888719,
+  "n10_native_qualification_s": {
+   "head": "8d49e9d (evidence); legs at fire-2 tree incl pyproject fix",
+   "wheel_installed_numba_leg_s": 19.502,
+   "wheel_leg_class": "timed public call (installed wheel context, venv_install)",
+   "native_build_cost_s": 4.0041,
+   "build_cost_class": "NOT a public call: fresh native/build.py in /tmp copy (venv-n00), charged per N10 law",
+   "fire1_void_note": "fire-1 installed leg crashed pre-timer (packaging defect; no wall)",
+   "gate": "pre-leg loadavg 5.98 (quiet)",
+   "outcome": "installed wheel executes cohort bitwise (64f/147829892B, bitwise_equal=True vs numba matrix arm); packaging defect found+fixed (spawn shim force-include, inherited from parent)"
+  }
  }
 }
