@@ -17,10 +17,10 @@
   "note": "recorded for transparency; NOT silently merged into the ledger \u2014 basis difference left to the performance owner"
  },
  "w00_calibration_receipts": "not present locally; W00 deliverables (PRIMARY.json/WORKLOADS.json/baseline_stage_model.json) live in the remote run root \u2014 any W00 heavy consumption is inside the P00-ledger basis or unknown_pending_remote",
- "remaining_work_budget_seconds": 24920.401681375,
+ "remaining_work_budget_seconds": 24677.6016813749,
  "final_reserved_seconds": 7200,
  "reset": false,
- "this_run_consumption_so_far_seconds": 1656.1283186251,
+ "this_run_consumption_so_far_seconds": 1898.9283186251,
  "note": "all values transcribed from committed receipts, not recomputed; ledger only grows",
  "consumption_log_2026_10_06": {
   "law": "ledger only grows; walls are committed per-leg public_call_wall_s figures",
@@ -109,8 +109,8 @@
    "co_tenancy_caveat": "NOT frozen figures: n=2/arm matrix under ambient co-tenancy; loadavg gate (<8, 90-min bounded) held 3 legs (L1B1 1 sample/60s, L2A2 1 sample/60s, L1B2 6 samples/360s); in-run 1-min loadavg max L1B1 10.08, L2A2 12.76, L1B2 9.66, L2A1 8.26; L1B2 native 16.2113s fired after gate release from a 12.54 entry reading and is the known anomalous leg - no speed claim rests on it",
    "headlines": "native==numba bitwise across all 4 matrix legs (64 files / 147829892 B census exact every leg); engagement exactly one native owner dispatch per native leg (origins 14751, tiles 231, candidates 90331, errors 0, last_status 0) and zero report lines on numba controls; impl_pin src byte-identical to e6920bfd70ed6d3801305264d8d1c864d1197b16, tests additive-only, tree clean"
   },
-  "session_total_s": 1656.1283186251,
-  "cumulative_ledger_s": 3879.598318625,
+  "session_total_s": 1898.9283186251,
+  "cumulative_ledger_s": 4122.3983186251,
   "n10_native_qualification_s": {
    "head": "8d49e9d (evidence); legs at fire-2 tree incl pyproject fix",
    "wheel_installed_numba_leg_s": 19.502,
@@ -131,6 +131,15 @@
    "bitwise": "both legs 64 files / 147829892 B, bitwise_equal_to_n00_L2A1_reference=True, zero failed jobs",
    "untimed_residue_disclosed_not_merged": "3x S50 probe attempts (2 failed on CSV-dir anchoring before fix, 1 clean) + parent probes + builds/installs; each 2-row probe bounded well under 10s, no timer, residue disclosed per superseded-shakedown precedent",
    "evidence": "i00/installed_manifest.json + freeze_candidate.json + sha-named consoles (fire1 7f4431b1..., fire2 4cdb6da4...)"
+  },
+  "v00_gauntlet_s": {
+   "law": "measured pytest walls only (time-reported); probes untimed -> disclosed not merged",
+   "batch_subtree_pytest_s": 189.61,
+   "control_test_pytest_s": 29.65,
+   "skip_identification_rerun_s": 23.54,
+   "v00_total_s": 242.8,
+   "untimed_residue_disclosed_not_merged": "4x installed 2-row serial/parallel probe calls + 3x S50 probes from I00 (no timers, bounded minutes total)",
+   "evidence": "v00/{bitparity,state_artifact_checks,backend_matrix}.json + sha-named consoles (9009f2ac, 4024b11d, ccc79fd9)"
   }
  }
 }

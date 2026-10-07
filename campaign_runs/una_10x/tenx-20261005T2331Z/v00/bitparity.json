@@ -1,0 +1,56 @@
+{
+ "schema": "una-10x-v00-bitparity-1",
+ "task": "V00 bit parity from installed artifacts (TASKS_CLAUDE.yaml V00, VALIDATION.md)",
+ "date": "2026-10-07",
+ "method": "per-file sha256 cross-compare of REQUIRED cohort outputs recorded in the legs' output_files (byte-identity claims bind to those files; no rerun needed)",
+ "arms": {
+  "A_installed_comparator": {
+   "leg": "i00/legs/a_installed_comparator.json",
+   "wheel_sha256": "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1",
+   "source_rev": "395cdc5f683894b6f2ba460f7dbcefee99981ba3"
+  },
+  "B_installed_candidate": {
+   "leg": "i00/legs/b_installed_candidate.json",
+   "wheel_sha256": "9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97",
+   "source_rev": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c"
+  },
+  "R_repo_reference_n00_L2A1": {
+   "leg": "n00/legs/L2A1_numba.json",
+   "role": "repo-frame numba reference leg (matrix arm L2A1)"
+  }
+ },
+ "normalization": "rel directory accessibility_<date>_<time> -> accessibility_TS (runs happen at different clock times; timestamp policy itself disclosed unnormalized below)",
+ "raw_output_dir_prefixes": {
+  "a": {
+   "accessibility_2026-10-07_0519": 8,
+   "accessibility_2026-10-07_0520": 56
+  },
+  "b": {
+   "accessibility_2026-10-07_0523": 64
+  },
+  "note": "A leg crossed a minute boundary (0519 8 files / 0520 56 files): the per-minute output naming policy is retained, not normalized away in the raw legs"
+ },
+ "required_files_per_arm": 64,
+ "bytes_per_arm": {
+  "A": 147829892,
+  "B": 147829892,
+  "R": 147829892
+ },
+ "bitwise_equal_per_file": {
+  "A_vs_B": true,
+  "A_vs_R": true,
+  "B_vs_R": true,
+  "mismatched_keys": {
+   "A_vs_B": [],
+   "A_vs_R": []
+  }
+ },
+ "per_arm_sha256_aggregate_of_sorted_file_shas": {
+  "A": "9fff1b9d2af5925228f29eb6c797ec486f51a40590a9eb4525b49fa2d74cf79b",
+  "B": "9fff1b9d2af5925228f29eb6c797ec486f51a40590a9eb4525b49fa2d74cf79b",
+  "R": "9fff1b9d2af5925228f29eb6c797ec486f51a40590a9eb4525b49fa2d74cf79b"
+ },
+ "aggregates_equal": true,
+ "scope": "frozen 32-job observed cohort, 64 required files, installed noneditable wheels, zero failed jobs (legs' zero_failed_jobs)",
+ "not_claimed": "cross-ISA parity (VALIDATION.md:66); GPU outputs; native-backend outputs (covered by n00 matrix native legs, linked in backend_matrix.json)"
+}

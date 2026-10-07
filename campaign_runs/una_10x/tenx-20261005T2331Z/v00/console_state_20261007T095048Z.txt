@@ -1,0 +1,5 @@
+STATE OK arm=a files=4 bytes=9239257 serial==parallel bitwise
+STATE OK arm=b files=4 bytes=9239257 serial==parallel bitwise
+SHIM OK arm=a 037d6c47c7ec
+SHIM OK arm=b 037d6c47c7ec
+STATE ARTIFACT CHECKS WRITTEN

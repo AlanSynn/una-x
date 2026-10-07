@@ -1,0 +1,43 @@
+{
+ "schema": "una-10x-v00-backend-matrix-1",
+ "task": "V00 backend matrix from installed artifacts (TASKS_CLAUDE.yaml V00; VALIDATION.md installed/backend law)",
+ "date": "2026-10-07",
+ "matrix": {
+  "A_installed_comparator": {
+   "wheel_sha256": "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1",
+   "backends_available": [
+    "numba"
+   ],
+   "evidence": "395cdc5 tree: backends/ = contracts stub only, no native implementation (git ls-tree); installed leg i00/legs/a_installed_comparator.json bitwise vs reference",
+   "native": "absent in source rev (capability did not exist at 395cdc5)",
+   "gpu": "absent in source rev"
+  },
+  "B_installed_candidate": {
+   "wheel_sha256": "9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97",
+   "backends_available": [
+    "numba"
+   ],
+   "numba": "default gate stack; installed leg i00/legs/b_installed_candidate.json bitwise vs reference (64f/147829892B)",
+   "native_trace_producer": {
+    "status": "RETAINED capability, env-gated opt-in, repo-scoped",
+    "in_installed_wheel": false,
+    "wheel_census_assert": "native/.so/sitecustomize/una_n00_trace_producer entries absent (i00/wheel_census.json)",
+    "admission": "numba (unchanged): native trace producer NOT admitted to the 10x gate stack; installed wheel is numba-only by construction and the C-arm shows no reliable full-region win",
+    "bitwise_evidence": "n00 matrix native==numba bitwise at batch scale; n10 native_qualification.json decision",
+    "not_a_lever_verdict": "not a demonstrated lever: native legs contradict each other at n=2 under co-tenancy; no reliable full-region benefit (dossier 08 'reject default where no measured full-region benefit')"
+   },
+   "gpu": {
+    "status": "explicit_unavailable on this host",
+    "gate": "G11 durable store authoritative; any device claim requires NCSA Delta checklist (missing hardware = qualification blocker, not simulated success)",
+    "recorded_as": "not passed (VALIDATION.md:65 skipped/unavailable = not passed)"
+   }
+  }
+ },
+ "engagement": {
+  "10x_gate_stack": "numba only, both arms (N10 decision: native not admitted; GPU unavailable)",
+  "native_engagement_evidence": "none in gate legs: UNA_NATIVE_TRACE cleared in all timed legs (i00/fire_i00.sh S40/S41 env)"
+ },
+ "installed_wheel_is_not_source_tree_pass": "VALIDATION.md:59-60 satisfied: legs ran from fresh noneditable venv installs outside checkouts (i00/install_identity.json), per-module identity chain wheel->parent->worker",
+ "cpu_only_install_remains_functional": true,
+ "fallback_qualification_disclaimer": "no fallback-only/simulated qualification performed; unavailable backends recorded, not simulated"
+}
