@@ -56,8 +56,16 @@ def test_validation_refusals_precede_hardware_probe(monkeypatch):
 
 
 def test_no_device_refuses_hardware_unavailable():
-    # This host has no CUDA device (G00 audit); the REAL probe refuses.
-    with pytest.raises(HardwareUnavailable, match="no_cuda_driver"):
+    # The REAL probe must refuse on a host without a usable CUDA device —
+    # whatever its typed reason is on that host (macOS: no_cuda_driver;
+    # Delta login node: cuInit_failed rc=100, driver loader but no GPU).
+    from gpu.runtime.availability import probe_driver
+    probe = probe_driver()
+    if probe.available:
+        pytest.skip("this host has a real CUDA device; the no-device "
+                    "refusal is unreachable here (run on a GPU-less host)")
+    with pytest.raises(HardwareUnavailable,
+                       match=f"CUDA probe refused \\({probe.reason}\\)"):
         execute_fold_region(_request())
 
 
@@ -80,27 +88,79 @@ def test_forged_cell_cannot_bypass_gate_store(monkeypatch):
         execute_fold_region(_request(cell=forged), context=object())
 
 
-def test_context_refusal_after_gate(monkeypatch):
-    from gpu.backends.gpu import cell_gate
-    cell_gate("gated-cell", passed=True, association="seq",
-              evidence_ref="test fixture")
+def test_context_refusal_after_gate(monkeypatch, tmp_path):
+    from gpu.backends.gpu import record_gate
+    evidence = tmp_path / "evidence.json"
+    evidence.write_text('{"fixture": true}\n')
+    store = tmp_path / "store.json"
+    record_gate(str(store), "gated-cell", passed=True, association="seq",
+                evidence_ref=str(evidence))
     monkeypatch.setattr(region, "probe_driver",
                         lambda: _FakeProbe(available=True))
     cell = FoldCell(cell_id="gated-cell", association="seq",
                     bit_validated=True)
+    request = _request(cell=cell)
+    request = FoldRegionRequest(
+        distance_rows=request.distance_rows, d_weights=request.d_weights,
+        scalars=request.scalars, cell=request.cell,
+        tile_origins=request.tile_origins, gate_store=str(store))
     with pytest.raises(HardwareUnavailable, match="device context"):
-        execute_fold_region(_request(cell=cell), context=None)
+        execute_fold_region(request, context=None)
 
 
-def test_all_gates_pass_stop_is_designed_not_fallback(monkeypatch):
-    from gpu.backends.gpu import cell_gate
-    cell_gate("gated-cell2", passed=True, association="seq",
-              evidence_ref="test fixture")
+def test_all_gates_pass_stop_is_designed_not_fallback(monkeypatch, tmp_path):
+    from gpu.backends.gpu import record_gate
+    evidence = tmp_path / "evidence.json"
+    evidence.write_text('{"fixture": true}\n')
+    store = tmp_path / "store.json"
+    record_gate(str(store), "gated-cell2", passed=True, association="seq",
+                evidence_ref=str(evidence))
     monkeypatch.setattr(region, "probe_driver",
                         lambda: _FakeProbe(available=True))
     cell = FoldCell(cell_id="gated-cell2", association="seq",
                     bit_validated=True)
+    request = _request(cell=cell)
+    request = FoldRegionRequest(
+        distance_rows=request.distance_rows, d_weights=request.d_weights,
+        scalars=request.scalars, cell=request.cell,
+        tile_origins=request.tile_origins, gate_store=str(store))
     with pytest.raises(NotImplementedError, match="G11"):
+        execute_fold_region(request, context=object())
+
+
+def test_tampered_evidence_closes_dispatch(monkeypatch, tmp_path):
+    # G10R F2 enforcement end to end: a cell opened against evidence that
+    # LATER CHANGES must be refused at dispatch — the store re-verifies
+    # evidence bytes on every read.
+    from gpu.backends.gpu import record_gate
+    evidence = tmp_path / "evidence.json"
+    evidence.write_text('{"fixture": true}\n')
+    store = tmp_path / "store.json"
+    record_gate(str(store), "tampered-cell", passed=True,
+                association="seq", evidence_ref=str(evidence))
+    evidence.write_text('{"fixture": true, "tampered": 1}\n')
+    monkeypatch.setattr(region, "probe_driver",
+                        lambda: _FakeProbe(available=True))
+    cell = FoldCell(cell_id="tampered-cell", association="seq",
+                    bit_validated=True)
+    request = FoldRegionRequest(
+        distance_rows=_request(cell=cell).distance_rows,
+        d_weights=_request(cell=cell).d_weights,
+        scalars=_scalars(), cell=cell, tile_origins=2,
+        gate_store=str(store))
+    with pytest.raises(ParityGateNotRun, match="gate store does not open"):
+        execute_fold_region(request, context=object())
+
+
+def test_gate_store_env_fallback(monkeypatch, tmp_path):
+    # The request may omit gate_store; the env var is the fallback and its
+    # absence keeps every cell closed.
+    monkeypatch.setattr(region, "probe_driver",
+                        lambda: _FakeProbe(available=True))
+    cell = FoldCell(cell_id="env-cell", association="seq",
+                    bit_validated=True)
+    monkeypatch.delenv("UNA_GPU_GATE_STORE", raising=False)
+    with pytest.raises(ParityGateNotRun, match="no gate store configured"):
         execute_fold_region(_request(cell=cell), context=object())
 
 

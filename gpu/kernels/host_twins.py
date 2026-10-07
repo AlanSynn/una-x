@@ -62,12 +62,25 @@ def k0_compact(d_distance: np.ndarray, cutoff: float):
 def kept_prefix(d_distance: np.ndarray, d_weights: np.ndarray, cutoff: float):
     """Kept-plan input passthrough: values already compacted by the trace.
 
-    Validates finiteness of the kept values (the engine's domain guarantee:
-    in-cutoff distances are finite) and returns views unchanged.
+    Validates the kept domain and returns views unchanged: equal lengths and
+    FINITE kept values (the engine's domain guarantee: in-cutoff distances
+    are finite).  Refusal, never coercion — a non-finite kept value is
+    outside the plan's recorded domain and is refused, not propagated.
+
+    (G10R F3: the finiteness check the docstring claimed is now implemented;
+    previously only the length check existed.)
     """
     if d_distance.shape[0] != d_weights.shape[0]:
         raise ValueError("kept prefix: distance/weight length mismatch "
                          f"({d_distance.shape[0]} vs {d_weights.shape[0]})")
+    for name, arr in (("distances", d_distance), ("weights", d_weights)):
+        finite = np.isfinite(arr)
+        if not bool(finite.all()):
+            bad = int((~finite).sum())
+            raise ValueError(
+                f"kept prefix: non-finite kept {name} ({bad} value(s)); "
+                "the kept plan's domain is finite values — refusal, no "
+                "coercion")
     return d_distance, d_weights
 
 

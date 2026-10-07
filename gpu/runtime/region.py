@@ -18,7 +18,9 @@ G11 crossover measurement, never subtracted.
 FAIL-CLOSED ORDER (each step refuses before any later step executes):
   1. request validation      -> ValueError/TypeError (typed, no coercion)
   2. driver probe            -> HardwareUnavailable (no CUDA/FP64 device)
-  3. cell parity gate        -> ParityGateNotRun (gate exists, not passed)
+  3. cell parity gate        -> ParityGateNotRun (the DURABLE EVIDENCE-BACKED
+     gate store does not open the cell: missing store/entry/evidence, or
+     evidence bytes changed since the verdict was recorded — G10R F2)
   4. device context port     -> HardwareUnavailable (port not attached)
 
 The device launch ABI itself lands with G11 against real CUDA; this build
@@ -35,7 +37,7 @@ from typing import Optional, Tuple
 
 import numpy as np
 
-from ..backends.gpu import cell_association, cell_is_gated_open
+from ..backends.gpu import gate_state
 from ..kernels.host_twins import fold_host_reference
 from .availability import probe_driver
 from .buffers import require_c_contiguous
@@ -137,6 +139,8 @@ class FoldRegionRequest:
     cell: FoldCell
     tile_origins: int = 64
     staging_budget_bytes: int = 64 * 1024 * 1024
+    gate_store: Optional[str] = None   # durable gate-store path; None falls
+    # back to UNA_GPU_GATE_STORE, and with neither, every cell reads closed.
 
 
 class FoldRegionRecord:
@@ -220,15 +224,18 @@ def execute_fold_region(request: FoldRegionRequest,
     if not probe.available:
         raise HardwareUnavailable(
             f"CUDA probe refused ({probe.reason}): {probe.detail}")
-    # 3. per-cell parity gate — the GATE STORE is authoritative; a
-    # caller-forged cell object alone can never open dispatch.
+    # 3. per-cell parity gate — the DURABLE EVIDENCE-BACKED store is the
+    # sole authority (G10R F2): the verdict and its evidence bytes are
+    # re-read and re-verified from disk on every dispatch; a caller-forged
+    # cell object can never open a cell, and tampered evidence closes it.
     request.cell.require_gate()
-    if not cell_is_gated_open(request.cell.cell_id):
+    state = gate_state(request.cell.cell_id, request.gate_store)
+    if not state["open"]:
         raise ParityGateNotRun(
-            f"cell {request.cell.cell_id!r}: not marked bit-validated in "
-            "the gate store (only validate_device_bits.py on a real device "
-            "may open a cell)")
-    certified = cell_association(request.cell.cell_id)
+            f"cell {request.cell.cell_id!r}: gate store does not open this "
+            f"cell ({state['reason']}; only validate_device_bits.py on a "
+            "real device may record a passed cell)")
+    certified = state["association"]
     if certified != request.cell.association:
         raise ParityGateNotRun(
             f"cell {request.cell.cell_id!r}: request association "
@@ -258,6 +265,11 @@ def run_host_stage_composition(distance_rows, d_weights, scalars,
         distance_rows=distance_rows, d_weights=d_weights, scalars=scalars,
         cell=FoldCell(cell_id="host-stage-composition",
                       association=association, bit_validated=True)))
+    # (G10R F5) The bit_validated=True above is INERT: validate_request
+    # never reads request.cell, and this helper performs no dispatch — the
+    # flag exists only because FoldRegionRequest requires a FoldCell.  The
+    # authority to dispatch lives exclusively in the durable gate store,
+    # consulted by execute_fold_region, which this helper does not call.
     n = len(distance_rows)
     reach = np.empty(n, dtype=np.float64)
     ge = np.empty(n, dtype=np.float64)
