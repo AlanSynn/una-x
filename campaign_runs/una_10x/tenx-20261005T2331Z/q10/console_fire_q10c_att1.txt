@@ -1,0 +1,21 @@
+[2026-10-07T12:09:41Z] C40 begin (paired_samples assembly + per-window asserts)
+PAIRS ASSEMBLED 7 | invalid flags: []
+ratios: [2.3388, 2.1823, 2.5399, 2.3798, 2.5119, 2.4777, 2.2345]
+[2026-10-07T12:09:41Z] C50 begin (gate_10x)
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaigns/una_10x/tools/gate_10x.py", line 154, in <module>
+    main()
+    ~~~~^^
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaigns/una_10x/tools/gate_10x.py", line 142, in main
+    result = evaluate(json.loads(blob))
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaigns/una_10x/tools/gate_10x.py", line 103, in evaluate
+    validate_record(pair.get(arm))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaigns/una_10x/tools/gate_10x.py", line 65, in validate_record
+    raise ValueError('immutable manifest and wheel hashes required')
+ValueError: immutable manifest and wheel hashes required
+[2026-10-07T12:09:41Z] C50 done gate_rc=1 (2 = below target, recorded honestly)
+[2026-10-07T12:09:41Z] C60 begin (raw_index + protected criterion)
+Traceback (most recent call last):
+  File "<stdin>", line 85, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/q10/gate_10x.json'

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "evidence_class": "derived_from_measured",
+  "method": "exp(median paired log ratios); linear percentile bootstrap",
+  "pair_count": 7,
+  "pair_ratios": [
+    2.3388109661703114,
+    2.1823019468867755,
+    2.5399073153729974,
+    2.3798464894987252,
+    2.51194987868923,
+    2.4777331395845805,
+    2.2344939526263827
+  ],
+  "target": 10.0,
+  "median_ratio": 2.3798464894987252,
+  "one_sided_95_lower": 2.2344939526263827,
+  "bootstrap_seed": 20261003,
+  "bootstrap_resamples": 20000,
+  "passes_10x_arithmetic": false,
+  "measurement_class": "observed_proxy",
+  "primary_sha256": "777cab1a25a0a01b58c33b979b2a9cfa24930a014a3801d7edebcdfe702eef4b",
+  "freeze_sha256": "8778b0dcaba189aa6e07c87e5b3a708562760eb61679a6a61b421fc5a8c8aa2c",
+  "source_A": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "source_B": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c",
+  "note": "Independent source/bit/state/artifact/resource/review and protected-case gates remain required; attestations are not verified by this calculator.",
+  "samples_sha256": "cb16f11122beb7ebee55d687a9760d2aad941844d27c386b1c622585a309b00b"
+}

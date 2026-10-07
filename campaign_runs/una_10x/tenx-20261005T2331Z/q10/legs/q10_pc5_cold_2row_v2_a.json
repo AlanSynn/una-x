@@ -1,0 +1,112 @@
+{
+ "schema": "una-10x-p05s-leg-run-1",
+ "tag": "q10_pc5_cold_2row_v2_a",
+ "task": "P05S staged screen measured leg (designs/07 staged selection)",
+ "pins": {
+  "tree_head": "ee5652aa81b6a0361e8067400b67573a36f0ca13",
+  "tree_dirty": true,
+  "manifest_sha256": "fef6c3a23d3a28901958d0ec7eb1c4ce8170429bb09a37e2840e3cfa174df24f",
+  "manifest_bytes": 1029,
+  "manifest_path": "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/q00/inputs/pc5_cold_2row_v2.csv",
+  "interpreter": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "executable": "/private/tmp/i00/venv_a/bin/python",
+  "numba_cache_dir": "/tmp/q10/nc_q10_pc5_cold_2row_v2_a",
+  "numba_version": "0.67.0",
+  "numpy_version": "2.4.6",
+  "host_ncpu": 10
+ },
+ "config": {
+  "parallel": true,
+  "workers": 4,
+  "threads_per_worker": 1,
+  "queue_depth": 64,
+  "cache_mode": "off",
+  "cache_dir": null,
+  "cache_dir_existed_before": null,
+  "row_cache_dir": null,
+  "row_cache_entries_before": 0,
+  "writer_concurrency": 1
+ },
+ "outdir": "/private/tmp/q10/out_q10_pc5_cold_2row_v2_a",
+ "outdir_existed_before": true,
+ "timing": {
+  "import_s": 2.5646,
+  "public_call_wall_s": 14.3174,
+  "timer_note": "wall brackets ONLY the public RunBatch call; import recorded separately (BENCHMARKS.md)"
+ },
+ "sampler": {
+  "interval_s": 0.05,
+  "peak_single_rss_bytes": 374718464,
+  "peak_tree_rss_bytes": 1238253568
+ },
+ "row_count": 2,
+ "zero_failed_jobs": true,
+ "rows": [
+  {
+   "index": 0,
+   "name": "cohort_beta_00",
+   "status": "ran",
+   "backend": "reference",
+   "detail": null
+  },
+  {
+   "index": 1,
+   "name": "cohort_beta_01",
+   "status": "ran",
+   "backend": "reference",
+   "detail": null
+  }
+ ],
+ "effective_snapshot": {
+  "backend": "reference",
+  "fallback_reason": "no qualified native/gpu capability entries are registered for this build; auto selected the trusted reference route",
+  "options": {
+   "semantic_profile": "una_legacy",
+   "backend": "auto",
+   "device": null,
+   "cpu_budget": null,
+   "threads_per_worker": 1,
+   "logical_reduction_plan": "canonical",
+   "memory_limit_bytes": null,
+   "workspace_limit_bytes": null,
+   "queue_depth": 64,
+   "writer_concurrency": 1,
+   "timeout_s": null,
+   "cache": {
+    "mode": "off",
+    "directory": ".una-cache",
+    "max_memory_bytes": null,
+    "max_disk_bytes": null,
+    "verification": "on_read",
+    "schema_version": 1
+   },
+   "checkpoint": null
+  }
+ },
+ "output_files": [
+  {
+   "rel": "accessibility_2026-10-07_0806/cohort_beta_00.feather",
+   "bytes": 649306,
+   "sha256": "6acb6a5319aebbe4d8f6712821972cf83b59cf00c7f7d9eb57ce59db1a9cb5c7"
+  },
+  {
+   "rel": "accessibility_2026-10-07_0806/cohort_beta_00.geojson",
+   "bytes": 3970303,
+   "sha256": "690b044ffa102a31b3ffd09c3c21c516ef5ba44961974317171fbb2ff44756c0"
+  },
+  {
+   "rel": "accessibility_2026-10-07_0806/cohort_beta_01.feather",
+   "bytes": 649314,
+   "sha256": "f096a4bcdb1a1702ceba6030ca15142626b7cf7937cb280a8144b8e3fc362780"
+  },
+  {
+   "rel": "accessibility_2026-10-07_0806/cohort_beta_01.geojson",
+   "bytes": 3970334,
+   "sha256": "a80e27cb6ad481867fb2c41ecf77f743901031148597274363cc0af8910270d0"
+  }
+ ],
+ "output_file_count": 4,
+ "output_bytes_total": 9239257,
+ "cache_entries_after": null,
+ "row_cache_entries_after": null
+}

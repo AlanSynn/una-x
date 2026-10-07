@@ -1,0 +1,96 @@
+[2026-10-07T11:16:15Z] T10 begin (frozen-identity verification)
+Q00 digests intact: primary 777cab1a25a0a01b
+[2026-10-07T11:16:15Z] T10 ok (wheels/venvs/harness/manifest/Q00 digests verified)
+[2026-10-07T11:16:15Z] T21 begin (pair p1 order AB)
+[2026-10-07T11:16:15Z] gate hold #1 loadavg=12.11
+[2026-10-07T11:17:15Z] gate hold #2 loadavg=9.78
+[2026-10-07T11:18:16Z] gate hold #3 loadavg=8.07
+[2026-10-07T11:19:16Z] gate hold #4 loadavg=10.46
+[2026-10-07T11:20:16Z] gate open pre_leg_loadavg=7.80
+LEG OK tag=q10_p1_A rows=32 wall=40.0360s files=64 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p1_a.json
+[2026-10-07T11:21:04Z] LEG OK tag=q10_p1_A wall=40.036s
+[2026-10-07T11:21:04Z] gate hold #1 loadavg=10.97
+[2026-10-07T11:22:04Z] gate hold #2 loadavg=8.83
+[2026-10-07T11:23:04Z] gate hold #3 loadavg=11.71
+[2026-10-07T11:24:04Z] gate hold #4 loadavg=9.03
+[2026-10-07T11:25:04Z] gate hold #5 loadavg=12.16
+[2026-10-07T11:26:04Z] gate open pre_leg_loadavg=7.92
+LEG OK tag=q10_p1_B rows=32 wall=17.1181s files=107 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p1_b.json
+[2026-10-07T11:26:29Z] LEG OK tag=q10_p1_B wall=17.1181s
+[2026-10-07T11:26:29Z] T21 ok (pair p1 complete: AB)
+[2026-10-07T11:26:29Z] T22 begin (pair p2 order BA)
+[2026-10-07T11:26:29Z] gate hold #1 loadavg=8.53
+[2026-10-07T11:27:29Z] gate open pre_leg_loadavg=5.49
+LEG OK tag=q10_p2_B rows=32 wall=17.8336s files=107 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p2_b.json
+[2026-10-07T11:27:51Z] LEG OK tag=q10_p2_B wall=17.8336s
+[2026-10-07T11:27:51Z] gate open pre_leg_loadavg=5.58
+LEG OK tag=q10_p2_A rows=32 wall=38.9183s files=64 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p2_a.json
+[2026-10-07T11:28:37Z] LEG OK tag=q10_p2_A wall=38.9183s
+[2026-10-07T11:28:37Z] T22 ok (pair p2 complete: BA)
+[2026-10-07T11:28:37Z] T23 begin (pair p3 order AB)
+[2026-10-07T11:28:37Z] gate hold #1 loadavg=8.15
+[2026-10-07T11:29:37Z] gate open pre_leg_loadavg=5.63
+LEG OK tag=q10_p3_A rows=32 wall=39.3518s files=64 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p3_a.json
+[2026-10-07T11:30:20Z] LEG OK tag=q10_p3_A wall=39.3518s
+[2026-10-07T11:30:20Z] gate hold #1 loadavg=8.39
+[2026-10-07T11:31:20Z] gate hold #2 loadavg=11.93
+[2026-10-07T11:32:20Z] gate hold #3 loadavg=12.13
+[2026-10-07T11:33:20Z] gate open pre_leg_loadavg=7.86
+LEG OK tag=q10_p3_B rows=32 wall=15.4934s files=107 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p3_b.json
+[2026-10-07T11:33:39Z] LEG OK tag=q10_p3_B wall=15.4934s
+[2026-10-07T11:33:39Z] T23 ok (pair p3 complete: AB)
+[2026-10-07T11:33:39Z] T24 begin (pair p4 order BA)
+[2026-10-07T11:33:39Z] gate open pre_leg_loadavg=6.93
+LEG OK tag=q10_p4_B rows=32 wall=15.2172s files=107 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p4_b.json
+[2026-10-07T11:33:58Z] LEG OK tag=q10_p4_B wall=15.2172s
+[2026-10-07T11:33:58Z] gate open pre_leg_loadavg=7.52
+LEG OK tag=q10_p4_A rows=32 wall=36.2146s files=64 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p4_a.json
+[2026-10-07T11:34:38Z] LEG OK tag=q10_p4_A wall=36.2146s
+[2026-10-07T11:34:38Z] T24 ok (pair p4 complete: BA)
+[2026-10-07T11:34:38Z] T25 begin (pair p5 order AB)
+[2026-10-07T11:34:38Z] gate hold #1 loadavg=10.07
+[2026-10-07T11:35:38Z] gate open pre_leg_loadavg=6.61
+LEG OK tag=q10_p5_A rows=32 wall=40.8958s files=64 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p5_a.json
+[2026-10-07T11:36:23Z] LEG OK tag=q10_p5_A wall=40.8958s
+[2026-10-07T11:36:23Z] gate hold #1 loadavg=8.35
+[2026-10-07T11:37:23Z] gate hold #2 loadavg=8.62
+[2026-10-07T11:38:23Z] gate hold #3 loadavg=16.28
+[2026-10-07T11:39:23Z] gate hold #4 loadavg=8.96
+[2026-10-07T11:40:23Z] gate hold #5 loadavg=12.93
+[2026-10-07T11:41:24Z] gate hold #6 loadavg=12.31
+[2026-10-07T11:42:24Z] gate hold #7 loadavg=8.68
+[2026-10-07T11:43:24Z] gate open pre_leg_loadavg=6.46
+LEG OK tag=q10_p5_B rows=32 wall=16.2805s files=107 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p5_b.json
+[2026-10-07T11:43:44Z] LEG OK tag=q10_p5_B wall=16.2805s
+[2026-10-07T11:43:44Z] T25 ok (pair p5 complete: AB)
+[2026-10-07T11:43:44Z] T26 begin (pair p6 order BA)
+[2026-10-07T11:43:44Z] gate open pre_leg_loadavg=7.36
+LEG OK tag=q10_p6_B rows=32 wall=15.2087s files=107 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p6_b.json
+[2026-10-07T11:44:02Z] LEG OK tag=q10_p6_B wall=15.2087s
+[2026-10-07T11:44:02Z] gate hold #1 loadavg=8.44
+[2026-10-07T11:45:03Z] gate open pre_leg_loadavg=6.47
+LEG OK tag=q10_p6_A rows=32 wall=37.6831s files=64 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p6_a.json
+[2026-10-07T11:45:44Z] LEG OK tag=q10_p6_A wall=37.6831s
+[2026-10-07T11:45:44Z] T26 ok (pair p6 complete: BA)
+[2026-10-07T11:45:44Z] T27 begin (pair p7 order AB)
+[2026-10-07T11:45:44Z] gate open pre_leg_loadavg=7.73
+LEG OK tag=q10_p7_A rows=32 wall=36.8944s files=64 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p7_a.json
+[2026-10-07T11:46:24Z] LEG OK tag=q10_p7_A wall=36.8944s
+[2026-10-07T11:46:24Z] gate hold #1 loadavg=8.50
+[2026-10-07T11:47:24Z] gate open pre_leg_loadavg=7.68
+LEG OK tag=q10_p7_B rows=32 wall=16.5113s files=107 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_p7_b.json
+[2026-10-07T11:47:45Z] LEG OK tag=q10_p7_B wall=16.5113s
+[2026-10-07T11:47:45Z] T27 ok (pair p7 complete: AB)
+[2026-10-07T11:47:45Z] T30 begin (protected pairs)
+[2026-10-07T11:47:45Z] gate hold #1 loadavg=8.18
+[2026-10-07T11:48:45Z] gate hold #2 loadavg=12.27
+[2026-10-07T11:49:45Z] gate open pre_leg_loadavg=7.25
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/p05s/run_screen_leg.py", line 261, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/p05s/run_screen_leg.py", line 163, in main
+    p.RunBatch("accessibility", str(pairing),
+  File "/private/tmp/i00/venv_b/lib/python3.11/site-packages/urban_network_analysis/UNA.py", line 232, in RunBatch
+    raise RuntimeError("No settings to run — provide a pairing_file or call SaveSettingsToProject() first to populate the batch list.")
+RuntimeError: No settings to run — provide a pairing_file or call SaveSettingsToProject() first to populate the batch list.
+[2026-10-07T11:49:49Z] LEG FAIL tag=q10_pc1_tiny_gis_beta00_a b rc=1

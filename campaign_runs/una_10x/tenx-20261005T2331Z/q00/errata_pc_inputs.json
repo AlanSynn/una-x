@@ -1,0 +1,17 @@
+{
+ "schema": "una-10x-q00-errata-1",
+ "date": "2026-10-07",
+ "subject": "protected-cell derived inputs (NOT the primary workload)",
+ "defect": "generate_q00.py write_rows omitted the CSV header row; pd.read_csv consumed the first data row as header (pc1: 0 records, pc5: 1 of 2, garbled keys); Q10 fire-1 protected leg pc1 died with RuntimeError('No settings to run')",
+ "evidence": "venv-p01m pandas reproduction on the frozen v1 files (records 0/1/1/1/1); console_fire_q10.log LEG FAIL tag='q10_pc1_tiny_gis_beta00_a b' rc=1 (also documents the secondary zsh $ARMS non-split defect, fixed in fire_q10b.sh)",
+ "correction": "pc1..pc5 regenerated WITH header + row-level absolute data_folder column as *_v2.csv (this regenerator); v1 bytes kept in place, never edited; freeze.json protected_inputs_sha256 remains the record of v1; v2 shas below supersede for protected-cell execution only",
+ "v2_inputs_sha256": {
+  "pc1_tiny_gis_beta00_v2": "78e73a8964fb9b1e1582640cc921dee146c72859f1f215ba9889aa87a172fa2b",
+  "pc2_tiny_gis_beta31_v2": "8fb59527851f8273981d3f9e6049743b2e582208b786254f9c07c8cd1ecff889",
+  "pc3_search_radius1200_v2": "58e1a1e8ddb49d1c55aa9c70bc9637cf23ddc3dc7f8d600cfdb0563682db62fc",
+  "pc4_search_radius1600_v2": "7179c61c12484cfed6d9ff3b4fdb1ddc5e29fe178e93b0b46d93d8a0fe63f878",
+  "pc5_cold_2row_v2": "fef6c3a23d3a28901958d0ec7eb1c4ce8170429bb09a37e2840e3cfa174df24f"
+ },
+ "primary_untouched": "workload_sha256 235405de67cf22dc76c3e89bd0c3d198927d0ed0870172a0e86b942fecb8a60a is the frozen cohort manifest; the 7 primary windows completed before this errata and are unaffected",
+ "note": "no self-hash (self-reference is undefined); this file's sha256 is recorded by q10/raw_index.json and the q10b commit message after the bytes are final"
+}

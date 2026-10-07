@@ -1,0 +1,95 @@
+{
+ "schema": "una-10x-p05s-leg-run-1",
+ "tag": "q10_pc4_search_radius1600_v2_a",
+ "task": "P05S staged screen measured leg (designs/07 staged selection)",
+ "pins": {
+  "tree_head": "ee5652aa81b6a0361e8067400b67573a36f0ca13",
+  "tree_dirty": true,
+  "manifest_sha256": "7179c61c12484cfed6d9ff3b4fdb1ddc5e29fe178e93b0b46d93d8a0fe63f878",
+  "manifest_bytes": 688,
+  "manifest_path": "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/q00/inputs/pc4_search_radius1600_v2.csv",
+  "interpreter": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "executable": "/private/tmp/i00/venv_a/bin/python",
+  "numba_cache_dir": "/tmp/q10/nc_q10_pc4_search_radius1600_v2_a",
+  "numba_version": "0.67.0",
+  "numpy_version": "2.4.6",
+  "host_ncpu": 10
+ },
+ "config": {
+  "parallel": true,
+  "workers": 4,
+  "threads_per_worker": 1,
+  "queue_depth": 64,
+  "cache_mode": "off",
+  "cache_dir": null,
+  "cache_dir_existed_before": null,
+  "row_cache_dir": null,
+  "row_cache_entries_before": 0,
+  "writer_concurrency": 1
+ },
+ "outdir": "/private/tmp/q10/out_q10_pc4_search_radius1600_v2_a",
+ "outdir_existed_before": true,
+ "timing": {
+  "import_s": 3.1352,
+  "public_call_wall_s": 15.8411,
+  "timer_note": "wall brackets ONLY the public RunBatch call; import recorded separately (BENCHMARKS.md)"
+ },
+ "sampler": {
+  "interval_s": 0.05,
+  "peak_single_rss_bytes": 380403712,
+  "peak_tree_rss_bytes": 907739136
+ },
+ "row_count": 1,
+ "zero_failed_jobs": true,
+ "rows": [
+  {
+   "index": 0,
+   "name": "cohort_beta_00",
+   "status": "ran",
+   "backend": "reference",
+   "detail": null
+  }
+ ],
+ "effective_snapshot": {
+  "backend": "reference",
+  "fallback_reason": "no qualified native/gpu capability entries are registered for this build; auto selected the trusted reference route",
+  "options": {
+   "semantic_profile": "una_legacy",
+   "backend": "auto",
+   "device": null,
+   "cpu_budget": null,
+   "threads_per_worker": 1,
+   "logical_reduction_plan": "canonical",
+   "memory_limit_bytes": null,
+   "workspace_limit_bytes": null,
+   "queue_depth": 64,
+   "writer_concurrency": 1,
+   "timeout_s": null,
+   "cache": {
+    "mode": "off",
+    "directory": ".una-cache",
+    "max_memory_bytes": null,
+    "max_disk_bytes": null,
+    "verification": "on_read",
+    "schema_version": 1
+   },
+   "checkpoint": null
+  }
+ },
+ "output_files": [
+  {
+   "rel": "accessibility_2026-10-07_0806/cohort_beta_00.feather",
+   "bytes": 706714,
+   "sha256": "149f9aa76fc7c9436a2b786ca706b8b1221628221423096d6c5433e87d85f836"
+  },
+  {
+   "rel": "accessibility_2026-10-07_0806/cohort_beta_00.geojson",
+   "bytes": 4063341,
+   "sha256": "b3a0dc0e81aaee0843a353852d3d7dcbaeb91248b41ca14bc729e1f2994fcce8"
+  }
+ ],
+ "output_file_count": 2,
+ "output_bytes_total": 4770055,
+ "cache_entries_after": null,
+ "row_cache_entries_after": null
+}

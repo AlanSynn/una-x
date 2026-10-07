@@ -1,0 +1,47 @@
+[2026-10-07T12:01:44Z] B10 begin (frozen-identity verification)
+Q00 digests intact; v2 protected inputs match errata
+[2026-10-07T12:01:45Z] B10 ok (wheels/venvs/harness/manifest/Q00 digests + primary legs present)
+[2026-10-07T12:01:45Z] B30 begin (protected pairs, v2 inputs)
+[2026-10-07T12:01:45Z] gate hold #1 loadavg=11.72
+[2026-10-07T12:02:45Z] gate hold #2 loadavg=9.56
+[2026-10-07T12:03:45Z] gate open pre_leg_loadavg=5.44
+LEG OK tag=q10_pc1_tiny_gis_beta00_v2_a rows=1 wall=15.1769s files=2 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_pc1_tiny_gis_beta00_v2_a.json
+[2026-10-07T12:04:04Z] LEG OK tag=q10_pc1_tiny_gis_beta00_v2_a wall=15.1769s
+[2026-10-07T12:04:04Z] gate open pre_leg_loadavg=6.94
+LEG OK tag=q10_pc1_tiny_gis_beta00_v2_b rows=1 wall=12.4969s files=45 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_pc1_tiny_gis_beta00_v2_b.json
+[2026-10-07T12:04:20Z] LEG OK tag=q10_pc1_tiny_gis_beta00_v2_b wall=12.4969s
+[2026-10-07T12:04:20Z] B3x pair pc1_tiny_gis_beta00_v2 complete
+[2026-10-07T12:04:20Z] gate open pre_leg_loadavg=6.89
+LEG OK tag=q10_pc2_tiny_gis_beta31_v2_b rows=1 wall=12.0250s files=45 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_pc2_tiny_gis_beta31_v2_b.json
+[2026-10-07T12:04:36Z] LEG OK tag=q10_pc2_tiny_gis_beta31_v2_b wall=12.025s
+[2026-10-07T12:04:36Z] gate open pre_leg_loadavg=6.75
+LEG OK tag=q10_pc2_tiny_gis_beta31_v2_a rows=1 wall=14.1683s files=2 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_pc2_tiny_gis_beta31_v2_a.json
+[2026-10-07T12:04:53Z] LEG OK tag=q10_pc2_tiny_gis_beta31_v2_a wall=14.1683s
+[2026-10-07T12:04:53Z] B3x pair pc2_tiny_gis_beta31_v2 complete
+[2026-10-07T12:04:53Z] gate open pre_leg_loadavg=7.82
+LEG OK tag=q10_pc3_search_radius1200_v2_a rows=1 wall=14.5536s files=2 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_pc3_search_radius1200_v2_a.json
+[2026-10-07T12:05:11Z] LEG OK tag=q10_pc3_search_radius1200_v2_a wall=14.5536s
+[2026-10-07T12:05:11Z] gate open pre_leg_loadavg=6.51
+LEG OK tag=q10_pc3_search_radius1200_v2_b rows=1 wall=13.4911s files=45 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_pc3_search_radius1200_v2_b.json
+[2026-10-07T12:05:28Z] LEG OK tag=q10_pc3_search_radius1200_v2_b wall=13.4911s
+[2026-10-07T12:05:28Z] B3x pair pc3_search_radius1200_v2 complete
+[2026-10-07T12:05:28Z] gate open pre_leg_loadavg=7.37
+LEG OK tag=q10_pc4_search_radius1600_v2_b rows=1 wall=13.3793s files=45 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_pc4_search_radius1600_v2_b.json
+[2026-10-07T12:05:45Z] LEG OK tag=q10_pc4_search_radius1600_v2_b wall=13.3793s
+[2026-10-07T12:05:45Z] gate open pre_leg_loadavg=6.98
+LEG OK tag=q10_pc4_search_radius1600_v2_a rows=1 wall=15.8411s files=2 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_pc4_search_radius1600_v2_a.json
+[2026-10-07T12:06:04Z] LEG OK tag=q10_pc4_search_radius1600_v2_a wall=15.8411s
+[2026-10-07T12:06:04Z] B3x pair pc4_search_radius1600_v2 complete
+[2026-10-07T12:06:04Z] gate open pre_leg_loadavg=7.82
+LEG OK tag=q10_pc5_cold_2row_v2_a rows=2 wall=14.3174s files=4 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_pc5_cold_2row_v2_a.json
+[2026-10-07T12:06:22Z] LEG OK tag=q10_pc5_cold_2row_v2_a wall=14.3174s
+[2026-10-07T12:06:22Z] gate open pre_leg_loadavg=6.90
+LEG OK tag=q10_pc5_cold_2row_v2_b rows=2 wall=13.2645s files=47 -> campaign_runs/una_10x/tenx-20261005T2331Z/q10/legs/q10_pc5_cold_2row_v2_b.json
+[2026-10-07T12:06:38Z] LEG OK tag=q10_pc5_cold_2row_v2_b wall=13.2645s
+[2026-10-07T12:06:39Z] B3x pair pc5_cold_2row_v2 complete
+[2026-10-07T12:06:39Z] B30 ok (5 protected pairs complete)
+[2026-10-07T12:06:39Z] B40 begin (paired_samples assembly + per-window asserts)
+Traceback (most recent call last):
+  File "<stdin>", line 75, in <module>
+  File "<stdin>", line 45, in record
+AssertionError: /private/tmp/i00/venv_a/bin/python
