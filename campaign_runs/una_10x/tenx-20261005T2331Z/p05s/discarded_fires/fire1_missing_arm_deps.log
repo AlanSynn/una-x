@@ -1,0 +1,20 @@
+LEG OK sd_cmp395cdc5            arm=cmp395cdc5  w4 t1 wall= 52.0691s (host   57.6s) rss_tree= 1816.5MiB
+LEG FAIL sd_parent rc=1
+stdout:
+
+stderr:
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/p05s/run_screen_leg.py", line 261, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/p05s/run_screen_leg.py", line 130, in main
+    from urban_network_analysis import UNA
+  File "/Users/alansynn/orca/workspaces/una-x/parent-e7c9eda/src/urban_network_analysis/__init__.py", line 84, in __getattr__
+    value = getattr(import_module(target, __name__), name)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/parent-e7c9eda/src/urban_network_analysis/UNA.py", line 2, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+

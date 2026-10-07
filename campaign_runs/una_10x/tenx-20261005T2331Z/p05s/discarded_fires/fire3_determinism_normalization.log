@@ -1,0 +1,30 @@
+LEG OK sd_cmp395cdc5            arm=cmp395cdc5  w4 t1 wall= 44.4461s (host   49.3s) rss_tree= 1946.4MiB residue=0f/0B
+LEG OK sd_parent                arm=parent      w4 t1 wall= 64.4178s (host   69.4s) rss_tree= 1965.4MiB residue=5f/1564433B
+LEG OK sd_p02                   arm=p02         w4 t1 wall= 23.3575s (host   27.7s) rss_tree= 1710.5MiB residue=43f/18046393B
+LEG OK sd_p03a                  arm=p03a        w4 t1 wall= 24.5803s (host   29.3s) rss_tree= 1620.9MiB residue=43f/18046393B
+LEG OK sd_full                  arm=full        w4 t1 wall= 17.2425s (host   23.7s) rss_tree= 1912.7MiB residue=43f/18046393B
+LEG OK cmp395cdc5_w4t1_r1       arm=cmp395cdc5  w4 t1 wall= 46.2083s (host   50.5s) rss_tree= 1979.9MiB residue=0f/0B
+LEG OK parent_w4t1_r1           arm=parent      w4 t1 wall= 39.9152s (host   44.3s) rss_tree= 1954.0MiB residue=5f/1564433B
+LEG OK p02_w4t1_r1              arm=p02         w4 t1 wall= 17.3677s (host   22.1s) rss_tree= 1818.2MiB residue=43f/18046393B
+LEG OK p03a_w4t1_r1             arm=p03a        w4 t1 wall= 16.9450s (host   20.9s) rss_tree= 1984.7MiB residue=43f/18046393B
+LEG OK full_w4t1_r1             arm=full        w4 t1 wall= 18.5982s (host   22.6s) rss_tree= 1714.8MiB residue=43f/18046393B
+LEG OK cmp395cdc5_w4t1_r2       arm=cmp395cdc5  w4 t1 wall= 41.0968s (host   45.2s) rss_tree= 2018.9MiB residue=0f/0B
+LEG OK parent_w4t1_r2           arm=parent      w4 t1 wall= 37.9644s (host   42.3s) rss_tree= 1937.1MiB residue=5f/1564433B
+LEG OK p02_w4t1_r2              arm=p02         w4 t1 wall= 22.6749s (host   27.5s) rss_tree= 1849.6MiB residue=43f/18046393B
+LEG OK p03a_w4t1_r2             arm=p03a        w4 t1 wall= 17.8827s (host   22.8s) rss_tree= 2248.8MiB residue=43f/18046393B
+LEG OK full_w4t1_r2             arm=full        w4 t1 wall= 16.6996s (host   20.8s) rss_tree= 2053.3MiB residue=43f/18046393B
+LEG OK cmp395cdc5_w4t1_r3       arm=cmp395cdc5  w4 t1 wall= 45.1570s (host   49.5s) rss_tree= 1980.0MiB residue=0f/0B
+LEG OK parent_w4t1_r3           arm=parent      w4 t1 wall= 36.9696s (host   40.6s) rss_tree= 2018.7MiB residue=5f/1564433B
+LEG OK p02_w4t1_r3              arm=p02         w4 t1 wall= 16.7299s (host   20.7s) rss_tree= 1763.7MiB residue=43f/18046393B
+LEG OK p03a_w4t1_r3             arm=p03a        w4 t1 wall= 17.1047s (host   21.2s) rss_tree= 1810.7MiB residue=43f/18046393B
+LEG OK full_w4t1_r3             arm=full        w4 t1 wall= 16.8253s (host   21.6s) rss_tree= 1831.4MiB residue=43f/18046393B
+LEG OK cfg_full_w2t1_q64        arm=full        w2 t1 wall= 17.7178s (host   21.9s) rss_tree= 1127.1MiB residue=43f/18046393B
+LEG OK cfg_full_w4t2_q64        arm=full        w4 t2 wall= 24.9835s (host   29.4s) rss_tree= 1694.6MiB residue=43f/18046393B
+LEG OK cfg_full_w2t2_q64        arm=full        w2 t2 wall= 17.1697s (host   21.2s) rss_tree= 1349.7MiB residue=43f/18046393B
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/p05s/run_stage_screen.py", line 286, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/p05s/run_stage_screen.py", line 198, in main
+    assert same, f"{arm}: outputs differ across windows"
+           ^^^^
+AssertionError: cmp395cdc5: outputs differ across windows

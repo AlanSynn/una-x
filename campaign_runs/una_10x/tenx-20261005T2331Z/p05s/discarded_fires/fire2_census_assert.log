@@ -1,0 +1,11 @@
+LEG OK sd_cmp395cdc5            arm=cmp395cdc5  w4 t1 wall= 41.8032s (host   46.3s) rss_tree= 2017.8MiB
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/p05s/run_stage_screen.py", line 268, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/p05s/run_stage_screen.py", line 156, in main
+    legs[f"sd_{arm}"] = _run_leg(f"sd_{arm}", arm, 4, 1, 64, "shakedown")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/p05s/run_stage_screen.py", line 125, in _run_leg
+    assert leg["output_file_count"] == EXPECT_FILES, \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('sd_parent', 69)
