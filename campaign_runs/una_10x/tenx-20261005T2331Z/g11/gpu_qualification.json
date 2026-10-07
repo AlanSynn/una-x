@@ -1,0 +1,48 @@
+{
+ "schema": "una-10x-g11-gpu-qualification-1",
+ "task": "G11 real-device bit parity and end-to-end crossover (performance-owner)",
+ "status": "explicit_unavailable",
+ "completion_law": "Real hardware qualified or explicit unavailable; performance and capability status separate",
+ "capability_status": {
+  "region": "specified: per-origin accessibility fold family, una_legacy, verification-gated (G00 gpu_region.json, sha c8a877df11b0d1a3827dfe40378ecbf1c66200aa426ce152bdf1510f09730630)",
+  "implementation": "exists on new gpu/ surface only, src/ untouched (G10 gpu_implementation.json, sha 554eb67a22ea7be1747ea777bfcd063a58d6947bcc5202c505cde6c80156d313); 53 tests pass; host twins bit-validated against the REAL engine fold on this host",
+  "device_parity": "NOT RUN - no CUDA device",
+  "admission": "closed: FoldRegionRecord.hardware_validated constant False; gate store authoritative; auto=reference, forced-gpu raises (p05s effective_snapshot)"
+ },
+ "performance_status": {
+  "claims": "NONE - the GPU region has never executed on real hardware; no wall, ratio, or speedup figure exists for it",
+  "gate_default": "CPU retained for the 10x gate (numba stack, unchanged by N10); the 'choose CPU when the complete GPU region loses' branch is not even reached - the region cannot run"
+ },
+ "team_lead_harness_run": {
+  "command": "PYTHONDONTWRITEBYTECODE=1 venv-p01m/bin/python -m gpu.kernels.validate_device_bits (repo main, 2026-10-07T08:27:42Z)",
+  "exit_code": 2,
+  "status": "hardware_unavailable",
+  "gate": "NOT PASSED (designed refusal; never simulated)",
+  "driver_reason": "no_cuda_driver (platform=Darwin)",
+  "nvcc_on_path": false,
+  "note": "first invocation as a plain script failed with ImportError (relative import, rc=1) - invocation error, not a code defect; module form is the documented entry"
+ },
+ "hardware_record": {
+  "this_host": "Apple M1 Pro, macOS 26.6.2, zero CUDA-class devices, no nvcc; Apple GPU/Metal explicitly NOT a qualification target",
+  "venue": "NCSA Delta (CUDA-class FP64) - designated per user directive, access under recovery; PLANNED, currently unavailable (directive-sourced, flagged in G00)"
+ },
+ "unrun_until_hardware": [
+  "device kernel execution and output bit parity (the rc=0 gate)",
+  "transfers/conversion/JIT/sync and neighboring service measurement (FULL-service crossover)",
+  "installed-context device engagement",
+  "characterization battery REGENERATION on the qualification host against the SAME engine build (G10 context-dependence finding: association class is build-bound; the local battery classification does not transfer)"
+ ],
+ "delta_access_checklist": [
+  "run gpu.kernels.validate_device_bits on Delta; require rc=0 for the una_legacy.fold.default cell",
+  "regenerate host_battery.json-equivalent on the qualification host engine build; pin the certified association per output",
+  "FULL-service crossover vs strongest matched CPU arm (w4t1 q64 cache-off); admit per cell into CapabilityRegistryEntry only on median win",
+  "installed-wheel engagement smoke (post-I00 wheel identity)"
+ ],
+ "evidence_index": {
+  "g00": "campaign_runs/una_10x/tenx-20261005T2331Z/g00/gpu_region.json",
+  "g10": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/gpu_implementation.json",
+  "g10_gate_harness": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/gate_harness_failclosed.json",
+  "g10_host_battery": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/host_battery.json",
+  "fold_blockers": "n00/probe_order.txt (fastmath vector trees; numba argsort tie permutation; transcendentals)"
+ }
+}
