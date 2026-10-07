@@ -1,0 +1,21 @@
+{
+ "schema": "una-10x-p05r-head-suite-evidence-1",
+ "task": "HEAD be8441b tenx suite custody + P05R reviewer independent verification",
+ "generated": "2026-10-07T03:18:40Z",
+ "consoles": {
+  "headcheck_be8441b_persubdir.log": {
+   "sha256": "3622c5047bc091eb0e752a4f1595fcaa45ac3c435f564563cf6bd8544fa08429",
+   "role": "valid evidence: five per-subdir runs at HEAD be8441b",
+   "figures": "metrics 72 passed; preparation 35 passed; replay 34 passed + 1 skipped; p01m telemetry 10 passed; cohort 6 passed; all RC=0; OVERALL_RC=0"
+  },
+  "headcheck_be8441b_combined_invocation_DEFECT.log": {
+   "sha256": "ab9a03707902b9d88565b01705d6901f45f2239d45aabb75ae422b2c2614a77f",
+   "role": "quarantined invocation defect: two dirs in ONE pytest process -> cohort's 'from conftest import tree_bytes' bound to post_p00/replay/conftest.py, PYTEST_EXIT=2; tenx suites are per-subdir-invocation only; NOT evidence of a code defect"
+  }
+ },
+ "reviewer_verification": {
+  "who": "p03r-reviewer (P05R owner, via teammate relay 2026-10-07)",
+  "verified": "console custody read in full before accepting; sha256 3622c5047bc091eb0e752a4f1595fcaa45ac3c435f563cf6bd8544fa08429 matches the preserved persubdir console; defect log independently confirmed (PYTEST_EXIT=2, tree_bytes ImportError); replay skip matches reviewer's own P03R-era 34+1skip"
+ },
+ "readiness_file_impact": "NONE \u2014 post_p00_readiness.json (sha 652d2a0f...) remains accurate as filed: its not_run states the suites were not re-run BY THE REVIEW, which stays true; the verdict does not depend on suite status (no src/tests in be8441b). Reviewer offered an addendum block on explicit scope reopen; declined \u2014 this custody note + preserved consoles carry the evidence instead (per eb43a0b/86e8b0a custody-append precedent)."
+}

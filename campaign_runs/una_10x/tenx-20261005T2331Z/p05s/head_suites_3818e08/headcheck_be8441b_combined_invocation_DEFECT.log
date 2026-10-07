@@ -1,0 +1,17 @@
+
+==================================== ERRORS ====================================
+___________ ERROR collecting tests/tenx/cohort/test_cohort_route.py ____________
+ImportError while importing test module '/Users/alansynn/orca/workspaces/una-x/main/tests/tenx/cohort/test_cohort_route.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/tenx/cohort/test_cohort_route.py:15: in <module>
+    from conftest import tree_bytes
+E   ImportError: cannot import name 'tree_bytes' from 'conftest' (/Users/alansynn/orca/workspaces/una-x/main/tests/tenx/post_p00/replay/conftest.py)
+=========================== short test summary info ============================
+ERROR tests/tenx/cohort/test_cohort_route.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 4.24s
+PYTEST_EXIT=2

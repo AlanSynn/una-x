@@ -1,0 +1,16 @@
+........................................................................ [100%]
+72 passed in 4.86s
+RC[tests/tenx/post_p00/metrics]=0
+...................................                                      [100%]
+35 passed in 21.86s
+RC[tests/tenx/post_p00/preparation]=0
+......s............................                                      [100%]
+34 passed, 1 skipped in 0.34s
+RC[tests/tenx/post_p00/replay]=0
+..........                                                               [100%]
+10 passed in 18.65s
+RC[tests/tenx/post_p00/test_p01m_telemetry.py]=0
+......                                                                   [100%]
+6 passed in 16.77s
+RC[tests/tenx/cohort]=0
+OVERALL_RC=0
