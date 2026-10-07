@@ -1,0 +1,29 @@
+Timeout (0:05:00)!
+Thread 0x0000000170417000 (most recent call first):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/multiprocessing/connection.py", line 384 in _send
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/multiprocessing/connection.py", line 427 in _send_bytes
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/multiprocessing/connection.py", line 200 in send_bytes
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/multiprocessing/queues.py", line 250 in _feed
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 982 in run
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 1045 in _bootstrap_inner
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 1002 in _bootstrap
+
+Thread 0x000000016f40b000 (most recent call first):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 331 in wait
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 629 in wait
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/n00/instruments/leg_runner.py", line 82 in run
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 1045 in _bootstrap_inner
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 1002 in _bootstrap
+
+Thread 0x00000001ef45a180 (most recent call first):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 1139 in _wait_for_tstate_lock
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/threading.py", line 1119 in join
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/multiprocessing/queues.py", line 199 in _finalize_join
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/multiprocessing/util.py", line 227 in __call__
+  File "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/multiprocessing/queues.py", line 151 in join_thread
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/batch/runtime.py", line 443 in cancel
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/batch/runtime.py", line 1466 in _cancel
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/batch/runtime.py", line 1215 in run_batch_parallel
+  File "/Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/UNA.py", line 256 in RunBatch
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/n00/instruments/leg_runner.py", line 186 in main
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/n00/instruments/leg_runner.py", line 305 in <module>

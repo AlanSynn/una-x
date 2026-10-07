@@ -1,0 +1,40 @@
+# N00 L0 cold build+install boundary (declared: compile + stale-check load path)
+# date: 2026-10-07T04:34:52Z  loadavg at start:  14.85 16.86 14.74
+# tree HEAD: e6920bfd70ed6d3801305264d8d1c864d1197b16
+/Users/alansynn/orca/workspaces/una-x/main/native/_build/una_n00_trace_producer.cpython-311-darwin.so
+{
+ "compile_flags": [
+  "-std=c++17",
+  "-O3",
+  "-fPIC",
+  "-shared",
+  "-ffp-contract=off",
+  "-fno-fast-math",
+  "-Wall",
+  "-Wextra"
+ ],
+ "compiler": "/usr/bin/clang++",
+ "defines": {
+  "UNA_N00_BUILD_CC": "/usr/bin/clang++",
+  "UNA_N00_BUILD_FLAGS": "-std=c++17 -O3 -fPIC -shared -ffp-contract=off -fno-fast-math -Wall -Wextra"
+ },
+ "ext_suffix": ".cpython-311-darwin.so",
+ "output": "una_n00_trace_producer.cpython-311-darwin.so",
+ "output_sha256": "cb4cf2580280ffe6db71a11008095716c2323925af87a73baeea3eaeb4a460eb",
+ "pybind11_version": "3.1.0",
+ "python": "3.11.16",
+ "report_flags": [
+  "-Rpass=loop-vectorize",
+  "-Rpass-missed=loop-vectorize",
+  "-Rpass-analysis=loop-vectorize"
+ ],
+ "schema": "una-10x-n00-build-manifest-1",
+ "sources": {
+  "bindings.cpp": "df07db8d7105ab8c3e221ccbe57852a16cbfffc837ab2297211690a5bae7df06",
+  "trace_producer.cpp": "70fbe3ecb97c6c729782498534bccf04b8783e3ce933519691756ef805ac1ec0"
+ }
+}
+install+uninstall wall: 4.0778s
+L0 total cold wall (build+install): 10.6030s
+build rc=0 install rc=0
+loadavg at end:  15.07 16.84 14.76

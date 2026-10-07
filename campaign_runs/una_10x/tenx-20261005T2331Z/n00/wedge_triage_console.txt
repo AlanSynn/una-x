@@ -1,0 +1,22 @@
+# N00 shakedown wedge triage (2026-10-07) - four attempts wedged, one root cause
+# Attempt 1: sampler-starvation finding (real but NOT the wedge cause; 0.05s psutil loop starved workers)
+# Attempt 3: sample/lsof showed main in a lock, one thread in os_write, NO worker processes
+# Attempt 4: faulthandler sidecar named the wedge: main inside runtime._cancel -> pool.cancel -> Queue.join_thread,
+#   blocked on the inbox feeder thread, itself blocked in queues.py _feed send_bytes (pipe full, readers gone).
+# Direct foreground rerun + instrument-side _cancel wrapper exposed the pending exception:
+#   ModuleNotFoundError: No module named 'pyarrow' - raised via runtime.py:1108 _worker_failure(result).
+# Root cause: venv-n00 lacked pyarrow (venv-p01m reference has 25.0.1); worker row path imports it lazily
+#   (Topology.py:83, cache/identity.py:197).  Row failed -> except BaseException (runtime.py:1215) -> _cancel ->
+#   ENGINE DEADLOCK: cancel() terminates the workers BEFORE closing queues, so the inbox feeder blocks forever
+#   writing backlogged jobs to a pipe whose only remaining read end is the parent's own undrained _reader.
+# Fixes applied: pyarrow==25.0.1 installed into venv-n00 (freeze diff vs venv-p01m: only pybind11 n00-only,
+#   urban-network-analysis p01m-only-by-install, iniconfig 2.3.1 vs 2.3.0 pytest-inert); leg_runner faulthandler
+#   sidecar (300s cadence) + driver process-group SIGKILL cap (LEG_TIMEOUT_S/SHAKEDOWN_TIMEOUT_S); triage wrapper
+#   retained (print-only on an already-failing path).
+# The cancel-path deadlock itself is a LATENT ENGINE DEFECT (any worker-row failure wedges the batch instead of
+#   failing loudly) - reported to the team lead, not fixed by N00 (engine scope).
+# Direct leg after fix: LEG OK sd_direct arm=numba rows=32 wall=25.1586s files=107 bytes=165876285
+#   load1m start=28.30 max=28.3 (co-tenancy; shakedown walls unclaimed).
+
+LEG OK tag=sd_direct arm=numba rows=32 wall=25.1586s files=107 bytes=165876285 load1m[start=28.30 max=28.3] -> /tmp/n00_legs/sd_direct.json
+DIRECT rc=0

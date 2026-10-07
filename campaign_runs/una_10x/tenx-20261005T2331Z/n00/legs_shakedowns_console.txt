@@ -1,0 +1,17 @@
+# N00 shakedowns attempt 5 (post-fix: pyarrow 25.0.1 installed into venv-n00; wedge instruments retained)
+# loadavg at launch  11.42 14.93 12.95
+# start 2026-10-07T06:20:55Z
+== shakedowns (labelled; consumed, never claimed) ==
+LEG OK sd_n00_numba   arm=numba  wall= 15.9176s (host   19.7s) rss_tree= 1709.6MiB preLA=11.42 maxLA=14.48 residue=43f/18046393B
+LEG FAIL sd_n00_native rc=1
+stdout:
+
+stderr:
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/n00/instruments/leg_runner.py", line 327, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/n00/instruments/leg_runner.py", line 310, in main
+    assert engagement_after["dispatches"] > \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: native arm dispatched nothing - install() wiring dead
+
