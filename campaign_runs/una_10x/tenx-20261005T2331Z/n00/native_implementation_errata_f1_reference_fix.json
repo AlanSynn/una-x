@@ -1,0 +1,13 @@
+{
+ "schema": "una-10x-errata-1",
+ "task": "N00R intake reference fix: errata_f1 cited a superseded draft generation of review.json",
+ "parent_object": "native_implementation_errata_f1.json",
+ "defect": {
+  "field": "finding_ref",
+  "filed_value": "n00/review.json finding F1 (p03r-reviewer, approve_with_notes, head_reviewed d63652fc6ab4)",
+  "correct_value": "n00/review.json finding F1 (p03r-reviewer, approve_with_notes, head_reviewed 12ffa6b09f7d)",
+  "cause": "the reviewer rewrote review.json between my read and my intake commit (their self-caught hand-typed-HEAD-sha correction); my read hashed the superseded draft (9d2453894f28f35b...), the committed bytes are the final generation fe0a11ec265ecf4c1d0bbd48abb318da31c09df4548d735e16dfb1fc1bc073de"
+ },
+ "substance_check": "F1 substance identical across generations (stale pin 11cdb972... -> live a6897d68...); verdict, 0-blocking, and the 40-passed-in-13.87s rerun verified in the final bytes; only the head_reviewed parenthetical was draft-stale",
+ "law": "committed evidence objects never edited; this addendum is the correction of record"
+}
