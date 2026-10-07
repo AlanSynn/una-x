@@ -1,0 +1,15 @@
+{
+ "probe_env": {
+  "UNA_NATIVE_TRACE": "1",
+  "PYTHONDONTWRITEBYTECODE": "1"
+ },
+ "package_file": "/private/tmp/n10/venv_install/lib/python3.11/site-packages/urban_network_analysis/__init__.py",
+ "spawn_shim_file": "/private/tmp/n10/venv_install/lib/python3.11/site-packages/una_batch_worker_main.py",
+ "native_extension_importable": false,
+ "native_extension_import_error": "No module named 'una_n00_trace_producer'",
+ "sitecustomize_file": "/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/sitecustomize.py",
+ "wheel_sha256": "93f827025f7220eaec543c96235709beb6b170dc53cf22b21d38ae4b4c204b3b",
+ "sdist_sha256": "30acb3c60da1683f3c5aa78caff724254152454ef224bd6f85a2e67b7740c490",
+ "executable": "/private/tmp/n10/venv_install/bin/python",
+ "una_constructed": true
+}

@@ -60,6 +60,17 @@ path = "src/urban_network_analysis/__init__.py"
 [tool.hatch.build.targets.wheel]
 packages = ["src/urban_network_analysis"]
 
+# The batch worker spawn shim is deliberately a TOP-LEVEL module
+# (src/una_batch_worker_main.py, outside the package): multiprocessing
+# "spawn" imports it in the fresh worker interpreter before any code of
+# ours runs, and a target inside the package would transitively import
+# numpy (OpenBLAS/MKL pool init) before the worker's thread budgets
+# could be applied (dossier 05).  It must therefore ship at the wheel
+# root as a sibling of the package, or parallel RunBatch crashes in any
+# non-editable install with ModuleNotFoundError at pool.start().
+[tool.hatch.build.targets.wheel.force-include]
+"src/una_batch_worker_main.py" = "una_batch_worker_main.py"
+
 # Build hook: writes src/urban_network_analysis/_build_info.py with the
 # date of the last git commit, so about() can report it at runtime.
 [tool.hatch.build.hooks.custom]

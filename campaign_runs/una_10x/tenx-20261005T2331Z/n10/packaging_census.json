@@ -1,0 +1,32 @@
+{
+ "wheel": {
+  "path": "/tmp/n10/dist/urban_network_analysis-2.6.0-py3-none-any.whl",
+  "sha256": "b1df0a15c53998800b00685f9eeccb57419036756304727c87af3527c54e3da5",
+  "entries": 68,
+  "py_entries": 63,
+  "native_or_ext_or_sitecustomize_entries": [],
+  "extension_modules": []
+ },
+ "sdist": {
+  "path": "/tmp/n10/dist/urban_network_analysis-2.6.0.tar.gz",
+  "sha256": "2e1d16734ec193def2b655476fdb3acc4bbfd02d458ee8fc16cee8bc3c447196",
+  "entries": 3353,
+  "native_entries": [
+   "urban_network_analysis-2.6.0/native/.gitignore",
+   "urban_network_analysis-2.6.0/native/bindings.cpp",
+   "urban_network_analysis-2.6.0/native/build.py",
+   "urban_network_analysis-2.6.0/native/sitecustomize.py",
+   "urban_network_analysis-2.6.0/native/trace_build_native.py",
+   "urban_network_analysis-2.6.0/native/trace_producer.cpp",
+   "urban_network_analysis-2.6.0/native/trace_producer.h",
+   "urban_network_analysis-2.6.0/native/_build/build_manifest.json",
+   "urban_network_analysis-2.6.0/native/_build/una_n00_trace_producer.cpython-311-darwin.so",
+   "urban_network_analysis-2.6.0/native/_build/vectorization_report.txt",
+   "urban_network_analysis-2.6.0/tests/native/conftest.py",
+   "urban_network_analysis-2.6.0/tests/native/test_native_bindings.py",
+   "urban_network_analysis-2.6.0/tests/native/test_native_producer_parity.py",
+   "urban_network_analysis-2.6.0/tests/native/test_sitecustomize_optin.py"
+  ]
+ },
+ "law_note": "wheel packages ONLY src/urban_network_analysis (pyproject tool.hatch.build.targets.wheel); native/ is repo-scoped. sdist native presence = sources ride along with NO build wiring (hatch hook only bakes commit date)."
+}

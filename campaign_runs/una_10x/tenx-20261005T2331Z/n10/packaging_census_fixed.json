@@ -1,0 +1,17 @@
+{
+ "wheel": {
+  "path": "/tmp/n10/dist_fixed/urban_network_analysis-2.6.0-py3-none-any.whl",
+  "sha256": "93f827025f7220eaec543c96235709beb6b170dc53cf22b21d38ae4b4c204b3b",
+  "entries": 69,
+  "spawn_shim_at_root": true,
+  "native_or_ext_or_sitecustomize_entries": [],
+  "extension_modules": []
+ },
+ "sdist": {
+  "path": "/tmp/n10/dist_fixed/urban_network_analysis-2.6.0.tar.gz",
+  "sha256": "30acb3c60da1683f3c5aa78caff724254152454ef224bd6f85a2e67b7740c490",
+  "entries": 3358,
+  "spawn_shim_in_src": true
+ },
+ "law_note": "fixed wheel: top-level spawn shim force-included at wheel root (defect fix for ModuleNotFoundError at pool.start); still native/ext/sitecustomize-free by construction"
+}

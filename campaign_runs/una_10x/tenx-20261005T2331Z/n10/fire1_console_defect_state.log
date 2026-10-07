@@ -1,0 +1,47 @@
+[2026-10-07T07:33:30Z] S10 begin
+Name: hatchling
+Version: 1.32.4
+ERROR: Pipe to stdout was broken
+[2026-10-07T07:33:34Z] S10 ok
+[2026-10-07T07:33:34Z] S20 begin (sdist+wheel from tree HEAD 57788a77d89d49a1458f64f3f91fa960fa9c5005)
+[wheel]
+dist/urban_network_analysis-2.6.0-py3-none-any.whl
+
+[sdist]
+dist/urban_network_analysis-2.6.0.tar.gz
+total 122688
+drwxr-xr-x@ 4 alansynn  wheel       128 Oct  7 03:33 .
+drwxr-xr-x@ 4 alansynn  wheel       128 Oct  7 03:33 ..
+-rw-r--r--@ 1 alansynn  staff    386258 Oct  7 03:33 urban_network_analysis-2.6.0-py3-none-any.whl
+-rw-r--r--@ 1 alansynn  staff  62227466 Oct  7 03:33 urban_network_analysis-2.6.0.tar.gz
+[2026-10-07T07:33:45Z] S20 ok wheel=urban_network_analysis-2.6.0-py3-none-any.whl sdist=urban_network_analysis-2.6.0.tar.gz
+[2026-10-07T07:33:45Z] S30 begin
+WHEEL clean: 68 entries, 63 py; SDIST native entries: 14
+[2026-10-07T07:33:46Z] S30 ok wheel_sha=b1df0a15c53998800b00685f9eeccb57419036756304727c87af3527c54e3da5 sdist_sha=2e1d16734ec193def2b655476fdb3acc4bbfd02d458ee8fc16cee8bc3c447196
+[2026-10-07T07:33:46Z] S40 begin (copy p01m -> install venv, replace editable with wheel)
+Name: urban-network-analysis
+Version: 2.6.0
+Summary: UNA — accessibility and pedestrian-flow metrics on street networks
+ERROR: Pipe to stdout was broken
+[2026-10-07T07:33:59Z] S40 ok
+[2026-10-07T07:33:59Z] S50 begin
+IDENTITY OK: /private/tmp/n10/venv_install/lib/python3.11/site-packages/urban_network_analysis/__init__.py
+[2026-10-07T07:34:40Z] S50 ok
+[2026-10-07T07:34:40Z] S60 begin (gate: 1-min loadavg < 8, 90-min bounded)
+[2026-10-07T07:34:40Z] gate hold #1 loadavg=13.55
+[2026-10-07T07:35:40Z] gate hold #2 loadavg=14.93
+[2026-10-07T07:36:40Z] gate hold #3 loadavg=9.08
+[2026-10-07T07:37:40Z] gate hold #4 loadavg=8.31
+[2026-10-07T07:38:40Z] gate open pre_leg_loadavg=7.79
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/p05s/run_screen_leg.py", line 261, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/p05s/run_screen_leg.py", line 163, in main
+    p.RunBatch("accessibility", str(pairing),
+  File "/private/tmp/n10/venv_install/lib/python3.11/site-packages/urban_network_analysis/UNA.py", line 256, in RunBatch
+    run_batch_parallel(
+  File "/private/tmp/n10/venv_install/lib/python3.11/site-packages/urban_network_analysis/batch/runtime.py", line 993, in run_batch_parallel
+    pool.start()
+  File "/private/tmp/n10/venv_install/lib/python3.11/site-packages/urban_network_analysis/batch/runtime.py", line 379, in start
+    from una_batch_worker_main import pool_main as _spawn_main
+ModuleNotFoundError: No module named 'una_batch_worker_main'
