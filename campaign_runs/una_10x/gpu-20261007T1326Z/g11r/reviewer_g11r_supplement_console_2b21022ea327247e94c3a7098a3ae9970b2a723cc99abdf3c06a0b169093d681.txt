@@ -1,0 +1,108 @@
+== G11R SUPPLEMENT console (S1 binder / S2 deviation / S3 mirror) ==
+
+== S1 binder sha re-hash (live bytes, verdict time) ==
+de6e0b3db2fa36b962d84857d9eb0ba6616a3a4496d0762fafc62c433640711a  campaign_runs/una_10x/gpu-20261007T1326Z/crossover_driver.py
+3d595fcaeabad7594a27c534075c936fff8c52241e8b105e3fed476c057e9605  campaign_runs/una_10x/gpu-20261007T1326Z/g11_xover.sbatch
+5ce54e2b8f71055e6f1387572d3a4d2ee4214915054df4113a3438805d8732df  campaign_runs/una_10x/gpu-20261007T1326Z/PREREGISTRATION.md
+633c40a87425bd5d94ca8e9f5edf009f1fe16023b055030fb37c1e232141d6a5  campaign_runs/una_10x/gpu-20261007T1326Z/RUN_PLAN.md
+fd173c3c25b4895d0d3c2917bfa0a3d2c8baedbf298021900902e6884b082ae6  campaign_runs/una_10x/gpu-20261007T1326Z/consoles/fd173c3c25b4895d0d3c2917bfa0a3d2c8baedbf298021900902e6884b082ae6.txt
+
+== S1b sbatch content (3d595fca...) ==
+#!/bin/bash
+#SBATCH --job-name=g11-xover
+#SBATCH --account=bicm-delta-gpu
+#SBATCH --partition=gpuA100x4
+#SBATCH --gpus=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=32G
+#SBATCH --time=00:40:00
+#SBATCH --output=/u/dsynn/projects/una-x/runs/gpu-20261007T1326Z/job_%j.out
+
+# G11 fold-cell crossover (PREREGISTRATION A1 walls + A2 probe-first shape).
+# Both arms in ONE job on the same A100 node: matched host class, matched
+# core allocation (4), same I/O root.  CPU arm = installed engine fold under
+# 4 spawn workers x 1 numba thread, queue depth 64, cache off.  GPU arm =
+# execute_fold_region via DeviceRuntime, PTX reused from the rc=0 gate
+# verdict, durable gate store authority per dispatch.
+set -u
+RUN=/u/dsynn/projects/una-x/runs/gpu-20261007T1326Z
+PY=/u/dsynn/projects/una-x/env/bin/python
+export PYTHONDONTWRITEBYTECODE=1
+# fresh numba cache root per job (A1: cold rep 1, warm reps 2-7 within job)
+export NUMBA_CACHE_DIR=/u/dsynn/projects/una-x/cache/numba_g11_xover_${SLURM_JOB_ID}
+export NUMBA_NUM_THREADS=1
+
+cd "$RUN"
+
+echo "== identity =="
+hostname
+date -u
+echo "-- nvidia-smi -L (inside the job) --"
+nvidia-smi -L
+echo "-- numba / numpy --"
+"$PY" -c "import numba, numpy; print('numba', numba.__version__, '| numpy', numpy.__version__)"
+echo "-- engine install --"
+"$PY" -c "import urban_network_analysis, importlib.metadata as md; print(md.distribution('urban-network-analysis').metadata['Name'], md.distribution('urban-network-analysis').version)"
+
+echo "== crossover driver =="
+"$PY" crossover_driver.py
+echo "XOVER_RC=$?"
+date -u
+
+== S2.iii commit times vs crossover job (sacct Submit 09:46:04 -0500) ==
+7d0a946 2026-10-07T09:22:00-05:00 committer=dsynn@dt-login04.delta.ncsa.illinois.edu G11: wire device stage composition into the region (K0/K1 device via port, K2/K3 host tail)
+9afe677 2026-10-07T10:13:52-04:00 G11 intake: Delta device-gate evidence gpu-20261007T1326Z (gate rc=0 on A100); g11-delta-staging ff-intaked at 7b877eb
+
+== diffstat-figure grep receipt (RUN_PLAN + PREREGISTRATION) ==
+(no diffstat figures)
+
+== S3 source-level: knn_* uses inside reach_gravity_knn_access ==
+73:def reach_gravity_knn_access(d_distance, d_weights, cutoff, gravity_beta, gravity_plateau, gravity_logistic_midpoint, knn_gravity_plateau, knn_weights, knn_gravity_beta, knn_decay, knn_gravity_logistic_midpoint, gravity_growth_rate, knn_gravity_growth_rate):
+403:                    knn_gravity_plateau=gravity_plateau,
+405:                    knn_gravity_beta=gravity_beta,
+407:                    knn_gravity_logistic_midpoint=gravity_logistic_midpoint,
+408:                    knn_gravity_growth_rate=gravity_growth_rate,
+443:                knn_gravity_plateau=gravity_plateau,
+445:                knn_gravity_beta=gravity_beta,
+447:                knn_gravity_logistic_midpoint=gravity_logistic_midpoint,
+448:                knn_gravity_growth_rate=gravity_growth_rate,
+480:            knn_gravity_plateau=gravity_plateau,
+482:            knn_gravity_beta=gravity_beta,
+484:            knn_gravity_logistic_midpoint=gravity_logistic_midpoint,
+485:            knn_gravity_growth_rate=gravity_growth_rate,
+-- knn branches (only main gravity scalars read) --
+        if knn_decay == "exponential":
+            knn_access      = ((knn_coefficients_cropped * n_weights_cropped) * np.exp(-gravity_beta * np.maximum(0, n_distances_cropped-gravity_plateau))).sum()
+        elif knn_decay == "logistic":
+             knn_access      = ((knn_coefficients_cropped * n_weights_cropped) * (1 - 1 / (1 + np.exp(-gravity_growth_rate * (n_distances_cropped - gravity_plateau - gravity_logistic_midpoint))))).sum()
+        else:
+            knn_access = (knn_coefficients_cropped * n_weights_cropped).sum()
+
+    return reach, gravity_exponential, gravity_logistic, knn_access
+
+== S2.ii + S3 empirical: CPU-only re-derivation from the committed driver ==
+driver sha256: de6e0b3db2fa36b962d84857d9eb0ba6616a3a4496d0762fafc62c433640711a
+engine bound to: /Users/alansynn/orca/workspaces/una-x/main/src/urban_network_analysis/Engines/AccessibilityWElevation.py | from REPO: True
+knn_* param uses inside reach_gravity_knn_access body: ['def reach_gravity_knn_access(d_distance, d_weights, cutoff, gravity_beta, gravity_plateau, gravity_logistic_midpoint, knn_gravity_plateau, knn_weights, knn_gravity_beta, knn_decay, knn_gravity_logistic_midpoint, gravity_growth_rate, knn_gravity_growth_rate):']
+
+== S3 mirror vs battery mapping, bit-compare, frozen workload ==
+W=64: pairs=128 mirror!=battery diffs=0 []
+W=4096: pairs=128 mirror!=battery diffs=0 []
+VERDICT S3: mirror-vs-battery BIT-IDENTICAL
+
+== S3b engine-side knn_pass_through sites (context) ==
+  line 403 in function: def integrated_scope_access(
+  line 443 in function: def integrated_scope_access(
+  line 480 in function: def integrated_scope_access(
+
+== S2.ii local parity re-derivation (this host; Delta authoritative) ==
+W=64: region-host-tail(seq) vs engine: mismatching (row,output) pairs=62/128, rows touched=30/32 sample=[(0, 'gravity_exponential'), (2, 'knn_access'), (3, 'reach'), (3, 'gravity_logistic')]
+W=4096: region-host-tail(seq) vs engine: mismatching (row,output) pairs=98/128, rows touched=32/32 sample=[(0, 'gravity_exponential'), (0, 'knn_access'), (1, 'reach'), (1, 'gravity_exponential')]
+
+== S2.ii local tree sweep (first row per group, W=64) ==
+  exponential  empty reproducing-tree outputs: (none) | hits per output: reach:6 gravity_exponential:4 gravity_logistic:6 knn_access:5
+  logistic     empty reproducing-tree outputs: (none) | hits per output: reach:1 gravity_exponential:5 gravity_logistic:8 knn_access:5
+  linear       empty reproducing-tree outputs: ['reach'] | hits per output: reach:0 gravity_exponential:3 gravity_logistic:7 knn_access:5
+
+== S2.ii local preflight (W=4096, host twins vs engine) ==
+{'exponential': False, 'logistic': False, 'linear': False}
