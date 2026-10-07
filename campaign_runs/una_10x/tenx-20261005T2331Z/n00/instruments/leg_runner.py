@@ -304,13 +304,17 @@ def main(argv=None):
     assert zero_failed, [r for r in rows if r["status"] != "ran"][:5]
     if args.cache_mode == "off":
         assert not cache_entries, "cache dir populated under mode 'off'"
+    # Parallel-law note (wire validation, 2026-10-07): rows build traces
+    # inside SPAWNED workers - the parent's process-local engagement
+    # counters stay at zero by design, and the cohort single flight
+    # means at most one worker dispatches per trace key.  The live
+    # per-leg engagement evidence is the WORKERS' atexit reports
+    # ([n00-native-engagement] stderr lines), parsed and asserted by the
+    # DRIVER (worker_dispatches > 0).  Here we only record the
+    # parent-side snapshots.
     if args.arm == "native":
         assert engagement_after is not None and \
             engagement_before is not None
-        assert engagement_after["dispatches"] > \
-            engagement_before["dispatches"], \
-            "native arm dispatched nothing - install() wiring dead"
-        assert engagement_after["errors"] == engagement_before["errors"]
     else:
         assert engagement_before is None and engagement_after is None
 

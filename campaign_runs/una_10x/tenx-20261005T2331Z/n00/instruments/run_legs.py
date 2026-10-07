@@ -118,6 +118,11 @@ def _run_leg(tag, arm, gate=True, timeout_s=LEG_TIMEOUT_S):
     env["PYTHONDONTWRITEBYTECODE"] = "1"
     env.pop("UNA_BATCH_PHASES", None)   # diagnostics off in timed legs
     env["PYTHONPATH"] = "%s/src:%s/native" % (MAIN, MAIN)
+    # Spawn-worker native opt-in (native/sitecustomize.py): "1" installs
+    # the cohort hook in each worker (native legs); "0" loads the module
+    # WITHOUT installing - matched module-load wiring for the numba
+    # control, hook never installed, engagement untouched.
+    env["UNA_NATIVE_TRACE"] = "1" if arm == "native" else "0"
     cmd = [str(VENV / "bin" / "python"), str(RUNNER),
            "--tree", str(MAIN),
            "--pairing", str(PAIRING),
@@ -159,6 +164,16 @@ def _run_leg(tag, arm, gate=True, timeout_s=LEG_TIMEOUT_S):
               f"stderr:\n{proc_stderr[-3000:]}")
         sys.exit(20)
     leg = json.loads(leg_json.read_text())
+    # Per-worker engagement evidence (native/sitecustomize.py atexit
+    # reports): parse the leg's captured stderr lines into the leg JSON
+    # so the dispatch counters are recorded live per leg.
+    worker_engagement = []
+    for line in (proc_stderr or "").splitlines():
+        if line.startswith("[n00-native-engagement] "):
+            worker_engagement.append(
+                json.loads(line.split("] ", 1)[1]))
+    leg["engagement"]["workers"] = worker_engagement
+    leg["config"]["una_native_trace_env"] = env["UNA_NATIVE_TRACE"]
     required = [f for f in leg["output_files"]
                 if not f["rel"].split("/")[0].startswith(".")]
     hidden = [f for f in leg["output_files"]
@@ -193,7 +208,14 @@ def _run_leg(tag, arm, gate=True, timeout_s=LEG_TIMEOUT_S):
     assert leg["config"]["queue_depth"] == 64, tag
     if arm == "native":
         eng = leg["engagement"]
-        assert eng["after"]["dispatches"] > eng["before"]["dispatches"], tag
+        worker_dispatches = sum(w.get("dispatches", 0)
+                                for w in eng.get("workers", []))
+        assert worker_dispatches > 0, \
+            (tag, "no worker reported native dispatches - "
+                  "sitecustomize opt-in wiring dead")
+    else:
+        assert not leg["engagement"].get("workers"), \
+            (tag, "numba leg must carry no worker engagement reports")
     print(f"LEG OK {tag:14s} arm={arm:6s} "
           f"wall={leg['timing']['public_call_wall_s']:8.4f}s "
           f"(host {host_wall:6.1f}s) "
@@ -201,7 +223,8 @@ def _run_leg(tag, arm, gate=True, timeout_s=LEG_TIMEOUT_S):
           f"preLA={pre_loadavg:.2f} "
           f"maxLA={leg['sampler']['loadavg_1m_max']} "
           f"residue={leg['hidden_residue']['files']}f/"
-          f"{leg['hidden_residue']['bytes']}B")
+          f"{leg['hidden_residue']['bytes']}B "
+          f"wdisp={sum(w.get('dispatches', 0) for w in leg['engagement'].get('workers', []))}")
     sys.stdout.flush()
     return leg
 
