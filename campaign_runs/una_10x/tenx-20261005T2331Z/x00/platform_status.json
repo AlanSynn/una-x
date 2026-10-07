@@ -1,0 +1,102 @@
+{
+  "schema": "una-10x-x00-platform-status-1",
+  "task": "X00",
+  "generated": "2026-10-07",
+  "author": "integ-audit (integrator)",
+  "law": "PLATFORM_CONTINUITY.md: publish tenx_status AND platform_status separately; only completion of all mandatory inherited capabilities AND their required hardware/API/scientific gates permits platform_status=qualified; a 10x-only result never marks missing tasks done",
+  "head": "eb9276f5e5d0eb78c2e36203e48b73e4148a9dfc",
+  "branch": "perf/una-10x",
+  "obligations_record": {
+    "path": "x00/platform_obligations.json",
+    "sha256": "3f8faccc4de8d156a065be80b9659c71d936d204a1e6f57a93da1bfe384eeb41"
+  },
+  "tenx_status": {
+    "value": "in_progress",
+    "position": "post_p00 DAG: P01M/P01F, P02*, P03*, P04*, P05S/P05R, H01 (prior run), S01/S10, C10-C31, F00/F10, N00/N00R/N10, G00/G10/G11 closed; X00 (this audit) closing; remaining: G10R, I00 (incl. task #19 intake prep), V00, Q00, Q10, R00, Z00",
+    "boundary_claim_status": "NO public 10x boundary figure exists yet; P05S/P05R figures are same-host matched-arm SELECTION evidence only; the claim path is the frozen 7-window paired AB/BA protocol (Q10) against the untouched 92.1141s PACE primary",
+    "open_engine_defect": "DEF-24 cancel-path wedge (fix in flight, uncommitted at audit time)",
+    "native_in_gate_stack": "numba stack unchanged; native producer retained as capability, not admitted as a gate lever (N10)",
+    "gpu_in_gate_stack": "CPU retained; GPU region cannot run (no CUDA hardware), admission fail-closed (G11)",
+    "evidence": [
+      {
+        "label": "P05R readiness review (approve_with_notes, 0 blocking)",
+        "path": "campaign_runs/una_10x/tenx-20261005T2331Z/post_p00_readiness.json",
+        "sha256": "652d2a0f851d9ad37ed3aa7c9d22a3ac351b860353f9b6ef55c1fd807324dd2d",
+        "grade": "OBSERVED"
+      },
+      {
+        "label": "P05S staged selection screen",
+        "path": "campaign_runs/una_10x/tenx-20261005T2331Z/p05s/screen_index.json",
+        "sha256": "67b1a4a6b532b14b173d2f07cda767820b6c5aa75004593493f57fc0e5352d55",
+        "grade": "OBSERVED"
+      },
+      {
+        "label": "identity check",
+        "path": "campaign_runs/una_10x/tenx-20261005T2331Z/primary_identity_check.json",
+        "sha256": "0576605440b48b77b41e98c0e53c7a3a072e64fde3cf287be2f997c2ba7f11c2",
+        "grade": "OBSERVED"
+      }
+    ]
+  },
+  "platform_status": {
+    "value": "incomplete",
+    "qualified": false,
+    "reason": "mandatory inherited capabilities remain unclosed: GPU device qualification hardware-blocked; 9 city incident root causes unverified; CI never run; clean A/B installed validation (I00) pending; 18/39 platform tasks have no evidence dirs (NATIVE_CORE, NATIVE_SIMD, GPU_DEVICE, GPU_KERNEL, GPU_REGION, PARITY, CITIES, PACKAGE, SCREEN_CPU, SCREEN_GPU, SCREEN_CACHE_BATCH, BACKEND_POLICY, INTEGRATE, FREEZE, CONFIRM, FAULTS, REVIEW, CLOSE); DEF-24 engine defect open",
+    "capability_matrix": {
+      "madina_parity": {
+        "disposition": "evidence_closed",
+        "open_blockers": []
+      },
+      "scientific_corrections": {
+        "disposition": "evidence_closed",
+        "open_blockers": []
+      },
+      "batch_runtime": {
+        "disposition": "open_blockers",
+        "open_blockers": [
+          "DEF-24"
+        ]
+      },
+      "cache_policy": {
+        "disposition": "evidence_closed",
+        "open_blockers": []
+      },
+      "native_backend": {
+        "disposition": "open_blockers",
+        "open_blockers": [
+          "BLK-NATIVE-PLATFORM-SCOPE"
+        ]
+      },
+      "gpu_support": {
+        "disposition": "open_blockers",
+        "open_blockers": [
+          "BLK-GPU-HW",
+          "BLK-G10R"
+        ]
+      },
+      "city_failures": {
+        "disposition": "open_blockers",
+        "open_blockers": [
+          "BLK-CITY-ROOTCAUSES",
+          "BLK-CITIES-SCOPE"
+        ]
+      },
+      "install_packaging": {
+        "disposition": "open_blockers",
+        "open_blockers": [
+          "BLK-INSTALL-CI-I00"
+        ]
+      }
+    },
+    "hardware_blockers": [
+      "no CUDA-class device / no nvcc on audit host (Darwin, Apple M1 Pro); G11 explicit_unavailable + rc=2 designed refusal on record; hardware absence is a qualification blocker, never simulated success"
+    ],
+    "retained_capabilities": [
+      "native bit-exact trace producer (N00, reviewed; env-gated opt-in; never silently engaged; numba wheel default)",
+      "GPU fold-region specification + bounded device source + exact host twins (G00/G10; hardware_validated=False; fail-closed admission)",
+      "batch runtime with ordering/checkpoint/recovery (platform receipts; DEF-24 cancellation defect open)",
+      "cache store/typed identities (platform receipts + C10-C31; untouched by campaign commits)",
+      "Madina compat surface (platform receipts; untouched by campaign commits)"
+    ]
+  }
+}

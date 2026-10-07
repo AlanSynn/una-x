@@ -1,0 +1,1125 @@
+{
+  "schema": "una-10x-x00-platform-obligations-1",
+  "task": "X00 Carry and close inherited platform obligations (campaign una_10x post_p00)",
+  "generated": "2026-10-07",
+  "author": "integ-audit (integrator)",
+  "audit_frame": {
+    "head": "eb9276f5e5d0eb78c2e36203e48b73e4148a9dfc",
+    "branch": "perf/una-10x",
+    "retained_law": {
+      "label": "PLATFORM_CONTINUITY.md (retained-obligations law)",
+      "path": "campaigns/una_10x/PLATFORM_CONTINUITY.md",
+      "sha256": "4b2acb9ae57e8cf2fba06341294ab3a0525c9d4a104a884e5caf228b794bbbe8",
+      "grade": "OBSERVED"
+    },
+    "platform_task_file": {
+      "label": "retained platform TASKS_CLAUDE.yaml",
+      "path": "campaigns/una_platform/TASKS_CLAUDE.yaml",
+      "sha256": "26536cca3075dbedb70a8f1cf8b67a75ecf483abed5cec700be1ea00da24eac6",
+      "grade": "OBSERVED"
+    },
+    "platform_task_file_note": "declared read path ../una_platform/TASKS_CLAUDE.yaml does not exist at the workspace sibling level; the retained in-repo copy campaigns/una_platform/TASKS_CLAUDE.yaml is the audited file",
+    "x00_task_block": {
+      "label": "una_10x TASKS_CLAUDE.yaml (X00 block)",
+      "path": "campaigns/una_10x/TASKS_CLAUDE.yaml",
+      "sha256": "b8a8e929b323f00cedeb072b4323deaa3e310cd51a5f73f8f09beef993284401",
+      "grade": "OBSERVED"
+    },
+    "completion_law": "Every inherited obligation has current evidence or explicit unfinished blocker; no waived requirements",
+    "method": "every sha256 computed in this task from the cited bytes; platform receipt census walked from campaigns/una_platform/evidence/tasks/; git touchprint via git log 6130769a..HEAD per surface"
+  },
+  "platform_receipt_census": {
+    "total_platform_tasks": 39,
+    "tasks_with_receipts": [
+      "API_REVIEW",
+      "BATCH_EXEC",
+      "BATCH_PLAN",
+      "BATCH_REVIEW",
+      "BOOT",
+      "CACHE_GRAPH",
+      "CACHE_STORE",
+      "CONTRACT",
+      "CPU_ALGORITHMS",
+      "CPU_LAYOUT",
+      "EXECUTION",
+      "FAILURES",
+      "HARNESS",
+      "INVENTORY",
+      "MADINA_ACCESS",
+      "MADINA_FLOW",
+      "MADINA_PATHS",
+      "MADINA_WORKFLOWS",
+      "MADINA_ZONAL",
+      "SCIENCE",
+      "TOPOLOGY"
+    ],
+    "tasks_with_receipt_count": 21,
+    "tasks_without_evidence_dirs": [
+      "BACKEND_POLICY",
+      "CITIES",
+      "CLOSE",
+      "CONFIRM",
+      "FAULTS",
+      "FREEZE",
+      "GPU_DEVICE",
+      "GPU_KERNEL",
+      "GPU_REGION",
+      "INTEGRATE",
+      "NATIVE_CORE",
+      "NATIVE_SIMD",
+      "PACKAGE",
+      "PARITY",
+      "REVIEW",
+      "SCREEN_CACHE_BATCH",
+      "SCREEN_CPU",
+      "SCREEN_GPU"
+    ],
+    "tasks_without_evidence_dir_count": 18,
+    "receipts": {
+      "API_REVIEW": [
+        {
+          "run_id": "mda-20261001T1215Z",
+          "path": "campaigns/una_platform/evidence/tasks/API_REVIEW/mda-20261001T1215Z/receipt.json",
+          "sha256": "5430485c4ab3cdb4ac8d3bc4ac32ed07a151650c72619cfd1695ffdd28db8783"
+        }
+      ],
+      "BATCH_EXEC": [
+        {
+          "run_id": "bex-20261001T2100Z",
+          "path": "campaigns/una_platform/evidence/tasks/BATCH_EXEC/bex-20261001T2100Z/receipt.json",
+          "sha256": "8397f5185962aaace60a8462391f93a6bf6167e0b39fe207c24a5d728388374b"
+        }
+      ],
+      "BATCH_PLAN": [
+        {
+          "run_id": "bpt-20261001T1330Z",
+          "path": "campaigns/una_platform/evidence/tasks/BATCH_PLAN/bpt-20261001T1330Z/receipt.json",
+          "sha256": "56a11fb77f4530b694b940a0f73acb359b76bdf26e54a8c44be2543513060c38"
+        }
+      ],
+      "BATCH_REVIEW": [
+        {
+          "run_id": "rev-20261003T0105Z",
+          "path": "campaigns/una_platform/evidence/tasks/BATCH_REVIEW/rev-20261003T0105Z/receipt.json",
+          "sha256": "81ca75fa9cc82ac62123d102c5d5b634bc571382a4d4c27affa1a2e798bfaefe"
+        }
+      ],
+      "BOOT": [
+        {
+          "run_id": "boot-20260930T133538Z",
+          "path": "campaigns/una_platform/evidence/tasks/BOOT/boot-20260930T133538Z/receipt.json",
+          "sha256": "0fcf84127ea3ba858270a171c938331ea39cb8d4ec3cf45eb325039a73be7c81"
+        }
+      ],
+      "CACHE_GRAPH": [
+        {
+          "run_id": "cg-20261002T2025Z",
+          "path": "campaigns/una_platform/evidence/tasks/CACHE_GRAPH/cg-20261002T2025Z/receipt.json",
+          "sha256": "d90856d1ab164c8ae43bfb4e9ade6ef010a87f271cdb0f877a3940ba76a38cc7"
+        }
+      ],
+      "CACHE_STORE": [
+        {
+          "run_id": "cst-20261001T1315Z",
+          "path": "campaigns/una_platform/evidence/tasks/CACHE_STORE/cst-20261001T1315Z/receipt.json",
+          "sha256": "fe1bba39c2129136d47ce174c97c7f071234532d83d635c5b631bdf9935eb9d6"
+        }
+      ],
+      "CONTRACT": [
+        {
+          "run_id": "con-20260930T135612Z",
+          "path": "campaigns/una_platform/evidence/tasks/CONTRACT/con-20260930T135612Z/receipt.json",
+          "sha256": "9ffb725d5700013a17e2cf1683b92bd284bb5c67ac8eff4535d6a04a2dbca57a"
+        }
+      ],
+      "CPU_ALGORITHMS": [
+        {
+          "run_id": "cpuk-20261003T0129Z",
+          "path": "campaigns/una_platform/evidence/tasks/CPU_ALGORITHMS/cpuk-20261003T0129Z/receipt.json",
+          "sha256": "7f7e4068cdf90c6bdc423030962d6836934c03bf1722b27705eea8fdc440fd41"
+        }
+      ],
+      "CPU_LAYOUT": [
+        {
+          "run_id": "cpul-20261002T2305Z",
+          "path": "campaigns/una_platform/evidence/tasks/CPU_LAYOUT/cpul-20261002T2305Z/receipt.json",
+          "sha256": "07423d882aadc760527f9d26b8377f43efcfb7969386d4cab03153311577060e"
+        }
+      ],
+      "EXECUTION": [
+        {
+          "run_id": "exe-20261001T1030Z",
+          "path": "campaigns/una_platform/evidence/tasks/EXECUTION/exe-20261001T1030Z/receipt.json",
+          "sha256": "a46ac73bd3b02c18296aab9073f4e6a77f780f968dd37a34ee1727140055c53c"
+        },
+        {
+          "run_id": "exe-review-20261001T0900Z",
+          "path": "campaigns/una_platform/evidence/tasks/EXECUTION/exe-review-20261001T0900Z/receipt.json",
+          "sha256": "c8b88ca3a12db244b6d44913506471dc2a70fa3c653f60d2a6ab8866871e24da"
+        }
+      ],
+      "FAILURES": [
+        {
+          "run_id": "fai-20260930T1710Z",
+          "path": "campaigns/una_platform/evidence/tasks/FAILURES/fai-20260930T1710Z/receipt.json",
+          "sha256": "d709a969270117dd275e395b3eaa87cb4081a3fd11256e348948fc595a54f8bb"
+        }
+      ],
+      "HARNESS": [
+        {
+          "run_id": "har-20260930T153809Z",
+          "path": "campaigns/una_platform/evidence/tasks/HARNESS/har-20260930T153809Z/receipt.json",
+          "sha256": "ea1b51b81ba0f12d6ea310d0350e8987f095a8dd2a1f135bd356c6578ded5f9e"
+        }
+      ],
+      "INVENTORY": [
+        {
+          "run_id": "inv-20260930T134302Z",
+          "path": "campaigns/una_platform/evidence/tasks/INVENTORY/inv-20260930T134302Z/receipt.json",
+          "sha256": "feee3a46548eda38812cbbe90d6f325b220263049ef3c47b5848b0add7d47850"
+        }
+      ],
+      "MADINA_ACCESS": [
+        {
+          "run_id": "mda-20261001T0154Z",
+          "path": "campaigns/una_platform/evidence/tasks/MADINA_ACCESS/mda-20261001T0154Z/receipt.json",
+          "sha256": "569d68f1011c27eb01ec98616425b86ad1612d0dce8c57024ddebeeb9c5b0889"
+        }
+      ],
+      "MADINA_FLOW": [
+        {
+          "run_id": "mda-20261001T0406Z",
+          "path": "campaigns/una_platform/evidence/tasks/MADINA_FLOW/mda-20261001T0406Z/receipt.json",
+          "sha256": "2d06882cabc5b70da9871e04c13709c6b89d04275544c5f51019263bfb4938b2"
+        }
+      ],
+      "MADINA_PATHS": [
+        {
+          "run_id": "mdp-20261001T0037Z",
+          "path": "campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/receipt.json",
+          "sha256": "ef63c9fb8ece2222d4d7f872a83c2958a7227b4b26752317a61fcfb9b3cd45ed"
+        }
+      ],
+      "MADINA_WORKFLOWS": [
+        {
+          "run_id": "mda-20261001T1010Z",
+          "path": "campaigns/una_platform/evidence/tasks/MADINA_WORKFLOWS/mda-20261001T1010Z/receipt.json",
+          "sha256": "feb02f7ead2eef794214a81998b6e79d814fefe98aaae817e78ea8f02dc56ba2"
+        }
+      ],
+      "MADINA_ZONAL": [
+        {
+          "run_id": "mdz-20260930T2124Z",
+          "path": "campaigns/una_platform/evidence/tasks/MADINA_ZONAL/mdz-20260930T2124Z/receipt.json",
+          "sha256": "9a5c98712f503e21503c8977f1af649a46c2661dbf26836c072697daa1d433f4"
+        }
+      ],
+      "SCIENCE": [
+        {
+          "run_id": "sci-20260930T1908Z",
+          "path": "campaigns/una_platform/evidence/tasks/SCIENCE/sci-20260930T1908Z/receipt.json",
+          "sha256": "4a4fa83f4a05c9ebb299c0b728e5eb3929a00b143eec4b79de864fb54e6bc4c7"
+        }
+      ],
+      "TOPOLOGY": [
+        {
+          "run_id": "top-20260930T1808Z",
+          "path": "campaigns/una_platform/evidence/tasks/TOPOLOGY/top-20260930T1808Z/receipt.json",
+          "sha256": "356391dba7d308cb834479e0504acd6b1d5ef0fa7a4c44d4316e8b1f8f37e167"
+        }
+      ]
+    }
+  },
+  "campaign_touchprint_since_checkpoint": {
+    "src/urban_network_analysis/compat": 0,
+    "src/urban_network_analysis/reference": 0,
+    "src/urban_network_analysis/cache": 0,
+    "src/urban_network_analysis/batch": 8,
+    "src/urban_network_analysis/Engines": 4,
+    "src/urban_network_analysis/kernels": 0,
+    "native": 4,
+    "gpu": 1,
+    "pyproject.toml": 1,
+    "src": 10
+  },
+  "commit_pins": {
+    "G11": {
+      "sha": "eb9276f5e5d0eb78c2e36203e48b73e4148a9dfc",
+      "subject": "G11 intake (performance-owner): explicit_unavailable qualification - capability vs performance separated, zero performance claims, team-lead harness run rc=2 designed refusal on record, Delta checklist (battery regeneration build-bound, FULL-service crossover, installed engagement)"
+    },
+    "G10": {
+      "sha": "03224a9d9278c4010b0f769f5bfd358cb88a94b6",
+      "subject": "G10 intake: GPU region implementation - new gpu/ surface only (src/ untouched, zero tracked mods), fail-closed ladder + FoldRegionRecord.hardware_validated constant False, K0-K3 host twins (K2 numba tie transcription, K3 8 reduction trees), device source with -fmad=false/no-fast-math/FP64 pinned, gate harness designed refusal rc=2, host battery on REAL engine fold (context-dependence: association class is build-bound), 53 tests pass; numba_cache kept (cited path)"
+    },
+    "G00": {
+      "sha": "12ffa6b09f7d7cfd61a714e9691bf1006a09eeff",
+      "subject": "G00 intake: gpu_region.json - fold-family region specified, verification-gated parity class (3 blockers), CUDA-class+FP64 requirement, Delta=blocked venue, G10 buildable without hardware; cited shas verified (engine efc4dd4a, reductions 888378fa, una_legacy profile); probes untimed host time"
+    },
+    "N10": {
+      "sha": "8d49e9dcff9fff17fe207727ecbbe3d3b949d710",
+      "subject": "N10: native qualification - installed-wheel leg bitwise (64f/147829892B), C-arm no-lever verdict, numba default retained; FIX inherited wheel-packaging defect (spawn shim force-included at wheel root, latent since 0acbb11); native fresh-build 4.0041s charged"
+    },
+    "N00R": {
+      "sha": "0bb38b63ff4c38f116bc93d1bd95ce0e00ca60e2",
+      "subject": "N00R intake: independent review approve_with_notes (0 blocking, 40/40 rerun green, no-disturbance .so rehash); F1 errata filed - stale trace_producer.h sha pin in native_implementation.json corrected to a6897d68 (errata object, parent immutable)"
+    }
+  },
+  "families": [
+    {
+      "id": "madina_parity",
+      "family": "Madina API/functionality parity, shim and workflows",
+      "inherited_from": [
+        "INVENTORY",
+        "MADINA_ZONAL",
+        "MADINA_ACCESS",
+        "MADINA_PATHS",
+        "MADINA_FLOW",
+        "MADINA_WORKFLOWS",
+        "API_REVIEW"
+      ],
+      "platform_receipts": {
+        "INVENTORY": [
+          {
+            "run_id": "inv-20260930T134302Z",
+            "path": "campaigns/una_platform/evidence/tasks/INVENTORY/inv-20260930T134302Z/receipt.json",
+            "sha256": "feee3a46548eda38812cbbe90d6f325b220263049ef3c47b5848b0add7d47850"
+          }
+        ],
+        "MADINA_ZONAL": [
+          {
+            "run_id": "mdz-20260930T2124Z",
+            "path": "campaigns/una_platform/evidence/tasks/MADINA_ZONAL/mdz-20260930T2124Z/receipt.json",
+            "sha256": "9a5c98712f503e21503c8977f1af649a46c2661dbf26836c072697daa1d433f4"
+          }
+        ],
+        "MADINA_ACCESS": [
+          {
+            "run_id": "mda-20261001T0154Z",
+            "path": "campaigns/una_platform/evidence/tasks/MADINA_ACCESS/mda-20261001T0154Z/receipt.json",
+            "sha256": "569d68f1011c27eb01ec98616425b86ad1612d0dce8c57024ddebeeb9c5b0889"
+          }
+        ],
+        "MADINA_PATHS": [
+          {
+            "run_id": "mdp-20261001T0037Z",
+            "path": "campaigns/una_platform/evidence/tasks/MADINA_PATHS/mdp-20261001T0037Z/receipt.json",
+            "sha256": "ef63c9fb8ece2222d4d7f872a83c2958a7227b4b26752317a61fcfb9b3cd45ed"
+          }
+        ],
+        "MADINA_FLOW": [
+          {
+            "run_id": "mda-20261001T0406Z",
+            "path": "campaigns/una_platform/evidence/tasks/MADINA_FLOW/mda-20261001T0406Z/receipt.json",
+            "sha256": "2d06882cabc5b70da9871e04c13709c6b89d04275544c5f51019263bfb4938b2"
+          }
+        ],
+        "MADINA_WORKFLOWS": [
+          {
+            "run_id": "mda-20261001T1010Z",
+            "path": "campaigns/una_platform/evidence/tasks/MADINA_WORKFLOWS/mda-20261001T1010Z/receipt.json",
+            "sha256": "feb02f7ead2eef794214a81998b6e79d814fefe98aaae817e78ea8f02dc56ba2"
+          }
+        ],
+        "API_REVIEW": [
+          {
+            "run_id": "mda-20261001T1215Z",
+            "path": "campaigns/una_platform/evidence/tasks/API_REVIEW/mda-20261001T1215Z/receipt.json",
+            "sha256": "5430485c4ab3cdb4ac8d3bc4ac32ed07a151650c72619cfd1695ffdd28db8783"
+          }
+        ]
+      },
+      "platform_receipts_absent": [],
+      "implementation_status": "closed at platform scope: all 7 inherited tasks carry receipts; implementation reviews ACCEPT/ACCEPT-with-findings",
+      "evidence_status": "current (receipt-level); campaign made 0 commits touching src/urban_network_analysis/compat and .../reference since checkpoint 6130769a5751, so receipts remain byte-current for the compat surface",
+      "current_evidence": [
+        {
+          "label": "P05R readiness review (approve_with_notes, 0 blocking)",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/post_p00_readiness.json",
+          "sha256": "652d2a0f851d9ad37ed3aa7c9d22a3ac351b860353f9b6ef55c1fd807324dd2d",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "P05S staged selection screen",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/p05s/screen_index.json",
+          "sha256": "67b1a4a6b532b14b173d2f07cda767820b6c5aa75004593493f57fc0e5352d55",
+          "grade": "OBSERVED"
+        }
+      ],
+      "campaign_touchprint_since_checkpoint": {
+        "src/urban_network_analysis/compat": 0,
+        "src/urban_network_analysis/reference": 0,
+        "src/urban_network_analysis/cache": 0,
+        "src/urban_network_analysis/batch": 8,
+        "native": 4,
+        "gpu": 1,
+        "pyproject.toml": 1
+      },
+      "remaining_work": [
+        "campaign-end revalidation of the parity surface at V00/R00 (installed parity cells)"
+      ],
+      "owner": "integrator (X00) -> successor tasks",
+      "new_task_mapping": "X00 (this audit); V00/R00 revalidation",
+      "acceptance_gate": "PLATFORM_CONTINUITY.md: parity matrix against pinned Madina",
+      "blockers": [],
+      "disposition": "evidence_closed"
+    },
+    {
+      "id": "scientific_corrections",
+      "family": "Scientific fixes and corrected reference profiles (una_legacy / madina_legacy / corrected_v1)",
+      "inherited_from": [
+        "CONTRACT",
+        "SCIENCE",
+        "TOPOLOGY"
+      ],
+      "platform_receipts": {
+        "CONTRACT": [
+          {
+            "run_id": "con-20260930T135612Z",
+            "path": "campaigns/una_platform/evidence/tasks/CONTRACT/con-20260930T135612Z/receipt.json",
+            "sha256": "9ffb725d5700013a17e2cf1683b92bd284bb5c67ac8eff4535d6a04a2dbca57a"
+          }
+        ],
+        "SCIENCE": [
+          {
+            "run_id": "sci-20260930T1908Z",
+            "path": "campaigns/una_platform/evidence/tasks/SCIENCE/sci-20260930T1908Z/receipt.json",
+            "sha256": "4a4fa83f4a05c9ebb299c0b728e5eb3929a00b143eec4b79de864fb54e6bc4c7"
+          }
+        ],
+        "TOPOLOGY": [
+          {
+            "run_id": "top-20260930T1808Z",
+            "path": "campaigns/una_platform/evidence/tasks/TOPOLOGY/top-20260930T1808Z/receipt.json",
+            "sha256": "356391dba7d308cb834479e0504acd6b1d5ef0fa7a4c44d4316e8b1f8f37e167"
+          }
+        ]
+      },
+      "platform_receipts_absent": [],
+      "implementation_status": "closed at platform scope; campaign introduced no new scientific default and did not touch reference surfaces (0 commits)",
+      "evidence_status": "current (receipt-level + campaign retention evidence)",
+      "current_evidence": [
+        {
+          "label": "S01/S10 sparse projection admission (prior run evidence, retained)",
+          "path": "campaigns/una_10x/evidence/proofs/S10_sparse_projection/sparse_admission.json",
+          "sha256": "23a6fcdeff9ae47dea7f105aa605030a56675c53d72fff6f38948189f745d65d",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "independent review of sparse projection proof",
+          "path": "campaigns/una_10x/evidence/proofs/S10_sparse_projection/review_indep/verdict.json",
+          "sha256": "fbb89b9968786b48f797165a7366707306776b152f8ab889c8e3f032d32beced",
+          "grade": "OBSERVED"
+        }
+      ],
+      "campaign_touchprint_since_checkpoint": {
+        "src/urban_network_analysis/compat": 0,
+        "src/urban_network_analysis/reference": 0,
+        "src/urban_network_analysis/cache": 0,
+        "src/urban_network_analysis/batch": 8,
+        "native": 4,
+        "gpu": 1,
+        "pyproject.toml": 1
+      },
+      "remaining_work": [
+        "none at family level; V00 re-runs profile bit checks from installed artifacts"
+      ],
+      "owner": "integrator (X00) -> successor tasks",
+      "new_task_mapping": "X00 (this audit); S01/S10 already evidenced the sparse profile; V00 revalidation",
+      "acceptance_gate": "PLATFORM_CONTINUITY.md: three references preserved as distinct; never claim a speedup from a model change",
+      "blockers": [],
+      "disposition": "evidence_closed"
+    },
+    {
+      "id": "batch_runtime",
+      "family": "Public RunBatch plan/runtime/checkpoint (ordering, cancellation, recovery)",
+      "inherited_from": [
+        "BATCH_PLAN",
+        "BATCH_EXEC",
+        "BATCH_REVIEW"
+      ],
+      "platform_receipts": {
+        "BATCH_PLAN": [
+          {
+            "run_id": "bpt-20261001T1330Z",
+            "path": "campaigns/una_platform/evidence/tasks/BATCH_PLAN/bpt-20261001T1330Z/receipt.json",
+            "sha256": "56a11fb77f4530b694b940a0f73acb359b76bdf26e54a8c44be2543513060c38"
+          }
+        ],
+        "BATCH_EXEC": [
+          {
+            "run_id": "bex-20261001T2100Z",
+            "path": "campaigns/una_platform/evidence/tasks/BATCH_EXEC/bex-20261001T2100Z/receipt.json",
+            "sha256": "8397f5185962aaace60a8462391f93a6bf6167e0b39fe207c24a5d728388374b"
+          }
+        ],
+        "BATCH_REVIEW": [
+          {
+            "run_id": "rev-20261003T0105Z",
+            "path": "campaigns/una_platform/evidence/tasks/BATCH_REVIEW/rev-20261003T0105Z/receipt.json",
+            "sha256": "81ca75fa9cc82ac62123d102c5d5b634bc571382a4d4c27affa1a2e798bfaefe"
+          }
+        ]
+      },
+      "platform_receipts_absent": [],
+      "implementation_status": "closed at platform scope; campaign P03 removed the Python origin loop without changing the compiled full fold (P05R-bound); H01 exercised execution, ordered commits, cancellation and failure-prefix behavior",
+      "evidence_status": "current, with ONE OPEN engine defect",
+      "current_evidence": [
+        {
+          "label": "H01 fault matrix (prior run evidence, retained)",
+          "path": "campaigns/una_10x/evidence/faults/H01-tenx-20261003T1212Z/fault_matrix.json",
+          "sha256": "c0a7540218194d4a1ff813b0a8492bba243ca9dde3ccdcc4e3cc773056d322c6",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "H01 batch/flow screens record (prior run evidence, retained)",
+          "path": "campaigns/una_10x/evidence/screens/H01-tenx-20261003T1212Z/record.json",
+          "sha256": "680712966bb690ce897806663a54d34ed8af74876f3bc43d199c55f0fd91e8b9",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "P05R readiness review (approve_with_notes, 0 blocking)",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/post_p00_readiness.json",
+          "sha256": "652d2a0f851d9ad37ed3aa7c9d22a3ac351b860353f9b6ef55c1fd807324dd2d",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "P05S staged selection screen",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/p05s/screen_index.json",
+          "sha256": "67b1a4a6b532b14b173d2f07cda767820b6c5aa75004593493f57fc0e5352d55",
+          "grade": "OBSERVED"
+        }
+      ],
+      "campaign_touchprint_since_checkpoint": {
+        "src/urban_network_analysis/compat": 0,
+        "src/urban_network_analysis/reference": 0,
+        "src/urban_network_analysis/cache": 0,
+        "src/urban_network_analysis/batch": 8,
+        "native": 4,
+        "gpu": 1,
+        "pyproject.toml": 1
+      },
+      "remaining_work": [
+        "close defect DEF-24 (cancel-path wedge): fix in flight in working tree at audit time, uncommitted, unreviewed",
+        "post-fix rerun of cancellation/recovery cells; V00 fault gauntlet"
+      ],
+      "owner": "integrator (X00) -> successor tasks",
+      "new_task_mapping": "X00 (this audit); defect fix owner n00-native-engineer (task #24); V00 fault gauntlet",
+      "acceptance_gate": "PLATFORM_CONTINUITY.md: H01 tests actual execution, ordered commits, cancellation and failure-prefix behavior",
+      "blockers": [
+        {
+          "id": "DEF-24",
+          "description": "runtime._cancel queue-wedge: any worker-row failure can wedge the batch instead of failing it (main joins a backlogged Queue feeder inside runtime._cancel -> Queue.join_thread); failures swallowed",
+          "evidence": "n00/wedge_persistence_sd_direct_sidecar.txt (faulthandler stack) + n00/wedge_triage_console.txt",
+          "status": "OPEN - fix in flight (task #24; src/urban_network_analysis/batch/runtime.py modified, tests/batch/runtime/test_runtime_cancel_wedge.py untracked in working tree at audit time)"
+        }
+      ],
+      "disposition": "open_blockers"
+    },
+    {
+      "id": "cache_policy",
+      "family": "Content-addressed store, typed identities, resident leases, corruption/single-flight/quotas",
+      "inherited_from": [
+        "CACHE_STORE",
+        "CACHE_GRAPH"
+      ],
+      "platform_receipts": {
+        "CACHE_STORE": [
+          {
+            "run_id": "cst-20261001T1315Z",
+            "path": "campaigns/una_platform/evidence/tasks/CACHE_STORE/cst-20261001T1315Z/receipt.json",
+            "sha256": "fe1bba39c2129136d47ce174c97c7f071234532d83d635c5b631bdf9935eb9d6"
+          }
+        ],
+        "CACHE_GRAPH": [
+          {
+            "run_id": "cg-20261002T2025Z",
+            "path": "campaigns/una_platform/evidence/tasks/CACHE_GRAPH/cg-20261002T2025Z/receipt.json",
+            "sha256": "d90856d1ab164c8ae43bfb4e9ade6ef010a87f271cdb0f877a3940ba76a38cc7"
+          }
+        ]
+      },
+      "platform_receipts_absent": [],
+      "implementation_status": "closed at platform scope; campaign made 0 commits to src/urban_network_analysis/cache since checkpoint; C10-C31 typed identities + leases from the prior campaign preserved; screens ran at the frozen cache-off policy",
+      "evidence_status": "current (receipt-level + untouched-surface proof + P01 baseline-policy audit)",
+      "current_evidence": [
+        {
+          "label": "P01 baseline-policy audit: status=measured_legs_complete_on_local_registered_control_frozen_cohort_replication_open",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/baseline_policy_audit.json",
+          "sha256": "c8078f57c133172f6b71d239b7280bc71312939926b77ec01d89c960ece43e6b",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "primary identity check: local_bytes_verified_remote_bytes_unavailable",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/primary_identity_check.json",
+          "sha256": "0576605440b48b77b41e98c0e53c7a3a072e64fde3cf287be2f997c2ba7f11c2",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "P05R readiness review (approve_with_notes, 0 blocking)",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/post_p00_readiness.json",
+          "sha256": "652d2a0f851d9ad37ed3aa7c9d22a3ac351b860353f9b6ef55c1fd807324dd2d",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "P05S staged selection screen",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/p05s/screen_index.json",
+          "sha256": "67b1a4a6b532b14b173d2f07cda767820b6c5aa75004593493f57fc0e5352d55",
+          "grade": "OBSERVED"
+        }
+      ],
+      "campaign_touchprint_since_checkpoint": {
+        "src/urban_network_analysis/compat": 0,
+        "src/urban_network_analysis/reference": 0,
+        "src/urban_network_analysis/cache": 0,
+        "src/urban_network_analysis/batch": 8,
+        "native": 4,
+        "gpu": 1,
+        "pyproject.toml": 1
+      },
+      "remaining_work": [
+        "V00 revalidation of cache/state invariants from installed artifacts"
+      ],
+      "owner": "integrator (X00) -> successor tasks",
+      "new_task_mapping": "X00 (this audit); V00 revalidation",
+      "acceptance_gate": "PLATFORM_CONTINUITY.md: retain corruption, single-flight, byte quotas, safe decoding, atomic publication",
+      "blockers": [],
+      "disposition": "evidence_closed"
+    },
+    {
+      "id": "native_backend",
+      "family": "Substantive native/AOT backend (NATIVE_CORE, NATIVE_SIMD at platform scope)",
+      "inherited_from": [
+        "NATIVE_CORE",
+        "NATIVE_SIMD"
+      ],
+      "platform_receipts": {},
+      "platform_receipts_absent": [
+        "NATIVE_CORE",
+        "NATIVE_SIMD"
+      ],
+      "implementation_status": "platform-scope tasks NEVER EXECUTED (no evidence dirs); this campaign added a real, reviewed native trace-producer capability (N00) and qualified it (N10) without admitting it to the 10x gate stack",
+      "evidence_status": "campaign evidence current; platform-scope obligations remain unexecuted",
+      "current_evidence": [
+        {
+          "label": "N00 implementation record",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/native_implementation.json",
+          "sha256": "990823992f9bd49a4dc89c75ed0c98904b8a9efa57c1d9723a584ff49bff958b",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "N00R independent review",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/review.json",
+          "sha256": "fe0a11ec265ecf4c1d0bbd48abb318da31c09df4548d735e16dfb1fc1bc073de",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "N00R errata F1 (parent immutable)",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/native_implementation_errata_f1.json",
+          "sha256": "bbd221d60047c1f2a16f2af5bd763ce32548447f9752edf436ecb02e21abe4ee",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "N00R errata F1 correction of record",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/native_implementation_errata_f1_reference_fix.json",
+          "sha256": "ef005d554c1d600e106c8d8c2f5475b0a90a87360e4ef828002fdf2423ec89e0",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "N10 native qualification",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n10/native_qualification.json",
+          "sha256": "a997e72b52db3d6f7d840b7d6c4719a93431ae62323cd8e63eacd5400afde01f",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "N10 installed-wheel identity",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n10/install_identity.json",
+          "sha256": "18713792c6bc324f5cb6cadb64025f122a13dabebf0a0b64614ad067eed52c76",
+          "grade": "OBSERVED"
+        }
+      ],
+      "campaign_touchprint_since_checkpoint": {
+        "src/urban_network_analysis/compat": 0,
+        "src/urban_network_analysis/reference": 0,
+        "src/urban_network_analysis/cache": 0,
+        "src/urban_network_analysis/batch": 8,
+        "native": 4,
+        "gpu": 1,
+        "pyproject.toml": 1
+      },
+      "remaining_work": [
+        "platform NATIVE_CORE/NATIVE_SIMD scopes (AOT core kernel surface, SIMD/divergence variants) remain unexecuted - no receipts exist",
+        "platform PARITY native cells unrun",
+        "DEF-24 fix touches batch/runtime, not the native producer; native surface itself has no open defect"
+      ],
+      "owner": "integrator (X00) -> successor tasks",
+      "new_task_mapping": "X00 (this audit); N00/N10 closed by n00-native-engineer; PARITY cells -> V00",
+      "acceptance_gate": "PLATFORM_CONTINUITY.md: integrate reviewed ongoing work first; never port the slow portable oracle as a weak comparator",
+      "blockers": [
+        {
+          "id": "BLK-NATIVE-PLATFORM-SCOPE",
+          "description": "inherited NATIVE_CORE and NATIVE_SIMD platform tasks have no evidence dirs and no receipts; the platform-scope AOT core/SIMD obligation is not discharged by the 10x-scope N00 trace producer",
+          "evidence": "campaigns/una_platform/evidence/tasks/ contains no NATIVE_CORE/ or NATIVE_SIMD/ dirs (audited this task)",
+          "status": "OPEN - inherited obligation incomplete at platform scope; capability (not performance) carried by N00/N10"
+        }
+      ],
+      "disposition": "open_blockers"
+    },
+    {
+      "id": "gpu_support",
+      "family": "GPU support: device runtime, substantive kernels, residency region, qualification",
+      "inherited_from": [
+        "GPU_DEVICE",
+        "GPU_KERNEL",
+        "GPU_REGION"
+      ],
+      "platform_receipts": {},
+      "platform_receipts_absent": [
+        "GPU_DEVICE",
+        "GPU_KERNEL",
+        "GPU_REGION"
+      ],
+      "implementation_status": "platform-scope tasks NEVER EXECUTED (no evidence dirs); this campaign specified (G00), implemented (G10, bounded device source + exact host twins) and explicitly-disqualified (G11) the fold-family region; admission fail-closed",
+      "evidence_status": "campaign evidence current; device qualification blocked by hardware absence (qualification blocker, never simulated success)",
+      "current_evidence": [
+        {
+          "label": "G00 GPU residency region spec",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/g00/gpu_region.json",
+          "sha256": "c8a877df11b0d1a3827dfe40378ecbf1c66200aa426ce152bdf1510f09730630",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "G10 GPU region implementation record",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/gpu_implementation.json",
+          "sha256": "554eb67a22ea7be1747ea777bfcd063a58d6947bcc5202c505cde6c80156d313",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "G10 gate harness designed refusal",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/gate_harness_failclosed.json",
+          "sha256": "449d7953db106c309713077f0aadcfbdd0808b5e1d656843176fbd7c66573fb9",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "G10 53-test receipt",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/pytest_gpu_receipt.txt",
+          "sha256": "9bf3ef66fab93898e01f236d1c39f659c4eb844687c294ebccf40726c71302da",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "G11 explicit_unavailable qualification",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/g11/gpu_qualification.json",
+          "sha256": "971056f0ea27eb7d346c60c67fdb7a2a72e192879b8810e4695dc720f3db91e0",
+          "grade": "OBSERVED"
+        }
+      ],
+      "campaign_touchprint_since_checkpoint": {
+        "src/urban_network_analysis/compat": 0,
+        "src/urban_network_analysis/reference": 0,
+        "src/urban_network_analysis/cache": 0,
+        "src/urban_network_analysis/batch": 8,
+        "native": 4,
+        "gpu": 1,
+        "pyproject.toml": 1
+      },
+      "remaining_work": [
+        "G10R independent implementation review of G10 (task #28, PENDING)",
+        "real-device bit parity + end-to-end crossover on CUDA-class hardware with FP64 (no such hardware on this host)",
+        "platform GPU_DEVICE/GPU_KERNEL/GPU_REGION scopes remain unexecuted; platform PARITY GPU cells blocked",
+        "a fallback-only GPU route is NOT substantive support (PLATFORM_CONTINUITY.md) - implementation must be exercised on hardware"
+      ],
+      "owner": "integrator (X00) -> successor tasks",
+      "new_task_mapping": "X00 (this audit); G10R -> gpu-engineer/reviewer; hardware cells -> I00/V00 with explicit unavailable",
+      "acceptance_gate": "PLATFORM_CONTINUITY.md: G00/G10 are real implementation/qualification tasks; hardware absence blocks G10, not independent CPU work",
+      "blockers": [
+        {
+          "id": "BLK-GPU-HW",
+          "description": "no CUDA-class device and no nvcc on the audit host (Apple M1 Pro, Darwin; Apple GPU explicitly not a qualification target); device parity/benchmark cells cannot run here",
+          "evidence": "g10/gate_harness_failclosed.json (designed refusal rc=2, no_cuda_driver) + g11/gpu_qualification.json (team-lead harness run rc=2 on record)",
+          "status": "OPEN - qualification blocker; FoldRegionRecord.hardware_validated stays constant False"
+        },
+        {
+          "id": "BLK-G10R",
+          "description": "G10 implementation awaits independent review (task G10R #28 pending); no review verdict exists yet",
+          "evidence": "task register: #28 G10R pending",
+          "status": "OPEN - review pending"
+        }
+      ],
+      "disposition": "open_blockers"
+    },
+    {
+      "id": "city_failures",
+      "family": "City failures, incident root causes, diagnostic-mode behavior",
+      "inherited_from": [
+        "FAILURES",
+        "CITIES"
+      ],
+      "platform_receipts": {
+        "FAILURES": [
+          {
+            "run_id": "fai-20260930T1710Z",
+            "path": "campaigns/una_platform/evidence/tasks/FAILURES/fai-20260930T1710Z/receipt.json",
+            "sha256": "d709a969270117dd275e395b3eaa87cb4081a3fd11256e348948fc595a54f8bb"
+          }
+        ]
+      },
+      "platform_receipts_absent": [
+        "CITIES"
+      ],
+      "implementation_status": "FAILURES closed at platform scope (9 published incidents triaged, none reproduced); CITIES platform task NEVER EXECUTED; campaign ran no city-failure work",
+      "evidence_status": "receipt current; incident substance explicitly unresolved",
+      "current_evidence": [
+        {
+          "label": "platform incident register (9 incidents)",
+          "path": "campaigns/una_platform/incidents.json",
+          "sha256": "da1ac2dd98707a96ce6f2a06a9435dabc8c43b2b8655821a1ddd7c72546a8c67",
+          "grade": "OBSERVED"
+        }
+      ],
+      "campaign_touchprint_since_checkpoint": {},
+      "remaining_work": [
+        "all 9 incidents remain root_cause_verified=false; reproduction status unchanged",
+        "CITIES platform scope (observed morphology corpus, failure regressions) unexecuted",
+        "platform FAULTS final-fault gate unexecuted"
+      ],
+      "owner": "integrator (X00) -> successor tasks",
+      "new_task_mapping": "X00 (this audit); incident reproduction remains a platform obligation with no active owner",
+      "acceptance_gate": "PLATFORM_CONTINUITY.md: preserve incident identity and actual reproduction status; no claimed city root cause without data",
+      "blockers": [
+        {
+          "id": "BLK-CITY-ROOTCAUSES",
+          "description": "9 platform incidents (INC01-INC09) all reported_not_reproduced / hypothesis_not_reproduced with root_cause_verified=false",
+          "evidence": "campaigns/una_platform/incidents.json",
+          "status": "OPEN - genuine incident evidence recorded; causes unverified"
+        },
+        {
+          "id": "BLK-CITIES-SCOPE",
+          "description": "CITIES platform task has no evidence dir and no receipt",
+          "evidence": "campaigns/una_platform/evidence/tasks/ contains no CITIES/ dir (audited this task)",
+          "status": "OPEN - inherited obligation incomplete"
+        }
+      ],
+      "disposition": "open_blockers"
+    },
+    {
+      "id": "install_packaging",
+      "family": "Packaging, CI, installed-path validation",
+      "inherited_from": [
+        "PACKAGE"
+      ],
+      "platform_receipts": {},
+      "platform_receipts_absent": [
+        "PACKAGE"
+      ],
+      "implementation_status": "platform PACKAGE task NEVER EXECUTED; campaign found and FIXED an inherited wheel-packaging defect (spawn shim una_batch_worker_main.py missing from wheels, latent since 0acbb11, inherited from parent e7c9eda) via pyproject force-include, proven by an actual installed-wheel run",
+      "evidence_status": "campaign evidence current (installed-wheel identity pinned); CI and clean A/B installed validation do not exist yet",
+      "current_evidence": [
+        {
+          "label": "N10 installed-wheel identity + defect record",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n10/install_identity.json",
+          "sha256": "18713792c6bc324f5cb6cadb64025f122a13dabebf0a0b64614ad067eed52c76",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "live pyproject with force-include fix (audit-time bytes)",
+          "path": "pyproject.toml",
+          "sha256": "87d2f2844bda9dcafa6d29ef745816e7056dce7ad6925620397ce96c35a115bf",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "N10 post-fix packaging census",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n10/packaging_census_fixed.json",
+          "sha256": "2c8544615501a0b303c9d1b510f3e642a0bcce202065e3c26f569883c4cb7bed",
+          "grade": "OBSERVED"
+        }
+      ],
+      "campaign_touchprint_since_checkpoint": {
+        "src/urban_network_analysis/compat": 0,
+        "src/urban_network_analysis/reference": 0,
+        "src/urban_network_analysis/cache": 0,
+        "src/urban_network_analysis/batch": 8,
+        "native": 4,
+        "gpu": 1,
+        "pyproject.toml": 1
+      },
+      "remaining_work": [
+        "unrun CI is unavailable (PLATFORM_CONTINUITY.md: 'Unrun CI is unavailable') - no CI evidence exists",
+        "I00 must build A/B clean wheels and install OUTSIDE checkouts, pin modules/binaries/harnesses (task #19 prep pending)",
+        "installed L3 validation and V00 installed-parity cells not yet run"
+      ],
+      "owner": "integrator (X00) -> successor tasks",
+      "new_task_mapping": "X00 (this audit); packaging fix owner n00-native-engineer (N10); I00/V00 pending",
+      "acceptance_gate": "PLATFORM_CONTINUITY.md: packaging/CI/installed-path -> I00/V00/R00/Z00",
+      "blockers": [
+        {
+          "id": "BLK-INSTALL-CI-I00",
+          "description": "no CI runs and no clean A/B installed-wheel validation exist; I00 depends on X00 (this audit) and is pending",
+          "evidence": "PLATFORM_CONTINUITY.md + una_10x TASKS_CLAUDE.yaml I00 block; no CI artifacts anywhere in either campaign tree (audited)",
+          "status": "OPEN - scheduled successor work, not waived"
+        }
+      ],
+      "disposition": "open_blockers"
+    }
+  ],
+  "integration_of_reviewed_pending_work": {
+    "law": "PLATFORM_CONTINUITY.md: integrate independently reviewed pending implementations WITHOUT resetting baseline",
+    "baseline_continuation": {
+      "comparator": "395cdc5 (baseline-395cdc5 worktree + venv-baseline), executable and untouched",
+      "p00_parent": "e7c9eda (parent-e7c9eda worktree + venv-parent-e7c9eda), untouched",
+      "frozen_primary": "92.1141s PACE primary untouched; screens are selection evidence only (P05S notes)",
+      "evidence": {
+        "label": "commit pins verified: checkpoint/parent ancestors of HEAD, comparator ancestor of origin/main",
+        "path": "campaign_runs/una_10x/tenx-20261005T2331Z/primary_identity_check.json",
+        "sha256": "0576605440b48b77b41e98c0e53c7a3a072e64fde3cf287be2f997c2ba7f11c2",
+        "grade": "OBSERVED"
+      }
+    },
+    "items": [
+      {
+        "item": "N00 native trace producer",
+        "commit": "0bb38b63ff4c38f116bc93d1bd95ce0e00ca60e2",
+        "subject": "N00R intake: independent review approve_with_notes (0 blocking, 40/40 rerun green, no-disturbance .so rehash); F1 errata filed - stale trace_producer.h sha pin in native_implementation.json corrected to a6897d68 (errata object, parent immutable)",
+        "review": "approve_with_notes, blocking=[] (p03r-reviewer); errata F1 + correction of record filed",
+        "evidence": {
+          "label": "N00R review bytes",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/review.json",
+          "sha256": "fe0a11ec265ecf4c1d0bbd48abb318da31c09df4548d735e16dfb1fc1bc073de",
+          "grade": "OBSERVED"
+        }
+      },
+      {
+        "item": "N10 native qualification + wheel packaging fix",
+        "commit": "8d49e9dcff9fff17fe207727ecbbe3d3b949d710",
+        "subject": "N10: native qualification - installed-wheel leg bitwise (64f/147829892B), C-arm no-lever verdict, numba default retained; FIX inherited wheel-packaging defect (spawn shim force-included at wheel root, latent since 0acbb11); native fresh-build 4.0041s charged",
+        "review": "performance-owner qualification; native NOT admitted to 10x gate stack (no reliable lever), capability RETAINED",
+        "evidence": {
+          "label": "N10 qualification record",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n10/native_qualification.json",
+          "sha256": "a997e72b52db3d6f7d840b7d6c4719a93431ae62323cd8e63eacd5400afde01f",
+          "grade": "OBSERVED"
+        }
+      },
+      {
+        "item": "G00 GPU region spec",
+        "commit": "12ffa6b09f7d7cfd61a714e9691bf1006a09eeff",
+        "subject": "G00 intake: gpu_region.json - fold-family region specified, verification-gated parity class (3 blockers), CUDA-class+FP64 requirement, Delta=blocked venue, G10 buildable without hardware; cited shas verified (engine efc4dd4a, reductions 888378fa, una_legacy profile); probes untimed host time",
+        "review": "performance-owner spec; verification-gated parity class; G10 buildable without hardware",
+        "evidence": {
+          "label": "G00 spec record",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/g00/gpu_region.json",
+          "sha256": "c8a877df11b0d1a3827dfe40378ecbf1c66200aa426ce152bdf1510f09730630",
+          "grade": "OBSERVED"
+        }
+      },
+      {
+        "item": "G10 GPU region implementation",
+        "commit": "03224a9d9278c4010b0f769f5bfd358cb88a94b6",
+        "subject": "G10 intake: GPU region implementation - new gpu/ surface only (src/ untouched, zero tracked mods), fail-closed ladder + FoldRegionRecord.hardware_validated constant False, K0-K3 host twins (K2 numba tie transcription, K3 8 reduction trees), device source with -fmad=false/no-fast-math/FP64 pinned, gate harness designed refusal rc=2, host battery on REAL engine fold (context-dependence: association class is build-bound), 53 tests pass; numba_cache kept (cited path)",
+        "review": "PENDING - awaiting G10R independent review (task #28); no review verdict exists; new gpu/ surface only, src/ untouched",
+        "evidence": {
+          "label": "G10 implementation record",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/gpu_implementation.json",
+          "sha256": "554eb67a22ea7be1747ea777bfcd063a58d6947bcc5202c505cde6c80156d313",
+          "grade": "OBSERVED"
+        }
+      },
+      {
+        "item": "G11 explicit-unavailable GPU qualification",
+        "commit": "eb9276f5e5d0eb78c2e36203e48b73e4148a9dfc",
+        "subject": "G11 intake (performance-owner): explicit_unavailable qualification - capability vs performance separated, zero performance claims, team-lead harness run rc=2 designed refusal on record, Delta checklist (battery regeneration build-bound, FULL-service crossover, installed engagement)",
+        "review": "performance-owner qualification; zero performance claims; capability vs performance separated",
+        "evidence": {
+          "label": "G11 qualification record",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/g11/gpu_qualification.json",
+          "sha256": "971056f0ea27eb7d346c60c67fdb7a2a72e192879b8810e4695dc720f3db91e0",
+          "grade": "OBSERVED"
+        }
+      },
+      {
+        "item": "F00/F10 flow chain",
+        "commit": "83f193a/84e4b25/83a1b10 (F00 custody per f10 parent_evidence)",
+        "subject": "F00 sparse-output producer + ordered tape both not_admitted (Amdahl S<=1.134); F10 not triggered; existing flow unaffected",
+        "review": "admission + verdict records; no src/tests changes",
+        "evidence": {
+          "label": "F10 verdict binding F00 sha",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/f10/flow_verdict.json",
+          "sha256": "4a9aae83656b62e9d4e34af2b956a912a222589c05b4ebea57fe53e5dea88b33",
+          "grade": "OBSERVED"
+        }
+      },
+      {
+        "item": "P05S staged screen + P05R readiness review",
+        "commit": "86e8b0a measured / be8441b reviewed",
+        "subject": "full accepted stack (P02I+P03C+P03M-A/B+P04I-fix) bound at w4 t1 q64 cache-off; approve_with_notes, 0 blocking",
+        "review": "independent (p03r-reviewer); selection evidence only, NOT a 10x claim",
+        "evidence": {
+          "label": "P05R readiness verdict",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/post_p00_readiness.json",
+          "sha256": "652d2a0f851d9ad37ed3aa7c9d22a3ac351b860353f9b6ef55c1fd807324dd2d",
+          "grade": "OBSERVED"
+        }
+      },
+      {
+        "item": "wheel spawn-shim packaging fix",
+        "commit": "8d49e9dcff9fff17fe207727ecbbe3d3b949d710",
+        "subject": "pyproject force-include maps src/una_batch_worker_main.py to wheel root; defect INHERITED from parent e7c9eda, latent since 0acbb11",
+        "review": "proven by actual installed-wheel execution (install_identity.json)",
+        "evidence": {
+          "label": "live pyproject bytes (audit time)",
+          "path": "pyproject.toml",
+          "sha256": "87d2f2844bda9dcafa6d29ef745816e7056dce7ad6925620397ce96c35a115bf",
+          "grade": "OBSERVED"
+        }
+      },
+      {
+        "item": "DEF-24 cancel-wedge fix",
+        "commit": null,
+        "subject": "IN FLIGHT at audit time: src/urban_network_analysis/batch/runtime.py modified, tests/batch/runtime/test_runtime_cancel_wedge.py untracked; NOT committed, NOT reviewed",
+        "review": "none yet - recorded as OPEN, never as closed",
+        "evidence": {
+          "label": "working-tree status at audit time",
+          "porcelain": "M src/urban_network_analysis/batch/runtime.py\n?? campaign_data/\n?? campaign_runs/una_10x/tenx-20261005T2331Z/x00/\n?? tests/batch/runtime/test_runtime_cancel_wedge.py\n?? tests/tenx/gpu/",
+          "grade": "OBSERVED"
+        }
+      }
+    ]
+  },
+  "platform_incident_register": {
+    "path": "campaigns/una_platform/incidents.json",
+    "sha256": "da1ac2dd98707a96ce6f2a06a9435dabc8c43b2b8655821a1ddd7c72546a8c67",
+    "observed_date": "2026-09-30",
+    "incidents": [
+      {
+        "id": "INC01",
+        "status": "reported_not_reproduced",
+        "root_cause_verified": false
+      },
+      {
+        "id": "INC02",
+        "status": "reported_not_reproduced",
+        "root_cause_verified": false
+      },
+      {
+        "id": "INC03",
+        "status": "reported_not_reproduced",
+        "root_cause_verified": false
+      },
+      {
+        "id": "INC04",
+        "status": "reported_not_reproduced",
+        "root_cause_verified": false
+      },
+      {
+        "id": "INC05",
+        "status": "reported_not_reproduced",
+        "root_cause_verified": false
+      },
+      {
+        "id": "INC06",
+        "status": "reported_not_reproduced",
+        "root_cause_verified": false
+      },
+      {
+        "id": "INC07",
+        "status": "hypothesis_not_reproduced",
+        "root_cause_verified": false
+      },
+      {
+        "id": "INC08",
+        "status": "reported_not_reproduced",
+        "root_cause_verified": false
+      },
+      {
+        "id": "INC09",
+        "status": "hypothesis_not_reproduced",
+        "root_cause_verified": false
+      }
+    ],
+    "summary": "9 incidents; all root_cause_verified=false; 7 reported_not_reproduced, 2 hypothesis_not_reproduced"
+  },
+  "campaign_defect_and_anomaly_register": {
+    "DEF-24_silent_wedge": {
+      "engine_defect": "runtime._cancel queue-wedge swallows worker-row failures (runtime.py:1215 dispatch; _cancel at runtime.py:1466 -> cancel runtime.py:443 -> Queue.join_thread)",
+      "status": "OPEN (tasks #20/#24 in_progress; fix in flight, uncommitted at audit time)",
+      "evidence": [
+        {
+          "label": "persistence proof: faulthandler sidecar stack, main inside _cancel joining backlogged Queue feeder",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/wedge_persistence_sd_direct_sidecar.txt",
+          "sha256": "9cbe743ca8491d3db26d48222078d6d722110f7ed4fdae126dc08e5c6ccaba25",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "triage: four attempts, one root cause",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/wedge_triage_console.txt",
+          "sha256": "3e446170a06edbe0f9424280628875eb247c27b01cea828f81c30eaac7cf1afb",
+          "grade": "OBSERVED"
+        }
+      ]
+    },
+    "packaging_defect": {
+      "defect": "spawn shim una_batch_worker_main.py not packaged in wheels -> parallel RunBatch ModuleNotFoundError at pool.start (runtime.py:379) in any non-editable install",
+      "status": "FIXED (pyproject force-include; verified in installed wheel)",
+      "evidence": [
+        {
+          "label": "installed-wheel run evidence",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n10/install_identity.json",
+          "sha256": "18713792c6bc324f5cb6cadb64025f122a13dabebf0a0b64614ad067eed52c76",
+          "grade": "OBSERVED"
+        }
+      ]
+    },
+    "L1B2_co_tenancy_anomaly": {
+      "anomaly": "L1B2 native leg 16.2113s fired after loadavg-gate release from a 12.54 entry reading; in-run 1-min loadavg max 9.66 exceeded the <8 gate inside the leg; ambient co-tenancy",
+      "status": "RECORDED; no claim rests on it (N10 verdict treats the native arms as contradicting at n=2 under co-tenancy and admits nothing)",
+      "evidence": [
+        {
+          "label": "budget reconciliation, L1B2 anomaly entry",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/budget_reconciliation.json",
+          "sha256": "a4d106c10a21764b66ff352d76b8be910cfa9ac92ab6d209cf760c7053ccb05a",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "equal_C_comparison verdict",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n10/native_qualification.json",
+          "sha256": "a997e72b52db3d6f7d840b7d6c4719a93431ae62323cd8e63eacd5400afde01f",
+          "grade": "OBSERVED"
+        }
+      ]
+    },
+    "n00_shakedown_wedges": {
+      "count": 4,
+      "description": "four shakedown attempts wedged during N00 instrumentation; faulthandler sidecar resolved all four to the single cancel-path root cause (DEF-24); attempt-1 sampler starvation was a real instrument finding but NOT the wedge cause",
+      "status": "DIAGNOSED (root cause identified); engine fix = DEF-24, open",
+      "evidence": [
+        {
+          "label": "shakedown triage console",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/wedge_triage_console.txt",
+          "sha256": "3e446170a06edbe0f9424280628875eb247c27b01cea828f81c30eaac7cf1afb",
+          "grade": "OBSERVED"
+        },
+        {
+          "label": "shakedown legs console",
+          "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/legs_shakedowns_console.txt",
+          "sha256": "9b78052c900eeefcae50071ab9bc78cea356b21f3a73206a16b4f1c08583b2f5",
+          "grade": "OBSERVED"
+        }
+      ]
+    }
+  },
+  "no_waivers": {
+    "statement": "No requirement is waived. Families with disposition evidence_closed carry current receipt-level evidence; families with disposition open_blockers carry explicit unfinished blockers with named evidence. Receipt evidence is not installed-engagement proof (PLATFORM_CONTINUITY.md); installed revalidation is scheduled at I00/V00 and recorded there as pending, not assumed.",
+    "explicitly_not_waived": [
+      "GPU device qualification (hardware-blocked, explicit_unavailable on record)",
+      "city incident root-cause verification (9 unverified)",
+      "platform-scope NATIVE_CORE/NATIVE_SIMD/GPU_*/CITIES/PACKAGE execution (no receipts exist)",
+      "CI execution and clean A/B installed validation (I00)",
+      "G10R independent review of G10",
+      "DEF-24 engine fix (in flight, unreviewed)"
+    ]
+  },
+  "summary_counts": {
+    "families_total": 8,
+    "families_evidence_closed": 3,
+    "families_open_blockers": 5,
+    "open_blockers_total": 7
+  }
+}
