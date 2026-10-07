@@ -17,10 +17,10 @@
     "note": "recorded for transparency; NOT silently merged into the ledger \u2014 basis difference left to the performance owner"
   },
   "w00_calibration_receipts": "not present locally; W00 deliverables (PRIMARY.json/WORKLOADS.json/baseline_stage_model.json) live in the remote run root \u2014 any W00 heavy consumption is inside the P00-ledger basis or unknown_pending_remote",
-  "remaining_work_budget_seconds": 26130.2353,
+  "remaining_work_budget_seconds": 25355.1484,
   "final_reserved_seconds": 7200,
   "reset": false,
-  "this_run_consumption_so_far_seconds": 446.29470000000003,
+  "this_run_consumption_so_far_seconds": 1221.3816000000002,
   "note": "all values transcribed from committed receipts, not recomputed; ledger only grows",
   "consumption_log_2026_10_06": {
     "law": "ledger only grows; walls are committed per-leg public_call_wall_s figures",
@@ -36,8 +36,8 @@
       "seven_measured_legs_sum": 330.9916,
       "detail": "see baseline_policy_audit.json measured_legs_local_2026_10_06"
     },
-    "session_total_s": 446.29470000000003,
-    "cumulative_ledger_s": 2669.7646999999997,
+    "session_total_s": 1221.3816000000002,
+    "cumulative_ledger_s": 3444.8516,
     "superseded_first_disk_shakedown_attempt": "wall not recorded (superseded pre-record); unquantified residue disclosed",
     "p04i_legs_s": {
       "law": "public_call_wall_s figures transcribed from the four profile console outputs; spy diagnostic legs estimated (no public-call timer, 6-row w2 runs, bounded above at 5s each)",
@@ -54,6 +54,18 @@
       ],
       "p04i_total_s": 71.76219999999999,
       "verdict": "not_admitted"
+    },
+    "p05s_screen_legs_s": {
+      "law": "walls transcribed from legs/*.json produced by run_screen_leg.py; discarded fires counted separately",
+      "screen_leg_walls_sum_s": 642.0545000000001,
+      "leg_count": 23,
+      "discarded_fire_legs_s": [
+        52.0691,
+        41.8032,
+        39.1601
+      ],
+      "discarded_sum_s": 133.0324,
+      "p05s_total_s": 775.0869
     }
   }
 }

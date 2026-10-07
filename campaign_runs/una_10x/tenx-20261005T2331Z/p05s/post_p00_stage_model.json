@@ -1,0 +1,100 @@
+{
+ "schema": "una-10x-p05s-stage-model-1",
+ "task": "P05S stage model \u2014 interval-DAG critical path and additive accounting over the accepted post-P00 changes (designs/07)",
+ "generated": "2026-10-07T02:56:29Z",
+ "arms_and_wall_ladder_median_s": {
+  "cmp395cdc5": 45.157,
+  "parent_e7c9eda": 37.9644,
+  "p02_6fb01d0": 17.3677,
+  "p02_p03a_4b680b6": 17.1047,
+  "full_86e8b0a": 16.8253
+ },
+ "ladder_ratios_vs_immediate_predecessor": {
+  "p02_vs_parent": 2.185919839702436,
+  "p03a_vs_p02": 1.0153758908370214,
+  "p03b_vs_p03a": 1.0166059446191154,
+  "full_vs_parent": 2.256387701853756,
+  "full_vs_cmp395cdc5": 2.6838748789026052
+ },
+ "interval_dag_critical_path_full_stack": {
+  "law": "sum of NON-OVERLAPPING residual stages only; worker run spans overlap across the pool (sum-over-workers is NOT wall); idle is not a second independent multiplier",
+  "measured_sources": {
+   "telemetry_profile": "p04i/receiver_admission_profile.json (UNA_BATCH_PHASES=1, diagnostics leg)",
+   "screen_legs": "p05s/legs/*.json (timed legs, telemetry off)"
+  },
+  "stages": {
+   "pool_start": {
+    "wall_s": 0.219,
+    "overlaps": "nothing (serial head)"
+   },
+   "bootstrap_import_per_worker": {
+    "sum_over_workers_s": 10.563450331,
+    "critical_path_contribution_s": 2.64086258275,
+    "note": "4 spawn workers re-import concurrently; wall share ~sum/w4"
+   },
+   "singleflight_build_first_trace": {
+    "wall_s": 3.4764489172957838,
+    "overlaps": "partially \u2014 3 of 4 workers wait (singleflight_lost=31 rows total)"
+   },
+   "per_row_run_residual": {
+    "sum_over_workers_s": 44.775794956,
+    "critical_path_contribution_s": 11.193948739,
+    "note": "pool is compute-bound: run sum ~2.73x wall at w4"
+   },
+   "result_put_recv_wait": {
+    "wall_s": 0.828531083,
+    "overlaps": "mostly overlapped with worker compute; NOT material (P04I not_admitted, P04R verified)"
+   },
+   "commit_side": {
+    "surviving_lower_bound_s": 0.067263376,
+    "caveat": "LOWER BOUND; projected from surviving means ~1.22% of wall, composite/journal fully evicted (P04I errata F1)"
+   },
+   "export_and_durability": "inside worker run spans (exports already run in workers, P00 finding); coordinator commit side bounded above"
+  },
+  "residual_service_conclusion": "the wall floor is (bootstrap_import/4 + build_s + per-row residual/4 + export tail); the fold is NO LONGER the dominant term (P03B cut folds 8x with no wall change, P04I open_observation)"
+ },
+ "amdahl_accounting": {
+  "law": "S_total = 1/(1-f+f/s+delta) with f = fold share of the parent's serial service; delta = added work",
+  "f_fold_parent": 0.109,
+  "note_on_f": "P00 profile: ~10.9% routing+metric slice on the parent route; the C-series cohort route had already moved per-row folds onto shared traces, so the REMAINING fold share the P03B reuse attacked is inside this bound",
+  "p03b_formula_prediction_vs_observed": {
+   "formula_wall_ratio_vs_p03a": 1.0576414595452142,
+   "observed_wall_ratio_vs_p03a": 1.0166059446191154,
+   "honest_reading": "the formula predicts <1.06x from folding 7/8 of an ~11% slice; observed is ~1.0x \u2014 CONSISTENT: the fold was not the wall-dominant residual. No component ratio is multiplied into a target claim (designs/06/07 prohibition)"
+  },
+  "no_double_counting": {
+   "preparation_relief": "counted once as P02 (per-row prepared decode/build removed by single-flight)",
+   "idle_relief": "not counted (pool idle is not an independent multiplier)",
+   "parent_import": "outside public wall in NO arm; not subtracted"
+  }
+ },
+ "memory": {
+  "law": "designs/07: live memory = measured, not derived; sampler peak RSS single + tree at 50 ms",
+  "peak_tree_rss_mib": {
+   "w4_arms": {
+    "cmp395cdc5": 1979.953125,
+    "parent": 1954.015625,
+    "p02": 1818.1875,
+    "p03a": 1984.71875,
+    "full": 1831.4375
+   },
+   "full_w2t1": 1127.09375,
+   "full_w2t2": 1349.71875
+  },
+  "margin_note": "host has 10 logical cores / ample RAM; all schedules fit with wide margin"
+ },
+ "target_sensitivity_only": {
+  "law": "designs/07: historical sample planning ONLY, not a prediction or a demonstrated result",
+  "frozen_primary_s": 92.1141,
+  "primary_is_pace_host": "the frozen primary stays the gate baseline; the local ladder is a different host and NEVER claimed against it as a 10x figure",
+  "local_full_stack_vs_frozen_primary_number": 5.474737448960791,
+  "required_for_10x_vs_parent_local_s": 3.7964399999999996,
+  "gap": "local parent->full delivers 2.256x, not 10x; the remaining local floor (bootstrap + build + per-row residual) is quantified in the critical-path block"
+ },
+ "producer_shas": {
+  "screen_index.json": "67b1a4a6b532b14b173d2f07cda767820b6c5aa75004593493f57fc0e5352d55",
+  "receiver_admission_profile.json": "9e313c914078416a89e676683f2fff47bb3394d5c7a5a651e3f0f024fa9c4c38",
+  "run_stage_screen.py": "cb0ebdb9722a72a007e538929c69ab2f5d08d81054c1b406f4d3a24a1225d5c5",
+  "run_screen_leg.py": "9f84a70b70bff6bfd825213fba6ad5bf7e5a21e164a25e131d02748cbfe5248e"
+ }
+}

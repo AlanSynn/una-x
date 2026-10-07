@@ -1,0 +1,138 @@
+{
+ "schema": "una-10x-p05s-candidate-register-1",
+ "task": "P05S candidate register \u2014 every post-P00 candidate with review disposition, measured effect and counters (designs/07 deliverable)",
+ "generated": "2026-10-07T02:56:29Z",
+ "candidates": [
+  {
+   "id": "P02I",
+   "commits": [
+    "583fcad",
+    "6fb01d0"
+   ],
+   "title": "worker-local prepared reuse + run-wide prepared single-flight",
+   "review": {
+    "task": "P02R",
+    "disposition": "ACCEPT_WITH_NOTES",
+    "blocking": 0
+   },
+   "measured_wall_effect_vs_parent": 2.185919839702436,
+   "stage": "accepted"
+  },
+  {
+   "id": "P03C",
+   "commits": [
+    "4b680b6"
+   ],
+   "title": "compiled outer trace replay (one serial nogil driver)",
+   "review": {
+    "task": "P03R-scope",
+    "disposition": "accepted via P03R review of the P03C/P03M increments",
+    "blocking": 0
+   },
+   "measured_wall_effect_vs_p02": 1.0153758908370214,
+   "stage": "accepted"
+  },
+  {
+   "id": "P03M-A/B",
+   "commits": [
+    "41c2453",
+    "1523ad9",
+    "cb7acd5"
+   ],
+   "title": "typed MetricID v2 + production metric-reuse executor (bundle/split)",
+   "review": {
+    "task": "P03R",
+    "disposition": "approve_with_notes",
+    "blocking": 0,
+    "addendum": "F1/F2 closed at cb7acd5, verdict stands"
+   },
+   "measured_wall_effect_vs_p03a": 1.0166059446191154,
+   "engagement_counters_real_cohort": {
+    "collapse_full_folds": 4,
+    "split_rows": 28,
+    "split_copies": 84,
+    "registrations": 32,
+    "refusals": 0,
+    "folds_done": 59004,
+    "folds_done_before": 472032,
+    "source": "p04i/receiver_admission_profile.json (post-fix)"
+   },
+   "stage": "accepted"
+  },
+  {
+   "id": "P04I-fix",
+   "commits": [
+    "52dcc20"
+   ],
+   "title": "P04I-discovered reuse lifecycle fix: process-pinned store per cohort root",
+   "review": "defect found by P04I admission profiling (reuse arm silently inert on the real cohort); fix pinned by new test + cohort suite re-pin; P04R verified the fixed bytes and the non-admission",
+   "stage": "accepted"
+  },
+  {
+   "id": "P04-receiver",
+   "commits": [],
+   "title": "bounded independent result drain (single receiver + reserved credit)",
+   "review": {
+    "P04I_admission": "not_admitted on measured telemetry (recv_wait 4.41-5.045% ceiling, commit side lower-bounded 0.31-0.41%, pool compute-bound)",
+    "P04R": "approve_with_notes \u2014 non-admission VERIFIED, 0 blocking; errata filed for F1/F2/F3 prose (decision-insensitive)"
+   },
+   "measured_wall_effect": "none \u2014 not implemented",
+   "stage": "not_admitted"
+  }
+ ],
+ "screen_summary": {
+  "stage_ladder_median_s": {
+   "cmp395cdc5": 45.157,
+   "parent_e7c9eda": 37.9644,
+   "p02_6fb01d0": 17.3677,
+   "p02_p03a_4b680b6": 17.1047,
+   "full_86e8b0a": 16.8253
+  },
+  "strongest_valid_config": "w4 t1 q64 cache-off",
+  "strongest_wall_median_s": 16.8253,
+  "full_vs_parent_ratio": 2.256387701853756,
+  "determinism": "all five arms bitwise-identical across shakedown + 3 windows (normalized paths)",
+  "frozen_primary_relation": "92.1141s (PACE) remains the gate baseline; local ratios are same-host matched-arm figures and are NOT a 10x claim against it"
+ },
+ "budget_appendix": {
+  "law": "ledger only grows; all timed public calls below are appended to budget_reconciliation.json",
+  "screen_leg_walls_s": {
+   "sd_cmp395cdc5": 44.4461,
+   "sd_parent": 64.4178,
+   "sd_p02": 23.3575,
+   "sd_p03a": 24.5803,
+   "sd_full": 17.2425,
+   "cmp395cdc5_w4t1_r1": 46.2083,
+   "parent_w4t1_r1": 39.9152,
+   "p02_w4t1_r1": 17.3677,
+   "p03a_w4t1_r1": 16.945,
+   "full_w4t1_r1": 18.5982,
+   "cmp395cdc5_w4t1_r2": 41.0968,
+   "parent_w4t1_r2": 37.9644,
+   "p02_w4t1_r2": 22.6749,
+   "p03a_w4t1_r2": 17.8827,
+   "full_w4t1_r2": 16.6996,
+   "cmp395cdc5_w4t1_r3": 45.157,
+   "parent_w4t1_r3": 36.9696,
+   "p02_w4t1_r3": 16.7299,
+   "p03a_w4t1_r3": 17.1047,
+   "full_w4t1_r3": 16.8253,
+   "cfg_full_w2t1_q64": 17.7178,
+   "cfg_full_w4t2_q64": 24.9835,
+   "cfg_full_w2t2_q64": 17.1697
+  },
+  "screen_leg_walls_sum_s": 642.0545000000001,
+  "discarded_fire_legs_s": [
+   52.0691,
+   41.8032,
+   39.1601
+  ],
+  "discarded_note": "fire 1 (missing arm venv deps) + fire 2 (census-law assert): consumed public calls, never claimed",
+  "p05s_total_s": 775.0869
+ },
+ "producer_shas": {
+  "screen_index.json": "67b1a4a6b532b14b173d2f07cda767820b6c5aa75004593493f57fc0e5352d55",
+  "post_p00_stage_model.json": "1e8700215a563284576eb598344d51b8f238959afdb53a71e6818f71214ff5bb",
+  "post_p00_configuration_screen.json": "613497711ff721f2d75a0f70addf0d094817593c280238dce2b8f6e9fb63a242"
+ }
+}

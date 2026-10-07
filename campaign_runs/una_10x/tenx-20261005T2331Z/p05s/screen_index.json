@@ -1,0 +1,318 @@
+{
+ "schema": "una-10x-p05s-screen-index-1",
+ "generated": "2026-10-07T02:53:49Z",
+ "design_law": "designs/07 staged selection: P02 alone -> +P03A -> +accepted P03B -> admitted P04 (none admitted); compare each delta to its immediate predecessor at the SAME resource schedule; cache mode off is the P00 frozen fixed policy; timer brackets ONLY the public RunBatch call",
+ "arms": {
+  "cmp395cdc5": {
+   "sha_prefix": "395cdc5",
+   "tree": "/Users/alansynn/orca/workspaces/una-x/baseline-395cdc5",
+   "venv": "/Users/alansynn/orca/workspaces/una-x/venv-baseline"
+  },
+  "parent": {
+   "sha_prefix": "e7c9eda",
+   "tree": "/Users/alansynn/orca/workspaces/una-x/parent-e7c9eda",
+   "venv": "/Users/alansynn/orca/workspaces/una-x/venv-parent-e7c9eda"
+  },
+  "p02": {
+   "sha_prefix": "6fb01d0",
+   "tree": "/Users/alansynn/orca/workspaces/una-x/p02-6fb01d0",
+   "venv": "/Users/alansynn/orca/workspaces/una-x/venv-p02-6fb01d0"
+  },
+  "p03a": {
+   "sha_prefix": "4b680b6",
+   "tree": "/Users/alansynn/orca/workspaces/una-x/p03a-4b680b6",
+   "venv": "/Users/alansynn/orca/workspaces/una-x/venv-p03a-4b680b6"
+  },
+  "full": {
+   "sha_prefix": "86e8b0a",
+   "tree": "/Users/alansynn/orca/workspaces/una-x/main",
+   "venv": "/Users/alansynn/orca/workspaces/una-x/venv-p01m"
+  }
+ },
+ "cohort": {
+  "manifest": "/Users/alansynn/orca/workspaces/una-x/main/campaign_data/inputs/upstream_Boston/Boston/local_audit_manifest.csv",
+  "manifest_sha256": "235405de67cf22dc76c3e89bd0c3d198927d0ed0870172a0e86b942fecb8a60a",
+  "expected_files": 64,
+  "expected_bytes": 147829892
+ },
+ "stage_table": {
+  "cmp395cdc5": {
+   "sha_prefix": "395cdc5",
+   "walls_s": [
+    46.2083,
+    41.0968,
+    45.157
+   ],
+   "median_s": 45.157,
+   "median_ratio_vs_parent": 0.840720154128928,
+   "peak_tree_rss_mib_median": 1979.953125
+  },
+  "parent": {
+   "sha_prefix": "e7c9eda",
+   "walls_s": [
+    39.9152,
+    37.9644,
+    36.9696
+   ],
+   "median_s": 37.9644,
+   "median_ratio_vs_parent": 1.0,
+   "peak_tree_rss_mib_median": 1954.015625
+  },
+  "p02": {
+   "sha_prefix": "6fb01d0",
+   "walls_s": [
+    17.3677,
+    22.6749,
+    16.7299
+   ],
+   "median_s": 17.3677,
+   "median_ratio_vs_parent": 2.185919839702436,
+   "peak_tree_rss_mib_median": 1818.1875
+  },
+  "p03a": {
+   "sha_prefix": "4b680b6",
+   "walls_s": [
+    16.945,
+    17.8827,
+    17.1047
+   ],
+   "median_s": 17.1047,
+   "median_ratio_vs_parent": 2.21953030453618,
+   "peak_tree_rss_mib_median": 1984.71875
+  },
+  "full": {
+   "sha_prefix": "86e8b0a",
+   "walls_s": [
+    18.5982,
+    16.6996,
+    16.8253
+   ],
+   "median_s": 16.8253,
+   "median_ratio_vs_parent": 2.256387701853756,
+   "peak_tree_rss_mib_median": 1831.4375
+  }
+ },
+ "config_table": {
+  "cfg_full_w2t1_q64": {
+   "workers": 2,
+   "threads": 1,
+   "queue_depth": 64,
+   "wall_s": 17.7178,
+   "peak_tree_rss_mib": 1127.09375,
+   "ratio_vs_parent_median": 2.1427265236090256
+  },
+  "cfg_full_w4t2_q64": {
+   "workers": 4,
+   "threads": 2,
+   "queue_depth": 64,
+   "wall_s": 24.9835,
+   "peak_tree_rss_mib": 1694.640625,
+   "ratio_vs_parent_median": 1.5195789220885785
+  },
+  "cfg_full_w2t2_q64": {
+   "workers": 2,
+   "threads": 2,
+   "queue_depth": 64,
+   "wall_s": 17.1697,
+   "peak_tree_rss_mib": 1349.71875,
+   "ratio_vs_parent_median": 2.211127742476572
+  }
+ },
+ "determinism": {
+  "cmp395cdc5": {
+   "windows": [
+    "cmp395cdc5_w4t1_r1",
+    "cmp395cdc5_w4t1_r2",
+    "cmp395cdc5_w4t1_r3"
+   ],
+   "bitwise_identical_across_windows": true,
+   "shakedown_matches_windows": true
+  },
+  "parent": {
+   "windows": [
+    "parent_w4t1_r1",
+    "parent_w4t1_r2",
+    "parent_w4t1_r3"
+   ],
+   "bitwise_identical_across_windows": true,
+   "shakedown_matches_windows": true
+  },
+  "p02": {
+   "windows": [
+    "p02_w4t1_r1",
+    "p02_w4t1_r2",
+    "p02_w4t1_r3"
+   ],
+   "bitwise_identical_across_windows": true,
+   "shakedown_matches_windows": true
+  },
+  "p03a": {
+   "windows": [
+    "p03a_w4t1_r1",
+    "p03a_w4t1_r2",
+    "p03a_w4t1_r3"
+   ],
+   "bitwise_identical_across_windows": true,
+   "shakedown_matches_windows": true
+  },
+  "full": {
+   "windows": [
+    "full_w4t1_r1",
+    "full_w4t1_r2",
+    "full_w4t1_r3"
+   ],
+   "bitwise_identical_across_windows": true,
+   "shakedown_matches_windows": true
+  }
+ },
+ "legs": {
+  "sd_cmp395cdc5": {
+   "wall_s": 44.4461,
+   "kind": "shakedown",
+   "file": "legs/sd_cmp395cdc5.json"
+  },
+  "sd_parent": {
+   "wall_s": 64.4178,
+   "kind": "shakedown",
+   "file": "legs/sd_parent.json"
+  },
+  "sd_p02": {
+   "wall_s": 23.3575,
+   "kind": "shakedown",
+   "file": "legs/sd_p02.json"
+  },
+  "sd_p03a": {
+   "wall_s": 24.5803,
+   "kind": "shakedown",
+   "file": "legs/sd_p03a.json"
+  },
+  "sd_full": {
+   "wall_s": 17.2425,
+   "kind": "shakedown",
+   "file": "legs/sd_full.json"
+  },
+  "cmp395cdc5_w4t1_r1": {
+   "wall_s": 46.2083,
+   "kind": "measured",
+   "file": "legs/cmp395cdc5_w4t1_r1.json"
+  },
+  "parent_w4t1_r1": {
+   "wall_s": 39.9152,
+   "kind": "measured",
+   "file": "legs/parent_w4t1_r1.json"
+  },
+  "p02_w4t1_r1": {
+   "wall_s": 17.3677,
+   "kind": "measured",
+   "file": "legs/p02_w4t1_r1.json"
+  },
+  "p03a_w4t1_r1": {
+   "wall_s": 16.945,
+   "kind": "measured",
+   "file": "legs/p03a_w4t1_r1.json"
+  },
+  "full_w4t1_r1": {
+   "wall_s": 18.5982,
+   "kind": "measured",
+   "file": "legs/full_w4t1_r1.json"
+  },
+  "cmp395cdc5_w4t1_r2": {
+   "wall_s": 41.0968,
+   "kind": "measured",
+   "file": "legs/cmp395cdc5_w4t1_r2.json"
+  },
+  "parent_w4t1_r2": {
+   "wall_s": 37.9644,
+   "kind": "measured",
+   "file": "legs/parent_w4t1_r2.json"
+  },
+  "p02_w4t1_r2": {
+   "wall_s": 22.6749,
+   "kind": "measured",
+   "file": "legs/p02_w4t1_r2.json"
+  },
+  "p03a_w4t1_r2": {
+   "wall_s": 17.8827,
+   "kind": "measured",
+   "file": "legs/p03a_w4t1_r2.json"
+  },
+  "full_w4t1_r2": {
+   "wall_s": 16.6996,
+   "kind": "measured",
+   "file": "legs/full_w4t1_r2.json"
+  },
+  "cmp395cdc5_w4t1_r3": {
+   "wall_s": 45.157,
+   "kind": "measured",
+   "file": "legs/cmp395cdc5_w4t1_r3.json"
+  },
+  "parent_w4t1_r3": {
+   "wall_s": 36.9696,
+   "kind": "measured",
+   "file": "legs/parent_w4t1_r3.json"
+  },
+  "p02_w4t1_r3": {
+   "wall_s": 16.7299,
+   "kind": "measured",
+   "file": "legs/p02_w4t1_r3.json"
+  },
+  "p03a_w4t1_r3": {
+   "wall_s": 17.1047,
+   "kind": "measured",
+   "file": "legs/p03a_w4t1_r3.json"
+  },
+  "full_w4t1_r3": {
+   "wall_s": 16.8253,
+   "kind": "measured",
+   "file": "legs/full_w4t1_r3.json"
+  },
+  "cfg_full_w2t1_q64": {
+   "wall_s": 17.7178,
+   "kind": "measured",
+   "file": "legs/cfg_full_w2t1_q64.json"
+  },
+  "cfg_full_w4t2_q64": {
+   "wall_s": 24.9835,
+   "kind": "measured",
+   "file": "legs/cfg_full_w4t2_q64.json"
+  },
+  "cfg_full_w2t2_q64": {
+   "wall_s": 17.1697,
+   "kind": "measured",
+   "file": "legs/cfg_full_w2t2_q64.json"
+  }
+ },
+ "budget_appendix": {
+  "law": "every leg below is a timed public call; append to budget_reconciliation.json (ledger only grows)",
+  "leg_walls_s": {
+   "sd_cmp395cdc5": 44.4461,
+   "sd_parent": 64.4178,
+   "sd_p02": 23.3575,
+   "sd_p03a": 24.5803,
+   "sd_full": 17.2425,
+   "cmp395cdc5_w4t1_r1": 46.2083,
+   "parent_w4t1_r1": 39.9152,
+   "p02_w4t1_r1": 17.3677,
+   "p03a_w4t1_r1": 16.945,
+   "full_w4t1_r1": 18.5982,
+   "cmp395cdc5_w4t1_r2": 41.0968,
+   "parent_w4t1_r2": 37.9644,
+   "p02_w4t1_r2": 22.6749,
+   "p03a_w4t1_r2": 17.8827,
+   "full_w4t1_r2": 16.6996,
+   "cmp395cdc5_w4t1_r3": 45.157,
+   "parent_w4t1_r3": 36.9696,
+   "p02_w4t1_r3": 16.7299,
+   "p03a_w4t1_r3": 17.1047,
+   "full_w4t1_r3": 16.8253,
+   "cfg_full_w2t1_q64": 17.7178,
+   "cfg_full_w4t2_q64": 24.9835,
+   "cfg_full_w2t2_q64": 17.1697
+  },
+  "sum_leg_walls_s": 642.0545000000001
+ },
+ "notes": [
+  "screen evidence for candidate selection ONLY \u2014 NOT the final 10x qualification (7 paired AB/BA windows, seed 20261003, 20000 bootstrap remain the original protocol)",
+  "the frozen primary 92.1141s (PACE) is untouched; local ratios are same-host matched-arm ratios"
+ ]
+}

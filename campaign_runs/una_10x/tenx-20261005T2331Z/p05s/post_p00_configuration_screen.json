@@ -1,0 +1,93 @@
+{
+ "schema": "una-10x-p05s-configuration-screen-1",
+ "task": "P05S joint configuration screen at the full accepted stack (designs/07: at most four feasible schedules after live memory, logical stripes fixed)",
+ "generated": "2026-10-07T02:56:29Z",
+ "feasible_configs_measured": {
+  "w4t1_q64": {
+   "source": "stage legs r1-r3",
+   "walls_s": [
+    18.5982,
+    16.6996,
+    16.8253
+   ],
+   "median_s": 16.8253,
+   "peak_tree_rss_mib": 1831.4375
+  },
+  "w2t1_q64": {
+   "wall_s": 17.7178,
+   "peak_tree_rss_mib": 1127.09375
+  },
+  "w2t2_q64": {
+   "wall_s": 17.1697,
+   "peak_tree_rss_mib": 1349.71875
+  },
+  "w4t2_q64": {
+   "wall_s": 24.9835,
+   "peak_tree_rss_mib": 1694.640625
+  }
+ },
+ "strongest_valid_configuration": {
+  "config": "w4 t1 q64 cache-off",
+  "median_s": 16.8253,
+  "basis": "lowest measured median across the feasible set; w4t2 is a measured REGRESSION (oversubscription: 8 worker threads vs the frozen C=4 admission); w2 variants within noise of w4t1"
+ },
+ "axis_engagement": {
+  "threads_per_worker": "CONSUMED and material-negative at t2w4 (24.98s vs 16.83s median) \u2014 real axis",
+  "queue_depth": "fixed 64 across the screen (P00 measured 64-vs-4 free; not re-explored \u2014 logical stripes fixed)",
+  "writer_concurrency": "not consumed by the batch runtime (P00 finding) \u2014 excluded as an axis per designs/07",
+  "workers": "consumed; w2 ~= w4t1 within noise on this compute-bound residual (pool saturation)"
+ },
+ "equal_resource_law": "both arms of every comparison ran the SAME schedule (w4 t1 q64 cache-off) on the same host in round-robin windows; CPU=4 admitted budget honored (logical stripes fixed)",
+ "determinism": {
+  "cmp395cdc5": {
+   "windows": [
+    "cmp395cdc5_w4t1_r1",
+    "cmp395cdc5_w4t1_r2",
+    "cmp395cdc5_w4t1_r3"
+   ],
+   "bitwise_identical_across_windows": true,
+   "shakedown_matches_windows": true
+  },
+  "parent": {
+   "windows": [
+    "parent_w4t1_r1",
+    "parent_w4t1_r2",
+    "parent_w4t1_r3"
+   ],
+   "bitwise_identical_across_windows": true,
+   "shakedown_matches_windows": true
+  },
+  "p02": {
+   "windows": [
+    "p02_w4t1_r1",
+    "p02_w4t1_r2",
+    "p02_w4t1_r3"
+   ],
+   "bitwise_identical_across_windows": true,
+   "shakedown_matches_windows": true
+  },
+  "p03a": {
+   "windows": [
+    "p03a_w4t1_r1",
+    "p03a_w4t1_r2",
+    "p03a_w4t1_r3"
+   ],
+   "bitwise_identical_across_windows": true,
+   "shakedown_matches_windows": true
+  },
+  "full": {
+   "windows": [
+    "full_w4t1_r1",
+    "full_w4t1_r2",
+    "full_w4t1_r3"
+   ],
+   "bitwise_identical_across_windows": true,
+   "shakedown_matches_windows": true
+  }
+ },
+ "artifact_contract_note": "outputs are fixed 64 file names under a run-timestamped folder; determinism compares normalized paths; the cohort store root is the one allowed hidden residue (C30) \u2014 excluded from the required census and recorded per leg",
+ "producer_shas": {
+  "screen_index.json": "67b1a4a6b532b14b173d2f07cda767820b6c5aa75004593493f57fc0e5352d55",
+  "post_p00_stage_model.json": "1e8700215a563284576eb598344d51b8f238959afdb53a71e6818f71214ff5bb"
+ }
+}
