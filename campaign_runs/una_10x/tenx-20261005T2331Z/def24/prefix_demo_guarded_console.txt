@@ -1,0 +1,47 @@
+
+/opt/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py:1253: TimeoutExpired
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/private/var/folders/3d/cclyxf1x3bjf_y3pf071s1r00000gr/T/pytest-of-alansynn/pytest-2749/test_worker_row_failure_propag0')
+
+    def test_worker_row_failure_propagates_without_wedging(tmp_path):
+        """Row 0 fails inside the worker (pre_run injected MemoryError -> a
+        failed RowResult, worker stays alive) while every other row sits in
+        a backlog whose queued bytes exceed the pipe buffer.  The scheduler
+        must raise the ORIGINAL exception at the cursor and the failure
+        path's cancel must return."""
+>       _run_child("test_child_row_failure_surfaces_and_cancels", tmp_path)
+
+tests/batch/runtime/test_runtime_cancel_wedge.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+node = 'test_child_row_failure_surfaces_and_cancels'
+tmp_path = PosixPath('/private/var/folders/3d/cclyxf1x3bjf_y3pf071s1r00000gr/T/pytest-of-alansynn/pytest-2749/test_worker_row_failure_propag0')
+
+    def _run_child(node, tmp_path):
+        """Run one scenario as a guarded child pytest process."""
+        env = dict(os.environ)
+        env[_GUARD_ENV] = "1"
+        proc = subprocess.Popen(
+            [sys.executable, "-m", "pytest", f"{CHILD}::{node}", "-q", "-x"],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+            cwd=HERE, env=env, start_new_session=True)
+        try:
+            out, err = proc.communicate(timeout=CHILD_BOUND_S)
+        except subprocess.TimeoutExpired:
+            os.killpg(os.getpgid(proc.pid), 9)
+            out, err = proc.communicate()
+>           pytest.fail(
+                f"WEDGED: {node} was killed at the {CHILD_BOUND_S:.0f}s "
+                f"bound (the defective ordering hangs cancel(); child "
+                f"stderr tail carries the faulthandler dump):\n{err[-4000:]}")
+E           Failed: WEDGED: test_child_row_failure_surfaces_and_cancels was killed at the 150s bound (the defective ordering hangs cancel(); child stderr tail carries the faulthandler dump):
+
+tests/batch/runtime/test_runtime_cancel_wedge.py:84: Failed
+=========================== short test summary info ============================
+FAILED tests/batch/runtime/test_runtime_cancel_wedge.py::test_cancel_returns_with_freshly_killed_readers
+FAILED tests/batch/runtime/test_runtime_cancel_wedge.py::test_worker_row_failure_propagates_without_wedging
+2 failed in 300.25s (0:05:00)
+
+[exited with code 0]

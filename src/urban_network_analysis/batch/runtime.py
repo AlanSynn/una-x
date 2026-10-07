@@ -432,6 +432,23 @@ class _Pool:
 
     def cancel(self) -> None:
         self.cancelled = True
+        # Abort ordering (task #20/#24 regression): abandon the queued
+        # input BEFORE reaping the workers.  The inbox feeder may hold a
+        # backlog destined for a pipe whose only remaining read end is
+        # our own undrained _reader — terminating the readers first left
+        # that feeder blocked in send_bytes forever, and the
+        # join_thread() below then wedged the whole cancellation, so the
+        # caller's failure path (which re-raises the original worker-row
+        # exception) never ran.  cancel_join_thread() makes that join a
+        # no-op: the backlog is abandoned (flushing is a happy-close
+        # concern, not an abort one) and the daemon feeder dies at
+        # process exit.  The outbox is a SimpleQueue channel whose
+        # join_thread is already a no-op and which takes no
+        # cancel_join_thread; the ready queue's feeder holds only
+        # worker-sent readiness notes, never parent puts, but is
+        # abandoned here for the same reason.
+        for q in (self.inbox, self.ready):
+            q.cancel_join_thread()
         for p in self.procs:
             if p.is_alive():
                 p.terminate()

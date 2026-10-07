@@ -1,0 +1,2 @@
+LEG OK tag=sd_direct arm=numba rows=32 wall=25.1586s files=107 bytes=165876285 load1m[start=28.30 max=28.3] -> /tmp/n00_legs/sd_direct.json
+DIRECT rc=0
