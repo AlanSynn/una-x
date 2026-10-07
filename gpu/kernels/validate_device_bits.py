@@ -540,7 +540,7 @@ def run_device_gate(cell_id: str, gate_store: str, evidence_path: Path,
         for name, d, w, sc in _fold_case_inputs():
             fold_results[name] = _device_fold_case(
                 rt, np.asarray(d, dtype=np.float64),
-                np.asarray(w, dtype=np.float64), sc, engine_fold, None, k0_tw)
+                np.asarray(w, dtype=np.float64), sc, engine_fold, k0_tw)
         report["fold_battery"] = {
             name: {"leg_a_ok": r["leg_a_ok"],
                    "leg_a_details": r["cases"],
