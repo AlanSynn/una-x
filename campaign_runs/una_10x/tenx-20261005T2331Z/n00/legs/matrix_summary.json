@@ -1,0 +1,236 @@
+{
+ "schema": "una-10x-n00-leg-matrix-1",
+ "matrix": [
+  [
+   "L2A1_numba",
+   "numba"
+  ],
+  [
+   "L1B1_native",
+   "native"
+  ],
+  [
+   "L2A2_numba",
+   "numba"
+  ],
+  [
+   "L1B2_native",
+   "native"
+  ]
+ ],
+ "impl_pin": {
+  "pin_prefix": "e6920bfd70ed",
+  "pin_full": "e6920bfd70ed6d3801305264d8d1c864d1197b16",
+  "is_ancestor_of_head": true,
+  "src_diff_vs_pin": "",
+  "src_identical": true,
+  "tests_added": [
+   "A\ttests/native/test_sitecustomize_optin.py"
+  ],
+  "tests_nonadditive": [],
+  "src_tests_uncommitted": "",
+  "src_tests_working_tree_clean": true
+ },
+ "walls_s": {
+  "L2A1_numba": 15.1751,
+  "L1B1_native": 12.5244,
+  "L2A2_numba": 15.7252,
+  "L1B2_native": 16.2113
+ },
+ "pre_leg_loadavg": {
+  "L2A1_numba": 7.85,
+  "L1B1_native": 9.04,
+  "L2A2_numba": 9.77,
+  "L1B2_native": 12.54
+ },
+ "in_run_loadavg_max": {
+  "L2A1_numba": 8.26,
+  "L1B1_native": 10.08,
+  "L2A2_numba": 12.76,
+  "L1B2_native": 9.66
+ },
+ "peak_tree_rss_bytes": {
+  "L2A1_numba": 2256486400,
+  "L1B1_native": 2136834048,
+  "L2A2_numba": 1874690048,
+  "L1B2_native": 2052931584
+ },
+ "engagement_native": {
+  "L1B1_native": {
+   "before": {
+    "dispatches": 0,
+    "origins": 0,
+    "tiles": 0,
+    "budget_stops": 0,
+    "candidates": 0,
+    "admission_refusals": 0,
+    "errors": 0,
+    "last_status": null
+   },
+   "after": {
+    "dispatches": 0,
+    "origins": 0,
+    "tiles": 0,
+    "budget_stops": 0,
+    "candidates": 0,
+    "admission_refusals": 0,
+    "errors": 0,
+    "last_status": null
+   },
+   "workers": [
+    {
+     "dispatches": 1,
+     "origins": 14751,
+     "tiles": 231,
+     "budget_stops": 0,
+     "candidates": 90331,
+     "admission_refusals": 0,
+     "errors": 0,
+     "last_status": 0
+    },
+    {
+     "dispatches": 0,
+     "origins": 0,
+     "tiles": 0,
+     "budget_stops": 0,
+     "candidates": 0,
+     "admission_refusals": 0,
+     "errors": 0,
+     "last_status": null
+    },
+    {
+     "dispatches": 0,
+     "origins": 0,
+     "tiles": 0,
+     "budget_stops": 0,
+     "candidates": 0,
+     "admission_refusals": 0,
+     "errors": 0,
+     "last_status": null
+    },
+    {
+     "dispatches": 0,
+     "origins": 0,
+     "tiles": 0,
+     "budget_stops": 0,
+     "candidates": 0,
+     "admission_refusals": 0,
+     "errors": 0,
+     "last_status": null
+    },
+    {
+     "dispatches": 0,
+     "origins": 0,
+     "tiles": 0,
+     "budget_stops": 0,
+     "candidates": 0,
+     "admission_refusals": 0,
+     "errors": 0,
+     "last_status": null
+    },
+    {
+     "dispatches": 0,
+     "origins": 0,
+     "tiles": 0,
+     "budget_stops": 0,
+     "candidates": 0,
+     "admission_refusals": 0,
+     "errors": 0,
+     "last_status": null
+    }
+   ]
+  },
+  "L1B2_native": {
+   "before": {
+    "dispatches": 0,
+    "origins": 0,
+    "tiles": 0,
+    "budget_stops": 0,
+    "candidates": 0,
+    "admission_refusals": 0,
+    "errors": 0,
+    "last_status": null
+   },
+   "after": {
+    "dispatches": 0,
+    "origins": 0,
+    "tiles": 0,
+    "budget_stops": 0,
+    "candidates": 0,
+    "admission_refusals": 0,
+    "errors": 0,
+    "last_status": null
+   },
+   "workers": [
+    {
+     "dispatches": 0,
+     "origins": 0,
+     "tiles": 0,
+     "budget_stops": 0,
+     "candidates": 0,
+     "admission_refusals": 0,
+     "errors": 0,
+     "last_status": null
+    },
+    {
+     "dispatches": 1,
+     "origins": 14751,
+     "tiles": 231,
+     "budget_stops": 0,
+     "candidates": 90331,
+     "admission_refusals": 0,
+     "errors": 0,
+     "last_status": 0
+    },
+    {
+     "dispatches": 0,
+     "origins": 0,
+     "tiles": 0,
+     "budget_stops": 0,
+     "candidates": 0,
+     "admission_refusals": 0,
+     "errors": 0,
+     "last_status": null
+    },
+    {
+     "dispatches": 0,
+     "origins": 0,
+     "tiles": 0,
+     "budget_stops": 0,
+     "candidates": 0,
+     "admission_refusals": 0,
+     "errors": 0,
+     "last_status": null
+    },
+    {
+     "dispatches": 0,
+     "origins": 0,
+     "tiles": 0,
+     "budget_stops": 0,
+     "candidates": 0,
+     "admission_refusals": 0,
+     "errors": 0,
+     "last_status": null
+    },
+    {
+     "dispatches": 0,
+     "origins": 0,
+     "tiles": 0,
+     "budget_stops": 0,
+     "candidates": 0,
+     "admission_refusals": 0,
+     "errors": 0,
+     "last_status": null
+    }
+   ]
+  }
+ },
+ "determinism": {
+  "files": 64,
+  "verdict": "identical across all legs"
+ },
+ "required_census": {
+  "files": 64,
+  "bytes": 147829892
+ }
+}

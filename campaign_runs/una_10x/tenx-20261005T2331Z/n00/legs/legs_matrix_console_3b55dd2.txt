@@ -1,0 +1,19 @@
+fire#2: gated AB/AB matrix L2A1 numba -> L1B1 native -> L2A2 numba -> L1B2 native (gate semantics amended)
+utc: 2026-10-07T06:59:09Z  head: 3b55dd28db7d9bcf7a2de444bc5f09e304149570
+instrument digests:
+b0df6774b4a75776b3bcb5287519286b142585aff98a9522b7b7e40a20a19797  run_legs.py
+922f68e7539d052c15839261892434c968a49a745096d83e4c8a1b3b26c8a0fa  leg_runner.py
+== driver ==
+== measured AB/AB matrix (fresh controls) ==
+GATE L2A1_numba loadavg1m=7.85 (waited 0 samples, 0.0 min)
+LEG OK L2A1_numba     arm=numba  wall= 15.1751s (host   18.5s) rss_tree= 2152.0MiB preLA=7.85 maxLA=8.26 residue=43f/18046393B wdisp=0
+GATE L1B1_native loadavg1m=6.77 (waited 1 samples, 1.0 min)
+LEG OK L1B1_native    arm=native wall= 12.5244s (host   16.1s) rss_tree= 2037.8MiB preLA=9.04 maxLA=10.08 residue=43f/18046393B wdisp=1
+GATE L2A2_numba loadavg1m=6.17 (waited 1 samples, 1.0 min)
+LEG OK L2A2_numba     arm=numba  wall= 15.7252s (host   19.1s) rss_tree= 1787.8MiB preLA=9.77 maxLA=12.76 residue=43f/18046393B wdisp=0
+GATE L1B2_native loadavg1m=7.94 (waited 6 samples, 6.0 min)
+LEG OK L1B2_native    arm=native wall= 16.2113s (host   21.0s) rss_tree= 1957.8MiB preLA=12.54 maxLA=9.66 residue=43f/18046393B wdisp=1
+== bitwise cross-leg determinism (native vs numba included) ==
+DETERMINISM OK: 4 legs, 64 files, digest-identical (timestamp-normalized, residue-excluded)
+MATRIX SUMMARY -> legs/matrix_summary.json
+DRIVER_RC=0

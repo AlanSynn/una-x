@@ -1,0 +1,19 @@
+fire: gated AB/AB matrix L2A1 numba -> L1B1 native -> L2A2 numba -> L1B2 native
+utc: 2026-10-07T06:55:33Z  head: 65a080e68db4547112442d76d986871c82eb084b
+instrument digests:
+40053bebb3b0e76dbe178bc13f46bc304eb4a81b4a085fc8773717bfc382a152  run_legs.py
+922f68e7539d052c15839261892434c968a49a745096d83e4c8a1b3b26c8a0fa  leg_runner.py
+== driver ==
+== measured AB/AB matrix (fresh controls) ==
+GATE L2A1_numba loadavg1m=7.36 (waited 0 samples, 0.0 min)
+Traceback (most recent call last):
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/n00/instruments/run_legs.py", line 347, in <module>
+    main()
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/n00/instruments/run_legs.py", line 310, in main
+    legs[tag] = _run_leg(tag, arm)
+                ^^^^^^^^^^^^^^^^^^
+  File "/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/n00/instruments/run_legs.py", line 244, in _run_leg
+    assert pin["src_tests_identical"], \
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('L2A1_numba', 'src/tests drifted from IMPL_PIN:\ntests/native/test_sitecustomize_optin.py | 186 +++++++++++++++++++++++++++++++\n 1 file changed, 186 insertions(+)')
+DRIVER_RC=1

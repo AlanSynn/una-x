@@ -6,7 +6,7 @@
   "branch": "perf/una-10x",
   "base_commit": "b98af85b9c529883b8d9fad72440f199f9a75e9c",
   "verdict": "implemented",
-  "measurement_status": "stubbed_pending_coordination",
+  "measurement_status": "measured_c_arm_complete (AB/AB matrix fired 2026-10-07 under team-lead go; see phase3_measurement)",
 
   "region": {
     "chosen": "trace producer: Engines._trace_access_scratch._tr_epoch_scope_search_tile + build_trace's bounded tile loop (build-time serial block; p04i receiver_admission_profile.json: build_s 3.476s wall of a 16.8253s full stack, singleflight first-trace, 3 of 4 workers waiting)",
@@ -24,6 +24,8 @@
       "native/bindings.cpp": "df07db8d7105ab8c3e221ccbe57852a16cbfffc837ab2297211690a5bae7df06",
       "native/build.py": "9ce897e70be074cf43de3cc75d7aff4421a9b71b96b86628be3beec1c0720bd3",
       "native/trace_build_native.py": "5812025ad099ede2bd031fca621debff4aabb7f73172f3c9289e9da539a05662",
+      "native/sitecustomize.py": "c1831b328d97ee91836e045a61346f5fbcadc0f14acb5a5ecdfcdaa7d33315d1",
+      "tests/native/test_sitecustomize_optin.py": "acde84ae7587dca61bbe752c50fb240669e665b91a964195ae69922cefe35b17",
       "native/.gitignore": "_build/ (built extension + manifest live only in the working tree)",
       "tests/native/conftest.py": "a74e3d29a4a76cbb5c92fe5181d397c10c3e8e44d1ba35ea7b17a4e783cf926b",
       "tests/native/test_native_producer_parity.py": "0173ccc9689f6b676a3ed1b6f11f6e3561495248ed7b2def9721ab0014d1dcfe",
@@ -52,6 +54,7 @@
     "llvmlite": "0.49.0",
     "numpy": "2.4.6",
     "pybind11": "3.1.0",
+    "pyarrow": "25.0.1 (installed 2026-10-07 to close the worker-import gap that wedged the first shakedowns; engine defect filed separately, task #20)",
     "numba_cache_dir": "campaign_runs/_numba_cache_owner",
     "pythondontwritebytecode": "1"
   },
@@ -59,8 +62,8 @@
   "parity": {
     "law": "bit-exact vs the live numba build_trace (numba 0.67.0): trace_id, schema, geometry bytes (indptr/destination_ids array_equal, distance_bits tobytes), content_digest, refusal text, route, and every counter except tile_temp_bytes (each route measures its OWN scratch by declared design; both figures honest, never compared to each other)",
     "suite": "tests/native (venv-n00, per-directory)",
-    "result": "36 passed",
-    "evidence": "parity_suite.txt (36 PASSED lines)",
+    "result": "40 passed (36 parity/bindings + 4 sitecustomize opt-in, added under the ruling's condition 1)",
+    "evidence": "parity_suite_40.txt (fresh full-suite receipt, 2026-10-07); parity_suite.txt (original 36-test receipt)",
     "coverage": [
       "battery (7 cases from the single-source cpu_kernels conftest: base, nan_seed_end, neg_seed, big_seed, same_terminal, zero_cutoff, weights_f32) x tile_origins {64,3,1} - includes equal duplicates, ties, self loops, refusals",
       "equal-weight tie battery (heap total order + min tie law)",
@@ -115,16 +118,42 @@
   },
 
   "phase3_measurement": {
-    "status": "NOT RUN - coordination stub; no timed leg was executed",
-    "timed_leg_seconds_consumed": 0,
-    "coordination": "benchmark host is single-owner; measurement intent filed at measurement_intent.md; timed legs require the team-lead's go before any wall is recorded",
-    "planned_legs": [
-      "L0 cold build+install cost: venv-n00 python native/build.py from clean _build; wall of the compile+stale-check charged to the declared cold boundary (never inside timed legs)",
-      "L1 C-arm build leg: control cohort schedule identical to p05s (w4/t1/q64/cache-off), native hook installed via trace_build_native.install(), timer brackets ONLY the public RunBatch, fresh NUMBA_CACHE_DIR + fresh outdir, PYTHONDONTWRITEBYTECODE=1, census 64 files / 147829892 B, bitwise determinism vs the numba arm's published bytes",
-      "L2 numba control leg (same schedule, hook uninstall()ed) if the current control-cohort wall needs re-bracketing on this host; otherwise reuse the p05s control receipt",
-      "L3 bitwise cross-leg determinism: native-leg trace bytes identical across two legs and equal to the numba route's bytes for the same inputs (content_digest comparison at the cohort boundary)"
-    ],
-    "bitwise_parity_gate": "a timed native leg is only valid if its census and digests match the numba route's; any mismatch voids the leg and the verdict reverts to stub"
+    "status": "COMPLETE - gated AB/AB matrix fired 2026-10-07 under the team-lead's approved fire sequence, after the engagement-mechanism ruling (option B) was landed and tested (commit 65a080e) and one instrument gate defect was amended (commit 3b55dd2)",
+    "implementation_pin": {
+      "pin": "e6920bfd70ed6d3801305264d8d1c864d1197b16",
+      "law": "ruled binding pin e6920bf, asserted PER LEG by the driver: ancestor-of-running-HEAD + src/ byte-identity vs pin + tests/ additive-only + clean src/tests working tree; recorded in each leg JSON driver_gate.impl_pin and in matrix_summary.json",
+      "head_at_fire": "3b55dd28db7d9bcf7a2de444bc5f09e304149570",
+      "instrument_amendment": "first firing's gate demanded src+tests byte-identity - unpassable by construction because the same ruling ORDERS new opt-in tests (it tripped on tests/native/test_sitecustomize_optin.py); amended to src-identity + tests-additive-only; the tripped leg completed clean but is void as a matrix member (legs/L2A1_numba.void1_gateTrip.json), its wall unclaimed and charged to the budget ledger"
+    },
+    "engagement_mechanism": "ruled option B at 0166d65 + hardening 65a080e: native/sitecustomize.py rides PYTHONPATH into every spawn worker; UNA_NATIVE_TRACE absent=inert (one env read), '1'=install()+atexit stderr engagement report, '0'=matched module load without install (control carries the same load cost, hook never installed, zero report lines); whole gated body fails quiet (never raises out of site initialization); both directions + broken-import never-raise proven by tests/native/test_sitecustomize_optin.py (4 tests)",
+    "arm_symmetry_recorded": "per leg JSON config: una_native_trace_env ('1' native / '0' numba) AND full PYTHONPATH content (identical MAIN/src:MAIN/native on every leg) - the arms differ ONLY in the declared native channel",
+    "schedule": "w4/t1/q64, cache mode OFF, fresh NUMBA_CACHE_DIR + fresh outdir per leg, PYTHONDONTWRITEBYTECODE=1, UNA_BATCH_PHASES popped, timer brackets ONLY the public RunBatch call (leg_runner.py; shakedowns excluded by law)",
+    "gate": "pre-leg 1-min loadavg < 8 with 90-min bounded wait; enforced per leg, wait samples and pre-gate loadavg recorded in driver_gate (two legs were held by the gate and re-sampled to quiet before firing - walls below are quiet-window walls)",
+    "matrix": ["L2A1_numba", "L1B1_native", "L2A2_numba", "L1B2_native"],
+    "walls_s": {"L2A1_numba": 15.1751, "L1B1_native": 12.5244, "L2A2_numba": 15.7252, "L1B2_native": 16.2113},
+    "walls_source": "byte-read from legs/<tag>.json timing.public_call_wall_s via matrix_summary.json; never transcribed from consoles",
+    "loadavg": {"pre_leg_1m": {"L2A1_numba": 7.85, "L1B1_native": 9.04, "L2A2_numba": 9.77, "L1B2_native": 12.54}, "in_run_1m_max": {"L2A1_numba": 8.26, "L1B1_native": 10.08, "L2A2_numba": 12.76, "L1B2_native": 9.66}},
+    "peak_tree_rss_mib": {"L2A1_numba": 2152.0, "L1B1_native": 2037.8, "L2A2_numba": 1787.8, "L1B2_native": 1957.8},
+    "engagement": {
+      "topology": "per-worker atexit stderr reports parsed by the driver into leg JSON engagement.workers with the per-worker breakdown preserved (ruled condition 3)",
+      "L1B1_native_workers": "6 reports: owner {dispatches 1, origins 14751, tiles 231, candidates 90331, budget_stops 0, admission_refusals 0, errors 0, last_status 0}, five {dispatches 0}",
+      "L1B2_native_workers": "6 reports: owner {dispatches 1, origins 14751, tiles 231, candidates 90331, budget_stops 0, admission_refusals 0, errors 0, last_status 0} (at worker index 1), five {dispatches 0}",
+      "numba_legs": "zero report lines on both controls (matched-load law holds)",
+      "census_of_workers": "6 reports per native leg vs w4 configured: the pool's worker set over the leg's lifetime; breakdown preserved verbatim per the ruling"
+    },
+    "census": {"required_files": 64, "required_bytes": 147829892, "hidden_residue": "43 files / 18046393 B (cohort store root, C30 law) identical on every leg", "asserted_per_leg": true},
+    "determinism": "bitwise cross-leg: timestamp-normalized digest census (accessibility_YYYY-MM-DD_HHMM -> accessibility_TS, hidden residue excluded) IDENTICAL across all 4 legs - native == numba byte-for-byte (64 files)",
+    "honest_interpretation": "one shared trace key serves the whole 32-row cohort, so the native producer dispatches ONCE per leg (owner worker only); the C-arm wall delta is the single build amortized cohort-wide, not a per-row win. N00's value is capability + parity (substantive native backend, bit-exact, engaged through the ruled opt-in), not a 10x lever; walls are recorded exactly as measured and are not a performance claim",
+    "evidence_files": {
+      "leg_jsons": "legs/{L2A1_numba,L1B1_native,L2A2_numba,L1B2_native}.json (+ .stacks.txt wedge sidecars, all clean)",
+      "matrix_summary": "legs/matrix_summary.json (schema una-10x-n00-leg-matrix-1)",
+      "consoles": "legs/legs_matrix_console_3b55dd2.txt (fire 2, complete) and legs/legs_matrix_console_65a080e_fire1_gateTrip.txt (fire 1, gate-trip)",
+      "void_leg": "legs/L2A1_numba.void1_gateTrip.json (fire 1: leg completed clean 17.6834s wall, then the driver's by-construction-defective pin assert killed the firing; wall unclaimed)",
+      "instruments": "instruments/run_legs.py sha256 b0df6774b4a75776b3bcb5287519286b142585aff98a9522b7b7e40a20a19797, instruments/leg_runner.py sha256 922f68e7539d052c15839261892434c968a49a745096d83e4c8a1b3b26c8a0fa (both echoed in the fire consoles)",
+      "untimed_foundations": "shakedown legs sd_n00_{numba,native}.json and wire-validation legs sd_wire_{numba,native}.json (walls never claimed, per law)"
+    },
+    "budget_ledger_note": "timed public-call walls consumed on this task (append to campaign budget reconciliation): 4 matrix legs (15.1751 + 12.5244 + 15.7252 + 16.2113 s) + void fire-1 leg (17.6834 s) = 77.3194 s, plus shakedown/wire legs consumed earlier (sd_n00_numba 15.9176s, sd_wire_numba 15.3373s, sd_wire_native 12.8650s, sd_n00_native 13.0051s, plus earlier discarded shakedown attempts); engine wedge diagnosis runs were untimed host time",
+    "bitwise_parity_gate": "HELD: every leg's census matched 64 files / 147829892 B and the cross-leg digest census is identical; no tolerance anywhere"
   },
 
   "constraints_respected": {
