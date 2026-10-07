@@ -1,0 +1,21 @@
+{
+ "schema": "una-10x-p05s-discarded-fires-receipt-1",
+ "task": "P05R note R3 closure: custody for the three discarded P05S fire consoles",
+ "generated": "2026-10-07T03:16:51Z",
+ "law": "fires 1-2 died on infrastructure asserts (missing arm venv deps / census law needed hidden-residue exclusion); fire 3 completed all 23 legs and died only on run-timestamp path normalization. All consumed legs counted in the ledger as discarded (52.0691 + 41.8032 + 39.1601 = 133.0324 s) and never claimed. Original consoles were /tmp custody (volatile); copied verbatim, no edits.",
+ "console_logs": {
+  "fire1_missing_arm_deps.log": {
+   "sha256": "5b2a5ae42bf21370c8470825a59e8814ce410c30f705081d759627a557b591a4",
+   "leg_lines": 2
+  },
+  "fire2_census_assert.log": {
+   "sha256": "8eea2fca195ad5f5398017c8194383d67174e8df35f8216df576bfe32a77dda1",
+   "leg_lines": 1
+  },
+  "fire3_determinism_normalization.log": {
+   "sha256": "02acc36d25d75945963eaf172feceb55008029459afef8dee80401768220f146",
+   "leg_lines": 23
+  }
+ },
+ "leg_wall_provenance": "the three discarded walls are quoted in budget_reconciliation.json p05s_screen_legs_s.discarded_fire_legs_s; per-leg JSONs were never produced (the legs died pre-census or pre-index), which is why these consoles are the primary custody for the discarded figures"
+}
