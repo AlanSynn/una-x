@@ -15,3 +15,13 @@ Traceback (most recent call last):
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: native arm dispatched nothing - install() wiring dead
 
+
+# --- wire-validation legs (2026-10-07, post-mechanism commit 0166d65; labelled, unclaimed) ---
+# sd_wire_numba + sd_wire_native console lines (first native attempt FAILED at the stale parent-side engagement assert, fixed in 0166d65; its two visible worker reports were single-flight losers at dispatches=0)
+LEG OK sd_wire_native arm=native wall= 12.8650s (host   17.3s) rss_tree= 2095.2MiB preLA=6.41 maxLA=9.5 residue=43f/18046393B wdisp=1
+LEG OK sd_wire_numba  arm=numba  wall= 15.3373s (host   18.7s) rss_tree= 1731.6MiB preLA=10.66 maxLA=11.97 residue=43f/18046393B wdisp=0
+
+# --- tagged sd_n00_native shakedown rerun (fixed instruments; untimed, unclaimed) ---
+LEG OK sd_n00_native  arm=native wall= 13.0051s (host   16.7s) rss_tree= 1995.6MiB preLA=10.09 maxLA=10.91 residue=43f/18046393B wdisp=1
+TAGGED NATIVE SHAKEDOWN COMPLETE
+rc=0
