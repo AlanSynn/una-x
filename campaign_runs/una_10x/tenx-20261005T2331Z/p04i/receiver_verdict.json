@@ -1,0 +1,24 @@
+{
+  "schema": "una-10x-p04i-receiver-verdict-1",
+  "task": "P04I conditionally implement bounded result drain",
+  "generated": "2026-10-07T02:08:38Z",
+  "verdict": "not_admitted",
+  "completion_criterion_quoted": "Causally justified safe candidate or explicit not_admitted; no unbounded queues or weakened fsync",
+  "satisfaction": "explicit not_admitted on measured telemetry; no receiver code changed, so no queue grew and no durability law was touched",
+  "admission_evidence": "receiver_admission.json (this directory)",
+  "deliverables": {
+    "receiver_admission.json": "written \u2014 measured basis, 4 legs, decision",
+    "receiver_verdict.json": "written \u2014 this object",
+    "receiver_fault_matrix.json": "not_applicable \u2014 conditional deliverable; the receiver change is not admitted, so there is no new receiver to fault-test (deadlock/partial frame/worker-death tests attach to the candidate receiver only)"
+  },
+  "downstream": {
+    "P04R": "review target is the DOCUMENTED NON-ADMISSION (per TASKS_CLAUDE.yaml P04R actions: 'verify documented non-admission')",
+    "P05S": "unaffected; the open_observation block in receiver_admission.json is P05 sizing input"
+  },
+  "producer_shas": {
+    "receiver_admission.json": "eedc1cb71ad7a26a63ce1ff3f857fdea61a172ad2748b6dcd49e6c5672301595",
+    "receiver_admission_profile.py": "6a1b9b110aeebea2927539c8c94b27dda3b8fed10f6bf93c6656ce97d645e9c5",
+    "receiver_admission_profile.json": "9e313c914078416a89e676683f2fff47bb3394d5c7a5a651e3f0f024fa9c4c38",
+    "src/urban_network_analysis/batch/cohort.py": "cc42a93722336c039c918a9a00c77853aa3aa38a6b2b8d2826b7f01f66cbaf24"
+  }
+}

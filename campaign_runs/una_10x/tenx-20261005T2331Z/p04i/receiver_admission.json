@@ -1,0 +1,106 @@
+{
+  "schema": "una-10x-p04i-receiver-admission-1",
+  "task": "P04I residual backpressure re-profile (designs/05 admission question)",
+  "generated": "2026-10-07T02:08:38Z",
+  "criterion_quoted": "Admit a receiver change only if post-P02/P03 telemetry shows material result-put/commit backpressure. (designs/05_receiver_and_durability.md)",
+  "cohort": "P01F anchor-verified 32-row control cohort (local_audit_manifest.csv, sha 235405de...), w4, cache mode off, UNA_BATCH_PHASES=1, timer brackets ONLY the public RunBatch call (BENCHMARKS.md)",
+  "legs": [
+    {
+      "leg": "L1_pre_fix",
+      "code": "cb7acd5 (clean tree)",
+      "public_call_wall_s": 15.6228,
+      "recv_wait_s": 0.6897,
+      "recv_wait_pct": 4.41,
+      "commit_side_s": 0.0529,
+      "commit_side_pct": 0.34,
+      "worker_run_sum_s": 43.45,
+      "bootstrap_sum_s": 9.77,
+      "rows": 32,
+      "reuse": "collapsed 32/32 (per-row store defect present)"
+    },
+    {
+      "leg": "L2_pre_fix",
+      "code": "cb7acd5 (clean tree)",
+      "public_call_wall_s": 14.6877,
+      "recv_wait_s": 0.6812,
+      "recv_wait_pct": 4.64,
+      "commit_side_s": 0.0456,
+      "commit_side_pct": 0.31,
+      "worker_run_sum_s": 41.36,
+      "bootstrap_sum_s": 8.84,
+      "rows": 32,
+      "reuse": "collapsed 32/32"
+    },
+    {
+      "leg": "L3_pre_fix",
+      "code": "cb7acd5 (clean tree)",
+      "public_call_wall_s": 15.0288,
+      "recv_wait_s": 0.6812,
+      "recv_wait_pct": 4.53,
+      "commit_side_s": 0.0513,
+      "commit_side_pct": 0.34,
+      "worker_run_sum_s": 41.56,
+      "bootstrap_sum_s": 10.49,
+      "rows": 32,
+      "reuse": "collapsed 32/32"
+    },
+    {
+      "leg": "L4_post_fix",
+      "code": "cb7acd5 + uncommitted cohort.py process-store fix",
+      "public_call_wall_s": 16.4229,
+      "recv_wait_s": 0.8285,
+      "recv_wait_pct": 5.04,
+      "commit_side_s": 0.0673,
+      "commit_side_pct": 0.41,
+      "worker_run_sum_s": 44.78,
+      "bootstrap_sum_s": 10.56,
+      "rows": 32,
+      "reuse": "4 collapse (one per worker) + 28 split; artifact receiver_admission_profile.json"
+    }
+  ],
+  "instrument": "receiver_admission_profile.py (this directory); timer law and full field census in its docstring",
+  "measurement_reliability": {
+    "result_recv_wait_ns": "bounded accumulator, no eviction \u2014 RELIABLE",
+    "commit_side_spans": "LOWER BOUND \u2014 the bounded span buffer evicted 67 events (dropped_events=67 in every leg); surviving late commit spans only, projected upper effect still <1% of wall"
+  },
+  "decision": "not_admitted",
+  "decision_basis": [
+    "result-put side: recv_wait is 4.41-5.04% of public wall across all four legs (pre- and post-reuse-fix); the coordinator is not starved waiting for results",
+    "commit side: 0.31-0.41% of wall even as a lower bound from evicted-span survivors; publishing/state/journal spans are an order below any materiality",
+    "residual is compute-bound: worker run span sum is ~2.7x wall (44.8s vs 16.4s at w4) in the post-fix leg \u2014 the pool is worker-CPU-saturated, not receiver-put-saturated",
+    "a single-receiver + reserved-credit rearchitecture attacks a <=5% ceiling while carrying deadlock/credit/durability risk that designs/05 itself flags; not material under the quoted criterion"
+  ],
+  "post_fix_engagement_facts": {
+    "note": "measured in L4 after the P04I lifecycle fix (see below); recorded because it changes folds_done, not the admission decision",
+    "reuse_modes": {
+      "collapse_full_fold": 4,
+      "metric_reuse_split": 28
+    },
+    "split_copies": 84,
+    "split_folds": 28,
+    "registrations": 32,
+    "refusals": 0,
+    "folds_done": 59004,
+    "folds_done_pre_fix_32_full_folds": 472032
+  },
+  "p04i_lifecycle_defect_and_fix": {
+    "defect": "P03M-B made the metric-reuse store a CohortSession instance member, but worker._run_row constructs a fresh CohortSession PER ROW \u2014 the store died every row and the reuse arm collapsed 32/32 on the real cohort while all offline executor tests passed. Proven live with a JSONL spy around production row_replay (store empty in the SAME pid on the 3rd call).",
+    "fix": "process-pinned store per cohort root in batch/cohort.py (_metric_store_for, mirroring the trace-store lifecycle law); pinning test added; one cohort-route test re-pinned to the reuse-aware accounting (its replays==4 contract predates P03M).",
+    "fix_files_sha256": {
+      "src/urban_network_analysis/batch/cohort.py": "cc42a93722336c039c918a9a00c77853aa3aa38a6b2b8d2826b7f01f66cbaf24",
+      "tests/tenx/post_p00/metrics/test_metric_reuse_wiring.py": "8f99e35e3a35ee3945e3573752ff531bed483a4181c9d8b00a3e8b5144ad2c87",
+      "tests/tenx/cohort/test_cohort_route.py": "ec246c84f414e158c193d9129c7a80b7be6239904f3b014d290be4cc55c659bf"
+    }
+  },
+  "open_observation_not_an_admission_input": {
+    "fact": "folds_done dropped 8x (472032 -> 59004) yet public wall did not drop (14.7-15.6s pre-fix vs 16.4s post-fix leg, host noise band); worker run spans overlap across workers so sum-over-workers is not a speedup metric \u2014 wall is authoritative",
+    "reading": "on this 4-worker host the per-row 'run' residual is not fold-dominated; where the remaining run time lives (split-row refold cost vs copy/output assembly vs singleflight waits) is P05 sizing input, not a receiver admission input"
+  },
+  "tests_after_fix": [
+    "tests/tenx/post_p00/metrics/ 72 passed",
+    "tests/tenx/cohort/ 6 passed (1 re-pinned to reuse-aware accounting)",
+    "tests/batch/runtime/ 48 passed (pre-fix tree state, unaffected by fix)",
+    "metric_reuse_wiring_probe.py regenerated: 32/32 bitwise parity, 1 collapse + 31 split offline; producer shas refreshed for the new cohort.py"
+  ],
+  "fault_matrix": "not_applicable \u2014 no receiver change exists to fault-test; the original sync transport, commit owner and fsync/rename/state/journal sequence are untouched"
+}

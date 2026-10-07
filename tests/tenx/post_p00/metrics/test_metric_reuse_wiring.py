@@ -506,3 +506,39 @@ def test_cohort_session_counters_and_kill_switch(monkeypatch, tmp_path):
     monkeypatch.setenv("UNA_METRIC_REUSE", "0")
     s2 = CohortSession(str(tmp_path / "root2"), 1 << 26)
     assert s2.reuse_enabled is False and s2._reuse is None
+
+
+def test_cohort_session_metric_store_is_process_pinned(monkeypatch,
+                                                       tmp_path):
+    """P04I lifecycle fix: the batch worker constructs a fresh
+    CohortSession for EVERY row, so the metric-reuse store must be
+    pinned at PROCESS level per cohort root (same lifecycle law as the
+    trace store).  Two sessions on one root share ONE store object and
+    therefore each other's registrations; a different root gets a
+    different store; the kill switch still yields None."""
+    from urban_network_analysis.batch import cohort as cohort_mod
+    from urban_network_analysis.batch.cohort import CohortSession
+    monkeypatch.delenv("UNA_METRIC_REUSE", raising=False)
+    root_a = str(tmp_path / "root_a")
+    root_b = str(tmp_path / "root_b")
+    s1 = CohortSession(root_a, 1 << 26)
+    s2 = CohortSession(root_a, 1 << 26)   # next row, same worker process
+    s3 = CohortSession(root_b, 1 << 26)   # different cohort root
+    assert s1._reuse is s2._reuse
+    assert s1._reuse is not s3._reuse
+    # Shared state is live: a registration in s1's store is visible
+    # from s2's (same object), and evictions are counted in one place.
+    s1._reuse.register(
+        "mid-pinning-probe", "pinning-probe-trace",
+        {"gravity_beta": 0.1, "gravity_plateau": 0,
+         "gravity_logistic_midpoint": 500, "gravity_growth_rate": 0.8,
+         "knn_decay": "logistic", "knn_weights": np.array([1.0]),
+         "cutoff": 400},
+        {name: np.zeros((2,), dtype=np.float64) for name in ALL_OUTS})
+    assert len(s2._reuse.entries_for_trace("pinning-probe-trace")) == 1
+    assert s2.delta(s2.mark())["reuse_split_rows"] == 0
+    assert s1._reuse.evictions == s2._reuse.evictions
+    # Kill switch still bypasses the shared cache entirely.
+    monkeypatch.setenv("UNA_METRIC_REUSE", "0")
+    s4 = CohortSession(root_a, 1 << 26)
+    assert s4.reuse_enabled is False and s4._reuse is None

@@ -94,7 +94,14 @@ def test_shared_identity_builds_once_and_warm_repeat_serves(
     assert cs1["rows"] == 4
     assert cs1["builds"] == 1, cs1     # produce-once per identity
     assert cs1["distinct_trace_identities"] == 1
-    assert cs1["replays"] == 4
+    # P04I: the process-pinned P03M metric-reuse arm engages here —
+    # per worker process the first row full-folds (collapse, canonical
+    # register) and every later distinct-beta row split-serves (reach
+    # copied, gravity refolded).  Every row is accounted, none refused.
+    modes1 = [stats["reuse_mode"] for stats in cs1["per_row"].values()]
+    assert len(modes1) == 4
+    assert cs1["replays"] == modes1.count(None) >= 1
+    assert {m for m in modes1 if m} == {"metric_reuse_split"}
     # every non-owner row was served from the store or the residency
     assert cs1["faultins"] + cs1["resident_hits"] == 3
     assert cs1["refusals"] == {}, cs1["refusals"]
@@ -110,7 +117,12 @@ def test_shared_identity_builds_once_and_warm_repeat_serves(
     p2.RunBatch("accessibility", parallel=True, workers=2)
     cs2 = cohort_summary(p2)
     assert cs2["builds"] == 0, cs2     # nothing is built again
-    assert cs2["replays"] == 4
+    # The metric store is process-local (designs/04: no persistence) —
+    # fresh workers collapse their first row again, then split-serve;
+    # the TRACE layer stays warm (faultins only, zero builds).
+    modes2 = [stats["reuse_mode"] for stats in cs2["per_row"].values()]
+    assert cs2["replays"] == modes2.count(None) >= 1
+    assert {m for m in modes2 if m} == {"metric_reuse_split"}
     assert cs2["faultins"] + cs2["resident_hits"] == 4
     assert cs2["refusals"] == {}, cs2["refusals"]
     # warm artifacts unchanged, bitwise

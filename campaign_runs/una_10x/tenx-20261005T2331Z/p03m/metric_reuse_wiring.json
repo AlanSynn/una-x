@@ -1,7 +1,7 @@
 {
   "schema": "una-10x-p03mb-metric-reuse-wiring-1",
   "task": "P03M-B wiring evidence: production row_replay over the frozen-cohort shape; correctness receipt only",
-  "generated": "2026-10-07T01:32:29.975673+00:00",
+  "generated": "2026-10-07T02:02:40.771503+00:00",
   "law": [
     "bitwise parity per una_legacy profile: every reuse-served row must equal a direct replay_trace of the same binding, byte for byte, on all four fold outputs",
     "gates-before-hit: binding + trace-structure validation ran on EVERY row including reuse rows (reuse_refusals would count any crossing); failed outputs are never registered",
@@ -467,7 +467,7 @@
       "Engines/_trace_access_scratch.py": "2c7e3ad779efe845f14e6467545d5f13a40566791b594f882421c3f7ff4da8a2",
       "Engines/_metric_reuse_scratch.py": "280afefb2d4f06442a14515a2e470bfa2859588f03d2d965017e1f5d49cb9609",
       "Engines/_metric_identity.py": "376286c3fa1e823e7bf1ad39998c3dbda648f111ebee283c03e32c4f496e2ddf",
-      "batch/cohort.py": "f709936ee616245cd7113e01b8d900afe887b8910baa1cd339694870f77b3c25"
+      "batch/cohort.py": "cc42a93722336c039c918a9a00c77853aa3aa38a6b2b8d2826b7f01f66cbaf24"
     }
   },
   "disposition": {

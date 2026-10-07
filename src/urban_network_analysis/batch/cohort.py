@@ -189,6 +189,25 @@ def _stores_for(root: str, residency_cap_bytes: int) -> _CohortStores:
         return pair
 
 
+# P03M-B metric reuse (designs/04 step 5, worker-local arm): the store
+# is PROCESS-LIFETIME, keyed by cohort root — the worker constructs a
+# fresh CohortSession PER ROW, so an instance-member store would reset
+# every row (observed live in the P04I admission profile: 32/32 rows
+# collapsed with per-row stores).  Same lifecycle law as the trace
+# store/residency pair above.
+_METRIC_REUSE_STORES: Dict[str, _mre.MetricReuseStore] = {}
+_METRIC_REUSE_STORES_LOCK = threading.Lock()
+
+
+def _metric_store_for(root: str) -> _mre.MetricReuseStore:
+    with _METRIC_REUSE_STORES_LOCK:
+        store = _METRIC_REUSE_STORES.get(root)
+        if store is None:
+            store = _mre.MetricReuseStore()
+            _METRIC_REUSE_STORES[root] = store
+        return store
+
+
 class CohortSession:
     """Run-scoped cohort share state (one per worker process per run).
 
@@ -219,11 +238,15 @@ class CohortSession:
         self.last_metric_id: Optional[str] = None
         # P03M-B: worker-local metric-reuse store (designs/04 step 5's
         # worker-local arm; process lifetime, no persistence, bounded
-        # LRU).  The kill switch keeps the plain replay path.
+        # LRU).  The store is shared PER PROCESS via _metric_store_for:
+        # the worker builds a fresh CohortSession for every row, so an
+        # instance-member store would reset each row and the reuse arm
+        # would never engage (observed live, P04I profile).  The kill
+        # switch keeps the plain replay path.
         self.reuse_enabled = os.environ.get(_METRIC_REUSE_ENV, "1") \
             not in ("0", "false", "False")
-        self._reuse = (_mre.MetricReuseStore() if self.reuse_enabled
-                       else None)
+        self._reuse = (_metric_store_for(str(root))
+                       if self.reuse_enabled else None)
         self.last_reuse_mode: Optional[str] = None
 
     # -- per-row attribution -------------------------------------------------

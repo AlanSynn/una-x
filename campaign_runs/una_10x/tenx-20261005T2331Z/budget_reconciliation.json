@@ -1,43 +1,59 @@
 {
- "schema": "una-10x-budget-reconciliation-1",
- "run_id": "tenx-20261005T2331Z",
- "law": "campaign.json: heavy_budget_seconds=28800, final_reserved_seconds=7200, resume_budget_policy='carry prior usage; do not reset'",
- "prior_ledger_as_recorded_seconds": 2223.47,
- "prior_ledger_source": "p00_receipt.json budget block (h01_supervised_walls_s=344.87 + p00_child_process_walls_s=1878.6; 15 charged run ids listed there)",
- "prior_ledger_components": {
-  "h01_supervised_walls_s": 344.87,
-  "p00_child_process_walls_s": 1878.6
- },
- "supervisor_walls_observed_but_not_in_p00_ledger_seconds": {
-  "flow_supervisor": 55.99,
-  "obs_single_supervisor": 16.15,
-  "smoke_supervisor": 32.86,
-  "fault_supervisor": 160.8,
-  "sum": 265.8,
-  "note": "recorded for transparency; NOT silently merged into the ledger \u2014 basis difference left to the performance owner"
- },
- "w00_calibration_receipts": "not present locally; W00 deliverables (PRIMARY.json/WORKLOADS.json/baseline_stage_model.json) live in the remote run root \u2014 any W00 heavy consumption is inside the P00-ledger basis or unknown_pending_remote",
- "remaining_work_budget_seconds": 26201.9975,
- "final_reserved_seconds": 7200,
- "reset": false,
- "this_run_consumption_so_far_seconds": 374.5325,
- "note": "all values transcribed from committed receipts, not recomputed; ledger only grows",
- "consumption_log_2026_10_06": {
-  "law": "ledger only grows; walls are committed per-leg public_call_wall_s figures",
-  "shakedown_legs_committed_at_85f157f_s": {
-   "shakedown_base_serial_off": 14.8397,
-   "det2": 5.1195,
-   "disk_cold2": 3.3115,
-   "disk_warm2": 0.7716,
-   "sum": 24.0423
+  "schema": "una-10x-budget-reconciliation-1",
+  "run_id": "tenx-20261005T2331Z",
+  "law": "campaign.json: heavy_budget_seconds=28800, final_reserved_seconds=7200, resume_budget_policy='carry prior usage; do not reset'",
+  "prior_ledger_as_recorded_seconds": 2223.47,
+  "prior_ledger_source": "p00_receipt.json budget block (h01_supervised_walls_s=344.87 + p00_child_process_walls_s=1878.6; 15 charged run ids listed there)",
+  "prior_ledger_components": {
+    "h01_supervised_walls_s": 344.87,
+    "p00_child_process_walls_s": 1878.6
   },
-  "local_measured_legs_s": {
-   "warmup_untimed_duty": 19.4986,
-   "seven_measured_legs_sum": 330.9916,
-   "detail": "see baseline_policy_audit.json measured_legs_local_2026_10_06"
+  "supervisor_walls_observed_but_not_in_p00_ledger_seconds": {
+    "flow_supervisor": 55.99,
+    "obs_single_supervisor": 16.15,
+    "smoke_supervisor": 32.86,
+    "fault_supervisor": 160.8,
+    "sum": 265.8,
+    "note": "recorded for transparency; NOT silently merged into the ledger \u2014 basis difference left to the performance owner"
   },
-  "session_total_s": 374.5325,
-  "cumulative_ledger_s": 2598.0024999999996,
-  "superseded_first_disk_shakedown_attempt": "wall not recorded (superseded pre-record); unquantified residue disclosed"
- }
+  "w00_calibration_receipts": "not present locally; W00 deliverables (PRIMARY.json/WORKLOADS.json/baseline_stage_model.json) live in the remote run root \u2014 any W00 heavy consumption is inside the P00-ledger basis or unknown_pending_remote",
+  "remaining_work_budget_seconds": 26130.2353,
+  "final_reserved_seconds": 7200,
+  "reset": false,
+  "this_run_consumption_so_far_seconds": 446.29470000000003,
+  "note": "all values transcribed from committed receipts, not recomputed; ledger only grows",
+  "consumption_log_2026_10_06": {
+    "law": "ledger only grows; walls are committed per-leg public_call_wall_s figures",
+    "shakedown_legs_committed_at_85f157f_s": {
+      "shakedown_base_serial_off": 14.8397,
+      "det2": 5.1195,
+      "disk_cold2": 3.3115,
+      "disk_warm2": 0.7716,
+      "sum": 24.0423
+    },
+    "local_measured_legs_s": {
+      "warmup_untimed_duty": 19.4986,
+      "seven_measured_legs_sum": 330.9916,
+      "detail": "see baseline_policy_audit.json measured_legs_local_2026_10_06"
+    },
+    "session_total_s": 446.29470000000003,
+    "cumulative_ledger_s": 2669.7646999999997,
+    "superseded_first_disk_shakedown_attempt": "wall not recorded (superseded pre-record); unquantified residue disclosed",
+    "p04i_legs_s": {
+      "law": "public_call_wall_s figures transcribed from the four profile console outputs; spy diagnostic legs estimated (no public-call timer, 6-row w2 runs, bounded above at 5s each)",
+      "profile_legs_s": [
+        15.6228,
+        14.6877,
+        15.0288,
+        16.4229
+      ],
+      "profile_legs_sum_s": 61.76219999999999,
+      "spy_diagnostic_legs_est_s": [
+        5.0,
+        5.0
+      ],
+      "p04i_total_s": 71.76219999999999,
+      "verdict": "not_admitted"
+    }
+  }
 }
