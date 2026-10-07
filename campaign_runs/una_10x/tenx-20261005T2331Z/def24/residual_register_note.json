@@ -1,0 +1,38 @@
+{
+ "schema": "una-10x-def24-register-note-1",
+ "task": "DEF-24R intake: residual/register notes from the review (no code change)",
+ "date": "2026-10-07",
+ "review": {
+  "path": "campaign_runs/una_10x/tenx-20261005T2331Z/def24/review.json",
+  "sha256": "cb8d20d0ce1b6b4914336073c568dc3086f3f741f3b626706b3fa9a143081746",
+  "verdict": "approve_with_notes",
+  "blocking": 0,
+  "review_target": "ab357c6 (committed fix + committed 3-scenario test file)"
+ },
+ "entries": [
+  {
+   "id": "RES-1 (review F1, advisory)",
+   "seam": "_state_only_rerun runtime.py:768-803 builds a raw pool, never closes queues/join_thread",
+   "class": "stranded feeder would hang at INTERPRETER EXIT via mp _exit_function -> _finalize_join (no timeout); no cancel-wedge (nothing joins)",
+   "grade": "pre-existing, theoretical (RowJobs are settings/manifests, not data bulk)",
+   "disposition": "RECORDED in register, no follow-up defect (reviewer: no follow-up defect needed); unchanged comparator line too (baseline capability gap retained)"
+  },
+  {
+   "id": "RES-2 (review F2, advisory) - in-flight healthy-path control",
+   "state": "author-owned, UNDECLARED, uncommitted (+67/-5 generation at 04:56:12)",
+   "observations": "lead: failed 2/2 isolated runs (consoles: gen1 lost tails, gen2 preserved at def24/healthy_control_child_console_20261007T0458Z.txt sha a45f7f23f389a24468a19014f8152dc397c362693ec3acd2396615ebc97d5eac); reviewer: failed 1/3 under full-subdir load (209.33s run), passed isolated 11.45s and full-file 26.74s",
+   "candidate": "numba prange/thread abort flake class under load (reviewer hypothesis; lead gen-2 additionally showed 60s watchdog firing inside plan_batch/_snapshot_row realpath before zero-public-files assert)",
+   "disposition": "NOT committed; review-backed state stays ab357c6 (3 runner + 3 child scenarios, all passing); author to harden + declare, lead re-verifies from declared bytes"
+  },
+  {
+   "id": "RES-3 (review F3, informational) - triage tooling note",
+   "note": "def24 sidecar consoles contain NUL padding: grep needs -a or silently returns nothing"
+  },
+  {
+   "id": "RES-4 (review F4, informational) - comment wording nit",
+   "note": "fix comment 'our own undrained _reader' should read 'the inbox Queue's internal read connection'; RECORDED NOT APPLIED - comment-only edit would churn review-backed fix bytes for a wording nit; any future bytes-touching change to cancel() should fold this in"
+  }
+ ],
+ "happy_path_identity": "PASS (single hunk +17/-0 in cancel() only; close() byte-identical; cancel_join_thread on idle feeder behaviorally a no-op)",
+ "caller_census": "start() readiness-deadline 392 / dead-before-ready 399 / _cancel() 1483 covering deadline 1063, worker-loss 1087, KeyboardInterrupt 1225, BaseException 1231; parent never reads inbox"
+}

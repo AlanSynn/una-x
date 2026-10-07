@@ -1,0 +1,141 @@
+{
+  "schema": "una_10x.review.v1",
+  "task": "DEF-24R: independent review of the runtime._cancel queue-wedge fix (tasks #20/#24)",
+  "reviewer": {
+    "teammate": "p03r-reviewer",
+    "owner": "independent-reviewer",
+    "independence": "no role in the fix or its tests; own runs, own frame reconciliation"
+  },
+  "date": "2026-10-07",
+  "intake_commit": "ab357c6",
+  "deliverable_reviewed": {
+    "fix": "src/urban_network_analysis/batch/runtime.py _Pool.cancel: cancel_join_thread on (inbox, ready) BEFORE worker termination",
+    "diff_shape": "single hunk, +17/-0, 0 deletions, inside cancel() only (verified via git show --stat and the full hunk); close() and every other function byte-identical",
+    "regression_test": "tests/batch/runtime/test_runtime_cancel_wedge.py @ ab357c6: 3 runner + 3 child-guarded scenarios"
+  },
+  "verdict": "approve_with_notes",
+  "blocking_findings": 0,
+  "advisory_findings": 2,
+  "informational_findings": 2,
+  "question_assessments": {
+    "Q1_cancel_join_thread_semantics_all_callers": {
+      "assessment": "PASS \u2014 abandonment is safe at every caller; no reader can depend on abandoned contents",
+      "evidence": [
+        "caller census (grep + read): pool.cancel() is called from exactly three sites \u2014 start() readiness deadline (runtime.py:392), start() dead-before-ready (399), and _cancel() (1483); _cancel() covers BatchCancelledError from deadline (1063) and worker-loss (1087), KeyboardInterrupt (1225-1228), and the worker-row BaseException handler (1231-1232)",
+        "the parent NEVER reads the inbox: puts only (dispatch 408, close sentinels 423, rehydration 790/793); the only inbox reader is the worker loop (worker.py pool_main: get until None), and cancel() terminates those workers",
+        "the only ready-queue reader is start(); in the failure path start() has long completed; in the start-failure paths the notes are abandoned by design",
+        "committed work is journal-backed, never inbox-backed: rows are journalled by the parent only after the synchronous outbox recv (_journal_row under the run loop); abandoned inbox jobs are uncommitted rows that resume re-runs; results already in the SimpleQueue pipe but unrecv'd are likewise uncommitted (the serial-parity prefix comes from _attach_rows over recv'd outcomes)",
+        "the OLD ordering preserved nothing of value on these paths: with workers terminated, queued jobs had no consumer in any ordering \u2014 the only thing the old ordering 'delivered' was the wedge itself",
+        "cancel_join_thread only sets the shared no-join flag; it does not break puts, kill feeders, or affect gets \u2014 the workers are terminated moments later regardless"
+      ]
+    },
+    "Q2_declared_residuals": {
+      "assessment": "AGREE \u2014 genuinely theoretical on the happy path; daemon-leak residual real but bounded; recommend a defect-register NOTE, not a new defect; one ADJACENT unprotected seam found (finding F1)",
+      "evidence": [
+        "close() wedge requires a feeder blocked mid-flush at close time; the run loop reaches close() only after every dispatched job was recv'd (in_flight back to zero), which means every worker consumed its job; the pipe is drained and the inbox feeder is idle; the None sentinels (~50 B each) flush instantly into the empty pipe before any join",
+        "straggler-terminate in close() (10 s join timeout) cannot wedge: the pipe is empty by then, so no feeder thread is mid-send",
+        "daemon feeder leak post-cancel: real \u2014 the inbox feeder stays blocked in send_bytes until process exit \u2014 but the failure path re-raises (CLI exits) and mp queue feeders are daemon threads; a library caller that catches the failure and keeps the interpreter alive leaks one blocked thread, as declared"
+      ]
+    },
+    "Q3_happy_path_identity": {
+      "assessment": "PASS \u2014 fix cannot alter happy-path behavior",
+      "evidence": [
+        "single-hunk diff in cancel() only; close() byte-identical (0 deletions in the whole commit)",
+        "the happy path never invokes cancel(): close() guards 'if self.cancelled: return' and cancel() is reachable only from the two start()-failure paths and the run-level exception handlers",
+        "cancel_join_thread on an idle-feeder queue changes no observable behavior (the later join_thread simply no-ops)",
+        "reviewer rerun of the committed scenarios: all three runner tests passed (inside the full-subdir run: 51 passed total); the implementer's healthy sibling leg evidence (direct_console.txt rc=0, 25.16 s) is consistent"
+      ]
+    },
+    "Q4_test_honesty": {
+      "assessment": "PASS \u2014 children assert the ORIGINAL exception and the prefix law, not merely non-hang",
+      "evidence": [
+        "row-failure child: pytest.raises(MemoryError, match='injected OOM') \u2014 the ORIGINAL injected exception type and message at the RunBatch caller \u2014 plus batch_report is None and ei.value.batch_rows == () (empty committed prefix, serial-parity law)",
+        "worker-death child: raises Exception match='died' with the same prefix assertions",
+        "unit-seam child: cancel() returns, cancelled flag set, every proc dead",
+        "non-hang is enforced structurally: runner kills the whole child process group at a 150 s hard bound (start_new_session + killpg), and a 60 s faulthandler watchdog dumps all thread stacks to the REAL stderr for forensics before the kill \u2014 a wedge lands as a loud failure carrying its own stacks",
+        "geometry honesty: pre-existing cancellation tests use 2-4 row batches (test_runtime_cancellation.py) \u2014 far below the ~64 KiB pipe buffer, correctly explaining why they passed on defective code; the new scenarios pin ~2 MiB (63 x 32 KiB inert specs) and 512 KiB (64 x 8 KiB raw) backlogs",
+        "staging hygiene asserted via hidden_residue (single cleanup owner runs on cancellation alike)"
+      ]
+    },
+    "Q5_comment_mechanics_claims": {
+      "assessment": "PASS \u2014 every claim verified against the bytes",
+      "evidence": [
+        "'outbox is a SimpleQueue channel whose join_thread is already a no-op': TRUE \u2014 _ResultChannel.join_thread is literally 'pass' (runtime.py:357-358), documented 'no feeder thread to join'",
+        "'takes no cancel_join_thread': TRUE \u2014 mp.SimpleQueue has no cancel_join_thread; the fix iterates only (inbox, ready), avoiding an AttributeError",
+        "'ready queue's feeder holds only worker-sent readiness notes, never parent puts': TRUE \u2014 the only ready producer is the worker's one-shot readiness note (worker.py:571); parent puts go to inbox only (408/423/790/793)",
+        "'feeder blocked in send_bytes on a pipe whose only remaining read end is our own undrained _reader': consistent with the captured stacks \u2014 the parent process holds the inbox Queue's own read connection (never polled), so terminating the workers does NOT break the pipe (no EPIPE) and the feeder blocks forever once the backlog exceeds the pipe buffer; '_reader' is the mp.Queue-internal connection, not a _Pool attribute (informational nit: the name may send a reader grepping for self._reader)",
+        "sidecar frame reconciliation: pre-fix blob (ab357c6~1) line 443 = q.join_thread(), 1466 = pool.cancel() inside _cancel, 1215 = _cancel call inside the except BaseException handler \u2014 the live +17 shift maps them exactly to 460/1483/1232; the wedge stack (queues.py:250 _feed -> send_bytes; main thread in Queue.join_thread via _finalize_join) matches the comment's mechanism claim for byte-identical evidence"
+      ]
+    }
+  },
+  "independent_verification": {
+    "subdir_rerun": "venv-p01m, tests/batch/runtime per-subdir, PYTHONDONTWRITEBYTECODE=1, fresh pinned NUMBA_CACHE_DIR: 1 failed, 51 passed, 4 skipped in 209.33s \u2014 the ONLY failure is the implementer's IN-FLIGHT (uncommitted) control scenario, see finding F2; all three COMMITTED runner scenarios passed; the committed-claims counts reproduce (file alone: 3 passed 3 skipped per lead's 12.08s run; subdir 51 passed 3 skipped at the committed bytes)",
+    "control_isolated_rerun": "test_healthy_backlog_completes_normally alone: 1 passed in 11.45s",
+    "full_live_file_rerun": "4 passed, 4 skipped in 26.74s (live bytes incl. the in-flight control)",
+    "prefax_demonstration": "committed console prefix_demo_guarded_console.txt: the two wedge runner scenarios FAILED in 300.25s on the pre-fix tree (TimeoutExpired at the 150 s bound, wedged child killed) \u2014 the defect was loud and reproducible pre-fix; direct_console.txt: healthy sibling leg rc=0 in 25.16s",
+    "frame_reconciliation": "git show ab357c6~1 sed at 443/1466/1215 reproduces the sidecar frames against the pre-fix generation; +17 maps them to current 460/1483/1232",
+    "pytest_wedge_sample": "genuine macOS sample(1) capture of the wedged demonstration process (launch 03:59:05, sampled 04:13:00, 1521 samples on the main thread)",
+    "cited_files_resolve": "n00/wedge_triage_console.txt and n00/wedge_stacks_attempt4.txt (cited by the test docstring) both exist"
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "advisory",
+      "class": "adjacent_unprotected_pool_seam",
+      "finding": "_state_only_rerun (runtime.py:768-803, rehydration path) builds its own raw one-worker spawn pool whose teardown does inbox.put(None) + join(5)/terminate but NEVER closes the queues and NEVER calls cancel_join_thread/join_thread. Nothing joins a feeder there, so DEF-24's wedge class cannot fire \u2014 but (a) the queue/pipe objects are never closed, and (b) a stranded full feeder (single job exceeding the pipe buffer x a ready-but-stuck worker that never consumes it, hit on the outbox-timeout path) would hang the process AT INTERPRETER EXIT via multiprocessing's _exit_function -> Queue._finalize_join (join without timeout). Same theoretical family as the declared close() residual; pre-existing; no demonstrated defect (RowJobs are settings/manifests, not data bulk).",
+      "requested_disposition": "defect-register NOTE alongside the declared residuals (close() theoretical, daemon-leak bounded, _state_only_rerun exit-join theoretical + unclosed queues); no code change required for this intake",
+      "blocking": false
+    },
+    {
+      "id": "F2",
+      "severity": "advisory",
+      "class": "in_flight_test_flake",
+      "finding": "the implementer's UNCOMMITTED +39 clean-path control (test_healthy_backlog_completes_normally, not part of ab357c6) failed ONCE in this reviewer's full-subdir run \u2014 child exited nonzero at the runner's returncode assert \u2014 and then passed twice on rerun (isolated 11.45 s; full live file 26.74 s). Candidate cause: the known numba prange/thread abort flake class under suite load (pre-existing, disclosed for tests/tenx/sparse). The committed intake is unaffected; the diagnostic tails were lost to this reviewer's own console truncation, not to the test (the runner's assert carries out/err tails by design).",
+      "requested_disposition": "implementer: diagnose/harden the control before committing it (reproduce under full-subdir load; the child's captured output on failure is the first datum); until then the committed 3-scenario file remains the review-backed state",
+      "blocking": false
+    },
+    {
+      "id": "F3",
+      "severity": "informational",
+      "class": "forensics_tooling_note",
+      "finding": "wedge_persistence_sd_direct_sidecar.txt contains NUL padding; grep without -a silently returns nothing on it (CPython binary detection). Future forensic greps on preserved faulthandler sidecars should use grep -a. (Reviewer process note; no defect.)",
+      "requested_disposition": "none (note for the triage playbook)",
+      "blocking": false
+    },
+    {
+      "id": "F4",
+      "severity": "informational",
+      "class": "comment_wording_nit",
+      "finding": "the fix comment's 'our own undrained _reader' refers to the inbox mp.Queue's internal read connection (never polled by the parent), not to a _Pool attribute; a reader grepping for self._reader in runtime.py will not find it. Substance of the claim is verified TRUE.",
+      "requested_disposition": "optional wording follow-up ('the inbox queue's own never-polled read connection')",
+      "blocking": false
+    }
+  ],
+  "verdict_time_repins": {
+    "src/urban_network_analysis/batch/runtime.py": "e6462090bdc0f275677441005198e25d969bac6132fcf640d2c6fcd1204b7a70",
+    "tests/batch/runtime/test_runtime_cancel_wedge.py @ ab357c6 (committed blob under review)": "2c7e5cfff8e084686c52d5870f03a27cd8e871f5a5c83907bf16afa0b93acf0f",
+    "tests/batch/runtime/test_runtime_cancel_wedge.py live working tree (in-flight +39, disclosed)": "b01ab9eb2cfb85f53fe3286ffe0575afc46df8057ba4e99eed56e72a4cf86422",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/def24/prefix_demo_guarded_console.txt": "6966da837fa69e8c3635e89bcb22a1a133c5fba55ae59b687f68ee27a2fd8b8c",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/def24/direct_console.txt": "cbe480327d840109ab6e32e2fc2334044c6d9a9680586c331fca60d78113a351",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/def24/pytest_wedge_sample.txt": "49903d025652ef1cbee98c67fe47caa1b3340273160bfba401f8cee558477a3d",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/n00/wedge_persistence_sd_direct_sidecar.txt": "9cbe743ca8491d3db26d48222078d6d722110f7ed4fdae126dc08e5c6ccaba25"
+  },
+  "ambient_working_tree_disclosure": {
+    "runtime_py": "live bytes == ab357c6 (diff empty at verdict time)",
+    "test_file": "uncommitted +39 on top of ab357c6 (clean-path control scenario, implementer in-flight, task #24 still open); reviewed bytes are the committed blob; in-flight delta disclosed and excluded from the verdict",
+    "diff_stat_inflight": "tests/batch/runtime/test_runtime_cancel_wedge.py | 72 ++++++++++++++++++++++--\n 1 file changed, 67 insertions(+), 5 deletions(-)"
+  },
+  "head_advance_reconciliation": {
+    "head_at_verdict": "68c226bd9e10232f6477b1a28fda6a304c941924",
+    "head_short": "68c226b",
+    "intake": "ab357c6",
+    "fix_bytes_intake_to_head": "(empty: fix bytes unchanged since intake)"
+  },
+  "constraints_respected": [
+    "venv-p01m per-subdir pytest only (tests/batch/runtime + the single wedge file)",
+    "no timed measurements performed; only pytest/leg consoles' own figures observed",
+    "reviewer outputs live only under def24/review.json; nothing written inside the implementation census",
+    "write scope honored: def24/review.json is the only file created (scratch consoles under /tmp, removed or ephemeral)",
+    "all sha figures in this file are live hashlib tool outputs computed in the generating block; the committed-blob hash was taken from git show, not the working tree"
+  ]
+}
