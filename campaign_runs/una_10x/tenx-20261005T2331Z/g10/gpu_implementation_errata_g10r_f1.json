@@ -1,0 +1,50 @@
+{
+ "schema": "una-10x-errata-1",
+ "task": "G10R intake errata F1 (lead-filed, requested_disposition of review finding F1)",
+ "date": "2026-10-07",
+ "errata_for": {
+  "path": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/gpu_implementation.json",
+  "sha256": "554eb67a22ea7be1747ea777bfcd063a58d6947bcc5202c505cde6c80156d313",
+  "first_landed_in_commit": "03224a9"
+ },
+ "review_finding": {
+  "source": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/review.json",
+  "review_sha256_at_intake": "a04ec37e7d789e5763d378c8394d71656116f3cd315f663424b13b48b2e741b0",
+  "id": "F1",
+  "severity": "advisory",
+  "class": "prose_completeness_in_committed_deliverable"
+ },
+ "correction": {
+  "legs_affected": [
+   {
+    "leg": "context_dependence_finding.measured[1]",
+    "committed_text": "reproduces the committed n00/probe_order.txt engine-side pattern: big_at_1 reach/gravity_exponential = 9007199254740998.0 with vec4_tree/vec8_tree/vec16_tree hits and seq/pairwise/vec8_seq misses",
+    "defect": "the hit-set enumeration omits vec4_seq"
+   },
+   {
+    "leg": "gate_harness.host_battery_evidence.key_results.big_at_1",
+    "committed_text": "engine reach = gravity_exponential = 9007199254740998.0; hit by vec4_tree/vec8_tree/vec16_tree; seq/pairwise/vec8_seq miss",
+    "defect": "same omission of vec4_seq on the second prose leg"
+   }
+  ],
+  "corrected_fact": "the big_at_1 engine hit set is FOUR-fold: vec4_tree, vec8_tree, vec4_seq, vec16_tree. vec4_seq matches reach and gravity_exponential (the two metrics the prose legs name), not knn_access/gravity_logistic.",
+  "evidence": {
+   "host_battery_json": {
+    "path": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/host_battery.json",
+    "sha256": "83fa3e9ce5d405131f2ee6a66a9ab09bf6870cd1973a09b0b346141f51746fa9",
+    "tree_hits.vec4_seq": [
+     "reach",
+     "gravity_exponential"
+    ],
+    "tree_hits.vec8_seq": []
+   },
+   "n00_probe_order_line1": {
+    "path": "campaign_runs/una_10x/tenx-20261005T2331Z/n00/probe_order.txt",
+    "sha256": "c713f8c8b15c2cebf472228d60f3af3fe216b17d938962d8d298b879a31b18cd",
+    "line": "big_at_1: numba_reach=9007199254740998.0 matches=['vec4_tree', 'vec8_tree', 'vec4_seq', 'vec16_tree']"
+   }
+  },
+  "impact": "none on the build-bound association finding: the prose 'reproduces the committed n00 engine-side pattern' claim is exact (the pattern INCLUDES vec4_seq); individual named statements remain true; the omission strengthens nothing either way",
+  "disposition": "committed evidence is never edited (errata-not-edit precedent); this object is the correction of record"
+ }
+}

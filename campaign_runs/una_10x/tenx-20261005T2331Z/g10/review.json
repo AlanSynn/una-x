@@ -1,0 +1,187 @@
+{
+  "schema": "una_10x.review.v1",
+  "task": "G10R: independent implementation review of the GPU region surface (task #25 G10)",
+  "reviewer": {
+    "teammate": "p03r-reviewer",
+    "owner": "independent-reviewer",
+    "independence": "no role in G10 implementation; separate review evidence, own runs"
+  },
+  "date": "2026-10-07",
+  "intake_commit": "03224a9",
+  "deliverable_reviewed": {
+    "path": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/gpu_implementation.json",
+    "sha256": "554eb67a22ea7be1747ea777bfcd063a58d6947bcc5202c505cde6c80156d313",
+    "sha_matches_team_lead_intake_pin": true,
+    "first_landed_in_commit": "03224a9"
+  },
+  "scope": {
+    "files_read_in_full": "all 12 gpu/ source files + all 10 tests/tenx/gpu modules + deliverable + gate_harness_failclosed.json + pytest receipt; host_battery.json verified programmatically (per-case engine_bits + tree_hits + tie summary)",
+    "src_untouched_claim": {
+      "verdict": "VERIFIED for the G10 range",
+      "g10_range_commits": [
+        "03224a9 G10 intake: GPU region implementation - new gpu/ surface only (src/ untouched, zero tracked mods), fail-closed ladder + FoldRegionRecord.hardware_validated constant False, K0-K3 host twins (K2 numba tie transcription, K3 8 reduction trees), device source with -fmad=false/no-fast-math/FP64 pinned, gate harness designed refusal rc=2, host battery on REAL engine fold (context-dependence: association class is build-bound), 53 tests pass; numba_cache kept (cited path)",
+        "eb9276f G11 intake (performance-owner): explicit_unavailable qualification - capability vs performance separated, zero performance claims, team-lead harness run rc=2 designed refusal on record, Delta checklist (battery regeneration build-bound, FULL-service crossover, installed engagement)",
+        "99c9c02 G10 intake follow-up: tests/tenx/gpu/ (10 modules, 53 tests) - missed in 03224a9, deliverable component; x00 audit confirms it pre-existed untracked"
+      ],
+      "g10_range_src_diff": "(empty: intake + follow-up touch no src file)",
+      "post_intake_note": "commits AFTER the G10 follow-up legitimately modify src outside G10 scope (DEF-24 ab357c6 runtime.py cancel fix, task #24); listed below, not part of G10",
+      "post_intake_other_commits": [
+        "ab357c6 DEF-24 fix: _Pool.cancel abandons inbox/ready feeder backlog (cancel_join_thread BEFORE termination, 17 insertions in cancel only) - original worker-row exception now propagates instead of wedging in Queue.join_thread; regression test 3 runner + 3 child-guarded (150s kill bound, >64KiB backlog pins), pre-fix wedge demonstrated on HEAD (2 failed in 300.25s, consoles preserved under def24/); new-file run post-fix: 3 passed 3 skipped in 12.08s (team-lead verified)",
+        "d2bd9ce X00 intake: platform obligations audit - 8 families (3 evidence_closed / 5 open_blocker, 7 explicit blockers), 21/39 receipts + 18 no-evidence tasks recorded-not-waived, integration map (N00R/N10/G00/G10/G11/F00/F10/P05S+R), defect register (DEF-24 open, packaging fixed, L1B2 recorded); in-repo campaigns/una_platform/TASKS_CLAUDE.yaml used (declared ../una_platform path absent, disclosed); untimed host time"
+      ],
+      "src_working_tree_now": "(clean)"
+    }
+  },
+  "verdict": "approve_with_notes",
+  "blocking_findings": 0,
+  "advisory_findings": 5,
+  "question_assessments": {
+    "Q1_fail_closed_law": {
+      "assessment": "PASS \u2014 verified store-backed end to end",
+      "evidence": [
+        "execute_fold_region ladder: (1) typed validate_request; (2) probe_driver -> HardwareUnavailable; (3) require_gate() AND cell_is_gated_open(cell_id) AND association match -> ParityGateNotRun naming the gate store; (4) context None -> HardwareUnavailable, else unconditional NotImplementedError naming G11",
+        "the terminal step-4 raise is unconditional once a context object exists: even forged probe + forged gate store cannot reach device execution in this build",
+        "FoldRegionRecord.hardware_validated is set False unconditionally (constant, not a parameter)",
+        "forged bit_validated FLAG is functionally inert: validate_request never reads request.cell; the ladder consults the gate STORE via cell_is_gated_open, not the flag (test_forged_cell_cannot_bypass_gate_store pins this)",
+        "run_host_stage_composition (the line ~260 FoldCell(bit_validated=True)) is host-tail composition only; its record declares context_kind='host-tail-composition (not device execution)' and cannot dispatch kernels",
+        "indirect paths checked: no registry lookup, default, or request-validation path constructs or reaches a device dispatch; the only device-entry funnel is execute_fold_region"
+      ],
+      "residual": "_CELL_GATES is in-RAM with a public writer (finding F2); authority is procedural in this build, and the build cannot dispatch anyway (terminal raise)"
+    },
+    "Q2_availability_probe": {
+      "assessment": "PASS for this host; residual deferred to G11 with bounded impact",
+      "evidence": [
+        "Darwin short-circuits before any dlopen: typed no_cuda_driver refusal \u2014 cannot false-positive locally",
+        "NVIDIA stub libcuda returns CUDA_ERROR_STUB_LIBRARY(34) from cuInit -> cuInit_failed refuse (fail-closed)",
+        "cuDeviceGetCount<1 -> no_cuda_device; FP64 attribute 13 checked on device 0 only -> conservative OVER-refusal (multi-GPU host with FP64 only on non-zero devices is refused, never under-admitted)",
+        "probe_driver never raises; every refusal path is typed with reason+detail"
+      ],
+      "residual": "working driver but broken/faked context creation is undetectable at probe time; in THIS build impact is bounded by ladder step 3 (fresh process -> empty gate store -> ParityGateNotRun) plus the terminal raise; G11 owns context honesty"
+    },
+    "Q3_twin_fidelity": {
+      "assessment": "PASS \u2014 independently verified",
+      "evidence": [
+        "engine quirk verified from source bytes: reach_gravity_knn_access knn branches read the GLOBAL gravity_beta/gravity_plateau/gravity_logistic_midpoint/gravity_growth_rate; the knn_gravity_* parameters are never read; reductions.py documents the same; twins correctly bind the global scalars",
+        "K1 expressions match engine summands elementwise (exponential, logistic, three knn decay branches)",
+        "K2 INDEPENDENT differential probe (reviewer, seed 20261007, 183 trials incl. n=14..17/31/32/100/200/1000, organ-pipe and sawtooth tie patterns, -0.0/0.0 mixes): 0 mismatches vs compiled numba 0.67.0 njit np.argsort; 136/150 random trials differ from numpy quicksort (non-vacuous)",
+        "K3: eight association trees verified; battery tree_hits reproduced from live bytes (see Q5)",
+        "fold_host_reference composes K0->K1->K2(sort, crop knn=min(kept,len(knn_weights)), 0.0 if knn==0)->K3 with explicit association, matching engine order and the knn==0 convention"
+      ]
+    },
+    "Q4_device_source": {
+      "assessment": "PASS \u2014 read in full",
+      "evidence": [
+        "flag contract in header: -O3 -std=c++17 -prec-sqrt=true -prec-div=true -fmad=false; --use_fast_math FORBIDDEN; double precision only",
+        "K0 una_g10_fold_compact: one block/row, 256 threads, chunked Hillis-Steele inclusive scan over keep=(i<d_count)&&(drow[i]<=cutoff); write at orow[s_base + s_scan[tid]-1] preserves ascending order (rank-1 placement); s_base update by tid 255 with correct syncthreads fencing",
+        "K1 kernels are per-element mirrorings of the engine summands; fmax(0.0,...) vs np.maximum NaN divergence is recorded with the post-K0 finite-domain reliance",
+        "absence of device reductions is explicit and intentional in the source (association classes are CPU-compiler-specific); K3 stays on host behind cell-certified trees"
+      ]
+    },
+    "Q5_context_dependence": {
+      "assessment": "SUPPORTED \u2014 build-bound over source-bound, independently reproduced",
+      "evidence": [
+        "reviewer re-ran the classification from live bytes: bare @njit(cache=False) w.sum() on big_at_1 yields 2^53 (bits 0000000000004043) and hits seq/pairwise/vec8_seq \u2014 exactly the finding's measured[0] claim",
+        "engine fold on the cohort case recomputed: reach 11.0 (bits 0000000000002640), gravity_exponential 9.628618189812515 (bits b9d44d3eda412340) matched by ONLY vec4_seq \u2014 exactly the battery and key_results claim",
+        "the two legs TOGETHER demonstrate the finding first-hand: same host, same numba 0.67.0, same source-level summation semantics, DIFFERENT compiled artifacts classify into DIFFERENT association classes \u2014 the class follows the compiled artifact, not the source lines",
+        "host_battery.json tree_hits reproduce the committed n00/probe_order.txt engine-side 4-hit pattern on big_at_1/7/0 exactly (see finding F1 on the prose enumeration of that set)",
+        "cohort case is the load-bearer for G11: association differences appear in ordinary primary-domain data (gravity_exponential), not only catastrophic-cancellation edges",
+        "test_k3_trees.py deliberately pins only context-stable facts (agreement, splits, distinguishability) and refuses to pin the host-specific hit set \u2014 correct posture for a build-bound property"
+      ],
+      "implication_for_g11": "the Delta checklist must regenerate the host battery on the qualification host and gate cells against THAT engine artifact; a certification imported from this Mac is void"
+    },
+    "Q6_test_honesty": {
+      "assessment": "PASS \u2014 independently rerun",
+      "evidence": [
+        "reviewer rerun: venv-p01m, PYTHONDONTWRITEBYTECODE=1, fresh pinned NUMBA_CACHE_DIR (removed after), per-subdir: 53 passed, 2 warnings \u2014 matches the committed pytest receipt (its only timing figure is pytest's own summary line; no reviewer benchmarking performed)",
+        "no test asserts hardware validation passed; conftest states the CPU-only law explicitly",
+        "the 2 warnings are the intentional K1 exp-overflow boundary pins (documented in the deliverable)",
+        "records_never_claim_hardware_validation pins record invariants; gate harness exit contract distinguishes 0 (real-device pass, G11) / 2 (hardware_unavailable designed refusal) / 3 (launcher absent) / 4 (mismatch)",
+        "live gate invocation on this host recorded rc=2 'NOT PASSED (designed refusal; never simulated)' with reason no_cuda_driver \u2014 matches gate_harness_failclosed.json",
+        "import-light hygiene is test-enforced (subprocess bans numba/engine/cuda imports through the gpu surface)"
+      ],
+      "note": "no device-gated skips exist because no device test exists yet (G11); nothing is marked skipped-pending-hardware that could silently pass"
+    }
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "advisory",
+      "class": "prose_completeness_in_committed_deliverable",
+      "finding": "both prose legs describing the big_at_1 pattern \u2014 context_dependence_finding.measured[1] and gate_harness.host_battery_evidence.key_results.big_at_1 \u2014 enumerate hits as 'vec4_tree/vec8_tree/vec16_tree' while the evidence records a FOUR-hit set: host_battery.json tree_hits and n00/probe_order.txt line 1 both include vec4_seq (matches=['vec4_tree','vec8_tree','vec4_seq','vec16_tree']). Every individually named statement is true (those three DO hit; seq/pairwise/vec8_seq DO miss) and the 'reproduces the committed n00 engine-side pattern' claim is exact \u2014 the pattern is reproduced including vec4_seq \u2014 but the prose description of the pattern drops one true hit on both legs. The build-bound finding is unaffected (strengthened, if anything).",
+      "requested_disposition": "lead-filed errata noting vec4_seq in the big_at_1 hit set on both legs (deliverable is committed evidence; errata-not-edit)",
+      "blocking": false
+    },
+    {
+      "id": "F2",
+      "severity": "advisory",
+      "class": "authority_is_procedural",
+      "finding": "gpu/backends/gpu.py _CELL_GATES is a module-global in-RAM dict with a PUBLIC writer: any in-process caller may call cell_gate(passed=True, ...) and open a cell. 'Only the device-side harness can open a cell' is a procedure, not an enforced invariant. Additionally the docstring 'CPU-only callers must never pass passed=True' is contradicted by two legitimate in-RAM test fixtures. In THIS build no harm is reachable (terminal step-4 raise); the exposure becomes real the moment G11 wires a context port.",
+      "requested_disposition": "G11: make the durable evidence-backed store authoritative for cell_is_gated_open (read recorded evidence, not in-RAM writable state) before any device dispatch exists; fix the docstring to describe the actual contract",
+      "blocking": false
+    },
+    {
+      "id": "F3",
+      "severity": "advisory",
+      "class": "docstring_overclaim",
+      "finding": "kept_prefix (gpu/kernels/host_twins.py) docstring claims it 'Validates finiteness of the kept values' but the body only checks length mismatch \u2014 no finiteness check exists. No behavior defect (post-K0 finite-domain reliance is separately recorded), but the docstring asserts validation that does not happen.",
+      "requested_disposition": "implement the finiteness check or reword the docstring in a follow-up implementation change",
+      "blocking": false
+    },
+    {
+      "id": "F4",
+      "severity": "advisory",
+      "class": "exit_code_overloading",
+      "finding": "validate_device_bits main() returns EXIT_PASSED (0) for --emit-host-battery, overloading the documented '0 = gate PASSED on a real device'. A script keying on rc==0 alone would read a host-only battery emission as gate-passed. Mitigated: stdout says 'host_battery_written ... device half requires real hardware and stays unrun' and no path marks a cell bit_validated.",
+      "requested_disposition": "distinct exit code (e.g. 5) for the host-battery mode before G11 automation consumes rc",
+      "blocking": false
+    },
+    {
+      "id": "F5",
+      "severity": "informational",
+      "class": "stylistic_confusion_risk",
+      "finding": "run_host_stage_composition constructs FoldCell(bit_validated=True). Verified functionally inert (validate_request never reads request.cell; the ladder consults the store), and the helper is marked gate/tests-only with a non-dispatching record \u2014 but the forged flag invites exactly the misreading the fail-closed law warns about.",
+      "requested_disposition": "optional inline comment naming the flag's inertness; no behavior change",
+      "blocking": false
+    }
+  ],
+  "independent_verification": {
+    "suite_rerun": "venv-p01m, tests/tenx/gpu per-subdir, PYTHONDONTWRITEBYTECODE=1, fresh pinned NUMBA_CACHE_DIR: 53 passed, 2 warnings in 1.79s (matches committed receipt)",
+    "k2_differential": "reviewer probe, seed 20261007, 183 trials (random tie-dense n<=1000, boundary sizes 14-17/31/32, organ-pipe/sawtooth, -0.0 mixes): argsort_tie_law vs compiled numba 0.67.0 = 0 mismatches; 136/150 differ from numpy quicksort",
+    "q5_reclassification": "bare-probe big_at_1 hits seq/pairwise/vec8_seq (2^53) vs engine artifact vec-tree family (2^53+6) \u2014 reproduced from live bytes; cohort gravity_exponential recomputed = 9.628618189812515, only-vec4_seq \u2014 reproduced",
+    "pin_rehash": "all 25 evidence_index pins (11 gpu_surface + 10 tests + 4 cited_sources_read) re-hashed against live bytes: 0 mismatches; plus the 13 verdict_time_repins entries",
+    "cited_paths_resolve": "g10/numba_cache/ exists with the engine .nbi/.nbc entries (run's pinned NUMBA_CACHE_DIR); host_battery_stderr.txt empty (clean battery run)"
+  },
+  "verdict_time_repins": {
+    "campaign_runs/una_10x/tenx-20261005T2331Z/g10/gpu_implementation.json": "554eb67a22ea7be1747ea777bfcd063a58d6947bcc5202c505cde6c80156d313",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/g10/host_battery.json": "83fa3e9ce5d405131f2ee6a66a9ab09bf6870cd1973a09b0b346141f51746fa9",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/g10/gate_harness_failclosed.json": "449d7953db106c309713077f0aadcfbdd0808b5e1d656843176fbd7c66573fb9",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/g10/pytest_gpu_receipt.txt": "9bf3ef66fab93898e01f236d1c39f659c4eb844687c294ebccf40726c71302da",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/g00/gpu_region.json": "c8a877df11b0d1a3827dfe40378ecbf1c66200aa426ce152bdf1510f09730630",
+    "campaign_runs/una_10x/tenx-20261005T2331Z/n00/probe_order.txt": "c713f8c8b15c2cebf472228d60f3af3fe216b17d938962d8d298b879a31b18cd",
+    "gpu/runtime/region.py": "c044e2e516595e8b11a0f36a914838d82d45dd31b91356b7f89d515776b36ac1",
+    "gpu/backends/gpu.py": "929017df2b194ecb6ee770a003c23e7390b11c2b4e3d80b75ce4a765856103d2",
+    "gpu/runtime/availability.py": "30e4f4c6c6df6a33c325cd8d706370730efed5a2e37c0f9c31de814f6b89cddd",
+    "gpu/runtime/buffers.py": "9c94604cd8c6f7b152ad21eb478cb36858296e4e9f6d3bebca6c4f4fafb5e8f5",
+    "gpu/kernels/host_twins.py": "85b97f4ccbbd94615696c1f2fa118ef8bc9f2440cf0e19958d4e0651668a1c5b",
+    "gpu/kernels/validate_device_bits.py": "aa0af51ec5b5cbc55af2d6debd8c137f2546675a1b592ecc4e9170e6fa33f520",
+    "gpu/kernels/fold_kernels.cu": "bf843394f2ecefbf813d31b0537f391e763a1cbaf2b2e45a59347ad1bd4d6344"
+  },
+  "head_advance_reconciliation": {
+    "head_at_verdict": "ab357c6e1b2679f04e228b1d48f8d9335ff4330a",
+    "head_short": "ab357c6",
+    "intake": "03224a9",
+    "g10_scope_commits_after_intake": {
+      "99c9c027f5a3f2b49d430757ab8edc902774091a": "G10 intake follow-up: tests/tenx/gpu/ (10 modules, 53 tests) - missed in 03224a9, deliverable component; x00 audit confirms it pre-existed untracked"
+    },
+    "reconciliation": "tests/tenx/gpu was missed in the 03224a9 intake commit and landed as the lead's own follow-up (deliverable component, pre-existed untracked per x00 audit); all 10 test module pins in the deliverable match live bytes, and live bytes == HEAD (diff empty), so the review verdict covers the completed intake",
+    "g10_owned_bytes_intake_to_head": "gpu/ and g10/ evidence unchanged since intake; only the follow-up test commit (sha above) touched G10 scope",
+    "src_committed_g10_range": "(empty)"
+  },
+  "constraints_respected": [
+    "venv-p01m per-subdir pytest only",
+    "no timed measurements performed (co-tenant working); only pytest's own summary line observed",
+    "reviewer outputs live only under g10/review.json; nothing written inside the implementation census",
+    "write scope honored: g10/review.json is the only file created",
+    "all sha figures in this file are live hashlib tool outputs computed in the generating block"
+  ]
+}
