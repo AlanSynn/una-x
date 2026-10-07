@@ -1,0 +1,33 @@
+{
+ "schema": "una-10x-merge-manifest-1",
+ "source_sha": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c",
+ "source_tree": "perf/una-10x worktree (candidate built at 1e7237b; Q10 evidence chain commits 95e5fcd/e643ba9/ee5652a/357d011)",
+ "target_main_sha": "16bf404d2cc5e776a78dc073c80405f6d186da29",
+ "merge_base": null,
+ "rehearsal_sha": "2f4dae6 (T13 disposable merge rehearsal: clean merge, byte-identical wheel, L0 24/24 in rehearsed tree)",
+ "included_files": [],
+ "excluded_research_files": [],
+ "wheel_hashes": [
+  "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1",
+  "9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97"
+ ],
+ "default_domains": [],
+ "fallback_domains": [],
+ "validation_records": [
+  "bitparity.json",
+  "state_artifact_checks.json",
+  "backend_matrix.json",
+  "gate_10x.json",
+  "raw_index.json"
+ ],
+ "performance_records": [
+  "paired_samples.json",
+  "gate_10x.json",
+  "raw_index.json"
+ ],
+ "independent_review": "r00/review.json (sha 0cf3896b468c122d052c40f68eb7fcde1fcb1966f53e139ab4ad281ad7a22c0c)",
+ "ci": "unavailable",
+ "platform_status": "incomplete",
+ "decision": "do_not_merge",
+ "decision_reason": "10x gate not met (median 2.3798 < 10.0) and no merge authorization exists for this campaign; publication permission was consumed at design-packet publication"
+}

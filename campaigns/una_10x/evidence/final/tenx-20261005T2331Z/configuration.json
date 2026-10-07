@@ -1,0 +1,63 @@
+{
+ "schema": "una-10x-q00-configuration-1",
+ "date": "2026-10-07",
+ "freeze_basis": {
+  "candidate": {
+   "source_rev": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c",
+   "wheel_sha256": "9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97",
+   "wheel_census": "i00/wheel_census.json B_candidate",
+   "install": {
+    "package_file": "/private/tmp/i00/venv_b/lib/python3.11/site-packages/urban_network_analysis/__init__.py",
+    "spawn_shim_file": "/private/tmp/i00/venv_b/lib/python3.11/site-packages/una_batch_worker_main.py",
+    "spawn_shim_sha256_parent_probe": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f"
+   }
+  },
+  "comparator": {
+   "source_rev": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+   "wheel_sha256": "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1",
+   "declared_tree_delta": "pyproject.toml ONLY (force-include packaging parity backport)",
+   "wheel_census": "i00/wheel_census.json A_comparator",
+   "install": {
+    "package_file": "/private/tmp/i00/venv_a/lib/python3.11/site-packages/urban_network_analysis/__init__.py",
+    "spawn_shim_file": "/private/tmp/i00/venv_a/lib/python3.11/site-packages/una_batch_worker_main.py",
+    "spawn_shim_sha256_parent_probe": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f"
+   }
+  },
+  "bitwise_basis": "v00/bitparity.json (A==B==n00 reference per-file, 64 files/147829892B)"
+ },
+ "harness": {
+  "path": "p05s/run_screen_leg.py",
+  "sha256": "9f84a70b70bff6bfd825213fba6ad5bf7e5a21e164a25e131d02748cbfe5248e",
+  "args": "--tree <main> --pairing <cohort> --data-folder <Boston> --outdir <fresh> --tag <id> --out <leg.json> --parallel --workers 4 --threads 1 --queue-depth 64 --cache-mode off"
+ },
+ "schedule": {
+  "order": [
+   "AB",
+   "BA",
+   "AB",
+   "BA",
+   "AB",
+   "BA",
+   "AB"
+  ],
+  "pair_ids": [
+   "q10_p1",
+   "q10_p2",
+   "q10_p3",
+   "q10_p4",
+   "q10_p5",
+   "q10_p6",
+   "q10_p7"
+  ],
+  "per_window": "fresh process + fresh NUMBA_CACHE_DIR + fresh outdir per leg",
+  "protected_after": "5 protected pairs after the 7 primary windows, same gates"
+ },
+ "invalidation_clause": "one FULL repeat block only for preregistered invalidation (pre-leg gate unopenable 90min / in-run external load spike recorded by sampler / leg failure or census mismatch); all blocks retained; no selective reruns of slow candidate windows",
+ "law": [
+  "BENCHMARKS.md",
+  "DECISION.md",
+  "VALIDATION.md",
+  "campaigns/una_10x/dossiers/09_final_integration.md",
+  "post_p00/designs/07_measurement_and_gates.md"
+ ]
+}

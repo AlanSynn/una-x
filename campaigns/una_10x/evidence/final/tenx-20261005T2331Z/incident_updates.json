@@ -1,0 +1,69 @@
+{
+ "schema": "una-10x-incident-updates-1",
+ "date": "2026-10-07",
+ "incidents": [
+  {
+   "id": "INC-1",
+   "title": "RunBatch rows anchor fresh Settings() at the CSV's own directory",
+   "impact": "I00 S50 probe fires 1-2 FileNotFoundError (relative paths resolved against /private/tmp/i00)",
+   "resolution": "row-level absolute data_folder column (UNA.py:196-232 convention); recorded in i00 design_note",
+   "class": "measured (consoles retained)"
+  },
+  {
+   "id": "INC-2",
+   "title": "freeze_source drift at manifest generation",
+   "impact": "i00 manifest initially named a head that was never built",
+   "resolution": "pinned to census B source_rev 1e7237b with separate head_at_manifest_generation field, before i00 commit",
+   "class": "measured (committed manifest history)"
+  },
+  {
+   "id": "INC-3",
+   "title": "q00 v1 protected inputs lacked CSV header row",
+   "impact": "pandas parsed 0/1 records; Q10 fire-1 pc1 leg failed (RuntimeError 'No settings to run')",
+   "resolution": "errata_pc_inputs.json + v2 regeneration (v1 kept); primary workload/windows unaffected",
+   "class": "measured (errata + consoles)"
+  },
+  {
+   "id": "INC-4",
+   "title": "zsh $ARMS non-split in fire_q10.sh protected loop",
+   "impact": "single iteration ARM='a b', wrong venv, mangled tag 'q10_pc1_tiny_gis_beta00_a b'",
+   "resolution": "explicit arm lists in fire_q10b.sh; defective-leg sampler retained as evidence",
+   "class": "measured (console fire1 + sampler file)"
+  },
+  {
+   "id": "INC-5",
+   "title": "/tmp vs /private/tmp symlink prefix assert (assembly only)",
+   "impact": "fire-2 B40 crash after all 10 protected legs completed; no measurement affected",
+   "resolution": "os.path.realpath prefix comparison in fire_q10c.sh",
+   "class": "measured"
+  },
+  {
+   "id": "INC-6",
+   "title": "gate records missing 6 of 7 required digests (assembly only)",
+   "impact": "fire-3 attempt-1 C50 ValueError; no result written",
+   "resolution": "digests added from q00 PRIMARY/freeze (attempt 2)",
+   "class": "measured"
+  },
+  {
+   "id": "INC-7",
+   "title": "runtime._cancel queue-wedge swallowed worker-row failures",
+   "impact": "earlier shakedown wedges (4 SIGKILLed attempts, n00 era)",
+   "resolution": "fixed (#24) + independent DEF-24R review + fault gauntlet green in v00",
+   "class": "measured"
+  },
+  {
+   "id": "INC-8",
+   "title": "host co-tenancy during Q10",
+   "impact": "gate holds (loadavg <8.0, 90-min bounded); in-run sampler maxima well under the preregistered 16.0 invalidation line; sampler cadence 60s means legs shorter than 60s get 1 sample (limitation disclosed)",
+   "resolution": "no invalidation fired; policy-only handling (never killed external load)",
+   "class": "measured (samplers)"
+  },
+  {
+   "id": "INC-9",
+   "title": "PACE/Delta environments unavailable this run",
+   "impact": "all measurements on local CPU host; NCSA Delta recovery pending (cron Oct 9); installed qualification beyond this host not established",
+   "resolution": "platform obligations stay open",
+   "class": "status"
+  }
+ ]
+}

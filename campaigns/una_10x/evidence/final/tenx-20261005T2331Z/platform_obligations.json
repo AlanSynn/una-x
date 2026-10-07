@@ -1,0 +1,38 @@
+{
+ "schema": "una-10x-platform-obligations-1",
+ "date": "2026-10-07",
+ "law": "PLATFORM_CONTINUITY.md: missing hardware is a qualification blocker, not simulated success; CPU fallback does not complete these",
+ "obligations": [
+  {
+   "item": "Madina API parity",
+   "status": "incomplete",
+   "evidence": "no parity evidence in this run; unchanged from inherited state"
+  },
+  {
+   "item": "corrected science profiles (corrected_v1)",
+   "status": "incomplete",
+   "evidence": "all Q10 measurements are una_legacy; corrected_v1 unmeasured here"
+  },
+  {
+   "item": "substantive native backend",
+   "status": "qualified_on_cpu_install_not_in_frozen_wheel",
+   "evidence": "n10/native_qualification.json (installed wheel executes cohort bitwise; packaging defect found+fixed); v00/backend_matrix.json shows wheels are numba-only"
+  },
+  {
+   "item": "substantive GPU support",
+   "status": "blocked_external_hardware",
+   "evidence": "g11/gpu_qualification.json explicit_unavailable; g10 spec exists"
+  },
+  {
+   "item": "recovery/resume obligations",
+   "status": "incomplete",
+   "evidence": "inherited duty; not exercised in this run's scope"
+  },
+  {
+   "item": "installed validation at target platforms",
+   "status": "incomplete",
+   "evidence": "single-host macOS validation only; NCSA Delta recovery pending (cron Oct 9); no cross-ISA claim made (VALIDATION.md)"
+  }
+ ],
+ "bottom_line": "platform_status=independent of tenx_status and stays incomplete; no obligation is closed by the CPU throughput work"
+}

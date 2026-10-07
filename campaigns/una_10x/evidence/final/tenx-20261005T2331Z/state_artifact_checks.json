@@ -1,0 +1,55 @@
+{
+ "schema": "una-10x-v00-state-artifact-checks-1",
+ "task": "V00 state/artifact/fault checks (TASKS_CLAUDE.yaml V00; VALIDATION.md public batch + installed law)",
+ "date": "2026-10-07",
+ "installed_serial_vs_parallel": {
+  "method": "2-row pairing, per arm, fresh output dirs, NUMBA_CACHE_DIR pinned per call, subprocess cwd=DATAFOLDER, row-level absolute data_folder column (I00 fire lesson)",
+  "arms": {
+   "a": {
+    "serial_equals_parallel_bitwise": true,
+    "files": 4,
+    "bytes": 9239257,
+    "spawn_shim_reasserted": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f"
+   },
+   "b": {
+    "serial_equals_parallel_bitwise": true,
+    "files": 4,
+    "bytes": 9239257,
+    "spawn_shim_reasserted": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f"
+   }
+  },
+  "full_per_file_census": "probe_state.py output preserved in this file's source run; summary binds to /tmp/i00/state_<arm>_<mode> dirs (disposable)",
+  "cross_arm_note": "both arms produced byte-identical 2-row outputs (9239257 B, 4 files)",
+  "console": "v00/console_state_20261007T095048Z.txt"
+ },
+ "fault_gauntlet": {
+  "committed_control_test": {
+   "file": "tests/batch/runtime/test_runtime_cancel_wedge.py (final declared sha fee930ee..., committed 5e2a0ef)",
+   "result": "4 passed, 4 skipped in 29.65s, rc=0",
+   "skip_explanation": "the 4 skipped are guarded scenarios that run via _run_child subprocess - they are executed BY the 4 passed runner tests (pytest -rs verified); not unexecuted checks",
+   "console": "v00/console_control_test_20261007T095048Z.txt"
+  },
+  "full_batch_subtree": {
+   "file": "tests/batch (plan + runtime, 15 test files)",
+   "result": "95 passed, 4 skipped in 189.61s, rc=0",
+   "console": "v00/console_batch_suite_20261007T095048Z.txt"
+  },
+  "comparator_side_fault_semantics": "RETAINED GAP (A2): DEF-24 cancel-wedge fix is candidate-only; comparator ships the as-shipped wedge; happy-path cohort legs never enter cancel-with-backlog"
+ },
+ "bit_parity": "v00/bitparity.json: A=B=n00-L2A1-reference per-file bitwise, 64 files / 147829892 B per arm",
+ "backend_matrix": "v00/backend_matrix.json: numba-only gate stack both arms; native retained env-gated (not in wheel); GPU explicit_unavailable = not passed",
+ "identity_chains": "wheel census shim == parent probe == worker journal (i00/installed_manifest.json); re-asserted above per arm",
+ "artifacts": {
+  "installed_manifest": "i00/installed_manifest.json",
+  "freeze": "i00/freeze_candidate.json",
+  "wheels": {
+   "comparator": "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1",
+   "candidate": "9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97"
+  }
+ },
+ "not_passed_records": {
+  "GPU_device_parity": "explicit_unavailable - no CUDA device (g11/gpu_qualification.json); recorded NOT PASSED per VALIDATION.md:65",
+  "cross_ISA_parity": "not claimed (VALIDATION.md:66)",
+  "L4_user_actual_workload": "unavailable - no user workload provided (VALIDATION.md L4 law)"
+ }
+}

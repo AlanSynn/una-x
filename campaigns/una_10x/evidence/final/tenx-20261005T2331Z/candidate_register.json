@@ -1,0 +1,67 @@
+{
+ "schema": "una-10x-candidate-register-1",
+ "date": "2026-10-07",
+ "candidate_source_sha": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c",
+ "candidate_wheel_sha256": "9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97",
+ "comparator_source_sha": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+ "comparator_wheel_sha256": "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1",
+ "accepted_components": [
+  {
+   "item": "prepared input-keyed single-flight before decode",
+   "receipt": "p02d/p02i + P05 screen + V00 parity; inside candidate wheel",
+   "measured_effect": "included in the measured 2.3798x public-boundary median; not separable at this boundary"
+  },
+  {
+   "item": "independent row objects / row validation chronology preserved",
+   "receipt": "V00 state checks; P05 screen"
+  },
+  {
+   "item": "compiled outer replay retaining the original full fold",
+   "receipt": "p03c/p03m; bitwise parity vs reference (v00/bitparity.json)"
+  },
+  {
+   "item": "typed metric reuse (scoped admission)",
+   "receipt": "A3I ADMITTED 8.92% scoped (a3i register); no 10x claim rests on it"
+  },
+  {
+   "item": "causal phase telemetry",
+   "receipt": "p01m phase_summary.json + hypothesis_verdicts"
+  },
+  {
+   "item": "runtime._cancel queue-wedge fix (worker-row failures no longer swallowed)",
+   "receipt": "def24 + DEF-24R independent review; fault gauntlet in v00"
+  },
+  {
+   "item": "native execution region (CPU), qualified separately from the frozen wheel",
+   "receipt": "n00/N00R + n10/native_qualification.json: installed wheel executes cohort bitwise; NOT enabled in the numba-only frozen wheels measured at Q10"
+  }
+ ],
+ "rejected_components": [
+  {
+   "item": "flow sparse-output producer + ordered update tapes",
+   "reason": "F00 not_admitted",
+   "evidence": "f00/flow_admission.json sha 54d4ead4a49d464f3e2d2dbcc6299d11063b9df94c67f52be2e1dff78ff2b26e"
+  },
+  {
+   "item": "P04 bounded independent result drain",
+   "reason": "residual backpressure never demonstrated; p04i verdict not_admitted",
+   "evidence": "p04i consoles + budget entry"
+  },
+  {
+   "item": "GPU execution region as qualified backend",
+   "reason": "missing hardware is a qualification blocker",
+   "evidence": "g11/gpu_qualification.json explicit_unavailable"
+  },
+  {
+   "item": "baseline-input-cache identical-answer hits / cache relaxation",
+   "reason": "law excludes same-answer hits from the primary gate",
+   "evidence": "baseline_policy_audit.json"
+  },
+  {
+   "item": "unchecked queue enlargement",
+   "reason": "law forbids without measured residual backpressure",
+   "evidence": "post_p00 designs 04/05"
+  }
+ ],
+ "register_note": "'accepted' means evidence-backed and inside the measured candidate; nothing is accepted for merge (merge_disposition do_not_merge)"
+}

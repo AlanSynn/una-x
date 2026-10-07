@@ -1,0 +1,27 @@
+{
+ "schema": "una-10x-cache-matrix-1",
+ "date": "2026-10-07",
+ "law": "q00/cache_policy.json (sha 48b530406a4b8d4e845f89c826d51fad018eb78bfaf417513cb360d52883bf70)",
+ "regimes_measured": [
+  {
+   "regime": "COLD",
+   "arms": "A and B",
+   "windows": "7 primary pairs + 5 protected pairs",
+   "implementation": "fresh process + fresh arm-specific NUMBA_CACHE_DIR per leg, cache-mode off, initial trace cost inside the timer",
+   "class": "measured",
+   "evidence": "paired_samples.json + raw_index.json"
+  }
+ ],
+ "regimes_not_measured": [
+  {
+   "regime": "warm/reuse",
+   "class": "not measured in this gate",
+   "note": "earlier screen history (P05S A1R/F1R/F2R) is screen evidence, not part of this gate"
+  },
+  {
+   "regime": "same-answer hits",
+   "class": "excluded by law"
+  }
+ ],
+ "cache_engagement": "run_screen_leg asserted zero failed + cache engagement per leg; cache disabled (off) so no cross-window reuse existed"
+}

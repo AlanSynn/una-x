@@ -1,0 +1,163 @@
+{
+ "schema": "una-10x-r00-review-1",
+ "reviewed_commit": "357d0118d18877be882f95787ce356ac0f8debc5",
+ "reviewer": "p03r-reviewer (independent-reviewer)",
+ "date": "2026-10-07",
+ "scope": "Independent final review of Q10 installed 10x confirmation: paired arithmetic, gate tool, wheel custody, bitwise attestation, protected cells, errata legitimacy, record truthfulness, fire history.",
+ "checks": [
+  {
+   "id": "1_ratio_median_lower_recompute",
+   "method": "recomputed 7 A/B ratios from legs q10_p{1..7}_{a,b}.json timing.public_call_wall_s; exp(median log); gate_10x.py exact rng/percentile (seed 20261003, 20000 resamples, linear q=0.05)",
+   "result": "PASS - bit-exact match to committed gate_10x.json; passes_10x_arithmetic false",
+   "evidence": "q10/legs/*.json; my console r00/reviewer_recompute_console.txt"
+  },
+  {
+   "id": "2_gate_rerun_scratch_rc2",
+   "method": "executed campaigns/una_10x/tools/gate_10x.py --samples paired_samples.json --out /tmp/r00_review/gate_r00.json (committed evidence untouched)",
+   "result": "PASS - rc=2 (below target, per-tool convention); scratch output byte-identical to committed gate_10x.json",
+   "evidence_sha": "cb16f11122beb7ebee55d687a9760d2aad941844d27c386b1c622585a309b00b",
+   "evidence": "q10/gate_10x.json"
+  },
+  {
+   "id": "3_wheel_identities_all_custody",
+   "method": "sha256 of wheels at /tmp/i00/dist_a|dist_b, workspace i00_frozen_wheels/, i00/wheel_census.json pins, PRIMARY.json wheel_sha256",
+   "result": "PASS - A f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1 (source 395cdc5) and B 9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97 (source 1e7237b) identical at all four custody points; identical spawn shim 037d6c47 in both wheels",
+   "evidence": "i00/wheel_census.json; i00_frozen_wheels/"
+  },
+  {
+   "id": "4_bitwise_census_trees",
+   "method": "re-walked 10 retained output trees (3 primary pairs x both arms + pc1/pc5 v2 pairs), recomputed per-file sha256 with accessibility_<date>_<minute>->accessibility_TS normalization, dot-prefixed top-level dirs excluded",
+   "result": "PASS - every tree == its leg JSON map; primaries additionally == I00 64-file reference map; B arms carry exactly 43 hidden .una-* state files (18046393 B) outside the required map; totals 147829892 (A) / 165876285 (B) reconcile exactly",
+   "evidence": "/tmp/q10/out_q10_*; i00/legs/a_installed_comparator.json"
+  },
+  {
+   "id": "5_protected_criterion",
+   "method": "recomputed 5 B/A ratios from v2 leg JSONs; reproduced implementer estimator exactly (random.Random(20261003), 20000 resamples, exp(median log), sorted, boot[19000])",
+   "result": "PASS - median_B_over_A 0.8487256763337874 <= 1.05; one_sided_95_upper 0.926994008355321 <= 1.10; default_dispatch_ok true; per-cell A/B output maps bitwise equal and v2 input sha pinned in both legs",
+   "evidence": "q10/raw_index.json protected_cells/protected_criterion"
+  },
+  {
+   "id": "6_errata_legitimacy",
+   "method": "re-hashed v1 inputs vs freeze.protected_inputs_sha256; pandas (venv-p01m) parses of v1 and v2; workload manifest re-hash",
+   "result": "PASS - v1 bytes unchanged and match freeze; v1 parse 0/0/0/0/1 records (header consumed, garbled keys on pc5) exactly as errata states; v2 parse 1/1/1/1/2 with real network_file/data_folder keys; workload sha 235405de... unchanged (primary windows unaffected)",
+   "evidence_sha": "c3b13f40baf078580aca94289261a66ac7bfeabb4030426135ad236ec54381ef",
+   "evidence": "q00/errata_pc_inputs.json; q00/regenerate_pc_inputs_v2.py"
+  },
+  {
+   "id": "7_record_truthfulness",
+   "method": "for each of the 14 paired-sample records and 10 protected legs: cross-checked every claimed field against the underlying leg JSON (config 4 workers/1 thread/queue 64/cache off, una_legacy effective snapshot, zero_failed, row_count 32, jobs 32/32/0, substantive_calls 32, venv executable prefix under realpath, wall/import/cold_boundary arithmetic, sampler max/count, all 7 digests vs PRIMARY/freeze)",
+   "result": "PASS - all fields reconcile; cache_regime COLD consistent with cache off + fresh per-leg NUMBA_CACHE_DIR (24 distinct)",
+   "evidence": "q10/paired_samples.json; q10/legs/*.json"
+  },
+  {
+   "id": "8_gate_tool_and_freeze_digests",
+   "method": "git log/diff e643ba9..357d011 on gate_10x.py; re-hash PRIMARY/freeze/configuration; parent lineage of 357d011",
+   "result": "PASS - gate_10x.py untouched across the range (empty log and empty diff); TARGET 10.0; PRIMARY 777cab1a..., freeze 8778b0dc..., configuration 25475676... all match freeze pins; parent of 357d011 is ee5652a (the pinned law commit)",
+   "evidence": "campaigns/una_10x/tools/gate_10x.py; q00/*"
+  },
+  {
+   "id": "9_fire_history_honesty",
+   "method": "hashed the 4 evidence consoles vs raw_index pins and vs /tmp live consoles; counted LEG OK/FAIL lines; searched disclosed-defect signatures",
+   "result": "PASS - pins match (fire1 5b4bac05..., fire2 e08ea1e8..., att1 03ba0ef2...); att2 console established at 67451e37ce3b53b577fcba91bf637d38f119921ceb6f07bb47856d2c45498535 (evidence copy == live); LEG OK 28/20/0/0 = 14 primary legs (fire1) + 10 protected legs (fire2), zero re-runs; all three disclosed defects corroborated in console bytes (RuntimeError 'No settings to run' with space-tag q10_pc1_tiny_gis_beta00_a b; AssertionError /private/tmp/i00/venv_a/bin/python; ValueError immutable manifest and wheel hashes required)",
+   "evidence": "q10/console_fire_*.txt"
+  },
+  {
+   "id": "10_window_order_and_samplers",
+   "method": "extracted fire1 console LEG OK tag sequence; compared to PRIMARY window_order; re-hashed all 25 sampler files vs raw_index; global in-run loadavg max",
+   "result": "PASS - execution order == preregistered AB,BA,AB,BA,AB,BA,AB; sampler census 25 files == 25 pins, all hashes match (note: 25, not the 26 stated in the review assignment); global in-run loadavg max 7.92 < 16.0 threshold; invalidation_flags empty is honest",
+   "evidence": "q10/sampler/*; q10/raw_index.json"
+  }
+ ],
+ "findings": [
+  {
+   "severity": "advisory",
+   "description": "Tag-case inconsistency: paired_samples.json records carry measurement_detail.tag 'q10_p1_a' (lowercase) while the leg JSONs' own tag is 'q10_p1_A' (uppercase, matching outdir/numba_cache_dir/sampler filenames). Cross-references resolve only because the volume is case-insensitive (APFS); on case-sensitive storage the sampler filename would not resolve from the record's tag. No figure is affected; leg paths in the records are exact.",
+   "evidence": "q10/paired_samples.json pairs[0].A.measurement_detail.tag vs q10/legs/q10_p1_a.json tag"
+  },
+  {
+   "severity": "advisory",
+   "description": "Leg pins record tree_dirty=true at fire time (untracked files present, chiefly the campaign_data input tree). Tracked bytes are pinned at ee5652a and all input/workload bytes are sha-pinned (manifest 235405de..., v2 inputs in errata), so no drift is evidenced, but the dirty flag means the run tree was not pristine.",
+   "evidence": "q10/legs/q10_p1_a.json pins.tree_head/tree_dirty"
+  },
+  {
+   "severity": "advisory",
+   "description": "In-run sampler cadence 60s yields a single loadavg sample per leg (legs run 12-40s), so in-run resource compliance rests on the pre-leg gate (<8.0, up to 90x60s holds) plus one in-run point. This is disclosed in paired_samples/raw_index (in_run_samples: 1) and was accepted at assignment time; global in-run max observed is 7.92. Limitation, not a defect.",
+   "evidence": "q10/paired_samples.json measurement_detail.in_run_samples; q10/raw_index.json invalidation_rule"
+  },
+  {
+   "severity": "informational",
+   "description": "raw_index.json leaves the att2 console sha as 'self-console, finalized after this index; sha at commit'. This review establishes it: 67451e37ce3b53b577fcba91bf637d38f119921ceb6f07bb47856d2c45498535, evidence copy byte-identical to the /tmp live console. Downstream decision files should cite this value.",
+   "evidence": "q10/console_fire_q10c_att2.txt"
+  },
+  {
+   "severity": "informational",
+   "description": "Sampler census is 25 files (14 primary + 10 protected-v2 + 1 failed fire1 leg with the space-tag), matching raw_index pins exactly; the review assignment's '26 entries' was incorrect.",
+   "evidence": "q10/sampler/; q10/raw_index.json sampler_files_sha256"
+  },
+  {
+   "severity": "informational",
+   "description": "Outcome classification per DECISION.md vocabulary: with median 2.38 and 95% lower 2.23 against the fixed 10.0 target, both arms on installed wheels, 7 preregistered windows, protected cells passing, and the bounded investigation complete, the evidence supports tenx_status=target_unmet (report the bottleneck), not improvement_only. The gate's negative result is recorded honestly in gate_10x.json, the commit message, and the fire consoles (gate rc=2).",
+   "evidence": "q10/gate_10x.json; campaigns/una_10x/DECISION.md"
+  }
+ ],
+ "verdict": "approve_with_notes",
+ "exact_figures_computed": {
+  "pair_ratios_A_over_B": [
+   2.3388109661703114,
+   2.1823019468867755,
+   2.5399073153729974,
+   2.3798464894987252,
+   2.51194987868923,
+   2.4777331395845805,
+   2.2344939526263827
+  ],
+  "median_ratio": 2.3798464894987252,
+  "one_sided_95_lower": 2.2344939526263827,
+  "target": 10.0,
+  "passes_10x_arithmetic": false,
+  "protected_ratio_B_over_A": [
+   0.8234158490864406,
+   0.8487256763337874,
+   0.926994008355321,
+   0.8445941254079578,
+   0.9264601114727535
+  ],
+  "protected_median_B_over_A": 0.8487256763337874,
+  "protected_one_sided_95_upper": 0.926994008355321,
+  "protected_default_dispatch_ok": true,
+  "A_walls_s": [
+   40.036,
+   38.9183,
+   39.3518,
+   36.2146,
+   40.8958,
+   37.6831,
+   36.8944
+  ],
+  "B_walls_s": [
+   17.1181,
+   17.8336,
+   15.4934,
+   15.2172,
+   16.2805,
+   15.2087,
+   16.5113
+  ]
+ },
+ "evidence_digests_verified": {
+  "q10/paired_samples.json": "cb16f11122beb7ebee55d687a9760d2aad941844d27c386b1c622585a309b00b",
+  "q10/gate_10x.json": "bcd0ca15d10c7be6745c39754e569e21e455ba68fe0fdee47fc99fb7a70e073c",
+  "q10/raw_index.json": "46e34641c291cf2709e8e3eaf0e748f1fd9b6aecb5ce41a87ac4b5b7de239067",
+  "q00/PRIMARY.json": "777cab1a25a0a01b58c33b979b2a9cfa24930a014a3801d7edebcdfe702eef4b",
+  "q00/freeze.json": "8778b0dcaba189aa6e07c87e5b3a708562760eb61679a6a61b421fc5a8c8aa2c",
+  "q00/configuration.json": "2547567693f28d031dfdd0178f5ffe744d4c9872c962ab976f21b808a9e160a5",
+  "q00/errata_pc_inputs.json": "c3b13f40baf078580aca94289261a66ac7bfeabb4030426135ad236ec54381ef",
+  "q10/console_fire_q10_fire1.txt": "5b4bac05fcab04535b3a1d19fc58ee4971266cf8e3e6b36e89a9ce527bfd7868",
+  "q10/console_fire_q10b_fire2.txt": "e08ea1e875196049b9e06a9c66bf06b221c6d44f8fa1d7e51bb779994c853f8a",
+  "q10/console_fire_q10c_att1.txt": "03ba0ef243a7f14ec937e0223cf8088ba01d4753672e612c7fd5f4927d77e791",
+  "q10/console_fire_q10c_att2.txt": "67451e37ce3b53b577fcba91bf637d38f119921ceb6f07bb47856d2c45498535",
+  "wheel_A_f0504f88": "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1",
+  "wheel_B_9a84517b": "9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97"
+ },
+ "blocking_count": 0
+}

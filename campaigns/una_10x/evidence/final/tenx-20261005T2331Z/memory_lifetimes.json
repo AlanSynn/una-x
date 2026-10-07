@@ -1,0 +1,36 @@
+{
+ "schema": "una-10x-memory-lifetimes-1",
+ "date": "2026-10-07",
+ "items": [
+  {
+   "item": "NUMBA_CACHE_DIR per leg",
+   "lifetime": "created fresh before each leg, scoped to the leg, never reused across windows",
+   "evidence": "q10 fire scripts + leg pins numba_cache_dir=/tmp/q10/nc_<tag>"
+  },
+  {
+   "item": "output tree per window",
+   "lifetime": "fresh outdir per leg (rm -rf + mkdir recorded before gate); census taken after the call, outside the timer",
+   "evidence": "leg JSONs output_files census"
+  },
+  {
+   "item": "hidden .una-* preparation/cohort artifacts (B arm)",
+   "lifetime": "created and retained within the window; outside the required 64-file census; comparator has none",
+   "evidence": "leg output_file_count A=64 vs B=107; raw_index fire_history"
+  },
+  {
+   "item": "row validation/read leases",
+   "lifetime": "unchanged candidate contract: row-level validation and failure chronology preserved on cache hits; immutable internal leases do not permit public mutable aliasing",
+   "evidence": "v00 state checks + post_p00 designs"
+  },
+  {
+   "item": "cross-window caches",
+   "lifetime": "none (cache-mode off, distinct jobs, COLD regime)",
+   "evidence": "q00/cache_policy.json + paired_samples records cache_regime=COLD"
+  },
+  {
+   "item": "state/journal durability",
+   "lifetime": "unchanged engine fsync/rename/state/journal sequence both arms",
+   "evidence": "q00/output_policy.json + v00 bitparity"
+  }
+ ]
+}

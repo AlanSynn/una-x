@@ -17,7 +17,7 @@
   "note": "recorded for transparency; NOT silently merged into the ledger \u2014 basis difference left to the performance owner"
  },
  "w00_calibration_receipts": "not present locally; W00 deliverables (PRIMARY.json/WORKLOADS.json/baseline_stage_model.json) live in the remote run root \u2014 any W00 heavy consumption is inside the P00-ledger basis or unknown_pending_remote",
- "remaining_work_budget_seconds": 24677.6016813749,
+ "remaining_work_budget_seconds": 24155.2307813749,
  "final_reserved_seconds": 7200,
  "reset": false,
  "this_run_consumption_so_far_seconds": 1898.9283186251,
@@ -109,8 +109,8 @@
    "co_tenancy_caveat": "NOT frozen figures: n=2/arm matrix under ambient co-tenancy; loadavg gate (<8, 90-min bounded) held 3 legs (L1B1 1 sample/60s, L2A2 1 sample/60s, L1B2 6 samples/360s); in-run 1-min loadavg max L1B1 10.08, L2A2 12.76, L1B2 9.66, L2A1 8.26; L1B2 native 16.2113s fired after gate release from a 12.54 entry reading and is the known anomalous leg - no speed claim rests on it",
    "headlines": "native==numba bitwise across all 4 matrix legs (64 files / 147829892 B census exact every leg); engagement exactly one native owner dispatch per native leg (origins 14751, tiles 231, candidates 90331, errors 0, last_status 0) and zero report lines on numba controls; impl_pin src byte-identical to e6920bfd70ed6d3801305264d8d1c864d1197b16, tests additive-only, tree clean"
   },
-  "session_total_s": 1898.9283186251,
-  "cumulative_ledger_s": 4122.3983186251,
+  "session_total_s": 2421.2992186251,
+  "cumulative_ledger_s": 4644.7692186251,
   "n10_native_qualification_s": {
    "head": "8d49e9d (evidence); legs at fire-2 tree incl pyproject fix",
    "wheel_installed_numba_leg_s": 19.502,
@@ -140,6 +140,16 @@
    "v00_total_s": 242.8,
    "untimed_residue_disclosed_not_merged": "4x installed 2-row serial/parallel probe calls + 3x S50 probes from I00 (no timers, bounded minutes total)",
    "evidence": "v00/{bitparity,state_artifact_checks,backend_matrix}.json + sha-named consoles (9009f2ac, 4024b11d, ccc79fd9)"
+  },
+  "q10_confirmation_legs_s": {
+   "law": "public_call_wall_s summed live from q10/legs/*.json (24 legs) at ledger update time; gate holds/assembly are untimed residue disclosed not merged",
+   "leg_count": 24,
+   "primary_14_legs_sum_s": 383.6568,
+   "protected_10_legs_sum_s": 138.7141,
+   "q10_legs_total_s": 522.3709,
+   "max_leg_s": 40.8958,
+   "evidence": "q10/{legs,sampler,paired_samples,gate_10x,raw_index}.json commit 357d011",
+   "outcome": "10x gate NOT met: median 2.3798, one-sided 95% lower 2.2345 (gate_rc=2, recorded honestly); protected cells pass (median 0.8487, 95% upper 0.9270)"
   }
  }
 }

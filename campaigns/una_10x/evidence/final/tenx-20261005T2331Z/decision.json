@@ -1,0 +1,89 @@
+{
+ "schema": "una-10x-decision-1",
+ "date": "2026-10-07",
+ "tenx_status": "target_unmet",
+ "status_basis": "/goal law fixed in advance: 'If no safe route reaches 10x, report target_unmet without lowering the gate.'  Bounded investigations are complete (P01-P05, F00/N00/N10/G10/G11, I00/V00/Q00/Q10); the fixed 10.0 gate was evaluated at full strength and not reached (median 2.3798, one-sided 95% lower 2.2345).",
+ "platform_status": "incomplete",
+ "source_sha": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c",
+ "comparator_source_sha": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+ "claim_scope": "observed_proxy: frozen distinct 32-job observed cohort (workload_sha256 235405de67cf22dc...), installed wheels, COLD public-call boundary (public_call_complete), initial trace cost included; NOT actual_target (no actual unreduced deployment workload was supplied; PRIMARY.json actual_target = unavailable)",
+ "gate_record": {
+  "path": "gate_10x.json",
+  "sha256": "bcd0ca15d10c7be6745c39754e569e21e455ba68fe0fdee47fc99fb7a70e073c",
+  "median_ratio": 2.3798464894987252,
+  "one_sided_95_lower": 2.2344939526263827,
+  "target": 10.0,
+  "passes_10x_arithmetic": false,
+  "pair_count": 7,
+  "seed": 20261003,
+  "resamples": 20000,
+  "gate_tool_rc": 2,
+  "samples_sha256": "cb16f11122beb7ebee55d687a9760d2aad941844d27c386b1c622585a309b00b"
+ },
+ "protected_cells_record": {
+  "median_B_over_A": 0.8487256763337874,
+  "one_sided_95_upper": 0.926994008355321,
+  "default_dispatch_ok": true,
+  "behavior_parity": "outputs bitwise equal across arms in all 5 cells, zero failed jobs"
+ },
+ "required_checks": {
+  "bitwise_parity_installed": "pass (v00/bitparity.json: A==B==n00 reference, 64 files / 147829892 B per window, per-file sha census)",
+  "state_artifact_checks": "pass (v00/state_artifact_checks.json: serial==parallel bitwise per arm; fault gauntlet green)",
+  "installed_identity_chain": "pass (i00: wheel census == parent probes == worker-journal spawn shim, both arms)",
+  "backend_matrix": "numba-only in both frozen wheels; native qualified separately (n10) but absent from wheels; GPU explicit_unavailable = NOT PASSED (v00/backend_matrix.json)",
+  "protected_cells": "pass (default_dispatch_ok=true)",
+  "independent_review": "pass (r00/review.json, sha 0cf3896b468c122d052c40f68eb7fcde1fcb1966f53e139ab4ad281ad7a22c0c)",
+  "fire4_console_sha256": "67451e37ce3b53b577fcba91bf637d38f119921ceb6f07bb47856d2c45498535",
+  "invalidations": "none fired (q10/invalidation_flags.json empty)"
+ },
+ "accepted": [],
+ "rejected": [
+  {
+   "item": "merging the candidate",
+   "reason": "merge_disposition do_not_merge: 10x gate not met and no merge authorization exists; disposable rehearsal (2f4dae6) proved mechanical mergeability only"
+  },
+  {
+   "item": "flow sparse-output producer + ordered update tapes",
+   "reason": "F00 admission not_admitted (f00/flow_admission.json sha 54d4ead4...; fraction-based, co-tenancy-robust)"
+  },
+  {
+   "item": "P04 independent result drain",
+   "reason": "p04i instrumentation verdict not_admitted; no measured residual backpressure demonstrated (gate precondition of P04)"
+  },
+  {
+   "item": "unchecked queue enlargement / blanket fallback",
+   "reason": "law: no unchecked queue enlargement or blanket fallback after partial publication"
+  },
+  {
+   "item": "baseline-input-cache same-answer hits",
+   "reason": "law: identical-answer hits and cache-policy relaxation cannot establish the primary gate; baseline policy audit kept the frozen primary unchanged (baseline_policy_audit.json)"
+  },
+  {
+   "item": "GPU region as qualified backend",
+   "reason": "g11: explicit_unavailable; missing hardware is a qualification blocker, not simulated success"
+  }
+ ],
+ "unavailable": [
+  "actual_target measurement (no actual unreduced deployment workload supplied)",
+  "GPU qualification (required hardware absent)",
+  "CI results (absent CI is unavailable, never passed)",
+  "cross-ISA parity claim (VALIDATION.md: not claimable on this host class)"
+ ],
+ "unverified_claims": [
+  "native backend executable speed inside the frozen candidate wheel (native is qualified on CPU install at n10 but the frozen wheels are numba-only; no native speed claim is made for the measured configuration)",
+  "warm/reuse-regime throughput (Q10 measured COLD only; q10 protected pc5 is a 2-row cold cell, not a warm-regime claim)"
+ ],
+ "bottleneck": {
+  "class": "measured + derived_from_measured",
+  "measured": "candidate public walls 15.2172-17.8336 s/window under equal budget (workers=4, threads=1, queue-depth=64, cache off, fresh NUMBA_CACHE_DIR); comparator 36.2146-40.8958 s; imports outside the timer are small and matched (A 2.54-7.22 s, B 2.70-7.51 s across the 7 primary pairs)",
+  "decomposition_evidence": "p01m/phase_summary.json (instrumented smoke frame, 4 rows, workers=2): worker bootstrap_import 5.1974 s dominates worker-side wall vs run 0.7789 s total (per-row ~0.19 s); coordinator pool_start 0.2112 s + pool_close 0.3524 s",
+  "derived": "in the frozen COLD regime each window re-pays worker engine imports, pool lifecycle and first-trace JIT specializations inside the public call (initial_trace_cost_included=true; per-call pools close at call end), so these fixed costs dilute the achievable public-boundary ratio; per-row arithmetic is a small fraction of the wall.  10x would require reducing worker-side startup/trace cost or amortizing across calls, outside this regime's contract",
+  "note": "decomposition scaled from an instrumented smoke frame (labelled derived_from_measured); no phase-level telemetry was run inside Q10 gate legs to keep the measured boundary untouched"
+ },
+ "merge_disposition": "do_not_merge",
+ "budget": {
+  "cumulative_ledger_s": 4644.7692186251,
+  "remaining_work_budget_seconds": 24155.2307813749,
+  "source": "budget_reconciliation.json (ledger only grows; untimed residue disclosed not merged)"
+ }
+}

@@ -1,0 +1,65 @@
+{
+ "schema": "una-10x-workloads-1",
+ "date": "2026-10-07",
+ "primary": {
+  "name": "frozen distinct 32-job observed cohort",
+  "manifest": "campaign_data/inputs/upstream_Boston/Boston/local_audit_manifest.csv",
+  "sha256": "235405de67cf22dc76c3e89bd0c3d198927d0ed0870172a0e86b942fecb8a60a",
+  "rows": 32,
+  "distinct_jobs": true,
+  "required_outputs_per_window": 64,
+  "output_bytes_per_window": 147829892,
+  "class": "measured"
+ },
+ "protected_cells": [
+  {
+   "id": "pc1_tiny_gis_beta00_v2",
+   "input": "q00/inputs/pc1_tiny_gis_beta00_v2.csv",
+   "sha256": "78e73a8964fb9b1e1582640cc921dee146c72859f1f215ba9889aa87a172fa2b",
+   "class": "measured",
+   "provenance": "errata v2 (header-corrected regeneration of frozen v1 design; v1 bytes kept, recorded in freeze.json protected_inputs_sha256)"
+  },
+  {
+   "id": "pc2_tiny_gis_beta31_v2",
+   "input": "q00/inputs/pc2_tiny_gis_beta31_v2.csv",
+   "sha256": "8fb59527851f8273981d3f9e6049743b2e582208b786254f9c07c8cd1ecff889",
+   "class": "measured",
+   "provenance": "errata v2 (header-corrected regeneration of frozen v1 design; v1 bytes kept, recorded in freeze.json protected_inputs_sha256)"
+  },
+  {
+   "id": "pc3_search_radius1200_v2",
+   "input": "q00/inputs/pc3_search_radius1200_v2.csv",
+   "sha256": "58e1a1e8ddb49d1c55aa9c70bc9637cf23ddc3dc7f8d600cfdb0563682db62fc",
+   "class": "measured",
+   "provenance": "errata v2 (header-corrected regeneration of frozen v1 design; v1 bytes kept, recorded in freeze.json protected_inputs_sha256)"
+  },
+  {
+   "id": "pc4_search_radius1600_v2",
+   "input": "q00/inputs/pc4_search_radius1600_v2.csv",
+   "sha256": "7179c61c12484cfed6d9ff3b4fdb1ddc5e29fe178e93b0b46d93d8a0fe63f878",
+   "class": "measured",
+   "provenance": "errata v2 (header-corrected regeneration of frozen v1 design; v1 bytes kept, recorded in freeze.json protected_inputs_sha256)"
+  },
+  {
+   "id": "pc5_cold_2row_v2",
+   "input": "q00/inputs/pc5_cold_2row_v2.csv",
+   "sha256": "fef6c3a23d3a28901958d0ec7eb1c4ce8170429bb09a37e2840e3cfa174df24f",
+   "class": "measured",
+   "provenance": "errata v2 (header-corrected regeneration of frozen v1 design; v1 bytes kept, recorded in freeze.json protected_inputs_sha256)"
+  }
+ ],
+ "protected_v1_defective_inputs": {
+  "note": "kept, never edited",
+  "recorded_in": "q00/freeze.json + q00/errata_pc_inputs.json (sha c3b13f40baf078580aca94289261a66ac7bfeabb4030426135ad236ec54381ef)"
+ },
+ "unmeasured": [
+  {
+   "name": "actual unreduced deployment workload",
+   "class": "unavailable"
+  },
+  {
+   "name": "warm/reuse regimes",
+   "class": "not measured in Q10 (COLD only)"
+  }
+ ]
+}

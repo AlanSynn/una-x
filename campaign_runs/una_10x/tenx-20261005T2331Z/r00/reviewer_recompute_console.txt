@@ -1,0 +1,16 @@
+CHECK 1_ratio_median_lower_recompute: PASS - median=2.3798464894987252 lower=2.2344939526263827 passes=False (target 10.0)
+CHECK 2_gate_rerun_scratch_rc2: PASS - gate rc=2; scratch output byte-identical to committed gate_10x.json (sha bcd0ca15d10c7be6...)
+CHECK 3_wheel_identities_all_custody: PASS - A f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1 (src 395cdc5) / B 9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97 (src 1e7237b) identical at dist_a|dist_b, i00_frozen_wheels, wheel_census.json
+CHECK 4_bitwise_census_trees: PASS - 10 retained trees recomputed: primaries == legmap == I00 64-file reference; B arms carry 43 hidden .una-* files (18046393 B); totals 147829892(A)/165876285(B) reconcile
+CHECK 5_protected_criterion: PASS - median_B_over_A=0.8487256763337874<=1.05, one_sided_95_upper=0.926994008355321<=1.10, default_dispatch_ok=True (A==B bitwise parity per cell)
+CHECK 6_errata_legitimacy: PASS - v1 bytes == freeze sha256 (never edited); pandas v1 records 0/0/0/0/1(garbled keys); v2 1/1/1/1/2 real keys; workload sha unchanged
+CHECK 7_record_truthfulness: PASS - 14 primary records + 10 protected legs: workers=4/threads=1/queue-depth=64/cache=off, una_legacy, zero_failed, row_count=32, venv prefix (realpath), cold_boundary arithmetic, all 7 digests == PRIMARY/freeze pins, in-run loadavg < 16
+CHECK 8_gate_tool_and_freeze_digests: PASS - gate_10x.py byte-identical across e643ba9..357d011 (empty log+diff); TARGET=10.0; PRIMARY/freeze/configuration digests match freeze pins; 357d011 parent == ee5652a (pinned law commit)
+CHECK 9_fire_history_honesty: PASS - 4 consoles verified (fire1 5b4bac05fcab0453, fire2 e08ea1e875196049, att1 03ba0ef243a7f14e, att2 67451e37ce3b53b5 == /tmp live); LEG OK 28/20/0/0 = 14 primary + 10 protected legs, NO re-runs; disclosed defects corroborated (RuntimeError No-settings + space-tag, AssertionError /private/tmp, ValueError immutable-manifest)
+CHECK 10_window_order_and_samplers: PASS - execution order == preregistered AB,BA,... (14 tags); sampler census 25 files == 25 pins, all hashes match; global in-run loadavg max 7.92 < 16.0; invalidation_flags empty
+ALL CHECKS PASS
+REVIEW WRITTEN 0cf3896b468c122d052c40f68eb7fcde1fcb1966f53e139ab4ad281ad7a22c0c
+Traceback (most recent call last):
+  File "<stdin>", line 267, in <module>
+  File "<stdin>", line 11, in sha
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/alansynn/orca/workspaces/una-x/main/campaign_runs/una_10x/tenx-20261005T2331Z/r00/reviewer_recompute_console.txt'

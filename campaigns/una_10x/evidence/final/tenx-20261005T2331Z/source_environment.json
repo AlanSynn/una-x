@@ -1,0 +1,43 @@
+{
+ "schema": "una-10x-source-environment-1",
+ "date": "2026-10-07",
+ "host": {
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "ncpu": 10
+ },
+ "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+ "numba": "0.67.0",
+ "numpy": "2.4.6",
+ "install_venvs": {
+  "A": "/tmp/i00/venv_a (cp -a venv-p01m, editable uninstalled, wheel --no-deps)",
+  "B": "/tmp/i00/venv_b (same procedure)"
+ },
+ "wheels": {
+  "A": {
+   "sha256": "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1",
+   "source_rev": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+   "provenance": "i00/wheel_census.json A_comparator; protected copy i00_frozen_wheels/dist_a/"
+  },
+  "B": {
+   "sha256": "9a84517b9a524d4632c990a2332f8ecc219d6d3dd844528e8dac9c8dafc58d97",
+   "source_rev": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c",
+   "provenance": "i00/wheel_census.json B_candidate; protected copy i00_frozen_wheels/dist_b/"
+  }
+ },
+ "harness": {
+  "path": "p05s/run_screen_leg.py",
+  "sha256": "9f84a70b70bff6bfd825213fba6ad5bf7e5a21e164a25e131d02748cbfe5248e"
+ },
+ "workload": {
+  "path": "campaign_data/inputs/upstream_Boston/Boston/local_audit_manifest.csv",
+  "sha256": "235405de67cf22dc76c3e89bd0c3d198927d0ed0870172a0e86b942fecb8a60a",
+  "bytes": 8435,
+  "rows": 32
+ },
+ "tree_at_leg_execution": {
+  "head": "ee5652aa81b6a0361e8067400b67573a36f0ca13",
+  "dirty": true,
+  "note": "legs executed at q00 commit ee5652a with uncommitted evidence dirs present; the operative pins are wheel + harness + workload identities, all re-verified"
+ },
+ "environment_policy_sha256": "2d4bed148afa2e4d9416602946cc86a8777b94fc9ecfd55b9930dbffad820bd3"
+}

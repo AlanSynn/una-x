@@ -1,0 +1,377 @@
+{
+ "schema": "una-10x-q10-raw-index-1",
+ "date": "2026-10-07",
+ "fire_history": [
+  {
+   "fire": 1,
+   "console": "q10/console_fire_q10_fire1.txt",
+   "script": "fire_q10.sh",
+   "scope": "T10 + 7 primary pairs complete (legs q10_p1..p7); 28 LEG OK lines",
+   "halt": "protected pc1 LEG FAIL rc=1: zsh $ARMS non-split tag; deeper cause q00 v1 protected inputs missing header row (pandas parsed 0/1 records)"
+  },
+  {
+   "fire": 2,
+   "console": "q10/console_fire_q10b_fire2.txt",
+   "script": "fire_q10b.sh",
+   "scope": "B10 identity re-verification + 5 protected pairs on v2 inputs, 10 legs OK",
+   "halt": "B40 harness crash: venv-prefix assert compared unresolved /tmp prefix against the resolved /private/tmp path recorded in leg pins (macOS symlink); no measurement affected, assembly only"
+  },
+  {
+   "fire": 3,
+   "console": "q10/console_fire_q10c_att1.txt",
+   "script": "fire_q10c.sh (attempt 1)",
+   "scope": "C40 assembly PASSED (7 pairs, no invalid flags), C50 gate schema defect: records carried only wheel_sha256; gate_10x requires all 7 digests (workload/resource/cache_policy/output_policy/environment/harness) per record",
+   "halt": "ValueError('immutable manifest and wheel hashes required'); no result written"
+  },
+  {
+   "fire": 4,
+   "console": "q10/console_fire_q10c_att2.txt (this console, finalized after this index)",
+   "script": "fire_q10c.sh (attempt 2, digests added from q00 PRIMARY/freeze)",
+   "scope": "C40/C50/C60 assembly + gate + raw index only; NO new windows",
+   "halt": null
+  }
+ ],
+ "console_sha256": {
+  "console_fire_q10_fire1.txt": "5b4bac05fcab04535b3a1d19fc58ee4971266cf8e3e6b36e89a9ce527bfd7868",
+  "console_fire_q10b_fire2.txt": "e08ea1e875196049b9e06a9c66bf06b221c6d44f8fa1d7e51bb779994c853f8a",
+  "console_fire_q10c_att1.txt": "03ba0ef243a7f14ec937e0223cf8088ba01d4753672e612c7fd5f4927d77e791",
+  "console_fire_q10c_att2.txt": "self-console, finalized after this index; sha at commit"
+ },
+ "errata": {
+  "file": "q00/errata_pc_inputs.json",
+  "sha256": "c3b13f40baf078580aca94289261a66ac7bfeabb4030426135ad236ec54381ef",
+  "scope": "protected-cell derived inputs only; primary workload and 7 primary windows unaffected (completed in fire 1 before the errata)"
+ },
+ "primary_windows": {
+  "q10_p1_a.json": {
+   "tag": "q10_p1_A",
+   "wall_s": 40.036,
+   "import_s": 7.2248,
+   "rows": 32,
+   "files": 64,
+   "bytes": 147829892,
+   "peak_tree_rss_bytes": 2078736384
+  },
+  "q10_p1_b.json": {
+   "tag": "q10_p1_B",
+   "wall_s": 17.1181,
+   "import_s": 7.5062,
+   "rows": 32,
+   "files": 107,
+   "bytes": 165876285,
+   "peak_tree_rss_bytes": 1814609920
+  },
+  "q10_p2_a.json": {
+   "tag": "q10_p2_A",
+   "wall_s": 38.9183,
+   "import_s": 5.6143,
+   "rows": 32,
+   "files": 64,
+   "bytes": 147829892,
+   "peak_tree_rss_bytes": 2113781760
+  },
+  "q10_p2_b.json": {
+   "tag": "q10_p2_B",
+   "wall_s": 17.8336,
+   "import_s": 3.2359,
+   "rows": 32,
+   "files": 107,
+   "bytes": 165876285,
+   "peak_tree_rss_bytes": 1820180480
+  },
+  "q10_p3_a.json": {
+   "tag": "q10_p3_A",
+   "wall_s": 39.3518,
+   "import_s": 3.1139,
+   "rows": 32,
+   "files": 64,
+   "bytes": 147829892,
+   "peak_tree_rss_bytes": 2123284480
+  },
+  "q10_p3_b.json": {
+   "tag": "q10_p3_B",
+   "wall_s": 15.4934,
+   "import_s": 3.2217,
+   "rows": 32,
+   "files": 107,
+   "bytes": 165876285,
+   "peak_tree_rss_bytes": 2195636224
+  },
+  "q10_p4_a.json": {
+   "tag": "q10_p4_A",
+   "wall_s": 36.2146,
+   "import_s": 3.0662,
+   "rows": 32,
+   "files": 64,
+   "bytes": 147829892,
+   "peak_tree_rss_bytes": 2341011456
+  },
+  "q10_p4_b.json": {
+   "tag": "q10_p4_B",
+   "wall_s": 15.2172,
+   "import_s": 2.8377,
+   "rows": 32,
+   "files": 107,
+   "bytes": 165876285,
+   "peak_tree_rss_bytes": 2126741504
+  },
+  "q10_p5_a.json": {
+   "tag": "q10_p5_A",
+   "wall_s": 40.8958,
+   "import_s": 3.5496,
+   "rows": 32,
+   "files": 64,
+   "bytes": 147829892,
+   "peak_tree_rss_bytes": 2138669056
+  },
+  "q10_p5_b.json": {
+   "tag": "q10_p5_B",
+   "wall_s": 16.2805,
+   "import_s": 3.2969,
+   "rows": 32,
+   "files": 107,
+   "bytes": 165876285,
+   "peak_tree_rss_bytes": 1880670208
+  },
+  "q10_p6_a.json": {
+   "tag": "q10_p6_A",
+   "wall_s": 37.6831,
+   "import_s": 3.1062,
+   "rows": 32,
+   "files": 64,
+   "bytes": 147829892,
+   "peak_tree_rss_bytes": 2111602688
+  },
+  "q10_p6_b.json": {
+   "tag": "q10_p6_B",
+   "wall_s": 15.2087,
+   "import_s": 2.6963,
+   "rows": 32,
+   "files": 107,
+   "bytes": 165876285,
+   "peak_tree_rss_bytes": 1979990016
+  },
+  "q10_p7_a.json": {
+   "tag": "q10_p7_A",
+   "wall_s": 36.8944,
+   "import_s": 2.5405,
+   "rows": 32,
+   "files": 64,
+   "bytes": 147829892,
+   "peak_tree_rss_bytes": 2133934080
+  },
+  "q10_p7_b.json": {
+   "tag": "q10_p7_B",
+   "wall_s": 16.5113,
+   "import_s": 3.605,
+   "rows": 32,
+   "files": 107,
+   "bytes": 165876285,
+   "peak_tree_rss_bytes": 1887059968
+  },
+  "q10_pc1_tiny_gis_beta00_v2_a.json": {
+   "tag": "q10_pc1_tiny_gis_beta00_v2_a",
+   "wall_s": 15.1769,
+   "import_s": 3.5549,
+   "rows": 1,
+   "files": 2,
+   "bytes": 4619609,
+   "peak_tree_rss_bytes": 895827968
+  },
+  "q10_pc1_tiny_gis_beta00_v2_b.json": {
+   "tag": "q10_pc1_tiny_gis_beta00_v2_b",
+   "wall_s": 12.4969,
+   "import_s": 3.1736,
+   "rows": 1,
+   "files": 45,
+   "bytes": 22666002,
+   "peak_tree_rss_bytes": 902660096
+  },
+  "q10_pc2_tiny_gis_beta31_v2_a.json": {
+   "tag": "q10_pc2_tiny_gis_beta31_v2_a",
+   "wall_s": 14.1683,
+   "import_s": 3.1925,
+   "rows": 1,
+   "files": 2,
+   "bytes": 4619701,
+   "peak_tree_rss_bytes": 914128896
+  },
+  "q10_pc2_tiny_gis_beta31_v2_b.json": {
+   "tag": "q10_pc2_tiny_gis_beta31_v2_b",
+   "wall_s": 12.025,
+   "import_s": 2.6806,
+   "rows": 1,
+   "files": 45,
+   "bytes": 22666094,
+   "peak_tree_rss_bytes": 916111360
+  },
+  "q10_pc3_search_radius1200_v2_a.json": {
+   "tag": "q10_pc3_search_radius1200_v2_a",
+   "wall_s": 14.5536,
+   "import_s": 2.707,
+   "rows": 1,
+   "files": 2,
+   "bytes": 4766359,
+   "peak_tree_rss_bytes": 889651200
+  },
+  "q10_pc3_search_radius1200_v2_b.json": {
+   "tag": "q10_pc3_search_radius1200_v2_b",
+   "wall_s": 13.4911,
+   "import_s": 3.1763,
+   "rows": 1,
+   "files": 45,
+   "bytes": 33298211,
+   "peak_tree_rss_bytes": 863125504
+  },
+  "q10_pc4_search_radius1600_v2_a.json": {
+   "tag": "q10_pc4_search_radius1600_v2_a",
+   "wall_s": 15.8411,
+   "import_s": 3.1352,
+   "rows": 1,
+   "files": 2,
+   "bytes": 4770055,
+   "peak_tree_rss_bytes": 907739136
+  },
+  "q10_pc4_search_radius1600_v2_b.json": {
+   "tag": "q10_pc4_search_radius1600_v2_b",
+   "wall_s": 13.3793,
+   "import_s": 2.7267,
+   "rows": 1,
+   "files": 45,
+   "bytes": 42025494,
+   "peak_tree_rss_bytes": 950190080
+  },
+  "q10_pc5_cold_2row_v2_a.json": {
+   "tag": "q10_pc5_cold_2row_v2_a",
+   "wall_s": 14.3174,
+   "import_s": 2.5646,
+   "rows": 2,
+   "files": 4,
+   "bytes": 9239257,
+   "peak_tree_rss_bytes": 1238253568
+  },
+  "q10_pc5_cold_2row_v2_b.json": {
+   "tag": "q10_pc5_cold_2row_v2_b",
+   "wall_s": 13.2645,
+   "import_s": 3.065,
+   "rows": 2,
+   "files": 47,
+   "bytes": 27285650,
+   "peak_tree_rss_bytes": 1207566336
+  }
+ },
+ "sampler_files_sha256": {
+  "q10_p1_A.loadavg.txt": "4dffe166444ca69fb55064f5aca89a26f5079802c58afcb72cff4dea7b19928e",
+  "q10_p1_B.loadavg.txt": "10711ced1c21d2803389f401734ed2e9f05fbcc84201157ebd159ec3e81ffe37",
+  "q10_p2_A.loadavg.txt": "8666790d853ef86e44fe59ae23f4b8394cd72085931f7bec7e1e0d9a6597a9cc",
+  "q10_p2_B.loadavg.txt": "e02d997f3614a70d921d925a1989f27e7c422a645bab064935cff14f4d7c01b0",
+  "q10_p3_A.loadavg.txt": "010fcadf536d716d8abfa13c71a0fe3b9dd2225d2bd908a233dafc9cef4a4775",
+  "q10_p3_B.loadavg.txt": "6d03d0f2af2ea948d8bded1350f3acd74fe8f2f661e6abb1e091dfd3900bd0f3",
+  "q10_p4_A.loadavg.txt": "2e78fef94cff875e7767d28a3b7694512d5ce2b40f9775e10d2c0dfdd625240b",
+  "q10_p4_B.loadavg.txt": "f18ff6f579264c6c9234d6aac8dff2863806449d4043ad28fbdbb06d1747b389",
+  "q10_p5_A.loadavg.txt": "a54f3910359d81e617f5b2310090a06648d7a6ed7a1601cc1355b1b0b25e9283",
+  "q10_p5_B.loadavg.txt": "647026d6269a7774813aee314dcf5c8e60b94b47be450eddf6aa9d47617c310e",
+  "q10_p6_A.loadavg.txt": "846ad0eb86ac92994ee34a42050b3a34f7058b4f36d609b6f084b3d02f05651d",
+  "q10_p6_B.loadavg.txt": "8abefb7fc7e05040f7a2b5c9905cd92b4455ac2e9bfe1fe5e802670f5af68191",
+  "q10_p7_A.loadavg.txt": "d2b498e363f4f625a351c846ceb739290942341fa261ba6a05c55d61c1014e18",
+  "q10_p7_B.loadavg.txt": "5d47d4273dd5e466a9254d6fc3a7e743046cdadfd36d5353510d87039ec97162",
+  "q10_pc1_tiny_gis_beta00_a b.loadavg.txt": "5edf5e3c4a745cd160103188be8e460bff9de4b5e65d3f48a84e2c8646c14831",
+  "q10_pc1_tiny_gis_beta00_v2_a.loadavg.txt": "49aacb96dc7d3767d29729890205aebcf1da896cdedeb945fa929e9a1737c53e",
+  "q10_pc1_tiny_gis_beta00_v2_b.loadavg.txt": "9fbefd2c02512b5f12c4be972046ac6e5ef9e492c458f83add299f44cd151d2a",
+  "q10_pc2_tiny_gis_beta31_v2_a.loadavg.txt": "0e573c20344c8fe6412d36e84f68c48cc6b9e60502d57e8bfd2157ace167aab0",
+  "q10_pc2_tiny_gis_beta31_v2_b.loadavg.txt": "0f341fc9fe179acac05e82cef35e1c8e808a5397d7cdab7de7aabb2b342fdd10",
+  "q10_pc3_search_radius1200_v2_a.loadavg.txt": "2add6b4de1844de315af2d4bfd6b47c5d48b2d43cef005631ef38385bda70bf8",
+  "q10_pc3_search_radius1200_v2_b.loadavg.txt": "ce8aa3534d25524cc8abb000b3863212ce562f08e17769618741c60585eef886",
+  "q10_pc4_search_radius1600_v2_a.loadavg.txt": "277f79385d18c32e6641acd76ca699a7d3c2d7d34f970a3a42e47da3f045d06e",
+  "q10_pc4_search_radius1600_v2_b.loadavg.txt": "11be1520ef5fd40ac39538dc93f47dd33958248ffc2d9e10918bf10e071884a1",
+  "q10_pc5_cold_2row_v2_a.loadavg.txt": "534c0e0f90c1608921688a8dbc3050cf8e0f64542e2749cbf66d7693dd1c0e7f",
+  "q10_pc5_cold_2row_v2_b.loadavg.txt": "1bb37e4c0c306a7b190efb8125a4678639c7496b410413f2416a35cac9353d49"
+ },
+ "invalidation_rule": "operative in-run invalidation threshold: any 60s loadavg sample >= 16.0 marks the window invalid_load_spike (preregistered in fire_q10.sh T40 before leg execution; rationale: >2x the pre-leg gate line 8.0 and above the historical co-tenanted in-run max 12.76, n00 L2A2); flagged windows would trigger the q00 one-FULL-repeat-block clause with all blocks retained",
+ "invalidation_flags": {
+  "invalid_windows": []
+ },
+ "protected_cells": [
+  {
+   "id": "pc1_tiny_gis_beta00_v2",
+   "input_sha256": "78e73a8964fb9b1e1582640cc921dee146c72859f1f215ba9889aa87a172fa2b",
+   "files": 2,
+   "wall_A_s": 15.1769,
+   "wall_B_s": 12.4969,
+   "ratio_B_over_A": 0.8234158490864406,
+   "outputs_bitwise_equal": true
+  },
+  {
+   "id": "pc2_tiny_gis_beta31_v2",
+   "input_sha256": "8fb59527851f8273981d3f9e6049743b2e582208b786254f9c07c8cd1ecff889",
+   "files": 2,
+   "wall_A_s": 14.1683,
+   "wall_B_s": 12.025,
+   "ratio_B_over_A": 0.8487256763337874,
+   "outputs_bitwise_equal": true
+  },
+  {
+   "id": "pc3_search_radius1200_v2",
+   "input_sha256": "58e1a1e8ddb49d1c55aa9c70bc9637cf23ddc3dc7f8d600cfdb0563682db62fc",
+   "files": 2,
+   "wall_A_s": 14.5536,
+   "wall_B_s": 13.4911,
+   "ratio_B_over_A": 0.926994008355321,
+   "outputs_bitwise_equal": true
+  },
+  {
+   "id": "pc4_search_radius1600_v2",
+   "input_sha256": "7179c61c12484cfed6d9ff3b4fdb1ddc5e29fe178e93b0b46d93d8a0fe63f878",
+   "files": 2,
+   "wall_A_s": 15.8411,
+   "wall_B_s": 13.3793,
+   "ratio_B_over_A": 0.8445941254079578,
+   "outputs_bitwise_equal": true
+  },
+  {
+   "id": "pc5_cold_2row_v2",
+   "input_sha256": "fef6c3a23d3a28901958d0ec7eb1c4ce8170429bb09a37e2840e3cfa174df24f",
+   "files": 4,
+   "wall_A_s": 14.3174,
+   "wall_B_s": 13.2645,
+   "ratio_B_over_A": 0.9264601114727535,
+   "outputs_bitwise_equal": true
+  }
+ ],
+ "protected_criterion": {
+  "median_B_over_A": 0.8487256763337874,
+  "one_sided_95_upper": 0.926994008355321,
+  "median_le_1_05": true,
+  "upper95_le_1_10": true,
+  "default_dispatch_ok": true
+ },
+ "gate_10x": {
+  "schema_version": 1,
+  "evidence_class": "derived_from_measured",
+  "method": "exp(median paired log ratios); linear percentile bootstrap",
+  "pair_count": 7,
+  "pair_ratios": [
+   2.3388109661703114,
+   2.1823019468867755,
+   2.5399073153729974,
+   2.3798464894987252,
+   2.51194987868923,
+   2.4777331395845805,
+   2.2344939526263827
+  ],
+  "target": 10.0,
+  "median_ratio": 2.3798464894987252,
+  "one_sided_95_lower": 2.2344939526263827,
+  "bootstrap_seed": 20261003,
+  "bootstrap_resamples": 20000,
+  "passes_10x_arithmetic": false,
+  "measurement_class": "observed_proxy",
+  "primary_sha256": "777cab1a25a0a01b58c33b979b2a9cfa24930a014a3801d7edebcdfe702eef4b",
+  "freeze_sha256": "8778b0dcaba189aa6e07c87e5b3a708562760eb61679a6a61b421fc5a8c8aa2c",
+  "source_A": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "source_B": "1e7237bebe8dd55e4a3b444f24ad9a255fa8644c",
+  "note": "Independent source/bit/state/artifact/resource/review and protected-case gates remain required; attestations are not verified by this calculator.",
+  "samples_sha256": "cb16f11122beb7ebee55d687a9760d2aad941844d27c386b1c622585a309b00b"
+ },
+ "law": "q00/PRIMARY.json + configuration.json (commit ee5652a); BENCHMARKS.md; DECISION.md"
+}
