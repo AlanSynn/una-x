@@ -1,0 +1,13 @@
+{
+  "status": "hardware_unavailable",
+  "cell": "una_legacy.fold.default",
+  "gate": "NOT PASSED (designed refusal; never simulated)",
+  "driver": {
+    "reason": "no_cuda_driver",
+    "detail": "platform=Darwin: no CUDA driver exists for this OS; Apple GPU present but not a qualification target"
+  },
+  "nvcc": {
+    "on_path": false,
+    "version": ""
+  }
+}

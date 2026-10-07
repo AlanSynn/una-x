@@ -1,0 +1,217 @@
+{
+  "schema": "una-10x-g10-gpu-implementation-1",
+  "task": "G10",
+  "date": "2026-10-07",
+  "author": "gpu-engineer",
+  "status": "implemented_bounded_device_source_and_exact_host_twins__hardware_unavailable_for_any_device_execution",
+
+  "region_reference": {
+    "file": "campaign_runs/una_10x/tenx-20261005T2331Z/g00/gpu_region.json",
+    "sha256": "c8a877df11b0d1a3827dfe40378ecbf1c66200aa426ce152bdf1510f09730630",
+    "committed_as": "12ffa6b",
+    "region": "per-origin accessibility fold family (reach/gravity/knn), verification-gated"
+  },
+
+  "scope": {
+    "writable_surface": [
+      "gpu/__init__.py",
+      "gpu/runtime/{__init__,errors,availability,buffers,region}.py",
+      "gpu/backends/gpu.py",
+      "gpu/kernels/{__init__,host_twins,validate_device_bits}.py",
+      "gpu/kernels/fold_kernels.cu",
+      "tests/tenx/gpu/*.py"
+    ],
+    "src_untouched": true,
+    "note": "Nothing under src/urban_network_analysis/ was read-modified or written; production stays untouched until the admission law wires a qualified entry (G11+)."
+  },
+
+  "kernel_inventory": [
+    {
+      "id": "K0",
+      "name": "order-preserving compaction",
+      "device_source": "gpu/kernels/fold_kernels.cu :: una_g10_fold_compact",
+      "host_twin": "gpu/kernels/host_twins.py :: k0_compact",
+      "method": "one block per origin row (UNA_G10_BLOCK_THREADS=256), Hillis-Steele inclusive scan over the predicate (d <= cutoff), ascending index order preserved; NaN excluded because (NaN <= cutoff) is false, matching np.where semantics",
+      "parity_argument": "bit-exact by construction: output is int64 indices, no arithmetic on float payload bits",
+      "state": "device source + verified host twin"
+    },
+    {
+      "id": "K1",
+      "name": "per-element coefficients (gravity exponential/logistic, knn exp/log/linear)",
+      "device_source": "gpu/kernels/fold_kernels.cu :: una_g10_fold_coefficients_exp/_log, una_g10_fold_knn_coeffs_exp/_log/_linear",
+      "host_twin": "gpu/kernels/host_twins.py :: k1_gravity_exponential_coeffs, k1_gravity_logistic_coeffs, k1_knn_coeffs",
+      "method": "per-element, no cross-element arithmetic; device exp(-x) via CUDA exp() double-precision only",
+      "compile_flag_contract": "-O3 -prec-sqrt=true -prec-div=true -fmad=false; --use_fast_math FORBIDDEN; double precision only (stated in the .cu header)",
+      "parity_argument": "per-element so bitwise parity reduces to exp()/expm1()-class scalar bit equality, which the K1 half of the gate battery pins on boundary values; no reduction reassociation possible inside K1",
+      "note": "the engine's knn branches read the GLOBAL gravity_plateau/gravity_logistic_midpoint (not the knn_-prefixed arguments); the twin mirrors this faithfully (verified by the cohort battery case)",
+      "state": "device source + verified host twin"
+    },
+    {
+      "id": "K2",
+      "name": "ordered selection (knn sort)",
+      "device_source": "NONE (intentional)",
+      "host_twin": "gpu/kernels/host_twins.py :: argsort_tie_law",
+      "method": "EXACT emulation plan: verbatim transcription of numba 0.67.0's quicksort argsort (_SMALL_QUICKSORT=15, MAX_STACK=100, median-of-three, LIFO largest-half partition stack, insertion-sort finish) so the tie permutation is the numba tie law, which differs from every numpy kind on tie-dense inputs",
+      "parity_argument": "the tie permutation is contractual input ORDERING, not arithmetic: an exact transcription reproduces it bit-exactly by construction",
+      "verification": "matches a real locally compiled numba probe (cache=False) on 128 tie trials + n=1000 + sorted/reverse/-0.0/empty/all-equal edge cases; battery re-check on the qualification host is part of the gate",
+      "state": "exact-emulation host implementation (device plan: none; sorting stays host-side in the heterogeneous composition)"
+    },
+    {
+      "id": "K3",
+      "name": "reductions (reach, gravity sums, knn sum)",
+      "device_source": "NONE (intentional absence, stated in the .cu)",
+      "host_twin": "gpu/kernels/host_twins.py :: seq_sum/pairwise_sum/vec_sum + reduce_with over REDUCTION_TREES (seq, pairwise, vec2_tree..vec16_tree, vec4_seq, vec8_seq)",
+      "method": "EXACT-emulation plan: per-cell certification selects the ONE association whose bits reproduce the engine fold on the characterization battery; the certified tree then runs host-side (fastmath vector-tree emulation) or, if the certified association has no host twin, the cell stays device-bound and REFUSES until G11 provides it",
+      "parity_argument": "sum association is the parity blocker class; the gate (below) certifies the association per cell against the real engine artifact",
+      "state": "exact-emulation host implementation, gate-certified per cell"
+    }
+  ],
+
+  "heterogeneous_composition": {
+    "composition": "K0+K1 on device, K2+K3 on host",
+    "legitimacy": "per designs/06 this is a legitimate full region: every output bit is either bit-exact by construction (K0, K2 ordering) or gate-certified against the engine artifact (K1 scalar bits, K3 association)",
+    "implemented_as": "gpu/runtime/region.py :: run_host_stage_composition (host tail; context_kind explicitly 'not device execution') and the device dispatch path in execute_fold_region, which is gated and NOT WIRED to a launcher in this build"
+  },
+
+  "ownership_and_sync_design": {
+    "input_lease": "gpu/runtime/buffers.py :: InputLease — validates dtype WITHOUT coercion (refuse-never-coerce, N00 binding law), hands out readonly views, release() closes the view",
+    "contiguity": "require_c_contiguous refuses non-C-contiguous and non-numpy inputs; zero-length is trivially contiguous",
+    "staging": "StagingPool with a hard byte budget (BudgetExceeded on exceed, never silent spill) and ScratchLedger measuring outstanding + high_water bytes; releasing unallocated bytes is a defect (underflow)",
+    "cancellation": "CancelFlag polled at TILE BARRIERS ONLY — explicitly not at queue-join, per the task #20 wedge defect class (mp cancel paths that join a backlogged Queue feeder deadlock and swallow failures)",
+    "device_memory": "dense O*D staging is FORBIDDEN above the budget (14751x6919x8 B = 778.7 MiB for the primary graph); tile planning in region.py :: plan_tiles bounds resident tiles",
+    "device_allocation": "device_allocate() fails closed with HardwareUnavailable when no device context exists"
+  },
+
+  "fail_closed_design": {
+    "ladder": [
+      "1. validate_request — typed shape/dtype/refusal checks",
+      "2. probe_driver — ctypes CUDA driver probe; Darwin reports no_cuda_driver with the Apple-GPU-not-a-target note",
+      "3. per-cell parity gate — gate STORE is authoritative: a caller-forged FoldCell.bit_validated flag cannot open a cell; cell_is_gated_open + cell_association must match the store, and a passed store entry requires a certified association + evidence_ref (only the device-side harness can create one)",
+      "4. device context port — absent in this build; execute_fold_region ends in NotImplementedError naming G11"
+    ],
+    "honesty_marker": "FoldRegionRecord.hardware_validated is a constant False in this build; no CPU-only path can set it",
+    "registry_abi": "gpu/backends/gpu.py :: capability_entry() emits dossier-10 CapabilityRegistryEntry shapes with qualified ALWAYS False; forced backend='gpu' raises BackendNotAvailableError under the contracts' own rules; empty registry auto-selects the trusted reference",
+    "detection_is_not_engagement": "availability_report() reports real probes verbatim; Apple Metal/MPS presence is explicitly recorded as not satisfying any GPU obligation"
+  },
+
+  "context_dependence_finding": {
+    "finding": "the sum-association class (which fastmath reduction tree the engine's compiled sums correspond to) is a property of the COMPILED ENGINE ARTIFACT, not of the Python source lines",
+    "measured": [
+      "a bare @njit w.sum() probe and a verbatim local transcription of the fold body BOTH classify differently on big-magnitude cases than the engine fold does on this host (e.g. big_at_1: local bare-probe hits seq/pairwise/vec8_seq; the engine fold hits the vec4/vec8/vec16_tree family)",
+      "the engine fold run by the gate battery on this host (njit parallel fastmath numba 0.67.0 python 3.11.16) reproduces the committed n00/probe_order.txt engine-side pattern: big_at_1 reach/gravity_exponential = 9007199254740998.0 with vec4_tree/vec8_tree/vec16_tree hits and seq/pairwise/vec8_seq misses",
+      "the cohort-realistic case discriminates HARDER than the catastrophic cases: gravity_exponential = 9.628618189812515 matches ONLY vec4_seq — association differences appear in ordinary cohort data, not just cancellation edge cases"
+    ],
+    "consequence": "NO local probe twin can certify a reduction tree, and a certification is valid only for the exact engine build that produced it. The gate therefore classifies per build: --emit-host-battery pins the expected bits ON the qualification host against THE engine artifact the device will be compared to, and a cell's validity is bound to that build. This strengthens the gate design; it does not weaken it.",
+    "test_pinning": "tests/tenx/gpu/test_k3_trees.py pins only context-stable facts (trees mutually distinguishable; all agree on well-conditioned inputs; big-magnitude splits the set) and refuses to pin a host-specific hit set"
+  },
+
+  "gate_harness": {
+    "file": "gpu/kernels/validate_device_bits.py",
+    "exit_contract": {"0": "gate PASSED on real device (G11 deliverable)", "2": "hardware_unavailable (designed refusal)", "3": "device present but launcher absent", "4": "battery mismatch — device bits != pinned host bits (cell stays gated closed)"},
+    "host_half": "--emit-host-battery runs the ENGINE fold (src Engines/AccessibilityWElevation.py :: reach_gravity_knn_access, sha256 efc4dd4a74dc2ec30ff3aeefff3cce7fb41361a75f2d2e04da3af44a39e0df36) over the characterization battery and writes the pinned expected-bits table + per-case association classification + K2 tie battery",
+    "device_half": "unrun by construction on this host; a CPU-only run can never mark a cell bit_validated",
+    "fail_closed_evidence": {
+      "file": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/gate_harness_failclosed.json",
+      "sha256": "449d7953db106c309713077f0aadcfbdd0808b5e1d656843176fbd7c66573fb9",
+      "exit_code": 2,
+      "status": "hardware_unavailable",
+      "gate": "NOT PASSED (designed refusal; never simulated)",
+      "driver_reason": "no_cuda_driver",
+      "nvcc_on_path": false
+    },
+    "host_battery_evidence": {
+      "file": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/host_battery.json",
+      "sha256": "83fa3e9ce5d405131f2ee6a66a9ab09bf6870cd1973a09b0b346141f51746fa9",
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "toolchain": "numba 0.67.0 on python 3.11.16 (venv-p01m)",
+      "numba_cache_dir": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/numba_cache (pinned, fresh)",
+      "key_results": {
+        "cohort_case": "engine reach 11.0 (distance 401 > cutoff 400 correctly excluded, k0 indices 0..6); gravity_exponential 9.628618189812515 matches ONLY vec4_seq; reach/gravity_logistic/knn_access exact-valued and matched by all trees",
+        "big_at_1": "engine reach = gravity_exponential = 9007199254740998.0; hit by vec4_tree/vec8_tree/vec16_tree; seq/pairwise/vec8_seq miss — reproduces the committed n00 engine-side pattern",
+        "big_at_7_knn_access": 4.0,
+        "tie_law": "45/64 trials differ from ALL numpy kinds (committed finding: 131/200) — numba tie law confirmed on this host"
+      }
+    }
+  },
+
+  "hardware_status": {
+    "record": "EXPLICIT UNAVAILABLE",
+    "host": "Apple M1 Pro, macOS 26.6.2, zero CUDA-class devices, no nvcc on PATH",
+    "apple_gpu_note": "the 16-core Apple GPU (Metal 4) is present but is NOT a qualification target per the hardware honesty law; it is never claimed, counted, or simulated as CUDA qualification hardware",
+    "qualification_venue": "NCSA Delta (CUDA-class FP64) — designated per user directive, access under recovery (GPU-hour account only); recorded as PLANNED and currently unavailable, never as available",
+    "consequence": "G11 real-device qualification (performance-owner) is hardware-blocked; no simulated success is filed. This build's entire honest GPU capability is: detection reports absence, the gate refuses with designed exit codes, and the host twins + battery are ready to certify on real hardware when it exists.",
+    "amdahl_frame": "no speedup or 10x contribution is claimed from this work; build fraction 0.2117 and replay fraction 0.6551 (g00 region spec) bound any FUTURE measured claim, which remains G11's deliverable on qualified hardware"
+  },
+
+  "test_results": {
+    "receipt": "campaign_runs/una_10x/tenx-20261005T2331Z/g10/pytest_gpu_receipt.txt",
+    "sha256": "9bf3ef66fab93898e01f236d1c39f659c4eb844687c294ebccf40726c71302da",
+    "command": "PYTHONDONTWRITEBYTECODE=1 venv-p01m/bin/python -m pytest tests/tenx/gpu -v (per-subdir law)",
+    "result": "53 passed, 2 warnings in 1.72s, rc=0",
+    "warnings_explained": "2 RuntimeWarnings (overflow in exp) are INTENTIONAL IEEE-boundary pins in test_k1_twin.py (exp overflow to +inf must match, not be smoothed away)",
+    "coverage_classes": [
+      "availability fails closed (no_cuda_driver; no Metal/MPS claim)",
+      "K0 twin vs np.where, K1 twin vs engine expressions incl. overflow boundaries",
+      "K2 exact numba tie law vs real compiled probe (128 trials + edges + all-equal + -0.0)",
+      "K3 trees: distinguishability, well-conditioned agreement, big-magnitude split, unknown-tree refusal",
+      "buffer ownership: typed refusals, readonly leases, budget + high-water, underflow defect, device_allocate fail-closed",
+      "region ladder ordering + gate-store authority (forged cell cannot bypass)",
+      "registry ABI structural compat with src contracts.py (standalone importlib load; exact field-set equality; forced gpu raises; import-lightness of the whole gpu/ surface in a subprocess)",
+      "gate harness fail-closed via its public main()"
+    ]
+  },
+
+  "evidence_index": {
+    "gpu_surface": {
+      "gpu/__init__.py": "6eb862a4963be2087ffd8b3bd301ce9dc97dfa098e59036e9622f9a19e4badcd",
+      "gpu/runtime/__init__.py": "ac4014599b7e71f5e967988ff5b832f3e01e385f04a0b13ccc40eaf5cd7bcf6a",
+      "gpu/runtime/errors.py": "9bfb73e0b1a7e85a9c9fd7de13ea41e6eb025477b3f89e2bb3d676c76c15bdab",
+      "gpu/runtime/availability.py": "30e4f4c6c6df6a33c325cd8d706370730efed5a2e37c0f9c31de814f6b89cddd",
+      "gpu/runtime/buffers.py": "9c94604cd8c6f7b152ad21eb478cb36858296e4e9f6d3bebca6c4f4fafb5e8f5",
+      "gpu/runtime/region.py": "c044e2e516595e8b11a0f36a914838d82d45dd31b91356b7f89d515776b36ac1",
+      "gpu/backends/gpu.py": "929017df2b194ecb6ee770a003c23e7390b11c2b4e3d80b75ce4a765856103d2",
+      "gpu/kernels/__init__.py": "4a42fd1270d809c3f6ee6b9cdca599d5488776164f5280eaa18b9c3e207fea94",
+      "gpu/kernels/host_twins.py": "85b97f4ccbbd94615696c1f2fa118ef8bc9f2440cf0e19958d4e0651668a1c5b",
+      "gpu/kernels/validate_device_bits.py": "aa0af51ec5b5cbc55af2d6debd8c137f2546675a1b592ecc4e9170e6fa33f520",
+      "gpu/kernels/fold_kernels.cu": "bf843394f2ecefbf813d31b0537f391e763a1cbaf2b2e45a59347ad1bd4d6344"
+    },
+    "tests": {
+      "tests/tenx/gpu/conftest.py": "9b7373840bf40b07e327045396719c4bfbd807f3be257c44b01c8cb4158c3aa9",
+      "tests/tenx/gpu/test_availability_failclosed.py": "63a96dc6d8dc84f6e72a59d2a7d30229284bbc0ff2fbe9658fe5b0bd84b21ccf",
+      "tests/tenx/gpu/test_k0_twin.py": "28c9276adcf965b973a5a944e6edae31d556bd75085e4cebd31ee930ec796dde",
+      "tests/tenx/gpu/test_k1_twin.py": "5cbf743ac7f3820f397755d7fa686a97179931aa633df826d72f7234e17e5453",
+      "tests/tenx/gpu/test_k2_tie_law.py": "6b0c307d2fa39cd6ca92535cc6f29db823b2f377d6580a119f63e746854d43fa",
+      "tests/tenx/gpu/test_k3_trees.py": "e6c086c5f0c73c514d3900fbf0fff06a8fdc4f44649d6e1f0c08af62184dbfd7",
+      "tests/tenx/gpu/test_buffer_ownership.py": "ae1c05cf041d9f99b34979570c1cbcb025114568ff43e007a6adb0cabd346c13",
+      "tests/tenx/gpu/test_region_failclosed.py": "1466c1f96d38c7228e7490f6b8df418f2ddf9da75a51319bc788ab628d591b4e",
+      "tests/tenx/gpu/test_registry_abi_compat.py": "526b121d5249d22712238b81a425d743e7f399e9c0664b98d55d9c2dda0c6fa5",
+      "tests/tenx/gpu/test_gate_harness_fails_closed.py": "0ae58f09ca26e99f7dc0e3a08777316ca62175e68e8c2bb8597c37ad535ee346"
+    },
+    "cited_sources_read": {
+      "src/urban_network_analysis/backends/contracts.py (dossier-10 ABI, read-only)": "f9c0bbe5b04354c67c998411c03c672fe3ac45783cf7e222eac23d5ddab3bb52",
+      "src/urban_network_analysis/Engines/AccessibilityWElevation.py (engine fold, read-only)": "efc4dd4a74dc2ec30ff3aeefff3cce7fb41361a75f2d2e04da3af44a39e0df36",
+      "src/urban_network_analysis/kernels/reductions.py (legacy plan composition, read-only)": "888378fa1d496de9ba6c74ddd69ec78b5506a0801b8a0b5d84191c4725a139d0",
+      "campaign_runs/una_10x/tenx-20261005T2331Z/n00/instruments/probe_order.py (tree definitions + battery source)": "7263297029dc45fbff1f41c54d1dfcbc92cd0155aeaf35263b15589afbfa5eb4"
+    },
+    "hash_note": "all sha256 figures above are shasum -a 256 tool outputs from this task on current bytes"
+  },
+
+  "constraints_respected": {
+    "no_commit_no_push_no_merge": true,
+    "nothing_under_src": true,
+    "venv_p01m_absolute_paths": true,
+    "per_subdir_pytest": true,
+    "bitwise_parity_law_in_doc_comments": "every claim-bearing doc comment binds the parity law; twins state their parity status explicitly",
+    "figures_from_tool_outputs": true,
+    "no_simulated_success": "the device half of the gate is unrun; hardware_validated is constant False; qualified is structurally False"
+  },
+
+  "handoff_to_g11": [
+    "run --emit-host-battery ON the qualification host against the SAME engine build the device will be compared to (association classification is build-bound)",
+    "wire the device context/launcher behind the existing NotImplementedError port in gpu/runtime/region.py",
+    "compile fold_kernels.cu with the pinned flag contract (-O3 -prec-sqrt=true -prec-div=true -fmad=false, no --use_fast_math, FP64 device required)",
+    "K1 scalar exp bits and K3 association get certified per cell by the gate on that device; rc=4 (mismatch) is the gate WORKING, not a failure of the harness",
+    "performance claims remain measured-public-boundary work on qualified hardware under the matched resource budget"
+  ]
+}

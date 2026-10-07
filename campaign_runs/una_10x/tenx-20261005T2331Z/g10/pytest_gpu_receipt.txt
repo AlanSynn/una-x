@@ -1,0 +1,72 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /Users/alansynn/orca/workspaces/una-x/venv-p01m/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/alansynn/orca/workspaces/una-x/main
+configfile: pyproject.toml
+collecting ... collected 53 items
+
+tests/tenx/gpu/test_availability_failclosed.py::test_darwin_probes_typed_unavailable PASSED [  1%]
+tests/tenx/gpu/test_availability_failclosed.py::test_nvcc_absence_recorded_not_fatal PASSED [  3%]
+tests/tenx/gpu/test_availability_failclosed.py::test_availability_report_shape_and_honesty PASSED [  5%]
+tests/tenx/gpu/test_availability_failclosed.py::test_requirements_pin_cuda_fp64_and_gate PASSED [  7%]
+tests/tenx/gpu/test_buffer_ownership.py::test_require_c_contiguous_refuses_and_names PASSED [  9%]
+tests/tenx/gpu/test_buffer_ownership.py::test_input_lease_refuses_wrong_dtype_without_coercion PASSED [ 11%]
+tests/tenx/gpu/test_buffer_ownership.py::test_input_lease_view_is_readonly_and_release_closes_it PASSED [ 13%]
+tests/tenx/gpu/test_buffer_ownership.py::test_staging_pool_bounds_and_high_water PASSED [ 15%]
+tests/tenx/gpu/test_buffer_ownership.py::test_pool_refuses_nonpositive_budget PASSED [ 16%]
+tests/tenx/gpu/test_buffer_ownership.py::test_ledger_release_without_allocation_is_a_defect PASSED [ 18%]
+tests/tenx/gpu/test_buffer_ownership.py::test_device_allocation_fails_closed PASSED [ 20%]
+tests/tenx/gpu/test_gate_harness_fails_closed.py::test_gate_harness_refuses_with_designed_exit_code PASSED [ 22%]
+tests/tenx/gpu/test_gate_harness_fails_closed.py::test_default_cell_is_not_gated_open PASSED [ 24%]
+tests/tenx/gpu/test_gate_harness_fails_closed.py::test_gate_store_requires_evidence_and_certified_association PASSED [ 26%]
+tests/tenx/gpu/test_k0_twin.py::test_matches_numpy_where_basic PASSED    [ 28%]
+tests/tenx/gpu/test_k0_twin.py::test_closed_radius_boundary_is_included PASSED [ 30%]
+tests/tenx/gpu/test_k0_twin.py::test_nan_excluded_by_compare_semantics PASSED [ 32%]
+tests/tenx/gpu/test_k0_twin.py::test_inf_excluded_below_any_finite_cutoff PASSED [ 33%]
+tests/tenx/gpu/test_k0_twin.py::test_empty_row_and_all_out PASSED        [ 35%]
+tests/tenx/gpu/test_k0_twin.py::test_ascending_order_preserved_on_unsorted_input PASSED [ 37%]
+tests/tenx/gpu/test_k1_twin.py::test_gravity_exponential_twin_matches_expression_bitwise PASSED [ 39%]
+tests/tenx/gpu/test_k1_twin.py::test_gravity_logistic_twin_matches_expression_bitwise PASSED [ 41%]
+tests/tenx/gpu/test_k1_twin.py::test_exp_boundary_values_match_expression_including_overflow PASSED [ 43%]
+tests/tenx/gpu/test_k1_twin.py::test_knn_branch_coefficients_match_fold_summands PASSED [ 45%]
+tests/tenx/gpu/test_k1_twin.py::test_sign_of_zero_preserved_in_linear_branch PASSED [ 47%]
+tests/tenx/gpu/test_k2_tie_law.py::test_tie_permutation_matches_numba_exactly PASSED [ 49%]
+tests/tenx/gpu/test_k2_tie_law.py::test_larger_n_with_ties_matches_numba PASSED [ 50%]
+tests/tenx/gpu/test_k2_tie_law.py::test_trivial_sizes PASSED             [ 52%]
+tests/tenx/gpu/test_k2_tie_law.py::test_all_equal_keys_is_a_valid_permutation_matching_numba PASSED [ 54%]
+tests/tenx/gpu/test_k2_tie_law.py::test_sorted_and_reverse_inputs_match_numba PASSED [ 56%]
+tests/tenx/gpu/test_k2_tie_law.py::test_minus_zero_vs_zero_tie_matches_numba PASSED [ 58%]
+tests/tenx/gpu/test_k2_tie_law.py::test_typed_refusals_name_the_offense PASSED [ 60%]
+tests/tenx/gpu/test_k3_trees.py::test_all_trees_agree_on_well_conditioned_inputs PASSED [ 62%]
+tests/tenx/gpu/test_k3_trees.py::test_big_magnitude_cases_split_the_tree_set PASSED [ 64%]
+tests/tenx/gpu/test_k3_trees.py::test_trees_are_distinguishable_on_crafted_inputs PASSED [ 66%]
+tests/tenx/gpu/test_k3_trees.py::test_pairwise_matches_seq_below_unroll_bound PASSED [ 67%]
+tests/tenx/gpu/test_k3_trees.py::test_vec_sum_lane_combine_variants PASSED [ 69%]
+tests/tenx/gpu/test_k3_trees.py::test_reduce_with_refuses_unknown_tree PASSED [ 71%]
+tests/tenx/gpu/test_region_failclosed.py::test_validation_refusals_precede_hardware_probe PASSED [ 73%]
+tests/tenx/gpu/test_region_failclosed.py::test_no_device_refuses_hardware_unavailable PASSED [ 75%]
+tests/tenx/gpu/test_region_failclosed.py::test_gate_refusal_precedes_context PASSED [ 77%]
+tests/tenx/gpu/test_region_failclosed.py::test_forged_cell_cannot_bypass_gate_store PASSED [ 79%]
+tests/tenx/gpu/test_region_failclosed.py::test_context_refusal_after_gate PASSED [ 81%]
+tests/tenx/gpu/test_region_failclosed.py::test_all_gates_pass_stop_is_designed_not_fallback PASSED [ 83%]
+tests/tenx/gpu/test_region_failclosed.py::test_cancel_flag_contract PASSED [ 84%]
+tests/tenx/gpu/test_region_failclosed.py::test_plan_tiles_bounds PASSED  [ 86%]
+tests/tenx/gpu/test_region_failclosed.py::test_host_tail_composition_matches_twin_reference PASSED [ 88%]
+tests/tenx/gpu/test_region_failclosed.py::test_records_never_claim_hardware_validation PASSED [ 90%]
+tests/tenx/gpu/test_region_failclosed.py::test_tiny_positive_budget_passes_validation_without_preallocating PASSED [ 92%]
+tests/tenx/gpu/test_registry_abi_compat.py::test_capability_entry_speaks_kernel_capabilities_fields PASSED [ 94%]
+tests/tenx/gpu/test_registry_abi_compat.py::test_capability_entry_speaks_registry_entry_fields PASSED [ 96%]
+tests/tenx/gpu/test_registry_abi_compat.py::test_execution_context_route_vocabulary_includes_gpu PASSED [ 98%]
+tests/tenx/gpu/test_registry_abi_compat.py::test_gpu_surface_is_import_light PASSED [100%]
+
+=============================== warnings summary ===============================
+tests/tenx/gpu/test_k1_twin.py::test_exp_boundary_values_match_expression_including_overflow
+  /Users/alansynn/orca/workspaces/una-x/main/gpu/kernels/host_twins.py:83: RuntimeWarning: overflow encountered in exp
+    return wn / np.exp(gravity_beta * t)
+
+tests/tenx/gpu/test_k1_twin.py::test_exp_boundary_values_match_expression_including_overflow
+  /Users/alansynn/orca/workspaces/una-x/main/tests/tenx/gpu/test_k1_twin.py:43: RuntimeWarning: overflow encountered in exp
+    want = wn / np.exp(np.maximum(0, vals))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 53 passed, 2 warnings in 1.72s ========================
