@@ -411,6 +411,84 @@ def test_register_repeat_is_noop():
     assert entry["outs"]["reach"].tobytes() == np.zeros(4).tobytes()
 
 
+def test_register_owns_its_binding_lease_arrays(tr):
+    """P03R F1: the stored binding lease holds PRIVATE copies of the
+    array-valued fields — a caller mutating a previously-passed array
+    in place after registration cannot make a later split agreement
+    check serve the old canonical bits against NEW binding bytes."""
+    from urban_network_analysis.Engines import _metric_identity as midm
+    from urban_network_analysis.Engines import _metric_reuse_scratch as mre
+    case = admitted_case("base")
+    rec = tck_build(tr, case)
+    store = mre.MetricReuseStore()
+    counters = {}
+    dwt = np.array(case["dwt"], copy=True)
+    binding0 = replay_binding(case, d_weights=dwt)
+    mid0 = midm.compute_metric_id(rec, *binding0)
+    expected_lease_bits = np.asarray(dwt).tobytes()
+    ref0 = replay_with(tr, rec, case)
+    _register(store, rec, (ref0.reach, ref0.gravity_exponential,
+                           ref0.gravity_logistic, ref0.knn_access),
+              case, d_weights=dwt)
+    entry = store.lookup(mid0)
+    assert entry is not None
+    assert entry["job"]["d_weights"] is not dwt      # private lease copy
+    assert entry["job"]["d_weights"].tobytes() == expected_lease_bits
+    # Caller mutates the array IN PLACE after registration.
+    dwt[0] += 1.5
+    served = _row(store, tr, rec, case, counters, d_weights=dwt)
+    assert served is None                    # no stale serve: collapse
+    assert counters["reuse_collapse_full_folds"] == 1
+    # The stored lease still records the registration-time bytes.
+    assert entry["job"]["d_weights"].tobytes() == expected_lease_bits
+
+
+def test_lease_copy_is_load_bearing(tr):
+    """Negative control for P03R F1: with the pre-fix SHALLOW lease
+    (dict(job), aliased arrays) the same scenario stale-serves — the
+    aliased lease 'agrees' with the mutated live array and copies
+    canonical outputs computed from the OLD bytes.  Proves the
+    private-copy law in register() is what prevents the defect."""
+    from urban_network_analysis.Engines import _metric_identity as midm
+    from urban_network_analysis.Engines import _metric_reuse_scratch as mre
+
+    class _ShallowStore(mre.MetricReuseStore):
+        # The pre-P03R-fix register (P03M-B 1523ad9 bytes).
+        def register(self, metric_id, trace_id, job, outs):
+            if metric_id in self._entries:
+                return
+            stored = {}
+            for name in mre.ALL_OUTS:
+                arr = np.array(outs[name], copy=True)
+                arr.flags.writeable = False
+                stored[name] = arr
+            self._entries[metric_id] = {"trace_id": trace_id,
+                                        "job": dict(job), "outs": stored}
+            self._order.append(metric_id)
+
+    case = admitted_case("base")
+    rec = tck_build(tr, case)
+    store = _ShallowStore()
+    dwt = np.array(case["dwt"], copy=True)
+    ref0 = replay_with(tr, rec, case)
+    binding0 = replay_binding(case, d_weights=dwt)
+    mid0 = midm.compute_metric_id(rec, *binding0)
+    store.register(mid0, rec.trace_id, mre.binding_job(*binding0),
+                   dict(zip(mre.ALL_OUTS,
+                            (ref0.reach, ref0.gravity_exponential,
+                             ref0.gravity_logistic, ref0.knn_access))))
+    dwt[0] += 1.5                              # caller mutates in place
+    counters = {}
+    served = _row(store, tr, rec, case, counters, d_weights=dwt)
+    assert served is not None                  # the stale serve happens
+    outs, mode = served
+    assert mode == mre.REUSE_MODE_SPLIT
+    assert counters["reuse_split_copies"] == 4  # every dep "agreed" (alias)
+    assert counters.get("reuse_split_folds", 0) == 0
+    ref1 = replay_with(tr, rec, case, d_weights=dwt)
+    assert fields_bits(ref1) != _bits_tuple(outs)   # served bits WRONG
+
+
 # --------------------------------------------------------------------------
 # Cohort transport: counters exposed, kill switch
 # --------------------------------------------------------------------------

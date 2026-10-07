@@ -523,8 +523,11 @@ class MetricReuseStore:
         return entry
 
     def entries_for_trace(self, trace_id):
-        """Canonical entries for ONE trace, insertion (first-arrival)
-        order — the C12 canonical-source rule."""
+        """Canonical entries for ONE trace in LRU (recency) order —
+        ``lookup`` reorders the underlying list, so this is NOT
+        insertion order; candidate source selection among agreeing
+        entries is LRU order (bit-irrelevant: agreeing candidates
+        serve identical bytes — pinned by the wiring suite)."""
         return [self._entries[m] for m in self._order
                 if self._entries[m]["trace_id"] == trace_id]
 
@@ -539,7 +542,16 @@ class MetricReuseStore:
             arr = np.array(outs[name], copy=True)
             arr.flags.writeable = False
             stored[name] = arr
-        self._entries[metric_id] = {"trace_id": trace_id, "job": dict(job),
+        # designs/04 lease law (P03R F1): the stored binding records
+        # the bytes the canonical outputs were computed FROM — the two
+        # array-valued fields get private copies, so a caller mutating
+        # a previously-passed array in place cannot turn a later
+        # agreement check into a stale serve.
+        job_copy = dict(job)
+        for _k in ("d_weights", "knn_weights"):
+            if _k in job_copy:
+                job_copy[_k] = np.array(job_copy[_k], copy=True)
+        self._entries[metric_id] = {"trace_id": trace_id, "job": job_copy,
                                     "outs": stored}
         self._order.append(metric_id)
         while len(self._order) > self._max:

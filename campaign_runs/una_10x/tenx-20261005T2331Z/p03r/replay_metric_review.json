@@ -1,0 +1,131 @@
+{
+  "schema": "una-10x-p03r-replay-metric-review-1",
+  "task": "P03R",
+  "reviewer_identity": "independent-reviewer (fresh context; no shared history with the P03C/P03M-A/P03M-B implementers; counterexample-seeking scope review, not a confirmation pass)",
+  "review_scope": "Independent review of the compiled outer replay (P03C), typed MetricID v2 + E8 demotion (P03M-A) and the production metric-reuse executor (P03M-B): compiled signatures, reductions, cache identities, ownership/freshness laws, gates-before-hit chronology, and evidence-vs-live-bytes reconciliation. This is an independent scope review, NOT a measured application 10x claim; no performance figure is established or consumed here.",
+  "generated_utc": "2026-10-07T01:24:50Z",
+  "commits_reviewed": [
+    {"sha": "4b680b60378066dbc0d2390e14a79391135b0a57", "label": "P03C: compiled outer trace replay"},
+    {"sha": "41c245350b13a4b5091a368d8a6d960e0d187a80", "label": "P03M-A: typed MetricID v2 + E8 demotion + dependency matrix"},
+    {"sha": "1523ad9010aa4da9e31ce4c9f101a432def0c037", "label": "P03M-B: production metric-reuse executor (this is branch HEAD as read; every byte hash below is against this working tree)"}
+  ],
+  "designs_read": [
+    {"path": "campaigns/una_10x/post_p00/designs/03_compiled_replay.md", "sha256": "d4e45714003e216da045277f50da35e14231eccc0981e074099463421798c650"},
+    {"path": "campaigns/una_10x/post_p00/designs/04_metric_reuse.md", "sha256": "e1bd8b99278bc4015b6927f94f512fe2d11779248c26aa80d183eac750c1f0d8"},
+    {"path": "campaigns/una_10x/post_p00/TEST_MATRIX.md", "rows_read": ["RP01", "MR01", "MR03"]},
+    {"path": "campaigns/una_10x/post_p00/SOURCE_AND_ERRATA.md", "rows_read": ["E8 (line 44): v1 result_key float64-coerces destination/KNN weights vs raw-dtype replay"]}
+  ],
+  "module_shas_live": {
+    "src/urban_network_analysis/Engines/_trace_access_scratch.py": "2c7e3ad779efe845f14e6467545d5f13a40566791b594f882421c3f7ff4da8a2",
+    "src/urban_network_analysis/Engines/_metric_identity.py": "376286c3fa1e823e7bf1ad39998c3dbda648f111ebee283c03e32c4f496e2ddf",
+    "src/urban_network_analysis/Engines/_metric_reuse_scratch.py": "94556ae573850572e6257ca6ca3b7823e47944cb808e098f41c8a39dfb91d0bc",
+    "src/urban_network_analysis/Engines/AccessibilityWElevation.py": "efc4dd4a74dc2ec30ff3aeefff3cce7fb41361a75f2d2e04da3af44a39e0df36",
+    "src/urban_network_analysis/batch/cohort.py": "f709936ee616245cd7113e01b8d900afe887b8910baa1cd339694870f77b3c25"
+  },
+  "checks_performed": [
+    {
+      "what": "Review action 1a: statement-by-statement arithmetic diff of the four generated split folds (_reach_only, _gravity_exponential_only, _gravity_logistic_only, _knn_access_only) against the REAL combined fold body",
+      "command": "manual byte read: AccessibilityWElevation.py lines 73-110 vs _metric_reuse_scratch.py lines 271-314",
+      "observed": "Retention prelude (np.where(d_distance <= cutoff)[0]; n_distances; n_weights), reach = n_weights.sum(), the gravity_exponential expression, the gravity_logistic expression and the whole KNN block (argsort, crops, three decay branches) are verbatim identical, including summation order and parenthesis grouping; the 13-parameter signature is byte-identical to the engine fold's. No reassociation, no fastmath change (split folds reuse the engine's own decorator flags: parallel=False, cache=True, nogil=True, fastmath=True, read live from AccessibilityWElevation.py lines 58-61)."
+    },
+    {
+      "what": "Review action 1a: outer-loop binding diff — the four P03M-B split outer loops vs the P03C full-fold driver _trace_replay_loop",
+      "command": "manual byte read: _trace_access_scratch.py lines 794-807 vs _metric_reuse_scratch.py lines 359-446",
+      "observed": "Identical per-origin composition (cand_dist = dist_all[lo:hi].copy(); cand_wts = d_weights[ids_all[lo:hi]].copy()) and the identical duplicated 13-argument binding (cutoff; beta, plateau, midpoint; plateau, knn_weights, beta; knn_decay, midpoint; growth, growth) in the same order. Serial nogil, no fastmath, no nested prange in any of the five loops. Split output arrays allocated with the trace's own reach_dtype/metric_dtype fields (_SPLIT_OUT_DTYPE_FIELD), matching replay_trace's allocations."
+    },
+    {
+      "what": "Review action 1b: MetricID v2 refusal-based encoding + schema string in bytes",
+      "command": "manual byte read _metric_identity.py; live probe of typed_scalar_frame/typed_array_frame laws via committed test suite",
+      "observed": "Schema string in bytes is METRIC_ID_SCHEMA_VERSION = 'una-10x-metricid-v2-1' (not the 'una-10x-metric-id...' form quoted in the task). Encoding raises MetricIdentityError/ValueError for complex/string/object/oversize-int inputs (no convenience float cast); scalars enter by own dtype bytes (-0.0, NaN payloads, 1-ULP distinct); arrays enter by original dtype incl. byte order, shape, layout/writability/alignment flags, logical-order bytes; fold closure embeds the fold module's sha256, its four compilation flags, numba/llvmlite/numpy versions. Identity is versioned (METRIC_CLOSURE_VERSION=1) without touching the trace producer schema (una-10x-c11-trace-1 unchanged)."
+    },
+    {
+      "what": "Review action 1c: cache identities — trace_id, residency keys, PRODUCER_SHA256 change claim, v1 result_key demotion",
+      "command": "manual byte read: _trace_access_scratch.py compute_trace_id/_module_sha256; cohort.py lines 112-120, 378-381; cache/trace_residency.py key_for (line 195), _decode (line 415); consumer census via grep",
+      "observed": "(i) residency key_for binds (trace_id, schema, producer_sha256); producer digest changed in P03M-B because _trace_access_scratch.py bytes changed (guard factor into binding_refusal/trace_structure_refusal), so every pre-P03M-B residency key misses -> rebuild. No scan/enumeration path exists that could surface an old payload; the _decode producer check is defensive-only. Claim 'old residency keys miss-and-rebuild lawfully' SUPPORTED. (ii) trace_id embeds the trace module sha (numerical_env field), so trace_id VALUES also change with the producer bytes — conservative, by design. (iii) v1 result_key (cohort.py line 359, disclosed float64 coercion, E8) has exactly one consumer: last_result_key -> RowResult transport (line 268). Never consulted for reuse; authoritative identity is compute_metric_id. E8 resolution = demotion, matching designs/04."
+    },
+    {
+      "what": "Review action 2(i): metrics suite",
+      "command": "NUMBA_CACHE_DIR=.../campaign_runs/_numba_cache_owner venv-p01m/bin/python -m pytest tests/tenx/post_p00/metrics/ -q",
+      "observed": "69 passed in 4.11s (exit 0). No allclose in the suite's comparators (bits/tobytes only, verified by reading conftest.py bits() and the test files)."
+    },
+    {
+      "what": "Review action 2(ii): INDEPENDENT probe driving the production row_replay on my own admitted C11 traces (self-built ring graph, seed 4242, v=300, 12 origins, 60 destinations; NOT the test battery), all comparisons bitwise via tobytes(), no allclose",
+      "command": "heredoc python probe (console custody in this session): build_trace(cutoff 8.0 float) + build_trace(cutoff 400 python int); register canonical full-fold rows in fresh MetricReuseStore instances; drive row_replay for bundle and split rows; compare every served field's tobytes() against a direct replay_trace of the same binding",
+      "observed": "ALL bitwise parity: bundle row == direct replay (float cutoff trace); split logistic+beta-change == direct; split 'linear'(other)+plateau-change == direct; split knn_weights-change == direct; INT-SIGNATURE row (int cutoff 400, int plateau 0, int midpoint 500) split == direct; knn_decay='logistic' rows covered in both the float-trace split leg and the hazard probe. Isolated per-leg counter assertions match the committed OUTPUT_DEPENDENCIES map exactly: logistic+beta = 3 copies/1 fold; other+plateau = 2 copies/2 folds (knn-'other' has no plateau dep — my first prediction of 1/3 was MY expectation error, the map and the executor agree); knn_weights = 3 copies/1 fold; midpoint/growth/beta-under-exponential = 2 copies/2 folds each; int-signature beta change = 2 copies/2 folds. Empty-store first row collapses to the full fold (reuse_collapse_full_folds counted, never four extractions)."
+    },
+    {
+      "what": "Review action 2(iii): mutation/freshness check",
+      "command": "same probe: mutate every served bundle array in place ([:] = -1), re-serve, compare bits; assert served arrays writeable=True, store entry arrays writeable=False, store write attempt raises ValueError",
+      "observed": "Store not corrupted (re-served bits still equal the direct replay); served arrays are fresh writable objects; store internals are write-protected. register() copies outs (np.array(copy=True) + flags.writeable=False), so full-replay return arrays are never aliased into the store. Committed test test_bundle_handouts_are_independent_objects additionally pins object independence; test_bundle_hit_bitwise_and_fresh pins the same mutation law."
+    },
+    {
+      "what": "Review action 2(iv): gates-before-hit with a corrupt trace over a registered identity",
+      "command": "same probe: flip one retained distance bit via nextafter WITHOUT updating content_digest (dataclasses.replace), drive row_replay with the registered MetricID; also drive direct replay_trace on the forged record",
+      "observed": "row_replay returned None and counted reuse_refusals (no bundle hit crossed a refused pair); direct replay_trace refused with route='trace_replay_refused', refusal='corrupt_trace_content_digest' — the identical gate the reuse path runs first. Also verified live: float scalars (cutoff 400.0, plateau 0.0, midpoint 500.0) against an int-cutoff trace refuse via cutoff_mismatch_with_trace_identity BEFORE the bundle lookup (typed, bit-exact cutoff gate). binding_refusal + trace_structure_refusal run on EVERY row including bundle hits (row_replay steps 1-2, _metric_reuse_scratch.py lines 567-586); failed rows never register (cohort registers only after route=='trace_replay' at line 522, and split-served rows register only computed outputs)."
+    },
+    {
+      "what": "Review action 3 supplement: stored-binding aliasing hazard probe (my own, beyond the required actions)",
+      "command": "same probe: register with d_weights W1 (fresh copy), then mutate W1 in place, then row_replay with W3 whose bytes equal the mutated W1; compare served bits against (a) the pre-mutation outputs and (b) a direct replay of W3",
+      "observed": "HAZARD CONFIRMED in a synthetic frame: MetricReuseStore.register stores dict(job) shallow — the entry's job['d_weights'] IS the caller's array (identity asserted). After in-place mutation, the later row's bundle lookup correctly misses (MetricID v2 hashes current bytes), but SPLIT sourcing compares W3 against the mutated stored reference, agrees, and serves the PRE-mutation outputs (served == stale: True; served == truth: False). See finding F1. Not manifested in-repo: batch workers construct a fresh UNA/Settings per row (batch/worker.py _run_row) and no in-repo caller mutates a previously-passed d_weights/knn_weights."
+    },
+    {
+      "what": "Review action 3 supplement: source-selection order after LRU touch",
+      "command": "same probe: two canonical entries agreeing on reach deps; store.lookup() touch on the first; third row's split serve; compare candidate scan order and served bits",
+      "observed": "LRU touch reorders entries_for_trace's iteration (documented 'insertion (first-arrival) order' is not what the code does after a hit); served bits remain bitwise-equal to the direct replay — the choice among agreeing candidates is bit-irrelevant because each output is a pure function of the shared trace + agreed dependencies. See finding F2 (docstring-only)."
+    },
+    {
+      "what": "Review action 4: evidence JSONs vs live bytes and figure re-derivation",
+      "command": "shasum -a 256 on modules + evidence; python json reconciliation of the four p03m evidence objects; derivation of sweep arithmetic from partial_plan_probe.py",
+      "observed": "(i) metric_reuse_wiring.json (sha256 4c4f5848d7f3357a487357f7a38a319363d8142ce119ccd4f1a0c9c55cc54a5f): all four embedded producer_shas match the live module bytes exactly; 32/32 rows_with_full_bitwise_parity recomputed true from per_row; counters internally consistent (1 collapse + 31 split rows, 93 copies = 31x3, 31 folds); disposition states NO performance claim. (ii) metric_reuse_verdict.json (sha256 2c822ccf87979709dde15f69e82932f72e38ab7f30e26408a02ade42159ec7af — exactly the sha the P03M-B commit message names as the regenerated int-sweep verdict): total 412776 = 294840 + 117936, and both terms re-derive exactly from the probe construction: 26 slices x 3 weight-pools x (7x5x3x4x3x3 = 3780 bundle grid) = 294840 float; 26 x 3 x (7x3x2x4x3x3 = 1512) = 117936 int. (iii) metric_dependency_matrix.json: 18 rows, all match=True, enforced by the committed 22-test matrix suite (passed in the 69). (iv) metric_identity_v2.json: all live_checks booleans true; schema/closure version strings match module bytes; NOTE finding F3 on the fold-closure sha not being pinned in the evidence. (v) live cross-check: fold_closure().fold_module_sha256 computed in this review == live AccessibilityWElevation.py bytes == efc4dd4a...; flags parallel=False/cache=True/nogil=True/fastmath=True match the module lines 58-61."
+    }
+  ],
+  "checks_with_first_divergence": {
+    "bitwise_output_divergences": [],
+    "detail": "No bitwise divergence between any reuse-served row and its direct replay_trace reference was observed in any check (bundle, split, int-signature, logistic, other-branch, knn_weights, post-mutation re-serve, post-reorder serve): every comparison was tobytes() equality, never allclose. The first probe run carried three FAILED counter assertions (split logistic+beta rows=2/copies=6/folds=2; other+plateau copies=11/folds=5; knn_weights leg) — these were REVIEWER BOOKKEEPING errors, not product defects: I shared one counter dict across legs and forgot that each newly-registered canonical binding is itself split-served from earlier agreeing entries before my registration, and I mis-predicted knn-'other' as plateau-dependent (the committed map and the executor both say it is not; the bits were bitwise-correct in all three). Rerun as six isolated one-canonical-store legs: all six PASS with exact map-conforming counters. Exact rejection-reason strings observed in this review (all as designed): 'corrupt_trace_content_digest' (forged record, both paths), 'cutoff_mismatch_with_trace_identity' class refusal (float scalars vs int trace, before any hit)."
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "non_blocking",
+      "claim_ground": "src/urban_network_analysis/Engines/_metric_reuse_scratch.py:542 ('job': dict(job) — shallow) with src/urban_network_analysis/batch/cohort.py:472-478,499-501,534-537 (the same caller-owned d_weights/knn_weights objects flow into the store)",
+      "description": "Latent staleness hazard: the store's internal binding lease aliases caller-owned MUTABLE arrays. register() copies the four output arrays (immutable private copies) but only shallow-copies the job dict, so job['d_weights']/['knn_weights'] reference the caller's arrays. If a caller mutates a previously-passed array in place, later SPLIT sourcing compares against the mutated bytes while the stored outputs hold pre-mutation bits, and a wrong (stale) serve results — demonstrated live in a synthetic frame (served==stale True, served==truth False; bundle mode is NOT exposed because MetricID v2 hashes current bytes). Not manifested anywhere in-repo: batch workers build fresh UNA/Settings/inputs per row and no caller mutates passed arrays. Tension to record: designs/04 step 2 says 'Keep fields in immutable internal storage' — the reused output fields are immutable, the agreement-binding lease is not. Suggested disposition: copy the two binding arrays inside register() (mirroring the outputs) or document the no-post-call-mutation caller contract in the store docstring; neither is required for the current committed callers.",
+      "evidence": "probe check 'HAZARD: split serves stale pre-mutation bits | served==stale(True) served==truth(False)' and 'registered job aliases caller array ... is W1' (this session's console custody)"
+    },
+    {
+      "id": "F2",
+      "severity": "note",
+      "claim_ground": "src/urban_network_analysis/Engines/_metric_reuse_scratch.py:517-529 (lookup() moves the metric_id to the end of _order; entries_for_trace iterates _order while its docstring claims 'insertion (first-arrival) order')",
+      "description": "Docstring inaccuracy, bit-irrelevant: after any LRU-touched lookup hit, the split source scan iterates candidates in LRU-recent order, not first-arrival order, so among multiple agreeing canonicals the served COPY may come from a later canonical rather than the first-arrival one the C12 planner names. Verified bit-safe: any agreeing source's output is a pure function of the shared trace and the agreed dependencies, so all agreeing candidates hold identical bits (probe: reorder happened; served bits stayed bitwise-equal to the direct replay). register() first-arrival no-op law is unaffected. Fix the docstring (or iterate a separate insertion-order list) whenever the file is next touched; no correctness action required.",
+      "evidence": "probe check 'LRU touch reorders candidate scan | before=[09b3a5, 32c8dc] after=[32c8dc, 09b3a5]' + 'bits still bitwise after reorder PASS'"
+    },
+    {
+      "id": "F3",
+      "severity": "note",
+      "claim_ground": "campaign_runs/una_10x/tenx-20261005T2331Z/p03m/metric_identity_v2.json live_checks.fold_closure_binds_module_bytes (boolean only; no fold-module sha256 pinned in the evidence object)",
+      "description": "Evidence completeness: the identity evidence records the fold-closure law as a boolean without pinning WHICH fold-module sha256 was live at generation time, so the evidence file alone cannot re-verify that claim against a named generation. Re-verified in this review by independent computation: fold_closure().fold_module_sha256 == sha256(live AccessibilityWElevation.py) == efc4dd4a74dc2ec30ff3aeefff3cce7fb41361a75f2d2e04da3af44a39e0df36. No action required for this verdict; future evidence objects should embed the observed closure digests.",
+      "evidence": "live python check in this review session"
+    },
+    {
+      "id": "F4",
+      "severity": "note",
+      "claim_ground": "src/urban_network_analysis/batch/cohort.py:112-120 (module-digest producer identity) + src/urban_network_analysis/cache/trace_residency.py:195-207 (producer inside key_for; no enumeration path)",
+      "description": "Disk-hygiene note, no correctness impact: because key_for embeds the producer digest and compute_trace_id embeds the trace module sha, the P03M-B guard refactor lawfully orphans ALL pre-P03M-B residency payloads and trace identities (miss-and-rebuild; verified structurally, and the defensive _decode producer check cannot fire in the production flow). The orphaned payloads remain on disk as inert, never-addressed garbage; no cleanup path exists or is required for correctness. Worth remembering when disk budgets are next reconciled.",
+      "evidence": "structural read of trace_residency.py (key_for/publish/_decode/acquire; no scan API)"
+    },
+    {
+      "id": "F5",
+      "severity": "note",
+      "claim_ground": "src/urban_network_analysis/batch/cohort.py:446-455 (division inside the MetricID try, which catches only TypeError/ValueError) vs cohort.py:511-520 (the pre-existing identical division in the replay call)",
+      "description": "Pre-existing semantics, not a P03M-B regression: gravity_growth_rate = gravity_decay_constant / gravity_logistic_midpoint is computed at two sites; a zero midpoint raises ZeroDivisionError at the (earlier) MetricID site instead of the replay site. The exception class and the uncaught propagation are unchanged from the pre-P03M-B route; only the crash site moved. Recorded so the movement is not later misread as a reuse-path defect.",
+      "evidence": "byte read of both sites; admission-domain reasoning (Settings midpoint is int per the frozen cohort, and the admitted trace battery never carries midpoint 0)"
+    }
+  ],
+  "not_run": [
+    {"check": "Re-execution of the full 412776-evaluation partial-plan sweep (partial_plan_probe.py)", "reason": "The figure was verified by exact derivation from the probe's own construction (26x3x3780 + 26x3x1512) and the live verdict bytes hash to the exact sha the P03M-B commit message names as the regenerated output (2c822ccf...); the probe's comparator is tobytes-only with first-divergence retention (read, confirmed). Re-running was judged redundant for this review's scope; this review does NOT re-establish the sweep as independent evidence, it verifies the recorded evidence is internally exact and matches live bytes."},
+    {"check": "End-to-end cohort route (metric_reuse_wiring_probe.py) re-run", "reason": "The wiring evidence was reconciled against live module bytes and its per-row parity table recomputed true; the executor itself was independently exercised by my own probe at the row_replay level. No figure in this review depends on the unexecuted re-run."},
+    {"check": "Installed-wheel / GPU / performance qualification of any kind", "reason": "Out of scope for P03R by task definition and by designs/03-04 (a replay-only or reuse-only win is not the 10x application claim; no timing was taken)."}
+  ],
+  "verdict": "approve_with_notes",
+  "verdict_rationale": "Zero blocking findings. The split folds are verbatim extractions of the reviewed fold with identical parameter binding, arithmetic order and compiler flags; my own independent bitwise probe (self-built traces, int-signature and logistic rows included) found zero divergence between reuse-served and directly replayed outputs; gates run before every hit including a registered-identity corrupt-trace attack; output ownership and freshness laws hold; MetricID v2 is genuinely refusal-based and the E8 demotion leaves the coercing v1 key with no reuse consumer; the four evidence objects reconcile against live bytes, including exact re-derivation of the 412776 sweep figure and the 32/32 wiring parity. F1 is a real but unmanifested latent hazard requiring a caller behavior (post-call in-place mutation of passed arrays) that no in-repo caller exhibits; it is recorded with a concrete hardening suggestion rather than a reject, consistent with the campaign's latent-vs-manifested grading.",
+  "disposition": "This is an INDEPENDENT SCOPE REVIEW of the P03C/P03M-A/P03M-B increments (correctness laws, identity discipline, evidence reconciliation) as of HEAD 1523ad9010aa4da9e31ce4c9f101a432def0c037. It is NOT a measured application 10x claim: no timing was taken, no frozen-policy comparator ran, and no performance, installed-native or GPU qualification is established or implied by this file. Per designs/03-04 and the campaign law, any 10x contribution of these increments remains a later measured PUBLIC-boundary claim."
+}
