@@ -1,0 +1,62 @@
+{
+ "schema": "una-10x-pace-recovery-manifest-1",
+ "run_id": "tenx-20261005T2331Z",
+ "executed_utc": "2026-10-09T13:24-13:40Z",
+ "trigger": "pre-registered recovery probe (cron f7901d26, Oct 9 09:23 local) after PACE gt-pace-phoenix maintenance ended 2026-10-08 23:59 local",
+ "purpose": "recover frozen P00 evidence bytes from PACE scratch (purge-prone Lustre) into local custody before any scratch cleanup",
+ "method": "read-only rsync -a down only; no remote writes; destination campaign_data/remote_recovery_pace/ (untracked scratch custody); all shas below are LOCAL post-transfer re-hashes, not remote restatements",
+ "source_trees": {
+  "worktree": "/storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels",
+  "baseline": "/storage/scratch1/1/dsynn6/una-x-baseline-395cdc5r2 (present, not needed for this recovery set)",
+  "note": "P00-era run id on PACE is tenx-20261003T1212Z; the pre-registered prompt's guessed paths (campaign_data/inputs/upstream_Boston/... and run-root PRIMARY.json) did not exist there - actual locations resolved by discovery and recorded below"
+ },
+ "recovered": {
+  "w00_freeze/cohort_manifest.csv": {
+   "sha256": "1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf",
+   "verdict": "MATCHES screen_index.json frozen_manifest_sha256 exactly (also matched by remote-side pre-sync hash)",
+   "remote_source": "worktree/campaign_runs/una_10x/tenx-20261003T1212Z/w00_freeze/"
+  },
+  "w00_freeze/PRIMARY.json": {
+   "sha256": "6f79c5eb7a5abba3be55f4a77e2f0566c791c2920472f72d3a3bf5cb43d13a2c",
+   "remote_source": "worktree/campaign_runs/una_10x/tenx-20261003T1212Z/w00_freeze/"
+  },
+  "p00_profile/p00_env.json": {
+   "sha256": "5ddad2d93b8dbdba7dc1b7b6c450254ef421819e127607cf3a6963f4f8cec64f",
+   "remote_source": "worktree/campaign_runs/una_10x/tenx-20261003T1212Z/p00_profile/"
+  },
+  "p00_profile/screen_index.json": {
+   "sha256": "57418f60a632cde19e64844d4dd1d72e7723524c842796cf934e429add81293d",
+   "remote_source": "worktree/campaign_runs/una_10x/tenx-20261003T1212Z/p00_profile/"
+  },
+  "h01_scripts/": {
+   "count": 11,
+   "note": "worktree-root sibling _h01*.py scripts (stray nested copies under evidence/ excluded; empty dir skeletons from the include pattern removed)",
+   "sha256": {
+    "_h01_baseline.py": "007dc4150767db0592155cbe986a499ffc30fc0f8546abe218fbca93a8139075",
+    "_h01_cohort_diag.py": "72921e189408da695d5dadb6fad4c4d174e32de673f40935012c4d480e2e6223",
+    "_h01_cohort.py": "e668adc1282c984142e32b25cb8c73f37f87c1c67bc88f9a0cbf814d64e133df",
+    "_h01_fault.py": "e0c17f7954b03f19965257f3195cc873db9631e318008b38201822fedebf2aa1",
+    "_h01_flow_verify.py": "0c74c348d3d5091002cb74666eb38a5e2a4f8b61e953daae936eafac751cd761",
+    "_h01_flow.py": "c6c270c4b1818b2e29a42a3436150398be973d9c1f2efebaaa245e9301d96bbe",
+    "_h01_l2.py": "38d7934dcd80343fd531fa356aece290edfe9ed38ea95d0370bc12320515d234",
+    "_h01_msgfix.py": "ad2332754f49e5251787a52b7f48ceb9e3ae2b572f0205c7aff59c02234923cf",
+    "_h01_obs_single.py": "223b1dda35699880949b674dab7a8873ab0eec1dd39e6a5bde57b907bdec205c",
+    "_h01_smoke.py": "d77413353da8154e6a0ea8af6c4fb74607f00b07e4d83b2e37fe578be81fa383",
+    "_h01_supervisor.py": "6a4f0f5c6838d3d807372e64948734be779e6606cba75c0bceb81b89aec5639f"
+   }
+  },
+  "reference_outputs/": {
+   "file_count": 64,
+   "bytes": 147830672,
+   "verdict": "64/64 files sha256+bytes MATCH p00_env.json reference_outputs pins (0 bad, 0 missing); pin total bytes identical",
+   "remote_source": "worktree/campaign_runs/una_10x/tenx-20261003T1212Z/h01_public/cohort_run1/ (dirs accessibility_2026-10-03_0944/0945/0946)",
+   "per_file_pins": "see recovered p00_env.json reference_outputs.files (authoritative)"
+  }
+ },
+ "pre_registered_step_4_disposition": {
+  "status": "STALE - not executed",
+  "reason": "P01F measured legs were already completed locally on 2026-10-06 (baseline_policy_audit.json measured_legs_local_2026_10_06; budget_reconciliation.json local_measured_legs_s seven_measured_legs_sum 330.9916s) and the campaign CLOSED 2026-10-07 at aa12950 (tenx_status=target_unmet, merge_disposition=do_not_merge). Re-running measured legs now would create unowned post-closure measurements; that requires new authorization and does not follow from a recovery probe."
+ },
+ "primary_identity_check_effect": "recovery_update_2026_10_09 appended to campaign_runs/una_10x/tenx-20261005T2331Z/primary_identity_check.json resolving PRIMARY_json, cohort_csv bytes, and reference_output_bytes from unavailable_pending_remote; original fields preserved verbatim",
+ "campaign_state_note": "una_10x campaign CLOSED (commit chain to aa12950); this recovery is preservation of frozen evidence only and creates no reopening"
+}

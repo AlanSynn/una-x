@@ -33,5 +33,16 @@
   "reference_output_bytes": "64 files, 147,830,672 B \u2014 hashes pinned in p00_env.json; bytes on PACE scratch, unreachable during maintenance (2026-10-05..08)"
  },
  "no_guessed_betas": true,
- "frozen_primary_untouched": true
+ "frozen_primary_untouched": true,
+ "recovery_update_2026_10_09": {
+  "trigger": "PACE post-maintenance recovery probe (cron f7901d26); manifest p01f/pace_recovery_2026_10_09.json",
+  "method": "read-only rsync down to campaign_data/remote_recovery_pace/; local post-transfer re-hashes",
+  "resolves": {
+   "PRIMARY_json": "RECOVERED w00_freeze/PRIMARY.json sha256 6f79c5eb7a5abba3be55f4a77e2f0566c791c2920472f72d3a3bf5cb43d13a2c (remote source tenx-20261003T1212Z/w00_freeze/); remote-side and local-side hashes agree",
+   "cohort_csv_uint64_bits": "cohort_manifest.csv bytes recovered; sha256 1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf == screen_index.json frozen_manifest_sha256 (exact)",
+   "reference_output_bytes": "64 files / 147,830,672 B recovered from h01_public/cohort_run1/; 64/64 sha256+bytes match p00_env.json pins (0 bad, 0 missing)"
+  },
+  "supersession": "unavailable_pending_remote above is retained verbatim as the historical during-maintenance record; this block is the resolution record and does not rewrite it",
+  "scope": "preservation only; closed campaign (aa12950) not reopened; no new measurements"
+ }
 }
