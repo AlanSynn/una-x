@@ -183,10 +183,15 @@ def test_staged_digest_verification_blocks_publishing(
         make_batch, tmp_path, monkeypatch):
     """The coordinator re-verifies staged bytes against the worker's
     digests BEFORE publishing — a lying/corrupted result must abort the
-    batch as cancellation, never publish unverified bytes."""
+    batch without publishing unverified bytes, as a ROW-ATTRIBUTED
+    integrity error, never BatchCancelledError (BATCH_REVIEW
+    rev-20261003T0105Z MINOR-2: corruption and cancellation are
+    different failure classes with different replay semantics; a
+    cancel-retry loop would spin forever on permanent corruption)."""
     from dataclasses import replace as dreplace
 
     from urban_network_analysis.batch import runtime as rt
+    from urban_network_analysis.batch.plan import InvariantViolation
 
     orig_recv = rt._Pool.recv
 
@@ -200,14 +205,70 @@ def test_staged_digest_verification_blocks_publishing(
 
     monkeypatch.setattr(rt._Pool, "recv", recv)
 
-    from urban_network_analysis.batch.report import BatchCancelledError
     p = make_batch(2, out_folder=tmp_path / "out")
-    with pytest.raises(BatchCancelledError, match="digest verification"):
+    with pytest.raises(InvariantViolation,
+                       match="digest verification") as ei:
         p.RunBatch("accessibility", parallel=True, workers=1)
+    assert ei.value.row == 0
     # nothing was published from the unverified result
     assert not os.path.exists(tmp_path / "out") or \
         not [n for n in os.listdir(tmp_path / "out")
              if n.startswith(("row", ".una-batch"))]
+
+
+def test_staged_vanish_is_row_attributed_integrity_error(tmp_path):
+    """The vanished-staged-artifact branch carries the same typed,
+    row-attributed integrity contract (MINOR-2): the error names the row
+    instead of masquerading as a cancellation."""
+    from urban_network_analysis.batch import runtime as rt
+    from urban_network_analysis.batch.plan import InvariantViolation
+
+    with pytest.raises(InvariantViolation, match="vanished") as ei:
+        rt._verify_staged(str(tmp_path),
+                          (("gone.feather", 1, "0" * 64),), row=3)
+    assert ei.value.row == 3
+
+
+def test_publish_staged_fsyncs_files_and_directories(tmp_path, monkeypatch):
+    """BATCH_REVIEW rev-20261003T0105Z MINOR-4: publication fsyncs every
+    published file and its parent directory at commit — the journal's
+    durability discipline mirrored at the os.replace site (without it, a
+    crash/power-loss window can leave torn or mixed-generation published
+    outputs behind the rename)."""
+    from urban_network_analysis.batch import runtime as rt
+
+    staged = tmp_path / "staging"
+    staged.mkdir()
+    public = tmp_path / "public"
+    public.mkdir()
+    (staged / "a.feather").write_bytes(b"AAAA")
+    (staged / "sub").mkdir()
+    (staged / "sub" / "b.csv").write_bytes(b"BBBB")
+
+    real_open = os.open
+    fsynced = []
+
+    def spy_open(path, flags, *args):
+        fd = real_open(path, flags, *args)
+        # every os.open in _publish_staged is an fsync target (files via
+        # _fsync_published, directories via _fsync_dir): the digests
+        # arrive precomputed and nothing else here reads by descriptor
+        fsynced.append(os.path.abspath(path))
+        return fd
+
+    monkeypatch.setattr(rt.os, "open", spy_open)
+    published = rt._publish_staged(
+        str(staged), str(public),
+        (("a.feather", 4, "0" * 64), ("sub" + os.sep + "b.csv", 4,
+                                      "0" * 64)))
+
+    assert sorted(os.path.relpath(p, public) for p in published) == \
+        ["a.feather", os.path.join("sub", "b.csv")]
+    assert all(os.path.exists(p) for p in published)
+    # both published files AND every touched parent directory fsynced
+    assert fsynced[:2] == [os.path.join(public, "a.feather"),
+                           os.path.join(public, "sub", "b.csv")]
+    assert set(fsynced[2:]) == {str(public), str(public / "sub")}
 
 
 def test_shared_output_name_serializes_and_matches_serial(

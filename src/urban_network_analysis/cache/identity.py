@@ -12,7 +12,11 @@ digest over a canonical encoding of the stage's COMPLETE dependency closure:
   results depend on the snapped inputs, so mutating ANY upstream dependency
   misses everywhere downstream),
 - every scalar/tuple/array parameter that reaches the stage's arithmetic
-  (including -0.0 vs 0.0 and NaN payloads, encoded via IEEE hex),
+  (including -0.0 vs 0.0, encoded via IEEE hex; NaN scalars deliberately
+  collapse to ONE canonical NaN tag — payloads are not distinguished,
+  pinned by
+  tests/cache/invalidation/test_keys_unit.py::
+  test_nan_payloads_get_one_canonical_key),
 - the semantic profile (una_legacy / madina_legacy / corrected_v1) and the
   environment fingerprint (interpreter + library + GEOS/LLVM versions +
   machine) for every producer whose output bits may differ across that
@@ -84,8 +88,11 @@ def _enc(value: Any, out: list) -> None:
         out.append(raw)
         out.append(b";")
     elif isinstance(value, float):
-        # IEEE-754 hex is injective for binary64 INCLUDING -0.0 vs 0.0 and
-        # NaN payloads; repr() is not guaranteed injective for payloads.
+        # IEEE-754 hex is injective for binary64 including -0.0 vs 0.0;
+        # NaN scalars collapse to one canonical tag (payloads are
+        # deliberately NOT distinguished — the reviewed test
+        # test_nan_payloads_get_one_canonical_key pins that intent), so
+        # hex encoding is not injective across NaN payloads.
         if value != value:
             out.append(_TAG_FLOAT_NAN)
         elif value == float("inf"):

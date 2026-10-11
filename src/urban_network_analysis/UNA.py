@@ -817,11 +817,16 @@ class UNA:
             v=2,
         )
 
-    def _finalize_batch_composite(self) -> None:
-        """After every row finishes, build and write the composite (if any row asked for one)."""
+    def _finalize_batch_composite(self):
+        """After every row finishes, build and write the composite (if any row asked for one).
+
+        Returns the published composite paths (None when nothing was
+        written) so the batch runtime can journal them (resume
+        integrity); the serial route ignores the return value."""
         if self._composite_active and self._composite_captured:
             self._compute_batch_composite()
-            self._export_batch_composite()
+            return self._export_batch_composite()
+        return None
 
     def _compute_batch_composite(self) -> None:
         """Group captured columns by join target; build one composite per group.
@@ -898,6 +903,8 @@ class UNA:
         file. When ALL three are False (composite output was still
         requested — we wouldn't be here otherwise), a CSV is written as a
         sensible fallback so the user's intent is never silently dropped.
+
+        Returns the tuple of paths written, in write order.
         """
         if not self.composite_results:
             raise RuntimeError("Call _compute_batch_composite() before _export_batch_composite().")
@@ -905,6 +912,7 @@ class UNA:
         settings = self.settings
         output_folder = resolve_output_folder(settings, folder_prefix)
         single = len(self.composite_results) == 1
+        written: list = []
 
         for group_name, gdf in self.composite_results:
             # One join target → plain "composite"; several → suffix each
@@ -914,6 +922,7 @@ class UNA:
             wrote_any = write_gdf_outputs(
                 gdf, settings, output_folder, out_name,
                 self.topology.logger, "RunBatch", desc="Composite", csv_drop_geometry=False,
+                collected=written,
             )
 
             if not wrote_any:
@@ -921,6 +930,7 @@ class UNA:
                 csv_gdf = (gdf.drop(columns="geometry")
                            if "geometry" in gdf.columns else gdf)
                 csv_gdf.to_csv(path, index=False, sep=settings.csv_delimiter)
+                written.append(path)
                 self.topology.logger.log(
                     'RunBatch',
                     f"Composite CSV → {path} (fallback: no output_* flag was set)",
@@ -933,3 +943,4 @@ class UNA:
             f"composite{'s' if not single else ''}) written to {output_folder}",
             v=1,
         )
+        return tuple(written)

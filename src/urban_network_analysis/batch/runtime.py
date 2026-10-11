@@ -238,30 +238,72 @@ class _Staging:
                 pass
 
 
+def _fsync_published(path: str) -> None:
+    """fsync one published file (mirrors the journal's durability
+    discipline; BATCH_REVIEW rev-20261003T0105Z MINOR-4)."""
+    fd = os.open(path, os.O_RDONLY)
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def _fsync_dir(path: str) -> None:
+    """fsync a directory entry, tolerating filesystems that refuse it."""
+    try:
+        dfd = os.open(path, os.O_RDONLY)
+    except OSError:
+        return
+    try:
+        os.fsync(dfd)
+    except OSError:
+        pass
+    finally:
+        os.close(dfd)
+
+
 def _publish_staged(staging_dir: str, public_folder: str,
                     files: Tuple[Tuple[str, int, str], ...]) -> Tuple[str, ...]:
     published = []
+    dirs = set()
     for relpath, _size, _digest in files:
         src = os.path.join(staging_dir, relpath)
         dest = os.path.join(public_folder, relpath)
-        os.makedirs(os.path.dirname(dest) or public_folder, exist_ok=True)
+        parent = os.path.dirname(dest) or public_folder
+        os.makedirs(parent, exist_ok=True)
         os.replace(src, dest)
         published.append(dest)
+        # Durability mirrors CheckpointJournal._write (BATCH_REVIEW
+        # MINOR-4): without fsync, a crash/power-loss window can leave
+        # torn or mixed-generation published outputs behind the rename.
+        _fsync_published(dest)
+        dirs.add(parent)
+    for d in sorted(dirs):
+        _fsync_dir(d)
     return tuple(sorted(published))
 
 
 def _verify_staged(staging_dir: str,
-                   files: Tuple[Tuple[str, int, str], ...]) -> None:
-    """Coordinator-side digest verification of the staged bytes."""
+                   files: Tuple[Tuple[str, int, str], ...],
+                   row: int) -> None:
+    """Coordinator-side digest verification of the staged bytes.
+
+    Raises the row-attributed ``InvariantViolation``, never
+    ``BatchCancelledError``: staged-integrity failure and cancellation
+    are different failure classes with different replay semantics
+    (BATCH_REVIEW rev-20261003T0105Z MINOR-2) — a caller retrying on
+    cancellation would spin forever on permanent corruption."""
     for relpath, size, digest in files:
         path = os.path.join(staging_dir, relpath)
         if not os.path.exists(path):
-            raise BatchCancelledError(
-                f"staged artifact {relpath!r} vanished before commit")
+            raise InvariantViolation(
+                row=row,
+                detail=f"staged artifact {relpath!r} vanished before commit")
         if os.path.getsize(path) != size or sha256_file(path) != digest:
-            raise BatchCancelledError(
-                f"staged artifact {relpath!r} failed digest verification "
-                f"before commit; refusing to publish")
+            raise InvariantViolation(
+                row=row,
+                detail=f"staged artifact {relpath!r} failed digest "
+                       f"verification before commit; refusing to publish")
 
 
 # ---------------------------------------------------------------------------
@@ -521,6 +563,41 @@ def _npy_bytes(arr: np.ndarray) -> bytes:
     return buf.getvalue()
 
 
+def _refold_composite_from_journal(una, plan: BatchPlan, journal) -> None:
+    """Rebuild ``una._composite_captured`` from the journal's capture
+    payloads — every committed row in ``plan.fold_order`` (caller order;
+    the fold is float order-sensitive), never only the rows that ran in
+    the current call.  ``read_capture`` digest-verifies each payload, so
+    a capture that cannot be trusted fails loudly here instead of
+    poisoning the republished composite (resume verification already
+    re-runs rows whose payloads failed at load time)."""
+    committed_now = journal.committed_row_indexes()
+    rows = (journal.load() or {}).get("rows") or {}
+    una._composite_captured = []
+    for i in plan.fold_order:
+        if i not in committed_now:
+            continue
+        cap = (rows.get(str(i)) or {}).get("capture")
+        if not cap:
+            continue
+        arr = np.load(io.BytesIO(journal.read_capture(cap)),
+                      allow_pickle=False)
+        una._composite_captured.append((
+            cap.get("column", ""), arr,
+            cap.get("metric", ""), cap.get("join_path")))
+
+
+def _composite_digest_map(exported) -> dict:
+    """Journal map for the published composite artifacts (absolute path
+    -> size + sha256); the composite folder may be timestamped, so the
+    paths cannot be re-derived from Settings on resume."""
+    if not exported:
+        return {}
+    return {os.path.abspath(p): {"bytes": os.path.getsize(p),
+                                 "sha256": sha256_file(p)}
+            for p in exported}
+
+
 # ---------------------------------------------------------------------------
 # Job construction.
 # ---------------------------------------------------------------------------
@@ -556,7 +633,7 @@ def _commit_worker_row(una, plan: BatchPlan, journal, i: int,
                        outcomes: Dict[int, RowOutcome],
                        manifests: Dict[int, Tuple[str, ...]],
                        bundles: Dict[int, dict]) -> None:
-    _verify_staged(result.staging_dir, result.files)
+    _verify_staged(result.staging_dir, result.files, row=i)
     os.makedirs(public_folder, exist_ok=True)
     published = _publish_staged(result.staging_dir, public_folder,
                                 result.files)
@@ -1128,11 +1205,28 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
         _attach_rows(cexc, outcomes)
         raise cexc from None
 
-    if not (journal is not None and composite_already_finalized
-            and not folded_this_call["value"]):
-        una._finalize_batch_composite()
-    if journal is not None and not composite_already_finalized:
-        journal.record_composite_finalized()
+    if journal is not None and composite_already_finalized:
+        # Resume of a batch whose composite was already published
+        # (BATCH_REVIEW rev-20261003T0105Z MAJOR-1 + MINOR-1).  The reuse
+        # branch above suppressed committed rows' captures when the
+        # composite is already finalized, so finalizing from the live
+        # accumulator alone would republish a composite built from ONLY
+        # the rows that re-ran this call — a silent single-row rebuild
+        # over the full published artifact.  Rebuild instead: when
+        # anything folded this call, or the published files no longer
+        # verify against their recorded digests, re-fold EVERY committed
+        # row's capture payload from the journal (digest-verified on
+        # read) in plan.fold_order and re-export the full composite.
+        if folded_this_call["value"] or not journal.verify_composite():
+            _refold_composite_from_journal(una, plan, journal)
+            exported = una._finalize_batch_composite()
+            journal.record_composite_finalized(
+                files=_composite_digest_map(exported))
+    else:
+        exported = una._finalize_batch_composite()
+        if journal is not None:
+            journal.record_composite_finalized(
+                files=_composite_digest_map(exported))
 
     una.batch_report = BatchExecutionReport(
         requested=requested,

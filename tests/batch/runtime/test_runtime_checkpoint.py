@@ -380,3 +380,18 @@ def test_resume_folds_composite_once_no_duplicate_columns(
     assert comp_after_p3 == comp_after_p2
     assert {f: os.stat(os.path.join(out, f)).st_mtime_ns
             for f in comp_after_p3} == mtimes_p2
+
+
+def test_checkpoint_create_error_points_to_the_real_resume_path(tmp_path):
+    """BATCH_REVIEW rev-20261003T0105Z MINOR-3: the "already holds a
+    journal" error must point at the actual resume entry — re-invoking
+    RunBatch with the same checkpoint directory — not a non-existent
+    load_resume() (repo-wide grep: that name exists nowhere else)."""
+    from urban_network_analysis.batch.checkpoint import CheckpointJournal
+
+    ckpt = str(tmp_path / "ckpt")
+    CheckpointJournal(ckpt).create("identity", {})
+
+    with pytest.raises(BatchCheckpointError, match="RunBatch") as ei:
+        CheckpointJournal(ckpt).create("identity", {})
+    assert "load_resume" not in str(ei.value)
