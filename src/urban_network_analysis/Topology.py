@@ -21,12 +21,10 @@ from heapq import heappush, heappop
 from pathlib import Path
 from typing import Dict, Mapping, Optional, Self, TypeAlias #, TypedDict
 from collections.abc import Collection, Callable
-from sklearn.cluster import KMeans
 from concurrent.futures import ThreadPoolExecutor
 from shapely.strtree import STRtree
 from shapely.geometry import Point, LineString
 
-import networkx as nx
 import concurrent.futures as fr
 import multiprocessing as mp
 import geopandas as gpd
@@ -1188,6 +1186,9 @@ class Topology:
 
         self.logger.log("Build clusters", f"Building clusters with n_clusters={n_clusters} and random_state={random_state}.", v=1)
 
+        # Deferred import (P3 lazy-import probe): scikit-learn is only
+        # needed when clustering actually runs.
+        from sklearn.cluster import KMeans
         kMeans = KMeans(n_clusters=n_clusters, random_state=random_state)
 
         kMeans.fit(self.origins.xy)

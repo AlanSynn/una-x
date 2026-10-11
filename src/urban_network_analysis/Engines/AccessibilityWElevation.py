@@ -24,7 +24,6 @@ from collections.abc import Collection, Callable
 from concurrent.futures import ThreadPoolExecutor
 from shapely.strtree import STRtree
 
-import networkx as nx
 import concurrent.futures as fr
 import multiprocessing as mp
 import geopandas as gpd
