@@ -1,0 +1,26 @@
+{
+  "files": {
+    "binary/_native_core.cpython-311-x86_64-linux-gnu.so": "dd1577b3f5aeb37e55af76238d421fa4adeeaeb388be09ffd2d48b77daec0840",
+    "binary/pairA.code.bin": "93fa5e6c3d5e151f916d5c35d446be89c6a7be06731467cfb587da3e632733f9",
+    "binary/pairB.code.bin": "93fa5e6c3d5e151f916d5c35d446be89c6a7be06731467cfb587da3e632733f9",
+    "binary_identity_and_variance.txt": "66e15b42161e11738d1cb98049c78f8e1ebcb8a6367c18c9324549f63484ec9c",
+    "commit_base.txt": "29abf59cd21231e28f12b4b89a551cb28ab8ae1a3528458e0d9117f2dc79c95c",
+    "probe_core_self_identification.txt": "e3f041ccfb84bf00541204bdc677e82a4b2bed1fb8d46a4241c59c3a55eb1567",
+    "receipt.json": "6c69764d0692a5bb2fd102a7e6e1a549b73d0a176a6ed10be33a0f191ee937ea",
+    "suite_cpu_kernels_guard.txt": "6763c6d7f63ba543dacff3cc7f3e0cf1a4ba4d4235cbd5d74196dd66057f514c",
+    "suite_native_core_asan_ubsan.txt": "2aebf5fc3ae71c2cdbf43488b1febcc29e6f8d1922cb239193e52f357f1a9407",
+    "suite_native_core_finalbytes.txt": "bfaa9db0aaa69bc00adb6b28ee6375a811244ec15a41e5be3e530f3027a64d82",
+    "suite_native_core_island_history.txt": "4300a42bfb04b6dd83c24f1b582aa9184a1f1909da9839c6fcd691173563ea1b"
+  },
+  "manifest": "(this file is the manifest: every untracked raw artifact is hashed above; no hand-typed hashes)",
+  "notes": "Pointers plus raw-byte hashes; the raw bytes live untracked beside this file. Generated programmatically from the evidence directory.",
+  "raw_evidence_dir": "(same directory, untracked)",
+  "receipt": "receipt.json",
+  "run_id": "natc-20261011T1821Z",
+  "suite": {
+    "command": "PYTHONHASHSEED=0 <alan python> -m pytest tests/native_core -q  &&  ... -m pytest tests/cpu_kernels -q",
+    "log": "suite_native_core_finalbytes.txt",
+    "log_tail": "110 passed, 4 skipped in 6.24s / 97 passed, 4 skipped in 8.50s"
+  },
+  "task": "NATIVE_CORE"
+}
