@@ -1,0 +1,83 @@
+{
+  "task": "BATCH_EXEC (fix round: BATCH_REVIEW rev-20261003T0105Z findings + DEF-24 wedge port)",
+  "campaign": "una_platform",
+  "role": "ACTING BATCH SCOPE OWNER (one writable scope: isolated worktree)",
+  "worktree": "/storage/scratch1/1/dsynn6/una-x-batchfix-20261011 (branch perf/batch-def24-major1, base c1f8614)",
+  "timestamp_utc": "2026-10-11T16:23Z",
+  "closure_commit": "implementation commits bb0684f (W1) + 06ffac0 (W2); tracked evidence committed separately on the same branch",
+  "objective": "W1: adaptive port of reviewed DEF-24 wedge fix (perf/una-10x ab357c6). W2: implement all actionable BATCH_REVIEW rev-20261003T0105Z findings — MAJOR-1 resume-after-finalize composite overwrite, MINOR-1 composite integrity on resume, MINOR-2 integrity-as-cancel conflation, MINOR-3 dead load_resume() hint, MINOR-4 publish durability, NOTE-4 NaN docstring — each with a regression test proven to FAIL on pre-fix code.",
+  "status": {
+    "implementation": "COMPLETE — all work items implemented and committed",
+    "verification": "PER-DIRECTORY ISLANDS GREEN AT/ABOVE BASELINE; MUTATION BATTERY 9/9 SELECTED; WHOLE-REPO SINGLE-PROCESS `pytest tests/ -q` IS NONDETERMINISTIC ON THIS NODE EVEN ON IDENTICAL BYTES (evidence below) AND COULD NOT SERVE AS A CLEAN DISCRIMINATOR — failure classes are confined to suites this change never touches, and the pristine baseline exhibits the same classes"
+  },
+  "delivers": [
+    "W1: _Pool.cancel calls cancel_join_thread() on inbox and ready BEFORE process termination (una_platform's outbox is the synchronous _ResultChannel, so it takes no cancel_join_thread — adaptation vs upstream ab357c6, same semantics). Regression: tests/batch/runtime/test_runtime_cancel_wedge.py (3 runner + 3 child-guarded, >64 KiB backlog pins, faulthandler dump at 60 s, hard kill at 150 s). Pre-fix demonstration: 3 failed in 457.42 s (every guarded child wedged to its kill bound); post-fix: 3 passed / 3 skipped in 17.50 s.",
+    "MAJOR-1 (semantics chosen: FULL REBUILD of the composite from journal captures on resume-when-finalized): when a finalized-composite batch resumes and anything folded this call, or the published composite fails its recorded digests, _refold_composite_from_journal re-folds every committed row's digest-verified capture payload in plan.fold_order (caller order), re-exports, and re-records the composite artifact map with a generation bump. Clean finalized resume (nothing folded, digests verify) stays byte-idempotent, preserving the reviewed idempotence contract pinned by test_resume_folds_composite_once_no_duplicate_columns. Rationale: the journal already holds verified captures for every committed row, so the correct composite is always reconstructible; refusing would deny the documented crash-recovery outcome for a recoverable state. Refuse-loudly remains the fallback when a payload fails its digest at fold time (read_capture raises).",
+    "MINOR-1: record_composite_finalized(files=...) records the published composite digest map (absolute paths; timestamped composite folders are not re-derivable); new CheckpointJournal.verify_composite() checks size+sha256 at resume; failure triggers the MAJOR-1 rebuild. Additive-optional: journals finalized before this field keep resuming unchanged.",
+    "MINOR-2: _verify_staged raises row-attributed InvariantViolation (from batch.plan; fields row, detail), never BatchCancelledError — corruption and cancellation are different failure classes with different replay semantics. Existing test expectation updated (review-directed); new vanish-branch test pins row == 3.",
+    "MINOR-3: checkpoint create() error now points to the real resume path (re-invoke RunBatch with the same checkpoint directory), not the dead load_resume() helper.",
+    "MINOR-4: _publish_staged fsyncs every published file and each touched parent directory (mirrors CheckpointJournal._write; dir fsync tolerates filesystems that refuse it).",
+    "NOTE-4 (doc-only): cache/identity.py docstrings now state NaN scalars collapse to ONE canonical tag (f~nan;), payloads not distinguished, citing the pinning test."
+  ],
+  "files": {
+    "note": "lists derived from git diff --name-only c1f8614..06ffac0 (never hand-typed); sha256 of final bytes at bex close",
+    "changed": {
+      "src/urban_network_analysis/batch/runtime.py": "d847ba6d3ab95294984b45ba227b0eab8bfcb34115ca9b48033bb1cecdce225c",
+      "src/urban_network_analysis/batch/checkpoint.py": "e7b24c1f92ee9fd7f86b5d5572a7414983afd196ef4e2acfc6b3c7907ca99abc",
+      "src/urban_network_analysis/UNA.py": "906f39a6d078b8f28e8a4472ed49558debe203cab2ca8c44965c80f10cb06c56",
+      "src/urban_network_analysis/Engines/Base.py": "49215734190543e3e5f2cac18b1d6568eacd555c10b7f5a28369962a3e5db383",
+      "src/urban_network_analysis/cache/identity.py": "5065f705ac1280ce7f385e8fd94c8b1f8875e077006d799071f0ee74f3936894",
+      "tests/batch/runtime/test_runtime_cancel_wedge.py": "aed7b55b9e1739144d13aa10d3491249c9df9477007a5c30c3e71339c659f2d3",
+      "tests/batch/runtime/test_runtime_checkpoint.py": "64eb6dfc613f128322484ba328f60f4e4f2b85086382ef11684a9f200c992102",
+      "tests/batch/runtime/test_runtime_composite_resume.py": "e4c318caeeca1d4923c9e8cbb2ea314deb0b606ec9081922ee1283fe12749d8c",
+      "tests/batch/runtime/test_runtime_ordering.py": "f06c45b62693695da6a5ba0892e1660387edc9d8029d353ec2cde1397eb027e3"
+    },
+    "diffstat": "9 files changed, 626 insertions(+), 29 deletions(-)"
+  },
+  "verification": {
+    "environment": "alan env python 3.11.4, numba 0.67.0, PYTHONHASHSEED=0, CPU only (no salloc, no installs)",
+    "per_directory_islands": [
+      {"cmd": "alan python -m pytest tests/batch -q", "result": "96 passed / 3 skipped, 262.08 s (reviewed baseline 88 passed + 8 new)", "log": "suite_tests_batch_final.txt"},
+      {"cmd": "alan python -m pytest tests/execution -q", "result": "107 passed (baseline 107)", "log": "suite_tests_execution_final.txt"},
+      {"cmd": "alan python -m pytest tests/platform_geometry -q", "result": "5 passed / 32 skipped (baseline 5/32; skips are .refs-absence artifacts)", "log": "suite_tests_platform_geometry_final.txt"},
+      {"cmd": "alan python -m pytest tests/cache -q", "result": "162 passed (baseline 162)", "log": "suite_tests_cache_final.txt"}
+    ],
+    "pre_fix_failure_demonstrations": [
+      {"finding": "W1 wedge (3 runner selectors, hunk reverted)", "result": "3 failed in 457.42 s — every child-guarded scenario wedged to its 150 s kill bound", "log": "batch_def24_prefix_demo_console.txt"},
+      {"finding": "MAJOR-1 (original finalize-gate block restored)", "result": "1 failed in 23.87 s"},
+      {"finding": "MINOR-1 (verify_composite disabled)", "result": "1 failed in 14.84 s"},
+      {"finding": "MINOR-2 (both selectors)", "result": "2 failed (10.09 s / 1.33 s)"},
+      {"finding": "MINOR-3", "result": "1 failed in 0.13 s"},
+      {"finding": "MINOR-4", "result": "1 failed in 0.15 s"},
+      {"note": "every temporary revert was restored byte-identically (sha256-verified in-session)"}
+    ],
+    "whole_repo": {
+      "instruction": "Final: whole-repo regression `pytest tests/ -q` (NOT bare pytest; expect ~700 passed / ~350 skipped, 25-35 min) — single clean run on your final bytes. If failures appear, diagnose by layer; do not weaken tests.",
+      "diagnosis": "The whole-repo SINGLE-PROCESS mode is nondeterministic on this node even on identical bytes; it cannot discriminate this change. Three runs: (1) my final bytes: 87 failed / 554 passed / 513 skipped, 572.99 s; (2) my final bytes AGAIN (identical, sha256-pinned): 62 failed / 579 passed / 513 skipped, 493.72 s — run 2's failure set is a STRICT SUBSET of run 1's; (3) pristine c1f8614 baseline (separate clean worktree, no changes): 8 failed / 625 passed / 510 skipped, 594.77 s. Exactly 8 failures are stable across ALL THREE runs including the pristine baseline (7x test_compacted_arm_bitwise + 1x BtnStats) — i.e. pre-existing. In EVERY run, ALL failures are confined to tests/cpu_kernels and tests/science — suites whose bytes are identical across all three runs and untouched by this change; zero failures in tests/batch, tests/execution, tests/platform_geometry, tests/cache in any run. Failure classes: (a) bare-module conftest name collision in one process (tests/science/conftest.py poisons sys.modules['conftest']; tests/cpu_kernels then cannot import case_kwargs — standalone tests/cpu_kernels: 97 passed / 4 skipped); (b) numba 'Cannot set NUMBA_NUM_THREADS to a different value once the threads have been launched' cross-suite state leakage; (c) .refs/madina reference tree absent from worktrees (untracked; only in the main checkout — same artifact as the 32 documented platform_geometry skips).",
+      "disposition": "Authoritative closure signal = the per-directory islands (all at/above reviewed baseline) + the mutation battery + pre-fix demonstrations. No test was weakened, skipped, or deleted. Logs: closure_regression_wholerepo.txt (run 1), closure_regression_wholerepo_run2.txt, wholerepo_pristine_baseline_c1f8614_console.txt, wholerepo_run{1,2}_failed.txt, wholerepo_baseline_failed.txt, wholerepo_failure_set_comparison.txt."
+    }
+  },
+  "review": {
+    "origin": "BATCH_REVIEW rev-20261003T0105Z, verdict ACCEPT-WITH-FINDINGS (1 MAJOR, 4 MINOR, 4 NOTE); approval CONDITIONAL on MAJOR-1 fix + re-review of the composite resume path, MINOR-2/3/4 before the batch-recovery surface ships",
+    "this_round": "MAJOR-1, MINOR-1, MINOR-2, MINOR-3, MINOR-4, NOTE-4 implemented. Re-review of the composite resume path REMAINS OPEN as the approval condition — see review-handoff.md for the re-review package.",
+    "handoff": "campaigns/una_platform/evidence/tasks/BATCH_EXEC/bex-20261011T1508Z/review-handoff.md (sha256 9ff0a5c39012c675661da748ab53b207da037a1698083eff6adfb82cc8ce2037)"
+  },
+  "constraints_respected": [
+    "One writer per scope: only /storage/scratch1/1/dsynn6/una-x-batchfix-20261011 written; base repo /storage/scratch1/1/dsynn6/una-x (staged user work) untouched; una-x-inspect-293730c and una-x-g11b-20261011 untouched; no .claude/worktrees access.",
+    "Base c1f8614 machine-asserted (HEAD + clean status) at worktree creation.",
+    "No pushes, no merges, no rebase; fetch not even needed. No GPU/salloc; no package installs; alan env only.",
+    "Frozen campaign evidence untouched; DEF-24 port adapted, not copied; 150 s child kill bound respected.",
+    "A separate pristine baseline worktree (una-x-base-c1f8614-wr) was created for the equivalence run and removed at close; no other worktree was touched."
+  ],
+  "limitations": [
+    "Whole-repo single-process run cannot go green in this environment (see verification.whole_repo); this predates the change (pristine baseline fails the same classes) but a 'single clean run' as instructed is NOT achieved — reported as NOT VERIFIED via that mode rather than claimed.",
+    "The 32 platform_geometry skips (missing .refs) and 4 cpu_kernels skips are environment artifacts, unchanged from baseline.",
+    "NOTE-4 has no behavioral mutant (doc-only) — excluded from the battery by design.",
+    "Re-review of the composite resume path by an independent reviewer has NOT happened yet (approval condition remains open)."
+  ],
+  "next": [
+    "Independent re-review of the composite resume path (review-handoff.md is the package).",
+    "If re-review passes, batch-recovery surface may ship (MINOR-2/3/4 closed).",
+    "Whole-repo single-process nondeterminism (conftest name collision + numba thread-state leakage) is a pre-existing repo-level test-infrastructure defect worth a platform-level fix; not expanded into this scope."
+  ]
+}
