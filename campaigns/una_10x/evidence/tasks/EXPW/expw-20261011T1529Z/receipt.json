@@ -1,0 +1,205 @@
+{
+ "schema": "una-x-expw-post-closure-candidate-receipt-1",
+ "task": "writer_concurrency consumption candidate (Stage 1 intra-row export format overlap; Stage 2 cross-row pipelining)",
+ "lineage": "post-closure recorded candidate on perf/exp-writer-1 (parent f2ea398, una-10x); campaign una_10x status target_unmet/do_not_merge UNTOUCHED",
+ "impl_commits": {
+  "stage1": "6f17c55cff30a5f3c7836f04421f24d9fb6a3164"
+ },
+ "base_pin": "f2ea398219111df11ba05839e617ecca5e14f2ed",
+ "runner_unchanged": true,
+ "def24": "ab357c6 NOT an ancestor (merge-base rc=1) - pool implements DEF-24 discipline itself (documented in code)",
+ "stage1": {
+  "probe_effect_ratio": 0.9671060720158601,
+  "probe_walls": {
+   "def": [
+    25.2496,
+    25.0933
+   ],
+   "wc4": [
+    26.0761,
+    25.9791
+   ]
+  },
+  "drift_sd": 0.11707634983379232,
+  "moe_log": 0.0859871211609973,
+  "ln_effect": 0.03344709769774881,
+  "gate": "POWER_LIMITED_STOP",
+  "verdict": "NOT SHIPPABLE AS A PERFORMANCE CHANGE \u2014 power-limited STOP with a negative measured probe effect; the wc default stays 1 and the knob remains opt-in byte-identical consumption, recorded as a post-closure candidate with NO gate pass"
+ },
+ "stage2": {
+  "residual_s": 4.9148,
+  "residual_over_wall": 0.1888303185848868,
+  "disposition": "NOT IMPLEMENTED \u2014 reopened by threshold but the implementation is not attempted: (a) the only measured overlap-of-export effect on these trees/this host is NEGATIVE (probe -3.40%, both pairs consistent) \u2014 Stage 2 relies on the same export-overlap mechanism inside a single-GIL t1 worker; (b) the 18.88% residual includes the parent-side commit+staging-scan slice Stage 2 cannot remove, and E1's tmpfs arm (D1T not faster than D1) already proved the span is CPU-side, so the plausible recoverable slice is far below the measured 8.6% log-scale power floor of the 7-window gate on this host; (c) per the round-2 law: record the power-limited no-claim rather than burn windows on a foreseeably uncertifiable gate"
+ },
+ "laws": {
+  "default_path_law_cand_def_vs_base_drift_w1": true,
+  "default_path_law_cand_def_vs_base_drift_w4": true,
+  "consumption_identity_cand_def_vs_cand_wc4_probe_w1": true,
+  "serial_vs_parallel_exports_64": true,
+  "serial_census_missing_infra_only": true
+ },
+ "census_law_all_export_legs_ok": true,
+ "tests": {
+  "new_unit": "tests/batch/runtime/test_writer_concurrency.py 8 passed",
+  "suite": "pytest tests/batch 99 passed / 0 failed at commit 6f17c55 bytes"
+ },
+ "raw_evidence_dir": "campaign_runs/una_10x/expw-20261011T1529Z/ (uncommitted per P00 raw-evidence law)",
+ "raw_index_sha256": {
+  "PREREGISTRATION.md": [
+   6748,
+   "e5de0d89af4be6dd43a3b23d2311dacf0b79faae4ac8a2a13308ee9075f314ac"
+  ],
+  "driver.console.txt": [
+   4172,
+   "ebe56391c3a9dfaebb979d0e81cb68851ea5cd9df770f34e29987ab26b72c913"
+  ],
+  "expw_driver.py": [
+   15314,
+   "06024b44912992998aba9a1fb8f128be903eecfd14222c559dfed922ff9aa7d7"
+  ],
+  "expw_finalize.py": [
+   8928,
+   "888db5cc0dd73e097997e829064ee86448a679b743d250b4222faf7d14d43c20"
+  ],
+  "leg_drift_w1.console.txt": [
+   932,
+   "1d1038efffa80e8bdef05d839c2c8bf1e1bc5d9bb3e7ae6025584b54bf161743"
+  ],
+  "leg_drift_w1.json": [
+   27666,
+   "ec3fe6f9af5e99712bf17cf20680b2c0ca91ae38e068f1279e5cb1d15918e475"
+  ],
+  "leg_drift_w2.console.txt": [
+   932,
+   "6a713f1cc1668ba992a996eb597a5f10ce01a55e32c2efe2661b816a17dd4a02"
+  ],
+  "leg_drift_w2.json": [
+   27666,
+   "d7257ebd3d38aa4c3f0bc2dc4caa874d5b58047e31c7faafba379d5b2194af58"
+  ],
+  "leg_drift_w3.console.txt": [
+   932,
+   "7c388f5e9281a63c0f3a48420039aead741c1f291f4a3cb18ef76a51053d5264"
+  ],
+  "leg_drift_w3.json": [
+   27665,
+   "2d6b974dfc183ce9ad3c4fce15f35e9d88cb849a1e90ff691ccde73d7687a072"
+  ],
+  "leg_drift_w4.console.txt": [
+   932,
+   "7a1ec5244df1ee07ad6557a2c4b457d41ba4c0f33c02c20d253795516e604bae"
+  ],
+  "leg_drift_w4.json": [
+   27666,
+   "a1794f20971d5a1e28bb609097c327d4e4f95f4a00ecff42ec95c0302d18ef94"
+  ],
+  "leg_probe_def_w1.console.txt": [
+   942,
+   "7f24913190677db622ce5769183bb62277ca0dc34a84a4b22869abdd91c75a15"
+  ],
+  "leg_probe_def_w1.json": [
+   27672,
+   "7228293bf375a67d4b3db300a4a6d41ac6355267fbfa6249ca973651c7392e10"
+  ],
+  "leg_probe_def_w2.console.txt": [
+   942,
+   "6ea3ca32e19810c2d47a229e193ccd018c04bd51f6f3d475fb667e33ed4d90c0"
+  ],
+  "leg_probe_def_w2.json": [
+   27673,
+   "cc43d706a8dd8d81da80da30e40d0a2348494c034eaeb8f01af7261513c0ca80"
+  ],
+  "leg_probe_wc4_w1.console.txt": [
+   939,
+   "1745645793a84ce3952f2923239d6b0cf0fe26b4653249e1f30ac327f91bd452"
+  ],
+  "leg_probe_wc4_w1.json": [
+   27673,
+   "6611118dc3d0d8e1760940835fee260df110485786183edad643aaf62b3d7d3e"
+  ],
+  "leg_probe_wc4_w2.console.txt": [
+   939,
+   "658e215d2ddfd762d63a966fd3eaf6baa2eea85b094c669e19ee009656802206"
+  ],
+  "leg_probe_wc4_w2.json": [
+   27673,
+   "dd9c81da5cbfbb02c01f2473de74adedfc2f13a4e40358363e0523b8c1fa19f6"
+  ],
+  "leg_resid_d2_w1.console.txt": [
+   942,
+   "3497d5c6b97d52889d9a1529e4ebb426842846289e017dfa7114b5e8e2f04989"
+  ],
+  "leg_resid_d2_w1.json": [
+   16446,
+   "144c3b1c9d24c8ad30a369af1bcd7ff38dbbf911f0fd4b5810b43cdb66516b48"
+  ],
+  "leg_resid_d2_w2.console.txt": [
+   942,
+   "020cf44d3c0bbe26bfef9e4398c563b19d36171376432c12ddd4cb2dfb6b99f2"
+  ],
+  "leg_resid_d2_w2.json": [
+   16445,
+   "478fc0b7df43befc1b9834e58aabd340d687b5a4d11522fad4d2f3872d311891"
+  ],
+  "leg_resid_d2_w3.console.txt": [
+   942,
+   "f8e7f917f163d201e58d3ebe7f396ba1da510b10052f7843b68d8783a0fa0c17"
+  ],
+  "leg_resid_d2_w3.json": [
+   16446,
+   "3bffbd7ad2212897b96f0cb8639e2014ce013b7da8c7d712e4c35b5ddc0f28b7"
+  ],
+  "leg_state_def.console.txt": [
+   927,
+   "4e81aa186263575a28d4e3c03f4e40f0d7f138358d5a9a12d7c21fe2425a7a6b"
+  ],
+  "leg_state_def.json": [
+   27667,
+   "8641d463ed59a0ec10734b7c5778885fadcca6faca1ed89d39e406597d930d6f"
+  ],
+  "leg_state_serial.console.txt": [
+   916,
+   "f7aec403eacc53e713119efc3e1f9dee23f7b732f36518256e46a4db9c2257d4"
+  ],
+  "leg_state_serial.json": [
+   17502,
+   "f6ce830419f52e3da9cdc632b50ab64f648b82d64bae582695a71acbd0c885ea"
+  ],
+  "leg_warmup_base.console.txt": [
+   938,
+   "ff2ef9050d0ece67d6e8fd51bef34157d820f55a980836a433ca181b18f54422"
+  ],
+  "leg_warmup_base.json": [
+   13568,
+   "73ce79e4334ffa05847da922175185145aa3e544a457f0524de5cd2c5e625855"
+  ],
+  "leg_warmup_cand.console.txt": [
+   928,
+   "a7a9bb21e07d24b480f9895e107d7af0b660df6aff2ee182db76f8d43053bb63"
+  ],
+  "leg_warmup_cand.json": [
+   13568,
+   "dfadc96fddcc2864b4ef4e6f5b129b8718cd82518b15293ba2a370b24fe0ce48"
+  ],
+  "local_audit_manifest.csv": [
+   8435,
+   "235405de67cf22dc76c3e89bd0c3d198927d0ed0870172a0e86b942fecb8a60a"
+  ],
+  "local_audit_manifest_noexport.csv": [
+   8721,
+   "eb3bfa5cf665d01813fdf58ea949995a3992d9fc51e6782c839ef5222c0408c0"
+  ],
+  "reference_census_normalized.json": [
+   17691,
+   "84773b785c5cf0dccc8a0258e558c1efdaa8bf06ad89476416dca701b7ddfd95"
+  ],
+  "results.json": [
+   8966,
+   "5e1fea1d856c0d9b2c6f74e5370aafdcc13a9429b6d292613d3ced8f4e0046c0"
+  ],
+  "warmup2_template_copy.csv": [
+   840,
+   "1f45a465fb15741b3f7fa6e5139cf8598ccbe7a6c40a17bf35ea1ec4f3ca2f41"
+  ]
+ }
+}
