@@ -1,6 +1,8 @@
 
 from __future__ import annotations
 import os
+from concurrent.futures import ThreadPoolExecutor
+
 import numpy as np
 import pandas as pd
 import geopandas as gpd
@@ -19,6 +21,76 @@ from ..Settings import Settings
 # composite-output export — can reuse them without an inheritance
 # relationship they shouldn't have.
 # ──────────────────────────────────────────────────────────────────────
+
+def _writer_concurrency_of(carrier) -> int:
+    """Runtime-only writer_concurrency transport (batch worker route).
+
+    The batch worker pins a private ``_writer_concurrency`` attribute on
+    the row's Topology (Settings is a validated dataclass — extra
+    attributes raise in ``Settings.Validation()``) and pops it again
+    before any state bundle is transported (batch/worker.py) — it is
+    never a serialized field and never observable state.  Every other
+    caller (serial route, parent-side composite export) sees no attribute
+    and gets 1: the exact historical inline write path (default-path
+    bitwise law).
+    """
+    wc = getattr(carrier, "_writer_concurrency", 1)
+    try:
+        wc = int(wc)
+    except (TypeError, ValueError):
+        return 1
+    return wc if wc >= 1 else 1
+
+
+def _run_write_jobs_parallel(jobs, writer_concurrency: int) -> bool:
+    """Overlap independent format writes on a bounded thread pool.
+
+    ``jobs`` is an ordered list of ``(run, log)`` callables in the exact
+    serial publication order (feather -> csv -> geojson).  All writes are
+    submitted, ALL are joined, and only then are the log lines emitted by
+    walking the jobs in serial order — so the log order is the serial
+    order regardless of write completion order, and no log line ever
+    races a still-running write.  The first failure in serial order is
+    re-raised after the pool has fully drained.
+
+    DEF-24 discipline (this lineage predates the DEF-24 queue-hygiene
+    fix, verified: ab357c6 is NOT an ancestor of the candidate base): the
+    pool is explicitly ``shutdown(wait=True)`` in a ``finally`` BEFORE any
+    exception propagates, and every submitted future's result is consumed,
+    so no future is ever abandoned and ``concurrent.futures``' atexit
+    thread join cannot wedge.  Bounded by construction: at most
+    ``min(writer_concurrency, len(jobs))`` threads and ``len(jobs) <= 3``
+    tasks.  Threads are joined before return — which is also what makes
+    the caller's subsequent staging scan safe.
+
+    Known, contained failure-path divergence: the serial path stops at
+    the first failed write, so later formats are never attempted; here
+    every submitted write runs to completion, so a failing row may have
+    written a later format the serial path would not have.  Batch workers
+    stage every write into a private staging directory that is discarded
+    when a row fails, so the extra artifacts never publish.
+    """
+    n = max(1, min(int(writer_concurrency), len(jobs)))
+    pool = ThreadPoolExecutor(max_workers=n, thread_name_prefix="una-writer")
+    try:
+        futures = [pool.submit(run) for run, _log in jobs]
+        outcomes = []
+        for fut in futures:
+            try:
+                fut.result()
+                outcomes.append(None)
+            except BaseException as exc:    # noqa: BLE001 — re-raised below
+                outcomes.append(exc)
+    finally:
+        pool.shutdown(wait=True)
+    wrote_any = False
+    for (_run, log), exc in zip(jobs, outcomes):
+        if exc is not None:
+            raise exc
+        log()
+        wrote_any = True
+    return wrote_any
+
 
 def resolve_output_folder(settings: Settings, folder_prefix: str = "") -> str:
     """Resolve settings.output_folder (+ optional timestamp subfolder), create it, return it.
@@ -55,6 +127,7 @@ def write_gdf_outputs(
     write_csv: bool = True,
     write_geojson: bool = True,
     csv_drop_geometry: bool = True,
+    writer_concurrency: int = 1,
 ) -> bool:
     """Write `gdf` to feather/csv/geojson per the settings.output_* flags.
 
@@ -63,9 +136,68 @@ def write_gdf_outputs(
     wording; leave "" for a plain "Saved feather → ...".  Returns whether
     anything was written, so callers needing a fallback-format guarantee
     (e.g. UNA.RunBatch's composite export) can act on it.
+
+    ``writer_concurrency`` > 1 overlaps the per-format writes on a bounded
+    thread pool (same bytes, logs emitted after the join in serial order);
+    callers derive it from the runtime-only Topology transport via
+    :func:`_writer_concurrency_of`.  The default of 1 is the exact
+    historical inline path.
     """
     wrote_any = False
     tag = f"{desc} " if desc else ""
+
+    if writer_concurrency > 1:
+        n_formats = (
+            int(bool(write_feather and settings.output_feather))
+            + int(bool(write_csv and settings.output_csv))
+            + int(bool(write_geojson and settings.output_geojson
+                       and "geometry" in gdf.columns)))
+        if n_formats > 1:
+            jobs = []
+            if write_feather and settings.output_feather:
+                path = os.path.join(output_folder, file_name + ".feather")
+                jobs.append((
+                    lambda gdf=gdf, path=path: gdf.to_feather(path),
+                    lambda path=path: logger.log(
+                        label, f"Saved {tag}feather → {path}", v=1),
+                ))
+            if write_csv and settings.output_csv:
+                path = os.path.join(output_folder, file_name + ".csv")
+                out = (gdf.drop(columns="geometry")
+                       if (csv_drop_geometry and "geometry" in gdf.columns)
+                       else gdf)
+                jobs.append((
+                    lambda out=out, path=path: out.to_csv(
+                        path, sep=settings.csv_delimiter, index=False),
+                    lambda path=path: logger.log(
+                        label, f"Saved {tag}CSV → {path}", v=1),
+                ))
+            if write_geojson and settings.output_geojson \
+                    and "geometry" in gdf.columns:
+                path = os.path.join(output_folder, file_name + ".geojson")
+
+                def _write_geojson(gdf=gdf, path=path):
+                    try:
+                        import pyogrio as _pyogrio
+                        _pyogrio.write_dataframe(
+                            gdf, path, driver="GeoJSON",
+                            layer_options={"COORDINATE_PRECISION": "6"},
+                        )
+                    except ImportError:
+                        gdf.to_file(path, driver="GeoJSON")
+
+                jobs.append((
+                    _write_geojson,
+                    lambda path=path: logger.log(
+                        label, f"Saved {tag}GeoJSON → {path}", v=1),
+                ))
+            # GDAL's GeoJSON driver embeds the output file's BASENAME in
+            # the "name" member — writes always target the final staging
+            # relpath (never a temp/thread-tagged name); the coordinator's
+            # relpath-preserving publish keeps the bytes equal.
+            return _run_write_jobs_parallel(jobs, writer_concurrency)
+        # a single enabled format has nothing to overlap — historical
+        # inline path below.
 
     if write_feather and settings.output_feather:
         path = os.path.join(output_folder, file_name + ".feather")
@@ -94,6 +226,77 @@ def write_gdf_outputs(
         wrote_any = True
 
     return wrote_any
+
+
+def _export_results_parallel(
+    engine, settings: Settings, output_folder: str, file_name: str,
+    results_data: dict,
+) -> bool:
+    """Overlap ExportAccessibilityResults' format writes when the row's
+    runtime-only ``_writer_concurrency`` transport is > 1 (batch worker
+    route).  Builds the same frames and performs the same writes as the
+    inline serial body, submits them in the serial publication order
+    (feather -> csv -> geojson), joins, then emits the same log lines in
+    that order.  Returns False (caller falls through to the untouched
+    inline body) unless more than one format is enabled — a single
+    enabled format has nothing to overlap.
+    """
+    wc = _writer_concurrency_of(engine.topology)
+    if wc <= 1:
+        return False
+    has_geometry = 'geometry' in results_data
+    n_formats = (
+        int(bool(settings.output_feather))
+        + int(bool(settings.output_csv))
+        + int(bool(settings.output_geojson and has_geometry)))
+    if n_formats <= 1:
+        return False
+
+    if has_geometry:
+        results_gdf = gpd.GeoDataFrame(
+            results_data,
+            crs=engine.topology.origins.crs
+            if hasattr(engine.topology.origins, 'crs') else None)
+    else:
+        results_df = pd.DataFrame(results_data)
+
+    jobs = []
+    if settings.output_feather:
+        results_path = os.path.join(output_folder, f"{file_name}.feather")
+        if has_geometry:
+            jobs.append((
+                lambda g=results_gdf, p=results_path: g.to_feather(p),
+                lambda p=results_path: engine.logger.log(
+                    'Export Results',
+                    f"Combined results (with geometry) exported to {p}",
+                    v=2),
+            ))
+        else:
+            jobs.append((
+                lambda d=results_df, p=results_path: d.to_feather(p),
+                lambda p=results_path: engine.logger.log(
+                    'Export Results',
+                    f"Combined results exported to {p}", v=2),
+            ))
+    if settings.output_csv:
+        csv_path = os.path.join(output_folder, f"{file_name}.csv")
+        frame = results_gdf if has_geometry else results_df
+        jobs.append((
+            lambda f=frame, p=csv_path: f.to_csv(
+                p, index=False, sep=settings.csv_delimiter),
+            lambda p=csv_path: engine.logger.log(
+                'Export Results', f"Combined results exported to {p}", v=2),
+        ))
+    if settings.output_geojson and has_geometry:
+        geojson_path = os.path.join(output_folder, f"{file_name}.geojson")
+        jobs.append((
+            lambda g=results_gdf, p=geojson_path: g.to_file(
+                p, driver='GeoJSON'),
+            lambda p=geojson_path: engine.logger.log(
+                'Export Results', f"Combined results exported to {p}", v=2),
+        ))
+    _run_write_jobs_parallel(jobs, wc)
+    return True
 
 
 class Base:
@@ -174,6 +377,16 @@ class Base:
         
         # Create combined results dataframe
         if results_data:
+            # Runtime-only writer_concurrency transport (batch worker
+            # route): overlap the format writes when the row requested
+            # it; anything else falls through to the inline serial body
+            # below, untouched.
+            if _export_results_parallel(
+                    self, settings, output_folder, file_name, results_data):
+                self.logger.log('ExportAccessibilityResults',
+                                f"All results exported to {output_folder}",
+                                v=1)
+                return
 
             if 'geometry' in results_data:
                 results_gdf = gpd.GeoDataFrame(results_data, crs=self.topology.origins.crs if hasattr(self.topology.origins, 'crs') else None)
@@ -305,7 +518,10 @@ class Base:
             cols[col_name + "_BA"] = self.edge_flow_BA
         gdf = gpd.GeoDataFrame(cols, geometry=net.geometry.values, crs=crs)
 
-        write_gdf_outputs(gdf, settings, output_folder, file_name, self.logger, "Flow")
+        write_gdf_outputs(gdf, settings, output_folder, file_name, self.logger,
+                          "Flow",
+                          writer_concurrency=_writer_concurrency_of(
+                              self.topology))
 
         if settings.flow_compute_node_flow and self.node_flow is not None:
             self._write_network_nodes_flow(
@@ -358,6 +574,8 @@ class Base:
         write_gdf_outputs(
             gdf, settings, output_folder, out_name, self.logger, "Flow",
             desc="network-nodes", write_csv=False,
+            writer_concurrency=_writer_concurrency_of(
+                self.topology),
         )
         nz = int((node_bw > 0).sum())
         self.logger.log("Flow",
@@ -383,6 +601,8 @@ class Base:
         write_gdf_outputs(
             gdf, settings, output_folder, out_name, self.logger, "Flow",
             desc="observer-points", write_csv=False,
+            writer_concurrency=_writer_concurrency_of(
+                self.topology),
         )
 
     def _write_obstacle_points_usage(
@@ -405,6 +625,8 @@ class Base:
         write_gdf_outputs(
             gdf, settings, output_folder, out_name, self.logger, "Flow",
             desc="obstacle-usage", write_csv=False,
+            writer_concurrency=_writer_concurrency_of(
+                self.topology),
         )
 
     def _write_destinations_used_origins(self,
@@ -448,6 +670,8 @@ class Base:
         write_gdf_outputs(
             gdf, settings, output_folder, out_name, self.logger, "Flow",
             desc="destinations-used-origins", write_csv=False,
+            writer_concurrency=_writer_concurrency_of(
+                self.topology),
         )
         n_used = int((n_used_origins > 0).sum())
         self.logger.log("Flow",

@@ -50,6 +50,35 @@ __all__ = ["RowJob", "RowResult", "pool_main"]
 
 _CHUNK = 1 << 20
 
+# Runtime-only writer_concurrency transport (post-closure candidate
+# expw-20261011): the declared ExecutionOptions field has no serialized
+# Settings representation (ApplyRow accepts only the four serialized
+# execution.* dotted keys), so the worker reads it from its inherited
+# environment ONCE per process.  Absent/unset = 1: the row's export takes
+# the exact historical inline write path (default-path bitwise law).
+# Any concurrent writer pool this drives lives inside Engines/Base.py and
+# follows the DEF-24 discipline (explicit bounded shutdown in finally, no
+# abandoned futures) — this lineage predates the DEF-24 fix itself.
+_WRITER_CONCURRENCY_ENV = "UNA_BATCH_WRITER_CONCURRENCY"
+
+
+def _load_writer_concurrency() -> int:
+    """Parse ``_WRITER_CONCURRENCY_ENV`` once; invalid values fail loudly."""
+    raw = os.environ.get(_WRITER_CONCURRENCY_ENV)
+    if raw is None or not raw.strip():
+        return 1
+    try:
+        wc = int(raw.strip())
+    except ValueError:
+        raise ValueError(
+            f"{_WRITER_CONCURRENCY_ENV}={raw!r} is not an integer") from None
+    if wc < 1:
+        raise ValueError(f"{_WRITER_CONCURRENCY_ENV}={wc} must be >= 1")
+    return wc
+
+
+_writer_concurrency = 1
+
 
 @dataclass(frozen=True)
 class RowJob:
@@ -405,6 +434,15 @@ def _run_row(job: RowJob) -> RowResult:
         s.__dict__.update(dict(job.settings_state))
         _bind_and_gate(s, job)
 
+    # Runtime-only writer_concurrency transport: pinned on the row's
+    # Topology (Settings is a validated dataclass — unexpected attributes
+    # raise in Settings.Validation()) so the export writers in
+    # Engines/Base.py consume it, and popped again below BEFORE the state
+    # bundle or settings snapshot is taken — it must never be transported
+    # (never observable state, exactly like topology._prepared_session).
+    if _writer_concurrency > 1:
+        una.topology._writer_concurrency = _writer_concurrency
+
     # -- staging redirect (runtime-only; public value restored below) ------
     public_output_folder = s.output_folder
     os.makedirs(job.staging_dir, exist_ok=True)
@@ -429,6 +467,7 @@ def _run_row(job: RowJob) -> RowResult:
             engine = una.accessibility
     timings["run_s"] = time.perf_counter() - t1
     _inject("post_run", job.inject)
+    una.topology.__dict__.pop("_writer_concurrency", None)
 
     # Detach the cohort wrapper before anything observes or transports
     # the engine: the rehydration bundle pickles the engine, and the
@@ -596,6 +635,11 @@ def pool_main(inbox, outbox, ready, threads_per_worker: int = 1,
     for key, value in _thread_env(threads_per_worker).items():
         os.environ[key] = value
     os.environ["_UNA_BATCH_IN_WORKER"] = "1"
+    # Runtime-only writer_concurrency transport: read once per worker
+    # process (see _WRITER_CONCURRENCY_ENV above); consumed per row in
+    # _run_row via the Settings private attribute the export writers read.
+    global _writer_concurrency
+    _writer_concurrency = _load_writer_concurrency()
     # P01M pool-loop telemetry: a recorder SEPARATE from the in-row one in
     # _run_row (whose events ride the RowResult).  These spans stream to a
     # per-process JSONL file as they happen — result_put cost is written
