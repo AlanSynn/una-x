@@ -31,5 +31,69 @@
  ],
  "not_done": "qualification/speed calibration (native_capabilities.qualified stays False, evidence_ref None); ISA-variant dispatch (NATIVE_SIMD); whole-repo regression run (untouched scopes: zero edits outside the new surface; batch/cache suites do not import the native package)",
  "raw_evidence": "untracked, same path: suite_native_core_finalbytes.txt, suite_cpu_kernels_guard.txt, suite_native_core_asan_ubsan.txt (full sanitizer log), suite_native_core_island_history.txt, probe_core_self_identification.txt, binary_identity_and_variance.txt, commit_base.txt, binary/ (shipped .so raw bytes + pair code sections)",
- "bans": "No pushes, merges to main, releases, purchases, or credential/provider changes. No historical evidence touched. Engines/, _trace_access_scratch.py, batch/cache sources, tests/batch, tests/cache untouched."
+ "bans": "No pushes, merges to main, releases, purchases, or credential/provider changes. No historical evidence touched. Engines/, _trace_access_scratch.py, batch/cache sources, tests/batch, tests/cache untouched.",
+ "amendment_timing": {
+  "requested_by": "team-lead amendment (gate law: build time + end-to-end timings RECORDED; a record under disclosed load satisfies honestly)",
+  "disclosure": "ALL numbers below are LOAD-DISCLOSED and INFORMATIONAL: single-core compile / in-process walls on a shared node with steady other-tenant load; NOT gate comparisons, NOT qualification, no speed claim",
+  "build": {
+   "invocation": "rm _native_core*.so; /usr/bin/time -v env PYTHON=<alan python> CXX=g++ bash build.sh",
+   "wall_s": 13.44,
+   "user_s": 12.57,
+   "sys_s": 0.45,
+   "max_rss_kbytes": 446472,
+   "load1_start": 18.16,
+   "load1_end": 18.85,
+   "rebuilt_binary_whole_sha256": "053b73f387084f8f73acaa30b208c37da272b783a235c620520a84afeffbc650",
+   "rebuilt_binary_code_sections_sha256": "93fa5e6c3d5e151f916d5c35d446be89c6a7be06731467cfb587da3e632733f9 (identical to the committed shipped digest - loadable bytes unchanged; whole-file delta is XALT link metadata only)",
+   "island_on_rebuilt_binary": "110 passed / 4 skipped / 0 failed (8.06 s, load ~18)"
+  },
+  "end_to_end_native_vs_fallback": {
+   "design": "route_scope_access('una_legacy', ...) native-engaged vs the same route with UNA_NATIVE_CORE_DISABLE=1 (pinned pure-Python oracle fallback); arms alternate (n,f) x 3 after one untimed warmup each; perf_counter; 1-min load recorded per rep; bitwise reach equality asserted between arms per case; probe script + raw JSON in the evidence dir",
+   "battery_small_seed5": {
+    "shape": "V=14 E=33 d_count=6 o_count=1 cutoff=25.0",
+    "native_walls_s": [
+     0.0004,
+     0.0002,
+     0.0002
+    ],
+    "fallback_walls_s": [
+     0.0002,
+     0.0002,
+     0.0002
+    ],
+    "load1": 17.79,
+    "reading": "both arms overhead-bound at toy scale (route/loader/frame costs dominate); no signal"
+   },
+   "row0_scale_V50k_deg4": {
+    "shape": "V=50000 E=200000 d_count=64 o_count=1 cutoff=25.0 (A3 route)",
+    "native_walls_s": [
+     0.1374,
+     0.1373,
+     0.1314
+    ],
+    "fallback_walls_s": [
+     1.0702,
+     1.0201,
+     0.9763
+    ],
+    "load1": 18.05,
+    "reading": "end-to-end native route ~7x faster than the portable fallback route on this case, load-disclosed; the native arm = native search+adjust + canonical numba fold plan, the fallback arm = the oracle's own pure-Python search + portable fold (production fallback path); attribution beyond 'route vs route' is NOT claimed from this probe"
+   }
+  },
+  "simd_headroom_judgment": {
+   "verdict": "No plausible ATTRIBUTED SIMD headroom identified in the shipped native surface under the characterized regime; NATIVE_SIMD has no ready target there and should not be expected to pay from this code as shipped.",
+   "reasoning": [
+    "search: heap/branch-bound - CPython-law tuple heap (scalar, NaN-first ordering), random-access label gather/scatter, and short adjacency rows (avg degree 4 in the row0-scale probe; characterized graphs similar): phase-one eligibility is elementwise IEEE-composable (fast_lt/fast_le reproduce exactly under SIMD NaN semantics) but width-4/8 within degree-2..8 rows wastes lanes, and the loop is memory-latency-bound, not arithmetic-throughput-bound",
+    "adjust: a d_count-length min scan per origin - vectorizable but negligible in every profiled split (CPU_LAYOUT attributed adjust ~3% of kernel)",
+    "fold: the ONLY wide-vector region (elementwise exp / ordered sums over d_count, where the engine's fastmath vectorization lives) is contractually ON THE CANONICAL PLANS, not in the native surface - numba already emits its own SIMD inside the pinned legacy plan, and a native SIMD fold would create a third arithmetic mode forbidden by the SPEC fold-profile split",
+    "label-init fill is memset-class; the ISA report confirms the binary is generic x86-64-v1 while the host is v4-capable, i.e. any variant claim would have to come with its own per-regime attribution"
+   ],
+   "revisit_condition": "NATIVE_SIMD becomes worth opening only with measured attribution on high-average-degree production regimes (cross-node batched eligibility with preserved row order), or if the campaign ever re-opens the fold-region admission (which CPU_ALGORITHMS pinned otherwise)"
+  },
+  "artifacts": [
+   "probe_e2e_native_vs_fallback.py",
+   "timing_e2e_native_vs_fallback.json",
+   "timing_build.txt"
+  ]
+ }
 }
