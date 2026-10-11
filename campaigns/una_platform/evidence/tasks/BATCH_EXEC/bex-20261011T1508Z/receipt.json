@@ -59,8 +59,21 @@
   },
   "review": {
     "origin": "BATCH_REVIEW rev-20261003T0105Z, verdict ACCEPT-WITH-FINDINGS (1 MAJOR, 4 MINOR, 4 NOTE); approval CONDITIONAL on MAJOR-1 fix + re-review of the composite resume path, MINOR-2/3/4 before the batch-recovery surface ships",
-    "this_round": "MAJOR-1, MINOR-1, MINOR-2, MINOR-3, MINOR-4, NOTE-4 implemented. Re-review of the composite resume path REMAINS OPEN as the approval condition — see review-handoff.md for the re-review package.",
-    "handoff": "campaigns/una_platform/evidence/tasks/BATCH_EXEC/bex-20261011T1508Z/review-handoff.md (sha256 9ff0a5c39012c675661da748ab53b207da037a1698083eff6adfb82cc8ce2037)"
+    "this_round": "MAJOR-1, MINOR-1, MINOR-2, MINOR-3, MINOR-4, NOTE-4 implemented; package for the re-review in review-handoff.md.",
+    "handoff": "campaigns/una_platform/evidence/tasks/BATCH_EXEC/bex-20261011T1508Z/review-handoff.md (sha256 9ff0a5c39012c675661da748ab53b207da037a1698083eff6adfb82cc8ce2037)",
+    "re_review": {
+      "reviewer": "F1 (independent re-reviewer, separate from implementation)",
+      "verdict": "ACCEPT-WITH-FINDINGS — 0 MAJOR, 0 MINOR, 3 NOTE; FLIP CONDITION: none (verdict is not conditional)",
+      "received_utc": "2026-10-11",
+      "preserved_verbatim": "REVIEW_verdict_bex2.md (tracked, same directory; sha256 aa7c6eca039b45030e0e49cbc1a768349df23d13afd133f7afa6843ca47afe15)",
+      "reviewer_verification": "10/10 claimed sha256s recomputed; static byte-level hunk audit; W1 compared 1:1 vs ab357c6; Phase B re-runs on a fresh detached checkout of abfedaa: MINOR-2/3/4 selectors 4 passed (27.95s), post-fix wedge trio 3 passed/3 skipped (14.77s), M07+M08 re-proven SELECTED under the reviewer's own hand-applied mutations, tests/batch island 96 passed/3 skipped (228.89s); whole-repo attribution verified from the recorded failed-set lists (87 = 62 + 25 exact; strict subset; 8 baseline failures stable across all three runs)",
+      "consequence": "The rev-20261003T0105Z approval conditions are SATISFIED — the batch-recovery surface may ship (MAJOR-1 fixed and re-reviewed; MINOR-2/3/4 closed)."
+    },
+    "dispositions": {
+      "N1": "NOTE accepted — _refold_composite_from_journal silently skips a COMMITTED row whose journal record lacks a capture key. Unreachable through any current code path (both commit paths always record captures for folding rows; corrupted capture FILES fail loudly via read_capture; deleted row records self-heal by re-run). Hardening (raise InvariantViolation when a rebuilt COMMITTED row lacks a capture) DEFERRED per the reviewer's own framing: may fold into any future batch-scope change without re-review.",
+      "N2": "NOTE accepted — same hardening family: a zero-capture rebuild plus record_composite_finalized(files={}) could launder a previously-tampered published composite into the nothing-recorded state; unreachable without an already-inconsistent journal. DEFERRED with N1 under the same folding term.",
+      "N3": "NOTE accepted — documentation gap only (five per-finding pre-fix demonstration consoles preserved as quoted timings, not files). SATISFIED by the existing 9-mutant battery, which independently re-proves every selector against its specific gate (reviewer's own framing); no action."
+    }
   },
   "constraints_respected": [
     "One writer per scope: only /storage/scratch1/1/dsynn6/una-x-batchfix-20261011 written; base repo /storage/scratch1/1/dsynn6/una-x (staged user work) untouched; una-x-inspect-293730c and una-x-g11b-20261011 untouched; no .claude/worktrees access.",
@@ -73,11 +86,12 @@
     "Whole-repo single-process run cannot go green in this environment (see verification.whole_repo); this predates the change (pristine baseline fails the same classes) but a 'single clean run' as instructed is NOT achieved — reported as NOT VERIFIED via that mode rather than claimed.",
     "The 32 platform_geometry skips (missing .refs) and 4 cpu_kernels skips are environment artifacts, unchanged from baseline.",
     "NOTE-4 has no behavioral mutant (doc-only) — excluded from the battery by design.",
-    "Re-review of the composite resume path by an independent reviewer has NOT happened yet (approval condition remains open)."
+    "Re-review COMPLETED after this receipt's original close: ACCEPT-WITH-FINDINGS, 0 MAJOR / 0 MINOR / 3 NOTE, no flip condition (see review.re_review); the original 'remains open' statement above is superseded."
   ],
   "next": [
-    "Independent re-review of the composite resume path (review-handoff.md is the package).",
-    "If re-review passes, batch-recovery surface may ship (MINOR-2/3/4 closed).",
+    "DONE: independent re-review of the composite resume path — verdict ACCEPT-WITH-FINDINGS (0 MAJOR, 0 MINOR, 3 NOTE), preserved verbatim in REVIEW_verdict_bex2.md.",
+    "Ship condition satisfied: the batch-recovery surface may ship (MINOR-2/3/4 closed; MAJOR-1 re-reviewed and upheld).",
+    "N1/N2 hardening folds into any future batch-scope change without re-review (reviewer's framing); N3 closed by the existing battery.",
     "Whole-repo single-process nondeterminism (conftest name collision + numba thread-state leakage) is a pre-existing repo-level test-infrastructure defect worth a platform-level fix; not expanded into this scope."
   ]
 }
