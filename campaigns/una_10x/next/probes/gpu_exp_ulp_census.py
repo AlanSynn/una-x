@@ -85,12 +85,11 @@ def main() -> int:
         for b in betas for rad in radii])
     # gl/kn-logistic branch args: -gr * (pos - mid); the manifest does not
     # carry a growth-rate column, so a gr grid brackets the delivered
-    # default neighborhood; pos in [0, radius]
+    # default neighborhood; pos in [0, radius]. One 1-D array per (gr, mid).
     gr_grid = [1e-4, 1e-3, 1e-2, 1e-1, 1.0]
     gl_args = np.concatenate([
-        -g * (p - m)
-        for g in gr_grid for m in mids
-        for p in np.linspace(0.0, max(radii), 1024)])
+        -g * (np.linspace(0.0, max(radii), 1024) - m)
+        for g in gr_grid for m in mids])
     # dense monotone sweep for coverage
     dense = np.concatenate([
         np.logspace(-40, 40, 41 * args.dense_per_decade),

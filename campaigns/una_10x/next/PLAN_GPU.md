@@ -47,11 +47,17 @@ The binding blocker is not "libdevice ≠ glibc" per se; it is that the parity a
 **delivered numba fastmath host fold**, and the device matches neither that nor strict.
 Steps, each falsifiable:
 
-1. **Host authority census**: capture (arg → result-bit) pairs of the delivered fold's exp
-   evaluations over representative domains — manifest-derived (per-row `gravity_beta` ×
-   clipped distance ranges; logistic `-gr·(pos−mid)` args; knn decay branches) plus a dense
-   logspace sweep. Probe: `probes/gpu_exp_ulp_census.py` (host side runs anywhere; device
-   side device-gated).
+1. **Host authority census** — EXECUTED 2026-10-12 on V100 (`receipts/gpuplane-20261012T1600Z.md`,
+   `tenx-20261012T1600Z/gpu_probes/exp_ulp_census.json`): sweep n=308,384 args
+   (manifest-derived ge 131,072 from the 32 cohort betas; gl 5,120; dense logspace 172,192).
+   Device libdevice exp vs the **delivered fastmath authority**: 9,362 differ (3.04%),
+   **max 1 ULP, 0 sign flips**; device == fastmath bit-exact on 299,022 args = **96.96% of
+   the swept domain**. (Device vs `np.exp`: 14,103 differ; `np.exp` vs fastmath: 8,925 —
+   the host authorities differ from each other too.) Dense-sweep exp overflow → +inf on
+   both sides, recorded, ulp filter finite-only. Reading: the bit-equal subdomain EXISTS at
+   the primitive level — road (b), admission-domain classification, is quantified as
+   "exclude/arg-census the ~3% divergent region"; G11's fold-level 0/4 stands, because real
+   fold arguments compose through the divergent region.
 2. **Device match, two roads**:
    - a device-side exp implementation reconstructed to reproduce the captured delivered bits
      exactly (gate: 0 differing arguments on the census domain), or
@@ -83,14 +89,26 @@ cold JIT (1.30 s) amortizes per process, not per row.
 
 Probe: `probes/gpu_phase_decomposition.py` measures per-phase walls (per-array H2D, launch,
 sync, per-array D2H) at the rep4000 shape, plus a K=32 upload-once variant with per-replay
-sync (region law: synchronize before timing ends or leases release). Gate (if pursued): paired
-cohort-shape walls on-device vs the delivered CPU arm at C=1, hardware addition recorded
+sync (region law: synchronize before timing ends or leases release). **EXECUTED 2026-10-12 on
+V100** (`receipts/gpuplane-20261012T1600Z.md`, `.../gpu_probes/phase_decomposition.json`):
+full-service bridge median 0.13718 s (cross-checks the G11 crossover 0.13535 s within ~1.4%,
+different node/day); measured device phases of a call total 0.00345 s (per-array H2D ≈2.81 ms
+incl. 0.90 ms allocation, launch 0.225 ms, sync-incl-kernel 0.146 ms, D2H outputs 0.242 ms);
+residency variant upload-once + 32 replays: total 0.01789 s, **per-replay median 0.553 ms**.
+Two readings: (i) the residency shape amortizes mechanically as dossier 08 specifies;
+(ii) ~97% of the full-service wall is NOT device phases — the residual is unattributed
+host-side bridge work, which re-attributes Direction 4's premise (see §6). Gate (if pursued):
+paired cohort-shape walls on-device vs the delivered CPU arm at C=1, hardware addition recorded
 separately and never fed to the CPU 10x gate.
 
 ## 6. Direction 4 — parallelism shape, within the order law
 
-The crossover loss is dominated by transfer+launch+sync and per-origin sequential
-order-bearing loops (≈60 nnz/origin at rep4000). The order law forbids the tempting axes:
+The crossover loss was attributed to transfer+launch+sync and per-origin sequential
+order-bearing loops (≈60 nnz/origin at rep4000). The 2026-10-12 phase decomposition
+**revises the attribution**: only ≈3.45 ms of the 137 ms full-service wall is measured
+device phases — before any Direction-4 tuning, the ~133 ms residual (host bridge/wrapper
+work) must itself be decomposed; tuning transfer or occupancy against a wall dominated by
+host overhead would optimize nothing. The order law forbids the tempting axes:
 no atomics, no completion-order sums, no reduction reassociation — a warp cannot cooperate on
 one origin's ordered sum without reassociating. Legal parallelism axes: across origins,
 across rows (Direction 3 batch launches), across independent metric jobs; plus occupancy
@@ -109,11 +127,20 @@ residency shape exists; do not tune against the one-shot shape.
 ## 8. Probes committed on this branch; execution status
 
 - `probes/gpu_exp_ulp_census.py` — host+device exp bit census (Direction 1 step 1).
+  **EXECUTED 2026-10-12** on Tesla V100-PCIE-16GB (`atl1-1-02-006-31-0`, slurm job
+  13983444, salloc `-A gts-hoh68 --qos=inferno`, gpu-v100, cuda/12.6.1) — results in §3
+  and `receipts/gpuplane-20261012T1600Z.md`. One probe bug was found and fixed on this
+  branch before the run (gl_args built per-scalar instead of per-array; local repro
+  confirmed, then re-run).
 - `probes/gpu_phase_decomposition.py` — per-phase walls + K-replay residency variant
-  (Direction 3 evidence).
-- Device legs run only under a real salloc device (GpuUnavailable otherwise). Execution
-  status and any results are recorded in `receipts/` on this branch; a probe that has not
-  run on hardware is recorded as pending, never as passed.
+  (Direction 3 evidence). **EXECUTED** same job — results in §5.
+- Device legs ran under a real salloc device; an earlier attempt without one returned the
+  typed `device_unavailable` blocker (never simulated). Operational lessons recorded in
+  the receipt: salloc executes its command on the LOCAL node (wrap in `srun`), bare
+  `srun --gres` failed step creation on this cluster (allocate with `salloc`, step with
+  `srun`), and `/tmp` is node-local (scripts must live on shared `/storage`).
+- Compute accounting: one 1-GPU allocation, ≈4 min wall — charged to the GPU probe scope
+  under the standing salloc authorization; no route/parity claim created.
 
 ## 9. Honesty / unrun gates
 
