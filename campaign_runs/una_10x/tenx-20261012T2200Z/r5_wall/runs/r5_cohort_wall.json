@@ -1,0 +1,36 @@
+{
+ "schema": "una10x-next-r5-cohort-wall-1",
+ "purpose": "diagnostic warm cohort wall on R5 branch bytes; no speedup claim; not a gate",
+ "python": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11",
+ "package": "/storage/scratch1/1/dsynn6/una-x-next-20261012/src/urban_network_analysis/__init__.py",
+ "manifest": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv",
+ "manifest_sha256": "1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf",
+ "manifest_sha_matches_p00_pin": true,
+ "workers": 4,
+ "numba_num_threads_env": "1",
+ "cpuset_cpus": 4,
+ "passes": [
+  {
+   "pass": 1,
+   "wall_s": 13.033732259995304,
+   "prep_rows": 32,
+   "cold_build": 0,
+   "verified_hit": 96,
+   "lease_hits": 84,
+   "decoded_nofit": 0,
+   "fallback_compute": 0,
+   "refusals": {}
+  },
+  {
+   "pass": 2,
+   "wall_s": 12.654423796979245,
+   "prep_rows": 32,
+   "cold_build": 0,
+   "verified_hit": 96,
+   "lease_hits": 84,
+   "decoded_nofit": 0,
+   "fallback_compute": 0,
+   "refusals": {}
+  }
+ ]
+}
