@@ -53,17 +53,36 @@ not a gate.
 The P00 brief already established these four regions are measured, disjoint, and **jointly
 required** for G=10:
 
-1. **R1 — shared input preparation (P02, dominant).** Read+parse the three GIS inputs once
-   per cohort; per-row work becomes views/slices of the prepared result. Design obligations:
-   - bit law: identical bytes → identical interpretation; no float64 key coercion; the row's
-     validation/warning/error chronology is NOT suppressed by a prepared hit (CONTRACT).
-   - memory: prepared residency bounded (measured trace store 1.5 MiB vs residency cap
-     8.9–17.9 GiB); immutable internal leases; no public aliasing.
-   - public path only: the preparation must be reachable through the public `RunBatch`
-     surface (prepared input-keyed single-flight before decode — the selected architecture),
-     never an internal constant patch.
-   - bound: P_shared 145.1 s → once (≈4.5 s) instead of 32×; serial-equivalent cohort work
-     drops by ≈137 s under stated bounds.
+1. **R1 — shared input preparation (P02): LANDED — consumer-audited 2026-10-12.**
+   `batch/preparation.py` (P02I `a71f0f5`, review-closed `fa92dca`, both ancestors of main
+   `2d6142a`) implements the guarded PreparedBundle single-flight BEFORE decode: per-row
+   snapshot-bytes sha256 + stage params + profile + geometry-env closure keys
+   (`cache/identity.py:193-216`), cross-process file-lock single-flight over a bounded
+   on-disk store (`.una-batch-prepared`, verification="on_read", quarantine+rebuild),
+   content-derived warnings replayed from the payload, refusals loud (no_root / turns_row /
+   obstacle_row / format_not_admitted / non-admitted stages). **Engage law (NR-6): the
+   prepared route arms ONLY on `RunBatch(parallel=True, analysis='accessibility')` with
+   dispatchable rows — the serial public call is structurally un-armed** (producer sets
+   `una._prepared_session` in `batch/worker.py:375-395` only; serial `UNA.py:263-314` never
+   arms). Consequences:
+   - the P01-refresh 84.1% load_gis profile above measures the SERIAL boundary, where R1
+     cannot engage by design; it does NOT describe the tenx gate boundary;
+   - the parallel cohort gate boundary DOES consume it: G4RC INC01 records the candidate
+     writing the 43-file/+18,046,104 B residency stores, and warm counted legs ran ~21 s
+     (vs pre-merge main 63–65 s) — row 1 cold-builds, rows 2–32 hit the disk store;
+   - **the published headline gate (tenx-20261005T2331Z, 2.3798x vs 395cdc5 installed
+     wheels, COLD, macOS arm64) ran on treatment `1e7237b`, which does NOT contain P02I/
+     P02R** (ancestry machine-checked 2026-10-12) — the landed R1 work is real on main but
+     is NOT banked in the published headline number; a future headline on main's bytes
+     requires a fresh tenx-law gate;
+   - on prepared hits pyogrio is skipped but **from_wkb + GeoSeries + sindex rebuild still
+     run per row** (decode-once NOT amortized) — that per-row restore is now a first-class
+     residual region (see R5).
+   Design obligations already enforced by the landed module (do not regress): bit law via
+   observed-bytes digest keys; row validation/read/failure chronology preserved on hits
+   (per-row snapshot read+digest gates at the seam BEFORE flight consult, TOCTOU-tested);
+   immutable payloads with sindex rebuilt as derived state; no GDAL/GEOS handle sharing
+   (flat WKB blob payloads + PROJJSON, WKT rejected for datum-ensemble loss).
 2. **R2 — pool-efficiency repair (0.46→≥0.75 target).** P01 verdict H1: load/parse contention
    is **refuted as dominant** (per-row run wall flat at W2: ratio 0.9983; W4 stretch 1.1568
    with `peak_busy_procs=5 > cpuset 4`). Mechanism: coordinator oversubscription —
@@ -76,6 +95,18 @@ required** for G=10:
 4. **R4 — window amortization (partially banked).** Import 3.42→≈1.5 s/worker landed with the
    lazy-import merge; remaining overhead amortizes only via multi-cohort windows per
    BENCHMARKS.md window-composition law (bounds 10x on a single 92–118 s arm-A window).
+5. **R5 — prepared-boundary residual (NEW binding region, 2026-10-12 audit).** On the
+   parallel prepared boundary the remaining wall is: per-row restore on hits (snapshot
+   read+sha, `_decode_snapshot_gdf`, `from_wkb` payload decode, GeoSeries+sindex rebuild,
+   log replay — decode-once NOT amortized across rows), the metrics fold, exports,
+   coordinator commit/journal/hashing, pool lifecycle and IPC. **The binding telemetry is a
+   PARALLEL W4 prepared-store-warm profile of current main — the serial profile above
+   cannot see this boundary.** Candidate levers, each needing its own design+review:
+   in-worker decoded-stage lease reuse across rows (immutable internal leases, no public
+   aliasing — the architecture's own "prepared input-keyed single-flight → independent row
+   objects" step 3), R2 pool-efficiency repair, R3 metric reuse. Current warm reference:
+   G4RC B arm 20.2–21.2 s (PACE, W4T1) vs pre-merge main 63–65 s; 10x from the P00 PACE
+   baseline (92.1 s W4) needs ≈9.2 s.
 
 **Sum-law projection (labeled projection, not a claim):** serial-equivalent cohort work
 188 s → ≈40–55 s (R1+R3+banked R4); at W4 with R2 efficiency ≥0.75 ⇒ wall ≈ 13–20 s vs the
@@ -116,15 +147,26 @@ variance (25–28% same-config spread — paired windows mandatory).**
 
 ## 6. Sequencing (post_p00 AUTHORITY law)
 
-1. **P01-refresh (this branch, now)**: re-run the region-share profile on current main — the
-   stage model predates the engine integration; every downstream design needs current shares.
-   Probe: `probes/profile_regions_main.py` (same cohort manifest sha `1161f485…daaf`, warm
-   JIT declared, serial public call, cProfile bucketed per the P00 brief §3.2 families).
-2. **P02**: shared-preparation single-flight design + implementation + review (dossier 06
-   residency/cache law); admission via the standard island battery + a tenx-law paired gate.
-3. **P03C**: replay precondition experiments (H3 list), then native fold admission decision
-   per profile with crossover evidence.
-4. R2/R4 receiver work only with measured residual backpressure (H2 stays refuted at this
+1. ~~P01-refresh (serial)~~ — DONE 2026-10-12 (`receipts/next-p01r-20261012T1600Z.md`), but
+   boundary-scoped: the serial public call structurally never arms preparation (NR-6), so
+   its 84.1% load_gis share describes the serial duty only.
+2. ~~P02 shared-preparation single-flight~~ — **ALREADY LANDED on main** (P02I `a71f0f5` +
+   P02R `fa92dca`; consumer audit 2026-10-12 confirms engage law, key composition, store
+   laws). Sequence item closed; remaining R5/R2/R3 work builds ON it.
+3. **P01-parallel (next telemetry)**: W4 prepared-store-warm profile of the CURRENT main on
+   the parallel public boundary — per-row restore composition, coordinator share, fold
+   share. This, not the serial profile, locates the residual ≈2.2x (G4RC B ≈21 s → ≈9.2 s
+   needed for G=10 from the P00 PACE baseline).
+4. **P03C preconditions**: thread-topology matrix on the current tree (probe
+   `probes/replay_thread_matrix.py`, running 2026-10-12), then native fold admission per
+   profile with crossover evidence.
+5. Implementation increments, each island battery + independent review: R5 decoded-stage
+   lease reuse; R2 pool-efficiency repair; R3 metric reuse (typed identity, gen2 law).
+6. Then a fresh tenx-law paired gate of main's bytes vs the 395cdc5 installed wheel
+   (cold and warm declared separately) — the published headline (2.3798x) binds treatment
+   `1e7237b`, which is NOT main's lineage (ancestry machine-checked), so main's bytes have
+   no qualifying gate yet.
+7. R2/R4 receiver work only with measured residual backpressure (H2 stays refuted at this
    scale; P04 remains conditional).
 
 ## 7. Gate law (unchanged)
@@ -140,4 +182,11 @@ declared. Bitwise parity per una_legacy/madina_legacy/corrected_v1; 1-ULP mismat
 - The probe result recorded here refreshes region shares; it does NOT establish any speedup.
 - The sum-law projection in §3 is a model bound, not a measurement; the tenx headline is
   unchanged (2.38x; target_unmet stands until a qualifying gate says otherwise).
+- **Boundary honesty (2026-10-12 consumer audit + ancestry checks):** the published
+  headline gate tenx-20261005T2331Z ran on treatment wheel `1e7237b` (macOS arm64, COLD,
+  workload sha `235405de…`, NOT an ancestor of main); the landed P02 preparation
+  (`a71f0f5`/`fa92dca`) is in main's lineage but was NOT in that treatment — so the R1
+  win is NOT banked in the headline number, and main's bytes have no qualifying gate vs
+  395cdc5 on any boundary. The G4RC 3.076x record is the PACE WARM comparison vs
+  pre-merge main `c1f8614` (scope law binds; not the headline).
 - No pushes from this branch; publication requires a new explicit user instruction.
