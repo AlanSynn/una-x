@@ -469,12 +469,18 @@ def test_resume_after_finalize_refolds_full_capture_set(
 
 def test_verify_staged_failure_is_integrity_not_cancelled(tmp_path):
     """BATCH_REVIEW MINOR-2 at the unit level: a digest mismatch on the
-    staged bytes raises BatchCheckpointError — a corruption report —
-    and is NOT a BatchCancelledError (the classes are siblings, so an
-    ``except BatchCancelledError`` handler cannot swallow corruption)."""
+    staged bytes raises the ROW-ATTRIBUTED COMMIT INTEGRITY error
+    ``InvariantViolation`` — a corruption report carrying the row — and
+    is NOT a BatchCancelledError (the classes are siblings, so an
+    ``except BatchCancelledError`` handler cannot swallow corruption).
+    Retyped at the 2026-10-12 reconcile (option A) from an una_10x-era
+    ``BatchCheckpointError`` expectation to the re-reviewed contract
+    (perf/batch-def24-major1); name kept: it states the preserved
+    intent."""
     import hashlib
 
     from urban_network_analysis.batch import runtime as rt
+    from urban_network_analysis.batch.plan import InvariantViolation
     from urban_network_analysis.batch.report import (BatchCancelledError,
                                                      BatchCheckpointError)
 
@@ -484,13 +490,17 @@ def test_verify_staged_failure_is_integrity_not_cancelled(tmp_path):
     good = hashlib.sha256(b"payload").hexdigest()
     files = (("a.txt", 7, good),)
 
-    rt._verify_staged(str(staging), files)          # honest bytes commit
+    rt._verify_staged(str(staging), files, row=0)   # honest bytes commit
 
     (staging / "a.txt").write_bytes(b"corrupt!")
-    with pytest.raises(BatchCheckpointError, match="digest verification"):
-        rt._verify_staged(str(staging), files)
-    with pytest.raises(BatchCheckpointError, match="vanished"):
-        rt._verify_staged(str(staging), (("gone.txt", 1, "0" * 64),))
+    with pytest.raises(InvariantViolation,
+                       match="digest verification") as ei:
+        rt._verify_staged(str(staging), files, row=4)
+    assert ei.value.row == 4
+    with pytest.raises(InvariantViolation, match="vanished") as ev:
+        rt._verify_staged(str(staging), (("gone.txt", 1, "0" * 64),),
+                          row=1)
+    assert ev.value.row == 1
 
     # the retype is the repair: the classes really are siblings
     assert not issubclass(BatchCheckpointError, BatchCancelledError)

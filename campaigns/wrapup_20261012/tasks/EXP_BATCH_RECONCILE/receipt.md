@@ -11,10 +11,11 @@ Parents: batchdef = `perf/batch-def24-major1` @ `be56059` (re-review ACCEPT-WITH
 exp-lazy = `perf/exp-lazy-1` @ `4658344` (M2 gate ACCEPTED 1.10654x median, LB 1.07908).
 Interpreter alan, `PYTHONHASHSEED=0`. Raw evidence: `evidence/tasks/EXP_BATCH_RECONCILE/rcn-20261012T0451Z/` (untracked, main repo).
 
-**STATUS: RESOLVED EXCEPT ONE STOP-CONDITION CONTRADICTION (see section 5). The
-contradiction is machine-demonstrated, not judged: one exp-lazy unit test is red
-under the merged tree with batchdef's reviewed bytes in place. No final decision
-was taken on it; the merge commit records the interim state honestly.**
+**STATUS: FULLY RESOLVED. The section-5 contradiction was decided by the
+team-lead (option A, user-authorized execution 2026-10-12) and closed by the
+follow-up commit: exp-lazy's one red test was retyped to the reviewed contract
+(name kept, expected exception + arity changed), island now 99 passed / 3
+skipped / 0 failed. See section 5 for the decision record.**
 
 ## 1. Hunk resolution decisions (all 11 hand-resolved regions)
 
@@ -48,6 +49,7 @@ Both (disjoint regions, auto-merged): UNA.py (batchdef composite return plumbing
 | tests/batch (island) run 1 (pre-wedge-harmonization) | 97 passed / 3 skipped / 2 failed, 173.89 s | — | wedge failure diagnosed (table #11), contradiction failure expected |
 | tests/batch (island) run 2 (final bytes) | **98 passed / 3 skipped / 1 failed**, 178.90 s | batchdef 96/3; exp-lazy 91 | +3 exp-lazy tests = 99 collected = 98+1; arithmetic closes; 1 failure = the contradiction (section 5) |
 | tests/batch (island) run 3 (final bytes, log captured) | **98 passed / 3 skipped / 1 failed**, 170.77 s — identical failure set | — | reproducible; log `tests_batch_island_run2.log` |
+| tests/batch (island) run 4 (post-option-A bytes, FINAL) | **99 passed / 3 skipped / 0 failed**, 174.77 s | 99/3/0 | contradiction closed; log `tests_batch_island_run3_optionA.log` |
 | tests/cache | 162 passed (46.91 s cold; 12.27 s logged re-run) | 162 | baseline-exact; log `tests_cache.log` |
 | tests/execution | 107 passed (7.33 s; 5.55 s logged re-run) | 107 | baseline-exact; log `tests_execution.log` |
 | tests/cpu_kernels | 97 passed / 4 skipped / 0 failed (41.42 s cold; 5.51 s warm-JIT re-run) | 97/4/0 | baseline-exact; log `tests_cpu_kernels.log` |
@@ -63,7 +65,7 @@ Bootstrap 107-file byte census intentionally NOT run (gate's job, per tasking). 
 - `git diff 4658344 -- src tests` (vs exp-lazy): exactly batchdef's content + resolutions — 5 src files +173/−66, 4 test files +436/−5 (`diff_vs_explazy_4658344.batchdef_content_plus_resolutions.patch`).
 - Per-file resolution patches + sha256 manifest: `resolved_*.patch`, `resolved_files_sha256.txt` in the raw evidence dir. Key digests: runtime.py `a289e350...4bd536`, checkpoint.py `e7b24c1f...99abc`.
 
-## 5. STOP-CONDITION CONTRADICTION (decision owed)
+## 5. STOP-CONDITION CONTRADICTION — DECIDED: OPTION A EXECUTED
 
 `_verify_staged` staged-digest failure must raise **`InvariantViolation`** (batchdef,
 re-reviewed: row-attributed, `plan.InvariantViolation(AssertionError)`, 3-arg `row`)
@@ -79,7 +81,7 @@ FAILS — `TypeError: _verify_staged() missing 1 required positional argument: '
 assertion (raises-type around a full RunBatch) was superseded in the union by
 batchdef's reviewed body; its non-contradictory sibling-class probe was retained.
 
-Options (lead's call):
+Options (were the lead's call):
 - **A (recommended): batchdef bytes stand.** Rewrite the one exp-lazy unit test to
   the reviewed contract (3-arg `row=`, expect `InvariantViolation`, assert `.row`);
   its intent (corruption is not cancellation; handlers must not swallow it) is fully
@@ -92,13 +94,40 @@ Options (lead's call):
   tests mechanically but invents typed-contract semantics neither branch reviewed;
   would need its own review.
 
+**DECISION (team-lead, user-authorized execution 2026-10-12): OPTION A.**
+Rationale: the adversarially re-reviewed verdict (ACCEPT-WITH-FINDINGS 0 MAJOR /
+0 MINOR / 3 NOTE) is the stronger evidence; the una_10x-era variant is
+superseded; the test's intent law is preserved verbatim; B was rejected (breaks
+two reviewed tests + the accepted row attribution), C was rejected (invents
+unreviewed typed-contract semantics).
+
+Execution: `test_verify_staged_failure_is_integrity_not_cancelled` retyped in
+place — NAME KEPT (it states the preserved intent: staged failure is integrity,
+not cancellation); expected exception changed to `InvariantViolation` with
+3-arg `row=` calls, row attribution asserted (`ei.value.row == 4`,
+`ev.value.row == 1`), docstring records the retyping provenance; the
+sibling-class assertions (`BatchCheckpointError`/`BatchCancelledError`) kept
+verbatim. Amended file sha256
+`f1b243601876ef1717848273d18040972e0550ba95624570af6ed46e767e3df9`
+(prev `24672986...19bacda`).
+
+Post-decision verification (amended bytes, alan, PYTHONHASHSEED=0):
+- tests/batch island: **99 passed / 3 skipped / 0 failed**, 174.77 s
+  (log `tests_batch_island_run3_optionA.log`) — 96 batchdef + 3 exp-lazy = 99,
+  zero failures, as predicted.
+- tests/cache: 162 passed (`tests_cache_optionA.log`); tests/execution: 107
+  passed (`tests_execution_optionA.log`) — both baseline-exact.
+- Re-review notification owed (batchdef's reviewed test surface now carries the
+  retyped test); recorded as an obligation in section 6.
+
 ## 6. What the gate re-run must cover (not executed here)
 
 1. Paired AB/BA throughput windows for the merged tree vs the strongest current-main
-   arm, per the EXPW preregistration law (heavy-owner lane).
-2. If option A is chosen: the batch island re-run on the amended bytes (expect
-   99/3/0) and a note that exp-lazy's test was retyped, plus re-review notification
-   since batchdef's reviewed test surface would be extended by the retyped test.
+   arm, per the EXPW preregistration law (heavy-owner lane) — runs on these final
+   option-A bytes.
+2. DONE (option A): island re-run on the amended bytes = 99/3/0; exp-lazy's test
+   retyped (name kept). Still owed: re-review notification, since batchdef's
+   reviewed test surface now carries the retyped test.
 3. The M2 import-census byte law (107-file) remains the M2 owner's obligation on
    the shipped bytes.
 
