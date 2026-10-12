@@ -20,5 +20,9 @@
   "platform_status": "retained_incomplete",
   "auto_publish": false,
   "authoring_scope": "packet_tools_and_research_preservation_only",
-  "application_10x": "unavailable"
+  "application_10x": "unavailable",
+  "post_p00_amendment": "post_p00/AUTHORITY.md",
+  "resume_checkpoint": "6130769a5751bf7446734dc39b9f8e3763461cfe",
+  "resume_branch": "perf/una-10x",
+  "resume_budget_policy": "carry prior usage; do not reset"
 }

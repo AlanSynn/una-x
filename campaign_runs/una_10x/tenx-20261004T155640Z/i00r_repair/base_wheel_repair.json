@@ -1,0 +1,31 @@
+{
+ "schema": "una-10x-i00r-base-wheel-1",
+ "task": "I00R stage 1",
+ "source": {
+  "pin": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "worktree": "/storage/scratch1/1/dsynn6/una-x-baseline-395cdc5r2",
+  "head": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "clean": true
+ },
+ "export_delta": [
+  "pyproject.toml (packaging-only force-include)"
+ ],
+ "wheel": {
+  "path": "/tmp/una_i00r/wheel_base/urban_network_analysis-2.6.0-py3-none-any.whl",
+  "sha256": "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1",
+  "bytes": 317467,
+  "py_modules": 56,
+  "shim_sha256": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f"
+ },
+ "wheel_diff_vs_unpatched": {
+  "added": [
+   "una_batch_worker_main.py"
+  ],
+  "removed": [],
+  "byte_diff": [
+   "urban_network_analysis-2.6.0.dist-info/RECORD"
+  ]
+ },
+ "install_target": "/tmp/una_i00r/site_base_r",
+ "origin_proof": "ORIGIN /tmp/una_i00r/site_base_r/urban_network_analysis/__init__.py /tmp/una_i00r/site_base_r/una_batch_worker_main.py"
+}

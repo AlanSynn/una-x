@@ -321,6 +321,16 @@ class UNA:
 
         self.settings.Validation()
 
+        # P02 (una_10x): forward the run-scoped prepared session to the
+        # topology seam BEFORE AddNetwork.  The session is consulted ONLY
+        # at the two Add* preparation sites via topology._prepared_session
+        # — never through cache_options (the engine's RESULT stage reads
+        # that same attribute; injecting there would silently enable
+        # results caching, which P02 forbids).  None on this route (serial
+        # or a detached repeat call): the prepared path is entirely absent.
+        self.topology._prepared_session = getattr(
+            self, "_prepared_session", None)
+
         self.topology.AddNetwork(self.settings)
         self.topology.AddOrigins(self.settings)
         self.topology.AddDestinations(self.settings)
@@ -377,6 +387,24 @@ class UNA:
                     v=1,
                 )
             self.accessibility = AccessibilityWElevation(self.topology, self.settings)
+
+        # Integrator-only cohort dispatch (campaign una_10x C30, dossier
+        # 06): a PARALLEL batch worker attaches a runtime-only session;
+        # the fresh graph engine is then wrapped so its o_access may
+        # serve from the run's shared routing trace.  Every refusal
+        # falls back to the inner engine unchanged, and the serial route
+        # (which never sets _cohort_session) is untouched.
+        # The ``not self.settings.turns`` clause is LOAD-BEARING
+        # (C31-NOTE-3): the trace identity's profile frame asserts turn
+        # semantics "not-present-in-prepared-domain", so a turns-enabled
+        # analysis must never arm the cohort route; the session itself
+        # refuses turns regardless of attachment (defense in depth).
+        session = getattr(self, "_cohort_session", None)
+        if session is not None and not self.settings.turns:
+            from .batch.cohort import CohortGraphEngine
+            self.accessibility.graph_engine = CohortGraphEngine(
+                self.accessibility.graph_engine, self.accessibility,
+                session)
 
         self.accessibility.Centrality(self.settings)
 
@@ -817,11 +845,16 @@ class UNA:
             v=2,
         )
 
-    def _finalize_batch_composite(self) -> None:
-        """After every row finishes, build and write the composite (if any row asked for one)."""
+    def _finalize_batch_composite(self):
+        """After every row finishes, build and write the composite (if any row asked for one).
+
+        Returns the published composite paths (None when nothing was
+        written) so the batch runtime can journal them (resume
+        integrity); the serial route ignores the return value."""
         if self._composite_active and self._composite_captured:
             self._compute_batch_composite()
-            self._export_batch_composite()
+            return self._export_batch_composite()
+        return None
 
     def _compute_batch_composite(self) -> None:
         """Group captured columns by join target; build one composite per group.
@@ -898,6 +931,8 @@ class UNA:
         file. When ALL three are False (composite output was still
         requested — we wouldn't be here otherwise), a CSV is written as a
         sensible fallback so the user's intent is never silently dropped.
+
+        Returns the tuple of paths written, in write order.
         """
         if not self.composite_results:
             raise RuntimeError("Call _compute_batch_composite() before _export_batch_composite().")
@@ -905,6 +940,7 @@ class UNA:
         settings = self.settings
         output_folder = resolve_output_folder(settings, folder_prefix)
         single = len(self.composite_results) == 1
+        written: list = []
 
         for group_name, gdf in self.composite_results:
             # One join target → plain "composite"; several → suffix each
@@ -914,6 +950,7 @@ class UNA:
             wrote_any = write_gdf_outputs(
                 gdf, settings, output_folder, out_name,
                 self.topology.logger, "RunBatch", desc="Composite", csv_drop_geometry=False,
+                collected=written,
             )
 
             if not wrote_any:
@@ -921,6 +958,7 @@ class UNA:
                 csv_gdf = (gdf.drop(columns="geometry")
                            if "geometry" in gdf.columns else gdf)
                 csv_gdf.to_csv(path, index=False, sep=settings.csv_delimiter)
+                written.append(path)
                 self.topology.logger.log(
                     'RunBatch',
                     f"Composite CSV → {path} (fallback: no output_* flag was set)",
@@ -933,3 +971,4 @@ class UNA:
             f"composite{'s' if not single else ''}) written to {output_folder}",
             v=1,
         )
+        return tuple(written)

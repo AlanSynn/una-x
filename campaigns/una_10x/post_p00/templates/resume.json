@@ -1,0 +1,21 @@
+{
+  "schema": "post-p00-resume-1",
+  "status": "template_not_executed",
+  "run_id": null,
+  "checkpoint_commit": "6130769a5751bf7446734dc39b9f8e3763461cfe",
+  "current_source_sha": null,
+  "main_sha": null,
+  "worktree": null,
+  "owners": {},
+  "prior_receipts_verified": [],
+  "local_raw_artifacts_verified": false,
+  "primary_sha256": null,
+  "remaining_heavy_budget_seconds": null,
+  "final_reserved_seconds": null,
+  "next_tasks": [
+    "P01M",
+    "P01F",
+    "P02D"
+  ],
+  "remote_publish_authorized": false
+}

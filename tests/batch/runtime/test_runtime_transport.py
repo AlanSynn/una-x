@@ -103,7 +103,8 @@ def test_untransportable_job_fails_its_row_loudly(make_batch, tmp_path,
     from urban_network_analysis.batch import runtime as rt
 
     def unpicklable_job(una, plan, i, staging_dir, analysis,
-                        script_output_folder, need_state):
+                        script_output_folder, need_state,
+                        **runtime_kwargs):
         return RowJob(
             job_id=f"j{i}", row_index=i, analysis=analysis,
             settings_state={"callback": lambda: None},  # unpicklable
@@ -117,10 +118,10 @@ def test_untransportable_job_fails_its_row_loudly(make_batch, tmp_path,
         p.RunBatch("accessibility", parallel=True, workers=1)
     assert p.batch_report is None
     assert ei.value.batch_rows == ()      # nothing had committed
+    from conftest import runtime_residue
     import os
     assert not os.path.exists(tmp_path / "out") or \
-        not [n for n in os.listdir(tmp_path / "out")
-             if n.startswith(("row", ".una-batch"))]
+        not runtime_residue(tmp_path / "out")
 
 
 def test_rehydration_failure_is_loud_not_silent(make_batch, tmp_path,

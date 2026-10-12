@@ -1,0 +1,47 @@
+{
+ "schema": "post-p00-sampler-ablation-1",
+ "design": "positive control: a KNOWN synthetic single-core load runs during load_w4; if the instruments (wall, tree CPU, busy procs) cannot see it, they cannot attribute P00's variance either",
+ "runs": {
+  "clean_telemetry_off": {
+   "wall_s": 87.4168,
+   "tree_cpu_s": 200.65,
+   "peak_busy_procs": 5
+  },
+  "clean_telemetry_on": {
+   "wall_s": 60.7742,
+   "tree_cpu_s": 196.7,
+   "peak_busy_procs": 5
+  },
+  "injected_load_telemetry_on": {
+   "wall_s": 74.9764,
+   "tree_cpu_s": 262.36,
+   "peak_busy_procs": 7,
+   "spinner": {
+    "pids": [
+     2340601
+    ],
+    "stats": [
+     {
+      "pid": 2340601,
+      "spinner_cpu_s": 65.56
+     }
+    ]
+   }
+  }
+ },
+ "telemetry_overhead_observation": {
+  "wall_off_s": 87.4168,
+  "wall_on_s": 60.7742,
+  "delta_s": -26.643,
+  "law": "single pair; P00 same-config spread is 25-28% (co-tenant load), so this delta is INDICATIVE ONLY and cannot bound overhead tighter than that spread; both runs verified bitwise against the same pin"
+ },
+ "detection": {
+  "wall_growth_s": 14.202,
+  "tree_cpu_growth_s": 65.66,
+  "spinner_cpu_s": [
+   65.56
+  ]
+ },
+ "instrument_sensitivity": "supported",
+ "reading": "tree_cpu growth matches the spinner's recorded CPU almost exactly: the sampler counts injected load precisely; wall growth is smaller because the spinner competed with already-busy workers"
+}

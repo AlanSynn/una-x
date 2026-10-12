@@ -1,0 +1,30 @@
+{
+  "count": 6,
+  "dir": "campaigns/una_10x/evidence/faults/H01-tenx-20261003T1212Z",
+  "files": {
+    "fault_matrix.json": {
+      "bytes": 30052,
+      "sha256": "c0a7540218194d4a1ff813b0a8492bba243ca9dde3ccdcc4e3cc773056d322c6"
+    },
+    "fault_matrix_run4_watcherbug.json": {
+      "bytes": 29914,
+      "sha256": "197dff2b1989ad1050e343102f678c37d906f1d47a0641458666c2815fd2efb8"
+    },
+    "fault_supervisor.json": {
+      "bytes": 579,
+      "sha256": "2a44bfa6890a7e23c1c842937e6ec18b0f4550f79b3ce418037f4e965e91f1f8"
+    },
+    "fault_supervisor.log": {
+      "bytes": 13144,
+      "sha256": "180e7a8f61eaa94256800c86a4446343daddeb297f9a5cf7458a1d74313153f2"
+    },
+    "fm1_journal_after_kill.json": {
+      "bytes": 52131,
+      "sha256": "4b49305c676e4e80dffe7f5f96598240a3aad402eb9b8d6459981316d9ac7409"
+    },
+    "record.json": {
+      "bytes": 1090,
+      "sha256": "4801b15c1bedfb44c2cce874b7447ee53149b3d1002c241bb2cd8f65ddee4627"
+    }
+  }
+}

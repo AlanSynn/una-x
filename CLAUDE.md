@@ -1,40 +1,41 @@
-# UNA-X active 10x execution campaign
+# UNA-X: resume the current 10x campaign after P00
 
-`/goal` executes `campaigns/una_10x/START_HERE.txt`, ID `una-10x-2026-10`.
-Read its AUTHORITY.md, EXECUTION.md, CONTRACT.md, SOURCE_AUDIT.md,
-PLATFORM_CONTINUITY.md and TASKS_CLAUDE.yaml before implementation. Execute, do not
-return another plan and stop. Develop on `perf/una-10x` and isolated owned worktrees.
+Active campaign: `campaigns/una_10x/`. Current scheduling authority:
+`campaigns/una_10x/post_p00/AUTHORITY.md`. `/goal` resumes the P00 checkpoint on
+`perf/una-10x`; it does not restart from old main or rerun the historical campaigns.
 
-Baseline source: `395cdc5f683894b6f2ba460f7dbcefee99981ba3`, already including earlier
-optimizations, public batch/cache and compiler-contract work. Record runtime drift and
-compare against the strongest actual current-main implementation, never pre-CSR or a
-slow portable oracle. Preserve dirty user work and ongoing independently owned branches.
+Read the post_p00 README, source/errata ledger, implementation map, assigned designs, test matrix
+and updated main TASKS_CLAUDE.yaml before work. Preserve current CONTRACT.md, BENCHMARKS.md,
+PRIMARY bytes, profile-specific references and remaining platform obligations. New tasks are
+pending until actual implementations/tests/reviews support their receipts.
 
-Goal: at least 10x complete installed PUBLIC API throughput with bitwise parity and all
-required artifacts/state. Prior 48x/15.8x numbers are synthetic prepared-array evidence,
-not application wins. Bridge preserved prototypes against actual compiled kernels first.
-Prioritize sparse epoch queries, local destination indexing, ordered routing traces,
-per-metric reuse, immutable residency and PUBLIC RunBatch integration. Retain initial
-trace construction, validation, state rehydration, output and commit costs in the gate.
+Checkpoint 6130769a5751bf7446734dc39b9f8e3763461cfe includes P00 evidence on parent implementation
+e7c9edacd7340670b863c2bee16e7feac98044f6. Numerical/performance comparator remains 395cdc5... or
+stronger verified runtime under the frozen policy. Record exact source and installed identities.
+Do not overwrite working C10~C31 code, raw evidence or open agents' scopes. Reuse unchanged
+receipts; reconcile cumulative heavy budget rather than reset it. Preserve dirty/untracked files.
 
-The unfinished `campaigns/una_platform/` program is retained, NOT declared complete.
-Madina API parity, justified scientific fixes, substantive native and GPU backends, public
-parallel RunBatch, caches, city-failure diagnosis, cancellation/recovery and installed
-validation remain required. Reuse completed work and record unresolved obligations.
-CPU 10x scope and overall platform qualification are separate dispositions.
+Selected architecture: row validation -> prepared input-keyed single-flight before decode ->
+independent row objects -> existing trace -> compiled outer replay -> admitted typed metric reuse
+-> unchanged required exporters -> ordered durable state/artifact/checkpoint commits.
+P01 causal instrumentation and baseline-policy audit precede P02 preparation work. P03 removes
+the Python origin loop without changing the compiled full fold. P04 receiver changes require
+measured residual backpressure. P05 gates entry to original installed/final validation.
 
-Keep una_legacy, madina_legacy and corrected_v1 distinct. No allclose, FP32 substitution,
-rounded exports, reassociation, hidden radius/data/output reduction, or flow-model switch.
-Preserve snapshot relaxation, heap/adjacency/destination order, arithmetic stripes and
-ordered publication. Scientific fixes use reviewed corrected references, not fake legacy
-parity. Native/GPU need real substantive installed execution; fallback/detection/simulation
-is not support. Missing hardware blocks qualification, not unrelated execution.
+Bitwise parity remains mandatory per una_legacy/madina_legacy/corrected_v1. Typed identities include
+actual dtype/scalar bits/specialization; no float64 key coercion, tolerance, output rounding,
+reduction reassociation or hidden work/output reduction. Immutable internal leases do not permit
+public mutable aliasing. Read/validation/failure chronology is still required on cache hits.
 
-One owner per writable scope and one exclusive heavy-performance owner. Independent review
-is separate from implementation. Preserve decisive raw bytes and counterexamples, not only
-hashes. Never overwrite historical evidence or load the candidate as its own reference.
-The preserved 28-file research packet under campaigns/una_10x/prior is immutable.
+10x is a measured PUBLIC boundary claim, not a prototype ratio. Count all required outputs,
+preparation, first trace, IPC/rehydration, integrity, durability and cleanup. Keep matched resource
+budgets. Idle is not a separate multiplier; parent import outside timing cannot be subtracted.
+Audit existing baseline input caches without changing the frozen primary or using identical-answer
+hits. No performance or installed/native/GPU qualification is established by packet tools.
 
-This publication authorization is consumed by the campaign-packet push. Future code pushes,
-main merges, PRs, releases, paid provisioning, credential/provider changes and destructive
-cleanup require a new explicit user instruction. Do not force-update or reset user branches.
+Madina parity, scientific bug fixes, native/GPU execution and recovery remain required through
+PLATFORM_CONTINUITY.md. Missing hardware is a qualification blocker, not simulated success.
+One writable owner per scope, one exclusive benchmark owner, independent implementation review.
+Future implementation pushes, main merges, PRs, releases, compute purchases, credential/provider
+edits and destructive cleanup need new explicit authorization. This publication changes design/
+DAG/entrypoints only and consumes the current one-time design-push permission.

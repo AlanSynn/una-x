@@ -1,0 +1,61 @@
+{
+ "schema": "una-10x-v00-state-artifact-checks-1",
+ "task": "V00",
+ "clean_frame_law": "the gauntlet ran from a disposable git-archive copy of HEAD with src/ removed; no test read hardcoded worktree paths (they ran to completion in the clean frame); the twin frame is the SAME archive bytes with src intact",
+ "frames": {
+  "wheel_frame": {
+   "copy": "/tmp/v00r_tree",
+   "src": "deleted",
+   "law": "imports resolve ONLY to the installed --target dirs (origin proof below)"
+  },
+  "source_twin_frame": {
+   "copy": "/tmp/v00r_tree_src",
+   "src": "intact",
+   "law": "same archive bytes with src present; serves ONLY source-law checks that read REPO/src"
+  }
+ },
+ "origin_proof": "ORIGIN /tmp/una_i00r/site_cand_r/urban_network_analysis/__init__.py",
+ "wheel_installed_identity": {
+  "cand": {
+   "files": 73,
+   "presence_set_equal": true,
+   "byte_equal_all": true,
+   "byte_diff_allowed": [
+    "urban_network_analysis-2.6.0.dist-info/RECORD"
+   ],
+   "installed_only_metadata": [
+    "urban_network_analysis-2.6.0.dist-info/INSTALLER",
+    "urban_network_analysis-2.6.0.dist-info/REQUESTED",
+    "urban_network_analysis-2.6.0.dist-info/direct_url.json"
+   ],
+   "installed_only_built_binaries": [
+    "urban_network_analysis/Engines/_native/libuna_metric_fold.so"
+   ]
+  },
+  "base": {
+   "files": 61,
+   "presence_set_equal": true,
+   "byte_equal_all": true,
+   "byte_diff_allowed": [
+    "urban_network_analysis-2.6.0.dist-info/RECORD"
+   ],
+   "installed_only_metadata": [
+    "urban_network_analysis-2.6.0.dist-info/INSTALLER",
+    "urban_network_analysis-2.6.0.dist-info/REQUESTED",
+    "urban_network_analysis-2.6.0.dist-info/direct_url.json"
+   ],
+   "installed_only_built_binaries": []
+  }
+ },
+ "wheel_installed_law": "installed trees are presence-set-equal to their wheels; every shared file byte-equal except installer-rewritten RECORD metadata; installed-only entries are limited to pip install metadata (INSTALLER/REQUESTED/direct_url.json) and the native .so the test gauntlet BUILT INSIDE the installed target - engagement evidence, not drift",
+ "sdist": {
+  "built": true,
+  "name": "urban_network_analysis-2.6.0.tar.gz",
+  "sha256": "3fd62358028ed66997e1185370f2d30337142ff8e84bcf92bdd5a733a928ea93",
+  "members": 3298,
+  "contains_package": true
+ },
+ "forbidden_import_scan": "I00 v1 scan remains valid for the package modules (byte-identical in the repaired wheels except the added shim, whose bytes equal the audited src/una_batch_worker_main.py at HEAD)",
+ "state_and_fault_surface": "public chronology (ordered commits, bitwise per-job artifacts, RunAccessibility twice, cold-vs-warm) is pinned by the public island (3 passed on the installed wheel); batch fault behaviors (worker death, deadline cancel, checkpoint resume, tamper rejection) are pinned by the harness island (45 passed, 1 protected skip) and the committed campaign fault matrix (P04I/P04R receipts)",
+ "not_passed_entries": "gpu device-battery checks (CPU-only host) and any fixture-unavailable clean-frame checks are recorded as NOT passed, never waived"
+}

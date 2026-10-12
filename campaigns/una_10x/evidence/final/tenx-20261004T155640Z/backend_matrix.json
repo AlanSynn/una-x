@@ -1,0 +1,49 @@
+{
+ "schema": "una-10x-v00-backend-matrix-1",
+ "task": "V00",
+ "installed_environments": {
+  "candidate": {
+   "target": "/tmp/una_i00r/site_cand_r",
+   "wheel_sha256": "5a7017f71ed1a1d4..."
+  },
+  "baseline": {
+   "target": "/tmp/una_i00r/site_base_r",
+   "wheel_sha256": "f0504f886eb99761..."
+  }
+ },
+ "backend_facts_installed_frame": {
+  "PYVER": "3.11.4",
+  "NUMPY": "2.4.6 NUMBA 0.67.0",
+  "REPLAY_COMPILED": "True",
+  "NATIVE": "True /tmp/una_i00r/site_cand_r/urban_network_analysis/Engines/_native_fold.py",
+  "GPU_AVAIL": "False"
+ },
+ "matrix": [
+  {
+   "backend": "numba compiled outer replay",
+   "status": "PASSED",
+   "evidence": "metrics island 69 passed on the installed wheel; _REPLAY_COMPILED True in the installed frame; AB probe arm B produced the cohort outputs bitwise-equal to both the baseline wheel and the forced fallback"
+  },
+  {
+   "backend": "python origin fallback route",
+   "status": "PASSED",
+   "evidence": "forced separately (_REPLAY_COMPILED=False, probe arm C): public outputs BITWISE-EQUAL to the compiled route (B==C) and to the baseline wheel (A==B==C)"
+  },
+  {
+   "backend": "installed baseline wheel",
+   "status": "PASSED",
+   "evidence": "ORIGIN_OK import proof + public RunBatch run (probe arm A) with outputs bitwise-equal to the candidate arm"
+  },
+  {
+   "backend": "native bridge (ctypes AOT strict fold)",
+   "status": "PASSED (battery scope)",
+   "evidence": "native island 85 passed on the installed wheel; libuna_metric_fold.so was compiled INSIDE the installed target during the gauntlet (recorded as installed-only built binary); production engagement law intact (source-law checks re-verified on the twin frame)"
+  },
+  {
+   "backend": "gpu device fold",
+   "status": "NOT PASSED ON THIS HOST (recorded honestly)",
+   "evidence": "CPU-only host: device checks skip -> NOT passed here; the REAL-device qualification is the G11 receipt (7a74024): V100 execution, bit matrix, CPU_ROUTE_RETAINED; production never imports the module (engagement law)"
+  }
+ ],
+ "no_unsafe_promoted_path": "every claim admits only passed domains: the production route is the numba compiled path with the Python origin fallback; native and GPU modules exist but are battery-scoped (engagement law proven on the source and by the fresh-frame import facts)"
+}

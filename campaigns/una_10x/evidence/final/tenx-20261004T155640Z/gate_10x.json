@@ -1,0 +1,40 @@
+{
+ "schema": "una-10x-q10-gate-1",
+ "task": "Q10R",
+ "decision": "TARGET_UNMET",
+ "claim": "the >=10x PUBLIC boundary claim is NOT met on the frozen observed cohort: the measured improvement is a tight 2.66x (median), one-sided 95% LB 2.59x",
+ "protocol": {
+  "windows": 7,
+  "alternation": "AB,BA,AB,BA,AB,BA,AB",
+  "schedule": "w4t1 (workers=4, threads_per_worker=1, queue_depth=64, writer_concurrency=1; C=4)",
+  "seed": 20261003,
+  "bootstrap_resamples": 20000,
+  "statistic": "median(ln(base_wall/cand_wall)) over the seven paired windows; exp() reported; one-sided 95% lower bound = exp(5th percentile of 20000 resampled medians)",
+  "pass_rule": "median >= 10 AND LB >= 10",
+  "arms": {
+   "base": "INSTALLED repaired baseline wheel (I00R target from the comparator pin 395cdc5, pin re-verified per run)",
+   "cand": "INSTALLED repaired candidate wheel (I00R target from the repair head that the I00R freeze pins; import origin asserted per run)"
+  },
+  "cache_regime": "FIRST_COHORT cold stores; per-tree warm numba caches (untimed warmups)",
+  "timer": "wall brackets ONLY the public RunBatch call"
+ },
+ "statistic": {
+  "median_log": 0.9795331757070863,
+  "median_ratio": 2.6632126993088145,
+  "lower_bound_95_log": 0.9535130365404367,
+  "lower_bound_95_ratio": 2.594809326204556,
+  "min_window_ratio": 2.594123905770464,
+  "max_window_ratio": 2.709543216165733,
+  "bootstrap": "20000 resamples of paired ln(base/cand) medians, seed 20261003, exp() reported; 5th percentile = one-sided 95% lower bound"
+ },
+ "pass_rule": "median >= 10 AND LB95 >= 10",
+ "outcome_wording": "target_unmet per DECISION.md taxonomy - no weakening of the gate, no tolerance, no baseline change; the truthful public claim is the measured paired ratio with its LB",
+ "why_far_below_gate": "the delivered candidate removes the per-row GIS load/parse rework and compiles the outer origin replay (P02I/P03C/P03M); the remaining ~25s/wall is dominated by the irreducible prepared-fold compute (stage floor ~16.6s of ~66.5s demand per the committed stage model), bounding the cohort ceiling near 4x at this schedule - recorded as the measured stage fact, not an extrapolation",
+ "no_optional_stopping": "all seven windows ran once each; no reruns, replacements or early stop",
+ "budget_charge_s": 646.3,
+ "budget_after": {
+  "cumulative_s": 5100.6,
+  "total_s": 28800.0,
+  "remaining_before_reserve_s": 16499.4
+ }
+}

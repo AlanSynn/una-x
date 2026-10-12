@@ -164,8 +164,9 @@ class CheckpointJournal:
         if os.path.exists(self.journal_path):
             raise BatchCheckpointError(
                 f"checkpoint directory {self.directory!r} already holds a "
-                f"journal; resume must go through load_resume() so changed "
-                f"identity is rejected instead of overwritten")
+                f"journal; resume by re-invoking RunBatch with the same "
+                f"checkpoint directory (ExecutionOptions.checkpoint) so "
+                f"changed identity is rejected instead of overwritten")
         doc = {
             "schema_version": JOURNAL_SCHEMA_VERSION,
             "identity": identity,
@@ -183,10 +184,19 @@ class CheckpointJournal:
         rows[str(row_index)] = _canonical(dict(record))
         self._write({**doc, "rows": rows})
 
-    def record_composite_finalized(self) -> None:
+    def record_composite_finalized(self, files: Optional[dict] = None) -> None:
+        """Mark the composite phase finalized (bumps the generation).
+        ``files`` optionally records the published composite artifacts'
+        digest map (absolute path -> {bytes, sha256}) so a resume can
+        verify — and restore — the published composite (BATCH_REVIEW
+        rev-20261003T0105Z MINOR-1).  Journals finalized without the map
+        keep resuming unchanged: nothing recorded, nothing to verify."""
         doc = self._require()
+        composite = {"phase": "finalized"}
+        if files is not None:
+            composite["files"] = files
         self._write({**doc,
-                     "composite": {"phase": "finalized"},
+                     "composite": composite,
                      "generation": doc["generation"] + 1})
 
     def _require(self) -> dict:
@@ -336,3 +346,23 @@ class CheckpointJournal:
     def composite_finalized(self) -> bool:
         doc = self.load()
         return bool(doc and doc.get("composite", {}).get("phase") == "finalized")
+
+    def verify_composite(self) -> bool:
+        """True when the recorded composite artifacts (if any) exist and
+        verify against their recorded digests (size + sha256).  True too
+        when nothing was recorded (composite never exported, or a journal
+        finalized before artifact recording existed) — there is then
+        nothing to verify against, and resume keeps the published bytes
+        (BATCH_REVIEW rev-20261003T0105Z MINOR-1)."""
+        doc = self.load()
+        if doc is None:
+            return False
+        files = doc.get("composite", {}).get("files") or {}
+        for path, meta in files.items():
+            if not os.path.exists(path):
+                return False
+            if os.path.getsize(path) != meta["bytes"]:
+                return False
+            if sha256_file(path) != meta["sha256"]:
+                return False
+        return True

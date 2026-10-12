@@ -1,0 +1,699 @@
+{
+  "acquisition_record_sha256": "4eb64f0d18ef8f827a4644776293a3545040d89c367dcf1a8ebaaa19c8641e44",
+  "finding_id": "W00-MINOR-1",
+  "layers": {
+    "20260703_PercLenNetwork_InnerCore.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/20260703_PercLenNetwork_InnerCore.geojson"
+      },
+      "bytes": 71290787,
+      "columns": [
+        "batch_composite_result_column=edge_flow",
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=Count",
+        "destination_weight_column=weekly_departures",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count",
+        "origin_weight_column=pop2020",
+        "origin_weight_column=weight"
+      ],
+      "deep": "SKIPPED (network-scale layer, out of finding scope; blob-verified in the acquisition record)",
+      "manifests": {
+        "cohort_manifest.csv": 32,
+        "flow_manifest.csv": 2,
+        "mixed_manifest.csv": 10
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson",
+      "sha256": "83ec3e724693bab4581a24d8c04859e14dde839e3f9a380c92cb30cd85459799"
+    },
+    "20260703_PercLenNetwork_InnerCore_3D.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/20260703_PercLenNetwork_InnerCore_3D.geojson"
+      },
+      "bytes": 66301651,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=weekly_departures",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": "SKIPPED (network-scale layer, out of finding scope; blob-verified in the acquisition record)",
+      "manifests": {
+        "mixed_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore_3D.geojson",
+      "sha256": "6f72bcb2aedecb72b36298645b45ca5551ec32514ab017c8113cb54f3530f9f5"
+    },
+    "Cambridge_building_centroids.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/Cambridge_building_centroids.geojson"
+      },
+      "bytes": 5982662,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=Count",
+        "destination_weight_column=weekly_departures",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 14751,
+        "geometry_types": {
+          "Point": 14751
+        },
+        "property_keys": [
+          "class",
+          "fid",
+          "floors_source",
+          "fp_area_m2",
+          "gfa_m2",
+          "height_m",
+          "height_source",
+          "id",
+          "lat",
+          "lon",
+          "n_floors",
+          "subtype"
+        ],
+        "weight_column_nonnull": {}
+      },
+      "manifests": {
+        "cohort_manifest.csv": 32,
+        "mixed_manifest.csv": 11
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson",
+      "sha256": "14999756f30cc0f3245ac104b64f807dce76765e7c0e28af1da499c892d3bcdc"
+    },
+    "Cambridge_building_centroids_pop2020.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/Cambridge_building_centroids_pop2020.geojson"
+      },
+      "bytes": 6239448,
+      "columns": [
+        "batch_composite_result_column=edge_flow",
+        "destination_weight_column=weekly_departures",
+        "network_weight_column=Geometric",
+        "origin_weight_column=pop2020"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 14751,
+        "geometry_types": {
+          "Point": 14751
+        },
+        "property_keys": [
+          "class",
+          "fid",
+          "floors_source",
+          "fp_area_m2",
+          "gfa_m2",
+          "height_m",
+          "height_source",
+          "id",
+          "lat",
+          "lon",
+          "n_floors",
+          "pop2020",
+          "subtype"
+        ],
+        "weight_column_nonnull": {
+          "pop2020": 14751
+        }
+      },
+      "manifests": {
+        "flow_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids_pop2020.geojson",
+      "sha256": "bc8cb6bfba7c5e7fa8c8381d212d02052ff5beacb1c67fe3da3c521bc980412e"
+    },
+    "Cambridge_transit_stations.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/Cambridge_transit_stations.geojson"
+      },
+      "bytes": 169011,
+      "columns": [
+        "batch_composite_result_column=edge_flow",
+        "destination_weight_column=weekly_departures",
+        "network_weight_column=Geometric",
+        "origin_weight_column=pop2020",
+        "origin_weight_column=weight"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 434,
+        "geometry_types": {
+          "Point": 434
+        },
+        "property_keys": [
+          "dep_bus",
+          "dep_commuter_rail",
+          "dep_rapid_transit",
+          "modes_served",
+          "multimodal",
+          "municipality",
+          "station_type",
+          "stop_id",
+          "stop_name",
+          "weekly_departures"
+        ],
+        "weight_column_nonnull": {
+          "weekly_departures": 434
+        }
+      },
+      "manifests": {
+        "flow_manifest.csv": 2
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_transit_stations.geojson",
+      "sha256": "8a3602034db712a7f28d47f64d7dad0b5f7b84e105d05b4453c7cb102c1ece76"
+    },
+    "MA_bus_stops.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/MA_bus_stops.geojson"
+      },
+      "bytes": 2641054,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=Count",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 6661,
+        "geometry_types": {
+          "Point": 6661
+        },
+        "property_keys": [
+          "Count",
+          "dep_bus",
+          "dep_commuter_rail",
+          "dep_rapid_transit",
+          "modes_served",
+          "multimodal",
+          "municipality",
+          "station_type",
+          "stop_id",
+          "stop_name",
+          "weekly_departures"
+        ],
+        "weight_column_nonnull": {
+          "Count": 6661
+        }
+      },
+      "manifests": {
+        "mixed_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_bus_stops.geojson",
+      "sha256": "4e049dd001ef95e7d622bf0e2c179fc88c43e1f9e803731d5b8e128bbc28964c"
+    },
+    "MA_metro_stations.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/MA_metro_stations.geojson"
+      },
+      "bytes": 53738,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=Count",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 125,
+        "geometry_types": {
+          "Point": 125
+        },
+        "property_keys": [
+          "Count",
+          "dep_bus",
+          "dep_commuter_rail",
+          "dep_rapid_transit",
+          "modes_served",
+          "multimodal",
+          "municipality",
+          "station_type",
+          "stop_id",
+          "stop_name",
+          "weekly_departures"
+        ],
+        "weight_column_nonnull": {
+          "Count": 125
+        }
+      },
+      "manifests": {
+        "mixed_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_metro_stations.geojson",
+      "sha256": "c67db4db5388fd6149582704fa93f7bdf9147582883f6d4a6f0c7dfc71cee25b"
+    },
+    "MA_transit_stations.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/MA_transit_stations.geojson"
+      },
+      "bytes": 2666677,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=weekly_departures",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 6919,
+        "geometry_types": {
+          "Point": 6919
+        },
+        "property_keys": [
+          "dep_bus",
+          "dep_commuter_rail",
+          "dep_rapid_transit",
+          "modes_served",
+          "multimodal",
+          "municipality",
+          "station_type",
+          "stop_id",
+          "stop_name",
+          "weekly_departures"
+        ],
+        "weight_column_nonnull": {
+          "weekly_departures": 6919
+        }
+      },
+      "manifests": {
+        "cohort_manifest.csv": 32,
+        "mixed_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson",
+      "sha256": "52080688bb2678e169221290e307e5aaef505f537cc0a14be331ec1ee700bab0"
+    },
+    "inner_core_parks_pointgrid.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/establishments/anonym/inner_core_parks_pointgrid.geojson"
+      },
+      "bytes": 4264509,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=Count",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 5138,
+        "geometry_types": {
+          "Point": 5138
+        },
+        "property_keys": [
+          "park_areas_ptgrid_cropped.COUNT",
+          "park_areas_ptgrid_cropped.FID",
+          "park_areas_ptgrid_cropped.Id",
+          "park_areas_ptgrid_cropped.LENGTH",
+          "park_areas_ptgrid_cropped.ORIG_FID",
+          "park_areas_ptgrid_cropped.area",
+          "park_areas_ptgrid_cropped.code",
+          "park_areas_ptgrid_cropped.fclass",
+          "park_areas_ptgrid_cropped.lng_x_area",
+          "park_areas_ptgrid_cropped.name",
+          "park_areas_ptgrid_cropped.osm_id",
+          "park_areas_ptgrid_cropped_AddSpatialJoin.Join_Count",
+          "park_areas_ptgrid_cropped_AddSpatialJoin.OBJECTID",
+          "park_areas_ptgrid_cropped_AddSpatialJoin.TARGET_FID",
+          "park_areas_ptgrid_cropped_AddSpatialJoin.area_frac"
+        ],
+        "weight_column_nonnull": {}
+      },
+      "manifests": {
+        "mixed_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/establishments/anonym/inner_core_parks_pointgrid.geojson",
+      "sha256": "b59610f4ab418bd16b8ca2c593f670f9813fa808606f55340fbef4f85c741e55"
+    },
+    "innercore_arts_venues_category_only.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/establishments/anonym/innercore_arts_venues_category_only.geojson"
+      },
+      "bytes": 131765,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=Count",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 789,
+        "geometry_types": {
+          "Point": 789
+        },
+        "property_keys": [
+          "category"
+        ],
+        "weight_column_nonnull": {}
+      },
+      "manifests": {
+        "mixed_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/establishments/anonym/innercore_arts_venues_category_only.geojson",
+      "sha256": "56a2669723dd8aa77f8913d3fdf1718853799329f402d0f2607552a1f81c890a"
+    },
+    "innercore_food_beverage_category_only.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/establishments/anonym/innercore_food_beverage_category_only.geojson"
+      },
+      "bytes": 882808,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=Count",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 5199,
+        "geometry_types": {
+          "Point": 5199
+        },
+        "property_keys": [
+          "category"
+        ],
+        "weight_column_nonnull": {}
+      },
+      "manifests": {
+        "mixed_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/establishments/anonym/innercore_food_beverage_category_only.geojson",
+      "sha256": "83d81c2672a8ff593b7d7a17f9fdbb034d2e76bcd6a0ef79311af7b8b3a2599c"
+    },
+    "innercore_health_category_only.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/establishments/anonym/innercore_health_category_only.geojson"
+      },
+      "bytes": 6576761,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=Count",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 40384,
+        "geometry_types": {
+          "Point": 40384
+        },
+        "property_keys": [
+          "category"
+        ],
+        "weight_column_nonnull": {}
+      },
+      "manifests": {
+        "mixed_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/establishments/anonym/innercore_health_category_only.geojson",
+      "sha256": "a655387f3eb934835abb00aefd09d4f562b6908e372ec75290fbcc943a33aeff"
+    },
+    "innercore_personal_services_category_only.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/establishments/anonym/innercore_personal_services_category_only.geojson"
+      },
+      "bytes": 885329,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=Count",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 5123,
+        "geometry_types": {
+          "Point": 5123
+        },
+        "property_keys": [
+          "category"
+        ],
+        "weight_column_nonnull": {}
+      },
+      "manifests": {
+        "mixed_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/establishments/anonym/innercore_personal_services_category_only.geojson",
+      "sha256": "497da6f1ace7bf7281ee49d8861864c4ce4d42c8ed3919fe75860a8181d33e83"
+    },
+    "innercore_public_institutions_category_only.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/establishments/anonym/innercore_public_institutions_category_only.geojson"
+      },
+      "bytes": 414800,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=Count",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 2372,
+        "geometry_types": {
+          "Point": 2372
+        },
+        "property_keys": [
+          "category"
+        ],
+        "weight_column_nonnull": {}
+      },
+      "manifests": {
+        "mixed_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/establishments/anonym/innercore_public_institutions_category_only.geojson",
+      "sha256": "a7356e367bc5559f2f95bd6eafb6e548a52d69b4235441134536c1947edd5d37"
+    },
+    "innercore_retailers_category_only.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/establishments/anonym/innercore_retailers_category_only.geojson"
+      },
+      "bytes": 1233747,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=Count",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 7487,
+        "geometry_types": {
+          "Point": 7487
+        },
+        "property_keys": [
+          "category"
+        ],
+        "weight_column_nonnull": {}
+      },
+      "manifests": {
+        "mixed_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/establishments/anonym/innercore_retailers_category_only.geojson",
+      "sha256": "6811fe82ffde9e5020fbb2e404d67bfce42b43d9bdb3431e3d9b05d613c92091"
+    },
+    "innercore_schools_category_only.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/establishments/anonym/innercore_schools_category_only.geojson"
+      },
+      "bytes": 137441,
+      "columns": [
+        "batch_composite_result_column=knn_access",
+        "destination_weight_column=Count",
+        "network_weight_column=Geometric",
+        "origin_weight_column=Count"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 772,
+        "geometry_types": {
+          "Point": 772
+        },
+        "property_keys": [
+          "category",
+          "weight"
+        ],
+        "weight_column_nonnull": {}
+      },
+      "manifests": {
+        "mixed_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/establishments/anonym/innercore_schools_category_only.geojson",
+      "sha256": "832308edd1a22d3dceffe44144413efa81f949f789b4cdd031712f5457b4db8a"
+    },
+    "schools_cambridge.geojson": {
+      "acquisition": {
+        "digest_field": "sha256",
+        "how": "fetched at pinned ref",
+        "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+        "record_key": "Boston/schools_cambridge.geojson"
+      },
+      "bytes": 19470,
+      "columns": [
+        "batch_composite_result_column=edge_flow",
+        "destination_weight_column=weekly_departures",
+        "network_weight_column=Geometric",
+        "origin_weight_column=weight"
+      ],
+      "deep": {
+        "crs_member": {
+          "properties": {
+            "name": "urn:ogc:def:crs:EPSG::6491"
+          },
+          "type": "name"
+        },
+        "feature_count": 60,
+        "geometry_types": {
+          "Point": 60
+        },
+        "property_keys": [
+          "category",
+          "company",
+          "employees",
+          "naics",
+          "naics6",
+          "naics_desc",
+          "weights"
+        ],
+        "weight_column_nonnull": {}
+      },
+      "manifests": {
+        "flow_manifest.csv": 1
+      },
+      "path": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/schools_cambridge.geojson",
+      "sha256": "180068e52aa1e3932bbb3577f492de6f4ca234f683d3c0195cccfa7d8d0d926e"
+    }
+  },
+  "manifests": [
+    "cohort_manifest.csv",
+    "flow_manifest.csv",
+    "mixed_manifest.csv"
+  ],
+  "pinned_ref": "c15ebda6981397f46eed5c2d55229f71e57d44fb",
+  "reviewed_commit": "d23344bc1498b5041fb76b05723c571cfaa84d2e",
+  "scope": "every distinct origins/destinations layer referenced by cohort_manifest.csv, flow_manifest.csv, mixed_manifest.csv; network layers are out of scope here (blob-verified in the acquisition record, exercised bitwise by the H01 cohort run)",
+  "task": "W00 supplemental point-layer inspection (discharges review finding W00-MINOR-1 from verdict ACCEPT)"
+}

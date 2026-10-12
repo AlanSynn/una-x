@@ -1,0 +1,79 @@
+{
+  "canonical_encoding": {
+    "frame_law": "fields in SCHEMA ORDER (never sorted); str=u64len+utf8; int=8B LE signed; float=8B IEEE-754 bits (bit identity: -0.0 != 0.0, 1-ULP visible); bytes; bool; list=count+ordered frames, LIST ONLY (a tuple value is refused); field=namelen+name+value; ID=sha256(frame).hexdigest(); refusal contract: out-of-range ints raise struct.error and unframed types raise TypeError - every encoder refusal is an admission refusal, never a silent wrap",
+    "parent_embedding": "child ids embed the parent digest as a hex str field, making composition order explicit"
+  },
+  "id_fields": {
+    "ArtifactID": [
+      "names",
+      "formats",
+      "crs",
+      "output_metadata",
+      "publication_policy"
+    ],
+    "DestID": [
+      "dest_terminal_ids_ordered",
+      "dest_cost_bits_ordered",
+      "extraction_plan",
+      "min_plan",
+      "membership_plan"
+    ],
+    "GraphID": [
+      "profile_id",
+      "csr_indptr_bits",
+      "csr_neighbor_ids_bits",
+      "csr_cost_bits",
+      "csr_flags_bits",
+      "prepared_topology_semantics",
+      "turn_semantics",
+      "obstacle_semantics",
+      "elevation_semantics",
+      "compiler_search_plan",
+      "numerical_env"
+    ],
+    "MetricID": [
+      "trace_id",
+      "dest_weight_bits_original_order",
+      "metric_params_bits",
+      "metric_branch_plan",
+      "metric_dtype_plan",
+      "compiler_identity"
+    ],
+    "QueryID": [
+      "graph_id",
+      "origin_seed_ids_ordered",
+      "seed_cost_bits_ordered",
+      "cutoff_value",
+      "cutoff_dtype",
+      "search_policy",
+      "sentinel_policy",
+      "expansion_policy"
+    ],
+    "TraceID": [
+      "query_id",
+      "dest_id",
+      "trace_schema_version"
+    ]
+  },
+  "laws": [
+    "cutoff equality is exact and typed; a trace produced at larger R is NEVER shared with a smaller R by filtering (b, seed gates, queue chronology and labels depend on R)",
+    "graph equivalence over real weights is not execution equivalence over ordered bits; the bits decide",
+    "changed graph flags/edge order/turns/obstacles/costs/profile/code cause identity misses even when many distances look unchanged",
+    "do not reverse a query or contract degree-two paths without a rounded-operation proof",
+    "a handle is not a durable cache identity; a pointer address is not a hash",
+    "trace representation: packed origin-major, indptr[O+1], destination_ids[nnz] int64, distance_bits[nnz] float64, immutable metadata; each slice strictly ascending ORIGINAL destination ids",
+    "store evaluated retained distance bits only; no rounded or compressed surrogates; no dense O*D or K*O*D intermediates; a consumer needing the full ODM keeps its original representation",
+    "one bounded producer tile at a time; measured trace bytes, packing, queues and leased memory; exceeding the trace budget selects recompute/streaming, never truncated-trace success",
+    "a partially computed trace carries incomplete status and can never be published as a cache hit",
+    "checked integer capacities and signed indices; representation proofs replace the prototype's typed-list narrowing warning, not warning suppression",
+    "validation: each trace slice vs actual full reference distances filtered in original index order; each job replay vs an independently executed full job",
+    "metric variation set varied individually: beta/plateau/midpoint/growth/KNN branch/coefficients/destination weights",
+    "identity tests must force different results for at least two cohort rows and validate all K jobs",
+    "exact-repeat control uses the current full-result cache",
+    "no invalid input becomes successful because an earlier trace hit avoided its validation",
+    "API surface (concept names adapt to existing backends, no parallel API): prepare_snapshot -> immutable GraphHandle; route(GraphHandle, query, dest) -> TraceHandle(capabilities, owner, bytes, complete); replay(TraceHandle, MetricPlan, weights) -> fresh ResultBundle; release(handle) after dependents complete"
+  ],
+  "provenance_exclusion": "provenance never enters any ID: two graphs with identical ordered bits share a GraphID regardless of where the bytes came from; a provenance-only difference never misses",
+  "schema_version": "una-10x-c10-1",
+  "task": "C10"
+}

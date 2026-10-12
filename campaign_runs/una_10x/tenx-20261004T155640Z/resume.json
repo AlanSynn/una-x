@@ -1,0 +1,74 @@
+{
+ "schema": "post-p00-resume-1",
+ "status": "executed",
+ "run_id": "tenx-20261004T155640Z",
+ "checkpoint_commit": "6130769a5751bf7446734dc39b9f8e3763461cfe",
+ "current_source_sha": "4a5e56f7a64b962c1d11df8f49e30bc636903770",
+ "main_sha": "c1f8614a2733903b3fa9664579ba2fdce7ef7a74",
+ "origin_perf_una_10x_sha": "4a5e56f7a64b962c1d11df8f49e30bc636903770",
+ "worktree": "/storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels",
+ "worktrees": [
+  "/storage/scratch1/1/dsynn6/una-x                                  c1f8614 [main]",
+  "/storage/scratch1/1/dsynn6/una-x-baseline-395cdc5r2               395cdc5 (detached HEAD)",
+  "/storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels    4a5e56f [perf/una-10x] locked",
+  "/storage/scratch1/1/dsynn6/una-x/.claude/worktrees/s12-review-r1  c8b19f2 (detached HEAD)"
+ ],
+ "dirty_tracked_count": 0,
+ "untracked_count": 263,
+ "cohort_py_sha256_now": "c1976193faed81a439c54103afb865e5be2900ea3bc48a5aeed7fe50ce517892",
+ "raw_bytes_unavailable": [
+  {
+   "tag": "e_cand_w2_t2",
+   "reason": "raw out tree not found on disk; run JSON with recorded bitwise verification (64/64 match) remains the evidence"
+  }
+ ],
+ "cohort_manifest_sha256": "1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf",
+ "cohort_manifest_paths": [
+  "campaign_runs/una_10x/tenx-20261003T1212Z/w00_freeze/cohort_manifest.csv",
+  "../../../../campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv"
+ ],
+ "prior_receipts_verified": [
+  "evidence/tasks/C11/c11_repair_receipt.json",
+  "p00_profile/p00_receipt.json",
+  "s02_bridge/task_receipt.json"
+ ],
+ "local_raw_artifacts_verified": true,
+ "primary_sha256": "6f79c5eb7a5abba3be55f4a77e2f0566c791c2920472f72d3a3bf5cb43d13a2c",
+ "remaining_heavy_budget_seconds": 26428.0,
+ "final_reserved_seconds": 7200,
+ "owners": {
+  "this_session": [
+   "coordinator",
+   "integrator",
+   "harness-engineer (P01M)",
+   "performance-owner (P01F, single heavy lease)",
+   "sequential implementation roles per phase as admitted"
+  ],
+  "unassigned": [
+   "batch scope independent owner (BATCH_REVIEW obligations)",
+   "native scope (until N00)",
+   "gpu scope (until G00, hardware-gated)",
+   "independent-reviewer role (fresh-context, separate)"
+  ]
+ },
+ "remote_publish_authorized": false,
+ "verification": {
+  "pass_count": 25,
+  "alarm_count": 0,
+  "notes": [
+   {
+    "file": "src/urban_network_analysis/batch/cohort.py",
+    "sha256_now": "c1976193faed81a439c54103afb865e5be2900ea3bc48a5aeed7fe50ce517892",
+    "matches": [
+     "p00_env_record"
+    ],
+    "note": "p00_env recorded c1976193... while commit dca4b4f message recorded c5b9eb25...; current disk value decides which was the executed P00 tree"
+   }
+  ]
+ },
+ "next_tasks": [
+  "P01M",
+  "P01F",
+  "P02D"
+ ]
+}

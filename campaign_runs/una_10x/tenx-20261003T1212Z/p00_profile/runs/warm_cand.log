@@ -1,0 +1,9 @@
+cmd: /storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11 /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/_p00_run_one.py --tree cand --mode par --tag warm_cand --outdir /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261003T1212Z/p00_profile/out/warm_cand --cold-store 1 --verify 0 --profile 0 --workers 2 --pairing /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/warmup_manifest.csv
+
+stdout:
+    0.0001 |        0.000100 | UNA | UNA instance created. Topology and Settings initialized
+    0.0105 |        0.010354 | RunBatch | Loaded 2 settings from /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/warmup_manifest.csv
+run warm_cand wall 15.769 s | asserts_ok True | bitwise None | tree_rss_MiB 1391.7
+wrote /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261003T1212Z/p00_profile/runs/warm_cand.json
+
+stderr:

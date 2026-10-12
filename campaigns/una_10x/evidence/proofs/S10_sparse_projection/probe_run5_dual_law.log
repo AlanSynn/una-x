@@ -1,0 +1,12 @@
+surgery ok; A1 module: _large_access_scratch
+A1 params: ['o_terminal_idxs', 'o_terminal_weights', 'adjacency_pointer', 'adjacency_vector', 'adjacency_vector_weights', 'adjacynct_vector_network_node', 'cutoff', 'd_count', 'eligible_offset', 'eligible_weight']
+oracle kwargs: {'d_count': 'd_count', 'domain': 'domain'} | trace params: ['o_idx', 'o_w', 'ptr', 'adj', 'wts', 'flag', 'cutoff', 'd_count', 'domain', 'stamp', 'arenas', 'epoch', 'pop_cap']
+functions: ['fail', 'trace_schedule', 'fresh_arenas', 'Kp_schedule', 'csr', 'ot', 'flags_all', 'bit_eq', 'e1_exhaustive', 'e2_e6_boundary', 'sys_float_max', 'e7_epochs', 'e8_sentinel', 'e9_concurrent', 'e10_sparse_touch', 'main', 'canon_ev', 'trace_ieee', 'kp_ieee', 'run_all', 'case', 'e5_nan_pump']
+passed: 138165 | failed: 0
+written: /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaigns/una_10x/evidence/proofs/S10_sparse_projection/sparse_admission.json
+
+real	0m45.160s
+user	0m42.369s
+sys	0m0.485s
+
+[exited with code 0]

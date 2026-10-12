@@ -1,0 +1,412 @@
+{
+ "bitwise_verify": {
+  "requested": false
+ },
+ "cohort": null,
+ "cold_store_requested": true,
+ "config": {
+  "queue_depth": 64,
+  "threads_per_worker": 1,
+  "workers": null,
+  "writer_concurrency": 1
+ },
+ "engagement_asserts": {},
+ "engagement_ok": true,
+ "jit_regime": "warm (declared; per-tree cache warmed once untimed)",
+ "mode": "serial",
+ "notes_runtime": [],
+ "outdir_existed_before": false,
+ "output_manifest_present": false,
+ "pairing": "../../../../../../../campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv",
+ "parallel_requested": false,
+ "pins": {
+  "manifest_sha256": "1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf",
+  "numba_cache_dir": "/storage/scratch1/1/dsynn6/campaign_data/numba_cache_p00_cand",
+  "python": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11"
+ },
+ "profile": {
+  "buckets": {
+   "cohort_store": {
+    "cumtime_max_s": 0.003,
+    "tottime_s": 0.005
+   },
+   "export_io": {
+    "cumtime_max_s": 8.76,
+    "tottime_s": 8.36
+   },
+   "load_gis": {
+    "cumtime_max_s": 147.513,
+    "tottime_s": 74.325
+   },
+   "metrics_fold": {
+    "cumtime_max_s": 192.326,
+    "tottime_s": 15.643
+   },
+   "other": {
+    "cumtime_max_s": 192.358,
+    "tottime_s": 93.171
+   },
+   "search_heap": {
+    "cumtime_max_s": 0.001,
+    "tottime_s": 0.0
+   },
+   "topology": {
+    "cumtime_max_s": 147.524,
+    "tottime_s": 0.8
+   },
+   "trace_build": {
+    "cumtime_max_s": 0.563,
+    "tottime_s": 0.052
+   }
+  },
+  "pstats": "p00_profile/profiles/prof_cand_serial.pstats",
+  "top_functions_by_tottime": [
+   {
+    "cumtime_s": 140.9752,
+    "func": "raw.py:read_arrow",
+    "tottime_s": 74.169
+   },
+   {
+    "cumtime_s": 66.8268,
+    "func": "~:<built-in method builtins.next>",
+    "tottime_s": 66.8026
+   },
+   {
+    "cumtime_s": 15.6165,
+    "func": "AccessibilityWElevation.py:integrated_scope_access",
+    "tottime_s": 15.6162
+   },
+   {
+    "cumtime_s": 8.1835,
+    "func": "raw.py:write",
+    "tottime_s": 8.1675
+   },
+   {
+    "cumtime_s": 7.4663,
+    "func": "~:<method 'acquire' of '_thread.lock' objects>",
+    "tottime_s": 7.4663
+   },
+   {
+    "cumtime_s": 5.3307,
+    "func": "~:<method 'argsort' of 'numpy.ndarray' objects>",
+    "tottime_s": 5.3307
+   },
+   {
+    "cumtime_s": 4.1166,
+    "func": "io.py:from_wkb",
+    "tottime_s": 4.1087
+   },
+   {
+    "cumtime_s": 1.2552,
+    "func": "pandas_compat.py:table_to_dataframe",
+    "tottime_s": 0.9266
+   },
+   {
+    "cumtime_s": 0.5951,
+    "func": "strtree.py:__init__",
+    "tottime_s": 0.5769
+   },
+   {
+    "cumtime_s": 0.4608,
+    "func": "string_arrow.py:_from_sequence",
+    "tottime_s": 0.4385
+   },
+   {
+    "cumtime_s": 7.2123,
+    "func": "Topology.py:BuildTopology",
+    "tottime_s": 0.4144
+   },
+   {
+    "cumtime_s": 0.3538,
+    "func": "_geometry.py:get_type_id",
+    "tottime_s": 0.3538
+   },
+   {
+    "cumtime_s": 0.3279,
+    "func": "~:<built-in method shapely.lib.get_coordinates>",
+    "tottime_s": 0.3279
+   },
+   {
+    "cumtime_s": 0.9115,
+    "func": "construction.py:sanitize_array",
+    "tottime_s": 0.3279
+   },
+   {
+    "cumtime_s": 0.3266,
+    "func": "predicates.py:is_empty",
+    "tottime_s": 0.3266
+   },
+   {
+    "cumtime_s": 0.5688,
+    "func": "io.py:to_wkb",
+    "tottime_s": 0.2891
+   },
+   {
+    "cumtime_s": 0.2772,
+    "func": "arraylike.py:default_array_ufunc",
+    "tottime_s": 0.2769
+   },
+   {
+    "cumtime_s": 0.2676,
+    "func": "~:<method 'copy' of 'numpy.ndarray' objects>",
+    "tottime_s": 0.2676
+   },
+   {
+    "cumtime_s": 0.1984,
+    "func": "feather.py:write_feather",
+    "tottime_s": 0.1847
+   },
+   {
+    "cumtime_s": 0.1784,
+    "func": "~:<built-in method posix.stat>",
+    "tottime_s": 0.1771
+   },
+   {
+    "cumtime_s": 0.1767,
+    "func": "shape_base.py:vstack",
+    "tottime_s": 0.1756
+   },
+   {
+    "cumtime_s": 5.0559,
+    "func": "_arraysetops_impl.py:_unique1d",
+    "tottime_s": 0.1561
+   },
+   {
+    "cumtime_s": 0.1445,
+    "func": "measurement.py:length",
+    "tottime_s": 0.1445
+   },
+   {
+    "cumtime_s": 0.2879,
+    "func": "managers.py:_merge_blocks",
+    "tottime_s": 0.1367
+   },
+   {
+    "cumtime_s": 0.1502,
+    "func": "range.py:_get_indexer",
+    "tottime_s": 0.121
+   }
+  ],
+  "total_tt_s": 192.357
+ },
+ "row_count": 32,
+ "rows": [
+  {
+   "backend": "reference",
+   "index": 0,
+   "name": "cohort_beta_00",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 1,
+   "name": "cohort_beta_01",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 2,
+   "name": "cohort_beta_02",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 3,
+   "name": "cohort_beta_03",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 4,
+   "name": "cohort_beta_04",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 5,
+   "name": "cohort_beta_05",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 6,
+   "name": "cohort_beta_06",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 7,
+   "name": "cohort_beta_07",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 8,
+   "name": "cohort_beta_08",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 9,
+   "name": "cohort_beta_09",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 10,
+   "name": "cohort_beta_10",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 11,
+   "name": "cohort_beta_11",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 12,
+   "name": "cohort_beta_12",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 13,
+   "name": "cohort_beta_13",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 14,
+   "name": "cohort_beta_14",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 15,
+   "name": "cohort_beta_15",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 16,
+   "name": "cohort_beta_16",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 17,
+   "name": "cohort_beta_17",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 18,
+   "name": "cohort_beta_18",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 19,
+   "name": "cohort_beta_19",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 20,
+   "name": "cohort_beta_20",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 21,
+   "name": "cohort_beta_21",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 22,
+   "name": "cohort_beta_22",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 23,
+   "name": "cohort_beta_23",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 24,
+   "name": "cohort_beta_24",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 25,
+   "name": "cohort_beta_25",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 26,
+   "name": "cohort_beta_26",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 27,
+   "name": "cohort_beta_27",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 28,
+   "name": "cohort_beta_28",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 29,
+   "name": "cohort_beta_29",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 30,
+   "name": "cohort_beta_30",
+   "status": "ran"
+  },
+  {
+   "backend": "reference",
+   "index": 31,
+   "name": "cohort_beta_31",
+   "status": "ran"
+  }
+ ],
+ "sampler": {
+  "interval_s": 0.05,
+  "peak_single_rss_bytes": 730632192,
+  "peak_tree_pss_bytes": 724074496,
+  "peak_tree_rss_bytes": 730632192,
+  "samples": 2860
+ },
+ "tag": "prof_cand_serial",
+ "task": "P00 measured run",
+ "timing": {
+  "import_s": 5.9996,
+  "proc_start_to_done_s": 198.3911,
+  "public_call_wall_s": 192.3578,
+  "timer_note": "wall brackets ONLY the public RunBatch call; import and process overhead recorded separately (BENCHMARKS.md)"
+ },
+ "trace_store": {
+  "bytes": 0,
+  "existed_after": false,
+  "files": 0,
+  "path_rel": "p00_profile/out/prof_cand_serial/.una-batch-cohort"
+ },
+ "tree": "cand",
+ "workers_effective": null,
+ "workers_requested": null,
+ "zero_failed": true
+}

@@ -1,0 +1,56 @@
+{
+  "campaign": "una_10x",
+  "evidence": {
+    "E12_snapshot_reread": {
+      "bytes": 2775,
+      "fixture": "tests/execution/fixtures/network.geojson",
+      "n": 200,
+      "note": "open question #1 input: cost of the per-row snapshot+digest the TOCTOU law requires; scales with input bytes, amortized by the arena/store reuse it gates",
+      "per_read_plus_digest_ms": 0.2658
+    },
+    "E1_bitwise_parity": {
+      "artifact_sha256_pairs_equal": true,
+      "artifacts_compared": 6,
+      "method": "sha256 per artifact, serial tree vs parallel tree",
+      "parallel_wall_s": 4.3237,
+      "rows": 3,
+      "serial_wall_s": 0.5774,
+      "workers": 2
+    },
+    "E4_engagement": {
+      "counters": {
+        "arena_cap_bytes_per_worker": 29306962944,
+        "arena_nofit": 0,
+        "build_s": 0.03586752247065306,
+        "cold_build": 3,
+        "contention_wait": 3,
+        "fallback_compute": 0,
+        "refusals": {},
+        "rows": 3,
+        "stages": 9,
+        "store_root": "/tmp/p02_evidence/par/.una-batch-prepared",
+        "verified_hit": 3
+      },
+      "distinct_identities": 3,
+      "nf7_gate": {
+        "builds": 3,
+        "equality_asserted": true,
+        "fallback_compute": 0,
+        "holds": true,
+        "identities": 3
+      }
+    },
+    "arena_cap_bytes_per_worker": 29306962944,
+    "store_root": "beside first dispatched row's public folder (.una-batch-prepared)",
+    "warm_repeat": {
+      "artifacts_unchanged": true,
+      "cold_build": 0,
+      "contention_wait": 0,
+      "fallback_compute": 0,
+      "verified_hit": 9,
+      "wall_s": 3.7928
+    }
+  },
+  "schema": "post-p00-prepared-engagement-1",
+  "task": "P02I"
+}

@@ -29,6 +29,10 @@ dependencies = [
     "pandas",
     "geopandas",
     "shapely",
+    # File loads go through pyogrio with use_arrow=True (Topology._get_gdf),
+    # which requires pyarrow at runtime — pyogrio only *optionally* depends
+    # on it, so it must be declared here or fresh installs fail at first load.
+    "pyarrow",
     "networkx",
     "numba",
     "scikit-learn",
@@ -59,6 +63,15 @@ path = "src/urban_network_analysis/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/urban_network_analysis"]
+
+# The stdlib-only spawn shim for parallel RunBatch lives at src/ TOP
+# level (outside the package dir) and batch/runtime.py imports it
+# unconditionally at pool start. Without this include the installed
+# wheel cannot spawn a parallel pool (ModuleNotFoundError:
+# una_batch_worker_main). Keep the shim stdlib-only and byte-stable:
+# its sha256 enters the batch transport identity.
+[tool.hatch.build.targets.wheel.force-include]
+"src/una_batch_worker_main.py" = "una_batch_worker_main.py"
 
 # Build hook: writes src/urban_network_analysis/_build_info.py with the
 # date of the last git commit, so about() can report it at runtime.

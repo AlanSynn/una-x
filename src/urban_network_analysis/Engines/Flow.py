@@ -44,7 +44,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 import geopandas as gpd
-import networkx as nx
 import numpy as np
 
 try:
@@ -1111,6 +1110,9 @@ class Flow(Base):
         has_z    = (net.z is not None) and elevation
         z_values = net.z if has_z else None
 
+        # Deferred import (P3 lazy-import probe): networkx is only
+        # needed when the directed-graph build actually runs.
+        import networkx as nx
         G = nx.DiGraph()
         G.add_nodes_from(range(n_net))
 

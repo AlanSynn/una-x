@@ -1,0 +1,43 @@
+{
+  "blocking_count": 0,
+  "budget_reconciliation": {
+    "charged_this_task_s": 0.0,
+    "cumulative_after_s": 3882.8,
+    "reason": "review walls are island-test/probe scale (evidence walls), not charged per the fa92dca/958e25b precedent; reviewer_charge_s 0.0 consumed from the review JSON"
+  },
+  "campaign": "una_10x",
+  "consumed_from": "campaign_runs/una_10x/tenx-20261004T155640Z/p03m_metrics/replay_metric_review.json",
+  "dispositions": {
+    "NR-1": {
+      "disposition": "documentation-only, ADOPTED as recorded here and in the closure commit message: the committed receipt bytes are NOT rewritten (receipt immutability law); future receipts name the semantics 'id_invariant_under_beta_perturbation'",
+      "finding": "metric_dependency_matrix.json key 'live_beta_perturbation_id_facts' wording can be misread; behavior correct"
+    },
+    "NR-2": {
+      "disposition": "note only, no action: residency-only surface mirroring the pre-existing _stores_for idiom; correctness never rides on the cap",
+      "finding": "_metric_store_for ignores cap for an existing root (first caller's cap wins for process lifetime)"
+    },
+    "NR-3": {
+      "disposition": "note only, no action: unreachable with production fields (origin_count > 0); boundary now recorded rather than discoverable",
+      "finding": "0-byte entry storable under a 0-byte cap (n > cap_bytes is False for n=0)"
+    }
+  },
+  "evidence_requirements": [
+    "No new evidence required for this task. The committed receipts (metric_identity_v2.json, metric_dependency_matrix.json, metric_reuse_verdict.json, metric_reuse_commit.json) cross-check clean against raw evidence and against my independent extractions/experiments.",
+    "Carried forward unchanged: the 10x boundary remains a P05 paired-gate claim; all walls in the verdict receipt stay diagnostic single-run readings.",
+    "P05 should carry the uncommitted raw evidence split_inline_divergence.json and runs/*.json preservation forward per the P00 raw-evidence law (they are present in the worktree today and were consumed by this review)."
+  ],
+  "expectation_change_judgment": "consumed verbatim: LEGITIMATE AND EXACTLY PINNED",
+  "next": "P04I receiver admission (receipts composed; the dependency_note gate \u2014 commit only after the P03R verdict lands \u2014 is now satisfied), then P04R receiver review.",
+  "non_blocking_count": 3,
+  "pins_verified_mechanically": {
+    "branch": "perf/una-10x",
+    "method": "git rev-parse HEAD/HEAD^ compared to the review's fields at consumption time",
+    "receipt_commit": "41853650eb167d8a32426e5b85b3f7a7fc74a6cf",
+    "reviewed_commit": "e36178e9d08608ace4b06e4eee199f5295cedc62"
+  },
+  "review_amendments_adopted": [],
+  "review_file_sha256": "98e62b117784e3f6888eda60b7e982d310c33026ace3ea2210cbfaa6acdab99f",
+  "schema": "una-10x-p03r-closure-1",
+  "task": "P03R",
+  "verdict_consumed": "ACCEPT_WITH_FINDINGS"
+}

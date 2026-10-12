@@ -1,0 +1,374 @@
+{
+ "baseline_policy_audit": {
+  "cohort_manifest": "frozen w00_freeze copy sha256 1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf recomputed by this review; the campaign_data copy actually loaded by every screen run hashes the same; driver enforces frozen==staged equality with a drift alarm",
+  "fixed_vs_strongest": "comparison remains the frozen cache-off primary; no policy amendment was made, so no PRIMARY_AUDIT_vN is due",
+  "no_identical_answer_shortcuts": "cold stores per run (outdir absent before, alarm if pre-existing); warm numba caches are the per-tree declared regime, equal for both arms; the in-run prepared/trace store hits are the accepted candidate mechanism itself, bitwise-verified, not a benchmark shortcut",
+  "primary_frozen": "PRIMARY.json at w00_freeze unchanged (P01F audit, sha256 recorded there); frozen baseline measurement 92.1141s = P00 stage_model par_w4_s (re-located in the P00 stage model by this review)"
+ },
+ "binding": {
+  "basis": [
+   "SAFETY: bitwise 64/64 vs the independent P00 reference set on every one of the 8 measured runs, both arms; reference provenance verified (h01_public/cohort_run1 (baseline 395cdc5 serial, bitwise reference set), baseline serial, recorded 2026-10-03, before the screen); artifact-level spot check ties reference, base output and cand output to one sha256",
+   "ENGAGEMENT: per-run asserts green with exact metric arithmetic (produced+hits==96, splits==32-replays, zero errors/fallbacks/refusals); baseline arm asserts cohort is None (no candidate machinery in the comparator)",
+   "PROCESS LAW: timer brackets only the public RunBatch call; baseline pin + clean tree re-verified before every base run (exit 3 on drift); frozen manifest equality enforced with a drift alarm; FIRST_COHORT cold-store alarm present and exercised (outdir_existed_before false on all 8 runs)",
+   "RESOURCES: peak tree RSS 2425.0 MiB worst case (w4t1 cand) < 3.5 GiB; equal C=4 budget both arms, same host, AB/BA alternation across schedules",
+   "REVIEW CLOSURE: P02R/P03R/P04R all ACCEPT_WITH_FINDINGS with 0 blocking findings; 20 receipt sha256s recomputed clean; 12 ledger commits verified with matching subjects; P04I and F00 are lawful not_admitted branches, each independently reviewed",
+   "INDEPENDENT RE-EXECUTION: post_p00 (43) and metrics (69) test islands re-run green by this reviewer on the accepted head",
+   "no unreviewed accepted source delta found in the comparator..head source surface"
+  ],
+  "config": {
+   "queue_depth": 64,
+   "schedule": "w4t1 (frozen primary)",
+   "threads_per_worker": 1,
+   "workers": 4,
+   "writer_concurrency": 1
+  },
+  "decision": "BIND_CANDIDATE",
+  "descriptive_context_is_not_the_claim": "the screen's ~3.2x median and the 2.9534x paired median are descriptive; the gate itself decides, and target_unmet is a lawful outcome - the stage model's 16.6321s demand floor makes an unmet gate the plausible outcome, which is a finding about the physics, not a safety defect",
+  "final_gate_protocol": "per design 07, unchanged and preregistered: I00 integrates accepted deltas ONLY, builds A/B clean wheels and installs outside both checkouts (WS03 module/engagement proof); V00 runs the full bit/state/artifact/fault gauntlet on the installed candidate; Q00 freezes PRIMARY.json/configuration.json/freeze.json BEFORE any Q10 result; Q10 runs seven independent paired windows under AB/BA alternation, seed 20261003, 20000 bootstrap resamples over paired log ratios, decision = median and one-sided 95% lower bound >= 10; timer brackets ONLY the public RunBatch call; bitwise 64/64 vs the frozen P00 pin outside timing on EVERY measured window; cold stores both arms, per-tree warm numba caches, equal C=4 budget on the same host; no optional stopping; raw windows retained; R00 independent review; Z00 truthful close",
+  "not_claimed_by_this_binding": "final 10x, installed parity, native/GPU capability, or absence of platform gaps - completion law of P05R",
+  "overturn_conditions": [
+   "any bitwise mismatch, engagement-assert failure, metric-arithmetic breach, or missing/failed row on the bound tree in any I00/V00/Q10 run -> fix or fall back per the task DAG, never silent continuation",
+   "peak process memory on the bound config exceeding the recorded band (>= 3.5 GiB) in the final windows",
+   "discovery of an accepted-but-unreviewed source delta entering the I00 integration set, or any source/harness/environment change that invalidates the frozen P00 primary comparison under the design-07 invalidation rule",
+   "V00 gauntlet failure on the installed wheel (the wheel identity, not the worktree, is what Q10 measures)",
+   "a lawful binding-relevant amendment (e.g. PRIMARY_AUDIT_vN) issued before the Q00 freeze"
+  ],
+  "schedule_selection_basis": "frozen primary schedule AND fastest candidate arm on the screen (24.7570s vs 26.7288 w3t1 / 31.1538 w2t2 / 45.6169 w1t4); the w3t1 oversubscription retune was screened and rejected on measurement; the binding rule (bitwise + engagement green, RSS < 3.5 GiB) is satisfied by every screened schedule; w4t1 also matches the frozen baseline's own schedule, keeping the paired comparison apples-to-apples",
+  "tree": "cand",
+  "tree_identity": "accepted head 80bdcb1ddc4210d632e0ef5eb74806c9dac965f5 - integrated accepted deltas P02I (prepared input single-flight) + P03C (compiled outer replay) + P03M (typed MetricID v2 partial metric reuse); P04I and F00 not_admitted with no code change; comparator arm remains the 395cdc5f683894b6f2ba460f7dbcefee99981ba3 worktree pin re-verified per run"
+ },
+ "blocking": [],
+ "budget_numbers_verified": {
+  "arithmetic": "3882.8 + 25.76 (P04I m_w4t) = 3908.6; 3908.6 + 545.7014 = 4454.3014; 28800 - 7200 - 4454.3014 = 17145.6986",
+  "cumulative_after_p05s_s": 4454.3,
+  "cumulative_before_p05s_s": 3908.6,
+  "final_reserve_s": 7200.0,
+  "original_heavy_budget_s": 28800.0,
+  "p05s_charged_sum_recomputed_exact": true,
+  "p05s_charged_walls_s": 545.7014,
+  "remaining_before_reserve_s": 17145.7,
+  "review_walls_precedent": "review walls are island/probe-scale evidence walls, charged 0.0 per the fa92dca/958e25b precedent",
+  "this_review_charged_s": 0.0
+ },
+ "campaign": "una_10x",
+ "commit_message_label_correction": {
+  "action": "correction recorded here; committed messages are immutable history, not rewritten",
+  "correct_text": "(itself atop 9d223be F00, atop 00632b7 P04I receipts; 85a83e6 is the P03R closure)",
+  "found_in": "80bdcb1 (P05S evidence commit)",
+  "hash_status": "every named hash is a real ancestor; only the labels are shifted",
+  "same_pattern_elsewhere": "917af63 message '(itself atop 00632b7 F00)' should read '(itself atop 00632b7 P04I receipts)'; its parent label 9d223be F00 is correct",
+  "wrong_text": "(itself atop 85a83e6 P04I receipts)"
+ },
+ "counters_recomputed": {
+  "law": "recomputed from the 8 raw run JSONs in p05s_screen/runs/ and the m_w4t/t_w4 telemetry_report + raw coordinator/workerpool phase JSONLs; NOT copied from receipts",
+  "per_screen_run": "each of 8 runs: row_count 32, 32 distinct names, all status 'ran', bitwise_match true 64/64 n_mismatched 0, engagement_ok true (cand: cohort_present/builds>=1/one_identity/zero_refusals/metric_ok; base: cohort is None), metric produced+hits==96==3x32, splits==32-replays (w4t1 12+84/28+4, w3t1 9+87/29+3, w2t2 6+90/30+2, w1t4 3+93/31+1), metric_errors==fallbacks==0, cold store observed (outdir_existed_before false on all 8), workers_effective as configured",
+  "prepared_route_sc_w4t1": "3 builds, 84 verified hits, 9 contention waits, 0 fallback computes",
+  "stage_model_m_w4t": {
+   "coordinator": "span 25.574542, union busy 6.043636, idle fraction 0.7637; commit 64 spans = 32 outer(row_id=i) wrapping 32 inner(row_id=None); max per-row commit 0.222946; leaves: publish 4.018985, staged_verify 0.690765, state_apply 0.003302, dispatch 0.000465, plan 0.166352, pool_start 0.445621, pool_close 0.713726, result_recv 0.000359",
+   "derived": "demand reduction 0.6828, tree-cpu reduction 0.75, W4 efficiency 49.18/103.04 = 0.4773, perfect-packing floor 66.5284/4 = 16.6321s = 1.81x the 9.21141s sensitivity anchor",
+   "import_cpu_sum_s": 6.871189,
+   "import_max_span_s": 3.88985,
+   "known_folds_s": "1.0644942 split + 1.9581962 whole-row = 3.0227 (m_w4w counters)",
+   "per_row_max_s": 10.347025,
+   "run_cpu_worker_s": 34.857886,
+   "run_demand_worker_wall_s": 66.528359,
+   "t_w4_pre_p02_reference": "demand 209.750186, tree cpu 196.7, wall 60.7742",
+   "transport": "result_put n=32, row 31 = 1.850811s, other-31 sum = 0.0273s",
+   "tree_cpu_s": 49.18,
+   "unattributed_residual_s": 63.5057,
+   "wall_s": 25.76
+  },
+  "trace_route_sc_w4t1": "1 build, 1 distinct identity, 3 store decodes, 28 resident hits, 4 replays"
+ },
+ "delta_ledger_with_p04r": [
+  {
+   "commits": [
+    "050b3160"
+   ],
+   "disposition": "accepted_evidence",
+   "task": "P01/P01F"
+  },
+  {
+   "commits": [
+    "f139dd3b"
+   ],
+   "disposition": "accepted_design",
+   "task": "P02D"
+  },
+  {
+   "commits": [
+    "c47a43b6",
+    "a71f0f51"
+   ],
+   "disposition": "accepted",
+   "receipts": "5 files, sha256 recomputed OK",
+   "task": "P02I"
+  },
+  {
+   "commits": [
+    "fa92dca5"
+   ],
+   "disposition": "accepted_review (ACCEPT_WITH_FINDINGS, 0 blocking)",
+   "task": "P02R"
+  },
+  {
+   "commits": [
+    "958e25b0",
+    "5c5214ab"
+   ],
+   "disposition": "accepted",
+   "receipts": "4 files, sha256 recomputed OK",
+   "task": "P03C"
+  },
+  {
+   "commits": [
+    "41853650",
+    "e36178e9"
+   ],
+   "disposition": "accepted",
+   "receipts": "6 files incl. replay_metric_review/closure, sha256 recomputed OK",
+   "task": "P03M"
+  },
+  {
+   "commits": [
+    "85a83e6f"
+   ],
+   "disposition": "accepted_review (ACCEPT_WITH_FINDINGS, 0 blocking)",
+   "task": "P03R"
+  },
+  {
+   "commits": [
+    "00632b73"
+   ],
+   "disposition": "not_admitted (lawful: no residual backpressure measured)",
+   "receipts": "3 files, sha256 recomputed OK",
+   "task": "P04I"
+  },
+  {
+   "commits": [
+    "9d223be6"
+   ],
+   "disposition": "not_admitted (Amdahl 0% route share; ROI)",
+   "receipts": "flow_admission.json sha256 recomputed OK",
+   "task": "F00"
+  },
+  {
+   "commits": [
+    "917af639"
+   ],
+   "disposition": "accepted_review (ACCEPT_WITH_FINDINGS, 0 blocking / 5 dispositioned non-blocking)",
+   "receipts": "receiver_review.json + receiver_closure.json, byte-identical to commit blobs (omitted from the register ledger - P05R-NR-3)",
+   "task": "P04R"
+  },
+  {
+   "commits": [
+    "80bdcb1d"
+   ],
+   "disposition": "accepted_evidence (subject of this review)",
+   "task": "P05S"
+  },
+  {
+   "commits": [
+    "n/a (screen row)"
+   ],
+   "disposition": "rejected_on_measurement (26.7288 cand vs 24.7570 frozen-primary w4t1)",
+   "task": "w3t1 retune (screen axis)"
+  }
+ ],
+ "exact_parity": {
+  "driver_enforcement": "mismatch or count mismatch -> exit 2 (verified in _p05s_run_one.py)",
+  "independent_spot_check": "sha256(cohort_beta_00.geojson) identical across the P00 reference set, the base arm output (sb_w1t4) and the cand arm output (sc_w4t1)",
+  "law": "bitwise 64/64 artifact sha256 equality vs the frozen P00 pin OUTSIDE timing on EVERY measured run, both arms",
+  "reference_provenance": "p00_env.json reference_outputs: 64 files, source h01_public/cohort_run1 (baseline 395cdc5 serial, bitwise reference set) (baseline 395cdc5 serial, 2026-10-03, P00 run tree predates the screen)"
+ },
+ "mechanical_checks": [
+  {
+   "check": "commit chain",
+   "command": "git rev-parse HEAD^{5 levels of ^} + git log --oneline -8",
+   "outcome": "80bdcb1 <- 917af63 <- 9d223be <- 00632b7 <- 85a83e6 <- 4185365; all subjects match their tasks"
+  },
+  {
+   "check": "commit scopes",
+   "command": "git show --stat 80bdcb1 / 917af63",
+   "outcome": "exactly 3 P05S deliverables; exactly 2 P04R files"
+  },
+  {
+   "check": "committed bytes == worktree",
+   "command": "git show <commit>:<path> vs open(path).read()",
+   "outcome": "IDENTICAL for all 5 deliverable files"
+  },
+  {
+   "check": "per-run screen recompute",
+   "command": "./_py _p05r_verify_screen.py (8 raw run JSONs)",
+   "outcome": "8/8 GREEN: rows 32, bitwise 64/64, engagement, metric arithmetic (produced+hits==96, splits==32-replays), zero_failed, cold observed, manifest sha, timer-law note"
+  },
+  {
+   "check": "charged walls",
+   "command": "sum of 8 public_call_wall_s values",
+   "outcome": "545.7014 exact vs the deliverable"
+  },
+  {
+   "check": "descriptive medians",
+   "command": "median ratios recomputed from raw walls",
+   "outcome": "cand-vs-frozen 3.2015 exact; paired 2.9534 exact; paired log 1.081061 vs mislabeled 1.160689 (which is median log frozen/cand) - P05R-NR-4"
+  },
+  {
+   "check": "stage model telemetry recompute",
+   "command": "./_py _p05r_stage_model.py (m_w4t + t_w4 + raw phase JSONLs + m_w4w)",
+   "outcome": "every stage-model number matches to printed precision (demand 66.528359, union busy 6.043636, span 25.574542, idle 0.7637, commit leaves, import sums, t_w4 209.750186/196.7, m_w4w 1.9581962/1.0644942, row31 1.850811/ other31 0.0273)"
+  },
+  {
+   "check": "baseline pin",
+   "command": "git -C /storage/scratch1/1/dsynn6/una-x-baseline-395cdc5r2 rev-parse HEAD; status --porcelain",
+   "outcome": "== 395cdc5f683894b6f2ba460f7dbcefee99981ba3; clean; driver re-verifies per run with exit 3 on drift"
+  },
+  {
+   "check": "frozen cohort manifest",
+   "command": "sha256sum w00_freeze/cohort_manifest.csv + the campaign_data copy the runs actually loaded",
+   "outcome": "both == 1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf (8468 bytes); driver drift alarm verified"
+  },
+  {
+   "check": "bitwise chain spot check",
+   "command": "sha256sum cohort_beta_00.geojson in P00 reference, sb_w1t4 (base), sc_w4t1 (cand)",
+   "outcome": "all three identical; reference set = 64 files from h01_public/cohort_run1 (baseline 395cdc5 serial, bitwise reference set)"
+  },
+  {
+   "check": "receipt ledger",
+   "command": "./_py _p05r_ledger.py (20 receipt_files sha256 recompute)",
+   "outcome": "20 checked, 0 bad/missing"
+  },
+  {
+   "check": "ledger commits",
+   "command": "./_py _p05r_commits.py (git log -1 per ledger commit)",
+   "outcome": "12 commits exist, subjects match prefixes"
+  },
+  {
+   "check": "receiver review verdict",
+   "command": "load receiver_review.json",
+   "outcome": "ACCEPT_WITH_FINDINGS, 0 blocking / 5 non-blocking"
+  },
+  {
+   "check": "test islands on accepted head",
+   "command": "./_py -m pytest tests/tenx/post_p00/ -q; ./_py -m pytest tests/tenx/metrics/ -q",
+   "outcome": "43 passed in 50.61s; 69 passed in 1.28s"
+  },
+  {
+   "check": "register P04R row",
+   "command": "grep -c P04R post_p00_candidate_register.json",
+   "outcome": "0 - ledger omission recorded as P05R-NR-3"
+  },
+  {
+   "check": "budget",
+   "command": "28800/7200 constants + cumulative arithmetic",
+   "outcome": "3908.6 + 545.7014 = 4454.3014; remaining before reserve 17145.6986"
+  }
+ ],
+ "non_blocking": [
+  {
+   "disposition": "Correction recorded in commit_message_label_correction; committed message bytes are immutable history and are NOT rewritten",
+   "evidence": "git rev-parse 917af63^ = 9d223be; 9d223be^ = 00632b7; 00632b7^ = 85a83e6; git log subjects match P04R/F00/P04I/P03R respectively",
+   "finding": "The 80bdcb1 commit message labels its ancestry '(itself atop 85a83e6 P04I receipts)'. 85a83e6 is the P03R closure commit; the P04I receipts commit is 00632b7; the F00 commit 9d223be is skipped by that parenthetical. The hash chain itself is correct.",
+   "id": "P05R-NR-1"
+  },
+  {
+   "disposition": "Recorded; committed message bytes not rewritten",
+   "evidence": "git rev-parse 9d223be^ = 00632b7; subject of 00632b7 is 'P04I complete'",
+   "finding": "Same off-by-one label pattern in the 917af63 message: '(itself atop 00632b7 F00)' - 00632b7 is P04I receipts; F00 is 9d223be (which IS the stated parent, labeled correctly).",
+   "id": "P05R-NR-2"
+  },
+  {
+   "disposition": "The P04R closure row is recorded HERE (delta_ledger_with_p04r); the committed register bytes stay immutable per receipt immutability; the implementation owner may append the row in a later evidence commit",
+   "evidence": "grep -c P04R register = 0; receiver_review.json verdict ACCEPT_WITH_FINDINGS, 0 blocking / 5 non-blocking; both files byte-identical to the 917af63 blobs",
+   "finding": "post_p00_candidate_register.json accepted_delta_ledger omits the P04R row (917af63: receiver_review.json + receiver_closure.json), although the parallel review rows P02R and P03R are present; grep for 'P04R' in the register returns 0 hits.",
+   "id": "P05R-NR-3"
+  },
+  {
+   "disposition": "Label correction recorded; the field is descriptive-only and neither value feeds the claim; the two headline medians (3.2015, 2.9534) recompute exactly",
+   "evidence": "median(ln(92.1141/[24.7570,26.7288,31.1538,45.6169])) = 1.160689 exact; median(ln(base/cand) over the 4 paired windows) = 1.081061",
+   "finding": "post_p00_configuration_screen.json descriptive field median_paired_log_ratio_cand_vs_base=1.160689 recomputes as the median of log(frozen_baseline 92.1141 / cand) over the four schedules, not of the paired base/cand ratios (true median paired log ratio = 1.081061).",
+   "id": "P05R-NR-4"
+  }
+ ],
+ "remaining_floor": {
+  "admission_state": "no further CPU-route lever admitted (P04I/F00 not_admitted with receipts and independent review); N00/N10 and G00/G10/G11 are separate native/GPU qualification scopes, not CPU-route gains",
+  "anchors_are_not_thresholds": "9.21141s and 7.676175s are design-07 sensitivity numbers; the only decision rule is the paired final gate",
+  "law": "measured run service demand 66.5284 worker-wall-s / 4 cores with ZERO idle, before import overlap, coordinator busy and tail; exceeds the 9.21141s sensitivity anchor ~1.81x, so a further ~2.5x real service-demand cut plus near-perfect packing would be required for 10x on the CPU public route",
+  "perfect_packing_floor_s": 16.6321
+ },
+ "remaining_platform_obligations": {
+  "f10": "conditional on F00 admission - F00 not_admitted, so F10 stays dormant lawfully",
+  "final_chain": "I00 depends on P00/F10/N10/G11/X00/P05R - the platform dependencies are consumed on their own schedules; this binding fixes WHAT the existing gates measure when they run",
+  "gpu": "G00 region/capability selection; G10 exact GPU region; G11 real-device bit parity - hardware absence blocks G10/G11 qualification (missing hardware is a qualification blocker, not simulated success); no receipts yet",
+  "law": "recorded as obligations for their own scopes, NOT blockers for the CPU-route gate binding (PLATFORM_CONTINUITY: CPU 10x may qualify while platform status remains incomplete); tenx_status and platform_status publish separately",
+  "native": "N00 integrate/specialize substantive native backend; N10 qualify native region and install cost - no receipts in the run root yet",
+  "scientific_fixes": "corrected_v1 parity and scientific bug fixes remain required through PLATFORM_CONTINUITY; bitwise parity mandatory per profile",
+  "x00": "carry and close inherited platform obligations incl. the Madina parity matrix against pinned Madina (una_legacy/madina_legacy/corrected_v1 distinct references)"
+ },
+ "review_date": "2026-10-04",
+ "reviewed_commit": "80bdcb1ddc4210d632e0ef5eb74806c9dac965f5",
+ "reviewed_tree_state": {
+  "branch": "perf/una-10x",
+  "committed_bytes_vs_worktree": "IDENTICAL for all 5 committed deliverables (3 P05S at 80bdcb1, 2 P04R at 917af63), byte-compared via git show",
+  "comparator_checkout": "/storage/scratch1/1/dsynn6/una-x-baseline-395cdc5r2",
+  "comparator_checkout_verified": "rev-parse HEAD == pin; status --porcelain empty",
+  "comparator_pin": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "head": "80bdcb1ddc4210d632e0ef5eb74806c9dac965f5",
+  "parent_chain_verified": [
+   "80bdcb1 (P05S evidence) <- 917af63 (P04R closure) <- 9d223be (F00 not_admitted) <- 00632b7 (P04I not_admitted receipts) <- 85a83e6 (P03R closure) <- 4185365 (P03M evidence receipt)"
+  ],
+  "source_surface_comparator_to_head": "14 src files (batch preparation/runtime/worker/telemetry, trace/metric scratch modules, trace_residency, Topology, UNA, checkpoint) + tests/tenx islands; all map to reviewed deltas P02I/P03C/P03M (+ P01 telemetry) and the P00-checkpointed C-series; no unreviewed accepted source delta found"
+ },
+ "reviewer": "p05r-reviewer (fresh-context independent review agent)",
+ "schema": "una-10x-p05r-readiness-1",
+ "simultaneous_process_memory": {
+  "all_schedules_under_bound": true,
+  "law": "peak tree RSS sampled per run (0.05s interval); binding bound < 3.5 GiB",
+  "measured_peak_tree_rss_mib": {
+   "sb_w1t4": 982.1,
+   "sb_w2t2": 1489.8,
+   "sb_w3t1": 2025.7,
+   "sb_w4t1": 2529.1,
+   "sc_w1t4": 966.3,
+   "sc_w2t2": 1435.0,
+   "sc_w3t1": 1976.1,
+   "sc_w4t1": 2425.0
+  },
+  "note": "w4t1 peak_busy_procs readings 5-6 are a coarse +/-1 sampler diagnostic; steady-state co-residency is coordinator+workers; not a safety filter"
+ },
+ "state_and_fault_coverage": {
+  "outstanding": "the full V00 TEST_MATRIX gauntlet (PP/RP/MR/RX/WS) is NOT run yet - it is V00's scope and runs on the INSTALLED wheel after I00",
+  "p04i_fault_matrix": "7 conditions: 5 absent reproduced, 1 measured_not_backpressure (row-31 producer-side serialization), 1 not_applicable (receiver does not exist); P04R independently reproduced all 5",
+  "p04r_review": "verdict ACCEPT_WITH_FINDINGS, 0 blocking; commit/cancellation/resume semantics preserved; _pending_bound pinned by passing tests; P04R-NR-5 unexercised full-pipe stall carried as a register note",
+  "test_islands_rerun_by_this_review": "tests/tenx/post_p00 43 passed (50.61s); tests/tenx/metrics 69 passed (1.28s) on the accepted head"
+ },
+ "task": "P05R",
+ "unrun_checks": [
+  "no cohort-scale benchmark runs (P05R is read/review/binding only; Q10 owns the windows)",
+  "full V00 TEST_MATRIX gauntlet not executed (V00 scope, installed wheel)",
+  "P02I/P03C raw-phase receipts not re-derived event-by-event (covered by P02R/P03R independent reviews; the integrated tree's screen bitwise+engagement supersedes for binding purposes)",
+  "installed-wheel identity (WS03) not checkable - no wheel exists before I00",
+  "N00/N10/G00/G10/G11/X00 scopes not assessed beyond obligation recording"
+ ],
+ "verdict": "ACCEPT_WITH_FINDINGS",
+ "walls": {
+  "charged_budget_impact_s": 0.0,
+  "charging_note": "island/probe-scale evidence walls per the fa92dca/958e25b precedent; no cohort-scale benchmark run was executed by this review",
+  "measured_invocations": [
+   {
+    "outcome": "43 passed",
+    "wall_s": 50.61,
+    "what": "pytest tests/tenx/post_p00/ -q"
+   },
+   {
+    "outcome": "69 passed",
+    "wall_s": 1.28,
+    "what": "pytest tests/tenx/metrics/ -q"
+   },
+   {
+    "outcome": "all checks in mechanical_checks",
+    "wall_s": "< 60 total",
+    "what": "static recompute probes (run JSONs, telemetry JSONLs, sha256s, git)"
+   }
+  ]
+ }
+}

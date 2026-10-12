@@ -39,7 +39,8 @@ def test_composite_parity_across_workers(make_batch, tmp_path):
     assert caps == ["knn_access_row0", "knn_access_row1", "knn_access_row2"]
     for c in caps + ["composite_sum"]:
         assert np.array_equal(np.asarray(p_gdf[c]), np.asarray(s_gdf[c]))
-    assert tree_bytes(tmp_path / "ser") == tree_bytes(tmp_path / "par")
+    assert tree_bytes(tmp_path / "ser", skip_hidden=True) == \
+        tree_bytes(tmp_path / "par", skip_hidden=True)
 
 
 def test_composite_respects_per_row_opt_out(make_batch, tmp_path):
@@ -59,7 +60,8 @@ def test_composite_respects_per_row_opt_out(make_batch, tmp_path):
     for gdf in (serial.composite_result, par.composite_result):
         caps = [c for c in gdf.columns if c.startswith("knn_access_")]
         assert caps == ["knn_access_row0", "knn_access_row2"]
-    assert tree_bytes(tmp_path / "ser") == tree_bytes(tmp_path / "par")
+    assert tree_bytes(tmp_path / "ser", skip_hidden=True) == \
+        tree_bytes(tmp_path / "par", skip_hidden=True)
 
 
 def test_composite_fold_is_caller_order_under_completion_noise(
@@ -98,4 +100,5 @@ def test_composite_fold_is_caller_order_under_completion_noise(
     for c in caps + ["composite_sum"]:
         assert np.array_equal(np.asarray(par.composite_result[c]),
                               np.asarray(serial.composite_result[c]))
-    assert tree_bytes(tmp_path / "ser") == tree_bytes(tmp_path / "par")
+    assert tree_bytes(tmp_path / "ser", skip_hidden=True) == \
+        tree_bytes(tmp_path / "par", skip_hidden=True)

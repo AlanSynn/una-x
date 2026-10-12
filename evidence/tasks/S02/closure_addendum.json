@@ -1,0 +1,9 @@
+{
+  "clarification": "reference_bridge.json kept_identity.legacy_divergences (48 records) and counterexamples.json (171 records) evidence DIFFERENT comparisons: the 48 kept-plan divergence records compare the kept plan vs the base plan; the 171 counterexample records compare the una_legacy vs corrected_v1 numerical profiles. 24 of the 48 kept-plan records also appear in counterexamples.json. receipted counterexample_count=171 describes the second comparison only; citing it as coverage of kept-plan divergences would overstate. All 48 kept-plan records retain raw base/kept 64-bit patterns inline, so no decisive raw bytes are missing.",
+  "finding_id": "S02-MINOR-1",
+  "finding_site": "s02_bridge/bridge_adversarial.json kept_identity.legacy_divergences vs s02_bridge/counterexamples.json",
+  "historical_bytes": "reference_bridge.json and counterexamples.json are historical S02 receipt artifacts; this addendum does NOT modify them \u2014 the sha256 values recorded at review remain the authoritative identity.",
+  "reviewed_commit": "d23344b",
+  "reviewer_disposition_owner": "S02 owner: optional one-line clarification in reference_bridge.json wording at next revision; no repair required",
+  "task": "S02 closure addendum \u2014 owner disposition of review finding S02-MINOR-1 (verdict ACCEPT at d23344b)"
+}

@@ -1,0 +1,65 @@
+{
+  "branch": "perf/una-10x (local commit only; NO push)",
+  "campaign": "una_10x",
+  "commit": "a71f0f512aaa77e308cf00b1c3cd7dabbac1f492",
+  "deliverables": {
+    "prepared_L0_L2.json": "campaign_runs/una_10x/tenx-20261004T155640Z/p02i/prepared_L0_L2.json",
+    "prepared_engagement.json": "campaign_runs/una_10x/tenx-20261004T155640Z/p02i/prepared_engagement.json",
+    "prepared_memory.json": "campaign_runs/una_10x/tenx-20261004T155640Z/p02i/prepared_memory.json"
+  },
+  "extraction": {
+    "file_pairs_compared": 8,
+    "method": "git archive <commit> | tar -x into empty tmpdir",
+    "pairs": {
+      "src/urban_network_analysis/Topology.py": {
+        "extracted_sha256": "8cba282bfb9279687b232ed23d4da28e2291f242003575ff0c531702eac0f90e",
+        "match": true,
+        "worktree_sha256": "8cba282bfb9279687b232ed23d4da28e2291f242003575ff0c531702eac0f90e"
+      },
+      "src/urban_network_analysis/UNA.py": {
+        "extracted_sha256": "df0ae7da8e3d81285c45f5c59502b8e16747cfe9fd868f990e28bf9a832ebe70",
+        "match": true,
+        "worktree_sha256": "df0ae7da8e3d81285c45f5c59502b8e16747cfe9fd868f990e28bf9a832ebe70"
+      },
+      "src/urban_network_analysis/batch/preparation.py": {
+        "extracted_sha256": "028f21cfb48f8635dde14ed61ec1155607b87fdfbce97df8bdf808909325e5f0",
+        "match": true,
+        "worktree_sha256": "028f21cfb48f8635dde14ed61ec1155607b87fdfbce97df8bdf808909325e5f0"
+      },
+      "src/urban_network_analysis/batch/runtime.py": {
+        "extracted_sha256": "f40c893bdb51b2cf66be8f3e21e406d7719d1e064fb875dd15b02c1d557aed50",
+        "match": true,
+        "worktree_sha256": "f40c893bdb51b2cf66be8f3e21e406d7719d1e064fb875dd15b02c1d557aed50"
+      },
+      "src/urban_network_analysis/batch/worker.py": {
+        "extracted_sha256": "148f01890df3b5edcef4097701d6717ce76bd277bffa53b9e48eb35ea4936cdc",
+        "match": true,
+        "worktree_sha256": "148f01890df3b5edcef4097701d6717ce76bd277bffa53b9e48eb35ea4936cdc"
+      },
+      "tests/batch/runtime/conftest.py": {
+        "extracted_sha256": "08e91ed6e08bdd72e9e411f17290ec3da2e076d7ce2c8385b195fd1ed324694b",
+        "match": true,
+        "worktree_sha256": "08e91ed6e08bdd72e9e411f17290ec3da2e076d7ce2c8385b195fd1ed324694b"
+      },
+      "tests/tenx/post_p00/test_preparation.py": {
+        "extracted_sha256": "a6ea9d660fc3963dd9e97945f95dfe45974c49dae63ed38063c9a05faa8c053b",
+        "match": true,
+        "worktree_sha256": "a6ea9d660fc3963dd9e97945f95dfe45974c49dae63ed38063c9a05faa8c053b"
+      },
+      "tests/tenx/post_p00/test_telemetry.py": {
+        "extracted_sha256": "00323daeeafaeb7eaffc1a9055b5ae997106e68d72b86a2724565c8244044057",
+        "match": true,
+        "worktree_sha256": "00323daeeafaeb7eaffc1a9055b5ae997106e68d72b86a2724565c8244044057"
+      }
+    }
+  },
+  "import_facts": "True True True",
+  "note": "prepared_source_commit.json rides this follow-up evidence-only commit per the P01 commit_proof.json precedent; no benchmark runs charged; heavy budget unchanged at cumulative 3581.3s of 28800.",
+  "parent": "f139dd3b4d910337c722bc6b8854613e7e6cd004",
+  "schema": "post-p00-commit-extraction-proof-1",
+  "task": "P02I",
+  "tests_from_extraction": {
+    "command": "<alan-env python> -m pytest tests/tenx/post_p00 -q (cwd = extraction tree, PYTHONPATH = extraction src; interpreter = sys.executable == the worktree's ./_py)",
+    "outcome": "23 passed in 66.09s (0:01:06)"
+  }
+}

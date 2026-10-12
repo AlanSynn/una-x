@@ -1,0 +1,10 @@
+{
+ "schema": "post-p00-primary-identity-1",
+ "primary_path": "campaign_runs/una_10x/tenx-20261003T1212Z/w00_freeze/PRIMARY.json",
+ "sha256_now": "6f79c5eb7a5abba3be55f4a77e2f0566c791c2920472f72d3a3bf5cb43d13a2c",
+ "sha256_expected": "6f79c5eb7a5abba3be55f4a77e2f0566c791c2920472f72d3a3bf5cb43d13a2c",
+ "match": true,
+ "reference_outputs_rehashed_files": 64,
+ "reference_outputs_total_bytes": 147830672,
+ "all_match": true
+}

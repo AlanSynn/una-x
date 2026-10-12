@@ -1,0 +1,125 @@
+{
+ "schema": "una-10x-r00-independent-review-1",
+ "task": "R00",
+ "reviewer": "independent fresh-context review agent (no implementation role; all numbers below recomputed from raw bytes, never copied)",
+ "reviewed_at": "2026-10-05",
+ "head_reviewed": "f9c0b9515e683e8cfbeec1529406c92a470b8de9",
+ "head_verified_how": "git rev-parse HEAD in the worktree returned f9c0b9515e683e8cfbeec1529406c92a470b8de9 independently",
+ "recomputed_statistic": {
+  "method": "walls taken from timing.public_call_wall_s of the 14 measured run docs (warmups excluded); ratios base/cand; median of ln(ratios); bootstrap rng=numpy.random.default_rng(20261003), idx=rng.integers(0,7,size=(20000,7)), medians of resampled log-ratios axis=1, np.quantile(medians,0.05), exp()",
+  "windows_base_wall_s": [66.8982, 67.8346, 66.2467, 67.5362, 65.9066, 67.0173, 67.9303],
+  "windows_cand_wall_s": [24.8718, 25.1361, 25.2829, 26.0343, 25.3994, 24.7338, 25.5069],
+  "window_ratios": [2.6897208887173427, 2.6986923190152807, 2.620217617441037, 2.594123905770464, 2.594809326204556, 2.709543216165733, 2.6632126993088145],
+  "median_log": 0.9795331757070863,
+  "median_ratio": 2.6632126993088145,
+  "lb95_log": 0.9535130365404367,
+  "lb95_ratio": 2.594809326204556,
+  "min_window_ratio": 2.594123905770464,
+  "max_window_ratio": 2.709543216165733,
+  "bootstrap_robustness": "sorted resampled medians srt[999] == srt[1000] == 0.9535130365404367, so the bound is insensitive to the quantile interpolation method (linear == inverted_cdf)"
+ },
+ "recorded_statistic": {
+  "decision_json_result": {"median_log": 0.9795331757070863, "median_ratio": 2.6632126993088145, "lower_bound_95_log": 0.9535130365404367, "lower_bound_95_ratio": 2.594809326204556, "min_window_ratio": 2.594123905770464, "max_window_ratio": 2.709543216165733},
+  "gate_10x_statistic": {"median_log": 0.9795331757070863, "median_ratio": 2.6632126993088145, "lower_bound_95_log": 0.9535130365404367, "lower_bound_95_ratio": 2.594809326204556},
+  "decision_word": "TARGET_UNMET"
+ },
+ "match": true,
+ "match_detail": "every recomputed value is EXACTLY equal (float ==) to the recorded values; per-window walls in decision.json and paired_samples.json are exactly equal to the raw run docs; no optional-stopping signature: exactly 7 windows x 2 arms + 2 warmups exist on disk",
+ "gate_law_check": {
+  "frozen_preregistration": "q00r_freeze/PRIMARY.json (status FROZEN_Q00, frozen_at 2026-10-05T03:50:44Z) + configuration.json + freeze.json",
+  "frozen_windows": 7,
+  "frozen_alternation": "AB,BA,AB,BA,AB,BA,AB",
+  "executed_alternation_from_raw_docs": "AB,BA,AB,BA,AB,BA,AB (order fields: base,cand / cand,base alternating)",
+  "frozen_seed": 20261003,
+  "frozen_resamples": 20000,
+  "frozen_quantile": 0.05,
+  "frozen_pass_rule": "median >= 10 AND LB95 >= 10",
+  "frozen_possible_outcomes": "observed_cohort_10x OR target_unmet",
+  "frozen_schedule": "w4t1 workers=4 threads_per_worker=1 queue_depth=64 writer_concurrency=1 C=4",
+  "executed_matches_frozen": true,
+  "decision_follows_from_numbers": "median 2.6632126993088145 < 10 AND LB95 2.594809326204556 < 10, so pass rule NOT met; recorded word TARGET_UNMET is the lawful outcome under the frozen rule and is inside the preregistered outcome set",
+  "no_gate_weakening": "no tolerance, rounding, baseline change or kernel extrapolation found in the gate receipts"
+ },
+ "raw_doc_audit": {
+  "docs_on_disk": 16,
+  "docs_audited": 16,
+  "invariant_violations": [],
+  "checks_applied_per_doc": ["outdir_existed_before == false (FIRST_COHORT cold store)", "zero_failed == true", "engagement_ok == true", "workers_effective == 4", "row_count == 32", "rows all status=='ran' and len(rows)==32", "bitwise_verify.bitwise_match == true", "bitwise_verify.ref_file_count == 64", "bitwise_verify.got_file_count == 64", "bitwise_verify.n_mismatched == 0", "warmup_run flag correct (true only for warm_base/warm_cand)", "config == {workers:4, queue_depth:64, writer_concurrency:1, threads_per_worker:1}", "cold_store_requested == true", "mode == 'par'", "output_manifest_present == true"],
+  "arm_asymmetry": {
+   "base_docs": "import_origin /tmp/una_i00r/site_base_r/urban_network_analysis/__init__.py, installed_target site_base_r, pins.baseline_pin_respected == true, engagement_asserts.base_has_no_cohort == true (all 9 base docs incl. warm)",
+   "cand_docs": "import_origin /tmp/una_i00r/site_cand_r/urban_network_analysis/__init__.py, installed_target site_cand_r, engagement_asserts {cohort_present, builds_ge_1, one_identity, zero_refusals, metric_ok} all true, identical across all 9 cand docs incl. warm",
+   "numba_cache_dirs_distinct_per_arm": true,
+   "note": "the raw docs assert the baseline pin as a boolean (baseline_pin_respected) without restating the pin sha in the doc; the sha + clean-tree binding is recorded in q00r_freeze/PRIMARY.json baseline_source and i00r_repair/base_wheel_repair.json (source.head == 395cdc5..., clean == true)"
+  }
+ },
+ "raw_index_sha256_audit": {
+  "docs_bound": 16,
+  "recomputed_and_matched": 16,
+  "mismatches": [],
+  "also_verified": "per-doc public_wall_s, tree, warmup flag and rows fields in raw_index.json all match the raw docs"
+ },
+ "identity_audit": {
+  "head": "f9c0b9515e683e8cfbeec1529406c92a470b8de9",
+  "direct_parent_chain_verified": ["f9c0b95", "8ff1b64", "8701702", "2562689", "73964e0", "5a4d6f5", "141cc87", "8262475", "7a74024", "c6175ea", "252a68a", "7208643", "55461af", "99072e9"],
+  "chain_commits_exist_and_are_ancestors_of_HEAD": ["99072e9", "7208643", "252a68a", "c6175ea", "7a74024", "8262475", "141cc87", "5a4d6f5", "73964e0", "2562689", "8701702", "8ff1b64"],
+  "comparator_pin_395cdc5f683894b6f2ba460f7dbcefee99981ba3": "exists, type commit, and is an ancestor of HEAD",
+  "ancestry_note": "99072e9 (N00) is an ancestor of 7208643 (N10) but not its DIRECT parent: 55461af (P05R consumed+closed) intervenes. Commit messages use 'atop' as ancestry; consistent with the campaign's recorded NR-1/NR-2 disposition ('every named hash is a real ancestor, only labels shifted'). Not counted as a discrepancy.",
+  "committed_receipts_byte_identical_to_worktree": {"q10_windows/paired_samples.json": true, "q10_windows/gate_10x.json": true, "q10_windows/raw_index.json": true},
+  "commit_messages_present_as_claimed": {"2562689": "I00R fix (spawn shim packaging repair)", "8701702": "I00R complete (repaired wheels + V00R)", "8ff1b64": "Q00R complete (re-freeze)", "f9c0b95": "Q10R executed in full, TARGET_UNMET, median 2.6632x LB 2.5948x"},
+  "p00_raw_evidence_law": "git ls-tree HEAD:q10_windows contains EXACTLY the 3 receipts (gate_10x.json, paired_samples.json, raw_index.json); decision.json and runs/ are uncommitted, as the law requires",
+  "q10_deliverables_set_equality": "committed q10_windows file names == TASKS_CLAUDE.yaml Q10 deliverables [paired_samples.json, gate_10x.json, raw_index.json]"
+ },
+ "wheel_install_audit": {
+  "status": "VERIFIED (tmp artifacts still present; not 'unavailable')",
+  "wheel_sha256_recomputed": {"base": "f0504f886eb9976150a56dcfa818188cdedb172a13716206003b8b1e1a1dc4b1", "cand": "5a7017f71ed1a1d430305b5b6200e812fef2652c4965a8ff3cce44cd1e4e0022"},
+  "wheel_sha256_matches_frozen": true,
+  "frozen_source_of_truth": "q00r_freeze/PRIMARY.json candidate_source/baseline_installed + i00r_repair/installed_manifest.json",
+  "installed_target_vs_wheel_bytes": {"site_base_r": {"code_files_in_wheel": 58, "matched": 58, "mismatched": 0, "missing": 0}, "site_cand_r": {"code_files_in_wheel": 70, "matched": 70, "mismatched": 0, "missing": 0}},
+  "metadata_skipped": "dist-info RECORD/METADATA/WHEEL excluded (packaging metadata, not code identity)",
+  "import_origin_files_exist": true,
+  "per_run_engagement_evidence": "each raw doc's pins.import_origin independently names the correct arm target, and the wheel<->target byte equality above makes those origins the frozen wheels' code"
+ },
+ "independent_bitwise_artifact_check": {
+  "performed": true,
+  "method": "sha256 of every cohort_beta_*.{geojson,feather} file in all 14 measured run output dirs under q10_windows/out/, compared pairwise by basename; plus comparison to the P00-era output dir campaign_runs/una_10x/tenx-20261003T1212Z/p00_profile/out/a_base_par_w4",
+  "result": "all 14 runs: exactly 64 artifacts each, ALL byte-identical across arms and windows; P00-era anchor: 64 files, 147830672 bytes (== frozen reference_bytes), byte-identical to every Q10 run",
+  "interpretation": "independently corroborates the raw docs' per-run 64/64 bitwise claims (arm parity + determinism + anchor into the P00 era); the harness's canonical pin reference set is not separately labeled on disk, so this is corroboration of the law, not a re-hash of that labeled set",
+  "cand_arm_extra_bytes": "cand run dirs additionally contain internal prepared-input store files (degrees, geometry_wkb, distance_bits.bin, ...) not part of the 64 required artifacts; base dirs total 147830672 bytes, cand 165876776 bytes; the output law binds the 64 required artifacts, which are identical"
+ },
+ "budget_arithmetic": {
+  "sum_of_14_measured_walls_s": 646.3351,
+  "recorded_charge_s": 646.3,
+  "warmup_walls_excluded": {"warm_base_s": 89.2715, "warm_cand_s": 38.8767},
+  "cumulative_check": "4454.3 (recorded prior) + 646.3351 = 5100.6351 -> recorded 5100.6",
+  "remaining_check": "28800 - 7200 - 5100.6 = 16499.4 == recorded remaining_before_reserve_s",
+  "verdict": "consistent"
+ },
+ "platform_audit": {
+  "backend_matrix_gpu": "v00r_validation/backend_matrix.json records GPU_AVAIL False on this CPU-only host, with the gpu device fold honestly 'NOT PASSED ON THIS HOST'; the real-device qualification is the G11 receipt (commit 7a74024, V100 sbatch 13864917) - recorded honestly, no GPU claim made from this host",
+  "backend_facts": "PYVER 3.11.4, numpy 2.4.6, numba 0.67.0, REPLAY_COMPILED True (installed frame)",
+  "x00_open_obligations": [
+   {"id": "MADINA_API_PARITY", "status": "open_partial", "gap": "pinned-Madina parity MATRIX re-run on the current installed tree does not exist in this campaign"},
+   {"id": "SCIENCE_CORRECTED_V1", "status": "open_partial", "gap": "S02 closure evidence"},
+   {"id": "CITY_FAILURES", "status": "open_recorded", "gap": "all 9 incidents (INC01-INC09) remain without reproducer/fix/verified root cause"},
+   {"id": "INSTALL_FINAL_GATES", "status": "pending_gates", "gap": "chain now at R00 done; Z00 remains"}
+  ],
+  "x00_closed_or_covered": ["BATCH_RUNTIME covered_by_current_campaign", "CACHE_STORE closed_on_platform_branch", "NATIVE_SUPPORT closed_this_campaign (N00/N10)", "GPU_SUPPORT closed_this_campaign (G00/G10/G11)"],
+  "decision_md_category": "target_unmet ('bounded investigations complete and target not achieved; report the bottleneck') - the preregistered honest outcome set was observed_cohort_10x OR target_unmet; the numbers dictate target_unmet; platform_status stays tracked separately per DECISION.md"
+ },
+ "checks_not_performed": [
+  "no RunBatch/benchmark re-execution, no test-suite runs, no salloc/GPU (banned for this review)",
+  "the canonical 'frozen P00 pin' reference artifact SET is not labeled by path in committed receipts, so its 64 sha256s were not re-hashed against a labeled location; instead the 14 runs' artifacts were proven mutually identical and identical to a P00-era output dir whose byte total equals the frozen reference_bytes (147830672) - corroboration, not the literal labeled anchor",
+  "the gate runner harness itself was uncommitted scratch (no tools/gate_10x.py exists in the tree despite dossier 09 mentioning that name), so the harness code could not be reviewed; its outputs were instead fully recomputed from the raw docs",
+  "sampler-based memory/CPU claims (peak RSS, tree_cpu_s) accepted as recorded, not independently re-measured",
+  "protected cells other than PRIMARY_OBS_COHORT (e.g. REPEAT_IDENTICAL negative control, COLD_SMALL) were not re-executed in Q10 and are not part of the gate statistic; their status is as recorded in earlier receipts"
+ ],
+ "discrepancies_found": [],
+ "minor_notes": [
+  "dossier 09 says 'run tools/gate_10x.py' but no such committed tool exists; the executed gate harness was uncommitted scratch - a documentation/text mismatch, not an evidence gap (all gate outputs were independently recomputed here)",
+  "commit messages' 'atop' phrasing means ancestry, not direct parentage (55461af intervenes between N10 and N00); consistent with the recorded NR-1/NR-2 convention",
+  "raw docs assert the base pin via baseline_pin_respected boolean; the sha-level binding lives in q00r_freeze/PRIMARY.json and i00r_repair/base_wheel_repair.json"
+ ],
+ "disposition": "confirmed_target_unmet_and_receipts_consistent",
+ "disposition_meaning": "the executed gate, its recorded TARGET_UNMET decision, and the measured 2.6632x median (LB95 2.5948x) are confirmed by independent recomputation from raw bytes; commit/wheel/install identities, raw-doc invariants, raw-index bindings, budget arithmetic and the P00 raw-evidence law all verify; no fabricated approval is needed or given for any 10x claim - the campaign's own truthful reading (real ~2.66x public improvement, not 10x) is what the evidence supports",
+ "notes": "This review recomputed every decisive number from raw inputs: 16 raw run docs, 16 sha256 bindings, 3 committed receipts (byte-identical at HEAD), 2 installed wheels (byte-compared to their wheels), 14x64 output artifacts (mutually identical and anchored to the P00 era), and the full bootstrap statistic (bit-exact). The one preregistered gate outcome consistent with the recomputed numbers is target_unmet."
+}

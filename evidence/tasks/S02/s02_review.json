@@ -1,0 +1,88 @@
+{
+  "adversarial_answers": {
+    "A_could_bridge_pass_against_non_pinned_baseline": "No mechanically: the recorded child ran the preserved verifier with --repo <baseline>; the verifier recomputes its own identity (pin + 2 source blobs) into the receipt and hard-fails on wrong module origin; 13 recorded pin fields are string-equal to source_pins.source_sha and the 6 pinned blobs (git blob sha1) recompute equal at the pinned detached recreate; the recorded runtime dir was purged post-run (documented), leaving recreate-based corroboration as the only residual gap",
+    "scope": "S02 evidence is prepared-array kernel-domain only; receipts explicitly scope out public API/export/installed-wheel/batch qualification and any speed claim (no throughput/ratio claims found in s02_bridge records)"
+  },
+  "findings": [
+    {
+      "claim_violated": "none asserted; coverage ambiguity only (receipt reports counterexample_count=171 which equals the legacy-vs-corrected profile ledger's nonzero-ulp count)",
+      "counterexample": "scripted multiset match on (n, gen, cutoff, metric, ulp): matched=24/48; raw patterns verified present and unequal in all 48 inline records",
+      "disposition_owner": "S02 owner: optional one-line clarification in reference_bridge.json wording at next revision; no repair required",
+      "evidence_sha256": {
+        "bridge_adversarial.json": "b5441df224c7db5b7efd0e63229d5d0a66ab8158d83c0daa47b76b7109cced9f",
+        "counterexamples.json": "b38bb0db4ba771d1d77ea7c66b37aa9768c96bbbb9112823c45715f506f17b7d"
+      },
+      "id": "S02-MINOR-1",
+      "reachability": "a future reader citing '171 counterexamples' as covering kept-plan divergences would overstate coverage",
+      "severity": "MINOR",
+      "site": "s02_bridge/bridge_adversarial.json kept_identity.legacy_divergences vs s02_bridge/counterexamples.json",
+      "what": "only 24 of the 48 kept-plan divergence records are also present in counterexamples.json; the two collections evidence different comparisons (kept-vs-base plan vs una_legacy-vs-corrected_v1 profile), and all 48 kept-divergence records retain raw base/kept bit patterns inline, so no decisive raw bytes are missing"
+    },
+    {
+      "claim_violated": "none; recorded path no longer exists (scratch purge, recorded in PRIMARY.baseline_note)",
+      "counterexample": "ls: original absent; git rev-parse HEAD == pin; symbolic-ref fails (detached); porcelain empty; 6/6 blob pins recomputed equal",
+      "disposition_owner": "none (recorded; recreate already documented by W00 PRIMARY.baseline_note)",
+      "evidence_sha256": {},
+      "id": "S02-NOTE-1",
+      "reachability": "the exact runtime directory cannot be re-verified after the purge; identity is corroborated by two independent records (verify_supervisor + suite identity) plus the matching recreate",
+      "severity": "NOTE",
+      "site": "task_receipt.environment_manifest.baseline_checkout = /storage/scratch1/1/dsynn6/una-x-baseline-395cdc5",
+      "what": "original baseline checkout dir purged post-run; recreation /storage/scratch1/1/dsynn6/una-x-baseline-395cdc5r2 is detached at the pin with clean status and all six pinned blobs matching the pins"
+    },
+    {
+      "claim_violated": "none (adversarial question A closed mechanically)",
+      "counterexample": "n/a (guard verified present in the packet copy used by the recorded supervisor command)",
+      "disposition_owner": "none",
+      "evidence_sha256": {
+        "verify_checkout.py (packet copy)": "1ff5628345df0c350e252497584d4a7d7c2d06916087ca11f2532bfa848720a2"
+      },
+      "id": "S02-NOTE-2",
+      "reachability": "n/a",
+      "severity": "NOTE",
+      "site": "campaigns/una_10x/prior/una_10x_investigation/verify_checkout.py:33-40",
+      "what": "the preserved verifier inserts --repo/src at sys.path[0] and hard-fails (Wrong import) unless the imported engine file is <repo>/src/urban_network_analysis/Engines/AccessibilityWElevation.py; together with the recomputed pin/blob equality this rules out wrong checkout, dirty-tree pins, and cwd shadow imports"
+    },
+    {
+      "claim_violated": "none; authenticity of the preserved verifier rests on packet immutability rather than a recorded pin",
+      "counterexample": "grep of both manifests finds no verify_checkout entry",
+      "disposition_owner": "optional: add the verifier file to the packet manifest at next packet revision",
+      "evidence_sha256": {},
+      "id": "S02-NOTE-3",
+      "reachability": "low; the packet directory is declared immutable by campaign authority",
+      "severity": "NOTE",
+      "site": "campaigns/una_10x/packet_checks.json / packet_files.json",
+      "what": "no packet-manifest entry pins verify_checkout.py; the supervisor's verifier_is_preserved_original=true is an owner assertion corroborated by packet immutability discipline"
+    }
+  ],
+  "log_file": "s02_review.log",
+  "mechanical_checks": {
+    "adversarial_suite": "18/18 fixture cases ok+engine==transcription+deterministic (cutoffs incl. 0, nextafter(2), 4, 12, 40, 100); empty-D/single-node/D=7 cases engine==local_sparse; 10/10 parameter cases finite+deterministic; 9/9 refusals; fold ledger 384 exact + 171 nonzero-ulp + 1 nan-pair + 12 inf-matched = 568 = 142 triples x 4 metrics; 0 signed-zero flips; 0 class divergences; 138 kept cases; 48 legacy kept-plan divergences each retaining raw base/kept 64-bit patterns",
+    "baseline_recreate_state": "detached HEAD == pin, status --porcelain empty",
+    "blob_checks": "6/6 git-blob sha1 recomputed == source_pins.files and recorded booleans truthful; verify_receipt_raw's 2 pinned source blobs recomputed == recorded",
+    "counterexamples": "171 records, each with raw got/want 64-bit hex bit patterns, got != want, count == receipted counterexample_count",
+    "pin_equality": "13 receipt/supervisor/PRIMARY pin fields == source_pins.source_sha == baseline recreate HEAD (string equality, scripted)",
+    "receipted_artifacts_sha256_recomputed": "7/7 task_receipt + 7/7 reference_bridge, sha256+bytes true; both receipts agree per artifact",
+    "supervision": "rlimit CPU s [600,700] < wall_deadline 900 s vs walls 49.78 s/98.76 s; 4-CPU affinity [20,21,22,23]; maxrss recorded (596.3/804.4 MiB); timed_out false, exit 0",
+    "verify_checkout_rerun": "NOT-RERUN (supervised twice, minutes-scale)",
+    "verify_records": "6 records, H={1,4}, sides={10,32,92}, all actual_kernel_bits_equal=true"
+  },
+  "not_run": [
+    "verify_checkout re-execution (minutes-scale; already supervised twice; judged from retained bytes)",
+    "full geojson re-parse of acquired layers (reviewer did header/provenance-level checks only)"
+  ],
+  "receipts_reviewed": {
+    "bridge_adversarial.json": "b5441df224c7db5b7efd0e63229d5d0a66ab8158d83c0daa47b76b7109cced9f",
+    "bridge_child.log": "f74cd5ebc90768922ddd3545959f500d73400cd57f2d85860eb0622958fbe09c",
+    "bridge_supervisor.json": "4925fbf388b6e5bff7e656f9a10aea2ba9d6911aceb3e4de84c7f826f10ecad9",
+    "counterexamples.json": "b38bb0db4ba771d1d77ea7c66b37aa9768c96bbbb9112823c45715f506f17b7d",
+    "reference_bridge.json": "e2843ef59064f7f0e3aebb1045a38206932df45bd6b4c8cf1c9015fea37a13b6",
+    "task_receipt.json": "d40cd5da41524a555e64da3492db7691b81b51876d9bdaad980ea681bae78682",
+    "verify_checkout.log": "d8f935f09bc415573b60562be034e37e7c4433d984dad9714962cb286483d305",
+    "verify_receipt_raw.json": "cf3984f775a6246c456ab7c8243ffcfca4019754470274f10165a3001ee5676f",
+    "verify_supervisor.json": "4327bdc4bdc440abe1e850fb4f0ffcd72b882d104e9b520b64b585f3c328d669"
+  },
+  "reviewed_commit": "d23344b",
+  "reviewer_scope": "independent adversarial review of evidence only; no implementation repaired",
+  "task": "S02",
+  "verdict": "ACCEPT"
+}

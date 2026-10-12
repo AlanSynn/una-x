@@ -1,0 +1,41 @@
+{
+ "dependency_table": {
+  "common": "trace identity (content+schema), typed cutoff, destination-weight vector bytes, output dtypes, profile tag, producer code closure, compiler/math identity",
+  "gravity_exponential": "+ beta bytes, plateau bytes",
+  "gravity_logistic": "+ plateau, midpoint, growth-rate bytes (the computed quotient the fold receives, not its two inputs)",
+  "group": "union of all of the above",
+  "knn_access": "+ knn_weights, decay branch; exponential: +beta,+plateau; logistic: +plateau,+midpoint,+growth; any other branch: no decay scalar",
+  "reach": "common only (no decay scalar consumed)"
+ },
+ "derived_id_structure": "one trace identity at cohort scale; the logistic branch makes reach/gravity_logistic/knn_access beta-invariant, so the trio id set for the whole cohort is exactly 3 distinct ids, while gravity_exponential contributes 32 distinct ids (one per beta).  Whole-fold group reuse is 0 in-run hits by construction; per-field reuse is the admitted surface.",
+ "frozen_cohort_facts": {
+  "all_calculate_flags_true": true,
+  "beta_max": 0.004,
+  "beta_min": 0.001,
+  "csv": "../../../../campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv",
+  "distinct_gravity_beta": 32,
+  "distinct_search_radius": 1,
+  "gravity_logistic_midpoint_values": [
+   "500"
+  ],
+  "knn_decay_values": [
+   "logistic"
+  ],
+  "knn_weights_values": [
+   "[1.0]"
+  ],
+  "rows": 32,
+  "search_radius_values": [
+   "400"
+  ],
+  "sha256": "1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf"
+ },
+ "live_beta_perturbation_id_facts": {
+  "gravity_exponential": false,
+  "gravity_logistic": true,
+  "knn_access": true,
+  "reach": true
+ },
+ "note": "exponential-knn profiles are NOT on this cohort; on such profiles the knn id varies with beta, the trio never completes, the store never serves and the whole-row replay runs (safe fallback, no split)",
+ "task": "P03M per-field dependency table (fold source: AccessibilityWElevation.reach_gravity_knn_access)"
+}
