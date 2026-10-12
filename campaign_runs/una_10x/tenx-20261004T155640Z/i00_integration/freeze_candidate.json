@@ -1,0 +1,18 @@
+{
+ "schema": "una-10x-i00-freeze-candidate-1",
+ "task": "I00",
+ "frozen_candidate": {
+  "tree": "82624755d4845d31565abfd4afda9aa26f20cdfe",
+  "wheel_sha256": "ebc57dc77e9cb9b6ce2a2998aa9c68dace50d3535ab68868ea066603038cca20",
+  "wheel_name": "urban_network_analysis-2.6.0-py3-none-any.whl",
+  "install_target": "/tmp/una_i00/site_cand"
+ },
+ "frozen_comparator": {
+  "pin": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "worktree": "/storage/scratch1/1/dsynn6/una-x-baseline-395cdc5r2",
+  "wheel_sha256": "4a59bc1795e5bbc5c8bfa0b3bdd580e77bb46f235bb97b0683f2cb75b928d5bb",
+  "install_target": "/tmp/una_i00/site_base"
+ },
+ "binding_reference": "campaign_runs/una_10x/tenx-20261004T155640Z/p05s_screen/post_p00_readiness.json (BIND_CANDIDATE; protocol unchanged)",
+ "next": "V00 gauntlet on the INSTALLED wheels"
+}

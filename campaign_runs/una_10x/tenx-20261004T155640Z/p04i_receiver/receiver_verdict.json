@@ -1,0 +1,26 @@
+{
+  "budget_reconciliation": {
+    "budget_total_s": 28800.0,
+    "charged_runs": {
+      "m_w4t": 25.76
+    },
+    "charged_this_task_s": 25.76,
+    "cumulative_after_s": 3908.6,
+    "cumulative_before_s": 3882.8,
+    "final_reserve_s": 7200.0,
+    "not_charged": "phase-event extraction + receipt composition (sub-second, per fa92dca/958e25b precedent)",
+    "remaining_before_reserve_s": 17691.4
+  },
+  "followup_observation": "row 31's ~1.85s CPU-bound result_put is ~7% of the diagnostic W4 wall and rides the last arrival; it is recorded as a producer-side serialization observation for the P05S screen's candidate register (not a scheduling axis; out of P04I scope under not_admitted).",
+  "next": "P04R independent review verifies the documented non-admission (receiver_review.json) after the P03R verdict lands.",
+  "obligations_unchanged": [
+    "sync completed-result transport preserved (worker.py _transport_safe + outbox.put; nothing buffered outbox-side)",
+    "original commit owner preserved (single coordinator commit region; staged_verify -> publish -> state_apply -> outcome sequence untouched)",
+    "earliest-failure prefix and fsync/rename/state/journal sequence untouched (no receiver code written)",
+    "no queue enlargement (no code change; outbox depth law unchanged)"
+  ],
+  "schema": "una-10x-receiver-verdict-1",
+  "statement": "No residual backpressure is measured on the P03M candidate tree at cohort scale: the coordinator is idle 76.4% of the run, never blocks on recv (0.000359s total), commits stay bounded (max 0.2229s/row under the original fsync/rename law), and the only >1s drain cost is producer-side CPU serialization of the final row's result, which a receiver cannot remove. Implementing the bounded single receiver would add a second commit owner with no measured relief, against dossier-05's own admission condition.",
+  "task": "P04I",
+  "verdict": "not_admitted"
+}

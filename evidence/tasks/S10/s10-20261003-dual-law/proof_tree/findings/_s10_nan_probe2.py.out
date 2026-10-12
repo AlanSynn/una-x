@@ -1,0 +1,8 @@
+seed=(0.1,nan)
+  oracle : [nan, 0.6, nan]
+  compact: [0.1, 0.6, nan]
+  a1     : [nan, 0.6, nan]
+seed=(nan,0.5)
+  oracle : [1.5, nan, 0.5]
+  compact: [nan, 2.5, 0.5]
+  a1     : [1.5, nan, 0.5]

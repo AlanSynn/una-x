@@ -1,0 +1,32 @@
+{
+ "schema": "una-10x-z00-rehearsal-1",
+ "task": "Z00",
+ "rehearsed_commit": "129c53f94e85210b1d4e5bbbc1a9d0d86b34e2e9",
+ "target_main": "c1f8614a2733903b3fa9664579ba2fdce7ef7a74",
+ "merge_base": "c1f8614a2733903b3fa9664579ba2fdce7ef7a74",
+ "checks": {
+  "rehearsal_worktree": "/tmp/una_z00_rehearsal",
+  "head_matches_tip": true,
+  "worktree_clean_at_checkout": true,
+  "compileall_rc": 0,
+  "compileall_s": 0.6,
+  "import_rc": 0,
+  "import_file": "/tmp/una_z00_rehearsal/src/urban_network_analysis/__init__.py",
+  "import_resolves_to_tree": true,
+  "pytest_rc": 0,
+  "pytest_summary": "50 passed in 25.97s",
+  "pytest_islands": [
+   "tests/tenx/identity",
+   "tests/tenx/public"
+  ],
+  "pytest_s": 28.0,
+  "merge_tree_rc": 0,
+  "merge_result_tree": "ea872509a05776b7cb5941d671bca04e2fa877e2",
+  "merge_tree_equals_tip_tree": true,
+  "main_is_merge_base": true,
+  "rehearsal_worktree_removed": true,
+  "src_tree_at_tip": "0621e867990c3e623a95ea0991fa272ef931d935",
+  "all_core_checks_green": true
+ },
+ "scope_note": "probe-scale integration rehearsal of the runtime tree at the recorded tip; heavy walls charged 0.0 per campaign precedent; publication itself remains banned without new authorization"
+}

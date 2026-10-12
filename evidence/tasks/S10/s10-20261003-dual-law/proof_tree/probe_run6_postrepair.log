@@ -1,0 +1,8 @@
+passed: 138368 | failed: 0
+written: /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaigns/una_10x/evidence/proofs/S10_sparse_projection/sparse_admission.json
+
+real	0m42.896s
+user	0m41.868s
+sys	0m0.400s
+
+[exited with code 0]

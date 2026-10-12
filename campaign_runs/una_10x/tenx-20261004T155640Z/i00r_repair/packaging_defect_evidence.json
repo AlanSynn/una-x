@@ -1,0 +1,37 @@
+{
+ "schema": "una-10x-i00r-packaging-defect-1",
+ "task": "I00R",
+ "discovered_by": "Q10 attempt 1: the frozen-gate warm_base run exited 2 at pool start (first process of the first UNTIMED warmup; NO measured window ran, no heavy-budget charge)",
+ "defect": "public parallel RunBatch is uninstallable from the wheel: batch/runtime.py imports the stdlib-only spawn shim una_batch_worker_main (top-level, OUTSIDE the package dir) with no fallback; pyproject ships only packages = ['src/urban_network_analysis']; inherited from the campaign batch-exec commit 0acbb11 at BOTH the comparator pin and HEAD - prior measurements ran worktree code where src/ was importable, so the installed surface was never exercised for pool spawn",
+ "repro": {
+  "cand": {
+   "site": "/tmp/una_i00/site_cand",
+   "rc": 1,
+   "error_tail": "etwork_analysis/batch/runtime.py\", line 1016, in run_batch_parallel\n    pool.start()\n  File \"/tmp/una_i00/site_cand/urban_network_analysis/batch/runtime.py\", line 378, in start\n    from una_batch_worker_main import pool_main as _spawn_main\nModuleNotFoundError: No module named 'una_batch_worker_main'"
+  },
+  "base": {
+   "site": "/tmp/una_i00/site_base",
+   "rc": 1,
+   "error_tail": "network_analysis/batch/runtime.py\", line 880, in run_batch_parallel\n    pool.start()\n  File \"/tmp/una_i00/site_base/urban_network_analysis/batch/runtime.py\", line 325, in start\n    from una_batch_worker_main import pool_main as _spawn_main\nModuleNotFoundError: No module named 'una_batch_worker_main'"
+  }
+ },
+ "wheel_contents": {
+  "cand": {
+   "wheel": "/tmp/una_i00/wheel_cand/urban_network_analysis-2.6.0-py3-none-any.whl",
+   "shim_modules": [],
+   "py_module_count": 66
+  },
+  "base": {
+   "wheel": "/tmp/una_i00/wheel_base/urban_network_analysis-2.6.0-py3-none-any.whl",
+   "shim_modules": [],
+   "py_module_count": 55
+  }
+ },
+ "shim_identity": {
+  "pin_sha256": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f",
+  "head_sha256": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f",
+  "byte_identical": true,
+  "law": "the shim is arm-neutral shared transport infrastructure: byte-identical at the comparator pin and HEAD, stdlib-only, carries no numerics; shipping it cannot move any output bit"
+ },
+ "repair": "pyproject [tool.hatch.build.targets.wheel] force-include of src/una_batch_worker_main.py at the wheel root; identical packaging delta applied to the comparator wheel build (pin export + packaging-only patch, source stays the pin); recorded deviation"
+}

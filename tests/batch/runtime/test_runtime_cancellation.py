@@ -8,6 +8,7 @@ committed prefix, leave ``batch_report`` None (serial parity), and raise
 """
 from __future__ import annotations
 
+from conftest import hidden_residue, runtime_residue
 import os
 
 import pytest
@@ -66,7 +67,7 @@ def test_deadline_cancel_preserves_prefix_and_reaps_workers(
         for f in r.output_files:
             assert os.path.exists(f)
     # this run's staging removed by ownership
-    assert not [n for n in os.listdir(out) if n.startswith(".una-batch")]
+    assert not hidden_residue(out)
 
     # every worker that entered a cancelled row was reaped
     pid_files = sorted(worker_pids.iterdir()) if worker_pids.exists() \
@@ -88,8 +89,7 @@ def test_worker_death_in_flight_cancels_cleanly(make_batch, tmp_path):
     assert p.batch_report is None
     assert ei.value.batch_rows == ()          # nothing had committed
     assert not os.path.exists(out) or \
-        not [n for n in os.listdir(out)
-             if n.startswith(("row", ".una-batch"))]
+        not runtime_residue(out)
 
 
 def test_keyboard_interrupt_cancels_and_cleans(make_batch, tmp_path,
@@ -115,8 +115,7 @@ def test_keyboard_interrupt_cancels_and_cleans(make_batch, tmp_path,
     assert p.batch_report is None
     assert ei.value.batch_rows == ()
     assert not os.path.exists(out) or \
-        not [n for n in os.listdir(out)
-             if n.startswith(("row", ".una-batch"))]
+        not runtime_residue(out)
 
 
 def test_cancellation_is_batchcancellederror_not_bare_kill(

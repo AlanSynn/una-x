@@ -499,6 +499,373 @@
       "conditional": false
     },
     {
+      "id": "P01M",
+      "title": "Expose causal phase telemetry and test its overhead",
+      "depends_on": [
+        "P00"
+      ],
+      "required_pass": [
+        "P00"
+      ],
+      "owner": "harness-engineer",
+      "reads": [
+        "post_p00/AUTHORITY.md",
+        "post_p00/SOURCE_AND_ERRATA.md",
+        "post_p00/designs/01_telemetry.md"
+      ],
+      "writes": [
+        "batch telemetry via runtime owner",
+        "diagnostic tests"
+      ],
+      "actions": [
+        "Verify P00/raw/PRIMARY identities without rewriting evidence",
+        "Expose existing RowResult timings and phase CPU/wall through report",
+        "Run bounded H1/H2/H3 and sampler-overhead diagnostics"
+      ],
+      "deliverables": [
+        "phase_events.jsonl",
+        "phase_summary.json",
+        "hypothesis_verdicts.json",
+        "sampler_ablation.json"
+      ],
+      "completion": "Causal hypotheses supported/refuted/unresolved explicitly; diagnostics are not primary timing",
+      "conditional": false
+    },
+    {
+      "id": "P01F",
+      "title": "Audit strongest baseline policy and frozen primary",
+      "depends_on": [
+        "P00"
+      ],
+      "required_pass": [
+        "P00"
+      ],
+      "owner": "performance-owner",
+      "reads": [
+        "post_p00/AUTHORITY.md",
+        "post_p00/designs/01_telemetry.md",
+        "post_p00/designs/07_measurement_and_gates.md"
+      ],
+      "writes": [
+        "append-only policy audit"
+      ],
+      "actions": [
+        "Verify actual cohort CSV and PRIMARY bytes; no guessed beta values",
+        "Audit baseline input-stage caches and equal-policy controls",
+        "Retain frozen cache-off result separately; record any necessary policy amendment before runs"
+      ],
+      "deliverables": [
+        "baseline_policy_audit.json",
+        "primary_identity_check.json",
+        "budget_reconciliation.json"
+      ],
+      "completion": "Fixed-policy and strongest-policy claims separated; no changed threshold/timer/workload or budget reset",
+      "conditional": false
+    },
+    {
+      "id": "P02D",
+      "title": "Review prepared input/state/identity design before implementation",
+      "depends_on": [
+        "P01M",
+        "P01F"
+      ],
+      "required_pass": [
+        "P01M",
+        "P01F"
+      ],
+      "owner": "preparation-engineer",
+      "reads": [
+        "post_p00/designs/02_prepared_bundle.md",
+        "post_p00/IMPLEMENTATION_MAP.md",
+        "post_p00/TEST_MATRIX.md"
+      ],
+      "writes": [
+        "prepared schema/consumer audit",
+        "tests/tenx/post_p00/preparation"
+      ],
+      "actions": [
+        "Enumerate all source observations, sidecars, reader params and mutable state",
+        "Specify private admission/identity/lease/restore seams from current helpers",
+        "Obtain independent proof review of narrow initial domain and failure order"
+      ],
+      "deliverables": [
+        "prepared_contract.json",
+        "prepared_consumer_audit.md",
+        "prepared_proof_review.json"
+      ],
+      "completion": "Independent proof review accepts admitted domain and state/reader/alias/TOCTOU rules before code",
+      "conditional": false
+    },
+    {
+      "id": "P02I",
+      "title": "Implement guarded shared preparation inside public path",
+      "depends_on": [
+        "P02D"
+      ],
+      "required_pass": [
+        "P02D"
+      ],
+      "owner": "preparation-engineer",
+      "reads": [
+        "post_p00/designs/02_prepared_bundle.md",
+        "post_p00/TEST_MATRIX.md"
+      ],
+      "writes": [
+        "private prepare session",
+        "Topology adapter",
+        "integrator-owned UNA dispatch"
+      ],
+      "actions": [
+        "Implement worker-local reuse milestone then one run-wide producer per immutable dependency identity",
+        "Preserve per-row validation/snapshot/error observation and fresh mutable outputs",
+        "Measure caps/leases and run mutation/corruption/cancellation/public state tests"
+      ],
+      "deliverables": [
+        "prepared_source_commit.json",
+        "prepared_L0_L2.json",
+        "prepared_engagement.json",
+        "prepared_memory.json"
+      ],
+      "completion": "Actual public-path implementation passes admitted domain; unsupported routes retain current behavior",
+      "conditional": false
+    },
+    {
+      "id": "P02R",
+      "title": "Independently review shared preparation and public artifacts",
+      "depends_on": [
+        "P02I"
+      ],
+      "required_pass": [],
+      "owner": "independent-reviewer",
+      "reads": [
+        "post_p00/designs/02_prepared_bundle.md",
+        "post_p00/TEST_MATRIX.md"
+      ],
+      "writes": [
+        "prepared review only"
+      ],
+      "actions": [
+        "Review immutable implementation and complete source/state dependencies",
+        "Verify outputs/CRS/UID/dtype/alias and failure tests",
+        "Accept scoped candidate or reject it with trusted-path continuation"
+      ],
+      "deliverables": [
+        "prepared_review.json"
+      ],
+      "completion": "Real independent disposition; rejected/blocked implementation is not labeled passed",
+      "conditional": false
+    },
+    {
+      "id": "P03C",
+      "title": "Compile outer trace replay without changing full fold",
+      "depends_on": [
+        "P01M"
+      ],
+      "required_pass": [
+        "P01M"
+      ],
+      "owner": "replay-engineer",
+      "reads": [
+        "post_p00/designs/03_compiled_replay.md",
+        "post_p00/TEST_MATRIX.md"
+      ],
+      "writes": [
+        "private compiled replay driver",
+        "tests/tenx/post_p00/replay"
+      ],
+      "actions": [
+        "Retain current facade checks and exact typed full-fold binding",
+        "Move per-origin Python loop to one compiled serial driver; no nested oversubscription",
+        "Test generated specializations and all output bits against actual references before timing"
+      ],
+      "deliverables": [
+        "compiled_replay_commit.json",
+        "replay_bitparity.json",
+        "replay_matched_samples.json"
+      ],
+      "completion": "Compiled outer driver qualified on narrow signatures or rejected with unchanged full replay",
+      "conditional": false
+    },
+    {
+      "id": "P03M",
+      "title": "Implement typed MetricID v2 and admitted partial reuse",
+      "depends_on": [
+        "P03C",
+        "P01F"
+      ],
+      "required_pass": [
+        "P01F"
+      ],
+      "owner": "numerical-engineer",
+      "reads": [
+        "post_p00/designs/04_metric_reuse.md",
+        "post_p00/TEST_MATRIX.md"
+      ],
+      "writes": [
+        "typed metric keys/replay plans",
+        "tests/tenx/post_p00/metrics"
+      ],
+      "actions": [
+        "Resolve C31-NOTE-1 before authoritative metric cache hits",
+        "Verify actual per-field cohort differences and per-branch dependencies",
+        "Admit split folds only after bit equality; keep fresh outputs and full-fold fallback"
+      ],
+      "deliverables": [
+        "metric_identity_v2.json",
+        "metric_dependency_matrix.json",
+        "metric_reuse_verdict.json"
+      ],
+      "completion": "Typed-key correctness established; partial plans accepted or explicitly not_admitted/rejected",
+      "conditional": true
+    },
+    {
+      "id": "P03R",
+      "title": "Independently review replay/metric numerical boundaries",
+      "depends_on": [
+        "P03C",
+        "P03M"
+      ],
+      "required_pass": [],
+      "owner": "independent-reviewer",
+      "reads": [
+        "post_p00/designs/03_compiled_replay.md",
+        "post_p00/designs/04_metric_reuse.md"
+      ],
+      "writes": [
+        "replay/metric review only"
+      ],
+      "actions": [
+        "Review compiled signatures, reductions, cache identities and original reference",
+        "Retain first divergence and rejection reasons; no allclose",
+        "Check public mutable output ownership and all required validation"
+      ],
+      "deliverables": [
+        "replay_metric_review.json"
+      ],
+      "completion": "Independent scope disposition exists, not a measured application 10x claim",
+      "conditional": false
+    },
+    {
+      "id": "P04I",
+      "title": "Conditionally implement bounded result drain",
+      "depends_on": [
+        "P01M",
+        "P02R",
+        "P03R"
+      ],
+      "required_pass": [
+        "P01M"
+      ],
+      "owner": "batch-engineer",
+      "reads": [
+        "post_p00/designs/05_receiver_and_durability.md",
+        "post_p00/TEST_MATRIX.md"
+      ],
+      "writes": [
+        "batch receiver/runtime via single owner",
+        "fault tests"
+      ],
+      "actions": [
+        "Re-profile residual after accepted preparation/replay changes",
+        "Only if backpressure is measured, implement reserved-byte single receiver and original commit owner",
+        "Keep sync result ownership and publication law; test deadlock/partial frame/worker death"
+      ],
+      "deliverables": [
+        "receiver_admission.json",
+        "receiver_verdict.json",
+        "receiver_fault_matrix.json"
+      ],
+      "completion": "Causally justified safe candidate or explicit not_admitted; no unbounded queues or weakened fsync",
+      "conditional": true
+    },
+    {
+      "id": "P04R",
+      "title": "Review conditional receiver and failure prefix",
+      "depends_on": [
+        "P04I"
+      ],
+      "required_pass": [],
+      "owner": "independent-reviewer",
+      "reads": [
+        "post_p00/designs/05_receiver_and_durability.md",
+        "post_p00/TEST_MATRIX.md"
+      ],
+      "writes": [
+        "receiver review only"
+      ],
+      "actions": [
+        "Check credits reserve capacity before dispatch including oversized state",
+        "Verify original commit and cancellation/resume semantics",
+        "Accept or reject candidate, or verify documented non-admission"
+      ],
+      "deliverables": [
+        "receiver_review.json"
+      ],
+      "completion": "Real review of implementation/disposition, not a fictitious passing runtime test",
+      "conditional": false
+    },
+    {
+      "id": "P05S",
+      "title": "Screen accepted post-P00 changes under equal resources",
+      "depends_on": [
+        "P02R",
+        "P03R",
+        "P04R",
+        "P01F"
+      ],
+      "required_pass": [
+        "P01F"
+      ],
+      "owner": "performance-owner",
+      "reads": [
+        "post_p00/designs/07_measurement_and_gates.md",
+        "post_p00/designs/06_startup_export_backends.md"
+      ],
+      "writes": [
+        "fresh public-call screen evidence"
+      ],
+      "actions": [
+        "Integrate only accepted changes and compare predecessor and strongest baseline arms",
+        "Retune at most four feasible schedules after new live-memory measurements",
+        "Separate all regimes and residual span; refuse target extrapolation from component wins"
+      ],
+      "deliverables": [
+        "post_p00_stage_model.json",
+        "post_p00_configuration_screen.json",
+        "post_p00_candidate_register.json"
+      ],
+      "completion": "Complete matched public screen supports final selection or truthful target_unmet continuation",
+      "conditional": false
+    },
+    {
+      "id": "P05R",
+      "title": "Independent readiness review before installed/final gates",
+      "depends_on": [
+        "P05S"
+      ],
+      "required_pass": [
+        "P05S"
+      ],
+      "owner": "independent-reviewer",
+      "reads": [
+        "post_p00/AUTHORITY.md",
+        "post_p00/designs/07_measurement_and_gates.md"
+      ],
+      "writes": [
+        "post-P00 readiness only"
+      ],
+      "actions": [
+        "Review evidence closure, baseline policy and accepted/rejected deltas",
+        "Check source owners, original budget/reserve and remaining platform obligations",
+        "Bind safe candidate or baseline continuation for existing I00/V00/Q00/Q10/R00/Z00"
+      ],
+      "deliverables": [
+        "post_p00_readiness.json"
+      ],
+      "completion": "Independent readiness disposition is valid; it cannot claim final 10x, installed parity or absent capabilities",
+      "conditional": false
+    },
+    {
       "id": "F00",
       "title": "Assess flow sparse-output producer and tapes",
       "depends_on": [
@@ -509,7 +876,8 @@
       ],
       "owner": "flow-engineer",
       "reads": [
-        "dossiers/07_flow_sparse_producer.md"
+        "dossiers/07_flow_sparse_producer.md",
+        "post_p00/designs/06_startup_export_backends.md"
       ],
       "writes": [
         "flow admission evidence"
@@ -563,7 +931,8 @@
       "owner": "native-engineer",
       "reads": [
         "dossiers/08_native_gpu_regions.md",
-        "PLATFORM_CONTINUITY.md"
+        "PLATFORM_CONTINUITY.md",
+        "post_p00/designs/06_startup_export_backends.md"
       ],
       "writes": [
         "native owned scope",
@@ -621,7 +990,8 @@
       "owner": "gpu-engineer",
       "reads": [
         "dossiers/08_native_gpu_regions.md",
-        "PLATFORM_CONTINUITY.md"
+        "PLATFORM_CONTINUITY.md",
+        "post_p00/designs/06_startup_export_backends.md"
       ],
       "writes": [
         "GPU capability/proof spec"
@@ -736,10 +1106,12 @@
         "F10",
         "N10",
         "G11",
-        "X00"
+        "X00",
+        "P05R"
       ],
       "required_pass": [
-        "P00"
+        "P00",
+        "P05R"
       ],
       "owner": "integrator",
       "reads": [
@@ -906,5 +1278,16 @@
       "completion": "Target/status and recommended exact SHA reflect evidence, not ambition",
       "conditional": false
     }
-  ]
+  ],
+  "post_p00_resume": {
+    "checkpoint_commit": "6130769a5751bf7446734dc39b9f8e3763461cfe",
+    "reported_completed_through": "P00 (verify actual receipts; no auto-passes)",
+    "first_new_tasks": [
+      "P01M",
+      "P01F"
+    ],
+    "existing_receipts_policy": "Reuse only unchanged dependency closures; new task statuses remain pending.",
+    "schedule_authority": "post_p00/AUTHORITY.md",
+    "frozen_measurement_contract": "BENCHMARKS.md"
+  }
 }

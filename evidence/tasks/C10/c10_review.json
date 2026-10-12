@@ -1,0 +1,150 @@
+{
+ "adversarial": {
+  "D_probes": "52 adversarial probes against the actual _canonical encoder and the suite Builder: 52 held, 0 violations",
+  "E_i": "no tolerance/allclose/ULP reconciliation found; exact bit equality only; ULP appears only as required identity sensitivity",
+  "E_ii": "no provenance enters any ID; unknown fields dropped by construction (Builder loops over schema fields only; probe confirmed base == provenance-override build)",
+  "E_iii": "all 38 contract fields exercised; law-level runtime enforcement deferred to C11/C12 by scope (obligation recorded, not a defect of this freeze)",
+  "E_iv": "2 text-only tests and 2 dead-code tests recorded as C10-MINOR-1 / C10-MINOR-2",
+  "E_v": "ge_only FORBIDDEN-by-default and arms-never-multiplied recorded in the table and receipt notes; uncontradicted in commit scope"
+ },
+ "findings": [
+  {
+   "evidence": "test_handle_law_in_contract and test_reuse_policy_and_arms_recorded assert only that substrings exist in the contract/table; test_plan_fields_cover_outputs and test_decorators_are_the_real_compiled_flags mix live-fact checks with text greps. None of these exercise runtime behavior.",
+   "id": "C10-MINOR-1",
+   "repair": "Keep them, renamed *_recorded, as recording checks; require C11/C12 to enforce the corresponding laws behaviorally (trace slice validation, partial-trace status, budget recompute, handle lifetime) and never count these text checks as runtime law enforcement in any gate total.",
+   "title": "Law-presence assertions are not behavioral enforcement"
+  },
+  {
+   "evidence": "test_growth_derivation_bit_identity: the split lhs/rhs are unused; the asserted equality is 1.5/2.0 == 0.75 (trivially exact) and the fold comparison overrides growth with its own default value, so it compares identical argument vectors. test_growth_ulp_miss_is_identity_not_tolerance: the 1-ULP fold run (`near`) is computed but never asserted; the ULP claim reduces to the canonical-digest flip already covered by test_canonical.py.",
+   "id": "C10-MINOR-2",
+   "repair": "In the derivation test, evaluate the wrapper's actual expression on two input pairs with the same real quotient but different bit results (e.g. 0.3/0.4 vs 0.75) and assert the plan records the exact quotient bits and the fold given those bits is bit-identical. In the ULP test, either assert on `near` (plan-identity digest differs; output bits may legitimately coincide) or delete the dead line and rename the test to what it actually checks.",
+   "title": "Dead code and vacuous assertions in two dependency tests"
+  },
+  {
+   "evidence": "canon.frame((1, 2)) == canon.frame([1, 2]) (isinstance(v, (list, tuple)) -> the same 'L' frame), while canonical_encoding.frame_law only names 'list'.",
+   "id": "C10-NOTE-1",
+   "repair": "State the unification explicitly in the frame law, or admit only list and reject tuple in the encoder; pin whichever the schema means.",
+   "title": "Frame encoder silently unifies tuple with list"
+  },
+  {
+   "evidence": "frame(2**64) raises struct.error (not a contract-typed rejection); test_unframed_types_refused covers only {1: 2} and None.",
+   "id": "C10-NOTE-2",
+   "repair": "Pin the refusal contract (accepted types, exception type for out-of-range ints) in the law text and add the out-of-range int case to the refusal test.",
+   "title": "Out-of-range int refusal is untyped and unpinned"
+  },
+  {
+   "evidence": "test_table_embeds_live_facts compares the table against _engine_facts output \u2014 the same extractor the implementation used to emit the table \u2014 so a shared extractor bug would pass. This review closed the hole independently (75/75 agreement with a different closure method).",
+   "id": "C10-NOTE-3",
+   "repair": "Keep a permanently independent re-derivation (or golden fact digests from a second extractor) in the gate so the table is never validated only by its own emitter.",
+   "title": "The suite's live-facts check is self-referential to its own extractor"
+  }
+ ],
+ "mechanical_checks": {
+  "A_hashes_and_receipt": {
+   "detail": {
+    "commit_diff_tree_vs_receipt": "set equality (9 paths)",
+    "deliverable_sha256": {
+     "campaigns/una_10x/identity/metric_dependencies.json": "3d86e4c55fad531c5f59a9c33c19215057ae3abd1dc48ed272da756ff4068595",
+     "campaigns/una_10x/identity/trace_contract.json": "253e5b860383655bf7fd01cf783ba67b65a1c4aa868328228bb99071916e1d01"
+    },
+    "receipt_artifact_bytes": "9/9 byte counts match",
+    "receipt_artifact_digests": "9/9 sha256 match recomputed",
+    "receipt_self_consistency": "34/34 assertions PASS (deliverables.*.sha256 vs artifact digests, env manifest vs recomputed engine sha, tests_passed=45, laws=16, id_types, call_sites, params=13, status=implemented, review=null)",
+    "run_root_pytest_log_digest": "match (bytes match)",
+    "suite_sha256": {
+     "tests/tenx/identity/_canonical.py": "59e8858ece5f2c80388e56b9f1391303bedc76e8c15767e724dad30bfc9c1cc7",
+     "tests/tenx/identity/_engine_facts.py": "c3349a8f9105fcbf2a148662d675ea0fed069f1ed7986168c847fbbc4c2314e7",
+     "tests/tenx/identity/conftest.py": "8eff07782dd8af692b5dffdf5a291f516cdabf126c21671d23255ad6513ede7f",
+     "tests/tenx/identity/test_canonical.py": "ede76fe37f24d5dacd32da0e8e000db8ae877f86fb87bd2de615ec3b814ceda6",
+     "tests/tenx/identity/test_env_profile.py": "077f25ed66ab4fb0a0fcd575dd0df8a5b8619e44bae27536ac92ae03d98cc536",
+     "tests/tenx/identity/test_identity_algebra.py": "f392d3574313394e563adc3d1257a0ec84aca647f317fb33c9c83126b63bac17",
+     "tests/tenx/identity/test_metric_dependencies.py": "43fc0b6fa0fffd9b99b0fb21b13893bd3af9a04461c1743a034dad8d7f42722a"
+    },
+    "tracked_c10_tree_vs_receipt": "set equality (9 files)"
+   },
+   "result": "PASS"
+  },
+  "B_suite": {
+   "detail": {
+    "cold_run": "45 passed in 11.81s",
+    "command": "cd <review worktree> && NUMBA_CACHE_DIR=/tmp/c10review/numba_cache python -m pytest tests/tenx/identity/ -v",
+    "interpreter": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python",
+    "run_root_receipt_log": "45 passed in 4.66s",
+    "skipped_xfailed": "0 / 0",
+    "warm_rerun": "45 passed in 3.57s"
+   },
+   "result": "PASS"
+  },
+  "C_independent_engine_facts": {
+   "detail": {
+    "agreements": "75/75 programmatic assertions",
+    "engine_sha256_recomputed": "efc4dd4a74dc2ec30ff3aeefff3cce7fb41361a75f2d2e04da3af44a39e0df36",
+    "method": "reviewer-written AST extractor with per-local fixpoint closure over the assignment graph (different algorithm from _engine_facts.py's per-entry stack walk)",
+    "verified": [
+     "13-param list and exact order",
+     "4 outputs and order",
+     "per-output params_read incl. condition params (knn_decay in knn_access; branches with polarity)",
+     "dead-in-fold slots = the 4 knn_* alias params",
+     "3 call sites (395/435/472), bindings unanimous, every dead slot bound to the same source expression as its shared slot at every site",
+     "wrapper o_access derived growth expression = settings.gravity_decay_constant / settings.gravity_logistic_midpoint",
+     "embedded table fold dict == my derivation (incl. branches, calls, decorators)"
+    ]
+   },
+   "result": "PASS"
+  },
+  "D_adversarial_canonical": {
+   "detail": {
+    "held": 52,
+    "observed_non_law_behaviors": [
+     "tuple unifies with list (C10-NOTE-1); out-of-range int raises struct.error (C10-NOTE-2)"
+    ],
+    "probes": 52,
+    "probes_held": [
+     "signed zero (frames, ids, inside lists)",
+     "1-ULP flips both directions at 5 magnitudes incl. smallest denormal",
+     "int vs float vs bool tags; big-int vs float",
+     "str vs bytes; NFC vs NFD utf-8 framing; length prefix framing",
+     "list order/length; list vs scalar; empty vs 0; nested lists",
+     "field reorder; duplicate fields and their order; frame-boundary bleed attempt (no bleed)",
+     "parent digest embedding: parent flip, digest str-vs-bytes, field position",
+     "NaN payload bits, NaN sign bit, same-bits equality",
+     "inf family distinctness",
+     "refusal of dict/None/object/complex/out-of-range int",
+     "Builder drops unknown (provenance) overrides by construction; known-field override flips"
+    ],
+    "violated": 0
+   },
+   "result": "PASS"
+  },
+  "E_shortcut_hunt": {
+   "detail": {
+    "i_tolerance": "no allclose/isclose/atol/rtol/rounding/abs-threshold anywhere in the identity system; the only ULP mentions are identity-SENSITIVITY asserts and the recorded no_tolerance law; fold outputs are compared only by exact bit equality",
+    "ii_provenance": "no path/mtime/timestamp/acquisition term enters any ID; deliverables grep clean; the suite's only provenance strings are the drop test; engine_sha256 is a code CONTENT hash required by the compiler-identity law",
+    "iii_field_coverage": "38/38 contract id_fields perturbed by test_exhaustive_field_sensitivity (guard >= 30); law-level runtime enforcement is partial by scope (C11/C12 obligations: representation, tile budget, partial-trace, validation, exact-repeat laws are frozen text here, not runtime)",
+    "iv_tautologies": "two text-only law-presence tests and two dead-code/vacuous tests found (C10-MINOR-1, C10-MINOR-2); the substantive checks are live-AST cross-checks that my independent derivation reproduced",
+    "v_ge_only_and_arms": "fold_reuse_policy.ge_only_extraction records FORBIDDEN-by-default with the same-ordered-plan proof alternative; arms.law records 'never multiplied'; mutation_law, fresh_copy_law and profile_invalidation recorded; no contradiction anywhere in commit scope; the receipt notes repeat both policies"
+   },
+   "result": "PASS"
+  },
+  "F_scope": {
+   "detail": "commit changes exactly the 2 deliverables + 7 suite files (diff-tree == receipt set); no router/trace/cache/runtime code, no src/, no pyproject change; identity freeze only; C11/C12 own runtime",
+   "result": "PASS"
+  }
+ },
+ "notes": [
+  "environment agreement: numba 0.67.0 / numpy 2.4.6 / python 3.11.4 match the live interpreter, the table's numerical_env and the receipt's environment_manifest",
+  "the suite relies on the runner to set NUMBA_CACHE_DIR before import (conftest does not set it; decorators use cache=True); this review ran with a reviewer-owned cache dir",
+  "receipt status remains 'implemented' with review=null; per its own note the status is raised by the review consumer, not by this reviewer",
+  "reviewer wrote only this evidence dir; no commits, pushes, branch updates, and no edits to the reviewed tree anywhere"
+ ],
+ "review_method": "independent detached worktree at the reviewed commit; spec authority = START_HERE/AUTHORITY/CONTRACT/dossiers 04+05; engine facts re-derived by the reviewer's own AST extractor (different closure method, no code shared with the candidate's _engine_facts.py); all comparisons programmatic, none by eye",
+ "review_scope": [
+  "campaigns/una_10x/identity/trace_contract.json",
+  "campaigns/una_10x/identity/metric_dependencies.json",
+  "tests/tenx/identity/ (7 files, 45 tests)"
+ ],
+ "reviewed_commit": "be5e9d01a7dad54e18777db6cfe30a9b527b7975",
+ "reviewed_commit_parent": "cf4d714bc3dc62c1a6a78f530ea916b4f94e7135",
+ "task": "C10",
+ "verdict": "ACCEPT_WITH_FINDINGS"
+}

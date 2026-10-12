@@ -1,0 +1,41 @@
+{
+ "schema": "una-10x-i00r-cand-wheel-1",
+ "task": "I00R stage 2",
+ "source": {
+  "head": "2562689408c918a7eca886a83afe2831bf7f1ae5",
+  "tracked_clean": true
+ },
+ "wheel": {
+  "path": "/tmp/una_i00r/wheel_cand/urban_network_analysis-2.6.0-py3-none-any.whl",
+  "sha256": "5a7017f71ed1a1d430305b5b6200e812fef2652c4965a8ff3cce44cd1e4e0022",
+  "bytes": 394021,
+  "py_modules": 67,
+  "shim_sha256": "037d6c47c7ec3a083829f8e861fb278b77593c5ceacfe704fc31f89a37bb320f"
+ },
+ "wheel_diff_vs_unpatched": {
+  "added": [
+   "una_batch_worker_main.py"
+  ],
+  "removed": [],
+  "byte_diff": [
+   "urban_network_analysis-2.6.0.dist-info/RECORD"
+  ]
+ },
+ "install_target": "/tmp/una_i00r/site_cand_r",
+ "origin_proof": "ORIGIN /tmp/una_i00r/site_cand_r/urban_network_analysis/__init__.py /tmp/una_i00r/site_cand_r/una_batch_worker_main.py",
+ "parallel_pool_smoke": {
+  "cand": {
+   "rc": 0,
+   "seq_line": "PAR_SEQ 2 True",
+   "wall_s": 30.145,
+   "site": "/tmp/una_i00r/site_cand_r"
+  },
+  "base": {
+   "rc": 0,
+   "seq_line": "PAR_SEQ 2 True",
+   "wall_s": 32.638,
+   "site": "/tmp/una_i00r/site_base_r"
+  }
+ },
+ "smoke_law": "public RunBatch(parallel=True, workers=2) on the hermetic smoke grid from the INSTALLED repaired wheels - the exact surface Q10 attempt 1 proved broken; both arms spawn pools and complete"
+}

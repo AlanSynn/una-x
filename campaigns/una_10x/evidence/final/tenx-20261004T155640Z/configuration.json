@@ -1,0 +1,56 @@
+{
+ "schema": "una-10x-q00-configuration-1",
+ "task": "Q00",
+ "host": "atl1-1-02-003-4-2.pace.gatech.edu",
+ "interpreter": "/storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/_py",
+ "schedule": {
+  "workers": 4,
+  "threads_per_worker": 1,
+  "queue_depth": 64,
+  "writer_concurrency": 1,
+  "cpu_budget_C": 4,
+  "schedule_tag": "w4t1 (frozen primary schedule; P05S chose it as primary from live-memory screens)"
+ },
+ "cache_policy": {
+  "regime": "FIRST_COHORT",
+  "cold_stores": "fresh outdir per run, asserted non-existent before the call",
+  "numba_caches": {
+   "base": "/storage/scratch1/1/dsynn6/campaign_data/numba_cache_q10_base",
+   "cand": "/storage/scratch1/1/dsynn6/campaign_data/numba_cache_q10_cand"
+  },
+  "warmup": "one UNTIMED run per arm before any measured window (per-tree warm JIT, per BENCHMARKS.md regime 1)",
+  "existing_graph_cache": "identically cold both arms (no cache-off asymmetry)"
+ },
+ "output_policy": {
+  "required_artifacts": 64,
+  "reference_bytes": 147830672,
+  "bitwise_law": "64/64 sha256 equality vs the frozen P00 pin OUTSIDE timing on EVERY measured window, both arms",
+  "state_duty": "batch report, output manifest, ordered commits, zero failed rows, engagement asserts green (cand) / no-cohort (base)"
+ },
+ "timer_law": "wall brackets ONLY the public UNA.RunBatch call, through successful completion (required files, state, checkpoint/publication guarantees); bitwise verification OUTSIDE timing; import/JIT/pool overhead recorded separately; proc-start-to-done reported as the cold boundary",
+ "equal_budget_law": "same host, same C=4 physical cores, same fresh-process protocol per run, cold stores both arms, per-tree warm numba caches; neither arm gets off-clock preparation the public call would do",
+ "windows": {
+  "count": 7,
+  "alternation": "AB,BA,AB,BA,AB,BA,AB",
+  "pair": "base arm then cand arm (or reversed per alternation); same 32-job cohort manifest bytes each run",
+  "no_optional_stopping": "all seven windows run once each; no reruns, no early stop, no window replacement",
+  "invalidation": "any window with a bitwise mismatch, failed row, engagement-assert failure or cold-store violation INVALIDATES the gate (abort, no silent replacement)"
+ },
+ "decision": {
+  "statistic": "median(ln(base_wall/cand_wall)) over the 7 paired windows",
+  "reported": "exp(median); one-sided 95% lower bound = exp(0.05 quantile of 20000 bootstrap resampled medians, seed 20261003)",
+  "pass_rule": "median >= 10 AND LB95 >= 10",
+  "possible_outcomes": "observed_cohort_10x OR target_unmet (improvement_only wording if useful scoped changes remain)"
+ },
+ "arms": {
+  "base": "INSTALLED baseline wheel from the 395cdc5 pin (worktree HEAD re-verified == pin each run)",
+  "cand": "INSTALLED candidate wheel from accepted head 2562689408c918a7eca886a83afe2831bf7f1ae5"
+ },
+ "environment_facts": {
+  "python": "ORIGIN /tmp/una_i00r/site_cand_r/urban_network_analysis/__init__.py /tmp/una_i00r/site_cand_r/una_batch_worker_main.py",
+  "wheels": {
+   "cand_sha256_16": "5a7017f71ed1a1d4",
+   "base_sha256_16": "f0504f886eb99761"
+  }
+ }
+}

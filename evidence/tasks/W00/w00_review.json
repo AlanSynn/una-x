@@ -1,0 +1,95 @@
+{
+  "adversarial_answers": {
+    "B_duplicate_or_near_duplicate_jobs": "No: 32/32 distinct full parameter tuples; 32 distinct beta bit patterns bit-exact vs the frozen linspace policy; 32/32 distinct on all material parameters ignoring only name/output_file_name; frozen axes uniform",
+    "C_synthetic_smuggled_as_observed": "No: all observed inputs fetched at pinned upstream ref c15ebda... (git blob+size+sha256 verified, recorded per file); reviewer header checks confirm real Boston/Cambridge layers (EPSG:6491, 69957/14751/6919 features); una_cpu workload_gen carries the H00 PROXY-ONLY verdict and is not the W00 cohort; SYN cells declared synthetic",
+    "D_silent_defaults": "No: declared-missing cells ({ACTUAL, HOLDOUT}) carry the literal MISSING EXPLICITLY marker and no value; no claim cell invents data for them; the only sentinel-style column (origins Count) is the engine's documented resolution, exercised bitwise in H01, and is recorded as an explicit choice (WORKLOADS 'use the original column or Count explicitly')",
+    "E_claims_beyond_artifacts": "No application claims found: neither S02 nor W00 receipts assert throughput/ratios or qualification; both carry explicit scope limits and next-task pointers; grep over both evidence dirs for throughput/speedup/ratio/10x keys returns only supervisor wall_deadline fields"
+  },
+  "findings": [
+    {
+      "claim_violated": "WORKLOADS.md 'inspect CRS/geometry/columns and keep provenance' is only partially discharged for the primary cohort's own origin/destination layers",
+      "counterexample": "json header parse: MA keys include weekly_departures, Count absent in both files; CRS urn:ogc:def:crs:EPSG::6491 in both",
+      "disposition_owner": "W00 owner: optional supplemental inspection record for the two point layers at next revision",
+      "evidence_sha256": {
+        "upstream_boston_acquisition.json": "4eb64f0d18ef8f827a4644776293a3545040d89c367dcf1a8ebaaa19c8641e44"
+      },
+      "id": "W00-MINOR-1",
+      "reachability": "no correctness reachability (bytes verified, run exercised); documentation completeness only",
+      "severity": "MINOR",
+      "site": "w00_acquisition/w00_inspection.json",
+      "what": "w00_inspection records CRS/columns/feature counts for the four packet files only; Cambridge_building_centroids.geojson and MA_transit_stations.geojson (the cohort's actual layers) are git-blob+size+sha256-verified in upstream_boston_acquisition.json but not CRS/column-inspected in W00. Reviewer header check: both EPSG:6491, 14751 / 6919 Point features; MA_transit_stations has weekly_departures (cohort destination weight column exists); Cambridge_building_centroids has no physical Count property \u2014 Count is the engine's resolved sentinel (Topology.py BuildAccessPoints cost_attribute resolution), legitimately exercised by the H01 bitwise cohort run"
+    },
+    {
+      "claim_violated": "none",
+      "counterexample": "ls of both directories; w00_receipt artifacts cover the acquisition files",
+      "disposition_owner": "none",
+      "evidence_sha256": {},
+      "id": "W00-NOTE-1",
+      "reachability": "none",
+      "severity": "NOTE",
+      "site": "run-root layout",
+      "what": "acquisition-side evidence lives in w00_acquisition/ while freeze artifacts live in w00_freeze/; the review task's file list expected them under w00_freeze. All receipts cross-hash the files consistently"
+    },
+    {
+      "claim_violated": "none",
+      "counterexample": "w00_validation.artifacts covers the three",
+      "disposition_owner": "none",
+      "evidence_sha256": {},
+      "id": "W00-NOTE-2",
+      "reachability": "none",
+      "severity": "NOTE",
+      "site": "w00_freeze/w00_receipt.json artifacts",
+      "what": "the receipt hashes the acquisition files and three manifests but not PRIMARY.json/pairing_resolution.json/w00_validation.json; those are covered instead by w00_validation.json, all recomputed true by this review"
+    },
+    {
+      "claim_violated": "none",
+      "counterexample": "cell text grep",
+      "disposition_owner": "none",
+      "evidence_sha256": {},
+      "id": "W00-NOTE-3",
+      "reachability": "none",
+      "severity": "NOTE",
+      "site": "PRIMARY.claim_cells.SYN_LOCAL",
+      "what": "SYN_LOCAL declares synthetic provenance only via the SYN_ prefix and una_cpu mechanics reference (the literal word 'synthetic' appears in SYN_DENSE/SYN_TINY only); no cell presents synthetic data as observed"
+    },
+    {
+      "claim_violated": "none",
+      "counterexample": "field-by-field verbatim match of all mixed upstream rows",
+      "disposition_owner": "none",
+      "evidence_sha256": {},
+      "id": "W00-NOTE-4",
+      "reachability": "none",
+      "severity": "NOTE",
+      "site": "PRIMARY.settings_surface.turn_penalty='32' vs cohort rows turn_penalty=35",
+      "what": "settings_surface records the una-x default surface for reference; cohort/mixed rows deliberately carry the upstream-recorded 45/35 threshold/penalty with turns FALSE (inert); both are explicitly recorded, and the 35 matches the upstream pairing CSVs"
+    }
+  ],
+  "log_file": "w00_review.log",
+  "mechanical_checks": {
+    "cohort": "21 columns == receipted list; 32 rows; 32 distinct full parameter tuples; 32 distinct beta bit patterns bit-exact vs np.linspace(0.001,0.004,32); PRIMARY uint64 beta bits == CSV betas; 32/32 distinct on material parameters excluding name/output_file_name; frozen axes uniform (radius 400, logistic k=[1.0], turns FALSE, elevation FALSE, Count/weekly_departures, midpoint 500)",
+    "cross_surface": "OBS_SINGLE config equals cohort rows on network/origins/destinations/weight columns/knn decay/radius and its beta bits equal cohort beta[0]; PRIMARY OBS_MIXED graph_changing_row equals the mixed manifest row including beta bits",
+    "explicit_missing": "claim_cells MISSING EXPLICITLY exactly {ACTUAL, HOLDOUT}; SYN_DENSE/SYN_TINY declared synthetic; REPEAT_IDENTICAL negative control present",
+    "freeze_order": "PRIMARY.json mtime 2026-10-03T13:35:58Z < earliest h01_public candidate artifact 2026-10-03T13:40:54Z; ordering S02 (earlier) <= acquisition <= freeze holds; source_pins.json last modified in commit 24be380 (before all runs); candidate-bearing commits (H01 onward) all postdate the freeze",
+    "pairing_resolution": "10 knn + 2 flow entries; every non-graph-changing mixed row resolved by name",
+    "receipted_artifacts_sha256_recomputed": "8/8 w00_receipt (acquisition + freeze files) and 6/6 w00_validation (PRIMARY, manifests, pairing_resolution, receipt itself), sha256+bytes true; PRIMARY.observed_data_identity hashes match disk and the receipt",
+    "referenced_files": "network + origins + destinations of all 32 cohort rows exist and match recorded sha256 (acquisition/upstream_boston_acquisition); flow manifest 2/2 rows distinct with sha-matching files; mixed manifest 11/11 rows distinct",
+    "verbatim_rows": "10/10 mixed upstream rows byte-verbatim vs upstream Boston_KNN_pairings.csv; 2/2 flow rows byte-verbatim vs Boston_Flow_pairings.csv; graph-changing row is elevation=TRUE + 3D network while all other rows are elevation FALSE (cohort MUST split)"
+  },
+  "not_run": [
+    "verify_checkout re-execution (minutes-scale; already supervised twice; judged from retained bytes)",
+    "full geojson re-parse of acquired layers (reviewer did header/provenance-level checks only)"
+  ],
+  "receipts_reviewed": {
+    "PRIMARY.json": "6f79c5eb7a5abba3be55f4a77e2f0566c791c2920472f72d3a3bf5cb43d13a2c",
+    "cohort_manifest.csv": "1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf",
+    "flow_manifest.csv": "1e5dab8f358050eaf0562c73328395cccc2ded5ee7239718afe6b4c661816725",
+    "mixed_manifest.csv": "07882ede16b011fd528b7b08df7b5fd4b790cd626c37b9d52e58f9b743a17ee4",
+    "pairing_resolution.json": "be64a84d82852df9196703b4ae78c69bc764d4f9c21eb06088e259225a87b807",
+    "w00_receipt.json": "190dca9faa5c60f4510b8f91b5ed08b45bb0c37e79496eb8be3d3172568abe62",
+    "w00_validation.json": "99c29eb749cb356dd936e551300ceed14e3cff1885c4f3c4f6e8dfa617d5b007"
+  },
+  "reviewed_commit": "d23344b",
+  "reviewer_scope": "independent adversarial review of evidence only; no implementation repaired",
+  "task": "W00",
+  "verdict": "ACCEPT"
+}

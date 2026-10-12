@@ -1,0 +1,76 @@
+{
+  "task": "EXPL (M2 lazy-import candidate performance gate, round-3 survivor)",
+  "run_id": "exl-20261011T164228Z",
+  "date_utc": "2026-10-11",
+  "status": "GATE CLOSED: ACCEPTED under the preregistered EXPW law — 7/7 paired windows byte-equal across arms and positive, median paired improvement 1.10654x, one-sided 95% LB 1.07908x > 1. Implementation status: the candidate bytes were already implemented and byte-proven upstream (probe branch perf/exp-lazy-probe @ efc33dc, patch sha a8f5eaa2...); this gate added ZERO source changes — it measured, verified bytes, and recorded the disposition. Verification status: all acceptance checks executed and green (details below); no check skipped.",
+  "objective": "Run the round-3 surviving lazy-import candidate through the campaign's preregistered paired performance gate (EXPW pattern) on the exclusive timing lanes, with an absolute cross-arm byte law and a preregistered power stop.",
+  "candidate": {
+    "patch": "5 files, +9/-6: sklearn.cluster deferred function-level into Topology.BuildClusters (Topology.py:1163, use :1191); networkx deferred function-level in Engines/Flow.py (_build_digraph) and Engines/AggregateFlow.py (_build_digraph); dead module-level networkx imports removed from Topology.py, Engines/Accessibility.py, Engines/AccessibilityWElevation.py",
+    "branch": "perf/exp-lazy-1 (worktree /storage/scratch1/1/dsynn6/una-x-m2gate-20261011), HEAD e79ffeea7a47780384f10b120d668f0cbbc4ae26 = cherry-pick of efc33dc167e3c277617b6c6ff7738a5018562b3c onto f2ea398219111df11ba05839e617ecca5e14f2ed",
+    "byte_proven": "git diff f2ea398 HEAD in the gate worktree is byte-identical (sha256 a8f5eaa227bb5ba8aa278f531b3efa4938f7a2cdb718e6b9279c6c2693460aa2) to the recorded probe patch p3_lazy_import.patch from coldd-20261011T1155Z",
+    "base_arm": "/storage/scratch1/1/dsynn6/una-x-m2base-20261011, detached HEAD f2ea398219111df11ba05839e617ecca5e14f2ed, pristine, clean"
+  },
+  "gate_protocol": {
+    "preregistration": "PREREGISTRATION.md written BEFORE any timed leg (run dir m2gate-20261011T164228Z); laws applied mechanically",
+    "runner": "run_baseline_legs.py (read-only, unchanged) — public RunBatch('accessibility'), --parallel --workers 4, cache mode off, exports on, 32-row cohort_manifest.csv (sha256 1161f485...), timer brackets ONLY the public call; per-leg per-file sha256 census of all outputs (107 files = 64 exports + 43 infra, output_bytes_total 165876776 every leg)",
+    "interpreter": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python, PYTHONHASHSEED=0",
+    "cohort_manifests": "local_audit_manifest.csv sha256 235405de67cf22dc76c3e89bd0c3d198927d0ed0870172a0e86b942fecb8a60a MATCH; cohort_manifest.csv sha256 1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf asserted in every leg's pins",
+    "numba_cache": "one shared fresh NUMBA_CACHE_DIR; arm A warmed by S1 (cold, uncounted), arm B warmed by S3 (cold, uncounted); all counted legs warm"
+  },
+  "byte_laws_untimed": {
+    "g1_fresh_spawn_import": "plain 'from urban_network_analysis import UNA' on candidate bytes: sklearn* and networkx* ABSENT from sys.modules (g1_import_guard.json)",
+    "g2_buildclusters": "BuildClusters completes and fires sklearn.cluster (sklearn 1.9.1 in sys.modules after call)",
+    "g2_runflow": "RunFlow smoke ok, 8.81 s (deferred networkx 3.6.1 import path); trace module sha 9676e572... matches the probe pin",
+    "tests_batch": "pytest tests/batch on the candidate tree (alan): 91 passed / 0 failed (184.29 s), matching the probe's 91"
+  },
+  "shakedown": {
+    "decision": "POWER_OK",
+    "e_prelim_ln": 0.094512,
+    "effect_prelim_factor": 1.09912,
+    "sd_hat_ln": 0.028011,
+    "moe_n7_ln": 0.025906,
+    "cold_start_step_A_ln": 0.520307,
+    "note": "steady-state drift matches the cold-decider P5 reference sd 0.0285 on this host; |e| >> moe, gate windows authorized, none burned by the stop"
+  },
+  "gate_windows": {
+    "n": 7,
+    "orders": "preregistered AB/BA alternating (w1 A,B; w2 B,A; w3 A,B; w4 B,A; w5 A,B; w6 B,A; w7 A,B)",
+    "r_values_ln": [0.101234, 0.074567, 0.081341, 0.122044, 0.1429, 0.101817, 0.074988],
+    "all_positive": true,
+    "median_improvement_factor": 1.10654,
+    "mean_r_ln": 0.099842,
+    "sd_r_ln": 0.025663,
+    "moe_n7_ln": 0.023734,
+    "one_sided_95_LB_factor": 1.07908,
+    "pass_law": "median(r) > 0 AND exp(mean - 2.4469*sd/sqrt(7)) > 1 — both hold",
+    "bytes": "content-equal across arms in ALL 7 windows (107/107 files, per-file sha256 identical under the wallclock-prefix normalization); raw per-leg censuses retained in leg_*.json"
+  },
+  "preregistration_deviations": [
+    "DEVIATION 1 (sd estimator pair): PREREGISTRATION.md set sd_hat = |ln(t_S1/t_S2)|, but (S1,S2) spans the preregistered cache-warmup transition (S1 is arm A's cold first leg on a fresh NUMBA_CACHE_DIR: 36.54 s vs 21.72 s warm) and therefore measures the cold-start step (0.5203 ln), not drift. Mechanical application would have manufactured a spurious POWER_LIMITED_STOP. Same one-draw-MLE rule, computed from the steady-state A-A pair (S2,S2b): sd_hat 0.0280 (r_AA -0.0280). Recorded in shakedown.json.",
+    "DEVIATION 2 (byte-law normalization): the preregistered rel-path law is unsatisfiable across legs run in different minutes — every leg publishes exports under a wallclock-stamped top-level directory (accessibility_<date>_<HHMM>). The law is evaluated on CONTENT: strip stamp prefixes, require identical canonical path sets and identical (bytes, sha256) per path. Content-neutrality proven same-arm cross-minute (S2 vs S2b) and cross-arm (S4 pair); any content mismatch still fails the gate absolutely.",
+    "DEVIATION 3 (comparator strictness, window-1 adjudication): the first windows run required exactly one stamp dir per leg; w1_A straddled a minute boundary and legitimately produced two. Both w1 legs COMPLETED and were retained; the failed adjudication is preserved (windows_run1_incident_adjudication.json) and w1 was re-adjudicated from raw leg JSONs (content-equal, r 0.101234). No measurement was rerun or discarded. Secondary effect: a leg straddling a boundary splits exports across stamp dirs; recorded per window (stamp_dirs_A/B).",
+    "INCIDENT (driver, not measurement): the first shakedown driver crashed at S3 on an over-crude tree_dirty assert AFTER the runner had completed and written leg_S3.json (retained, valid). The dirty entry was the untracked run/evidence dir itself, whose home inside the arm-B worktree is set by the task brief; the assert was relaxed to allow exactly that entry (any other porcelain entry still stops the gate). S1/S2/S3 raw JSONs are the incident run's retained measurements."
+  ],
+  "load_discipline": "Exclusive timing lanes asserted by affinity: this session's CPU affinity is cores 8-11; the load sources (external users' run_pydft.py ~13 cores and 4x dtms.e on cores 20-23) are pinned outside it (affinity lists recorded). Node-wide 1-min load stayed >8 throughout (16-20); the preregistered bounded wait (3x10 min) was executed and exhausted before EACH timed block (shakedown: 19.39/17.89/~18.0; gate: 16.15/18.24/19.47), then legs ran and loads were recorded per leg. Steady-state paired sd 0.0257-0.0280 during this load confirms lane cleanliness empirically.",
+  "observed_import_effects": {
+    "main_process_import_s": "uncounted (outside the timer): base arms 4.28-6.02 s, candidate arms 3.05 s — consistent with the probe's bootstrap median 3.3208->1.4999 s/worker",
+    "timed_public_call": "base arm ~19.5-22.6 s, candidate arm ~19.5-20.3 s across counted windows; median paired improvement 1.10654x"
+  },
+  "disposition": {
+    "verdict": "ACCEPTED",
+    "patch_bytes": "STAY as the ship-as-candidate branch perf/exp-lazy-1 (HEAD e79ffee, local commit only). Merging, pushing, or any publication is explicitly NOT done and remains a separate user authorization; the probe branch perf/exp-lazy-probe (efc33dc) is retained untouched as the probe record.",
+    "scope": "This gate shipped zero source changes beyond the candidate commit itself; the only tracked additions on perf/exp-lazy-1 are this evidence trio."
+  },
+  "artifacts": {
+    "tracked_trio": "campaigns/una_10x/evidence/tasks/EXPL/exl-20261011T164228Z/ (results.json + receipt.json + raw_index.sha256), committed on perf/exp-lazy-1",
+    "raw_run_dir": "/storage/scratch1/1/dsynn6/una-x-m2gate-20261011/campaign_runs/una_10x/m2gate-20261011T164228Z/ (UNTRACKED per campaign law): PREREGISTRATION.md, drivers (m2gate_*.py), guard scripts+outputs, 14 counted leg JSONs + S-leg JSONs with full per-file censuses, consoles, shakedown.json, windows.json, windows_run1_incident_adjudication.json, bytelaw_normalized.json, stderr captures, numba cache dirs; indexed by raw_index.sha256 (index of every run-dir file except numba caches)",
+    "raw_index_sha256": "e796cf0e4fa68357399bd825fa00ede16cf38e19f5f8a057f311609be37ebb0c"
+  },
+  "limitations": [
+    "Effect measured on the 32-row Boston control cohort, w4, this host — the same P00/tenx family used by all campaign gates; not a claim about other cohorts or worker counts.",
+    "The 1.1065x is a wall-time improvement of the timed public RunBatch call (w4); the lazy-import bootstrap reduction also improves untimed main-process import and per-worker worker startup visible inside the timed call.",
+    "Windows 1's pair was measured in the incident run and re-adjudicated after a comparator fix; windows 2-7 were measured after the fix. All 14 counted legs passed zero-failed/32-row/107-file checks and are retained raw.",
+    "No whole-repo regression was run for this gate (byte law + tests/batch + targeted guards are the preregistered acceptance set for a 5-file import-deferral patch with no numerical-path change; the diff touches no @njit kernel, no engine arithmetic, and no export writer)."
+  ],
+  "no_pushes": "No pushes, no merges to main, no releases, no purchases, no credential/provider changes. Commit is local to perf/exp-lazy-1 only."
+}

@@ -1,0 +1,226 @@
+C10 INDEPENDENT REVIEW TRANSCRIPT
+reviewer: independent identity reviewer (own detached worktree; the
+          reviewer repaired, improved and extended nothing)
+reviewed_commit: be5e9d01a7dad54e18777db6cfe30a9b527b7975
+parent: cf4d714bc3dc62c1a6a78f530ea916b4f94e7135
+review_worktree: /storage/scratch1/1/dsynn6/c10rev-wt-be5e9d01a
+run_root: /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261003T1212Z
+interpreter: /storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python
+NUMBA_CACHE_DIR: /tmp/c10review/numba_cache (reviewer-owned)
+reviewer scratch: /tmp/c10review (my_facts.py, compare.py, hashcheck.py,
+                  adversarial.py, build_log.py + captured outputs)
+NOTE on display: this environment renders some captured output with
+character noise, so ALL comparisons were performed programmatically in
+python and only computed digests and PASS/FAIL counts are quoted as
+evidence; nothing below was compared by eye.
+
+=== 0. worktree identity assertions ===
+$ git -C <review_worktree> rev-parse HEAD
+be5e9d01a7dad54e18777db6cfe30a9b527b7975
+expected == actual: True
+$ git -C <review_worktree> status --porcelain
+(empty output; clean tree at the reviewed commit)
+
+=== 1. commit stat (scope F evidence) ===
+$ git show --stat --format='%H%n%P%n%s' HEAD
+be5e9d01a7dad54e18777db6cfe30a9b527b7975
+cf4d714bc3dc62c1a6a78f530ea916b4f94e7135
+C10 implementation: typed identity contract + live-engine metric dependency table + 45-test identity suite (campaign una_10x, run root campaign_runs/una_10x/tenx-20261003T1212Z/, local commit only on perf/una-10x @ parent cf4d714bc).
+
+ .../una_10x/identity/metric_dependencies.json      | 414 +++++++++++++++++++++
+ campaigns/una_10x/identity/trace_contract.json     |  79 ++++
+ tests/tenx/identity/_canonical.py                  |  63 ++++
+ tests/tenx/identity/_engine_facts.py               | 191 ++++++++++
+ tests/tenx/identity/conftest.py                    | 100 +++++
+ tests/tenx/identity/test_canonical.py              |  93 +++++
+ tests/tenx/identity/test_env_profile.py            |  95 +++++
+ tests/tenx/identity/test_identity_algebra.py       | 184 +++++++++
+ tests/tenx/identity/test_metric_dependencies.py    | 260 +++++++++++++
+ 9 files changed, 1479 insertions(+)
+=> commit touches exactly the 2 deliverables + 7 suite files; no src/, router, trace, cache or runtime code lands in this commit.
+
+=== 2. check A: receipt digests vs recomputed ===
+$ python hashcheck.py   (cwd /tmp/c10review)
+receipt artifact paths:
+   campaigns/una_10x/identity/metric_dependencies.json
+   campaigns/una_10x/identity/trace_contract.json
+   tests/tenx/identity/_canonical.py
+   tests/tenx/identity/_engine_facts.py
+   tests/tenx/identity/conftest.py
+   tests/tenx/identity/test_canonical.py
+   tests/tenx/identity/test_env_profile.py
+   tests/tenx/identity/test_identity_algebra.py
+   tests/tenx/identity/test_metric_dependencies.py
+tracked identity files: 9
+  recomputed campaigns/una_10x/identity/metric_dependencies.json sha256=3d86e4c55fad531c5f59a9c33c19215057ae3abd1dc48ed272da756ff4068595 bytes=12235
+  recomputed campaigns/una_10x/identity/trace_contract.json sha256=253e5b860383655bf7fd01cf783ba67b65a1c4aa868328228bb99071916e1d01 bytes=4075
+  recomputed tests/tenx/identity/_canonical.py sha256=59e8858ece5f2c80388e56b9f1391303bedc76e8c15767e724dad30bfc9c1cc7 bytes=1976
+  recomputed tests/tenx/identity/_engine_facts.py sha256=c3349a8f9105fcbf2a148662d675ea0fed069f1ed7986168c847fbbc4c2314e7 bytes=6771
+  recomputed tests/tenx/identity/conftest.py sha256=8eff07782dd8af692b5dffdf5a291f516cdabf126c21671d23255ad6513ede7f bytes=3301
+  recomputed tests/tenx/identity/test_canonical.py sha256=ede76fe37f24d5dacd32da0e8e000db8ae877f86fb87bd2de615ec3b814ceda6 bytes=2818
+  recomputed tests/tenx/identity/test_env_profile.py sha256=077f25ed66ab4fb0a0fcd575dd0df8a5b8619e44bae27536ac92ae03d98cc536 bytes=3101
+  recomputed tests/tenx/identity/test_identity_algebra.py sha256=f392d3574313394e563adc3d1257a0ec84aca647f317fb33c9c83126b63bac17 bytes=6315
+  recomputed tests/tenx/identity/test_metric_dependencies.py sha256=43fc0b6fa0fffd9b99b0fb21b13893bd3af9a04461c1743a034dad8d7f42722a bytes=9511
+PASS 34  FAIL 0
+also verified programmatically:
+- receipt.result_sha.c10_identity_pytest.log == sha256 of run-root c10_identity/c10_identity_pytest.log (bytes match)
+- receipt.deliverables.metric_dependencies.sha256 and .trace_contract.sha256 == the corresponding artifact digests
+recomputed digests of the 9 tracked files (sha256, bytes):
+  campaigns/una_10x/identity/metric_dependencies.json     3d86e4c55fad531c5f59a9c33c19215057ae3abd1dc48ed272da756ff4068595  12235 bytes
+  campaigns/una_10x/identity/trace_contract.json          253e5b860383655bf7fd01cf783ba67b65a1c4aa868328228bb99071916e1d01  4075 bytes
+  tests/tenx/identity/_canonical.py                       59e8858ece5f2c80388e56b9f1391303bedc76e8c15767e724dad30bfc9c1cc7  1976 bytes
+  tests/tenx/identity/_engine_facts.py                    c3349a8f9105fcbf2a148662d675ea0fed069f1ed7986168c847fbbc4c2314e7  6771 bytes
+  tests/tenx/identity/conftest.py                         8eff07782dd8af692b5dffdf5a291f516cdabf126c21671d23255ad6513ede7f  3301 bytes
+  tests/tenx/identity/test_canonical.py                   ede76fe37f24d5dacd32da0e8e000db8ae877f86fb87bd2de615ec3b814ceda6  2818 bytes
+  tests/tenx/identity/test_env_profile.py                 077f25ed66ab4fb0a0fcd575dd0df8a5b8619e44bae27536ac92ae03d98cc536  3101 bytes
+  tests/tenx/identity/test_identity_algebra.py            f392d3574313394e563adc3d1257a0ec84aca647f317fb33c9c83126b63bac17  6315 bytes
+  tests/tenx/identity/test_metric_dependencies.py         43fc0b6fa0fffd9b99b0fb21b13893bd3af9a04461c1743a034dad8d7f42722a  9511 bytes
+
+
+=== 3. check B: suite run in the review worktree ===
+$ cd <review_worktree> && NUMBA_CACHE_DIR=/tmp/c10review/numba_cache python -m pytest tests/tenx/identity/ -v
+cold run: 45 passed in 11.81s; warm rerun full log: 45 passed in 3.57s (0 skipped, 0 xfailed; 45 items)
+$ tail of run-root receipt log c10_identity_pytest.log:
+============================== 45 passed in 4.66s ==============================
+pytest_full.log sha256: 0531751330014f0c636dc551b2dd203583050db0847dab8d9079fa1166a99f57
+
+=== 4. check C: independent AST derivation ===
+my_facts.py was written from scratch for this review with a different method (per-local fixpoint closure over the assignment graph); it shares no code with _engine_facts.py.
+$ python my_facts.py
+engine_sha256: efc4dd4a74dc2ec30ff3aeefff3cce7fb41361a75f2d2e04da3af44a39e0df36
+params: ['d_distance', 'd_weights', 'cutoff', 'gravity_beta', 'gravity_plateau', 'gravity_logistic_midpoint', 'knn_gravity_plateau', 'knn_weights', 'knn_gravity_beta', 'knn_decay', 'knn_gravity_logistic_midpoint', 'gravity_growth_rate', 'knn_gravity_growth_rate']
+outputs: ['reach', 'gravity_exponential', 'gravity_logistic', 'knn_access']
+dead: ['knn_gravity_beta', 'knn_gravity_growth_rate', 'knn_gravity_logistic_midpoint', 'knn_gravity_plateau']
+call_sites: [395, 435, 472]
+derivation: {'wrapper': 'o_access', 'kwarg': 'gravity_growth_rate', 'expression': 'settings.gravity_decay_constant / settings.gravity_logistic_midpoint'}
+per_output params_read:
+  reach ['cutoff', 'd_distance', 'd_weights'] conds: []
+  gravity_exponential ['cutoff', 'd_distance', 'd_weights', 'gravity_beta', 'gravity_plateau'] conds: []
+  gravity_logistic ['cutoff', 'd_distance', 'd_weights', 'gravity_growth_rate', 'gravity_logistic_midpoint', 'gravity_plateau'] conds: []
+  knn_access ['cutoff', 'd_distance', 'd_weights', 'gravity_beta', 'gravity_growth_rate', 'gravity_logistic_midpoint', 'gravity_plateau', 'knn_decay', 'knn_weights'] conds: ['knn == 0', "knn_decay == 'exponential'", "knn_decay == 'logistic'"]
+
+=== 5. check C: table vs my derivation ===
+$ python compare.py   (75 programmatic assertions)
+PASS 75  FAIL 0
+covered: engine_sha256, fold name/file/decorators, the 13-param order, the 4 outputs, per-output params_read incl. condition params, branch_conditions, branches with polarity, calls, params_dead_in_fold, all 3 call-site linenos with full binding maps, bindings_unanimous, every dead slot bound to the same source expression as its shared slot at every site, alias_bindings entries, derived_params (expression/op/inputs/kwarg/wrapper), numerical_env sha + decorators, schema/task.
+
+=== 6. check D: adversarial probes vs the actual _canonical.py and the suite Builder ===
+$ python adversarial.py
+probes 52  held 52  violated 0
+HELD signed_zero_frames
+HELD signed_zero_ids
+HELD signed_zero_in_list
+HELD ulp_up_0.75
+HELD ulp_dn_0.75
+HELD ulp_frames_0.75
+HELD ulp_up_1.0
+HELD ulp_dn_1.0
+HELD ulp_frames_1.0
+HELD ulp_up_1e+300
+HELD ulp_dn_1e+300
+HELD ulp_frames_1e+300
+HELD ulp_up_5e-324
+HELD ulp_dn_5e-324
+HELD ulp_frames_5e-324
+HELD ulp_up_-3.14159
+HELD ulp_dn_-3.14159
+HELD ulp_frames_-3.14159
+HELD int_vs_float
+HELD bool_vs_int
+HELD bool_vs_float
+HELD bigint_vs_float
+HELD str_vs_bytes
+HELD unicode_nfc_vs_nfd
+HELD str_embed_len
+HELD list_order
+HELD list_len
+HELD list_vs_scalar_frames
+HELD list_vs_scalar_ids
+HELD empty_list_vs_zero
+HELD nested_lists
+HELD tuple_and_list_unify
+HELD field_reorder
+HELD dup_fields_kept
+HELD dup_order
+HELD no_field_bleed
+HELD parent_flip
+HELD parent_str_vs_bytes
+HELD parent_position_matters
+HELD nan_payload
+HELD nan_signbit
+HELD nan_same_bits_equal
+HELD nan_frames
+HELD inf_family
+HELD refuse_dict
+HELD refuse_NoneType
+HELD refuse_object
+HELD refuse_complex
+HELD refuse_int
+HELD provenance_dropped
+HELD known_field_flips
+HELD builder_schema_order
+probe classes: signed zero (frames/ids/inside lists), 1-ULP flips both directions at 5 magnitudes incl. the smallest denormal, int/float/bool tags, str/bytes/NFC-NFD utf-8 framing, list order/length/list-vs-scalar/empty/nested, tuple-vs-list unification (recorded as NOTE), field reorder, duplicate fields, frame-boundary bleed attempt, parent digest embedding (flip/type/position), NaN payload/sign/same-bits, inf family, refusal of dict/None/object/complex/out-of-range int, provenance-override drop and known-field flip in the suite Builder.
+
+=== 7. check E: shortcut hunt ===
+(i) tolerance/reconciliation: grep -rniE "allclose|isclose|atol|rtol|
+    1e-0?[0-9]|abs\\(|round\\(|decimals|ulps?\\)" over both
+    deliverable JSONs and the 7 suite files -> only (a) a docstring
+    "A robust (not ULP) variation", (b) the canonical identity of a
+    1-ULP-flipped value asserted DIFFERENT (sensitivity, not
+    reconciliation), (c) the table's own no_tolerance law text.
+    Fold outputs are compared only with exact bit equality
+    (bits(a) == bits(b)); no allclose/rounding/tolerance anywhere.
+(ii) provenance in IDs: the deliverables contain no mtime/timestamp/
+    source_path/acquired/filename terms (grep: no hits). The suite's
+    only provenance-like strings are the DROP test
+    (test_provenance_never_enters_identity) which feeds provenance
+    overrides and asserts the ID is unchanged; my probe 10 confirms
+    the Builder drops unknown keys by construction (loop over schema
+    fields only). engine_sha256 is a code CONTENT hash required by the
+    compiler-identity law, not acquisition provenance.
+(iii) field coverage: 38 id_fields over 6 types (ArtifactID 5, DestID 5,
+    GraphID 11, MetricID 6, QueryID 8, TraceID 3);
+    test_exhaustive_field_sensitivity perturbs EVERY field of EVERY type
+    and asserts a flip (guard >= 30, actual 38). No contract field is
+    unexercised. Law-level coverage is partial BY SCOPE: representation/
+    tile-budget/partial-trace/validation laws are frozen text whose
+    runtime enforcement belongs to C11/C12, not to this freeze.
+(iv) tautology-class tests: test_handle_law_in_contract and
+    test_reuse_policy_and_arms_recorded assert substring presence in
+    the contract/table text; test_plan_fields_cover_outputs and
+    test_decorators_are_the_real_compiled_flags mix live-fact checks
+    with text greps. Recorded as C10-MINOR-1.
+    Additionally two tests carry dead code: in
+    test_growth_derivation_bit_identity the expression split lhs/rhs is
+    unused and the asserted equality (1.5/2.0 == 0.75, then an override
+    equal to the default) is trivially true; in
+    test_growth_ulp_miss_is_identity_not_tolerance the 1-ULP fold run
+    (`near`) is computed but never asserted, so the fold-level ULP
+    claim reduces to the canonical-digest flip already covered by
+    test_canonical.py. The substantive cross-checks survive elsewhere
+    (test_derived_param_recorded vs live AST; my independent
+    derivation). Recorded as C10-MINOR-2.
+(v) ge_only / arms: metric_dependencies.json records
+    fold_reuse_policy.ge_only_extraction "FORBIDDEN by default ..."
+    and arms.law "arm gains overlap; they are never multiplied"; the
+    only other references in the commit are the two assertions
+    checking those texts (test_reuse_policy_and_arms_recorded). No
+    contradiction anywhere in commit scope; the receipt notes repeat
+    both. The mutation_law, fresh_copy_law and profile_invalidation
+    are likewise recorded and uncontradicted.
+
+=== 8. check F: scope ===
+git diff-tree --no-commit-id --name-only -r HEAD == exactly the 9
+receipt-listed paths (asserted programmatically:
+commit_changes==9_receipt_paths, tracked_c10_set==receipt_set). The
+campaigns/una_10x/identity/ and tests/tenx/identity/ trees contain
+exactly those 9 files at this commit; no runtime module, router,
+trace, cache, pyproject or src change lands here. The suite imports
+the engine module read-only for compilation; conftest inserts repo
+src/ on sys.path at test time only.
+
+=== 9. verdict ===
+mechanical checks: A 34/34 PASS; B 45/45 PASS; C 75/75 PASS; D 52/52 probes held; E no shortcut found; F identity-only scope confirmed.
+VERDICT: ACCEPT_WITH_FINDINGS (0 MAJOR, 2 MINOR, 3 NOTE)
+review json: /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261003T1212Z/evidence/tasks/C10/c10_review.json
+review json sha256: 09282b01523f2fcca389ad73ca2d56382587e4b0e759aef56ad125ac421d9318

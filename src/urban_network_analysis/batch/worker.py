@@ -65,6 +65,17 @@ class RowJob:
     need_state: bool                   # carry the rehydration bundle
     verbosity: int = 0
     inject: Optional[Dict[str, str]] = None
+    # Runtime-only cohort route transport (dossier 06, C30): the shared
+    # content-addressed store root for this run.  Never a Settings field
+    # and never observable serial state — exactly like ``staging_dir``.
+    cohort_root: Optional[str] = None
+    cohort_residency_cap_bytes: int = 0
+    # Runtime-only prepared-input route transport (una_10x P02): the
+    # run's shared prepared-store root and its per-worker decoded-arena
+    # cap (C31-MINOR-1 sizing law).  Never a Settings field and never
+    # observable serial state — exactly like ``cohort_root``.
+    prepared_root: Optional[str] = None
+    prepared_residency_cap_bytes: int = 0
 
 
 @dataclass(frozen=True)
@@ -109,6 +120,21 @@ class RowResult:
     # exception object is not: the parent rebuilds the exact serial
     # construction (type and message, __str__ transformations included).
     error_args: Optional[Tuple[Any, ...]] = None
+    # Cohort route counters slice for this row (dossier 06 charge law:
+    # unique searches vs rows, decodes, folds — runtime-only reporting,
+    # never observable serial state).  None when the row ran without a
+    # cohort session.
+    cohort_stats: Optional[Dict[str, Any]] = None
+    # Prepared-route counters slice for this row (una_10x P02; delta vs
+    # the per-process session mark taken at attach).  None when the row
+    # ran without a prepared session.  Runtime-only reporting, never
+    # observable serial state.
+    prepared: Optional[Dict[str, Any]] = None
+    # Opt-in P01M diagnostics (post_p00 design 01): this row's bounded
+    # phase events and the recorder's dropped count.  Empty/0 unless the
+    # environment enabled telemetry — never identity, never required state.
+    phase_events: Tuple[Dict[str, Any], ...] = ()
+    phase_dropped: int = 0
 
 
 # ---------------------------------------------------------------------------
@@ -280,17 +306,11 @@ def _scan_staging(staging_dir: str) -> Tuple[Tuple[str, int, str], ...]:
     return tuple(sorted(entries))
 
 
-def _run_row(job: RowJob) -> RowResult:
-    """Execute one row exactly as the serial loop would, on a fresh UNA."""
-    t0 = time.perf_counter()
-    UNA = _load_analysis()
-    timings = {"import_s": time.perf_counter() - t0}
-
-    una = UNA(verbosity=job.verbosity)
-
-    s = una.settings
-    s.__dict__.update(dict(job.settings_state))
-
+def _bind_and_gate(s, job: RowJob) -> None:
+    """The serial loop's per-row Settings transitions: bind output folder,
+    the missing-field skip gate, and the ``'Results'``→name substitution.
+    Extracted verbatim so the instrumented and plain paths share one body.
+    """
     # -- bind_settings (serial: applies to every row, skipped ones too) ----
     if not (s.output_folder or '').strip():
         s.output_folder = job.script_output_folder or \
@@ -311,6 +331,80 @@ def _run_row(job: RowJob) -> RowResult:
     if s.output_file_name == "Results":
         s.output_file_name = s.name
 
+
+def _run_row(job: RowJob) -> RowResult:
+    """Execute one row exactly as the serial loop would, on a fresh UNA."""
+    # P01M diagnostics: inert unless the environment enabled telemetry
+    # (one env read); coarse spans only — per-stage hooks arrive with P02.
+    from .telemetry import PhaseRecorder
+    rec = PhaseRecorder.maybe(source="worker")
+    rec_begin = rec.begin_row if rec is not None else (lambda rid: None)
+    rec_begin(job.row_index)
+    t0 = time.perf_counter()
+    if rec is not None:
+        with rec.phase("import"):
+            UNA = _load_analysis()
+    else:
+        UNA = _load_analysis()
+    timings = {"import_s": time.perf_counter() - t0}
+
+    una = UNA(verbosity=job.verbosity)
+
+    # Cohort route (C30, dossier 06): attach the run's share session so
+    # the integrator dispatch in RunAccessibility wraps the fresh graph
+    # engine.  Accessibility rows only; the session accumulates across
+    # rows in this worker process (per-process store/residency pair),
+    # and each RowResult carries its per-row counter delta.
+    cohort_stats = None
+    prepared_stats = None
+    session = None
+    psession = None
+    if rec is not None:
+        with rec.phase("session_setup"):
+            if job.cohort_root and job.analysis == 'accessibility':
+                from .cohort import CohortSession
+                session = CohortSession(job.cohort_root,
+                                        job.cohort_residency_cap_bytes)
+                una._cohort_session = session
+                cohort_mark = session.mark()
+            # P02 prepared route (una_10x): attach the row's handle on the
+            # run's shared prepared store (per-row instance, shared
+            # process-wide Stores pair).  Refusals are decided here from
+            # the row's own settings snapshot; a refused session still
+            # attaches (its refusal is counted, and it serves nothing).
+            if job.prepared_root and job.analysis == 'accessibility':
+                from .preparation import PrepSession
+                psession = PrepSession(job.prepared_root,
+                                       job.prepared_residency_cap_bytes,
+                                       job.settings_state)
+                una._prepared_session = psession
+                prepared_mark = psession.mark()
+    else:
+        if job.cohort_root and job.analysis == 'accessibility':
+            from .cohort import CohortSession
+            session = CohortSession(job.cohort_root,
+                                    job.cohort_residency_cap_bytes)
+            una._cohort_session = session
+            cohort_mark = session.mark()
+        if job.prepared_root and job.analysis == 'accessibility':
+            from .preparation import PrepSession
+            psession = PrepSession(job.prepared_root,
+                                   job.prepared_residency_cap_bytes,
+                                   job.settings_state)
+            una._prepared_session = psession
+            prepared_mark = psession.mark()
+
+    s = una.settings
+
+    # -- bind_settings (serial: applies to every row, skipped ones too) ----
+    if rec is not None:
+        with rec.phase("row_validation_and_bind"):
+            s.__dict__.update(dict(job.settings_state))
+            _bind_and_gate(s, job)
+    else:
+        s.__dict__.update(dict(job.settings_state))
+        _bind_and_gate(s, job)
+
     # -- staging redirect (runtime-only; public value restored below) ------
     public_output_folder = s.output_folder
     os.makedirs(job.staging_dir, exist_ok=True)
@@ -318,14 +412,45 @@ def _run_row(job: RowJob) -> RowResult:
 
     _inject("pre_run", job.inject)
     t1 = time.perf_counter()
-    if job.analysis == 'flow':
-        una.RunFlow()
-        engine = una.flow
+    if rec is not None:
+        with rec.phase("run"):
+            if job.analysis == 'flow':
+                una.RunFlow()
+                engine = una.flow
+            else:
+                una.RunAccessibility()
+                engine = una.accessibility
     else:
-        una.RunAccessibility()
-        engine = una.accessibility
+        if job.analysis == 'flow':
+            una.RunFlow()
+            engine = una.flow
+        else:
+            una.RunAccessibility()
+            engine = una.accessibility
     timings["run_s"] = time.perf_counter() - t1
     _inject("post_run", job.inject)
+
+    # Detach the cohort wrapper before anything observes or transports
+    # the engine: the rehydration bundle pickles the engine, and the
+    # parent's rehydrated state must be the PLAIN engine — the cohort
+    # route is runtime-only and never observable state.
+    if session is not None:
+        from .cohort import CohortGraphEngine
+        ge = getattr(engine, "graph_engine", None)
+        if isinstance(ge, CohortGraphEngine):
+            engine.graph_engine = ge._inner
+        una._cohort_session = None
+        cohort_stats = session.delta(cohort_mark)
+
+    # Detach the prepared session BEFORE anything pickles the topology or
+    # the UNA instance (E9 detach law): PrepSession.__getstate__ raises a
+    # loud TypeError — the state bundle and the RowResult must never
+    # carry it.  The counter delta is taken first (runtime-only
+    # reporting; never observable serial state).
+    if psession is not None:
+        prepared_stats = psession.delta(prepared_mark)
+        una._prepared_session = None
+        una.topology._prepared_session = None
 
     # -- composite capture (the serial loop's capture, on this instance) ---
     capture = None
@@ -380,6 +505,10 @@ def _run_row(job: RowJob) -> RowResult:
         peak_rss_bytes=int(rss),
         worker_pid=os.getpid(),
         timings=timings,
+        cohort_stats=cohort_stats,
+        prepared=prepared_stats,
+        phase_events=rec.row_events() if rec is not None else (),
+        phase_dropped=rec.dropped if rec is not None else 0,
     )
 
 
@@ -467,16 +596,52 @@ def pool_main(inbox, outbox, ready, threads_per_worker: int = 1,
     for key, value in _thread_env(threads_per_worker).items():
         os.environ[key] = value
     os.environ["_UNA_BATCH_IN_WORKER"] = "1"
+    # P01M pool-loop telemetry: a recorder SEPARATE from the in-row one in
+    # _run_row (whose events ride the RowResult).  These spans stream to a
+    # per-process JSONL file as they happen — result_put cost is written
+    # after the put and never rides the result it measures (design 01).
+    from .telemetry import ENV_DIR, PhaseRecorder
+    prec = PhaseRecorder.maybe(source="workerpool")
+    pflush_path = None
+    pflush_since = 0
+    if prec is not None:
+        pdir = os.environ.get(ENV_DIR)
+        if pdir:
+            pflush_path = os.path.join(
+                pdir, f"phase_events.workerpool.{os.getpid()}.jsonl")
     try:
         ready.put(("ready", os.getpid()))
     except Exception:                        # pragma: no cover — queue broken
         return
     while True:
         try:
-            job = inbox.get()
+            if prec is not None:
+                with prec.phase("inbox_get"):
+                    job = inbox.get()
+            else:
+                job = inbox.get()
         except (KeyboardInterrupt, EOFError, OSError):
             return
         if job is None:
+            if prec is not None and pflush_path:
+                prec.flush_jsonl(pflush_path, since=pflush_since)
+            # P02: release this process's prepared arena leases (bounded
+            # registry law); the store bytes stay on disk for the run
+            # root's own lifecycle.
+            from .preparation import close_registry
+            close_registry()
             return
         _inject("startup", getattr(job, "inject", None))
-        outbox.put(_transport_safe(_run_job_safely(job)))
+        # The row itself is instrumented by the in-row recorder inside
+        # _run_row; the pool-loop span must measure ONLY the synchronous
+        # put (design 01: a result_put duration must not be polluted by,
+        # nor ride on, the work it reports).
+        result = _run_job_safely(job)
+        if prec is not None:
+            with prec.phase("result_put", row_id=job.row_index):
+                outbox.put(_transport_safe(result))
+            if pflush_path:
+                pflush_since += prec.flush_jsonl(pflush_path,
+                                                 since=pflush_since)
+        else:
+            outbox.put(_transport_safe(result))

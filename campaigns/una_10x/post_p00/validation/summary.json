@@ -1,0 +1,45 @@
+{
+  "schema": "post-p00-validation-1",
+  "status": "pass",
+  "scope": "Offline campaign consistency and executable design-model utility tests only; no application qualification",
+  "campaign_checks": 596,
+  "amendment_checks": 245,
+  "combined_checks": 841,
+  "original_tool_tests": {
+    "run": 47,
+    "passed": 47,
+    "failed": 0,
+    "skipped": 0
+  },
+  "new_design_model_tests": {
+    "run": 44,
+    "passed": 44,
+    "failed": 0,
+    "skipped": 0
+  },
+  "tasks_total": 42,
+  "tasks_added": 12,
+  "design_dossiers_added": 7,
+  "python": "3.13.5",
+  "commands": [
+    "python3 campaigns/una_10x/tools/validate_packet.py",
+    "python3 campaigns/una_10x/post_p00/tools/validate_post_p00.py",
+    "python3 -m unittest discover -s campaigns/una_10x/tests -v",
+    "python3 -m unittest discover -s campaigns/una_10x/post_p00/tests -v"
+  ],
+  "log_sha256": {
+    "original_tests.txt": "2334483a1dc20b5cee973ea60857847496bea0e202e2cbc897639aee2a06e101",
+    "design_model_tests.txt": "13f0c55c68949403b88e30ad2aa12988e3e892153a7cac14727d526b4979138a"
+  },
+  "full_check_json_sha256": {
+    "campaign_checks.json": "7b2fb0250d1142072dc5b7893b4fcf6efc394a4b5b88b4786cb9b5f4ded1ef0b",
+    "amendment_checks.json": "f121e1faefe384242fb5d5ae5b4929ccac3bb79f7b3b9d3d35012ef660530a28"
+  },
+  "full_check_records": "Reproducible from validators; full outputs also in downloadable authoring bundle. Only compact summary and test logs are committed.",
+  "new_application_benchmark": "not_run",
+  "p00_raw_output_revalidation": "not_run",
+  "installed_wheel": "not_run",
+  "independent_runtime_review": "not_run",
+  "runtime_source_changed": false,
+  "checkpoint_commit": "6130769a5751bf7446734dc39b9f8e3763461cfe"
+}

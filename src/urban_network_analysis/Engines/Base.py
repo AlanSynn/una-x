@@ -55,6 +55,7 @@ def write_gdf_outputs(
     write_csv: bool = True,
     write_geojson: bool = True,
     csv_drop_geometry: bool = True,
+    collected: list | None = None,
 ) -> bool:
     """Write `gdf` to feather/csv/geojson per the settings.output_* flags.
 
@@ -62,7 +63,10 @@ def write_gdf_outputs(
     ("Saved {desc} feather → ...") to preserve each caller's original
     wording; leave "" for a plain "Saved feather → ...".  Returns whether
     anything was written, so callers needing a fallback-format guarantee
-    (e.g. UNA.RunBatch's composite export) can act on it.
+    (e.g. UNA.RunBatch's composite export) can act on it.  When `collected`
+    is a list, the path of every file written is appended to it (callers
+    that must know exactly what reached disk, e.g. the batch runtime's
+    composite-artifact journaling).
     """
     wrote_any = False
     tag = f"{desc} " if desc else ""
@@ -72,6 +76,8 @@ def write_gdf_outputs(
         gdf.to_feather(path)
         logger.log(label, f"Saved {tag}feather → {path}", v=1)
         wrote_any = True
+        if collected is not None:
+            collected.append(path)
 
     if write_csv and settings.output_csv:
         path = os.path.join(output_folder, file_name + ".csv")
@@ -79,6 +85,8 @@ def write_gdf_outputs(
         out.to_csv(path, sep=settings.csv_delimiter, index=False)
         logger.log(label, f"Saved {tag}CSV → {path}", v=1)
         wrote_any = True
+        if collected is not None:
+            collected.append(path)
 
     if write_geojson and settings.output_geojson and "geometry" in gdf.columns:
         path = os.path.join(output_folder, file_name + ".geojson")
@@ -92,6 +100,8 @@ def write_gdf_outputs(
             gdf.to_file(path, driver="GeoJSON")
         logger.log(label, f"Saved {tag}GeoJSON → {path}", v=1)
         wrote_any = True
+        if collected is not None:
+            collected.append(path)
 
     return wrote_any
 

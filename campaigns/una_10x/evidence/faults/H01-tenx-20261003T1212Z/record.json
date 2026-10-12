@@ -1,0 +1,30 @@
+{
+  "area": "faults",
+  "data_identity": {
+    "acquisition.json": {
+      "bytes": 3316,
+      "sha256": "8bbe0c9ffff8cc238042a7c1d820d7c306ef979f5bba3f073155257f15b660c4"
+    },
+    "pinned_ref_tree_boston.json": {
+      "bytes": 7676,
+      "sha256": "53f4eec1dce21d23debab24deba1d3594068110b078958bb4fe29fa0710ba467"
+    },
+    "tutorial_acquisition.json": {
+      "bytes": 3431,
+      "sha256": "7158dcf5b8f0ade4f0179f1a2f4cde8fbec479d13b04677ed2ba7bf9ce7f6ac9"
+    },
+    "upstream_boston_acquisition.json": {
+      "bytes": 11899,
+      "sha256": "4eb64f0d18ef8f827a4644776293a3545040d89c367dcf1a8ebaaa19c8641e44"
+    },
+    "w00_inspection.json": {
+      "bytes": 9959,
+      "sha256": "2b02c60734052ebec151a7c6d22ac632dfde68d28e073c1f2e3755dcc7ae3c76"
+    }
+  },
+  "interpreter": "/storage/home/hcoda1/1/dsynn6/micromamba/envs/alan/bin/python",
+  "note": "append-only run record; receipts machine-generated under campaign_runs/una_10x/tenx-20261003T1212Z/h01_public",
+  "run_id": "tenx-20261003T1212Z",
+  "source_pin": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "task": "H01"
+}

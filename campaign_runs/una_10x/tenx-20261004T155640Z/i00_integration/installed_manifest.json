@@ -1,0 +1,61 @@
+{
+ "schema": "una-10x-i00-installed-manifest-1",
+ "task": "I00",
+ "candidate_head": "82624755d4845d31565abfd4afda9aa26f20cdfe",
+ "comparator_pin": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+ "baseline_worktree": {
+  "path": "/storage/scratch1/1/dsynn6/una-x-baseline-395cdc5r2",
+  "head": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+  "clean": true
+ },
+ "clean_wheel_law": "git-archive exports in /tmp (WS03: no checkout state, no untracked bytes, no network - the in-environment hatchling backend with --no-build-isolation), isolated pip --target installs OUTSIDE both checkouts with --no-deps (venv creation is broken in this micromamba interpreter: no ensurepip, encodings bootstrap failure; recorded as an environment limitation, not a waiver)",
+ "wheels": {
+  "cand": {
+   "tag": "cand",
+   "export_source": "/storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels",
+   "wheel": "/tmp/una_i00/wheel_cand/urban_network_analysis-2.6.0-py3-none-any.whl",
+   "wheel_sha256": "ebc57dc77e9cb9b6ce2a2998aa9c68dace50d3535ab68868ea066603038cca20",
+   "wheel_bytes": 393160,
+   "wheel_name": "urban_network_analysis-2.6.0-py3-none-any.whl",
+   "py_module_count": 66,
+   "version": "2.6.0"
+  },
+  "base": {
+   "tag": "base",
+   "export_source": "/storage/scratch1/1/dsynn6/una-x-baseline-395cdc5r2",
+   "wheel": "/tmp/una_i00/wheel_base/urban_network_analysis-2.6.0-py3-none-any.whl",
+   "wheel_sha256": "4a59bc1795e5bbc5c8bfa0b3bdd580e77bb46f235bb97b0683f2cb75b928d5bb",
+   "wheel_bytes": 316606,
+   "wheel_name": "urban_network_analysis-2.6.0-py3-none-any.whl",
+   "py_module_count": 55,
+   "version": "2.6.0"
+  }
+ },
+ "forbidden_import_scan": [
+  {
+   "tag": "cand",
+   "forbidden_imports": []
+  },
+  {
+   "tag": "base",
+   "forbidden_imports": []
+  }
+ ],
+ "installed_identity": {
+  "cand": {
+   "install_target": "/tmp/una_i00/site_cand",
+   "origin_proof": "ORIGIN_OK /tmp/una_i00/site_cand/urban_network_analysis/__init__.py",
+   "native_and_gpu_bridges_importable": true
+  },
+  "base": {
+   "install_target": "/tmp/una_i00/site_base",
+   "origin_proof": "ORIGIN_OK /tmp/una_i00/site_base/urban_network_analysis/__init__.py",
+   "native_and_gpu_bridges_importable": null
+  }
+ },
+ "accepted_deltas_only": {
+  "law": "BIND_CANDIDATE surface: the accepted head integrates P02I + P03C + P03M and the battery-scoped N00 native fold; P04I/F00 stay not_admitted; the production route never imports _native_fold or _gpu_fold (proven by engagement tests, re-verifiable on this tree)",
+  "not_admitted_present_in_wheel": false,
+  "note": "the native bridge FILES ride in the package per the hatchling set (N10 wheel statement); the wheel is production-inert (engagement law)"
+ }
+}

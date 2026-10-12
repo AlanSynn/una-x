@@ -1,0 +1,446 @@
+{
+ "amdahl": {
+  "C_usable_cpus": 4,
+  "additive_region_model_measured_bounds": {
+   "law": "regions sum on the wall; never multiply ratios (MODEL.md 'sum their residual contributions')",
+   "region_exports": {
+    "potentials": "overlapped/pipelined writers; output obligations unchanged (X_k exists K times)",
+    "serial_share_s": 8.4
+   },
+   "region_metric_folds": {
+    "measured_warm_fold_s_per_row": 0.5808722348156152,
+    "per_metric_reuse_potential": "reach + knn are beta-invariant on this cohort; gravity folds must recompute \u2014 upper bound ~half the fold time (C31-NOTE-1 owner)"
+   },
+   "region_pool_efficiency": {
+    "measured_efficiency_w4": 0.46,
+    "potentials": "repairing idle/serialization is worth ~2x on every parallel stage (both trees symmetric)"
+   },
+   "region_process_overhead": {
+    "measured_import_s": 3.4179,
+    "potentials": "amortized only by multi-cohort windows (BENCHMARKS.md window composition law); bounds 10x on a single 92-118 s arm-A window"
+   },
+   "region_shared_input_preparation": {
+    "per_serial_row_s": 4.53,
+    "potentials": "P_shared once per cohort instead of K times; MODEL.md T_cohort P_shared term; the largest single measured region",
+    "serial_share_s": 145.1
+   }
+  },
+  "law": "S_total = 1/(1-f+f/s+delta); with s<=C=4 process parallelism alone cannot reach G=10 \u2014 and the measured pool efficiency (~0.46-0.52) halves even that",
+  "measured_application_gain_w4_c1_vs_armA_w4": 0.912,
+  "measured_application_gain_w4_cpu_paired": 0.922,
+  "measured_pool_efficiency_w4": {
+   "baseline": 0.524,
+   "candidate": 0.459
+  },
+  "process_parallel_ceiling": 4,
+  "residual_regions": {
+   "exports": "X_k unchanged K times by design (obligation retained)",
+   "metric_folds": "fold cost remains once per row; per-metric reuse (C31-NOTE-1) is the carried next region",
+   "per_row_preparation": "loads+topology remain per-row in the cohort route (P is per-row, not yet shared) \u2014 the dominant measured residual",
+   "pool_idle": "measured ~0.5 efficiency at W4 on BOTH trees"
+  },
+  "serial_service_decomposition_shares": {
+   "export_write": 0.044,
+   "gis_read_parse": 0.754,
+   "note": "derived from prof_cand_serial pstats self times; cProfile self time is wall-inclusive",
+   "routing_metric": 0.109,
+   "topology_and_misc": 0.093
+  }
+ },
+ "baseline_pin": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+ "candidate_head": "e7c9edacd7340670b863c2bee16e7feac98044f6",
+ "cohort_stage_costs": {
+  "faultin_s": 0.012326558120548725,
+  "fold_sources": [
+   {
+    "build_s": 2.5453259986825287,
+    "faultin_s": 0.012326558120548725,
+    "replay_s_per_row": 0.5808722348156152,
+    "replays": 32,
+    "tag": "e_cand_w4_c1"
+   },
+   {
+    "build_s": 1.124957256950438,
+    "faultin_s": 0.012612128164619207,
+    "replay_s_per_row": 0.3487369433278218,
+    "replays": 32,
+    "tag": "e_cand_w2_c4"
+   },
+   {
+    "build_s": 1.1377079137600958,
+    "faultin_s": 0.012317138258367777,
+    "replay_s_per_row": 0.5653986391262151,
+    "replays": 32,
+    "tag": "e_cand_w4_c2_qd4"
+   },
+   {
+    "build_s": 1.76401390414685,
+    "faultin_s": 0.012409502640366554,
+    "replay_s_per_row": 0.630726279647206,
+    "replays": 32,
+    "tag": "e_cand_w4_c3_wc2"
+   }
+  ],
+  "fold_warm_s_per_row_median": 0.5809,
+  "folds_per_row": 14751,
+  "interpretation": "one trace build serves all K rows via singleflight (produce-once); each row then folds the four metrics from the shared trace and exports its own artifacts",
+  "trace_build_s_once": 2.5453259986825287
+ },
+ "floors": {
+  "export_bytes_per_run": 147830672,
+  "export_files_per_run": 64,
+  "export_law": "MODEL.md: exports exist K times; if outputs occupy >10% of the original wall and remain unchanged, compute-only acceleration cannot reach 10x \u2014 profile buckets bound the export share",
+  "import_s_per_process": {
+   "baseline": 5.6027,
+   "candidate": 3.4179
+  },
+  "ipc_queue_axis": "queue_depth sets the pending bound (workers + queue_depth); screened at 64 vs 4",
+  "writer_axis": "writer_concurrency is validated on the public ExecutionOptions surface but NOT consumed by the current batch runtime (grep evidence in receipt); the wc2 run is recorded as a C1 replicate"
+ },
+ "host": {
+  "affinity_cpus": [
+   20,
+   21,
+   22,
+   23
+  ],
+  "mem_available_GiB": 222.0,
+  "n_affinity": 4
+ },
+ "memory": {
+  "actual_trace_store_bytes_measured": {
+   "e_cand_w2_c4": 1564433,
+   "e_cand_w4_c1": 1564433,
+   "e_cand_w4_c2_qd4": 1564433
+  },
+  "residency_cap_bytes_per_worker_w2_warm": 17858484633,
+  "single_job_child_maxrss_MiB": 693.1,
+  "single_job_source": "h01_public/cohort_supervisor.json",
+  "whole_tree_peaks_MiB": {
+   "a_base_par_w2": 1460.2,
+   "a_base_par_w4": 2494.7,
+   "a_base_serial": 675.8,
+   "e_cand_serial": 688.0,
+   "e_cand_w2_c4": 1464.0,
+   "e_cand_w4_c1": 2532.5,
+   "e_cand_w4_c2_qd4": 2495.1
+  }
+ },
+ "node_time_variance": {
+  "external_load_observed": "co-tenant srun (jobid 13476856, cpus-per-task=2) present on this node during the screen",
+  "gate_law": "BENCHMARKS.md frozen protocol already mandates paired AB/BA windows; P00 adds the measured variance as the quantitative reason why",
+  "same_config_repeats": {
+   "e_cand_w4_c1": {
+    "spread_pct": 27.2,
+    "walls_s": [
+     100.9639,
+     128.3811
+    ]
+   }
+  }
+ },
+ "observed": {
+  "application_ratios": {
+   "baseline_serial_over_candidate_serial": 0.898,
+   "baseline_w4_over_candidate_w4_c1": 0.912,
+   "comparator_law": "arm A = strongest VERIFIED baseline configuration; ratios never multiplied"
+  },
+  "baseline_arm": {
+   "h01_serial_windows_s": [
+    169.535,
+    169.2
+   ],
+   "note": "drift consistent with co-tenant srun load on the node; paired-window final design absorbs it",
+   "p00_serial_s": 173.3098,
+   "par_w2_s": 103.885,
+   "par_w4_s": 92.1141,
+   "per_row_serial_s": 5.4159,
+   "runtime_drift_vs_h01": 0.0243,
+   "speedup_w2_vs_serial": 1.668,
+   "speedup_w4_vs_serial": 1.881,
+   "w4_cpu_instrumented": {
+    "cpu_efficiency_of_4": 0.524,
+    "plan_serialized": 0,
+    "plan_worker_admissible": 32,
+    "tree_cpu_s": 248.27,
+    "wall_s": 118.405
+   }
+  },
+  "candidate": {
+   "serial": {
+    "bitwise_match": true,
+    "cohort_build_s": null,
+    "cohort_builds": null,
+    "cohort_distinct_identities": null,
+    "cohort_faultin_s": null,
+    "cohort_folds_done": null,
+    "cohort_refusals": null,
+    "cohort_replay_s": null,
+    "cohort_replays": null,
+    "cohort_singleflight_lost": null,
+    "config": {
+     "queue_depth": 64,
+     "threads_per_worker": 1,
+     "workers": null,
+     "writer_concurrency": 1
+    },
+    "import_s": 3.4179,
+    "mode": "serial",
+    "peak_single_rss_MiB": 688.0,
+    "peak_tree_pss_MiB": 681.9,
+    "peak_tree_rss_MiB": 688.0,
+    "proc_start_to_done_s": 196.5086,
+    "tag": "e_cand_serial",
+    "trace_store_bytes": 0,
+    "tree": "cand",
+    "wall_s": 193.0852
+   },
+   "w2_c4": {
+    "bitwise_match": true,
+    "cohort_build_s": 1.124957256950438,
+    "cohort_builds": 1,
+    "cohort_distinct_identities": 1,
+    "cohort_faultin_s": 0.012612128164619207,
+    "cohort_folds_done": 472032,
+    "cohort_refusals": {},
+    "cohort_replay_s": 11.159582186490297,
+    "cohort_replays": 32,
+    "cohort_singleflight_lost": 31,
+    "config": {
+     "queue_depth": 64,
+     "threads_per_worker": 1,
+     "workers": 2,
+     "writer_concurrency": 1
+    },
+    "import_s": 7.8268,
+    "mode": "par",
+    "peak_single_rss_MiB": 616.5,
+    "peak_tree_pss_MiB": 1136.7,
+    "peak_tree_rss_MiB": 1464.0,
+    "proc_start_to_done_s": 131.4946,
+    "tag": "e_cand_w2_c4",
+    "trace_store_bytes": 1564433,
+    "tree": "cand",
+    "wall_s": 123.6548
+   },
+   "w2_t2": {
+    "bitwise_match": true,
+    "cohort_build_s": 0.9578778613358736,
+    "cohort_builds": 1,
+    "cohort_distinct_identities": 1,
+    "cohort_faultin_s": 0.01313482178375125,
+    "cohort_folds_done": 472032,
+    "cohort_refusals": {},
+    "cohort_replay_s": 10.849994318094105,
+    "cohort_replays": 32,
+    "cohort_singleflight_lost": 31,
+    "config": {
+     "queue_depth": 64,
+     "threads_per_worker": 2,
+     "workers": 2,
+     "writer_concurrency": 1
+    },
+    "import_s": 6.3283,
+    "mode": "par",
+    "peak_single_rss_MiB": 623.6,
+    "peak_tree_pss_MiB": 1181.0,
+    "peak_tree_rss_MiB": 1491.5,
+    "proc_start_to_done_s": 132.0043,
+    "tag": "e_cand_w2_t2",
+    "trace_store_bytes": 1564433,
+    "tree": "cand",
+    "wall_s": 125.6678
+   },
+   "w4_c1": {
+    "bitwise_match": true,
+    "cohort_build_s": 2.5453259986825287,
+    "cohort_builds": 1,
+    "cohort_distinct_identities": 1,
+    "cohort_faultin_s": 0.012326558120548725,
+    "cohort_folds_done": 472032,
+    "cohort_refusals": {},
+    "cohort_replay_s": 18.587911514099687,
+    "cohort_replays": 32,
+    "cohort_singleflight_lost": 31,
+    "config": {
+     "queue_depth": 64,
+     "threads_per_worker": 1,
+     "workers": 4,
+     "writer_concurrency": 1
+    },
+    "import_s": 6.9522,
+    "mode": "par",
+    "peak_single_rss_MiB": 584.5,
+    "peak_tree_pss_MiB": 1843.9,
+    "peak_tree_rss_MiB": 2532.5,
+    "proc_start_to_done_s": 107.9291,
+    "tag": "e_cand_w4_c1",
+    "trace_store_bytes": 1564433,
+    "tree": "cand",
+    "wall_s": 100.9639
+   },
+   "w4_c1_cpu_instrumented": {
+    "cpu_efficiency_of_4": 0.459,
+    "peak_busy_procs": 6,
+    "plan_serialized": 0,
+    "plan_worker_admissible": 32,
+    "resident_hits": 28,
+    "singleflight_lost": 31,
+    "tree_cpu_s": 235.8,
+    "wall_s": 128.3811
+   },
+   "w4_c2_qd4": {
+    "bitwise_match": true,
+    "cohort_build_s": 1.1377079137600958,
+    "cohort_builds": 1,
+    "cohort_distinct_identities": 1,
+    "cohort_faultin_s": 0.012317138258367777,
+    "cohort_folds_done": 472032,
+    "cohort_refusals": {},
+    "cohort_replay_s": 18.092756452038884,
+    "cohort_replays": 32,
+    "cohort_singleflight_lost": 31,
+    "config": {
+     "queue_depth": 4,
+     "threads_per_worker": 1,
+     "workers": 4,
+     "writer_concurrency": 1
+    },
+    "import_s": 6.898,
+    "mode": "par",
+    "peak_single_rss_MiB": 611.1,
+    "peak_tree_pss_MiB": 1785.4,
+    "peak_tree_rss_MiB": 2495.1,
+    "proc_start_to_done_s": 111.8566,
+    "tag": "e_cand_w4_c2_qd4",
+    "trace_store_bytes": 1564433,
+    "tree": "cand",
+    "wall_s": 104.9477
+   },
+   "w4_c3_wc2_replicate": {
+    "bitwise_match": true,
+    "cohort_build_s": 1.76401390414685,
+    "cohort_builds": 1,
+    "cohort_distinct_identities": 1,
+    "cohort_faultin_s": 0.012409502640366554,
+    "cohort_folds_done": 472032,
+    "cohort_refusals": {},
+    "cohort_replay_s": 20.18324094871059,
+    "cohort_replays": 32,
+    "cohort_singleflight_lost": 31,
+    "config": {
+     "queue_depth": 64,
+     "threads_per_worker": 1,
+     "workers": 4,
+     "writer_concurrency": 2
+    },
+    "import_s": 6.4729,
+    "mode": "par",
+    "peak_single_rss_MiB": 616.0,
+    "peak_tree_pss_MiB": 1799.6,
+    "peak_tree_rss_MiB": 2487.8,
+    "proc_start_to_done_s": 116.6572,
+    "tag": "e_cand_w4_c3_wc2",
+    "trace_store_bytes": 1564433,
+    "tree": "cand",
+    "wall_s": 110.1739
+   }
+  }
+ },
+ "parallel_pool_findings": {
+  "interpretation": "both trees leave roughly half the admitted CPUs idle at W4 \u2014 the pool is not CPU-saturated; this is a measured property of the CURRENT parallel runtime on BOTH sides (fair comparison preserved) and a first-order lever for the next region",
+  "measurement": "tree CPU seconds (utime+stime, 50 ms sampler) / (wall * 4 physical cores; no SMT pairing among affinity CPUs 20-23; cgroup cpu.max unthrottled, nr_throttled=0)",
+  "open_hypotheses": [
+   "per-row GDAL/arrow loads contend or serialize on shared state (locks observed: 7.3-7.5 s self even in serial)",
+   "coordinator commit/publish window idles the pool between row completions",
+   "fold/replay kernels lose bandwidth under concurrency (fold/row rises 0.35->0.58-0.83 s from W2 to W4)"
+  ],
+  "required_instrument": "surface worker RowResult.timings and per-phase worker CPU through the batch report (runtime owner change) \u2014 P00 does not patch the runtime",
+  "w4_cpu_efficiency_baseline": 0.524,
+  "w4_cpu_efficiency_candidate": 0.459
+ },
+ "profile_diagnostics": {
+  "baseline_serial_buckets": {
+   "cohort_store": {
+    "cumtime_max_s": 0.011,
+    "tottime_s": 0.015
+   },
+   "export_io": {
+    "cumtime_max_s": 8.66,
+    "tottime_s": 8.352
+   },
+   "load_gis": {
+    "cumtime_max_s": 142.793,
+    "tottime_s": 71.377
+   },
+   "metrics_fold": {
+    "cumtime_max_s": 186.463,
+    "tottime_s": 14.83
+   },
+   "other": {
+    "cumtime_max_s": 186.494,
+    "tottime_s": 91.051
+   },
+   "search_heap": {
+    "cumtime_max_s": 0.001,
+    "tottime_s": 0.0
+   },
+   "topology": {
+    "cumtime_max_s": 142.803,
+    "tottime_s": 0.814
+   },
+   "trace_build": {
+    "cumtime_max_s": 0.591,
+    "tottime_s": 0.054
+   }
+  },
+  "candidate_serial_buckets": {
+   "cohort_store": {
+    "cumtime_max_s": 0.003,
+    "tottime_s": 0.005
+   },
+   "export_io": {
+    "cumtime_max_s": 8.76,
+    "tottime_s": 8.36
+   },
+   "load_gis": {
+    "cumtime_max_s": 147.513,
+    "tottime_s": 74.325
+   },
+   "metrics_fold": {
+    "cumtime_max_s": 192.326,
+    "tottime_s": 15.643
+   },
+   "other": {
+    "cumtime_max_s": 192.358,
+    "tottime_s": 93.171
+   },
+   "search_heap": {
+    "cumtime_max_s": 0.001,
+    "tottime_s": 0.0
+   },
+   "topology": {
+    "cumtime_max_s": 147.524,
+    "tottime_s": 0.8
+   },
+   "trace_build": {
+    "cumtime_max_s": 0.563,
+    "tottime_s": 0.052
+   }
+  },
+  "note": "diagnostic cProfile runs; never timing evidence"
+ },
+ "schema": "una-10x-p00-stage-model-1",
+ "service_decomposition_serial": {
+  "export_write_self_s": 8.17,
+  "gis_read_parse_note": "pyogrio raw.read_arrow (incl. its generator next frame) + from_wkb \u2014 the per-row load/parse of the three frozen inputs dominates service",
+  "gis_read_parse_self_s": 140.9716,
+  "law_check": "MODEL.md: 'if outputs occupy >10% of original wall and remain unchanged, accelerating only compute cannot reach 10x' \u2014 exports are ~4% of serial service; the >10% sink is per-row INPUT LOADING, which shared preparation removes without touching output obligations",
+  "per_row_mean_serial_s": 6.034,
+  "routing_metric_note": "AccessibilityWElevation.integrated_scope_access \u2014 the whole per-row search+metric; the cohort fold replaces exactly this slice",
+  "routing_metric_self_s": 15.62,
+  "source": "prof_cand_serial pstats (diagnostic; self times are wall-inclusive, I/O waits count as self time)",
+  "topology_build_cum_s": 7.21
+ },
+ "task": "P00 stage model (measured; MODEL.md/BENCHMARKS.md laws)"
+}

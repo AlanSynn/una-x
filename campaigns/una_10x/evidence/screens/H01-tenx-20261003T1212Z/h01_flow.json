@@ -1,0 +1,192 @@
+{
+  "batch_report_run1": {
+    "effective": {
+      "backend": "reference",
+      "fallback_reason": "no qualified native/gpu capability entries are registered for this build; auto selected the trusted reference route",
+      "options": {
+        "backend": "auto",
+        "cache": {
+          "directory": ".una-cache",
+          "max_disk_bytes": null,
+          "max_memory_bytes": null,
+          "mode": "off",
+          "schema_version": 1,
+          "verification": "on_read"
+        },
+        "checkpoint": null,
+        "cpu_budget": null,
+        "device": null,
+        "logical_reduction_plan": "canonical",
+        "memory_limit_bytes": null,
+        "queue_depth": 64,
+        "semantic_profile": "una_legacy",
+        "threads_per_worker": 1,
+        "timeout_s": null,
+        "workspace_limit_bytes": null,
+        "writer_concurrency": 1
+      }
+    },
+    "notes": [],
+    "parallel_requested": "False",
+    "requested": {
+      "backend": "auto",
+      "cache": {
+        "directory": ".una-cache",
+        "max_disk_bytes": null,
+        "max_memory_bytes": null,
+        "mode": "off",
+        "schema_version": 1,
+        "verification": "on_read"
+      },
+      "checkpoint": null,
+      "cpu_budget": null,
+      "device": null,
+      "logical_reduction_plan": "canonical",
+      "memory_limit_bytes": null,
+      "queue_depth": 64,
+      "semantic_profile": "una_legacy",
+      "threads_per_worker": 1,
+      "timeout_s": null,
+      "workspace_limit_bytes": null,
+      "writer_concurrency": 1
+    },
+    "rows": [
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 0,
+        "name": "homes_to_transit",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 1,
+        "name": "schools_to_transit",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      }
+    ],
+    "workers_requested": "None"
+  },
+  "batch_report_run2": {
+    "effective": {
+      "backend": "reference",
+      "fallback_reason": "no qualified native/gpu capability entries are registered for this build; auto selected the trusted reference route",
+      "options": {
+        "backend": "auto",
+        "cache": {
+          "directory": ".una-cache",
+          "max_disk_bytes": null,
+          "max_memory_bytes": null,
+          "mode": "off",
+          "schema_version": 1,
+          "verification": "on_read"
+        },
+        "checkpoint": null,
+        "cpu_budget": null,
+        "device": null,
+        "logical_reduction_plan": "canonical",
+        "memory_limit_bytes": null,
+        "queue_depth": 64,
+        "semantic_profile": "una_legacy",
+        "threads_per_worker": 1,
+        "timeout_s": null,
+        "workspace_limit_bytes": null,
+        "writer_concurrency": 1
+      }
+    },
+    "notes": [],
+    "parallel_requested": "False",
+    "requested": {
+      "backend": "auto",
+      "cache": {
+        "directory": ".una-cache",
+        "max_disk_bytes": null,
+        "max_memory_bytes": null,
+        "mode": "off",
+        "schema_version": 1,
+        "verification": "on_read"
+      },
+      "checkpoint": null,
+      "cpu_budget": null,
+      "device": null,
+      "logical_reduction_plan": "canonical",
+      "memory_limit_bytes": null,
+      "queue_depth": 64,
+      "semantic_profile": "una_legacy",
+      "threads_per_worker": 1,
+      "timeout_s": null,
+      "workspace_limit_bytes": null,
+      "writer_concurrency": 1
+    },
+    "rows": [
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 0,
+        "name": "homes_to_transit",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 1,
+        "name": "schools_to_transit",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      }
+    ],
+    "workers_requested": "None"
+  },
+  "bitwise_normalized": {
+    "contents_bitwise_identical": true,
+    "differing_by_basename": [],
+    "differing_full_relpath": [
+      "flow_2026-10-03_0952/homes_to_metro.feather",
+      "flow_2026-10-03_0952/schools_to_bus.feather",
+      "flow_2026-10-03_0953/homes_to_metro.feather",
+      "flow_2026-10-03_0953/schools_to_bus.feather"
+    ],
+    "keys_equal_by_basename": true,
+    "keys_equal_full_relpath": false,
+    "method": "raw tree hashes; full relpath and basename-keyed",
+    "run1_bytes": 24637790,
+    "run1_rels": [
+      "composite_2026-10-03_0953/composite.feather",
+      "flow_2026-10-03_0952/homes_to_metro.feather",
+      "flow_2026-10-03_0952/schools_to_bus.feather"
+    ],
+    "run2_bytes": 24637790,
+    "run2_rels": [
+      "composite_2026-10-03_0953/composite.feather",
+      "flow_2026-10-03_0953/homes_to_metro.feather",
+      "flow_2026-10-03_0953/schools_to_bus.feather"
+    ]
+  },
+  "engine_type": "AggregateFlow",
+  "file_count": 3,
+  "job_count": 2,
+  "ordered_commit_sequences_equal": true,
+  "output_files_identical_sha256": false,
+  "route": "public RunBatch('flow', pairing_file=), serial default, default aggregate_flow engine",
+  "row_statuses_run1": [
+    "ran",
+    "ran"
+  ],
+  "run1": {
+    "engine_type": "AggregateFlow",
+    "tag": "flow_run1",
+    "wall_s": 27.775
+  },
+  "run2": {
+    "engine_type": "AggregateFlow",
+    "tag": "flow_run2",
+    "wall_s": 22.358
+  },
+  "run_id": "tenx-20261003T1212Z",
+  "task": "H01 OBS_FLOW public chronology (twice as reference)",
+  "zero_failed_jobs": true
+}

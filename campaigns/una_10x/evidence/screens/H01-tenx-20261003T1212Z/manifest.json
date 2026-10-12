@@ -1,0 +1,54 @@
+{
+  "count": 12,
+  "dir": "campaigns/una_10x/evidence/screens/H01-tenx-20261003T1212Z",
+  "files": {
+    "cohort_supervisor.json": {
+      "bytes": 583,
+      "sha256": "8ba639827bd9e38acba5a5a04f359a743e621700f717770eb907f962b84a6089"
+    },
+    "flow_supervisor.json": {
+      "bytes": 577,
+      "sha256": "7a135e17987da3efe2b1dae3ff3f655aaeb93ef01e836fc0e33faf27a4cbae30"
+    },
+    "h01_cohort.json": {
+      "bytes": 17189,
+      "sha256": "232b100f3fea216a50eb500f50f457f38ff4e6da711ade403d7b2a37ec09882b"
+    },
+    "h01_flow.json": {
+      "bytes": 5504,
+      "sha256": "f728e3f169cf93c105a73bcfc9a865af51f13b48f5e16325495493efe5115a22"
+    },
+    "h01_obs_single.json": {
+      "bytes": 2588,
+      "sha256": "44bee6db5f07f2bc3e89c41b930c626363b1a57b7ee1b6592e3a3678a6cd0073"
+    },
+    "h01_smoke.json": {
+      "bytes": 3327,
+      "sha256": "742b3aadc65bbb79ab18d1337e379161dc128f131ef264c41adfe67c7ecdce1d"
+    },
+    "obs_single_supervisor.json": {
+      "bytes": 594,
+      "sha256": "1daed3e9e0ef9bf1e8364847cd293f6d7c1c10e8af824cecb844b6dbe78d7009"
+    },
+    "public_baseline.json": {
+      "bytes": 4331,
+      "sha256": "61e827d4f0f0733e4ba5710a214aa0f15cb6f6cfdd8ee15fa85e2496b7c58aa8"
+    },
+    "record.json": {
+      "bytes": 1091,
+      "sha256": "680712966bb690ce897806663a54d34ed8af74876f3bc43d199c55f0fd91e8b9"
+    },
+    "smoke_supervisor.json": {
+      "bytes": 579,
+      "sha256": "d37a62bba980ee4eb15429a2a029803a67dabcc16d432082433f1c54224cbc7f"
+    },
+    "tenx_public_pytest.log": {
+      "bytes": 939,
+      "sha256": "d55c966eba8eb3bb5b7da9afc629eb737d82b3c7dbe86b2bfae4776a61d91ccb"
+    },
+    "tenx_public_pytest.xml": {
+      "bytes": 678,
+      "sha256": "f9922fcb1390d334f79b425e389511a9a1fbd5160bb9f8998e81d99ccc321f7d"
+    }
+  }
+}
