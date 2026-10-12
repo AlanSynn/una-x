@@ -29,6 +29,10 @@ dependencies = [
     "pandas",
     "geopandas",
     "shapely",
+    # File loads go through pyogrio with use_arrow=True (Topology._get_gdf),
+    # which requires pyarrow at runtime — pyogrio only *optionally* depends
+    # on it, so it must be declared here or fresh installs fail at first load.
+    "pyarrow",
     "networkx",
     "numba",
     "scikit-learn",
