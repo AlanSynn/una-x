@@ -88,11 +88,17 @@ required** for G=10:
    (per-row snapshot read+digest gates at the seam BEFORE flight consult, TOCTOU-tested);
    immutable payloads with sindex rebuilt as derived state; no GDAL/GEOS handle sharing
    (flat WKB blob payloads + PROJJSON, WKT rejected for datum-ensemble loss).
-2. **R2 — pool-efficiency repair (0.46→≥0.75 target).** P01 verdict H1: load/parse contention
-   is **refuted as dominant** (per-row run wall flat at W2: ratio 0.9983; W4 stretch 1.1568
-   with `peak_busy_procs=5 > cpuset 4`). Mechanism: coordinator oversubscription —
-   amortize/batch coordinator work (dispatch/commit/journal/hashing) off the workers'
-   critical resource; batched commits. Bound: ≈2x on every parallel stage at W4.
+2. **R2 — pool-efficiency repair: CLOSED-BY-FALSIFICATION at this scale (P01F,
+   2026-10-12).** The P04/R2 precondition — measured residual backpressure — is
+   ABSENT: worker-side telemetry (`receipts/next-p01f-20261012T2140Z.md`) shows
+   0.0096 aggregate mid-run idle worker-seconds across 2 passes × 4 workers
+   (per-worker ≤1.3 ms). The coordinator's 6.3 s active slice (P01E tick trace,
+   `receipts/next-p01e-20261012T2130Z.md`: 3 fsync/row durable publication,
+   40% of wall between poll waits) is FULLY HIDDEN by the greedy bounded
+   dispatch-ahead (`_pump`, pending bound = workers + queue_depth,
+   runtime.py:1087-1120). Coordinator batching has ≈ no wall to recover; P04
+   stays gated OFF. The warm-boundary wall ≈ worker-execution window
+   (per-row service ≈ 1.4–1.7 s) + ≈1.5 s serial head/tail.
 3. **R3 — per-metric reuse (C31-NOTE-1).** reach + knn are beta-invariant on this cohort
    (identity-table keyed, dtype-exact — see `metric_dependencies.gen2.json`); gravity folds
    must recompute. Upper bound ≈ half the fold region (20.5 s → ≈10–12 s). Typed identity
@@ -100,18 +106,19 @@ required** for G=10:
 4. **R4 — window amortization (partially banked).** Import 3.42→≈1.5 s/worker landed with the
    lazy-import merge; remaining overhead amortizes only via multi-cohort windows per
    BENCHMARKS.md window-composition law (bounds 10x on a single 92–118 s arm-A window).
-5. **R5 — prepared-boundary residual (NEW binding region, 2026-10-12 audit).** On the
-   parallel prepared boundary the remaining wall is: per-row restore on hits (snapshot
-   read+sha, `_decode_snapshot_gdf`, `from_wkb` payload decode, GeoSeries+sindex rebuild,
-   log replay — decode-once NOT amortized across rows), the metrics fold, exports,
-   coordinator commit/journal/hashing, pool lifecycle and IPC. **The binding telemetry is a
-   PARALLEL W4 prepared-store-warm profile of current main — the serial profile above
-   cannot see this boundary.** Candidate levers, each needing its own design+review:
-   in-worker decoded-stage lease reuse across rows (immutable internal leases, no public
-   aliasing — the architecture's own "prepared input-keyed single-flight → independent row
-   objects" step 3), R2 pool-efficiency repair, R3 metric reuse. Current warm reference:
-   G4RC B arm 20.2–21.2 s (PACE, W4T1) vs pre-merge main 63–65 s; 10x from the P00 PACE
-   baseline (92.1 s W4) needs ≈9.2 s.
+5. **R5 — prepared-boundary residual (THE binding lever after P01F).** On the
+   parallel prepared boundary the wall ≈ worker-execution window + ≈1.5 s serial
+   head/tail (P01F makespan 14.32 s, per-row service ≈ 1.4–1.7 s). The per-row
+   restore on prepared hits (snapshot read+sha gates, `_decode_snapshot_gdf`,
+   `from_wkb` payload decode, GeoSeries+sindex rebuild, log replay — decode-once
+   NOT amortized across rows; Topology.py:462-543) is the largest worker-side
+   slice that identity-keyed leasing can remove: in-worker decoded-stage lease
+   reuse across rows (immutable internal leases, no public mutable aliasing — the
+   goal's own "immutable internals with leases, fresh mutable outputs" law; the
+   architecture's "independent row objects" step preserved). Design BLOCKED on the
+   p02-audit mutation report (mutation sites, smallest-lawful shape). Remaining
+   warm-gap arithmetic after P01F: R5 ≈ 4 s off the loaded worker's busy time;
+   R3 (typed metric reuse) is the remainder lever; R2 is gone (§3.2).
 
 **Sum-law projection (labeled projection, not a claim):** serial-equivalent cohort work
 188 s → ≈40–55 s (R1+R3+banked R4); at W4 with R2 efficiency ≥0.75 ⇒ wall ≈ 13–20 s vs the
@@ -142,6 +149,11 @@ variance (25–28% same-config spread — paired windows mandatory).**
   thread shard 2.4% of theoretical; internal prange w4 ≥ w1).
 - **writer_concurrency**: measured NEGATIVE, power-stopped (7-window gate needs >9% log
   effect on this host; Settings.Validation rejects private attrs).
+- **R2 coordinator batching / pool-efficiency repair**: CLOSED 2026-10-12 — the
+  backpressure precondition is absent (P01F: 0.0096 starved worker-seconds,
+  per-worker ≤1.3 ms mid-run idle; dispatch-ahead already hides the coordinator's
+  6.3 s active slice). P04 stays gated OFF. Reopens only if a future boundary
+  demonstrates real worker starvation.
 - Contract-forbidden regardless of speed: identical-answer cache hits that suppress row
   validation, weak-thread baselines, FP32 substitution, rounding/reassociation, hidden
   radius/data/output reduction, flow-model switch.
@@ -158,15 +170,18 @@ variance (25–28% same-config spread — paired windows mandatory).**
 2. ~~P02 shared-preparation single-flight~~ — **ALREADY LANDED on main** (P02I `a71f0f5` +
    P02R `fa92dca`; consumer audit 2026-10-12 confirms engage law, key composition, store
    laws). Sequence item closed; remaining R5/R2/R3 work builds ON it.
-3. **P01-parallel (next telemetry)**: W4 prepared-store-warm profile of the CURRENT main on
-   the parallel public boundary — per-row restore composition, coordinator share, fold
-   share. This, not the serial profile, locates the residual ≈2.2x (G4RC B ≈21 s → ≈9.2 s
-   needed for G=10 from the P00 PACE baseline).
-4. **P03C preconditions**: thread-topology matrix on the current tree (probe
-   `probes/replay_thread_matrix.py`, running 2026-10-12), then native fold admission per
-   profile with crossover evidence.
-5. Implementation increments, each island battery + independent review: R5 decoded-stage
-   lease reuse; R2 pool-efficiency repair; R3 metric reuse (typed identity, gen2 law).
+3. ~~P01-parallel telemetry~~ — DONE 2026-10-12: P01P (parent buckets) + P01E
+   (coordinator tick trace) + P01F (worker-side backpressure — R2 refuted).
+   Boundary truth: wall ≈ worker window (per-row service ≈ 1.4–1.7 s) + ≈1.5 s
+   serial head/tail; coordinator work fully overlapped; restore (decode-once) is
+   the binding worker-side slice.
+4. **P03C preconditions**: thread-topology matrix on the current tree — DONE
+   (`receipts/next-p03c-20261012T2000Z.md`: W4T1 15.695 s optimal, threads
+   neutral, oversubscription cliff does NOT reproduce on the merged tree).
+5. Implementation increments, each island battery + independent review:
+   **R5 decoded-stage lease reuse (binding; blocked on p02-audit mutation
+   report)**; R3 metric reuse (typed identity, gen2 law) — R2 removed from the
+   sequence (§5).
 6. Then a fresh tenx-law paired gate of main's bytes vs the 395cdc5 installed wheel
    (cold and warm declared separately) — the published headline (2.3798x) binds treatment
    `1e7237b`, which is NOT main's lineage (ancestry machine-checked), so main's bytes have

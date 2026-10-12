@@ -1,0 +1,356 @@
+{
+ "schema": "una10x-next-p01f-backpressure-1",
+ "purpose": "worker-side mid-run idle (starvation) measurement on the parallel prepared boundary; P04/R2 gate input; no claim",
+ "python": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11",
+ "package": "/storage/scratch1/1/dsynn6/una-x-next-20261012/src/urban_network_analysis/__init__.py",
+ "manifest": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv",
+ "manifest_sha256": "1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf",
+ "manifest_sha_matches_p00_pin": true,
+ "numba_num_threads_env": "1",
+ "workers": 4,
+ "regime": "parallel public call w4t1; pass 1 untimed warm (telemetry already on), pass 2 measured (diagnostic \u2014 telemetry overhead included, never a comparator)",
+ "phase_dir": "campaign_runs/una_10x/tenx-20261012T1600Z/p01f_backpressure/runs/phase_events",
+ "cpuset_cpus": 4,
+ "warm_pass_wall_s": 15.314584467036184,
+ "telemetry_pass_wall_s": 15.791715827013832,
+ "workerpool_jsonl_files": [
+  "phase_events.workerpool.2598299.jsonl",
+  "phase_events.workerpool.2598300.jsonl",
+  "phase_events.workerpool.2598301.jsonl",
+  "phase_events.workerpool.2598302.jsonl",
+  "phase_events.workerpool.2599209.jsonl",
+  "phase_events.workerpool.2599210.jsonl",
+  "phase_events.workerpool.2599211.jsonl",
+  "phase_events.workerpool.2599212.jsonl"
+ ],
+ "coordinator_jsonl_files": [],
+ "workerpool": [
+  {
+   "file": "phase_events.workerpool.2598299.jsonl",
+   "pid": 2598299,
+   "window_s": 13.4381,
+   "jobs_done": 8,
+   "midrun_idle_s": 0.0013,
+   "midrun_idle_spans": 7,
+   "result_put_total_s": 1.8698,
+   "busy_share_of_window": 0.8608,
+   "midrun_idle_top": [
+    {
+     "s": 0.0003,
+     "t_rel_s": 10.628
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 4.41
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 5.385
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 6.51
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 7.524
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 8.573
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 9.593
+    }
+   ]
+  },
+  {
+   "file": "phase_events.workerpool.2598300.jsonl",
+   "pid": 2598300,
+   "window_s": 11.3851,
+   "jobs_done": 8,
+   "midrun_idle_s": 0.0012,
+   "midrun_idle_spans": 7,
+   "result_put_total_s": 0.003,
+   "busy_share_of_window": 0.9996,
+   "midrun_idle_top": [
+    {
+     "s": 0.0002,
+     "t_rel_s": 4.242
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 5.186
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 6.153
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 8.323
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 9.315
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 10.426
+    },
+    {
+     "s": 0.0001,
+     "t_rel_s": 7.166
+    }
+   ]
+  },
+  {
+   "file": "phase_events.workerpool.2598301.jsonl",
+   "pid": 2598301,
+   "window_s": 11.4581,
+   "jobs_done": 8,
+   "midrun_idle_s": 0.0012,
+   "midrun_idle_spans": 7,
+   "result_put_total_s": 0.003,
+   "busy_share_of_window": 0.9996,
+   "midrun_idle_top": [
+    {
+     "s": 0.0002,
+     "t_rel_s": 4.19
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 6.235
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 7.234
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 8.247
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 9.294
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 10.4
+    },
+    {
+     "s": 0.0001,
+     "t_rel_s": 5.234
+    }
+   ]
+  },
+  {
+   "file": "phase_events.workerpool.2598302.jsonl",
+   "pid": 2598302,
+   "window_s": 11.6746,
+   "jobs_done": 8,
+   "midrun_idle_s": 0.0012,
+   "midrun_idle_spans": 7,
+   "result_put_total_s": 0.003,
+   "busy_share_of_window": 0.9996,
+   "midrun_idle_top": [
+    {
+     "s": 0.0002,
+     "t_rel_s": 4.252
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 5.236
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 6.223
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 7.291
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 8.327
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 9.558
+    },
+    {
+     "s": 0.0001,
+     "t_rel_s": 10.573
+    }
+   ]
+  },
+  {
+   "file": "phase_events.workerpool.2599209.jsonl",
+   "pid": 2599209,
+   "window_s": 11.7966,
+   "jobs_done": 7,
+   "midrun_idle_s": 0.001,
+   "midrun_idle_spans": 6,
+   "result_put_total_s": 0.0027,
+   "busy_share_of_window": 0.9997,
+   "midrun_idle_top": [
+    {
+     "s": 0.0002,
+     "t_rel_s": 4.048
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 5.091
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 6.183
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 7.241
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 8.212
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 10.841
+    }
+   ]
+  },
+  {
+   "file": "phase_events.workerpool.2599210.jsonl",
+   "pid": 2599210,
+   "window_s": 14.3172,
+   "jobs_done": 9,
+   "midrun_idle_s": 0.0013,
+   "midrun_idle_spans": 8,
+   "result_put_total_s": 1.9275,
+   "busy_share_of_window": 0.8653,
+   "midrun_idle_top": [
+    {
+     "s": 0.0002,
+     "t_rel_s": 4.262
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 5.209
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 6.288
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 7.296
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 8.432
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 9.363
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 10.285
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 11.496
+    }
+   ]
+  },
+  {
+   "file": "phase_events.workerpool.2599211.jsonl",
+   "pid": 2599211,
+   "window_s": 12.317,
+   "jobs_done": 8,
+   "midrun_idle_s": 0.0012,
+   "midrun_idle_spans": 7,
+   "result_put_total_s": 0.0032,
+   "busy_share_of_window": 0.9996,
+   "midrun_idle_top": [
+    {
+     "s": 0.0002,
+     "t_rel_s": 4.154
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 6.102
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 7.058
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 8.361
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 10.075
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 11.341
+    },
+    {
+     "s": 0.0001,
+     "t_rel_s": 5.085
+    }
+   ]
+  },
+  {
+   "file": "phase_events.workerpool.2599212.jsonl",
+   "pid": 2599212,
+   "window_s": 12.1726,
+   "jobs_done": 8,
+   "midrun_idle_s": 0.0012,
+   "midrun_idle_spans": 7,
+   "result_put_total_s": 0.003,
+   "busy_share_of_window": 0.9997,
+   "midrun_idle_top": [
+    {
+     "s": 0.0002,
+     "t_rel_s": 3.921
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 4.893
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 5.862
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 6.856
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 7.892
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 10.177
+    },
+    {
+     "s": 0.0002,
+     "t_rel_s": 11.131
+    }
+   ]
+  }
+ ],
+ "aggregate": {
+  "workers_measured": 8,
+  "makespan_s": 14.3172,
+  "starved_worker_seconds_midrun": 0.0096,
+  "total_jobs": 64
+ },
+ "coordinator_spans": {}
+}
