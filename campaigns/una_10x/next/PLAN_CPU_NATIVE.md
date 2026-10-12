@@ -42,6 +42,11 @@ buckets (see `receipts/next-p01r-20261012T1600Z.md`; raw `prof_main_serial.pstat
 | other (lock acquire 5.3 s, numpy `argsort` 5.3 s, tail) | 18.0 s — 10.2% | ~9.3% family |
 | topology / export_io (self) | 1.5 s / 0.7 s | (in family) |
 
+Mapping-v3 errata (consumer audit, same day): the load_gis bucket includes 9.0 s of
+export write (`raw.py:write` matched "pyogrio" on the file path). **Function-level
+input-read family = 139.1 s = 78.8%**; export ≥ 9.0 s = 5.1%. Raw pstats is the
+authority; see `receipts/next-p01r-20261012T1600Z.md` ERRATA.
+
 Reading: the merged engine work **halved fold self time** (15.6→7.8 s) but per-row GIS
 load/parse is untouched and now an even larger share (84.1% of 176.6 s profiled serial wall).
 **R1 (shared preparation) is the binding region on the current tree**; R3's absolute bound
