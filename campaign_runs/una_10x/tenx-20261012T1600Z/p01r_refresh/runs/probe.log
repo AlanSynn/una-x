@@ -1,0 +1,647 @@
+    0.0001 |        0.000106 | UNA | UNA instance created. Topology and Settings initialized
+    0.0262 |        0.026109 | RunBatch | Loaded 32 settings from /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv
+    0.0262 |        0.000008 | RunBatch | Running accessibility — 32 settings
+    0.0263 |        0.000023 | RunBatch | Row 1/32: 'cohort_beta_00'
+    4.5313 |        0.000360 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+    5.2610 |        0.522738 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+    5.3424 |        0.000220 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+    5.5798 |        0.237419 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+    5.6460 |        0.000218 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+    5.6460 |        0.000006 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+    5.6627 |        0.016735 | AccessibilityWElevation | Graph engine initialized
+    5.6627 |        0.000007 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   28.1197 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1455
+   28.1199 |        0.000173 | RunBatch | Row 2/32: 'cohort_beta_01'
+   32.2237 |        0.000343 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   32.7969 |        0.334822 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   32.9708 |        0.002958 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   33.0997 |        0.128988 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   33.1601 |        0.001500 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   33.1601 |        0.000007 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   33.1771 |        0.016922 | AccessibilityWElevation | Graph engine initialized
+   33.1771 |        0.000008 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   33.7096 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1455
+   33.7098 |        0.000207 | RunBatch | Row 3/32: 'cohort_beta_02'
+   37.6538 |        0.000397 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   38.3206 |        0.426702 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   38.4072 |        0.003843 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   38.5399 |        0.132682 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   38.6105 |        0.001818 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   38.6105 |        0.000007 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   38.6282 |        0.017634 | AccessibilityWElevation | Graph engine initialized
+   38.6282 |        0.000009 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   39.2208 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1455
+   39.2210 |        0.000230 | RunBatch | Row 4/32: 'cohort_beta_03'
+   43.1552 |        0.000315 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   43.6911 |        0.314613 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   43.7747 |        0.003834 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   43.9023 |        0.127558 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   43.9722 |        0.001818 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   43.9722 |        0.000006 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   43.9890 |        0.016755 | AccessibilityWElevation | Graph engine initialized
+   43.9890 |        0.000007 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   44.5620 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1456
+   44.5621 |        0.000128 | RunBatch | Row 5/32: 'cohort_beta_04'
+   48.5396 |        0.000302 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   49.0798 |        0.315335 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   49.1571 |        0.003124 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   49.2860 |        0.128844 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   49.3514 |        0.002211 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   49.3515 |        0.000007 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   49.3684 |        0.016891 | AccessibilityWElevation | Graph engine initialized
+   49.3684 |        0.000007 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   50.4222 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1456
+   50.4225 |        0.000229 | RunBatch | Row 6/32: 'cohort_beta_05'
+   54.4648 |        0.000315 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   55.0280 |        0.325976 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   55.1141 |        0.003742 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   55.2469 |        0.132756 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   55.4267 |        0.002017 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   55.4267 |        0.000008 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   55.4445 |        0.017745 | AccessibilityWElevation | Graph engine initialized
+   55.4445 |        0.000009 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   56.1148 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1456
+   56.1150 |        0.000244 | RunBatch | Row 7/32: 'cohort_beta_06'
+   60.0587 |        0.000377 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   60.6308 |        0.328084 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   60.8716 |        0.004034 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   61.0043 |        0.132691 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   61.0863 |        0.002023 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   61.0863 |        0.000007 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   61.1035 |        0.017201 | AccessibilityWElevation | Graph engine initialized
+   61.1035 |        0.000009 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   61.7238 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1456
+   61.7240 |        0.000230 | RunBatch | Row 8/32: 'cohort_beta_07'
+   65.7216 |        0.000317 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   66.2590 |        0.315739 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   66.3337 |        0.004034 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   66.4618 |        0.128159 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   66.5272 |        0.001824 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   66.5272 |        0.000006 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   66.5441 |        0.016812 | AccessibilityWElevation | Graph engine initialized
+   66.5441 |        0.000009 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   67.1025 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1456
+   67.1027 |        0.000215 | RunBatch | Row 9/32: 'cohort_beta_08'
+   71.0892 |        0.000332 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   71.6437 |        0.320526 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   71.7313 |        0.005374 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   71.8609 |        0.129625 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   71.9287 |        0.002495 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   71.9287 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   71.9455 |        0.016724 | AccessibilityWElevation | Graph engine initialized
+   71.9455 |        0.000006 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   72.4790 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1456
+   72.4793 |        0.000237 | RunBatch | Row 10/32: 'cohort_beta_09'
+   76.5241 |        0.000384 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   77.1000 |        0.331168 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   77.2023 |        0.004115 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   77.3374 |        0.135187 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   77.4271 |        0.003929 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   77.4271 |        0.000005 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   77.4448 |        0.017691 | AccessibilityWElevation | Graph engine initialized
+   77.4449 |        0.000008 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   78.1099 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1456
+   78.1101 |        0.000230 | RunBatch | Row 11/32: 'cohort_beta_10'
+   82.0469 |        0.000316 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   82.5822 |        0.314666 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   82.6650 |        0.003635 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   82.8739 |        0.208859 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   82.9401 |        0.001796 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   82.9401 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   82.9569 |        0.016792 | AccessibilityWElevation | Graph engine initialized
+   82.9569 |        0.000005 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   83.6419 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1456
+   83.6421 |        0.000161 | RunBatch | Row 12/32: 'cohort_beta_11'
+   87.5528 |        0.000329 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   88.1817 |        0.405428 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   88.2624 |        0.004239 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   88.3938 |        0.131404 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   88.4588 |        0.002082 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   88.4588 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   88.4757 |        0.016901 | AccessibilityWElevation | Graph engine initialized
+   88.4757 |        0.000005 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   89.0191 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1456
+   89.0194 |        0.000236 | RunBatch | Row 13/32: 'cohort_beta_12'
+   93.1386 |        0.000377 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   93.7086 |        0.328188 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   93.8011 |        0.004195 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   93.9347 |        0.133647 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   94.0146 |        0.002790 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   94.0146 |        0.000004 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   94.0325 |        0.017849 | AccessibilityWElevation | Graph engine initialized
+   94.0325 |        0.000006 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   94.8954 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1456
+   94.8956 |        0.000240 | RunBatch | Row 14/32: 'cohort_beta_13'
+   98.9464 |        0.000385 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   99.5212 |        0.329439 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   99.6115 |        0.004050 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   99.7436 |        0.132100 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   99.8160 |        0.002224 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   99.8160 |        0.000004 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   99.8336 |        0.017522 | AccessibilityWElevation | Graph engine initialized
+   99.8336 |        0.000007 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  100.4944 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1456
+  100.4947 |        0.000222 | RunBatch | Row 15/32: 'cohort_beta_14'
+  104.4547 |        0.000296 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  104.9923 |        0.313685 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  105.0710 |        0.003681 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  105.1983 |        0.127329 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  105.3556 |        0.001754 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  105.3556 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  105.3724 |        0.016769 | AccessibilityWElevation | Graph engine initialized
+  105.3724 |        0.000004 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  105.8993 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1457
+  105.8995 |        0.000209 | RunBatch | Row 16/32: 'cohort_beta_15'
+  109.8323 |        0.000327 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  110.3837 |        0.317926 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  110.6109 |        0.004428 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  110.7432 |        0.132324 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  110.8138 |        0.002169 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  110.8138 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  110.8307 |        0.016881 | AccessibilityWElevation | Graph engine initialized
+  110.8307 |        0.000005 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  111.3918 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1457
+  111.3920 |        0.000222 | RunBatch | Row 17/32: 'cohort_beta_16'
+  115.3592 |        0.000379 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  116.0298 |        0.429917 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  116.1158 |        0.004264 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  116.2482 |        0.132356 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  116.3195 |        0.002808 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  116.3195 |        0.000004 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  116.3375 |        0.017976 | AccessibilityWElevation | Graph engine initialized
+  116.3375 |        0.000007 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  117.0897 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1457
+  117.0899 |        0.000238 | RunBatch | Row 18/32: 'cohort_beta_17'
+  121.0305 |        0.000294 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  121.5710 |        0.315933 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  121.6706 |        0.003705 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  121.7984 |        0.127741 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  121.8601 |        0.001957 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  121.8601 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  121.8768 |        0.016728 | AccessibilityWElevation | Graph engine initialized
+  121.8768 |        0.000005 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  122.3997 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1457
+  122.3999 |        0.000199 | RunBatch | Row 19/32: 'cohort_beta_18'
+  126.3904 |        0.000315 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  126.9319 |        0.315908 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  127.0141 |        0.003893 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  127.1437 |        0.129691 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  127.2111 |        0.002109 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  127.2111 |        0.000004 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  127.2280 |        0.016968 | AccessibilityWElevation | Graph engine initialized
+  127.2280 |        0.000006 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  127.7965 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1457
+  127.7967 |        0.000246 | RunBatch | Row 20/32: 'cohort_beta_19'
+  131.8501 |        0.000343 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  132.4189 |        0.327997 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  132.6352 |        0.004881 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  132.7694 |        0.134181 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  132.8380 |        0.002334 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  132.8380 |        0.000004 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  132.8558 |        0.017868 | AccessibilityWElevation | Graph engine initialized
+  132.8559 |        0.000006 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  133.4065 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1457
+  133.4067 |        0.000236 | RunBatch | Row 21/32: 'cohort_beta_20'
+  137.3647 |        0.000393 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  138.0367 |        0.434589 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  138.1212 |        0.004360 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  138.2535 |        0.132316 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  138.3348 |        0.002781 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  138.3348 |        0.000005 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  138.3526 |        0.017794 | AccessibilityWElevation | Graph engine initialized
+  138.3526 |        0.000008 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  138.9139 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1457
+  138.9141 |        0.000218 | RunBatch | Row 22/32: 'cohort_beta_21'
+  142.9659 |        0.000369 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  143.5112 |        0.313959 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  143.5920 |        0.003675 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  143.7197 |        0.127707 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  143.7858 |        0.002121 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  143.7858 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  143.8027 |        0.016884 | AccessibilityWElevation | Graph engine initialized
+  143.8027 |        0.000005 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  144.3966 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1457
+  144.3968 |        0.000202 | RunBatch | Row 23/32: 'cohort_beta_22'
+  148.4021 |        0.000331 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  148.9608 |        0.319787 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  149.0378 |        0.004027 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  149.1684 |        0.130587 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  149.2316 |        0.002063 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  149.2316 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  149.2486 |        0.016996 | AccessibilityWElevation | Graph engine initialized
+  149.2486 |        0.000007 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  149.8248 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1457
+  149.8251 |        0.000322 | RunBatch | Row 24/32: 'cohort_beta_23'
+  153.9148 |        0.000358 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  154.4813 |        0.325344 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  154.5648 |        0.004747 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  154.8056 |        0.240849 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  154.8790 |        0.002651 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  154.8790 |        0.000004 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  154.8966 |        0.017596 | AccessibilityWElevation | Graph engine initialized
+  154.8966 |        0.000006 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  155.4382 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1457
+  155.4384 |        0.000224 | RunBatch | Row 25/32: 'cohort_beta_24'
+  159.3410 |        0.000313 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  159.9606 |        0.397412 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  160.0448 |        0.003674 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  160.1725 |        0.127643 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  160.2363 |        0.002422 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  160.2364 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  160.2532 |        0.016796 | AccessibilityWElevation | Graph engine initialized
+  160.2532 |        0.000005 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  160.7822 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1457
+  160.7823 |        0.000163 | RunBatch | Row 26/32: 'cohort_beta_25'
+  164.7450 |        0.000294 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  165.2893 |        0.318623 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  165.3638 |        0.003761 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  165.4915 |        0.127697 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  165.5547 |        0.002049 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  165.5548 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  165.5715 |        0.016748 | AccessibilityWElevation | Graph engine initialized
+  165.5715 |        0.000005 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  166.1530 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1458
+  166.1532 |        0.000225 | RunBatch | Row 27/32: 'cohort_beta_26'
+  170.2413 |        0.000394 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  170.8044 |        0.319314 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  170.8928 |        0.005295 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  171.0289 |        0.136071 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  171.1045 |        0.002390 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  171.1045 |        0.000004 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  171.1218 |        0.017244 | AccessibilityWElevation | Graph engine initialized
+  171.1218 |        0.000007 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  171.6762 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1458
+  171.6764 |        0.000243 | RunBatch | Row 28/32: 'cohort_beta_27'
+  175.7701 |        0.000393 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  176.3417 |        0.319914 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  176.4327 |        0.004983 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  176.5660 |        0.133285 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  176.6400 |        0.002726 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  176.6400 |        0.000004 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  176.6580 |        0.017995 | AccessibilityWElevation | Graph engine initialized
+  176.6580 |        0.000007 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  177.2179 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1458
+  177.2181 |        0.000236 | RunBatch | Row 29/32: 'cohort_beta_28'
+  181.3283 |        0.000366 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  181.9020 |        0.330362 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  182.1286 |        0.004594 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  182.2587 |        0.130099 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  182.3389 |        0.002382 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  182.3389 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  182.3561 |        0.017245 | AccessibilityWElevation | Graph engine initialized
+  182.3561 |        0.000005 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  182.9127 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1458
+  182.9129 |        0.000221 | RunBatch | Row 30/32: 'cohort_beta_29'
+  186.8115 |        0.000300 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  187.4613 |        0.422820 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  187.5524 |        0.004100 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  187.6849 |        0.132525 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  187.7610 |        0.002285 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  187.7610 |        0.000003 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  187.7780 |        0.017044 | AccessibilityWElevation | Graph engine initialized
+  187.7780 |        0.000006 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  188.3308 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1458
+  188.3310 |        0.000223 | RunBatch | Row 31/32: 'cohort_beta_30'
+  192.4253 |        0.000369 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  192.9962 |        0.326859 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  193.0823 |        0.004453 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  193.2126 |        0.130358 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  193.2789 |        0.002431 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  193.2789 |        0.000004 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  193.2965 |        0.017661 | AccessibilityWElevation | Graph engine initialized
+  193.2965 |        0.000006 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  193.8741 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1458
+  193.8743 |        0.000248 | RunBatch | Row 32/32: 'cohort_beta_31'
+  197.8309 |        0.000295 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  198.3680 |        0.314645 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  198.4463 |        0.004007 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  198.5743 |        0.127995 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  198.6446 |        0.002045 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  198.6446 |        0.000004 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  198.6614 |        0.016778 | AccessibilityWElevation | Graph engine initialized
+  198.6614 |        0.000005 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  199.2143 |        0.000001 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1458
+    0.0001 |        0.000101 | UNA | UNA instance created. Topology and Settings initialized
+    0.0177 |        0.017625 | RunBatch | Loaded 32 settings from /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv
+    0.0177 |        0.000013 | RunBatch | Running accessibility — 32 settings
+    0.0178 |        0.000047 | RunBatch | Row 1/32: 'cohort_beta_00'
+    3.9582 |        0.000575 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+    4.4818 |        0.314721 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+    4.5666 |        0.000251 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+    4.7856 |        0.218982 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+    4.8533 |        0.000251 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+    4.8533 |        0.000009 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+    4.8700 |        0.016705 | AccessibilityWElevation | Graph engine initialized
+    4.8700 |        0.000027 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+    5.4424 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1458
+    5.4426 |        0.000198 | RunBatch | Row 2/32: 'cohort_beta_01'
+    9.3530 |        0.000521 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+    9.9073 |        0.332922 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   10.1228 |        0.003164 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   10.2562 |        0.133472 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   10.3435 |        0.001787 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   10.3435 |        0.000012 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   10.3612 |        0.017680 | AccessibilityWElevation | Graph engine initialized
+   10.3612 |        0.000016 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   10.9121 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1458
+   10.9123 |        0.000261 | RunBatch | Row 3/32: 'cohort_beta_02'
+   14.8399 |        0.000602 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   15.4045 |        0.329291 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   15.5226 |        0.004595 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   15.7756 |        0.253089 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   15.8709 |        0.002020 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   15.8709 |        0.000010 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   15.8890 |        0.018078 | AccessibilityWElevation | Graph engine initialized
+   15.8890 |        0.000015 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   16.5201 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1458
+   16.5203 |        0.000210 | RunBatch | Row 4/32: 'cohort_beta_03'
+   20.4565 |        0.000593 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   21.0172 |        0.330598 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   21.1147 |        0.003350 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   21.3689 |        0.254209 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   21.4536 |        0.002510 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   21.4536 |        0.000011 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   21.4713 |        0.017767 | AccessibilityWElevation | Graph engine initialized
+   21.4714 |        0.000015 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   22.1250 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1458
+   22.1253 |        0.000232 | RunBatch | Row 5/32: 'cohort_beta_04'
+   26.0002 |        0.000543 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   26.5470 |        0.322569 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   26.6455 |        0.003491 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   26.8792 |        0.233700 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   26.9502 |        0.001703 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   26.9502 |        0.000010 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   26.9674 |        0.017171 | AccessibilityWElevation | Graph engine initialized
+   26.9674 |        0.000016 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   27.5203 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1459
+   27.5205 |        0.000274 | RunBatch | Row 6/32: 'cohort_beta_05'
+   31.3678 |        0.000543 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   31.9222 |        0.330994 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   32.0291 |        0.004087 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   32.1645 |        0.135408 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   32.3768 |        0.002184 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   32.3768 |        0.000012 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   32.3949 |        0.018086 | AccessibilityWElevation | Graph engine initialized
+   32.3949 |        0.000016 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   32.9808 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1459
+   32.9811 |        0.000224 | RunBatch | Row 7/32: 'cohort_beta_06'
+   36.8485 |        0.000533 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   37.3858 |        0.315506 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   37.4824 |        0.003552 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   37.6134 |        0.130966 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   37.7835 |        0.001864 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   37.7835 |        0.000009 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   37.8005 |        0.016989 | AccessibilityWElevation | Graph engine initialized
+   37.8005 |        0.000012 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   38.4438 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1459
+   38.4440 |        0.000199 | RunBatch | Row 8/32: 'cohort_beta_07'
+   42.3054 |        0.000553 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   42.8469 |        0.316860 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   42.9658 |        0.003142 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   43.0956 |        0.129868 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   43.2666 |        0.002165 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   43.2666 |        0.000009 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   43.2836 |        0.016931 | AccessibilityWElevation | Graph engine initialized
+   43.2836 |        0.000012 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   43.8366 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1459
+   43.8368 |        0.000247 | RunBatch | Row 9/32: 'cohort_beta_08'
+   47.7889 |        0.000637 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   48.3523 |        0.320133 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   48.4570 |        0.003546 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   48.5874 |        0.130399 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   48.6695 |        0.001835 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   48.6695 |        0.000010 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   48.6864 |        0.016839 | AccessibilityWElevation | Graph engine initialized
+   48.6864 |        0.000012 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   49.3433 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1459
+   49.3436 |        0.000246 | RunBatch | Row 10/32: 'cohort_beta_09'
+   53.4621 |        0.000656 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   54.0449 |        0.338422 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   54.1445 |        0.004019 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   54.2809 |        0.136411 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   54.3688 |        0.002375 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   54.3688 |        0.000012 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   54.3871 |        0.018284 | AccessibilityWElevation | Graph engine initialized
+   54.3871 |        0.000017 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   55.0438 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1459
+   55.0440 |        0.000224 | RunBatch | Row 11/32: 'cohort_beta_10'
+   59.1543 |        0.000597 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   59.7131 |        0.322874 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   59.8173 |        0.004232 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   59.9574 |        0.140068 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   60.0415 |        0.002319 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   60.0415 |        0.000013 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   60.0596 |        0.018023 | AccessibilityWElevation | Graph engine initialized
+   60.0596 |        0.000017 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   60.7508 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1459
+   60.7511 |        0.000256 | RunBatch | Row 12/32: 'cohort_beta_11'
+   64.7096 |        0.000549 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   65.2504 |        0.319130 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   65.3404 |        0.003542 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   65.4785 |        0.138107 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   65.5566 |        0.002379 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   65.5566 |        0.000011 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   65.5739 |        0.017250 | AccessibilityWElevation | Graph engine initialized
+   65.5739 |        0.000015 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   66.1498 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1459
+   66.1500 |        0.000217 | RunBatch | Row 13/32: 'cohort_beta_12'
+   70.1328 |        0.000553 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   70.6788 |        0.318560 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   70.7732 |        0.003638 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   70.9092 |        0.135982 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   70.9959 |        0.002128 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   70.9960 |        0.000012 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   71.0137 |        0.017743 | AccessibilityWElevation | Graph engine initialized
+   71.0137 |        0.000015 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   71.5617 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1459
+   71.5619 |        0.000234 | RunBatch | Row 14/32: 'cohort_beta_13'
+   75.6522 |        0.000532 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   76.1911 |        0.317416 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   76.2799 |        0.003389 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   76.4116 |        0.131705 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   76.4825 |        0.001979 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   76.4825 |        0.000009 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   76.4993 |        0.016741 | AccessibilityWElevation | Graph engine initialized
+   76.4993 |        0.000011 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   77.0741 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1459
+   77.0744 |        0.000215 | RunBatch | Row 15/32: 'cohort_beta_14'
+   81.0218 |        0.000528 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   81.5616 |        0.318962 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   81.6556 |        0.003800 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   81.7859 |        0.130252 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   81.8603 |        0.001983 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   81.8603 |        0.000009 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   81.8772 |        0.016911 | AccessibilityWElevation | Graph engine initialized
+   81.8772 |        0.000012 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   82.4244 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1459
+   82.4246 |        0.000162 | RunBatch | Row 16/32: 'cohort_beta_15'
+   86.4337 |        0.000549 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   87.0033 |        0.333081 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   87.0990 |        0.003936 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   87.2413 |        0.142316 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   87.3385 |        0.002473 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   87.3386 |        0.000012 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   87.3564 |        0.017791 | AccessibilityWElevation | Graph engine initialized
+   87.3564 |        0.000016 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   88.0384 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1500
+   88.0386 |        0.000196 | RunBatch | Row 17/32: 'cohort_beta_16'
+   92.0950 |        0.000637 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   92.6679 |        0.331678 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   92.7780 |        0.003941 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   92.9158 |        0.137882 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   92.9982 |        0.002225 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   92.9982 |        0.000010 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   93.0160 |        0.017780 | AccessibilityWElevation | Graph engine initialized
+   93.0160 |        0.000017 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   93.6419 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1500
+   93.6422 |        0.000279 | RunBatch | Row 18/32: 'cohort_beta_17'
+   97.7440 |        0.000611 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+   98.3108 |        0.324281 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   98.4262 |        0.004375 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+   98.5631 |        0.136839 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   98.6700 |        0.002442 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+   98.6700 |        0.000012 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+   98.6879 |        0.017838 | AccessibilityWElevation | Graph engine initialized
+   98.6879 |        0.000017 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+   99.3494 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1500
+   99.3496 |        0.000235 | RunBatch | Row 19/32: 'cohort_beta_18'
+  103.3456 |        0.000537 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  103.8869 |        0.318556 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  103.9927 |        0.003808 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  104.1249 |        0.132215 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  104.2042 |        0.002091 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  104.2042 |        0.000010 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  104.2211 |        0.016928 | AccessibilityWElevation | Graph engine initialized
+  104.2211 |        0.000012 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  104.7817 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1500
+  104.7819 |        0.000216 | RunBatch | Row 20/32: 'cohort_beta_19'
+  108.7865 |        0.000557 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  109.3364 |        0.323872 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  109.4258 |        0.003682 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  109.5596 |        0.133828 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  109.6373 |        0.002421 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  109.6373 |        0.000010 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  109.6544 |        0.017071 | AccessibilityWElevation | Graph engine initialized
+  109.6544 |        0.000015 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  110.2083 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1500
+  110.2085 |        0.000274 | RunBatch | Row 21/32: 'cohort_beta_20'
+  114.3396 |        0.000643 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  114.8996 |        0.321088 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  114.9876 |        0.003744 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  115.1185 |        0.130951 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  115.1915 |        0.002016 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  115.1915 |        0.000009 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  115.2083 |        0.016828 | AccessibilityWElevation | Graph engine initialized
+  115.2084 |        0.000011 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  115.8487 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1500
+  115.8489 |        0.000195 | RunBatch | Row 22/32: 'cohort_beta_21'
+  119.8014 |        0.000551 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  120.3469 |        0.322393 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  120.4330 |        0.003711 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  120.5674 |        0.134333 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  120.6418 |        0.002004 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  120.6418 |        0.000009 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  120.6587 |        0.016895 | AccessibilityWElevation | Graph engine initialized
+  120.6588 |        0.000012 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  121.2056 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1500
+  121.2057 |        0.000171 | RunBatch | Row 23/32: 'cohort_beta_22'
+  125.2645 |        0.000559 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  125.8313 |        0.332657 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  125.9324 |        0.004240 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  126.0694 |        0.137036 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  126.1556 |        0.002465 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  126.1557 |        0.000011 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  126.1737 |        0.017987 | AccessibilityWElevation | Graph engine initialized
+  126.1737 |        0.000015 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  126.7397 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1500
+  126.7400 |        0.000252 | RunBatch | Row 24/32: 'cohort_beta_23'
+  130.8509 |        0.000634 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  131.4253 |        0.333900 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  131.5298 |        0.004262 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  131.6677 |        0.137830 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  131.7567 |        0.002606 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  131.7567 |        0.000012 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  131.7748 |        0.018046 | AccessibilityWElevation | Graph engine initialized
+  131.7748 |        0.000016 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  132.4077 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1500
+  132.4080 |        0.000264 | RunBatch | Row 25/32: 'cohort_beta_24'
+  136.5064 |        0.000639 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  137.0815 |        0.331903 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  137.1750 |        0.003906 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  137.3107 |        0.135678 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  137.3866 |        0.002355 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  137.3866 |        0.000011 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  137.4045 |        0.017921 | AccessibilityWElevation | Graph engine initialized
+  137.4046 |        0.000018 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  138.0380 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1500
+  138.0382 |        0.000239 | RunBatch | Row 26/32: 'cohort_beta_25'
+  142.0488 |        0.000551 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  142.5929 |        0.320887 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  142.6824 |        0.003646 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  142.8145 |        0.132149 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  142.8895 |        0.002049 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  142.8895 |        0.000009 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  142.9066 |        0.017043 | AccessibilityWElevation | Graph engine initialized
+  142.9066 |        0.000013 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  143.4599 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1501
+  143.4601 |        0.000249 | RunBatch | Row 27/32: 'cohort_beta_26'
+  147.3349 |        0.000548 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  147.8797 |        0.318705 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  148.0797 |        0.004110 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  148.2139 |        0.134211 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  148.2949 |        0.002228 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  148.2949 |        0.000009 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  148.3119 |        0.017049 | AccessibilityWElevation | Graph engine initialized
+  148.3119 |        0.000014 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  148.8747 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1501
+  148.8750 |        0.000238 | RunBatch | Row 28/32: 'cohort_beta_27'
+  152.8451 |        0.000641 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  153.4066 |        0.322606 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  153.6071 |        0.003669 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  153.7380 |        0.130920 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  153.8169 |        0.002208 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  153.8169 |        0.000010 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  153.8338 |        0.016848 | AccessibilityWElevation | Graph engine initialized
+  153.8338 |        0.000012 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  154.3558 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1501
+  154.3561 |        0.000211 | RunBatch | Row 29/32: 'cohort_beta_28'
+  158.2305 |        0.000532 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  158.7704 |        0.318090 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  158.9681 |        0.003459 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  159.0983 |        0.130209 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  159.1688 |        0.001927 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  159.1688 |        0.000009 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  159.1857 |        0.016891 | AccessibilityWElevation | Graph engine initialized
+  159.1857 |        0.000012 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  159.7557 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1501
+  159.7558 |        0.000162 | RunBatch | Row 30/32: 'cohort_beta_29'
+  163.7398 |        0.000703 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  164.3041 |        0.323519 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  164.5454 |        0.005114 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  164.6831 |        0.137773 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  164.7882 |        0.002452 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  164.7882 |        0.000012 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  164.8061 |        0.017943 | AccessibilityWElevation | Graph engine initialized
+  164.8061 |        0.000015 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  165.3779 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1501
+  165.3781 |        0.000249 | RunBatch | Row 31/32: 'cohort_beta_30'
+  169.3348 |        0.000641 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  169.9091 |        0.331629 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  170.1432 |        0.004432 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  170.2801 |        0.136891 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  170.3612 |        0.002462 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  170.3612 |        0.000012 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  170.3788 |        0.017589 | AccessibilityWElevation | Graph engine initialized
+  170.3788 |        0.000014 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  170.9513 |        0.000003 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1501
+  170.9515 |        0.000234 | RunBatch | Row 32/32: 'cohort_beta_31'
+  174.9129 |        0.000639 | Network added | Network added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/20260703_PercLenNetwork_InnerCore.geojson, with 69957 edges.
+  175.4768 |        0.331652 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  175.7264 |        0.004073 | Origins added | Origins added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Cambridge_building_centroids.geojson, with 14751 points.
+  175.8639 |        0.137528 | Build AccessPoints | Access points are built from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  175.9818 |        0.002549 | Destinations added | Destinations added from source /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/MA_transit_stations.geojson, with 6919 points.
+  175.9818 |        0.000012 | UNA Accessibility | Using AccessibilityWElevation (no elevation — symmetric weights)
+  175.9998 |        0.017949 | AccessibilityWElevation | Graph engine initialized
+  175.9998 |        0.000015 | AccessibilityWElevation | Calculating centrality with radius (weight) 400
+  176.5673 |        0.000002 | ExportAccessibilityResults | All results exported to /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/accessibility_2026-10-12_1501
+{"out": "campaign_runs/una_10x/tenx-20261012T1600Z/p01r_refresh/runs/region_share_main.json", "wall_s": 176.57739783200668, "manifest_sha_matches_p00_pin": true}
