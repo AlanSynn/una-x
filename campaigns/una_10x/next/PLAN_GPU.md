@@ -58,13 +58,45 @@ Steps, each falsifiable:
    the primitive level — road (b), admission-domain classification, is quantified as
    "exclude/arg-census the ~3% divergent region"; G11's fold-level 0/4 stands, because real
    fold arguments compose through the divergent region.
-2. **Device match, two roads**:
+2. **Fold-relevant box census + the ACTUAL derived exp arguments** — EXECUTED 2026-10-12 on
+   V100 (`receipts/gpuprobe2-20261012T1605Z.md`,
+   `tenx-20261012T1600Z/gpu_probes/fold_box_census.json`):
+   - Manifest-bounded boxes, device libdevice vs the delivered fastmath scalar authority:
+     ge box 131,072 args → 8,071 differ (**6.16%**); gl box 20,480 args → 1,109 differ
+     (**5.42%**); max 1 ULP, 0 sign flips everywhere.
+   - The exp arguments the rep4000 structure ACTUALLY feeds per decay (derived in float64
+     from the delivered fold source `Accessibility.py:83-106`; derived arg bits verified
+     bit-identical to the fold's own inline fastmath construction): ge 178,777 args →
+     10,649 divergent (**5.96%**); gl 178,777 → 11,087 (**6.20%**); kn-exponential 4,000 →
+     45 (1.13%); kn-logistic 4,000 → 206 (5.15%). Divergent args SPREAD across each box's
+     range — no clean safe sub-interval exists (ge divergents span |x| 0.011…1.59; gl
+     0.010…10.0; kn-logistic divergents all sit at |x| 3.1…5.0, the nearest-neighbor crop
+     region).
+   - Derivation certification: the arg bits are certified (0 diffs), but fold-output
+     reproduction is NOT: feeding the bit-verified derived args through verbatim
+     re-implementations of the fold's exp-consuming statements diverges from the delivered
+     fold by 1 ULP on one small case (rand96 exponential kn), while the same statements
+     with args constructed INLINE reproduce the delivered outputs everywhere tested.
+     Fold-level bit identity is a property of the delivered function's compiled reduction
+     lowering, not of the argument set alone.
+   - **No-go input for road (b) as a standalone mechanism:** ~6% of the actual cohort exp
+     feeds diverge at the primitive level with no exclusion boundary, and even
+     0-arg-divergence would not deliver fold-output parity. Arg-domain admission cannot
+     establish fold-level bit parity vs the delivered authority. Remaining roads: a device
+     exp reconstructed to the host bits on a declared domain, the Direction-2 exp-free
+     hybrid, or a new reviewed profile accepting non-host bits (user-gated scientific
+     decision, never a silent substitution).
+3. **Device match, two roads**:
    - a device-side exp implementation reconstructed to reproduce the captured delivered bits
      exactly (gate: 0 differing arguments on the census domain), or
    - an **admission-domain classification**: the sub-domain of arguments where libdevice
      already equals the delivered bits (the census identifies it exactly); admission would be
      declared on that domain only, with the refusal matrix extended to enforce it.
-3. **Gate**: extend the G11 battery matrix with the chosen domain; admission only after
+     STATUS after the box census (item 2): this road alone cannot establish fold-level
+     parity — the actual fold feeds diverge at ~6% density with no exclusion boundary, and
+     fold outputs additionally depend on the delivered function's compiled reduction
+     lowering (derivation-certification gap).
+4. **Gate**: extend the G11 battery matrix with the chosen domain; admission only after
    0-mismatch on the declared domain; contract-level creation of a NEW reviewed profile
    (accepting non-host bits) is a user-gated scientific decision, never a silent substitution.
 
@@ -101,19 +133,45 @@ host-side bridge work, which re-attributes Direction 4's premise (see §6). Gate
 paired cohort-shape walls on-device vs the delivered CPU arm at C=1, hardware addition recorded
 separately and never fed to the CPU 10x gate.
 
+**Residual attribution — EXECUTED 2026-10-12** (`receipts/gpuprobe2-20261012T1605Z.md`,
+`.../gpu_probes/host_residual.json`): the full-service median re-measured 0.13836 s (third
+independent cross-check of the 0.13535 G11 / 0.13718 phase-decomposition walls, different
+node/day/device). Re-executing `gpu_replay_fold`'s per-call sequence section by section
+(source order, 9 reps) attributes the wall: the **Phase-B host structural scan** — the
+pure-Python O(origins+nnz) refusal loop at `_gpu_fold.py:185-199` — is **0.13259 s median =
+95.8% of the full-service wall** (~0.56 µs per nnz element). Every other host section is
+≤34.5 µs; the measured device sections total 3.51 ms (H2D 2.03 ms, scratch/output allocs
+0.87 ms, launch 0.22 ms, sync 0.15 ms, D2H 0.24 ms); all sections sum to 0.13616 s, leaving
+**2.20 ms (1.6%) unattributed** dispatch/allocator gap. Caveat recorded in the JSON: sections
+are timed in isolated re-execution on warm state; the remainder quantifies exactly the
+in-context gap. Note the chronology law requires the Phase-B refusal check to precede any
+device work, so every one-shot call pays the scan; a residency batch pays it once per
+structure, not per row.
+
 ## 6. Direction 4 — parallelism shape, within the order law
 
 The crossover loss was attributed to transfer+launch+sync and per-origin sequential
 order-bearing loops (≈60 nnz/origin at rep4000). The 2026-10-12 phase decomposition
-**revises the attribution**: only ≈3.45 ms of the 137 ms full-service wall is measured
-device phases — before any Direction-4 tuning, the ~133 ms residual (host bridge/wrapper
-work) must itself be decomposed; tuning transfer or occupancy against a wall dominated by
-host overhead would optimize nothing. The order law forbids the tempting axes:
-no atomics, no completion-order sums, no reduction reassociation — a warp cannot cooperate on
-one origin's ordered sum without reassociating. Legal parallelism axes: across origins,
-across rows (Direction 3 batch launches), across independent metric jobs; plus occupancy
-(tpb tuning from 128) and tail effects. Re-measure the crossover only after Direction 3's
-residency shape exists; do not tune against the one-shot shape.
+revised the attribution to a ~133 ms host residual, and the same-day residual probe
+**settles it** (§5): the wall is ~96% the bridge's own Phase-B Python scan
+(`_gpu_fold.py:185-199`), with transfer (2.03 ms), scratch/output allocation (0.87 ms),
+launch (0.22 ms), sync (0.15 ms) and D2H (0.24 ms) jointly ~2.5%. Consequences for
+Direction 4: no device-side tuning axis (occupancy, tpb, tail effects) can move a wall
+dominated by a host scan — those axes remain legal but are measured at ~3.5 ms of headroom,
+not ~137 ms. The legal levers this evidence actually points to: (i) a bit-identical
+vectorized re-expression of the Phase-B checks (same refusal codes, same chronology —
+refusals still precede any device work), which is a change to the bridge instrument
+`src/urban_network_analysis/Engines/_gpu_fold.py` and therefore needs its own task,
+bit-identical-refusal gate and review; production never imports the bridge, so this moves
+GPU-qualification walls, not the production route; (ii) the Direction-3 residency shape,
+which pays the scan once per structure and so amortizes it per row (K rows share one
+validated upload + one scan) but leaves the one-shot full-service cost unchanged. The
+order law still forbids the
+tempting device axes: no atomics, no completion-order sums, no reduction reassociation —
+a warp cannot cooperate on one origin's ordered sum without reassociating. Legal
+parallelism axes: across origins, across rows (Direction 3 batch launches), across
+independent metric jobs. Re-measure the crossover only after a Direction-4 lever actually
+lands; do not tune against the one-shot shape.
 
 ## 7. What is NOT planned and why
 
@@ -134,13 +192,24 @@ residency shape exists; do not tune against the one-shot shape.
   confirmed, then re-run).
 - `probes/gpu_phase_decomposition.py` — per-phase walls + K-replay residency variant
   (Direction 3 evidence). **EXECUTED** same job — results in §5.
+- `probes/gpu_host_residual.py` — section-by-section attribution of the full-service wall
+  (Direction 4 prerequisite). **EXECUTED 2026-10-12** (slurm 13985066, node
+  `atl1-1-02-005-30-0`, Tesla V100-PCIE-16GB UUID `GPU-f18ae2ec-bda3-dbe2-2f3a-
+  9bdfcd428606`, cuda/12.6.1) — results in §5/§6, receipt
+  `gpuprobe2-20261012T1605Z.md`.
+- `probes/gpu_fold_box_census.py` — fold-relevant exp-arg boxes + the rep4000 structure's
+  actual derived exp arguments + derivation certification (Direction 1 road-(b) input).
+  **EXECUTED** same job — results in §3. The probe's certification leg decomposes
+  failures (arg-bit identity vs statement-lowering identity); on this host CPU the arg
+  bits certify and the fold-output reproduction does not (1 ULP, named gap).
 - Device legs ran under a real salloc device; an earlier attempt without one returned the
   typed `device_unavailable` blocker (never simulated). Operational lessons recorded in
   the receipt: salloc executes its command on the LOCAL node (wrap in `srun`), bare
   `srun --gres` failed step creation on this cluster (allocate with `salloc`, step with
   `srun`), and `/tmp` is node-local (scripts must live on shared `/storage`).
-- Compute accounting: one 1-GPU allocation, ≈4 min wall — charged to the GPU probe scope
-  under the standing salloc authorization; no route/parity claim created.
+- Compute accounting: first probe job ≈4 min wall (13983444); second probe job 35 s wall
+  (13985066) — both 1-GPU allocations charged to the GPU probe scope under the standing
+  salloc authorization; no route/parity claim created.
 
 ## 9. Honesty / unrun gates
 

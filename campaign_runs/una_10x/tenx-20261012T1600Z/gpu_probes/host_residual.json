@@ -1,0 +1,119 @@
+{
+ "schema": "una10x-gpu-host-residual-1",
+ "purpose": "Direction 4 prerequisite (PLAN_GPU.md \u00a76); host residual attribution; walls only",
+ "python": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11",
+ "shape": {
+  "origins": 4000,
+  "nnz": 238387,
+  "cutoff": 1500.0
+ },
+ "device": {
+  "name": "Tesla V100-PCIE-16GB",
+  "uuid": "GPU-f18ae2ec-bda3-dbe2-2f3a-9bdfcd428606"
+ },
+ "protocol": {
+  "full_service_reps": 6,
+  "full_service_warmup": false,
+  "section_reps": 9,
+  "section_warmup_passes": 1,
+  "section_order_mirrors_source": true,
+  "source_ref": "src/urban_network_analysis/Engines/_gpu_fold.py gpu_replay_fold",
+  "caveat": "sections are timed in isolated re-execution on warm state; the sum of isolated sections need not equal the in-context cost (caches/allocator/dispatch) \u2014 the remainder quantifies exactly that gap"
+ },
+ "full_service_bridge_s": {
+  "median": 0.13835620300960727,
+  "min": 0.13668925399542786,
+  "max": 1.5021399029938038
+ },
+ "host_sections": [
+  {
+   "section": "input_layout_normalization_ascontiguousarray_x5",
+   "source_ref": "_gpu_fold.py:213-217",
+   "median_s": 1.0550138540565968e-06,
+   "min_s": 1.000997144728899e-06,
+   "max_s": 1.6630219761282206e-06
+  },
+  {
+   "section": "input_dtype_law_checks_req_x5",
+   "source_ref": "_gpu_fold.py:218-222",
+   "median_s": 4.671019269153476e-06,
+   "min_s": 4.50800871476531e-06,
+   "max_s": 5.661975592374802e-06
+  },
+  {
+   "section": "shape_endpoint_validation",
+   "source_ref": "_gpu_fold.py:223-230",
+   "median_s": 4.2339961510151625e-06,
+   "min_s": 3.891997039318085e-06,
+   "max_s": 5.135021638125181e-06
+  },
+  {
+   "section": "decay_code_scalar_normalization_finiteness",
+   "source_ref": "_gpu_fold.py:234-240",
+   "median_s": 1.1422001989558339e-05,
+   "min_s": 1.1106021702289581e-05,
+   "max_s": 1.934499596245587e-05
+  },
+  {
+   "section": "phase_b_structural_scan",
+   "source_ref": "_gpu_fold.py:241-245 + _phase_b:185-199",
+   "median_s": 0.1325933710031677,
+   "min_s": 0.13251935300650075,
+   "max_s": 0.13390397798502818
+  },
+  {
+   "section": "device_availability_gate",
+   "source_ref": "_gpu_fold.py:246 + require_device:76-87",
+   "median_s": 3.449400537647307e-05,
+   "min_s": 3.382901195436716e-05,
+   "max_s": 3.565099905245006e-05
+  },
+  {
+   "section": "kernel_lookup_cached",
+   "source_ref": "_gpu_fold.py:253 + _kernel:90-175",
+   "median_s": 6.259942892938852e-07,
+   "min_s": 5.830079317092896e-07,
+   "max_s": 1.4569959603250027e-06
+  },
+  {
+   "section": "device_input_upload_h2d_x5",
+   "source_ref": "_gpu_fold.py:254-258",
+   "median_s": 0.0020335970039013773,
+   "min_s": 0.0018783650011755526,
+   "max_s": 0.0021867550094611943
+  },
+  {
+   "section": "device_output_scratch_alloc_x10",
+   "source_ref": "_gpu_fold.py:259-269",
+   "median_s": 0.0008710570109542459,
+   "min_s": 0.0008644440094940364,
+   "max_s": 0.0008905450231395662
+  },
+  {
+   "section": "kernel_launch",
+   "source_ref": "_gpu_fold.py:270-278",
+   "median_s": 0.0002206290082540363,
+   "min_s": 0.00021074601681903005,
+   "max_s": 0.0003004769969265908
+  },
+  {
+   "section": "device_synchronize",
+   "source_ref": "_gpu_fold.py:279-280",
+   "median_s": 0.00014724198263138533,
+   "min_s": 0.00014565500896424055,
+   "max_s": 0.00015027099289000034
+  },
+  {
+   "section": "result_download_d2h_x5",
+   "source_ref": "_gpu_fold.py:281-285",
+   "median_s": 0.00023633000091649592,
+   "min_s": 0.00023374101147055626,
+   "max_s": 0.00024628598475828767
+  }
+ ],
+ "replayed_sequence_median_s": 0.13620558299589902,
+ "host_sections_sum_median_s": 0.1361587280407548,
+ "unattributed_residual_s": 0.0021974749688524753,
+ "unattributed_share_of_full_service": 0.01588273543976836,
+ "law": "walls only; hardware addition recorded separately; never fed to the CPU 10x gate; not a route claim"
+}
