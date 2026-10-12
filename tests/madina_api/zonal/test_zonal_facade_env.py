@@ -59,22 +59,76 @@ def test_d3_zonal_port_has_no_env_write():
     assert not offenders, offenders
 
 
-def test_top_level_import_carries_pinned_una_env_write():
-    """The R1 una reexport makes the top-level import carry the pinned
-    upstream una-chain environment write (os.environ['USE_PYGEOS'] = '0'
-    at betweenness.py:3, carried verbatim; upstream ``import madina``
-    writes the same value at zonal.py:3).  Consumers needing a pristine
-    environment snapshot/restore around in-process imports, per the una
-    ledger.  D3 itself is unchanged — see
+def test_top_level_env_write_fires_at_first_una_load():
+    """D3-LAZY (cd3-20261012T0030Z): the R1 eager reexport's import-time
+    una-chain write moved to the FIRST una-surface load (PEP 562
+    __getattr__/__dir__ in compat/madina/__init__.py).  A bare facade
+    import — and therefore the D3 zonal import, which executes the
+    parent __init__ — leaves os.environ untouched; the pinned upstream
+    write ``os.environ['USE_PYGEOS'] = '0'`` (betweenness.py:105,
+    carried verbatim; upstream ``import madina`` writes the same value
+    at zonal.py:3) fires exactly once at its upstream site when the una
+    surface is first touched.  Supersedes R1's
+    test_top_level_import_carries_pinned_una_env_write, which pinned the
+    eager de2872f trigger.  D3 itself is unchanged — see
     test_d3_zonal_port_has_no_env_write."""
     proc = _run(
         "import os, sys\n"
         "sys.path.insert(0, 'src')\n"
         "os.environ.pop('USE_PYGEOS', None)\n"
         "import urban_network_analysis.compat.madina\n"
-        "print(os.environ.get('USE_PYGEOS'))")
+        "assert 'USE_PYGEOS' not in os.environ, (\n"
+        "    'bare facade import wrote the environment')\n"
+        "import urban_network_analysis.compat.madina as m\n"
+        "assert callable(m.parallel_betweenness)\n"
+        "assert os.environ.get('USE_PYGEOS') == '0', (\n"
+        "    'una surface load did not carry the pinned write')\n"
+        "print('lazy-trigger ok')")
     assert proc.returncode == 0, proc.stderr[-2000:]
-    assert proc.stdout.strip() == "0"
+    assert proc.stdout.strip() == "lazy-trigger ok"
+
+
+def test_d3_lazy_facade_and_zonal_imports_leave_env_pristine():
+    """D3 at the facade surface, fresh interpreter: importing the
+    compat.madina package or the compat.madina.zonal package (the exact
+    tests/platform_geometry D3 import shape) writes no environment
+    variable, and the una surface stays unexecuted until a una name is
+    touched."""
+    proc = _run(
+        "import os, sys\n"
+        "sys.path.insert(0, 'src')\n"
+        "os.environ.pop('USE_PYGEOS', None)\n"
+        "import urban_network_analysis.compat.madina as m\n"
+        "import urban_network_analysis.compat.madina.zonal as zp\n"
+        "assert 'USE_PYGEOS' not in os.environ\n"
+        "assert not any('compat.madina.una' in k for k in sys.modules)\n"
+        "print('pristine', zp.Zonal.__name__)\n")
+    assert proc.returncode == 0, proc.stderr[-2000:]
+    assert proc.stdout.strip() == "pristine Zonal"
+
+
+def test_star_import_materializes_the_full_surface():
+    """``from ...compat.madina import *`` mirrors upstream's star-import
+    (no ``__all__`` defined, mirroring upstream, whose __init__ defines
+    none): the machinery's ``__all__`` lookup routes through the lazy
+    trigger, so the landed public set is the materialized surface —
+    spot-pinned by the 17 functional engine/path names plus the
+    una-chain module imports (``os`` lands at the top level exactly as
+    upstream, via betweenness.py's module-top ``import os``).  The live
+    full-set authority stays test_top_level_reflection.py."""
+    proc = _run(
+        "import sys, types\n"
+        "sys.path.insert(0, 'src')\n"
+        "ns = {}\n"
+        "exec('from urban_network_analysis.compat.madina import *', ns)\n"
+        "fns = " + repr(TOP_LEVEL_FUNCTIONS) + "\n"
+        "missing = [f for f in fns if not callable(ns.get(f))]\n"
+        "assert not missing, missing\n"
+        "assert isinstance(ns['betweenness'], types.ModuleType)\n"
+        "assert 'os' in ns\n"
+        "print('star ok')")
+    assert proc.returncode == 0, proc.stderr[-2000:]
+    assert proc.stdout.strip() == "star ok"
 
 
 def test_d4_create_map_importerror_without_pydeck():
