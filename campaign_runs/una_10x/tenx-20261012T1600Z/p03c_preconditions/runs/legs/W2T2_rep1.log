@@ -1,0 +1,3 @@
+    0.0001 |        0.000098 | UNA | UNA instance created. Topology and Settings initialized
+    0.0305 |        0.030404 | RunBatch | Loaded 32 settings from /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv
+RESULT_JSON: {"config": "W2T2", "wall_s": 21.724, "rep": 1, "manifest_sha_matches_p00_pin": true, "package": "/storage/scratch1/1/dsynn6/una-x-next-20261012/src/urban_network_analysis/__init__.py", "numba_threads_seen": 2, "numba_threading_layer": "omp", "workers_effective": 2, "pool_notes": ["row-worker pool: 2 spawn worker(s) x 2 thread(s); pending bound = workers + queue_depth=64"], "rows_committed": 32}
