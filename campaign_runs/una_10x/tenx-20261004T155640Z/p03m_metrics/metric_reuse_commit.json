@@ -1,0 +1,59 @@
+{
+  "branch": "perf/una-10x (local commit only; NO push)",
+  "campaign": "una_10x",
+  "commit": "e36178e9d08608ace4b06e4eee199f5295cedc62",
+  "deliverables": {
+    "metric_dependency_matrix.json": "campaign_runs/una_10x/tenx-20261004T155640Z/p03m_metrics/metric_dependency_matrix.json",
+    "metric_identity_v2.json": "campaign_runs/una_10x/tenx-20261004T155640Z/p03m_metrics/metric_identity_v2.json",
+    "metric_reuse_verdict.json": "campaign_runs/una_10x/tenx-20261004T155640Z/p03m_metrics/metric_reuse_verdict.json"
+  },
+  "extraction": {
+    "file_pairs_compared": 7,
+    "method": "git archive <commit> | tar -x into empty tmpdir",
+    "pairs": {
+      "src/urban_network_analysis/Engines/_metric_identity.py": {
+        "extracted_sha256": "e247187fe5ef6ae3eb235cef7ea324154e2fe791222b8566c206bf4469dd8f67",
+        "match": true,
+        "worktree_sha256": "e247187fe5ef6ae3eb235cef7ea324154e2fe791222b8566c206bf4469dd8f67"
+      },
+      "src/urban_network_analysis/Engines/_trace_access_scratch.py": {
+        "extracted_sha256": "9676e5727bd4329e878ebf528b0eb7bd64a06c3137c7e58049bc96c3ff16763c",
+        "match": true,
+        "worktree_sha256": "9676e5727bd4329e878ebf528b0eb7bd64a06c3137c7e58049bc96c3ff16763c"
+      },
+      "src/urban_network_analysis/batch/cohort.py": {
+        "extracted_sha256": "91d102ec159475e4a9824793eca3e7651417c4a07b40502f26ec17893a309577",
+        "match": true,
+        "worktree_sha256": "91d102ec159475e4a9824793eca3e7651417c4a07b40502f26ec17893a309577"
+      },
+      "src/urban_network_analysis/batch/metric_reuse.py": {
+        "extracted_sha256": "510fb7fdd9aa94fe2c645c4244714c7ab6e9231539b3e3b6f2d9fdae75e861d0",
+        "match": true,
+        "worktree_sha256": "510fb7fdd9aa94fe2c645c4244714c7ab6e9231539b3e3b6f2d9fdae75e861d0"
+      },
+      "src/urban_network_analysis/batch/runtime.py": {
+        "extracted_sha256": "badccc992639f2bd68b89d3deb80d8309b4725cb9ef0894c0b116e4ce94812e4",
+        "match": true,
+        "worktree_sha256": "badccc992639f2bd68b89d3deb80d8309b4725cb9ef0894c0b116e4ce94812e4"
+      },
+      "tests/tenx/cohort/test_cohort_route.py": {
+        "extracted_sha256": "a995f7e774094271de0747f4999c1e413afabb1cb6acfeea06ce0522579aef2d",
+        "match": true,
+        "worktree_sha256": "a995f7e774094271de0747f4999c1e413afabb1cb6acfeea06ce0522579aef2d"
+      },
+      "tests/tenx/post_p00/metrics/test_metric_identity.py": {
+        "extracted_sha256": "c87736d655661d474a5bbb46a3de3adec50c392a188897dc3a18f6b8c36b6456",
+        "match": true,
+        "worktree_sha256": "c87736d655661d474a5bbb46a3de3adec50c392a188897dc3a18f6b8c36b6456"
+      }
+    }
+  },
+  "import_facts": "True | una:metric-id:v2 | numba.core.registry.CPUDispatcher | True | False | True | True | True | True | 4 | OrderedDict | 16",
+  "parent": "958e25b037f82dc96d3fb2d12dba8dac946a196b",
+  "schema": "post-p00-commit-extraction-proof-1",
+  "task": "P03M",
+  "tests_from_extraction": {
+    "command": "<alan-env python> -m pytest tests/tenx/post_p00 -q (cwd = extraction tree, PYTHONPATH = extraction src; interpreter = sys.executable == the worktree's ./_py)",
+    "outcome": "43 passed in 133.42s (0:02:13)"
+  }
+}

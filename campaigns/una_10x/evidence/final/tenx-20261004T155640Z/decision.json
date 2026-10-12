@@ -1,0 +1,92 @@
+{
+ "tenx_status": "target_unmet",
+ "platform_status": "incomplete",
+ "source_sha": "129c53f94e85210b1d4e5bbbc1a9d0d86b34e2e9",
+ "claim_scope": "installed public UNA.RunBatch on the frozen distinct 32-job observed cohort, w4t1, FIRST_COHORT cold stores, bitwise una_legacy/madina_legacy/corrected_v1: measured median paired ratio 2.6632x, one-sided 95% LB 2.5948x. No 10x claim exists in any cell; no component ratio is multiplied into a throughput claim",
+ "gate_record": {
+  "preregistration": "q00r_freeze/PRIMARY.json (FROZEN_Q00, frozen_at 2026-10-05T03:50:44Z)",
+  "decision": "TARGET_UNMET",
+  "statistic": {
+   "median_ratio": 2.6632126993088145,
+   "lower_bound_95_ratio": 2.594809326204556,
+   "pass_rule": "median >= 10 AND LB95 >= 10",
+   "windows": 7,
+   "seed": 20261003,
+   "resamples": 20000,
+   "quantile": 0.05
+  },
+  "receipts": [
+   "q10_windows/paired_samples.json",
+   "q10_windows/gate_10x.json",
+   "q10_windows/raw_index.json"
+  ],
+  "independent_review": "r00_review/review.json - confirmed_target_unmet_and_receipts_consistent, zero discrepancies",
+  "why": "residual ~25s/wall is dominated by irreducible prepared-fold compute (stage floor ~16.6s of ~66.5s cohort demand); the cohort ceiling at C=4 is near 4x and the bitwise law forbids changing the numerical work itself"
+ },
+ "required_checks": {
+  "bitwise_parity": "64/64 required artifacts on all 14 measured runs, both arms, outside timing; independently corroborated by R00 against the P00 anchor (147830672 bytes)",
+  "zero_failed_rows": true,
+  "engagement": "cand cohort present/builds>=1/one identity/zero refusals/zero metric fallbacks; base no-cohort; workers_effective=4 every run",
+  "installed_validation": "V00R gauntlet on the repaired wheels (368 passes, AB A==B==C, wheel<->installed identity)",
+  "rehearsal": "disposable worktree at 129c53f94e85210b1d4e5bbbc1a9d0d86b34e2e9: compileall rc0, import from tree, identity+public islands 50 passed, merge-tree == tip tree (fast-forward)"
+ },
+ "accepted": [
+  {
+   "component": "P01M phase wall/CPU/IPC/commit telemetry",
+   "records": "p01m_telemetry/"
+  },
+  {
+   "component": "P02I prepared input-keyed single-flight",
+   "records": "p02i/ (prepared_contract.json, prepared_proof_review.json)"
+  },
+  {
+   "component": "P03C compiled outer replay (bitwise)",
+   "records": "p03c_replay/"
+  },
+  {
+   "component": "P03M typed MetricID v2 + partial reuse",
+   "records": "p03m_metrics/ (incl P03R replay_metric_review.json)"
+  },
+  {
+   "component": "N00/N10 native AOT fold route (explicit-only)",
+   "records": "n00_native/, n10_native/ (REJECT_DEFAULT)"
+  },
+  {
+   "component": "G00/G10/G11 real-device GPU region (explicit-only)",
+   "records": "g00_gpu/, g10_gpu/, g11_gpu/ (V100, CPU_ROUTE_RETAINED)"
+  },
+  {
+   "component": "batch runtime/cohort/preparation/telemetry/trace",
+   "records": "X00 BATCH_RUNTIME covered_by_current_campaign; src diff main..tip = 18 files incl packaging, +5743/-290"
+  },
+  {
+   "component": "packaging repair: spawn shim shipped in wheels",
+   "records": "i00r_repair/ (I00R fix + complete)"
+  }
+ ],
+ "rejected": [
+  {
+   "component": ">=10x throughput claim on the frozen cohort",
+   "why": "measured median 2.6632x, LB95 2.5948x < 10 (gate_10x.json, R00-confirmed)"
+  },
+  {
+   "component": "P04 bounded independent result drain",
+   "why": "not_admitted - no measured residual backpressure (p04i_receiver/, P04R review; no code)"
+  },
+  {
+   "component": "native route as production default",
+   "why": "N10 REJECT_DEFAULT - explicit option only"
+  },
+  {
+   "component": "F00 flow-sparse producer",
+   "why": "not_admitted (P05R binding; no code)"
+  }
+ ],
+ "unavailable": [
+  "CI: none configured - absent CI is unavailable, never passed",
+  "production GPU default qualification on this CPU-only dev host (G11 real-device receipt stands; production GPU gates remain platform duties)",
+  "production target workload: the gate is an observed-cohort installed proxy; no production deployment was supplied"
+ ],
+ "unverified_claims": [],
+ "merge_disposition": "do_not_merge"
+}

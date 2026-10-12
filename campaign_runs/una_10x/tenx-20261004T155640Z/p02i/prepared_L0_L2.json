@@ -1,0 +1,94 @@
+{
+  "schema": "post-p00-prepared-l0-l2-1",
+  "task": "P02I",
+  "campaign": "una_10x",
+  "interpreter": "./_py (alan micromamba env, python 3.11)",
+  "note": "All commands actually run in this task, in order, with their real outcomes. No heavy-budget benchmark runs are charged: every run below is a correctness/evidence test (walls are test walls, not campaign measurements).",
+  "L0_unit": {
+    "suite": "tests/tenx/post_p00/test_preparation.py",
+    "command": "./_py -m pytest tests/tenx/post_p00/test_preparation.py -q",
+    "outcome": "13 passed",
+    "laws": {
+      "E7_refusal_taxonomy": "turns_row / obstacle_row / format_not_admitted:{network,origins,destinations} / stage_not_admitted each refuse loudly and serve nothing; admitted session serves both admitted stages",
+      "E8_no_fit": "cap=1 arena: arrays still served (correctness never governed by the cap); arena_nofit counted; nothing retained; store still serves verified hits",
+      "E9_detach": "pickle.dumps(PrepSession) raises TypeError mentioning 'detach' (loud transport law)",
+      "E10_mutation_isolation": "mutating a served copy leaves the next serve byte-identical to the producer payload",
+      "E6_owner_death": "SIGKILL'd flight owner: file-lock stolen via pid liveness; waiter completes with correct bits, cold_build=1, fallback_compute=0",
+      "E11_num_threads_bit_equality": "snap derivation with num_threads=1 vs 3: node_weight/weight_to_start/weight_to_end/nearest_edge_id/edge_start_node/edge_end_node/geometry wkb_hex all bit-equal",
+      "E5_invalidation": "byte change with unchanged size and restored mtime (two digits swapped inside the coordinate block) forces a fresh build under a different key; served geometry reflects the NEW bytes",
+      "corruption": "corrupted committed payload byte: verification on read refuses it; flight rebuilds; served bits are the producer's",
+      "file_disappearance": "missing source raises the uncached path's FileNotFoundError even when the arena holds the entry (per-row gate precedes the flight consult)",
+      "E2_log_replay": "prepared hit replays the owner's content-derived lines byte-identically incl. the NF-1 'CRS set to EPSG:3857.' line (crs_label carried in metadata because a CRS rebuilt from PROJJSON stringifies differently); the hit adds only its own v=2 announcement"
+    }
+  },
+  "L2_integration": {
+    "suite": "tests/tenx/post_p00/test_preparation.py (batch tests) + evidence probe",
+    "tests": [
+      "test_prepared_bitwise_engagement_and_warm: serial vs parallel(W2) artifact trees bitwise-equal; counters 9 stages / 3 builds / 6 served; NF-7 gate holds; warm repeat cold_build==0 with artifacts unchanged",
+      "test_serial_and_single_job_never_arm_the_prepared_route: serial RunBatch and plain RunAccessibility create no prepared root and report no preparation block",
+      "test_cross_role_snap_collision_distinct_entries (E3/BF-1): origins_file == destinations_file is legal; store holds 3 entries (1 network + 2 role-distinct snaps); run stays bitwise vs serial"
+    ],
+    "evidence_probe": "_p02i_evidence.py -> prepared_engagement.json (E1 sha256 tree parity, E4 counters, warm repeat, E12 cost)",
+    "outcome": "13 passed (single island run covers L0+L2)"
+  },
+  "regression": [
+    {"suite": "tests/tenx/cache", "command": "./_py -m pytest tests/tenx/cache -q", "outcome": "33 passed"},
+    {"suite": "tests/tenx/cohort", "command": "./_py -m pytest tests/tenx/cohort -q", "outcome": "6 passed"},
+    {"suite": "tests/tenx/post_p00", "command": "./_py -m pytest tests/tenx/post_p00 -q", "outcome": "23 passed (10 telemetry + 13 prepared)"},
+    {"suite": "tests/batch + tests/execution", "command": "./_py -m pytest tests/batch tests/execution -q", "outcome": "198 passed (first run: 5 failed — two real P02 defects, fixed; see defects_fixed)"},
+    {"suite": "tests/tenx/trace", "command": "./_py -m pytest tests/tenx/trace -q", "outcome": "55 passed, 2 skipped"},
+    {"suite": "tests/tenx/identity", "command": "./_py -m pytest tests/tenx/identity -q", "outcome": "47 passed"},
+    {"suite": "tests/tenx/metrics", "command": "./_py -m pytest tests/tenx/metrics -q", "outcome": "69 passed"},
+    {"suite": "tests/tenx/sparse", "command": "./_py -m pytest tests/tenx/sparse -q", "outcome": "74 passed, 1 skipped"},
+    {"suite": "tests/tenx/harness", "command": "./_py -m pytest tests/tenx/harness -q", "outcome": "45 passed, 1 skipped"},
+    {"suite": "tests/tenx/public", "command": "./_py -m pytest tests/tenx/public -q", "outcome": "3 passed"}
+  ],
+  "defects_fixed": [
+    {
+      "defect": "_store_network_to_cache referenced `net` outside its binding (UnboundLocalError on every CACHE_GRAPH commit path)",
+      "caught_by": "tests/execution/test_runbatch_serial.py::test_per_row_profile_from_pairing_csv_flows_to_outcomes (E5 split regression)",
+      "fix": "net = self.network bound before the payload-None branch",
+      "why_lint_missed_it": "pyflakes is path-insensitive: `net` assigned somewhere in the function defeats its undefined-local check"
+    },
+    {
+      "defect": "NF-1 replay line used the restored CRS object: CRS.from_json stringifies as PROJJSON, diverging from the uncached 'CRS set to EPSG:3857.' line",
+      "caught_by": "test_prepared_hit_replays_log_stream",
+      "fix": "payload metadata gains crs_label (owner-path str() form); the replay_crs_line branch logs it (older generations fall back to the restored object's form)",
+      "note": "CACHE_GRAPH restore bytes unchanged (documented inherited divergence, C10-C31)"
+    },
+    {
+      "defect": "Flight would commit an unrepresentable producer payload: encode_arrays({}) is a VALID empty commit, poisoning every waiter's restore",
+      "caught_by": "_p02i_smoke.py area 8 during development (before any test landed)",
+      "fix": "owner branch skips commit AND arena retention when the producer returned no arrays; waiters reach their own local compute (the documented Flight law)"
+    },
+    {
+      "defect": "E3 producer called _build_network_from_gdf without the source_file argument the E4 extraction added",
+      "caught_by": "_p02i_e2e.py (first public-path probe)",
+      "fix": "argument added to the prepared _produce closure"
+    }
+  ],
+  "expectation_changes": [
+    {
+      "test": "tests/tenx/post_p00/test_telemetry.py::test_parallel_run_default_has_no_telemetry",
+      "change": "default extra surface {cohort} -> subset of {cohort, preparation}",
+      "reason": "the P02 contract's counters law requires the preparation block in the report when the route engages (runtime-only reporting; telemetry itself remains env-gated and absent)"
+    },
+    {
+      "test": "tests/batch/runtime/conftest.py hidden_residue/runtime_residue",
+      "change": "allowlist gains .una-batch-prepared beside .una-batch-cohort",
+      "reason": "the prepared store root persists by design (warm resumes), identity-verified at every load — the same dossier-06 exemption the cohort route holds"
+    }
+  ],
+  "mandatory_invalidation_battery": {
+    "status": "covered",
+    "changed_bytes_same_size_mtime": "test_invalidation_on_same_size_mtime_change",
+    "changed_weight_precision_uid_crs_reader_profile": "key closure = the CACHE_GRAPH closure (proven invalidation surface, C10-C31 suites); prepared path recomputes the identical key from the same closure",
+    "mixed_rows": "E1 serial-vs-parallel tree equality across 3 distinct-radius rows",
+    "stale_manifest": "store verification pinned on_read (NF-2); corrupted-entry rebuild test",
+    "corrupted_wkb": "test_corrupted_entry_rebuilds",
+    "owner_death": "test_owner_death_waiter_completes (E6)",
+    "memory_refusal": "test_no_fit_serves_without_retention (E8)",
+    "final_object_mutation": "test_served_copy_mutation_isolation (E10)",
+    "file_disappearance": "test_file_disappearance_gates_at_seam"
+  }
+}

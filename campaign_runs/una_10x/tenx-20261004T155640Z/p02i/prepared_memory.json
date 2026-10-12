@@ -1,0 +1,32 @@
+{
+  "schema": "post-p00-prepared-memory-1",
+  "task": "P02I",
+  "campaign": "una_10x",
+  "sizing_law": {
+    "law": "per_worker_residency_cap(workers_effective) = max(64 MiB, allowance // workers)",
+    "defined_once_in": "src/urban_network_analysis/batch/cohort.py (C31-MINOR-1 law, re-exported by batch/preparation.py — one definition, two consumers)",
+    "measured_cap_bytes_per_worker": 29306962944,
+    "measured_context": "3-row smoke-grid batch, workers=2; this host's allowance makes the floor non-binding (64 MiB floor governs only small allowances)"
+  },
+  "arena": {
+    "kind": "bounded decoded-payload ledger per process per prepared root (LEASED state; TraceResidency precedent, review NF-5)",
+    "eviction": "LRU; a claim larger than the whole cap is NO_FIT (explicit False, ledger unchanged)",
+    "served_copies_law": "arena retains private copies; every row gets fresh copies (E10 test: served-copy mutation isolation)",
+    "no_fit_law": "cap governs retained bytes, never correctness (E8 test: cap=1 still serves, arena_nofit counted, store still serves verified hits)"
+  },
+  "registry": {
+    "bound": 4,
+    "law": "bounded per-process registry keyed by prepared root (design 02 line 121: no unlimited process-global registry — the cohort _PROCESS_STORES unbounded pattern is explicitly NOT copied, NF-8)",
+    "overflow": "oldest root closed and evicted",
+    "shutdown": "close_registry() refuses new leases and clears every arena; called at pool_main's sentinel exit (worker.py); reopen_registry() exists for serial/test reuse",
+    "test": "_p02i_smoke.py areas 2 and 7 (bound eviction; close/refuse/reopen)"
+  },
+  "transport": {
+    "detach_law": "PrepSession.__getstate__ raises TypeError ('detach before RowResult/state-bundle transport'); worker detaches una._prepared_session AND una.topology._prepared_session before the capture/state-bundle section (E9)",
+    "test": "test_detach_law_pickle_refusal + every parallel island run packs a need_state bundle with the session attached (would crash loudly on violation)"
+  },
+  "reservation": {
+    "design_note": "design 02 reserves build scratch + retained payload + decoded worker copies + current row + receiver bytes before admission; this increment admits the bounded-arena portion (retained payloads) and relies on the existing row/receiver budgets; the explicit pre-admission reservation model remains a P02R/P02J review item",
+    "measured_peak": "not measured this increment (no heavy-budget runs charged); arena retention on the smoke grid is far below the measured cap"
+  }
+}

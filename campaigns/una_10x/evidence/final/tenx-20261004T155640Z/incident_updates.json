@@ -1,0 +1,18 @@
+{
+ "schema": "una-10x-final-incident-updates-1",
+ "task": "Z00",
+ "city_failures": "INC01-INC09 unchanged: reported_not_reproduced / hypothesis_not_reproduced; no reproducer, fix commit or verified root cause (X00 ledger, platform_obligations.json)",
+ "new_this_campaign": {
+  "id": "INC10-q10r-pool-spawn-packaging",
+  "what": "Q10 attempt 1 died in its first UNTIMED warmup process: installed wheels of BOTH arms could not spawn a parallel pool (ModuleNotFoundError: una_batch_worker_main; shim unshipped since 0acbb11, present at both comparator pin and candidate tip)",
+  "discovered_by": "the Q10 gate itself (no measured window ran)",
+  "repair": "packaging-only force-include of the stdlib-only shim; byte-identical at both pins; arm-neutrality proven; both wheels rebuilt (+shim-only diff), re-installed, re-gauntleted (V00R), identities re-frozen (I00R/Q00R)",
+  "status": "fixed_verified",
+  "receipts": [
+   "i00r_repair/packaging_defect_evidence.json",
+   "i00r_repair/base_wheel_repair.json",
+   "i00r_repair/cand_wheel_repair.json",
+   "r00_review/review.json (wheel re-hash + installed byte-match + cohort-scale pool proof)"
+  ]
+ }
+}

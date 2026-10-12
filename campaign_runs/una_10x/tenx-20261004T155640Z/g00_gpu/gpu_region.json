@@ -1,0 +1,202 @@
+{
+ "schema": "una-10x-g00-gpu-region-1",
+ "task": "G00",
+ "hardware_audit_this_node": {
+  "which_nvidia_smi": 1,
+  "dev_nvidia_globs": [],
+  "numba_cuda_detect": "CudaSupportError Error at driver init:   CUDA driver library cannot be found. If you are sure that a CUDA driver is installed, try setting environment variable NUMBA_CUDA_DRIVER with the file path of the CUDA driver s",
+  "local_cuda_runtime": {
+   "prefixes": [
+    "/usr/local/cuda",
+    "/usr/local/cuda-11",
+    "/usr/local/cuda-11.7"
+   ],
+   "nvcc_present": false,
+   "note": "runtime libs only; no nvcc on this node"
+  },
+  "cluster_gpu_partitions": [
+   {
+    "partition": "interactive-cpu",
+    "avail": "inactive",
+    "nodes": 40,
+    "gres": "gpu:v100:2(S:0-1)"
+   },
+   {
+    "partition": "interactive-cpu1",
+    "avail": "inactive",
+    "nodes": 30,
+    "gres": "gpu:rtx_6000:4(S:0-1)"
+   },
+   {
+    "partition": "interactive-cpu2",
+    "avail": "inactive",
+    "nodes": 12,
+    "gres": "gpu:a100:2(S:2,5)"
+   },
+   {
+    "partition": "interactive-cpu2",
+    "avail": "inactive",
+    "nodes": 1,
+    "gres": "gpu:a100:8(S:1,3-4,6)"
+   },
+   {
+    "partition": "gpu-v100",
+    "avail": "up",
+    "nodes": 40,
+    "gres": "gpu:v100:2(S:0-1)"
+   },
+   {
+    "partition": "gpu-a100",
+    "avail": "up",
+    "nodes": 12,
+    "gres": "gpu:a100:2(S:2,5)"
+   },
+   {
+    "partition": "gpu-a100",
+    "avail": "up",
+    "nodes": 1,
+    "gres": "gpu:a100:8(S:1,3-4,6)"
+   },
+   {
+    "partition": "gpu-h100",
+    "avail": "up",
+    "nodes": 1,
+    "gres": "gpu:h100:8(S:0-1)"
+   },
+   {
+    "partition": "gpu-h100",
+    "avail": "up",
+    "nodes": 3,
+    "gres": "gpu:h100:8(S:0,2)"
+   },
+   {
+    "partition": "gpu-h200",
+    "avail": "up",
+    "nodes": 12,
+    "gres": "gpu:h200:8(S:0-3)"
+   },
+   {
+    "partition": "gpu-l40s",
+    "avail": "up",
+    "nodes": 10,
+    "gres": "gpu:l40s:8(S:0-3)"
+   },
+   {
+    "partition": "gpu-rtx6000",
+    "avail": "up",
+    "nodes": 30,
+    "gres": "gpu:rtx_6000:4(S:0-1)"
+   },
+   {
+    "partition": "gpu-rtxpro-blackwell",
+    "avail": "up",
+    "nodes": 3,
+    "gres": "gpu:rtx_pro_6000_blackwell:8(S:0-1)"
+   }
+  ],
+  "cuda_toolchain_modules": [
+   "cuda/11.6.0                     cudnn/9.2.0.82-11-cuda",
+   "cuda/11.7.0                     cudnn/9.2.0.82-12-cuda    (D)",
+   "cuda/11.8.0                     nvhpc-cuda/12.4",
+   "cuda/12.1.1                     nvhpc-cuda/12.9           (D)",
+   "cuda/12.6.1-cu7yzjl             quantum-espresso/7.1-cuda",
+   "cuda/12.6.1                     r/4.2.1-cuda",
+   "cuda/12.9.1              (D)    r/4.3.2-cuda",
+   "cuda/13.0.1                     r/4.4.1-cuda",
+   "cuda/12.1.1    hip/7.0.2-cuda        hipsolver/7.0.2-cuda",
+   "cuda/12.6.1    hipblas/7.0.2-cuda    openmpi/4.1.8-cuda"
+  ]
+ },
+ "hardware_law": "No GPU on the login/dev node; the cluster exposes real FP64-capable devices through salloc (gpu-v100/gpu-a100/gpu-h100/gpu-h200/gpu-l40s/gpu-rtx6000/gpu-rtxpro-blackwell, all up). Hardware absence on one node blocks nothing campaign-wide: G10/G11 run on a salloc'd device per the user's standing authorization (compute only, no pushes). Missing hardware on a chosen route would be recorded as an explicit qualification blocker, never simulated success.",
+ "fp64_capability_classes": {
+  "law": "dossier 08: record actual hardware and FP64/profile capabilities; a vendor API lacking required arithmetic is an unsupported exact domain, not license for FP32",
+  "candidate_classes": {
+   "v100_sm70": {
+    "partition": "gpu-v100",
+    "fp64": "1:2",
+    "role": "primary candidate"
+   },
+   "a100_sm80": {
+    "partition": "gpu-a100",
+    "fp64": "1:2",
+    "role": "candidate"
+   },
+   "hopper_sm90": {
+    "partition": "gpu-h100/gpu-h200",
+    "fp64": "1:2",
+    "role": "candidate"
+   }
+  },
+  "weak_fp64_classes": {
+   "ada_sm89": {
+    "partition": "gpu-l40s/gpu-rtx6000",
+    "fp64": "1:64",
+    "note": "real devices; crossover unlikely for a double fold - qualification would measure, not assume"
+   },
+   "blackwell_rtxpro": {
+    "partition": "gpu-rtxpro-blackwell",
+    "fp64": "1:64",
+    "note": "as ada_sm89"
+   }
+  }
+ },
+ "residency_region": {
+  "law": "dossier 08 candidate region, specialized to the measured replay: upload immutable prepared CSR (indptr/ids/dist/row weights) once per row execution; execute independent per-origin folds on device; download only the required per-origin outputs and kept counts; host keeps calibration inputs",
+  "granularity": "one thread per origin; strictly sequential order-bearing sums inside an origin (mirrors the N00 strict fold Phase C order)",
+  "forbidden": [
+   "atomics or completion-order sums",
+   "reduction reassociation of any order-bearing sum",
+   "dense O x D x jobs tensors",
+   "FP32 substitution for f64",
+   "unbounded queues/tiles"
+  ],
+  "device_transcendentals": "host retains delicate coefficients initially; device exp/logistic (libdevice) is NOT assumed bit-equal to the host libm path - independently bit-validated per profile before any device-side transcendental is admitted, else those terms stay on host"
+ },
+ "bitwise_target": {
+  "law": "parity is mandatory per una_legacy/madina_legacy/corrected_v1; the production authority is the DELIVERED numba fastmath route's per-output bits",
+  "consequence": "the device fold must reproduce the delivered route's outputs bit-for-bit on the validated profile to enter any production route; the N00 map already showed the STRICT host fold diverges from the delivered lowering at general trip counts, so the honest default is that the device fold qualifies only as battery/qualification scope unless on-device bit validation says otherwise"
+ },
+ "full_service_model": {
+  "components": [
+   "prepare",
+   "conversion",
+   "H2D",
+   "launch",
+   "kernel",
+   "D2H",
+   "sync",
+   "remaining",
+   "cold JIT/setup charged once in its declared boundary"
+  ],
+  "region_share_basis": {
+   "whole_row_replay_s": 1.9582,
+   "ge_split_s": 1.0645,
+   "fold_region_s": 3.0227,
+   "run_service_demand_s": 66.5284,
+   "source": "committed post_p00_stage_model.json"
+  },
+  "crossover_law": "CPU vs GPU selection uses validated measured crossover INCLUDING neighboring service; for identical fixed resource policy both arms need the same allowed budget - a GPU node is a hardware ADDITION, recorded separately, never labeled equal-resource with the C=4 CPU arm"
+ },
+ "comparator_law": "the strongest matched CPU configuration (frozen 395cdc5 pin on w4t1) remains the 10x comparator; no kernel ratio is multiplied with P02/P03 gains and GPU walls cannot feed the CPU public gate",
+ "buildable_implementation_plan_g10": {
+  "module": "src/urban_network_analysis/Engines/_gpu_fold.py",
+  "engagement": "lazy device module, never imported by the production route (same engagement law as N00's native bridge, enforced statically + fresh-process)",
+  "kernel": "numba.cuda one-thread-per-origin strict-order fold: filtered single pass with inline order-bearing sums, kept count, (d, idx) insertion-sorted knn crop k=min(kept, len(knn_weights)), host-mirrored decay branches",
+  "ownership_sync": "immutable uploaded inputs; exact-size per-structure scratch (no O*nnz blowup); bounded stream with events; synchronize before timing ends or leases release; explicit cancellation points between row submissions",
+  "device_battery": "tests/tenx/gpu - CPU-only tests assert engagement/refusal/structure laws and never mark hardware validation; the device battery runs only on hardware and is REQUIRED for any qualification claim",
+  "validation_command": "salloc -p gpu-v100 --gres=gpu:1 -c 4 -t 00:45:00 bash -c 'module load cuda/<ver> && NUMBA_CUDA_DRIVER=<libcuda> ./_py tests/tenx/gpu/_device_battery.py'",
+  "unrun_gates_statement": "until G11 executes on the device: no GPU bits, no GPU walls, no GPU engagement, no capability claim"
+ },
+ "deliverables_downstream": {
+  "G10": "gpu_implementation.json (device code + CPU-only tests or explicit external blocker)",
+  "G11": "gpu_qualification.json (real-device parity + full-service crossover, or explicit unavailable with performance/capability status separated)"
+ },
+ "budget": {
+  "charged_walls_s": 0.0,
+  "law": "G00 is an audit/spec composition (evidence wall, probe-scale)",
+  "cumulative_s": 4454.3,
+  "cap_s": 28800.0,
+  "reserve_s": 7200.0,
+  "remaining_before_reserve_s": 17145.7
+ }
+}

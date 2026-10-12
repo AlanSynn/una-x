@@ -25,7 +25,8 @@ executes every row in **caller order at a single commit cursor**:
 
 At each commit the coordinator: verifies the staged bytes against the
 worker's digests, publishes them by ``os.replace`` (stronger than serial,
-which writes output files in place one by one), applies the row's
+which writes output files in place one by one) with every published byte
+fsynced before its public name flips, applies the row's
 settings delta onto the caller's project object (identity preserved),
 applies the row's observable flags, folds composite capture in
 ``plan.fold_order`` (caller order — the fold is float order-sensitive),
@@ -48,6 +49,11 @@ sequence (log timestamps are not bitwise-comparable anyway), and a
 state-only rerun of the last committed row (a crash destroyed the live
 bundle; the rerun publishes nothing and double-counts nothing — the
 journal's capture payloads, not the rerun, feed the composite fold).
+A resume that re-runs rows AFTER the prior run had already finalized
+the composite re-folds the FULL capture set from the journal bytes in
+``plan.fold_order`` before re-finalizing — never just the re-run rows'
+captures, which would overwrite the published composite with a subset
+rebuild (BATCH_REVIEW MAJOR-1).
 
 Cancellation (deadline, KeyboardInterrupt, worker loss) stops dispatch,
 reaps the pool, removes this run's staging directories by ownership
@@ -238,7 +244,7 @@ class _Staging:
                 pass
 
 
-def _fsync_published(path: str) -> None:
+def _fsync_file(path: str) -> None:
     """fsync one published file (mirrors the journal's durability
     discipline; BATCH_REVIEW rev-20261003T0105Z MINOR-4)."""
     fd = os.open(path, os.O_RDONLY)
@@ -264,21 +270,27 @@ def _fsync_dir(path: str) -> None:
 
 def _publish_staged(staging_dir: str, public_folder: str,
                     files: Tuple[Tuple[str, int, str], ...]) -> Tuple[str, ...]:
+    """Publish staged artifacts by ``os.replace`` — atomic per file
+    (multi-file rows appear file-by-file; the journal record naming the
+    full set is written after, so resume verification never accepts a
+    partially published row).  Every published file is fsynced at its
+    public path once the rename lands, and each destination directory
+    afterwards (BATCH_REVIEW rev-20261003T0105Z MINOR-4)."""
     published = []
-    dirs = set()
+    dest_dirs = []
     for relpath, _size, _digest in files:
         src = os.path.join(staging_dir, relpath)
         dest = os.path.join(public_folder, relpath)
-        parent = os.path.dirname(dest) or public_folder
-        os.makedirs(parent, exist_ok=True)
+        d = os.path.dirname(dest) or public_folder
+        os.makedirs(d, exist_ok=True)
         os.replace(src, dest)
         published.append(dest)
         # Durability mirrors CheckpointJournal._write (BATCH_REVIEW
         # MINOR-4): without fsync, a crash/power-loss window can leave
         # torn or mixed-generation published outputs behind the rename.
-        _fsync_published(dest)
-        dirs.add(parent)
-    for d in sorted(dirs):
+        _fsync_file(dest)
+        dest_dirs.append(d)
+    for d in dict.fromkeys(dest_dirs):   # distinct dirs, first-seen order
         _fsync_dir(d)
     return tuple(sorted(published))
 
@@ -604,7 +616,11 @@ def _composite_digest_map(exported) -> dict:
 
 def _job_for(una, plan: BatchPlan, i: int, staging_dir: str, analysis: str,
              script_output_folder: Optional[str],
-             need_state: bool) -> RowJob:
+             need_state: bool,
+             cohort_root: Optional[str] = None,
+             cohort_residency_cap_bytes: int = 0,
+             prepared_root: Optional[str] = None,
+             prepared_residency_cap_bytes: int = 0) -> RowJob:
     s = una.projects[i]
     # ``inject_specs`` is a test-transport field, not a Settings field: it
     # must never reach the worker's Settings (Validation() rejects unknown
@@ -620,6 +636,10 @@ def _job_for(una, plan: BatchPlan, i: int, staging_dir: str, analysis: str,
         capture=bool(una._composite_active and s.batch_composite_output),
         need_state=need_state,
         verbosity=0,
+        cohort_root=cohort_root,
+        cohort_residency_cap_bytes=cohort_residency_cap_bytes,
+        prepared_root=prepared_root,
+        prepared_residency_cap_bytes=prepared_residency_cap_bytes,
     )
 
 
@@ -632,54 +652,67 @@ def _commit_worker_row(una, plan: BatchPlan, journal, i: int,
                        effective: EffectiveExecution,
                        outcomes: Dict[int, RowOutcome],
                        manifests: Dict[int, Tuple[str, ...]],
-                       bundles: Dict[int, dict]) -> None:
-    _verify_staged(result.staging_dir, result.files, row=i)
-    os.makedirs(public_folder, exist_ok=True)
-    published = _publish_staged(result.staging_dir, public_folder,
-                                result.files)
+                       bundles: Dict[int, dict],
+                       rec: Optional[PhaseRecorder] = None) -> None:
+    # Statement order below is the C30/C20 commit sequence, preserved
+    # verbatim; spans only observe it (P01M coarse commit decomposition).
+    _ph = rec.phase if rec is not None else _null_phase
+    with _ph("commit"):
+        with _ph("commit_staged_verify"):
+            _verify_staged(result.staging_dir, result.files, row=i)
+            os.makedirs(public_folder, exist_ok=True)
+        with _ph("commit_publish"):
+            published = _publish_staged(result.staging_dir, public_folder,
+                                        result.files)
 
-    _apply_settings_delta(una.projects[i], result.settings_post)
-    una.settings = una.projects[i]
-    una.has_flow_results = result.has_flow_results
-    una.has_centrality_results = result.has_centrality_results
-    if result.cap_resolved:
-        una.resolved_gravity_cap = result.resolved_gravity_cap
-    if result.capture is not None:
-        una._composite_captured.append(result.capture)
-    if result.state_bundle is not None:
-        bundles[i] = _unpack_state_bundle(result.state_bundle)
+        with _ph("commit_state_apply"):
+            _apply_settings_delta(una.projects[i], result.settings_post)
+            una.settings = una.projects[i]
+            una.has_flow_results = result.has_flow_results
+            una.has_centrality_results = result.has_centrality_results
+            if result.cap_resolved:
+                una.resolved_gravity_cap = result.resolved_gravity_cap
+            if result.capture is not None:
+                una._composite_captured.append(result.capture)
+            if result.state_bundle is not None:
+                bundles[i] = _unpack_state_bundle(result.state_bundle)
 
-    capture_meta = None
-    if journal is not None and result.capture is not None:
-        capture_meta = {
-            **journal.write_capture(i, result.capture[0],
-                                    _npy_bytes(result.capture[1])),
-            "column": result.capture[0],
-            "metric": result.capture[2],
-            "join_path": result.capture[3],
-        }
+        capture_meta = None
+        if journal is not None and result.capture is not None:
+            with _ph("commit_capture_write"):
+                capture_meta = {
+                    **journal.write_capture(i, result.capture[0],
+                                            _npy_bytes(result.capture[1])),
+                    "column": result.capture[0],
+                    "metric": result.capture[2],
+                    "join_path": result.capture[3],
+                }
 
-    outcomes[i] = RowExecutionOutcome(
-        index=i, name=plan.rows[i].row.name, status="ran",
-        semantic_profile=plan.rows[i].row.semantic_profile,
-        backend=effective.backend,
-        admission=plan.rows[i].admission,
-        admission_reasons=plan.rows[i].admission_reasons,
-        phase="COMMITTED",
-        worker_pid=result.worker_pid,
-        peak_rss_bytes=result.peak_rss_bytes,
-        output_files=published,
-        timings=dict(result.timings))
-    manifests[i] = published
+        with _ph("commit_outcome"):
+            outcomes[i] = RowExecutionOutcome(
+                index=i, name=plan.rows[i].row.name, status="ran",
+                semantic_profile=plan.rows[i].row.semantic_profile,
+                backend=effective.backend,
+                admission=plan.rows[i].admission,
+                admission_reasons=plan.rows[i].admission_reasons,
+                phase="COMMITTED",
+                worker_pid=result.worker_pid,
+                peak_rss_bytes=result.peak_rss_bytes,
+                output_files=published,
+                timings=dict(result.timings))
+            manifests[i] = published
 
-    if journal is not None:
-        _journal_row(journal, i, phase="COMMITTED",
-                     files={rel: {"bytes": size, "sha256": digest}
-                            for rel, size, digest in result.files},
-                     capture=capture_meta,
-                     settings={k: v for k, v in result.settings_post.items()},
-                     timings=dict(result.timings))
-    _check_prefix_decisions(plan, i, una, published)
+        if journal is not None:
+            with _ph("commit_journal"):
+                _journal_row(journal, i, phase="COMMITTED",
+                             files={rel: {"bytes": size, "sha256": digest}
+                                    for rel, size, digest in result.files},
+                             capture=capture_meta,
+                             settings={k: v for k, v
+                                       in result.settings_post.items()},
+                             timings=dict(result.timings))
+        with _ph("commit_prefix_check"):
+            _check_prefix_decisions(plan, i, una, published)
 
 
 def _commit_parent_row(una, plan: BatchPlan, journal, i: int,
@@ -875,6 +908,12 @@ def _rehydrate(una, plan: BatchPlan, bundles: Dict[int, dict],
 # Entry point.
 # ---------------------------------------------------------------------------
 
+def _null_phase(_name: str, **_kw: Any):
+    """Inert span context for the telemetry-disabled path (zero behavior)."""
+    from contextlib import nullcontext
+    return nullcontext()
+
+
 def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                        requested: ExecutionOptions,
                        effective: EffectiveExecution,
@@ -896,9 +935,19 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
             "RunBatch(parallel=True) was re-entered inside a batch worker "
             "process; nested parallel batches are not supported (guard "
             "module-level entry code with `if __name__ == '__main__'`)")
+    # P01M diagnostics (post_p00 design 01): opt-in coordinator telemetry.
+    # Disabled by default — ``_ph`` is an inert context and every span is
+    # free; enabled runs are diagnostic runs and never comparators.
+    from .telemetry import (ENV_DIR, SCHEMA, PhaseRecorder,
+                            summarize_events)
+    rec = PhaseRecorder.maybe(source="coordinator")
+    _ph = rec.phase if rec is not None else _null_phase
+
     projects = una.projects
-    plan = plan_batch(projects, script_output_folder=script_output_folder,
-                      analysis=analysis)
+    with _ph("plan"):
+        plan = plan_batch(projects,
+                          script_output_folder=script_output_folder,
+                          analysis=analysis)
     n = len(plan.rows)
     commit_order = tuple(plan.commit_order)
     error_at = next((rp.row.index for rp in plan.rows
@@ -961,18 +1010,64 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
     una._init_batch_compositor()
     folded_this_call = {"value": False}
 
+    # Cohort route (C30, dossier 06): eligible rows are the
+    # proven-independent (worker-admissible) rows of an accessibility
+    # batch.  The shared store root is runtime-only state beside the
+    # first dispatched row's public folder (staging-root convention:
+    # hidden, content-addressed, persists for warm resumes, safe to
+    # delete); the per-worker residency cap comes from RESOURCES.md
+    # sizing via the cohort module.  Grouping itself is runtime-
+    # resolved: workers derive trace identities after the graph build.
+    cohort_root = None
+    cohort_cap = 0
+    cohort_rows: Dict[int, dict] = {}
+    if analysis == 'accessibility' and dispatchable:
+        from .cohort import per_worker_residency_cap
+        # The root is STABLE across runs and resumes (no run id): warm
+        # restarts and exact repeats must hit, and a crashed run's trace
+        # serves the resumed one — identity-verified at every load, so
+        # reuse is always content-proven.  Content addressing + the
+        # single flight make concurrent sharers safe.
+        cohort_root = os.path.join(_public_folder(plan, dispatchable[0]),
+                                   ".una-batch-cohort")
+        cohort_cap = per_worker_residency_cap(workers_effective)
+        notes_runtime.append(
+            f"cohort route: {len(dispatchable)} eligible row(s); "
+            f"residency cap {cohort_cap} bytes/worker")
+
+    # P02 prepared route (una_10x, prepared_contract.json @ f139dd3):
+    # same eligibility as the cohort route; the prepared-store root is
+    # stable across runs/resumes (warm restarts hit), hidden beside the
+    # cohort root, and identity-verified at every load.  The arena cap
+    # is the SAME C31-MINOR-1 sizing law (defined once in cohort.py,
+    # re-exported by preparation.py).
+    prepared_root = None
+    prepared_cap = 0
+    prepared_rows: Dict[int, dict] = {}
+    if analysis == 'accessibility' and dispatchable:
+        from .preparation import per_worker_residency_cap
+        prepared_root = os.path.join(_public_folder(plan, dispatchable[0]),
+                                     ".una-batch-prepared")
+        prepared_cap = per_worker_residency_cap(workers_effective)
+        notes_runtime.append(
+            f"prepared route: {len(dispatchable)} eligible row(s); "
+            f"arena cap {prepared_cap} bytes/worker")
+
     outcomes: Dict[int, RowOutcome] = {}
     manifests: Dict[int, Tuple[str, ...]] = {}
     bundles: Dict[int, dict] = {}
     buffered: Dict[int, RowResult] = {}
     parent_ran: set = set()
+    # P01M: per-row worker telemetry arriving on committed RowResults.
+    worker_tel: Dict[int, dict] = {}
     pool = _Pool(workers_effective, effective.options.threads_per_worker)
     pool_started = False
     deadline = None
 
     try:
         if dispatchable:
-            pool.start()
+            with _ph("pool_start"):
+                pool.start()
             pool_started = True
             notes_runtime.append(
                 f"row-worker pool: {workers_effective} spawn worker(s) x "
@@ -1006,7 +1101,11 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                     una, plan, j, staging.dir_for(
                         j, _public_folder(plan, j)),
                     analysis, script_output_folder,
-                    need_state=(j == expected_last))
+                    need_state=(j == expected_last),
+                    cohort_root=cohort_root,
+                    cohort_residency_cap_bytes=cohort_cap,
+                    prepared_root=prepared_root,
+                    prepared_residency_cap_bytes=prepared_cap)
                 # Transportability is an admission requirement (see
                 # _job_transport_failure): fail THIS row loudly through the
                 # normal ordering path (earliest failure, prefix
@@ -1017,7 +1116,8 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                         job_id=job.job_id, row_index=j, status="failed",
                         error_type="RuntimeError", error_msg=probe)
                     continue
-                pool.dispatch(job)
+                with _ph("dispatch", row_id=j):
+                    pool.dispatch(job)
 
         while cursor < n:
             if deadline is not None and time.monotonic() > deadline:
@@ -1034,7 +1134,8 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                 # finished work cannot cover — dossier 04's ordering).
                 while True:
                     try:
-                        drained = pool.recv(timeout=0)
+                        with _ph("result_recv_drain"):
+                            drained = pool.recv(timeout=0)
                     except queue.Empty:
                         break
                     if drained.row_index in dispatch_set \
@@ -1082,10 +1183,21 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                         # failure: re-raise the original exception (same
                         # type/message) once the prefix has committed.
                         raise _worker_failure(result)
-                    _commit_worker_row(
-                        una, plan, journal, i, result,
-                        _public_folder(plan, i), effective,
-                        outcomes, manifests, bundles)
+                    with _ph("commit", row_id=i):
+                        _commit_worker_row(
+                            una, plan, journal, i, result,
+                            _public_folder(plan, i), effective,
+                            outcomes, manifests, bundles, rec=rec)
+                    if rec is not None and (result.phase_events
+                                            or result.phase_dropped):
+                        worker_tel[i] = {
+                            "events": list(result.phase_events),
+                            "dropped": result.phase_dropped,
+                            "worker_pid": result.worker_pid}
+                    if result.cohort_stats is not None:
+                        cohort_rows[i] = result.cohort_stats
+                    if result.prepared is not None:
+                        prepared_rows[i] = result.prepared
                     folded_this_call["value"] = folded_this_call["value"] \
                         or result.capture is not None
                     staging.discard(i)
@@ -1099,11 +1211,17 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
                         "never started")
                 try:
                     result = pool.recv(timeout=_TICK_S)
+                except queue.Empty:
+                    continue
+                # P01M: per-ARRIVAL marker (not per 20ms tick — a
+                # per-tick span floods any bounded buffer with idle
+                # noise and guarantees drops).  The span's timestamp is
+                # the arrival instant; the wait itself is visible as
+                # inter-arrival spacing.
+                with _ph("result_recv", row_id=result.row_index):
                     if result.row_index in dispatch_set \
                             and result.row_index not in committed:
                         buffered[result.row_index] = result
-                except queue.Empty:
-                    pass
                 continue
 
             if i in committed:
@@ -1153,9 +1271,10 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
 
             # Serial-class or plan-error row: exact serial statements, run
             # once everything before the cursor has committed.
-            _commit_parent_row(una, plan, journal, i, analysis,
-                               script_output_folder, effective, n,
-                               outcomes, manifests)
+            with _ph("commit_parent", row_id=i):
+                _commit_parent_row(una, plan, journal, i, analysis,
+                                   script_output_folder, effective, n,
+                                   outcomes, manifests)
             _check_prefix_decisions(plan, i, una, manifests.get(i, ()))
             parent_ran.add(i)
             folded_this_call["value"] = folded_this_call["value"] or bool(
@@ -1180,7 +1299,8 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
         raise
     finally:
         if pool_started:
-            pool.close()
+            with _ph("pool_close"):
+                pool.close()
         # Single cleanup owner: remove this run's staging by ownership on
         # success and cancellation alike (row dirs were discarded at their
         # commits; the per-folder hidden ROOTS remain).
@@ -1188,8 +1308,10 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
 
     # ---- rehydration, composite finalization, report ----------------------
     try:
-        _rehydrate(una, plan, bundles, outcomes, journal, effective,
-                   analysis, script_output_folder, notes_runtime, parent_ran)
+        with _ph("rehydrate"):
+            _rehydrate(una, plan, bundles, outcomes, journal, effective,
+                       analysis, script_output_folder, notes_runtime,
+                       parent_ran)
     except BatchCancelledError as exc:
         _attach_rows(exc, outcomes)
         raise
@@ -1219,14 +1341,151 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
         # read) in plan.fold_order and re-export the full composite.
         if folded_this_call["value"] or not journal.verify_composite():
             _refold_composite_from_journal(una, plan, journal)
-            exported = una._finalize_batch_composite()
+            with _ph("composite_finalize"):
+                exported = una._finalize_batch_composite()
             journal.record_composite_finalized(
                 files=_composite_digest_map(exported))
     else:
-        exported = una._finalize_batch_composite()
+        with _ph("composite_finalize"):
+            exported = una._finalize_batch_composite()
         if journal is not None:
             journal.record_composite_finalized(
                 files=_composite_digest_map(exported))
+
+    # Cohort aggregation (dossier 06 counters: unique searches vs rows,
+    # store decodes, resident hits, folds, refusals — runtime-resolved
+    # identities grouped here only for reporting).
+    cohort_summary = None
+    if cohort_rows:
+        totals = {
+            "rows": 0, "builds": 0, "faultins": 0, "resident_hits": 0,
+            "singleflight_lost": 0, "replays": 0, "folds_done": 0,
+            "build_s": 0.0, "faultin_s": 0.0, "replay_s": 0.0,
+            # P03M typed metric-field reuse (una:metric-id:v2)
+            "metric_field_hits": 0,
+            "metric_split_folds": 0,
+            "metric_field_produced": 0,
+            "metric_copied_bytes": 0,
+            "metric_fallbacks": 0,
+            "metric_errors": 0,
+            "split_s": 0.0,
+        }
+        refusals: Dict[str, int] = {}
+        identities = set()
+        for stats in cohort_rows.values():
+            for k in totals:
+                totals[k] += stats.get(k, 0)
+            for k, v in (stats.get("refusals") or {}).items():
+                refusals[k] = refusals.get(k, 0) + v
+            if stats.get("trace_id"):
+                identities.add(stats["trace_id"])
+        totals["refusals"] = refusals
+        totals["distinct_trace_identities"] = len(identities)
+        totals["per_row"] = {str(i): cohort_rows[i]
+                             for i in sorted(cohort_rows)}
+        totals["store_root"] = cohort_root
+        totals["residency_cap_bytes_per_worker"] = cohort_cap
+        cohort_summary = totals
+        notes_runtime.append(
+            f"cohort route: {len(cohort_rows)} row(s) attempted, "
+            f"{totals['builds']} trace build(s) over "
+            f"{totals['distinct_trace_identities']} distinct identit"
+            f"{'y' if totals['distinct_trace_identities'] == 1 else 'ies'}, "
+            f"{totals['faultins']} store decode(s), "
+            f"{totals['resident_hits']} resident hit(s), "
+            f"{totals['replays']} replay(s)"
+            + (f"; refusals {refusals}" if refusals else ""))
+
+    # P02 prepared aggregation (una_10x, design 02 counters — never
+    # collapsed: cold_build / verified_hit / contention_wait /
+    # fallback_compute / arena_nofit / refusals).  The NF-7 engagement
+    # gate (builds <= distinct identities, equality asserted only when
+    # every contention-fallback counter is zero) is asserted by the
+    # test island, where identities are constructed explicitly; the
+    # report carries the sums it needs.
+    preparation_summary = None
+    if prepared_rows:
+        totals = {
+            "stages": 0, "cold_build": 0, "verified_hit": 0,
+            "contention_wait": 0, "fallback_compute": 0,
+            "arena_nofit": 0, "build_s": 0.0,
+            # NR-3 (P02R review): store-level counters ride the per-row
+            # deltas; the contract's corruption_rebuild counter is the
+            # quarantined delta, so rebuilds surface in the report
+            # instead of hiding inside cold_build.
+            "store_hits": 0, "store_misses": 0, "corruption_rebuild": 0,
+        }
+        refusals = {}
+        identities = 0
+        for stats in prepared_rows.values():
+            for k in totals:
+                if k == "corruption_rebuild":
+                    totals[k] += stats.get("store_quarantined", 0)
+                else:
+                    totals[k] += stats.get(k, 0)
+            identities = max(identities,
+                             stats.get("identities", 0))
+            for k, v in (stats.get("refusals") or {}).items():
+                refusals[k] = refusals.get(k, 0) + v
+        # NF-7 public checkability (NR-3): totals carry the largest
+        # per-row distinct-identity count; the exact gate stays per-row
+        # (each row's cold_build vs its own identities in per_row).
+        totals["identities"] = identities
+        totals["rows"] = len(prepared_rows)
+        totals["refusals"] = refusals
+        totals["per_row"] = {str(i): prepared_rows[i]
+                             for i in sorted(prepared_rows)}
+        totals["store_root"] = prepared_root
+        totals["arena_cap_bytes_per_worker"] = prepared_cap
+        preparation_summary = totals
+        notes_runtime.append(
+            f"prepared route: {len(prepared_rows)} row(s) attempted, "
+            f"{totals['cold_build']} build(s), "
+            f"{totals['verified_hit']} verified hit(s), "
+            f"{totals['contention_wait']} contention wait(s), "
+            f"{totals['fallback_compute']} fallback compute(s)"
+            + (f"; {totals['corruption_rebuild']} corruption rebuild(s)"
+               if totals["corruption_rebuild"] else "")
+            + (f"; refusals {refusals}" if refusals else ""))
+
+    # P01M report attachment: only when telemetry is enabled.  The default
+    # route's ``extra`` stays as before ({} / cohort-only) plus the P02
+    # preparation block when that route engaged — runtime-only reporting,
+    # never observable serial state.
+    extra: Dict[str, Any] = {}
+    if cohort_summary is not None:
+        extra["cohort"] = cohort_summary
+    if preparation_summary is not None:
+        extra["preparation"] = preparation_summary
+    if rec is not None:
+        coord_events = rec.events_snapshot()
+        worker_events = [e for t in worker_tel.values() for e in t["events"]]
+        events_dir = os.environ.get(ENV_DIR) or None
+        coord_jsonl = None
+        if events_dir:
+            coord_jsonl = os.path.join(events_dir,
+                                       "phase_events.coordinator.jsonl")
+            rec.flush_jsonl(coord_jsonl)
+        extra["telemetry"] = {
+            "schema": SCHEMA,
+            "run_id": rec.run_id,
+            "diagnostic_only": True,
+            "summary_law": "per-phase wall/CPU sums over TOP-LEVEL spans "
+                           "only; worker sums aggregate across worker "
+                           "processes (worker-seconds of service demand, "
+                           "not elapsed time)",
+            "events_dir": events_dir,
+            "coordinator_jsonl": coord_jsonl,
+            "dropped_events": rec.dropped
+            + sum(t["dropped"] for t in worker_tel.values()),
+            "coordinator": rec.summarize(),
+            "workers": summarize_events(worker_events)
+            if worker_events else {},
+            "worker_rows": {str(i): {"events": len(t["events"]),
+                                     "dropped": t["dropped"],
+                                     "worker_pid": t["worker_pid"]}
+                            for i, t in sorted(worker_tel.items())},
+        }
 
     una.batch_report = BatchExecutionReport(
         requested=requested,
@@ -1246,6 +1505,7 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
         if journal else None,
         output_manifest={str(i): manifests[i] for i in sorted(manifests)},
         notes_runtime=tuple(notes_runtime),
+        extra=extra,
     )
 
 

@@ -76,7 +76,8 @@ def test_parallel_matches_serial_bitwise(make_batch, tmp_path, workers):
     par.RunBatch("accessibility", parallel=True, workers=workers)
 
     _assert_same_state(serial, par)
-    assert tree_bytes(tmp_path / "ser") == tree_bytes(tmp_path / "par")
+    assert tree_bytes(tmp_path / "ser", skip_hidden=True) == \
+        tree_bytes(tmp_path / "par", skip_hidden=True)
 
 
 def test_parallel_matches_serial_bitwise_multithreaded_workers(
@@ -94,7 +95,8 @@ def test_parallel_matches_serial_bitwise_multithreaded_workers(
         execution=replace(par.execution, threads_per_worker=2))
 
     _assert_same_state(serial, par)
-    assert tree_bytes(tmp_path / "ser") == tree_bytes(tmp_path / "par")
+    assert tree_bytes(tmp_path / "ser", skip_hidden=True) == \
+        tree_bytes(tmp_path / "par", skip_hidden=True)
     report = par.batch_report
     assert "2 spawn worker(s) x 2 thread(s)" in \
         " ".join(report.notes_runtime)
@@ -147,6 +149,7 @@ def test_flow_analysis_parity(make_batch, tmp_path):
     par.RunBatch("flow", parallel=True, workers=2)
 
     _assert_same_state(serial, par)
-    assert tree_bytes(tmp_path / "ser") == tree_bytes(tmp_path / "par")
+    assert tree_bytes(tmp_path / "ser", skip_hidden=True) == \
+        tree_bytes(tmp_path / "par", skip_hidden=True)
     assert np.array_equal(np.asarray(serial.flow.edge_flow),
                           np.asarray(par.flow.edge_flow))

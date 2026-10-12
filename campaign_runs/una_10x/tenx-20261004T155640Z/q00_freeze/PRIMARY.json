@@ -1,0 +1,1191 @@
+{
+ "schema_version": 1,
+ "status": "FROZEN_Q00",
+ "frozen_at": "2026-10-05T03:11:36Z",
+ "measurement_class": "observed_proxy",
+ "primary_workload": {
+  "kind": "observed distinct 32-job cohort (frozen)",
+  "cohort_manifest_sha256": "1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf",
+  "identity_anchor": "campaign_runs/una_10x/tenx-20261003T1212Z/w00_freeze/PRIMARY.json",
+  "identity_anchor_sha256": "6f79c5eb7a5abba3be55f4a77e2f0566c791c2920472f72d3a3bf5cb43d13a2c",
+  "acquisition": {
+   "acquisition.json": {
+    "bytes": 3316,
+    "sha256": "8bbe0c9ffff8cc238042a7c1d820d7c306ef979f5bba3f073155257f15b660c4"
+   },
+   "pinned_ref_tree_boston.json": {
+    "bytes": 7676,
+    "sha256": "53f4eec1dce21d23debab24deba1d3594068110b078958bb4fe29fa0710ba467"
+   },
+   "tutorial_acquisition.json": {
+    "bytes": 3431,
+    "sha256": "7158dcf5b8f0ade4f0179f1a2f4cde8fbec479d13b04677ed2ba7bf9ce7f6ac9"
+   },
+   "upstream_boston_acquisition.json": {
+    "bytes": 11899,
+    "sha256": "4eb64f0d18ef8f827a4644776293a3545040d89c367dcf1a8ebaaa19c8641e44"
+   },
+   "w00_inspection.json": {
+    "bytes": 9959,
+    "sha256": "2b02c60734052ebec151a7c6d22ac632dfde68d28e073c1f2e3755dcc7ae3c76"
+   }
+  }
+ },
+ "primary_api": "UNA.RunBatch",
+ "baseline_source": "395cdc5f683894b6f2ba460f7dbcefee99981ba3",
+ "candidate_source": {
+  "tree": "82624755d4845d31565abfd4afda9aa26f20cdfe",
+  "wheel_sha256": "ebc57dc77e9cb9b6ce2a2998aa9c68dace50d3535ab68868ea066603038cca20",
+  "installed_target": "/tmp/una_i00/site_cand"
+ },
+ "baseline_installed": {
+  "wheel_sha256": "4a59bc1795e5bbc5c8bfa0b3bdd580e77bb46f235bb97b0683f2cb75b928d5bb",
+  "installed_target": "/tmp/una_i00/site_base"
+ },
+ "numerical_profile": "una_legacy/madina_legacy/corrected_v1 bitwise law UNCHANGED; no tolerance, no FP32, no rounding, no reassociation; the production authority is the delivered numba fastmath route's per-output bits",
+ "workload_sha256": "1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf",
+ "resource_sha256": "d8b3f593c54315fb3189bff37e420663753173803ea1046ea6c20791728c4f26",
+ "cache_policy_sha256": "2795996befe1ee26382afefc8b270d8d39bb73aa4c8133b233719e8abe619cfb",
+ "output_policy_sha256": "0cae3eab589827d129a0516523c967b3501ceccc7e084234ea2997711bc24fbb",
+ "jobs_per_window": 32,
+ "cohorts_per_window": 1,
+ "paired_windows": 7,
+ "target_speedup": 10.0,
+ "bootstrap_resamples": 20000,
+ "bootstrap_seed": 20261003,
+ "lower_quantile": 0.05,
+ "cache_regime": "FIRST_COHORT",
+ "initial_trace_cost_included": true,
+ "distinct_jobs": true,
+ "required_outputs": {
+  "required_artifacts": 64,
+  "reference_bytes": 147830672,
+  "bitwise_law": "64/64 sha256 equality vs the frozen P00 pin OUTSIDE timing on EVERY measured window, both arms",
+  "state_duty": "batch report, output manifest, ordered commits, zero failed rows, engagement asserts green (cand) / no-cohort (base)"
+ },
+ "protected_cells": {
+  "ACTUAL": "MISSING EXPLICITLY - user production workflow unavailable; L4 not claimed",
+  "COLD_SMALL": {
+   "definition": "fresh process, cold JIT/numba cache dirs, tiny GIS fixture (two-origin tutorial files) and a dense control; diagnostic cell",
+   "fixtures": [
+    "MIT_SAP_Harvard_GSD.geojson",
+    "MIT_SAP_flow_origin.geojson",
+    "HarvardHC_and_GSD.geojson"
+   ]
+  },
+  "HOLDOUT": "MISSING EXPLICITLY - packet second_observed_morphology=not_selected; 3D and tut4 pedestrianized networks are same-network variants only, labeled as such, never holdouts",
+  "OBS_FLOW": {
+   "analysis": "flow",
+   "boundary": "public RunBatch(analysis='flow', pairing_file=flow_manifest.csv)",
+   "recorded_rows_source": "docs/Boston/Boston_Flow_pairings.csv at the pinned ref (raw rows verbatim in pairing_resolution.json)",
+   "stripe_policy": "fixed logical stripe partition from una-x Execution/Settings defaults at the pinned baseline (surfaces recorded in PRIMARY.json); never a replaced route model"
+  },
+  "OBS_MIXED": {
+   "analysis": "accessibility",
+   "boundary": "public RunBatch(analysis='accessibility', pairing_file=mixed_manifest.csv)",
+   "expected_split": "the elevation row uses a different network file with elevation enabled; the routing cohort MUST split (proved in C20/C30)",
+   "graph_changing_row": {
+    "calculate_exponential_gravity": true,
+    "calculate_knn_access": true,
+    "calculate_logistic_gravity": true,
+    "calculate_reach": true,
+    "destination_weight_column": "weekly_departures",
+    "destinations_file": "MA_transit_stations.geojson",
+    "elevation": true,
+    "gravity_beta": {
+     "bits": 4562254508917369340,
+     "float_hex": "0x1.0624dd2f1a9fcp-10"
+    },
+    "gravity_logistic_midpoint": 500,
+    "knn_decay": "logistic",
+    "knn_weights": [
+     1.0
+    ],
+    "name": "mixed_elevation_3d",
+    "network_file": "20260703_PercLenNetwork_InnerCore_3D.geojson",
+    "network_weight_column": "Geometric",
+    "origin_weight_column": "Count",
+    "origins_file": "Cambridge_building_centroids.geojson",
+    "output_file_name": "mixed_elevation_3d",
+    "search_radius": 400,
+    "turn_penalty": 35,
+    "turn_threshold": 45,
+    "turns": false
+   },
+   "graph_changing_row_required": true,
+   "recorded_rows_source": "docs/Boston/Boston_KNN_pairings.csv at the pinned ref (10 upstream categories; raw rows verbatim in pairing_resolution.json)"
+  },
+  "OBS_SINGLE": {
+   "analysis": "accessibility",
+   "boundary": "one complete public RunAccessibility() end-to-end; no preparatory private calls outside its boundary",
+   "config": {
+    "calculate_exponential_gravity": true,
+    "calculate_knn_access": true,
+    "calculate_logistic_gravity": true,
+    "calculate_reach": true,
+    "destination_weight_column": "weekly_departures",
+    "destinations_file": "MA_transit_stations.geojson",
+    "elevation": false,
+    "gravity_beta": {
+     "bits": 4562254508917369340,
+     "float_hex": "0x1.0624dd2f1a9fcp-10"
+    },
+    "gravity_logistic_midpoint": 500,
+    "knn_decay": "logistic",
+    "knn_weights": [
+     1.0
+    ],
+    "name": "obs_single_tutorial_f",
+    "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+    "network_weight_column": "Geometric",
+    "origin_weight_column": "Count",
+    "origins_file": "Cambridge_building_centroids.geojson",
+    "output_file_name": "obs_single",
+    "search_radius": 400,
+    "turn_penalty": 35,
+    "turn_threshold": 45,
+    "turns": false
+   },
+   "upstream_recorded_reference_values": {
+    "note": "display-rounded upstream narrative values from 2_UNA_Tutorial2_Accessibility_Boston.docx (sha256 in tutorial_acquisition.json); scale sanity checks only, NOT una-x parity targets",
+    "step_a_two_origins_radius400_unweighted_reach": {
+     "Harvard_GSD": 9.0,
+     "MIT_SAP": 7.0
+    },
+    "step_f_all_14751_origins_radius400": {
+     "gravity_exp": {
+      "max": 16457.07,
+      "mean": 2451.64,
+      "median": 1864.02,
+      "p90": 4572.85
+     },
+     "gravity_log": {
+      "max": 18397.42,
+      "mean": 2774.99,
+      "median": 2110.67,
+      "p90": 5154.1
+     },
+     "knn": {
+      "max": 7959.39,
+      "mean": 515.74,
+      "median": 356.19,
+      "p90": 876.46
+     },
+     "n_with_access": 13135,
+     "reach": {
+      "max": 20027.0,
+      "mean": 3197.96,
+      "median": 2490.0,
+      "p90": 5986.0
+     }
+    }
+   }
+  },
+  "PRIMARY_OBS_COHORT": {
+   "analysis": "accessibility",
+   "beta_vector": {
+    "policy": "32 binary64 linspace 0.001..0.004 (packet WORKLOADS starting policy; brackets the tutorial-recorded gravity_beta; CRS unit machine-verified metre)",
+    "values_hex": [
+     "0x3f50624dd2f1a9fc",
+     "0x3f51f83452b6785f",
+     "0x3f538e1ad27b46c1",
+     "0x3f55240152401524",
+     "0x3f56b9e7d204e387",
+     "0x3f584fce51c9b1ea",
+     "0x3f59e5b4d18e804c",
+     "0x3f5b7b9b51534eaf",
+     "0x3f5d1181d1181d12",
+     "0x3f5ea76850dceb74",
+     "0x3f601ea76850dcec",
+     "0x3f60e99aa833441d",
+     "0x3f61b48de815ab4e",
+     "0x3f627f8127f81280",
+     "0x3f634a7467da79b1",
+     "0x3f641567a7bce0e2",
+     "0x3f64e05ae79f4814",
+     "0x3f65ab4e2781af45",
+     "0x3f66764167641676",
+     "0x3f674134a7467da8",
+     "0x3f680c27e728e4d9",
+     "0x3f68d71b270b4c0a",
+     "0x3f69a20e66edb33c",
+     "0x3f6a6d01a6d01a6d",
+     "0x3f6b37f4e6b2819e",
+     "0x3f6c02e82694e8d0",
+     "0x3f6ccddb66775001",
+     "0x3f6d98cea659b732",
+     "0x3f6e63c1e63c1e64",
+     "0x3f6f2eb5261e8595",
+     "0x3f6ff9a86600ecc6",
+     "0x3f70624dd2f1a9fc"
+    ],
+    "values_uint64": [
+     4562254508917369340,
+     4562700801112701023,
+     4563147093308032705,
+     4563593385503364388,
+     4564039677698696071,
+     4564485969894027754,
+     4564932262089359436,
+     4565378554284691119,
+     4565824846480022802,
+     4566271138675354484,
+     4566683726512184556,
+     4566906872609850397,
+     4567130018707516238,
+     4567353164805182080,
+     4567576310902847921,
+     4567799457000513762,
+     4568022603098179604,
+     4568245749195845445,
+     4568468895293511286,
+     4568692041391177128,
+     4568915187488842969,
+     4569138333586508810,
+     4569361479684174652,
+     4569584625781840493,
+     4569807771879506334,
+     4570030917977172176,
+     4570254064074838017,
+     4570477210172503858,
+     4570700356270169700,
+     4570923502367835541,
+     4571146648465501382,
+     4571261708172110332
+    ]
+   },
+   "boundary": "public RunBatch(analysis='accessibility', pairing_file=cohort_manifest.csv)",
+   "distinct_parameter_jobs": true,
+   "job_count": 32,
+   "output_flags_policy": "una-x Settings defaults at the pinned baseline (output_geojson=True, output_feather=True, output_csv=False, logger_verbosity=1); full resolved surfaces in this file",
+   "rows": [
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4562254508917369340,
+      "float_hex": "0x1.0624dd2f1a9fcp-10"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_00",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_00",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4562700801112701023,
+      "float_hex": "0x1.1f83452b6785fp-10"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_01",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_01",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4563147093308032705,
+      "float_hex": "0x1.38e1ad27b46c1p-10"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_02",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_02",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4563593385503364388,
+      "float_hex": "0x1.5240152401524p-10"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_03",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_03",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4564039677698696071,
+      "float_hex": "0x1.6b9e7d204e387p-10"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_04",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_04",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4564485969894027754,
+      "float_hex": "0x1.84fce51c9b1eap-10"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_05",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_05",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4564932262089359436,
+      "float_hex": "0x1.9e5b4d18e804cp-10"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_06",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_06",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4565378554284691119,
+      "float_hex": "0x1.b7b9b51534eafp-10"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_07",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_07",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4565824846480022802,
+      "float_hex": "0x1.d1181d1181d12p-10"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_08",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_08",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4566271138675354484,
+      "float_hex": "0x1.ea76850dceb74p-10"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_09",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_09",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4566683726512184556,
+      "float_hex": "0x1.01ea76850dcecp-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_10",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_10",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4566906872609850397,
+      "float_hex": "0x1.0e99aa833441dp-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_11",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_11",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4567130018707516238,
+      "float_hex": "0x1.1b48de815ab4ep-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_12",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_12",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4567353164805182080,
+      "float_hex": "0x1.27f8127f81280p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_13",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_13",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4567576310902847921,
+      "float_hex": "0x1.34a7467da79b1p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_14",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_14",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4567799457000513762,
+      "float_hex": "0x1.41567a7bce0e2p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_15",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_15",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4568022603098179604,
+      "float_hex": "0x1.4e05ae79f4814p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_16",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_16",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4568245749195845445,
+      "float_hex": "0x1.5ab4e2781af45p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_17",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_17",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4568468895293511286,
+      "float_hex": "0x1.6764167641676p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_18",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_18",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4568692041391177128,
+      "float_hex": "0x1.74134a7467da8p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_19",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_19",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4568915187488842969,
+      "float_hex": "0x1.80c27e728e4d9p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_20",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_20",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4569138333586508810,
+      "float_hex": "0x1.8d71b270b4c0ap-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_21",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_21",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4569361479684174652,
+      "float_hex": "0x1.9a20e66edb33cp-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_22",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_22",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4569584625781840493,
+      "float_hex": "0x1.a6d01a6d01a6dp-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_23",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_23",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4569807771879506334,
+      "float_hex": "0x1.b37f4e6b2819ep-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_24",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_24",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4570030917977172176,
+      "float_hex": "0x1.c02e82694e8d0p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_25",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_25",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4570254064074838017,
+      "float_hex": "0x1.ccddb66775001p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_26",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_26",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4570477210172503858,
+      "float_hex": "0x1.d98cea659b732p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_27",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_27",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4570700356270169700,
+      "float_hex": "0x1.e63c1e63c1e64p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_28",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_28",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4570923502367835541,
+      "float_hex": "0x1.f2eb5261e8595p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_29",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_29",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4571146648465501382,
+      "float_hex": "0x1.ff9a86600ecc6p-9"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_30",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_30",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    },
+    {
+     "calculate_exponential_gravity": true,
+     "calculate_knn_access": true,
+     "calculate_logistic_gravity": true,
+     "calculate_reach": true,
+     "destination_weight_column": "weekly_departures",
+     "destinations_file": "MA_transit_stations.geojson",
+     "elevation": false,
+     "gravity_beta": {
+      "bits": 4571261708172110332,
+      "float_hex": "0x1.0624dd2f1a9fcp-8"
+     },
+     "gravity_logistic_midpoint": 500,
+     "knn_decay": "logistic",
+     "knn_weights": [
+      1.0
+     ],
+     "name": "cohort_beta_31",
+     "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+     "network_weight_column": "Geometric",
+     "origin_weight_column": "Count",
+     "origins_file": "Cambridge_building_centroids.geojson",
+     "output_file_name": "cohort_beta_31",
+     "search_radius": 400,
+     "turn_penalty": 35,
+     "turn_threshold": 45,
+     "turns": false
+    }
+   ],
+   "shared_input": {
+    "calculate_exponential_gravity": true,
+    "calculate_knn_access": true,
+    "calculate_logistic_gravity": true,
+    "calculate_reach": true,
+    "destination_weight_column": "weekly_departures",
+    "destinations_file": "MA_transit_stations.geojson",
+    "elevation": false,
+    "gravity_logistic_midpoint": 500,
+    "knn_decay": "logistic",
+    "knn_weights": [
+     1.0
+    ],
+    "network_file": "20260703_PercLenNetwork_InnerCore.geojson",
+    "network_weight_column": "Geometric",
+    "origin_weight_column": "Count",
+    "origins_file": "Cambridge_building_centroids.geojson",
+    "search_radius": 400,
+    "turn_penalty": 35,
+    "turn_threshold": 45,
+    "turns": false
+   }
+  },
+  "REPEAT_IDENTICAL": {
+   "definition": "OBS_COHORT manifest run a second time with the una-x result cache in its default ENABLED mode; negative control against counting cached answers as structural 10x"
+  },
+  "SYN_DENSE": "una_cpu benchmark W3 synthetic fixture - dense regression control",
+  "SYN_LOCAL": "prior local-domain fixtures via una_cpu mechanics; exact final pinned case frozen at H01 after the S02-closed direct-checkout bit bridge",
+  "SYN_TINY": "una_cpu benchmark W1 synthetic fixture (retained generator, mechanics-reuse verdict in H00) - regression control for prior tiny/search losses"
+ },
+ "actual_target": "unavailable",
+ "no_tuning_commitment": "radius/metric/job-count/output obligations frozen now; no change after viewing any candidate ratio (WORKLOADS.md)"
+}

@@ -1,0 +1,35 @@
+{
+ "schema": "post-p00-p01m-superseded-attempt-2",
+ "reason": "workerpool result_put span wrapped _run_job_safely(job) (entire row execution), not only outbox.put; fixed to span the put only. In-row (source=worker) phases were valid; the workerpool result_put stream misstates put cost, so all telemetry-on runs are re-measured.",
+ "attempts": [
+  {
+   "tag": "t_w1",
+   "public_call_wall_s": 184.7922,
+   "bitwise_match": true,
+   "engagement_ok": true,
+   "raw_out_tree": "removed (superseded; rerun reproduces verified bytes)"
+  },
+  {
+   "tag": "t_w2",
+   "public_call_wall_s": 98.2429,
+   "bitwise_match": true,
+   "engagement_ok": true,
+   "raw_out_tree": "removed (superseded; rerun reproduces verified bytes)"
+  },
+  {
+   "tag": "t_w4",
+   "public_call_wall_s": 72.7912,
+   "bitwise_match": true,
+   "engagement_ok": true,
+   "raw_out_tree": "removed (superseded; rerun reproduces verified bytes)"
+  },
+  {
+   "tag": "load_w4",
+   "public_call_wall_s": 118.9373,
+   "bitwise_match": true,
+   "engagement_ok": true,
+   "raw_out_tree": "removed (superseded; rerun reproduces verified bytes)"
+  }
+ ],
+ "budget_note": "these walls are consumed heavy budget and stay in the accounting even though superseded"
+}

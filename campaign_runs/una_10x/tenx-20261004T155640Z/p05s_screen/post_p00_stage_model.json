@@ -1,0 +1,143 @@
+{
+  "amdahl_and_gate_arithmetic": {
+    "anchor_law": "design-07: 9.21141s and 7.676175s are sensitivity numbers, NOT thresholds; the gate is the paired median + one-sided 95% lower bound of seven windows >= 10",
+    "diagnostic_ceiling_ratio_band": {
+      "best_single_wall_ratio": 3.5759,
+      "law": "band spans DIFFERENT schedules/regimes of the accepted tree; within-config W4T1 spread is 25.76 vs 33.2789",
+      "note": "diagnostic single-run ratios; never the boundary claim",
+      "ratio_vs_frozen_baseline": [
+        3.5759,
+        2.7679,
+        1.8277
+      ],
+      "wall_identities": [
+        "m_w4t W4T1 telemetry-on 25.76",
+        "m_w4w W4T1 clean warm 33.2789",
+        "m_w1 W1T4 clean warm 50.3976"
+      ],
+      "walls_s": [
+        25.76,
+        33.2789,
+        50.3976
+      ]
+    },
+    "frozen_baseline_arm_a_w4_s": 92.1141,
+    "packing_floor_law": "run demand 66.5284 worker-wall-s / 4 = 16.6321s with ZERO idle, before import overlap, coordinator busy and tail - the current measured service demand alone exceeds the sensitivity anchor ~1.8x, so 10x on the CPU public route would require a further real service-demand reduction (~2.5x) plus near-perfect packing; no further CPU-route lever is admitted (P04I/F00 not_admitted with receipts; N00/G00 are separate native/GPU qualification scopes, not CPU-route gains)",
+    "perfect_packing_floor_from_measured_demand_s": 16.6321,
+    "refusal": "no target extrapolation from component wins (task action); the P05S screen and the final gate decide",
+    "sensitivity_anchor_s": 9.21141
+  },
+  "budget_note": {
+    "charged_this_composition_s": 0.0,
+    "cumulative_at_composition_s": 3908.6,
+    "reason": "paper composition from receipt-backed raw evidence; no new measured runs; the screen walls are charged by the configuration-screen deliverable and the P05S evidence commit"
+  },
+  "campaign": "una_10x",
+  "diagnostic_note": "single-run readings on a shared node carry the P00-measured 25-28% wall variance; the deciding measurements are the P05S paired screen and the seven-window paired final gate",
+  "diagnostic_only": true,
+  "inputs": {
+    "m_w1": {
+      "path": "campaign_runs/una_10x/tenx-20261004T155640Z/p03m_metrics/runs/m_w1.json",
+      "telemetry": false,
+      "wall_s": 50.3976
+    },
+    "m_w4t": {
+      "config": {
+        "queue_depth": 64,
+        "threads_per_worker": 1,
+        "workers": 4
+      },
+      "path": "campaign_runs/una_10x/tenx-20261004T155640Z/p03m_metrics/runs/m_w4t.json",
+      "telemetry": true,
+      "wall_s": 25.76
+    },
+    "m_w4w": {
+      "path": "campaign_runs/una_10x/tenx-20261004T155640Z/p03m_metrics/runs/m_w4w.json",
+      "telemetry": false,
+      "wall_s": 33.2789
+    },
+    "p00_stage_model": {
+      "path": "campaign_runs/una_10x/tenx-20261003T1212Z/p00_profile/stage_model.json",
+      "sha256": "a870a8652a731815710e826c4be4640221d0a8992eb581bd2cf20cfabf58ce71"
+    },
+    "t_w4_pre_p02_reference": {
+      "path": "campaign_runs/una_10x/tenx-20261004T155640Z/p01m_telemetry/runs/t_w4.json",
+      "wall_s": 60.7742
+    }
+  },
+  "measured_tree_progression_w4t1_cold_telemetry_on": {
+    "law": "both runs telemetry-on W4T1 cold stores; the delta is the accepted P02I/P02R/P03C/P03M set, not a same-node paired comparison (single runs)",
+    "p03m_m_w4t": {
+      "run_demand_worker_s": 66.5284,
+      "tree_cpu_s": 49.18,
+      "wall_s": 25.76
+    },
+    "pre_p02_t_w4": {
+      "run_demand_worker_s": 209.7502,
+      "tree_cpu_s": 196.7,
+      "wall_s": 60.7742
+    },
+    "run_demand_reduction": 0.6828,
+    "tree_cpu_reduction": 0.75
+  },
+  "node_time_variance": {
+    "documented": "P00 same-config spread 27.2%",
+    "paired_windows_mandatory": true,
+    "this_tree_same_config_w4t1_warm_s": [
+      33.2789
+    ],
+    "this_tree_telemetry_on_s": [
+      25.76
+    ]
+  },
+  "residual_regions_w4t1": {
+    "coordinator_idle_fraction": 0.764,
+    "coordinator_leaf_sums": {
+      "commit_publish": 4.019,
+      "commit_staged_verify": 0.6908,
+      "commit_state_apply": 0.0033,
+      "dispatch": 0.0005,
+      "nested_commit_law": "commit events 64 = 32 row_id=i OUTER spans wrapping 32 row_id=None INNER children 1:1 (P04R-NR-1 corrected direction); naive sums double-count; union busy 6.044s is the honest occupancy",
+      "plan": 0.1664,
+      "pool_close": 0.7137,
+      "pool_start": 0.4456,
+      "result_recv": 0.0004
+    },
+    "coordinator_span_s": 25.575,
+    "coordinator_union_busy_s": 6.044,
+    "efficiency_note": "tree CPU s / (wall x 4 cores); matches the P00 candidate 0.459 band - the accepted deltas removed WORK, not IDLE",
+    "law": "regions sum on the wall; never multiply ratios (MODEL.md); idle is not a separate multiplier; the driver-side import (timing.import_s 10.2526s) sits OUTSIDE the public wall and is NOT subtracted",
+    "post_last_arrival_tail_s": 0.836,
+    "tree_cpu_efficiency_w4": 0.4773,
+    "worker_import_once_per_process": {
+      "attribution_note": "count=32 re-attributes each worker's one-time import across its 8 served rows; the true wall cost is ~4 one-time imports overlapped inside the wall",
+      "cpu_sum_s": 6.8712,
+      "max_span_s": 3.8899,
+      "per_worker_wall_s_approx": 3.8498,
+      "worker_count": 4
+    },
+    "worker_run_service": {
+      "cpu_worker_s": 34.8579,
+      "demand_worker_wall_s": 66.5284,
+      "known_sub_spans": {
+        "ge_split_s_total": 1.0645,
+        "source": "m_w4w clean warm metric counters (P03M receipt); replay runs once per worker process, splits on served rows",
+        "whole_row_replay_s_total": 1.9582
+      },
+      "per_row_max_s": 10.347,
+      "per_row_mean_s": 2.079,
+      "rows": 32,
+      "unattributed_note": "prepared-serve/restore, export composition+write, result build, trace store; NOT further split without a new instrument",
+      "unattributed_residual_s": 63.5057
+    },
+    "worker_transport": {
+      "note": "P04I finding: producer-side serialization PRECEDING the queue boundary; a receiver cannot remove it; ~7% of this diagnostic wall; overlaps worker occupancy",
+      "other_31_puts_sum_s": 0.0273,
+      "result_put_spans": 32,
+      "row31_put_s": 1.8508
+    }
+  },
+  "run_root": "campaign_runs/una_10x/tenx-20261004T155640Z",
+  "schema": "una-10x-post-p00-stage-model-1",
+  "task": "P05S"
+}

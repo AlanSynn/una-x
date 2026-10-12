@@ -1,0 +1,694 @@
+{
+  "batch_report_run1": {
+    "effective": {
+      "backend": "reference",
+      "fallback_reason": "no qualified native/gpu capability entries are registered for this build; auto selected the trusted reference route",
+      "options": {
+        "backend": "auto",
+        "cache": {
+          "directory": ".una-cache",
+          "max_disk_bytes": null,
+          "max_memory_bytes": null,
+          "mode": "off",
+          "schema_version": 1,
+          "verification": "on_read"
+        },
+        "checkpoint": null,
+        "cpu_budget": null,
+        "device": null,
+        "logical_reduction_plan": "canonical",
+        "memory_limit_bytes": null,
+        "queue_depth": 64,
+        "semantic_profile": "una_legacy",
+        "threads_per_worker": 1,
+        "timeout_s": null,
+        "workspace_limit_bytes": null,
+        "writer_concurrency": 1
+      }
+    },
+    "notes": [],
+    "parallel_requested": "False",
+    "requested": {
+      "backend": "auto",
+      "cache": {
+        "directory": ".una-cache",
+        "max_disk_bytes": null,
+        "max_memory_bytes": null,
+        "mode": "off",
+        "schema_version": 1,
+        "verification": "on_read"
+      },
+      "checkpoint": null,
+      "cpu_budget": null,
+      "device": null,
+      "logical_reduction_plan": "canonical",
+      "memory_limit_bytes": null,
+      "queue_depth": 64,
+      "semantic_profile": "una_legacy",
+      "threads_per_worker": 1,
+      "timeout_s": null,
+      "workspace_limit_bytes": null,
+      "writer_concurrency": 1
+    },
+    "rows": [
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 0,
+        "name": "cohort_beta_00",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 1,
+        "name": "cohort_beta_01",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 2,
+        "name": "cohort_beta_02",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 3,
+        "name": "cohort_beta_03",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 4,
+        "name": "cohort_beta_04",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 5,
+        "name": "cohort_beta_05",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 6,
+        "name": "cohort_beta_06",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 7,
+        "name": "cohort_beta_07",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 8,
+        "name": "cohort_beta_08",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 9,
+        "name": "cohort_beta_09",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 10,
+        "name": "cohort_beta_10",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 11,
+        "name": "cohort_beta_11",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 12,
+        "name": "cohort_beta_12",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 13,
+        "name": "cohort_beta_13",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 14,
+        "name": "cohort_beta_14",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 15,
+        "name": "cohort_beta_15",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 16,
+        "name": "cohort_beta_16",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 17,
+        "name": "cohort_beta_17",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 18,
+        "name": "cohort_beta_18",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 19,
+        "name": "cohort_beta_19",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 20,
+        "name": "cohort_beta_20",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 21,
+        "name": "cohort_beta_21",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 22,
+        "name": "cohort_beta_22",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 23,
+        "name": "cohort_beta_23",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 24,
+        "name": "cohort_beta_24",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 25,
+        "name": "cohort_beta_25",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 26,
+        "name": "cohort_beta_26",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 27,
+        "name": "cohort_beta_27",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 28,
+        "name": "cohort_beta_28",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 29,
+        "name": "cohort_beta_29",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 30,
+        "name": "cohort_beta_30",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 31,
+        "name": "cohort_beta_31",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      }
+    ],
+    "workers_requested": "None"
+  },
+  "batch_report_run2": {
+    "effective": {
+      "backend": "reference",
+      "fallback_reason": "no qualified native/gpu capability entries are registered for this build; auto selected the trusted reference route",
+      "options": {
+        "backend": "auto",
+        "cache": {
+          "directory": ".una-cache",
+          "max_disk_bytes": null,
+          "max_memory_bytes": null,
+          "mode": "off",
+          "schema_version": 1,
+          "verification": "on_read"
+        },
+        "checkpoint": null,
+        "cpu_budget": null,
+        "device": null,
+        "logical_reduction_plan": "canonical",
+        "memory_limit_bytes": null,
+        "queue_depth": 64,
+        "semantic_profile": "una_legacy",
+        "threads_per_worker": 1,
+        "timeout_s": null,
+        "workspace_limit_bytes": null,
+        "writer_concurrency": 1
+      }
+    },
+    "notes": [],
+    "parallel_requested": "False",
+    "requested": {
+      "backend": "auto",
+      "cache": {
+        "directory": ".una-cache",
+        "max_disk_bytes": null,
+        "max_memory_bytes": null,
+        "mode": "off",
+        "schema_version": 1,
+        "verification": "on_read"
+      },
+      "checkpoint": null,
+      "cpu_budget": null,
+      "device": null,
+      "logical_reduction_plan": "canonical",
+      "memory_limit_bytes": null,
+      "queue_depth": 64,
+      "semantic_profile": "una_legacy",
+      "threads_per_worker": 1,
+      "timeout_s": null,
+      "workspace_limit_bytes": null,
+      "writer_concurrency": 1
+    },
+    "rows": [
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 0,
+        "name": "cohort_beta_00",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 1,
+        "name": "cohort_beta_01",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 2,
+        "name": "cohort_beta_02",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 3,
+        "name": "cohort_beta_03",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 4,
+        "name": "cohort_beta_04",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 5,
+        "name": "cohort_beta_05",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 6,
+        "name": "cohort_beta_06",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 7,
+        "name": "cohort_beta_07",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 8,
+        "name": "cohort_beta_08",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 9,
+        "name": "cohort_beta_09",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 10,
+        "name": "cohort_beta_10",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 11,
+        "name": "cohort_beta_11",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 12,
+        "name": "cohort_beta_12",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 13,
+        "name": "cohort_beta_13",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 14,
+        "name": "cohort_beta_14",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 15,
+        "name": "cohort_beta_15",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 16,
+        "name": "cohort_beta_16",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 17,
+        "name": "cohort_beta_17",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 18,
+        "name": "cohort_beta_18",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 19,
+        "name": "cohort_beta_19",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 20,
+        "name": "cohort_beta_20",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 21,
+        "name": "cohort_beta_21",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 22,
+        "name": "cohort_beta_22",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 23,
+        "name": "cohort_beta_23",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 24,
+        "name": "cohort_beta_24",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 25,
+        "name": "cohort_beta_25",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 26,
+        "name": "cohort_beta_26",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 27,
+        "name": "cohort_beta_27",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 28,
+        "name": "cohort_beta_28",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 29,
+        "name": "cohort_beta_29",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 30,
+        "name": "cohort_beta_30",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      },
+      {
+        "backend": "reference",
+        "detail": null,
+        "index": 31,
+        "name": "cohort_beta_31",
+        "semantic_profile": "una_legacy",
+        "status": "ran"
+      }
+    ],
+    "workers_requested": "None"
+  },
+  "bitwise_normalized": {
+    "contents_bitwise_identical": true,
+    "differing_files": [],
+    "keys_equal": true,
+    "method": "raw tree hashes keyed by per-job file name; engine writes into minute-timestamped export dirs by design",
+    "run1_bytes": 147830672,
+    "run1_export_dirs": [
+      "accessibility_2026-10-03_0944",
+      "accessibility_2026-10-03_0945",
+      "accessibility_2026-10-03_0946"
+    ],
+    "run2_bytes": 147830672,
+    "run2_export_dirs": [
+      "accessibility_2026-10-03_0946",
+      "accessibility_2026-10-03_0947",
+      "accessibility_2026-10-03_0948",
+      "accessibility_2026-10-03_0949"
+    ]
+  },
+  "file_count": 64,
+  "first_trace_note": "run1 wall includes any first-in-call construction cost inside the public boundary",
+  "job_count": 32,
+  "ordered_commit_sequences_equal": true,
+  "output_files_identical_sha256": false,
+  "route": "public RunBatch('accessibility', pairing_file=), serial default (parallel=False), default execution",
+  "row_statuses_run1": [
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran",
+    "ran"
+  ],
+  "run1": {
+    "tag": "cohort_run1",
+    "wall_s": 169.535
+  },
+  "run2": {
+    "tag": "cohort_run2",
+    "wall_s": 169.2
+  },
+  "run_id": "tenx-20261003T1212Z",
+  "task": "H01 OBS_COHORT public chronology (twice as reference)",
+  "zero_failed_jobs": true
+}

@@ -1,26 +1,14 @@
 {
   "status": "pass",
-  "scope": "packet consistency and utility self-tests only; not application qualification",
-  "check_count": 448,
-  "tasks": 30,
-  "dossiers": 9,
-  "tool_tests": {
-    "run": 47,
-    "passed": 47,
-    "failed": 0,
-    "skipped": 0
-  },
-  "python": "3.13.5",
-  "commands": [
-    "python3 campaigns/una_10x/tools/validate_packet.py",
-    "python3 -m unittest discover -s campaigns/una_10x/tests -v"
-  ],
-  "logs": {
-    "validation/checks.json": "68b81db59c85a52ccd799cb7dd6ff47ba4b96de96b46fc8bb5c04c6af28df491",
-    "validation/tool_tests.txt": "32e7691584451a45a242785377970bf2e005a3c04c771ed6c02675bc5d175e48"
-  },
-  "source_bridge": "not_run_during_packet_authoring",
-  "application_10x": "not_run",
-  "independent_application_review": "unavailable",
-  "prior_files_preserved": 28
+  "scope": "Updated packet consistency and utility tests only; not application qualification",
+  "check_count": 841,
+  "tasks": 42,
+  "original_tool_tests_passed": 47,
+  "post_p00_model_tests_passed": 44,
+  "failed": 0,
+  "skipped": 0,
+  "details": "post_p00/validation/summary.json",
+  "previous_packet_checks": "24be380883485f1d4c71f03eb0f474419869c411:campaigns/una_10x/packet_checks.json",
+  "source_bridge": "not_run_during_this_amendment",
+  "application_10x": "not_run"
 }

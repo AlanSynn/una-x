@@ -321,6 +321,16 @@ class UNA:
 
         self.settings.Validation()
 
+        # P02 (una_10x): forward the run-scoped prepared session to the
+        # topology seam BEFORE AddNetwork.  The session is consulted ONLY
+        # at the two Add* preparation sites via topology._prepared_session
+        # — never through cache_options (the engine's RESULT stage reads
+        # that same attribute; injecting there would silently enable
+        # results caching, which P02 forbids).  None on this route (serial
+        # or a detached repeat call): the prepared path is entirely absent.
+        self.topology._prepared_session = getattr(
+            self, "_prepared_session", None)
+
         self.topology.AddNetwork(self.settings)
         self.topology.AddOrigins(self.settings)
         self.topology.AddDestinations(self.settings)
@@ -377,6 +387,24 @@ class UNA:
                     v=1,
                 )
             self.accessibility = AccessibilityWElevation(self.topology, self.settings)
+
+        # Integrator-only cohort dispatch (campaign una_10x C30, dossier
+        # 06): a PARALLEL batch worker attaches a runtime-only session;
+        # the fresh graph engine is then wrapped so its o_access may
+        # serve from the run's shared routing trace.  Every refusal
+        # falls back to the inner engine unchanged, and the serial route
+        # (which never sets _cohort_session) is untouched.
+        # The ``not self.settings.turns`` clause is LOAD-BEARING
+        # (C31-NOTE-3): the trace identity's profile frame asserts turn
+        # semantics "not-present-in-prepared-domain", so a turns-enabled
+        # analysis must never arm the cohort route; the session itself
+        # refuses turns regardless of attachment (defense in depth).
+        session = getattr(self, "_cohort_session", None)
+        if session is not None and not self.settings.turns:
+            from .batch.cohort import CohortGraphEngine
+            self.accessibility.graph_engine = CohortGraphEngine(
+                self.accessibility.graph_engine, self.accessibility,
+                session)
 
         self.accessibility.Centrality(self.settings)
 

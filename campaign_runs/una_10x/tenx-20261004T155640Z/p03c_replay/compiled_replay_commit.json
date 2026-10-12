@@ -1,0 +1,38 @@
+{
+  "branch": "perf/una-10x (local commit only; NO push)",
+  "campaign": "una_10x",
+  "commit": "5c5214ab94f0ac973debee22bf757a92cf2e5fe6",
+  "deliverables": {
+    "replay_bitparity.json": "campaign_runs/una_10x/tenx-20261004T155640Z/p03c_replay/replay_bitparity.json",
+    "replay_matched_samples.json": "campaign_runs/una_10x/tenx-20261004T155640Z/p03c_replay/replay_matched_samples.json"
+  },
+  "extraction": {
+    "file_pairs_compared": 3,
+    "method": "git archive <commit> | tar -x into empty tmpdir",
+    "pairs": {
+      "src/urban_network_analysis/Engines/_trace_access_scratch.py": {
+        "extracted_sha256": "2dc4de492d005cfbb87b3f759bbc56bb1364714fa951b52006965dc8efacd8e6",
+        "match": true,
+        "worktree_sha256": "2dc4de492d005cfbb87b3f759bbc56bb1364714fa951b52006965dc8efacd8e6"
+      },
+      "tests/tenx/post_p00/conftest.py": {
+        "extracted_sha256": "44b43f513934a2f7fcfb3972ad246c90d2065a84d1d47997db0b771532e74f6f",
+        "match": true,
+        "worktree_sha256": "44b43f513934a2f7fcfb3972ad246c90d2065a84d1d47997db0b771532e74f6f"
+      },
+      "tests/tenx/post_p00/replay/test_replay_driver.py": {
+        "extracted_sha256": "73173e9a300752e1006f2ba642e0968e214f009b8e199cfe53750340d7aada22",
+        "match": true,
+        "worktree_sha256": "73173e9a300752e1006f2ba642e0968e214f009b8e199cfe53750340d7aada22"
+      }
+    }
+  },
+  "import_facts": "True | numba.core.registry.CPUDispatcher | True | True | False | True | True | True",
+  "parent": "fa92dca578de7275067857c90cf62d744937fdc2",
+  "schema": "post-p00-commit-extraction-proof-1",
+  "task": "P03C",
+  "tests_from_extraction": {
+    "command": "<alan-env python> -m pytest tests/tenx/post_p00 -q (cwd = extraction tree, PYTHONPATH = extraction src; interpreter = sys.executable == the worktree's ./_py)",
+    "outcome": "32 passed in 120.14s (0:02:00)"
+  }
+}

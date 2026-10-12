@@ -109,7 +109,6 @@ import time
 import threading
 import concurrent.futures
 
-import networkx as nx
 import numpy as np
 import numba as nb
 from scipy.sparse import csr_matrix as _scipy_csr
@@ -916,6 +915,9 @@ class AggregateFlow(Base):
         has_z    = (net.z is not None) and elevation
         z_values = net.z if has_z else None
 
+        # Deferred import (P3 lazy-import probe): networkx is only
+        # needed when the directed-graph build actually runs.
+        import networkx as nx
         G = nx.DiGraph()
         G.add_nodes_from(range(n_net))
 

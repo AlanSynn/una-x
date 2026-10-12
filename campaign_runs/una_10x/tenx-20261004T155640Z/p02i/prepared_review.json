@@ -1,0 +1,259 @@
+{
+  "schema": "post-p00-prepared-review-1",
+  "task": "P02R",
+  "campaign": "una_10x",
+  "reviewed_commit": "a71f0f512aaa77e308cf00b1c3cd7dabbac1f492",
+  "receipt_commit": "c47a43b61574d3e45fec67f5582bfb871ccad574",
+  "contract_commit": "f139dd3b4d910337c722bc6b8854613e7e6cd004",
+  "verdict": "ACCEPT_WITH_FINDINGS",
+  "verdict_basis": "Zero blocking findings. The contract's load-bearing laws were verified mechanically against the committed bytes: the seam is consulted only at the two Add* preparation sites and never through cache_options (full-tree census); BF-1's two-hash split is real and the observed _stage_key stays role-free so engine result-key composition is unchanged; the extracted derivations are byte-verbatim (ast-slice normalized diff vs f139dd3: 48/48 network lines identical, snap identical except the moved store block); public artifacts are bitwise equal with the route armed (island E1 test plus this review's independent 3-row serial-vs-W2 sha256 tree re-run: 6 artifacts, trees equal); read/validation/failure chronology is preserved (snapshot read + digest strictly before the flight consult at both seams; file-disappearance and same-size-mtime invalidation tests green); the detach law holds on the success path (delta taken then una and topology detached before capture/state-bundle) AND on the exception path (empirical: a mid-row FileNotFoundError with the session attached yields a failed RowResult that pickles cleanly at 633 bytes with no state_bundle and empty settings_post); the empty-payload owner law works (probe: fresh root, owner ({}, None) commits 0 entries and never poisons the next build); the registry is bounded at 4 with oldest eviction (probe: 6 touched roots -> 4 retained, close/reopen correct); refusal taxonomy falls back to the byte-identical original path because prep=None joins the unmodified cache-off body. The seven non-blocking findings below are diagnostic-surface fidelity, counters/reporting gaps, evidence-coverage and claim-precision items, each with a bounded repair.",
+  "blocking": [],
+  "non_blocking": [
+    {
+      "id": "NR-1",
+      "severity": "non_blocking",
+      "file": "src/urban_network_analysis/Topology.py:274-282 (vs line 321)",
+      "what_is_wrong": "The prepared AddNetwork branch returns at line 282 before the unconditional tail line 321, so the OWNER (cold-build) row's log stream misses the v=2 line ('create topology', \"edge_list_dict created\") that the current path always emits. The pre-P02I body logged it unconditionally at AddNetwork's end (f139dd3 old line 323).",
+      "failure_scenario": "Any parallel accessibility run with the route armed: the owner rows' row-log streams differ from the serial/current route by one missing v=2 line. Artifacts are unaffected (verified bitwise), so no comparator breaks; the divergence is on a diagnostic surface and is invisible to E2, whose filter only compares event=='Network added' entries.",
+      "verified_by": "Probe A (_p02r_probes.py): original vs prepared-owner event dumps on the smoke fixture - owner stream lacks exactly that line; all other lines byte-identical.",
+      "minimal_repair": "Log ('create topology', \"edge_list_dict created\", v=2) in the prepared owner/fallback branch before the return (or move the tail line above the early return so both paths share it). 2-line diff + a stream-parity assertion."
+    },
+    {
+      "id": "NR-2",
+      "severity": "non_blocking",
+      "file": "src/urban_network_analysis/Topology.py:458-531 (_restore_network_from_cache) and prepared_consumer_audit.md section 10",
+      "what_is_wrong": "The prepared HIT stream misses the v=2 line ('create topology', \"edge_sindex created\") that the produce path emits inside Network.BuildTopology. The audit's section-10 replay inventory (the amended contract text the restore follows) itself omits this line, so the restore satisfies the inventory but not the actual uncached v<=2 stream. Consequence: owner and hit 'create topology' streams differ from each other (owner: edge_sindex created only; hit: edge_list_dict created only), and each differs from the current path. The E2 gate compares only the 'Network added' event subset, so it establishes less than the claimed 'log-stream parity modulo the hit's own announcement'.",
+      "failure_scenario": "Parallel run with the route armed: every hit row's stream misses one content-derived v=2 line relative to the current route. No artifact, chronology, or result impact (probe C trees bitwise-equal); NF-1's 'CRS set to EPSG:3857.' line IS replayed correctly (probe A confirms the crs_label mechanism works).",
+      "verified_by": "Probe A event dumps (original / prepared owner / prepared hit); audit section 10 text re-read; E2 test source inspected (filter is event=='Network added' only).",
+      "minimal_repair": "Replay ('create topology', \"edge_sindex created\", v=2) in _restore_network_from_cache and add it to audit section 10's inventory; or record it explicitly as an accepted divergence the way CACHE_GRAPH's missing CRS line was recorded. Amend the E2 test to compare full streams modulo the announcement."
+    },
+    {
+      "id": "NR-3",
+      "severity": "non_blocking",
+      "file": "src/urban_network_analysis/batch/preparation.py:33-38,207-216 and src/urban_network_analysis/batch/runtime.py:1341-1370",
+      "what_is_wrong": "(a) The contract counters_law names corruption_rebuild as a distinct counter; it exists nowhere - the module docstring says 'store stats at report time' but no code reads store stats into the report; a corrupt-entry rebuild is only visible as cold_build. (b) distinct identities are not in the report, so the NF-7 gate (builds <= distinct identities, equality only when contention-fallback counters are zero) is checkable only inside tests; for a stage whose payload is unrepresentable (reachable in the admitted domain: a mixed-dimension geojson layer yields payload None -> the ({}, None) sentinel) every row becomes owner and builds with fallback_compute==0, which violates the letter of NF-7 while being behaviorally correct (each row computes locally exactly as the current path).",
+      "failure_scenario": "A post-hoc auditor reading extra['preparation'] cannot evaluate the NF-7 engagement law or detect corruption-rebuild activity from public evidence; a mixed-dim input run would report cold_build==rows==identities-looking numbers that no reported quantity can contradict.",
+      "verified_by": "Code read of the aggregation block and PrepSession.counters; grep confirms no store.stats() consumer in the batch layer; probe 2 confirms the empty/unrepresentable owner path leaves 0 entries and counts cold_build per row.",
+      "minimal_repair": "Aggregate store.stats() (hits/misses/quarantined) and a distinct-identity count into extra['preparation'] at report time (the session/flight already sees every key), and record the NF-7 boundary for unrepresentable stages in the contract amendments."
+    },
+    {
+      "id": "NR-4",
+      "severity": "non_blocking",
+      "file": "tests/tenx/post_p00/test_preparation.py (missing case)",
+      "what_is_wrong": "The EMPTY-PAYLOAD law - the commit's 'defect 3', the one law whose violation would poison every waiter - has no committed regression test. The island's ({}, None) producers (test_served_copy_mutation_isolation, lines 218/221) only ever execute on HIT paths where the owner branch is never reached; prepared_L0_L2.json attributes the law's evidence to the uncommitted _p02i_smoke.py area 8.",
+      "failure_scenario": "A future refactor of Flight.arrays_once that drops the 'if arrays:' guard would pass the entire committed suite while re-introducing the poisoned-empty-entry defect.",
+      "verified_by": "This review verified the law works today (probe 2: fresh root, owner ({}, None) -> StageProduced, store entries 0, nothing retained; subsequent real producer builds and commits normally), which is exactly the test that is missing from the island.",
+      "minimal_repair": "Add the probe as a committed test: fresh root, owner returning ({}, None), assert 0 store entries + StageProduced, then a real producer on the same key builds/serves correct bits."
+    },
+    {
+      "id": "NR-5",
+      "severity": "non_blocking",
+      "file": "src/urban_network_analysis/batch/preparation.py:364,372-376",
+      "what_is_wrong": "Flight's owner-branch commit guard is weaker than the StageCache.put_arrays machinery it mirrors: it guards on `if arrays:` (truthy dict) and catches TypeError only. A producer returning a non-empty dict whose encode drops every entry (e.g. {'x': None}) raises ValueError ('payload must contain at least one named blob') out of arrays_once, failing the row loudly instead of leaving the stage uncached. Unreachable from the two v1 producers (both payload builders return the ({}, None) sentinel whenever geometry_wkb is absent), so this is a latent robustness gap, not a live bug.",
+      "failure_scenario": "Increment A widens the producer set (feather/parquet fixtures, new stages): a producer that can return all-None arrays would turn 'stage stays uncached' into a hard row failure - a contract fallback-law violation of the silent kind the flight is supposed to prevent.",
+      "verified_by": "Probe 2: all-None producer raises ValueError through arrays_once; store.py:194-217 put() rejects empty payload mappings; cache/stages.py:132-152 put_arrays() refuses empty encodes and catches TypeError.",
+      "minimal_repair": "Compute payload = encode_arrays(arrays) once, commit only `if payload:`, keeping the TypeError catch - identical shape to StageCache.put_arrays. 3-line diff."
+    },
+    {
+      "id": "NR-6",
+      "severity": "non_blocking",
+      "file": "src/urban_network_analysis/batch/runtime.py:993-1000",
+      "what_is_wrong": "The commit message claims 'serial and single-job runs never arm the prepared route', but the negative test covers only serial RunBatch and a direct RunAccessibility call. A single-row PARALLEL RunBatch arms the route: runtime.py gates on analysis=='accessibility' and dispatchable being non-empty, with no row-count condition.",
+      "failure_scenario": "Probe B: 1-row parallel run -> .una-batch-prepared created, 3 cold_builds, preparation block present. Not a contract violation (the contract sets no arming row-count gate), but the 1-row parallel path carries unexamined overhead (root creation, snapshot+digest, three commits) on exactly the boundary the 10x claim must account for, and the recorded claim is imprecise.",
+      "verified_by": "Probe B output (root exists, extra keys [cohort, preparation], counters rows=1/stages=3/cold_build=3); runtime.py:970-1000 arming conditions; test_serial_and_single_job_never_arm_the_prepared_route read.",
+      "minimal_repair": "Either gate arming on len(dispatchable) >= 2 (with a negative test) or correct the claim to 'serial and session-less routes never arm' in the next receipt."
+    },
+    {
+      "id": "NR-7",
+      "severity": "non_blocking",
+      "file": "src/urban_network_analysis/Topology.py:1288-1289; src/urban_network_analysis/batch/preparation.py:158; commit message of a71f0f5",
+      "what_is_wrong": "Small claim/comment-vs-reality mismatches: (a) the comment '(counted)' at Topology.py:1288-1289 is false - a BuildAccessPoints label outside {Origins, Destinations} silently nulls the local prep without any refuse() call; unreachable in the armed domain (flow rows never carry a session; obstacle rows refuse at session construction), but the counters law says refusals are never silent; (b) the commit message says Topology gained '+1 benign label parameter-redefinition shadow' - the mechanical pyflakes multiset delta vs f139dd3 is +2 occurrences; (c) preparation.py:158 carries a redundant `global _REG_CLOSED` (read-only in that scope) flagged by pyflakes on the new file.",
+      "failure_scenario": "Future maintainers trust the '(counted)' comment or the receipt's lint accounting; neither can corrupt runs today.",
+      "verified_by": "Code read; mechanical pyflakes multiset comparison vs f139dd3 (UNA/worker/runtime identical, Topology +2); pyflakes on the new module.",
+      "minimal_repair": "Call prep.refuse('role_not_admitted:'+label) before nulling, or fix the comment; correct the lint delta count in the next receipt; drop the redundant global statement."
+    }
+  ],
+  "cosmetic_note": "Arena-served hit announcements read 'generation None, memory' (the arena retention does not carry a store generation) - inside the hit's own announcement line only, diagnostic surface, no parity impact (probe A).",
+  "evidence_requirements": {
+    "E1": {
+      "status": "satisfied",
+      "evidence": "tests/tenx/post_p00/test_preparation.py::test_prepared_bitwise_engagement_and_warm (serial vs W2 tree equality incl. warm repeat) plus prepared_engagement.json E1 (6-artifact sha256 pairs, serial 0.5774s vs W2 4.3237s, no performance claim).",
+      "verified_by": "Island re-run by this review: 23 passed in 35.14s; PLUS independent re-run of the method on this review's own 3-row serial-vs-W2 run (probe C): 6 artifacts, sha256 tree equality True, counters cold_build=3/contention_wait=3/fallback_compute=0, refusals {}."
+    },
+    "E2": {
+      "status": "partial",
+      "evidence": "test_prepared_hit_replays_log_stream verifies hit-vs-owner parity for event=='Network added' including the NF-1 crs_label line.",
+      "verified_by": "Island re-run green; probe A shows the gate's scope is narrower than 'log-stream parity': 'create topology' v=2 lines diverge between owner/hit/original (NR-1, NR-2). Satisfied for the 'Network added' subset it tests; not a full-stream gate."
+    },
+    "E3": {
+      "status": "satisfied",
+      "evidence": "test_cross_role_snap_collision_distinct_entries: origins_file==destinations_file yields 3 store entries and a bitwise run vs serial.",
+      "verified_by": "Island re-run green; independent key-split probe (_p02r_keysplit.py) recomputing the closure exactly as the seam does: observed, origins-store, destinations-store keys pairwise distinct."
+    },
+    "E4": {
+      "status": "satisfied",
+      "evidence": "Engagement asserts inside the E1 test: served==stages==9, cold_build==3==distinct identities, fallback_compute==0 (equality asserted), refusals empty; prepared_engagement.json E4 nf7_gate holds=true.",
+      "verified_by": "Island re-run green; probe C's own run produced the same counter shape from the public report block."
+    },
+    "E5": {
+      "status": "satisfied",
+      "evidence": "test_invalidation_on_same_size_mtime_change: digit swap inside the coordinate block, same size, restored mtime -> fresh build with different geometry, cold_build=1, verified_hit=0.",
+      "verified_by": "Island re-run green (key is the byte digest read per row before the flight consult - code path Topology.py:252-264)."
+    },
+    "E6": {
+      "status": "satisfied",
+      "evidence": "test_owner_death_waiter_completes: SIGKILL mid-flight, waiter completes with producer's bits, cold_build=1, fallback_compute=0.",
+      "verified_by": "Island re-run green; store.py singleflight pid-liveness lock-steal semantics read (file lock published atomically with content; token-matched release)."
+    },
+    "E7": {
+      "status": "satisfied",
+      "evidence": "test_session_refusal_taxonomy: turns_row / obstacle_row / format_not_admitted:{network,origins,destinations} / stage_not_admitted each refuse and serve nothing.",
+      "verified_by": "Island re-run green; code read confirms a refused session's stage_cache returns None so the seam joins the byte-identical cache-off body (refusal fallback == session-absent path by construction). Scope note: the taxonomy test is unit-level; no mixed-batch integration test drives a refused row through RunBatch - the fallback code path is identical to the session-absent path, so exposure is nil."
+    },
+    "E8": {
+      "status": "satisfied",
+      "evidence": "test_no_fit_serves_without_retention: cap=1 serves correct arrays twice (store-served), arena_nofit counted, arena empty.",
+      "verified_by": "Island re-run green; the cap-governs-retention-never-correctness law read in Arena.put/Flight."
+    },
+    "E9": {
+      "status": "satisfied",
+      "evidence": "test_detach_law_pickle_refusal (PrepSession.__getstate__ raises TypeError) + worker detach order (delta at worker.py:451, then una and topology detached at 452-453, BEFORE capture at 456 and state-bundle at 466).",
+      "verified_by": "Island re-run green; PLUS the adversarial exception path this review was asked to trace: empirical probe 3 (_p02r_probes3.py) - a mid-row FileNotFoundError with the session attached produces status=failed and the RowResult pickles cleanly (633 bytes, no state_bundle, empty settings_post); _failed_result transports error fields only (traceback frames never pickle) and _transport_safe degrades in place. No route transports the session."
+    },
+    "E10": {
+      "status": "satisfied",
+      "evidence": "test_served_copy_mutation_isolation: mutating the served copy cannot poison the next serve (arena retention is via _acopy, serves are fresh copies).",
+      "verified_by": "Island re-run green; _acopy/arena read (owner retains copies, row receives producer objects; store serves are decoded fresh per read)."
+    },
+    "E11": {
+      "status": "satisfied",
+      "evidence": "test_snap_num_threads_bit_equality: snap arrays + geometry wkb_hex equal across num_threads 1 vs 3.",
+      "verified_by": "Island re-run green (NF-4's convert-the-argument-into-evidence law)."
+    },
+    "E12": {
+      "status": "satisfied",
+      "evidence": "prepared_engagement.json E12_snapshot_reread: 0.2658 ms per read+digest at 2,775 input bytes, n=200 - the contract's open question #1 input for P02J.",
+      "verified_by": "Receipt read only; not re-measured by this review (measurement-only requirement, P02J's input; no benchmark runs permitted here)."
+    }
+  },
+  "mechanical_checks": [
+    {
+      "check": "Commit/receipt identities and all 8 sha256 pairs of prepared_source_commit.json re-verified against git reality",
+      "command": "./_py _p02r_receipt_check.py (git show a71f0f5:<path> | sha256 per file vs receipt extracted/worktree values; parent via git rev-parse a71f0f5^)",
+      "outcome": "0 fails: receipt commit == a71f0f5..., parent == f139dd3... == git reality, 8/8 pairs MATCH committed bytes and worktree bytes, keys well-formed; only the receipt file itself differs a71f0f5..HEAD. (No mistyped hashes found - the JSON pin is consistent.)"
+    },
+    {
+      "check": "Seam law: _prepared_session consulted only at the two Add* sites, never via cache_options",
+      "command": "grep -rn '_prepared_session' src/ (excl. __pycache__); grep -rn 'cache_options\\s*=' src/; grep -n cache_options src/urban_network_analysis/Engines/AccessibilityWElevation.py src/urban_network_analysis/Engines/Accessibility.py",
+      "outcome": "References: Topology.py:205 (sole read, inside _prepared_stage_cache), UNA.py:331-332 (forward before AddNetwork), worker.py:380/394 (attach) and 452-453 (detach), tests. _prepared_stage_cache called at exactly Topology.py:250 (AddNetwork) and :1285 (BuildAccessPoints). cache_options written only at Topology.py:185 (init None) and :193 (per-Add* settings refresh, pre-existing); engine result stage still reads getattr(topology,'cache_options',None) at AccessibilityWElevation.py:930-931 and Accessibility.py:841-842 - untouched."
+    },
+    {
+      "check": "Serial identity: RunAccessibility forwards None; serial stream byte-identical to pre-P02I",
+      "command": "./_py _p02r_probes.py (probe A original-path event dump) + UNA.py:331-332 read",
+      "outcome": "getattr(self,'_prepared_session',None) is None on serial/direct routes; the original stream shows exactly the pre-P02I lines (CRS line, source line, topology counts, edge_sindex created, edge_list_dict created, snap lines)."
+    },
+    {
+      "check": "BF-1 two-hash split computed exactly as the seam computes it",
+      "command": "./_py _p02r_keysplit.py",
+      "outcome": "observed != origins-store key, origins-store != destinations-store key, observed absent from both store keys - store keys role-separated, observed _stage_key role-free; engine result-key composition (AccessibilityWElevation.py:853-856 reads topology.origins/destinations._stage_key) sees today's role-free values."
+    },
+    {
+      "check": "Extraction verbatim-ness of _build_network_from_gdf and _derive_access_points vs the pre-P02I inline bodies",
+      "command": "./_py _p02r_extract_diff.py (ast-slice, comment/blank-normalized unified diff vs git show f139dd3:Topology.py)",
+      "outcome": "network derivation: IDENTICAL (48 normalized lines). snap derivation: IDENTICAL (95 lines) except the tail - the store block moved to the caller and the return carries (pt, len(gdf), extras); n_points equivalent (len(gdf) then vs n_points now)."
+    },
+    {
+      "check": "Empty-payload owner law (commit/skip + no retention)",
+      "command": "./_py _p02r_probes2.py",
+      "outcome": "Owner ({}, None): StageProduced, store entries 0, nothing retained; a subsequent real producer on the same key builds and commits normally. ALSO exposed NR-5: an all-None dict producer raises ValueError through arrays_once (latent, unreachable from v1 producers)."
+    },
+    {
+      "check": "Registry bound, eviction and shutdown laws",
+      "command": "./_py inline: 6 touched roots via stage_cache/arrays_once, inspect preparation._REG, close_registry/reopen_registry",
+      "outcome": "6 touched roots -> registry size 4 (= _REG_MAX), oldest evicted (r0,r1 gone), close_registry empties and sets the closed flag, reopen restores leasing. In-process loser law confirmed by reading store.py:649-697: owned = acquired and not _committed(key), so in-process losers never double-produce behind a committing owner."
+    },
+    {
+      "check": "Failure-path transportability with the session attached (E9 edge)",
+      "command": "./_py _p02r_probes3.py (_run_job_safely on a job whose network file is missing, then pickle.dumps the failed RowResult)",
+      "outcome": "status=failed, error_type=FileNotFoundError, pickle round-trip OK (633 bytes), state_bundle None, settings_post {} - the session never rides the failure."
+    },
+    {
+      "check": "Single-row parallel arming (claim check)",
+      "command": "./_py _p02r_probes.py (probe B: 1-row RunBatch(parallel=True, workers=2))",
+      "outcome": "prepared root IS created, extra keys [cohort, preparation], rows=1/stages=3/cold_build=3 - contradicts the commit message's 'single-job runs never arm' wording (NR-6); the contract itself sets no row-count gate."
+    },
+    {
+      "check": "Independent E1-method artifact parity on this review's own run",
+      "command": "./_py _p02r_probes.py (probe C: 3-row serial vs W2, per-file sha256 of all non-hidden artifacts + report counters)",
+      "outcome": "6 artifacts both sides, trees equal (per-file sha256 pairs identical); preparation block: cold_build=3, verified_hit=0..3, contention_wait=3, fallback_compute=0, arena_nofit=0, refusals {} - consistent with the receipt's E4."
+    },
+    {
+      "check": "Test island tests/tenx/post_p00 on the committed bytes",
+      "command": "./_py -m pytest tests/tenx/post_p00 -q",
+      "outcome": "23 passed in 35.14s (13 prepared + 10 telemetry) - matches the receipt."
+    },
+    {
+      "check": "Public-path regression: batch + execution suites",
+      "command": "./_py -m pytest tests/batch tests/execution -q",
+      "outcome": "198 passed in 233.22s - matches the receipt; no drift from the prepared route."
+    },
+    {
+      "check": "CACHE_GRAPH regression (Topology.py store/restore machinery shared with the prepared path)",
+      "command": "./_py -m pytest tests/tenx/cache -q",
+      "outcome": "33 passed in 1.34s."
+    },
+    {
+      "check": "Pyflakes multiset delta vs parent for touched files",
+      "command": "./_py inline pyflakes multiset comparison vs git show f139dd3:<file> for Topology/UNA/worker/runtime; ./_py -m pyflakes on preparation.py and the new test",
+      "outcome": "UNA/worker/runtime: identical multisets. Topology: +2 \"redefinition of unused 'label'\" (commit message says +1 - NR-7b). preparation.py: 1 message (unused global _REG_CLOSED) - NR-7c. runtime.py:602 PhaseRecorder-undefined and coord_events-unused pre-exist (in both multisets), out of scope."
+    },
+    {
+      "check": "BuildAccessPoints caller census (uncounted role-refusal reachability, NR-7a)",
+      "command": "grep -n 'BuildAccessPoints(' and label= in Topology.py",
+      "outcome": "Callers: AddOrigins label='Origins' (:817), AddDestinations label='Destinations' (:836), AddObservers label='Observer points' (:876), AddObstacles label='Obstacle points' (:971). The latter two are unreachable with an admitted session (observers are flow-only per UNA.py:338-342; an obstacle file refuses the session at construction), so the false '(counted)' comment has no live failure scenario today."
+    }
+  ],
+  "contract_deviations": [
+    {
+      "deviation": "counters_law.distinct_counters names corruption_rebuild; it is absent from PrepSession counters and from the report, and the docstring's 'store stats at report time' claim has no code behind it.",
+      "severity": "non_blocking",
+      "safe_or_recorded": "safe (corrupt bytes are never served - verification on_read; rebuilds surface as cold_build) but only recorded in a module docstring line; needs the report-surface repair in NR-3."
+    },
+    {
+      "deviation": "restore_fidelity_law.logs in practice: prepared hits replay the section-10 inventory but the actual uncached stream also contains ('create topology', 'edge_sindex created') which the inventory omits and the restore does not replay.",
+      "severity": "non_blocking",
+      "safe_or_recorded": "safe for artifacts (bitwise verified); unrecorded - requires the section-10 amendment in NR-2 (add the line or record the accepted divergence explicitly, as CACHE_GRAPH's CRS divergence was)."
+    },
+    {
+      "deviation": "Owner-path produce stream omits ('create topology', 'edge_list_dict created') although the contract's hook_points say the owner path runs the derivation 'exactly as today'.",
+      "severity": "non_blocking",
+      "safe_or_recorded": "unsafe-by-omission on a diagnostic surface only; artifacts, chronology and state unaffected (bitwise verified). Not covered by any explicit contract law (the log law governs hits); repair in NR-1."
+    },
+    {
+      "deviation": "Arming domain: single-row parallel RunBatch arms the route. Consistent with the contract text (no row-count gate) but contradicts the commit message's 'single-job runs never arm' claim.",
+      "severity": "non_blocking",
+      "safe_or_recorded": "safe (behavior correct: build-once-serve-rest degenerates to build-once-serve-none); claim needs correcting or the gate added (NR-6)."
+    },
+    {
+      "deviation": "NF-7 engagement law as amended (builds <= distinct identities, equality only when fallback counters are zero) is violated in letter - though not in behavior - by unrepresentable-payload stages, where every row builds with fallback_compute==0; the report carries no distinct-identities figure so the law is not publicly checkable.",
+      "severity": "non_blocking",
+      "safe_or_recorded": "safe (each row computes locally exactly as the current path; no relief claimed or delivered); needs the NR-3 amendment recording the boundary."
+    }
+  ],
+  "review_amendments": [
+    "Amend prepared_consumer_audit.md section 10 (network stage inventory): add ('create topology', \"edge_sindex created\", v=2, emitted inside Network.BuildTopology) either as a must-replay line for the prepared restore or as an explicitly accepted divergence, and note that the prepared owner branch must emit ('create topology', \"edge_list_dict created\", v=2) to keep the produce stream identical to the uncached path.",
+    "Amend review_amendments.NF-7: state the unrepresentable-payload boundary (builds <= distinct identities holds only for representable stages; an unrepresentable stage builds per row with fallback_compute==0 by design, matching the current path), and require the report's preparation block to carry a distinct-identities count so the gate is publicly checkable."
+  ],
+  "unrun_checks": [
+    "tests/tenx/trace, tests/tenx/identity, tests/tenx/metrics, tests/tenx/sparse, tests/tenx/harness, tests/tenx/public were NOT re-run by this review (receipt claims them green at a71f0f5; this review re-ran the public-path-relevant set: post_p00, cache, batch+execution - all green).",
+    "The receipt's git-archive-extraction test run (23 passed from the tmpdir extraction) was not repeated; equivalence is established here by sha256-verifying all 8 committed files against the worktree bytes instead.",
+    "prepared_engagement.json's E12 measurement was not re-measured (P02J input).",
+    "No benchmark-class runs were made; heavy budget untouched."
+  ],
+  "walls": {
+    "./_py -m pytest tests/tenx/post_p00 -q": 35.14,
+    "./_py -m pytest tests/batch tests/execution -q": 233.22,
+    "./_py -m pytest tests/tenx/cache -q": 1.34,
+    "scratch probes (_p02r_*.py)": "sub-minute each, not individually wall-tracked; test walls only, no benchmark claims"
+  }
+}

@@ -63,14 +63,48 @@ def make_batch(smoke_fixture, tmp_path):
     return make
 
 
-def tree_bytes(root):
-    """relpath -> bytes for every file under root (artifact byte-diffs)."""
+def tree_bytes(root, skip_hidden=False):
+    """relpath -> bytes for every file under root (artifact byte-diffs).
+
+    ``skip_hidden`` excludes dot-prefixed files and anything under a
+    dot-prefixed directory — runtime state (the cohort store root,
+    dossier 06) is persistent by design beside the row outputs and is
+    not a row artifact; the cohort suite asserts its own presence."""
     out = {}
     for dirpath, _dirs, names in os.walk(root):
         for name in names:
             path = os.path.join(dirpath, name)
-            out[os.path.relpath(path, root)] = open(path, "rb").read()
+            rel = os.path.relpath(path, root)
+            if skip_hidden and (rel.startswith(".")
+                                or os.sep + "." in os.sep + rel
+                                or "/." in "/" + rel):
+                continue
+            out[rel] = open(path, "rb").read()
     return out
+
+
+def hidden_residue(folder):
+    """Hidden runtime dirs that must not linger — everything
+    ``.una-batch*`` EXCEPT the persistent store roots (dossier 06 cohort;
+    una_10x P02 prepared route), which persist by design and are
+    identity-verified at every reuse.  For completed runs, where row
+    artifacts are expected to exist."""
+    return [n for n in os.listdir(str(folder))
+            if n.startswith(".una-batch")
+            and n not in (".una-batch-cohort", ".una-batch-prepared")]
+
+
+def runtime_residue(folder):
+    """Everything that must NEVER be visible at public paths: row
+    artifacts plus every hidden runtime dir EXCEPT the persistent store
+    roots — the cohort route's and the prepared route's stores
+    (dossier 06; una_10x P02) deliberately survive clean runs (warm
+    resumes) and aborts alike, and their reuse is identity-verified at
+    every load."""
+    return [n for n in os.listdir(str(folder))
+            if n.startswith("row")
+            or (n.startswith(".una-batch")
+                and n not in (".una-batch-cohort", ".una-batch-prepared"))]
 
 
 def values_equal(a, b):
@@ -94,9 +128,10 @@ def install_inject_specs(monkeypatch):
     orig_job_for = rt._job_for
 
     def job_for(una, plan, i, staging_dir, analysis, script_output_folder,
-                need_state):
+                need_state, **runtime_kwargs):
         job = orig_job_for(una, plan, i, staging_dir, analysis,
-                           script_output_folder, need_state)
+                           script_output_folder, need_state,
+                           **runtime_kwargs)
         specs = getattr(una.projects[i], "inject_specs", None)
         if specs:
             object.__setattr__(job, "inject", specs)  # frozen dataclass

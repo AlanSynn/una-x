@@ -85,9 +85,15 @@ def _run_child(node, tmp_path):
 
 def _no_staging_residue(out):
     """(b) of the regression contract: this run's staging removed by
-    ownership (the single cleanup owner runs on cancellation alike)."""
+    ownership (the single cleanup owner runs on cancellation alike).
+    The cohort/prepared store roots are excluded: on the merged tree
+    they persist by design beside the row outputs, survive aborts
+    alike, and are identity-verified at every reuse (the same
+    convention as the runtime suite's ``runtime_residue`` helper)."""
     return not os.path.exists(out) or \
-        not [n for n in os.listdir(out) if n.startswith(".una-batch")]
+        not [n for n in os.listdir(out)
+             if n.startswith(".una-batch")
+             and n not in (".una-batch-cohort", ".una-batch-prepared")]
 
 
 # ---------------------------------------------------------------------------

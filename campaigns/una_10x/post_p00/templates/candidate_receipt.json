@@ -1,0 +1,24 @@
+{
+  "schema": "post-p00-candidate-receipt-1",
+  "task_id": null,
+  "status": "pending",
+  "base_sha": null,
+  "candidate_sha": null,
+  "owner": null,
+  "independent_reviewer": null,
+  "admitted_domain": null,
+  "source_paths": [],
+  "proof": null,
+  "tests": [],
+  "actual_input_identity": null,
+  "raw_evidence": [],
+  "measured": {},
+  "derived_from_measured_values": {},
+  "hypothetical_sensitivity_analysis": {},
+  "unavailable": [
+    "application 10x until final qualification"
+  ],
+  "fallback_reason": null,
+  "rejection_reason": null,
+  "decision": "not_evaluated"
+}

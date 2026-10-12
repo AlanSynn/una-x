@@ -1,0 +1,189 @@
+# run_root = /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261003T1212Z
+# inputs = /storage/scratch1/1/dsynn6/campaign_data/inputs | baseline_recreate = /storage/scratch1/1/dsynn6/una-x-baseline-395cdc5r2
+
+== CHECK 1: receipt artifact sha256/bytes recompute
+  bridge_adversarial.json: sha_ok=True bytes_ok=True (20426B)
+  bridge_child.log: sha_ok=True bytes_ok=True (934B)
+  bridge_supervisor.json: sha_ok=True bytes_ok=True (933B)
+  counterexamples.json: sha_ok=True bytes_ok=True (30006B)
+  verify_checkout.log: sha_ok=True bytes_ok=True (451B)
+  verify_receipt_raw.json: sha_ok=True bytes_ok=True (1203B)
+  verify_supervisor.json: sha_ok=True bytes_ok=True (1150B)
+  bridge_adversarial.json: sha_ok=True bytes_ok=True (20426B)
+  bridge_child.log: sha_ok=True bytes_ok=True (934B)
+  bridge_supervisor.json: sha_ok=True bytes_ok=True (933B)
+  counterexamples.json: sha_ok=True bytes_ok=True (30006B)
+  verify_checkout.log: sha_ok=True bytes_ok=True (451B)
+  verify_receipt_raw.json: sha_ok=True bytes_ok=True (1203B)
+  verify_supervisor.json: sha_ok=True bytes_ok=True (1150B)
+  acquisition.json: sha_ok=True bytes_ok=True (3316B)
+  cohort_manifest.csv: sha_ok=True bytes_ok=True (8468B)
+  flow_manifest.csv: sha_ok=True bytes_ok=True (880B)
+  mixed_manifest.csv: sha_ok=True bytes_ok=True (5466B)
+  pinned_ref_tree_boston.json: sha_ok=True bytes_ok=True (7676B)
+  tutorial_acquisition.json: sha_ok=True bytes_ok=True (3431B)
+  upstream_boston_acquisition.json: sha_ok=True bytes_ok=True (11899B)
+  w00_inspection.json: sha_ok=True bytes_ok=True (9959B)
+  PRIMARY.json: sha_ok=True bytes_ok=True (47803B)
+  cohort_manifest.csv: sha_ok=True bytes_ok=True (8468B)
+  flow_manifest.csv: sha_ok=True bytes_ok=True (880B)
+  mixed_manifest.csv: sha_ok=True bytes_ok=True (5466B)
+  pairing_resolution.json: sha_ok=True bytes_ok=True (75043B)
+  w00_receipt.json: sha_ok=True bytes_ok=True (3063B)
+  -- cross-receipt agreement:
+  bridge_adversarial.json: agree=True
+  bridge_child.log: agree=True
+  bridge_supervisor.json: agree=True
+  counterexamples.json: agree=True
+  verify_checkout.log: agree=True
+  verify_receipt_raw.json: agree=True
+  verify_supervisor.json: agree=True
+  PRIMARY.identity acquisition.json: ok=True
+  PRIMARY.identity pinned_ref_tree_boston.json: ok=True
+  PRIMARY.identity tutorial_acquisition.json: ok=True
+  PRIMARY.identity upstream_boston_acquisition.json: ok=True
+  PRIMARY.identity w00_inspection.json: ok=True
+
+== CHECK 2: pin equality
+  recreate HEAD==pin:True detached:True clean:True
+  task_receipt.base_sha == pin: True
+  task_receipt.env.baseline_head == pin: True
+  task_receipt.result_sha.identity.baseline_head == pin: True
+  task_receipt.result_sha.pin == pin: True
+  reference_bridge.identity.baseline_head == pin: True
+  reference_bridge.pin == pin: True
+  verify_receipt_raw.pin == pin: True
+  verify_supervisor.pin == pin: True
+  verify_supervisor.baseline_head == pin: True
+  bridge_supervisor.pin == pin: True
+  bridge_supervisor.baseline_head == pin: True
+  bridge_adversarial.identity.baseline_head == pin: True
+  PRIMARY.baseline_pin == pin: True
+  ALL PIN FIELDS EQUAL: True
+
+== CHECK 3: blob checks
+  src/urban_network_analysis/Engines/AccessibilityWElevation.py: recorded=True matches_pin=True truthful=True
+  src/urban_network_analysis/Engines/AggregateFlow.py: recorded=True matches_pin=True truthful=True
+  src/urban_network_analysis/Engines/_large_access_scratch.py: recorded=True matches_pin=True truthful=True
+  src/urban_network_analysis/batch/worker.py: recorded=True matches_pin=True truthful=True
+  src/urban_network_analysis/cache/stages.py: recorded=True matches_pin=True truthful=True
+  src/urban_network_analysis/kernels/SPEC.md: recorded=True matches_pin=True truthful=True
+  verify source blobs pinned: 2
+  Engines/AccessibilityWElevation.py: match=True
+  Engines/_large_access_scratch.py: match=True
+  verify records: n=6 H=[1, 1, 1, 4, 4, 4] sides=[10, 10, 32, 32, 92, 92] all_bits_equal=True
+
+== CHECK 4: supervision limits
+  verify: rlimit=[600, 700] deadline=900.0 wall=49.78 affinity=[20, 21, 22, 23] maxrss=596.3 timed_out=False exit=0 nontrivial=True
+  bridge: rlimit=[600, 700] deadline=900.0 wall=98.76 affinity=[20, 21, 22, 23] maxrss=804.4 timed_out=False exit=0 nontrivial=True
+
+== CHECK 5: adversarial suite
+  fixtures: n=18 all_ok=True all_engine==transcription=True all_deterministic=True
+  cutoffs: [0.0, 0.0, 0.4, 0.4, 0.4, 1.9999999999999998, 1.9999999999999998, 2.0, 2.0, 2.0, 2.0, 4.0, 4.0, 12.0, 12.0, 40.0, 40.0, 100.0]
+  engine==local_sparse seeds: ['a14', 'a15', 'a16', 'a17']
+  parameter_cases: n=10 all_finite=True all_deterministic=True
+  refusals: n=9 all_true=True
+  ledger: exact=384 nonzero_ulp=171 nan=1 inf=12 sum=568 hist=171 signflips=0 class_div=0
+  plan_triples=142 kept_cases=138 legacy_divergences=48
+  counterexamples: n=171 all_raw_bit_patterns=True (receipt 171)
+  kept divergences backed by raw counterexamples: 24/48
+!! FINDING S02/MINOR/divergences-not-in-counterexamples: 24/48
+
+== CHECK 6: cohort manifest
+  columns=21 receipted=21 header==receipted=True
+  rows=32 (validation 32)
+  distinct full parameter tuples: 32/32
+  distinct beta bits: 32 ascending=True min=0.001 max=0.004
+  beta bits == np.linspace(0.001,0.004,32) bit-exact: True
+  PRIMARY beta uint64 == cohort CSV beta bits: True
+  distinct jobs ignoring name/output_file_name: 32/32
+  frozen-axis search_radius: ['400']
+  frozen-axis knn_decay: ['logistic']
+  frozen-axis knn_weights: ['[1.0]']
+  frozen-axis turns: ['FALSE']
+  frozen-axis elevation: ['FALSE']
+  frozen-axis network_file: ['20260703_PercLenNetwork_InnerCore.geojson']
+  frozen-axis origins_file: ['Cambridge_building_centroids.geojson']
+  frozen-axis destinations_file: ['MA_transit_stations.geojson']
+  frozen-axis origin_weight_column: ['Count']
+  frozen-axis destination_weight_column: ['weekly_departures']
+  frozen-axis gravity_logistic_midpoint: ['500']
+  -- referenced files: existence + recorded sha256
+  20260703_PercLenNetwork_InnerCore.geojson: rows=32 sha_recorded=True sha_match=True (71290787B)
+  Cambridge_building_centroids.geojson: rows=32 sha_recorded=True sha_match=True (5982662B)
+  MA_transit_stations.geojson: rows=32 sha_recorded=True sha_match=True (2666677B)
+  -- flow_manifest.csv
+  columns=21 rows=2 distinct=2 (validation 2)
+  flow homes_to_transit: 20260703_PercLenNetwork_InnerCore.geojson exists=True sha_match=True
+  flow homes_to_transit: Cambridge_building_centroids_pop2020.geojson exists=True sha_match=True
+  flow homes_to_transit: Cambridge_transit_stations.geojson exists=True sha_match=True
+  flow schools_to_transit: 20260703_PercLenNetwork_InnerCore.geojson exists=True sha_match=True
+  flow schools_to_transit: schools_cambridge.geojson exists=True sha_match=True
+  flow schools_to_transit: Cambridge_transit_stations.geojson exists=True sha_match=True
+  -- mixed_manifest.csv
+  columns=27 rows=11 distinct=11 (validation 11)
+  graph-changing row: name=mixed_elevation_3d elevation=TRUE network=20260703_PercLenNetwork_InnerCore_3D.geojson; other rows elevation=['FALSE']
+  mixed upstream rows verbatim: 10/10
+  flow rows verbatim: 2/2
+  -- OBS_SINGLE config vs cohort/mixed
+  network: obs_single='20260703_PercLenNetwork_InnerCore.geojson' cohort='20260703_PercLenNetwork_InnerCore.geojson' equal=True
+  origins: obs_single='Cambridge_building_centroids.geojson' cohort='Cambridge_building_centroids.geojson' equal=True
+  destinations: obs_single='MA_transit_stations.geojson' cohort='MA_transit_stations.geojson' equal=True
+  dest_weight: obs_single='weekly_departures' cohort='weekly_departures' equal=True
+  orig_weight: obs_single='Count' cohort='Count' equal=True
+  knn_decay: obs_single='logistic' cohort='logistic' equal=True
+  radius: obs_single='400' cohort='400' equal=True
+  PRIMARY graph_changing_row vs mixed row: net=True orig=True dest=True radius=True elev=True beta_bits=True
+  OBS_SINGLE beta bits == cohort beta[0]: True
+  MISSING EXPLICITLY cells: ['ACTUAL', 'HOLDOUT']
+  synthetic-declared cells: ['SYN_DENSE', 'SYN_TINY']
+  pairing_resolution: knn_rows=10 flow_rows=2 knn_names=['knn_arts', 'knn_bus', 'knn_food_beverage', 'knn_health', 'knn_metro', 'knn_park', 'knn_personal_service', 'knn_public', 'knn_retail', 'knn_school']
+  every non-graph-changing mixed row resolved: True
+
+== CHECK 7: freeze timestamps vs candidate timing
+  PRIMARY.json mtime 2026-10-03T13:35:58Z frozen_at='2026-10-03, before any una_10x candidate timing; no ratio observed'
+  earliest h01_public artifact 2026-10-03T13:40:54Z freeze_precedes_all=True sample=['cohort_supervisor.json', 'cohort_supervisor.log', 'fault_matrix.json', 'fault_matrix_run4_watcherbug.json', 'fault_supervisor.json']
+  ordering S02_earliest<=acquisition_latest<=freeze: True
+  git log perf/una-10x (latest 12):
+    d23344bc1498b5041fb76b05723c571cfaa84d2e 2026-10-03T15:29:08-04:00 S12 closure: independent review of the S11 sparse kernel ACCEPT_WITH_FINDINGS, findings repaired in the
+    c1612a7d6961a90ae87a1e1c3fd0a299f5a4c8c2 2026-10-03T15:28:14-04:00 S12 repair round: sparse admission-gate rank closure (review F1/F2/F3, local commit only on perf/una-10
+    c98d5d1c8cc05e88a139de2ea33b16f2ef26987a 2026-10-03T14:46:58-04:00 H00 closure: reusable una_10x benchmark instrumentation + harness negative tests (campaign una_10x, run
+    0fd05005ebf6f0a5e6a3381643ab024da2e62cad 2026-10-03T14:27:23-04:00 S00+S01 closure (campaign una_10x, run root campaign_runs/una_10x/tenx-20261003T1212Z, local commit onl
+    c8b19f21a53a14199daf8086550710a4a3c10693 2026-10-03T14:13:57-04:00 S11 closure: sparse epoch-label kernel + indexed destination path proven bitwise against the actual com
+    06c7c66cab2bf2e6ac0d8919fd043665cc0f1861 2026-10-03T13:07:57-04:00 S10 closure: sparse epoch + destination projection proven and independently reviewed (ACCEPT_WITH_FINDI
+    4efeffc02233c96003b8a56e69e94335844ab090 2026-10-03T11:10:01-04:00 H01 closure: public chronology + fault recovery validated on the pinned baseline 395cdc5f683894b6f2ba46
+    c1f8614a2733903b3fa9664579ba2fdce7ef7a74 2026-10-03T08:11:19-04:00 BATCH_REVIEW: independent review verdict ACCEPT-WITH-FINDINGS (1 MAJOR, 4 MINOR, 4 NOTE) for BATCH_EXEC
+    bf8c0279123e933c4066fe9f6ef63744974f70b2 2026-10-03T08:08:28-04:00 CPU_LAYOUT closure: frontier measured, zero source changes shipped — engine byte-identical to audited b
+    24be380883485f1d4c71f03eb0f474419869c411 2026-10-03T07:40:08-04:00 Add concrete 10x sparse-query and public cohort campaign; retain platform obligations
+    395cdc5f683894b6f2ba460f7dbcefee99981ba3 2026-10-02T22:05:17-04:00 CPU_ALGORITHMS closure: frozen kernel/algorithm contracts + canonical corrected reductions (kernels/ + 
+    e2d790b096d088a11ce9fd8f6330d6be4ad5c446 2026-10-02T18:40:16-04:00 CACHE_GRAPH closure: whole-repo regression on the final merged tree (perf/una-platform @ a95ddfc = 3aa6
+
+== CHECK 8: full sha256 re-manifest
+  s02_bridge/bridge_adversarial.json 20426B b5441df224c7db5b7efd0e63229d5d0a66ab8158d83c0daa47b76b7109cced9f
+  s02_bridge/bridge_child.log 934B f74cd5ebc90768922ddd3545959f500d73400cd57f2d85860eb0622958fbe09c
+  s02_bridge/bridge_supervisor.json 933B 4925fbf388b6e5bff7e656f9a10aea2ba9d6911aceb3e4de84c7f826f10ecad9
+  s02_bridge/counterexamples.json 30006B b38bb0db4ba771d1d77ea7c66b37aa9768c96bbbb9112823c45715f506f17b7d
+  s02_bridge/reference_bridge.json 5512B e2843ef59064f7f0e3aebb1045a38206932df45bd6b4c8cf1c9015fea37a13b6
+  s02_bridge/task_receipt.json 8151B d40cd5da41524a555e64da3492db7691b81b51876d9bdaad980ea681bae78682
+  s02_bridge/verify_checkout.log 451B d8f935f09bc415573b60562be034e37e7c4433d984dad9714962cb286483d305
+  s02_bridge/verify_receipt_raw.json 1203B cf3984f775a6246c456ab7c8243ffcfca4019754470274f10165a3001ee5676f
+  s02_bridge/verify_supervisor.json 1150B 4327bdc4bdc440abe1e850fb4f0ffcd72b882d104e9b520b64b585f3c328d669
+  w00_freeze/PRIMARY.json 47803B 6f79c5eb7a5abba3be55f4a77e2f0566c791c2920472f72d3a3bf5cb43d13a2c
+  w00_freeze/cohort_manifest.csv 8468B 1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf
+  w00_freeze/flow_manifest.csv 880B 1e5dab8f358050eaf0562c73328395cccc2ded5ee7239718afe6b4c661816725
+  w00_freeze/mixed_manifest.csv 5466B 07882ede16b011fd528b7b08df7b5fd4b790cd626c37b9d52e58f9b743a17ee4
+  w00_freeze/pairing_resolution.json 75043B be64a84d82852df9196703b4ae78c69bc764d4f9c21eb06088e259225a87b807
+  w00_freeze/w00_receipt.json 3063B 190dca9faa5c60f4510b8f91b5ed08b45bb0c37e79496eb8be3d3172568abe62
+  w00_freeze/w00_validation.json 1204B 99c29eb749cb356dd936e551300ceed14e3cff1885c4f3c4f6e8dfa617d5b007
+  w00_acquisition/0_UNA_Setup.txt 2139B f1bd6928267e6be5f5db0f865e2b1621589cef9cc6385f238f6c74533f286eb4
+  w00_acquisition/2_UNA_Tutorial2_Accessibility_Boston.txt 11627B 0b875a7c74f494c059f6c8c7292081ca8b1576d3b120a1b360819fd489dd06b0
+  w00_acquisition/3_UNA_Tutorial3_Flow_Boston.txt 14706B 020077412c7ca5682b136695b24b36c0965aa6ea7efe78e05fd79debb660843e
+  w00_acquisition/4_UNA_Tutorial4_DesignImpact_Boston.txt 18743B cfe9fc708eee890d5c59d9b4a6d57368c2016dd16c5d764d25d0f73337f3d7b3
+  w00_acquisition/acquisition.json 3316B 8bbe0c9ffff8cc238042a7c1d820d7c306ef979f5bba3f073155257f15b660c4
+  w00_acquisition/pinned_ref_tree_boston.json 7676B 53f4eec1dce21d23debab24deba1d3594068110b078958bb4fe29fa0710ba467
+  w00_acquisition/tutorial_acquisition.json 3431B 7158dcf5b8f0ade4f0179f1a2f4cde8fbec479d13b04677ed2ba7bf9ce7f6ac9
+  w00_acquisition/upstream_boston_acquisition.json 11899B 4eb64f0d18ef8f827a4644776293a3545040d89c367dcf1a8ebaaa19c8641e44
+  w00_acquisition/w00_inspection.json 9959B 2b02c60734052ebec151a7c6d22ac632dfde68d28e073c1f2e3755dcc7ae3c76
+
+== NOT-RUN: verify_checkout re-execution (minutes-scale, supervised twice already; judged from retained bytes)
+== NOT-RUN: full geojson re-parse of acquired layers (header/provenance-level checks only)

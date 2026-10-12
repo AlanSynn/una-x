@@ -1,0 +1,319 @@
+{
+ "schema": "una-10x-g11-gpu-qualification-1",
+ "task": "G11",
+ "hardware_identity": {
+  "device": "Tesla V100-PCIE-16GB",
+  "compute_capability": [
+   7,
+   0
+  ],
+  "cpu": "Intel(R) Xeon(R) Gold 6226 CPU @ 2.70GHz",
+  "budget_C": 1,
+  "python": "3.11.4",
+  "numba": "0.67.0",
+  "numpy": "2.4.6",
+  "stack": "numba.cuda",
+  "toolchain": "module cuda/12.6.1 (nvcc 12.6.r12.6), QOS inferno, partition gpu-v100, account gts-hoh68 (PACE salloc per standing authorization, compute only)",
+  "jobs": {
+   "probe": "13864911 (11s wall: nvidia-smi -L + numba cuda.is_available True)",
+   "battery": "13864917 (32s wall, cput 00:02:08, mem 448072K peak)"
+  },
+  "raw": "campaign_runs/una_10x/tenx-20261004T155640Z/g11_gpu/raw/ (probe.log, battery.log, device_battery_result.json - uncommitted per the P00 raw-evidence law)",
+  "law": "hardware ADDITION recorded separately; never labeled equal-resource with the C=4 CPU arm; the frozen comparator and the 10x gate are untouched by these walls"
+ },
+ "bit_matrix_on_device": [
+  {
+   "case": "rep4000",
+   "decay": "exponential",
+   "origins": 4000,
+   "nnz": 238387,
+   "vs_native_strict_equal_targets": [
+    "reach",
+    "kept"
+   ],
+   "vs_native_strict_divergences": [
+    {
+     "target": "ge",
+     "n_diff": 196,
+     "max_ulp": 2
+    },
+    {
+     "target": "gl",
+     "n_diff": 1378,
+     "max_ulp": 3
+    },
+    {
+     "target": "kn",
+     "n_diff": 747,
+     "max_ulp": 2
+    }
+   ],
+   "vs_numba_delivered_equal_targets": [],
+   "vs_numba_delivered_divergent_targets": [
+    "reach",
+    "ge",
+    "gl",
+    "kn"
+   ]
+  },
+  {
+   "case": "rep4000",
+   "decay": "logistic",
+   "origins": 4000,
+   "nnz": 238387,
+   "vs_native_strict_equal_targets": [
+    "reach",
+    "kept"
+   ],
+   "vs_native_strict_divergences": [
+    {
+     "target": "ge",
+     "n_diff": 196,
+     "max_ulp": 2
+    },
+    {
+     "target": "gl",
+     "n_diff": 1378,
+     "max_ulp": 3
+    },
+    {
+     "target": "kn",
+     "n_diff": 91,
+     "max_ulp": 2
+    }
+   ],
+   "vs_numba_delivered_equal_targets": [],
+   "vs_numba_delivered_divergent_targets": [
+    "reach",
+    "ge",
+    "gl",
+    "kn"
+   ]
+  },
+  {
+   "case": "rep4000",
+   "decay": "flat",
+   "origins": 4000,
+   "nnz": 238387,
+   "vs_native_strict_equal_targets": [
+    "reach",
+    "kn",
+    "kept"
+   ],
+   "vs_native_strict_divergences": [
+    {
+     "target": "ge",
+     "n_diff": 196,
+     "max_ulp": 2
+    },
+    {
+     "target": "gl",
+     "n_diff": 1378,
+     "max_ulp": 3
+    }
+   ],
+   "vs_numba_delivered_equal_targets": [],
+   "vs_numba_delivered_divergent_targets": [
+    "reach",
+    "ge",
+    "gl",
+    "kn"
+   ]
+  },
+  {
+   "case": "rep4000_dupdist",
+   "decay": "exponential",
+   "origins": 4000,
+   "nnz": 238387,
+   "vs_native_strict_equal_targets": [
+    "reach",
+    "kept"
+   ],
+   "vs_native_strict_divergences": [
+    {
+     "target": "ge",
+     "n_diff": 393,
+     "max_ulp": 2
+    },
+    {
+     "target": "gl",
+     "n_diff": 1277,
+     "max_ulp": 4
+    },
+    {
+     "target": "kn",
+     "n_diff": 507,
+     "max_ulp": 2
+    }
+   ],
+   "vs_numba_delivered_equal_targets": [],
+   "vs_numba_delivered_divergent_targets": [
+    "reach",
+    "ge",
+    "gl",
+    "kn"
+   ]
+  },
+  {
+   "case": "small3_emptymid",
+   "decay": "exponential",
+   "origins": 3,
+   "nnz": 6,
+   "vs_native_strict_equal_targets": [
+    "reach",
+    "ge",
+    "kept"
+   ],
+   "vs_native_strict_divergences": [
+    {
+     "target": "gl",
+     "n_diff": 1,
+     "max_ulp": 1
+    },
+    {
+     "target": "kn",
+     "n_diff": 1,
+     "max_ulp": 1
+    }
+   ],
+   "vs_numba_delivered_equal_targets": [
+    "reach"
+   ],
+   "vs_numba_delivered_divergent_targets": [
+    "ge",
+    "gl",
+    "kn"
+   ]
+  },
+  {
+   "case": "small3_emptymid",
+   "decay": "logistic",
+   "origins": 3,
+   "nnz": 6,
+   "vs_native_strict_equal_targets": [
+    "reach",
+    "ge",
+    "kn",
+    "kept"
+   ],
+   "vs_native_strict_divergences": [
+    {
+     "target": "gl",
+     "n_diff": 1,
+     "max_ulp": 1
+    }
+   ],
+   "vs_numba_delivered_equal_targets": [
+    "reach"
+   ],
+   "vs_numba_delivered_divergent_targets": [
+    "ge",
+    "gl",
+    "kn"
+   ]
+  },
+  {
+   "case": "small3_emptymid",
+   "decay": "flat",
+   "origins": 3,
+   "nnz": 6,
+   "vs_native_strict_equal_targets": [
+    "reach",
+    "ge",
+    "kn",
+    "kept"
+   ],
+   "vs_native_strict_divergences": [
+    {
+     "target": "gl",
+     "n_diff": 1,
+     "max_ulp": 1
+    }
+   ],
+   "vs_numba_delivered_equal_targets": [
+    "reach",
+    "kn"
+   ],
+   "vs_numba_delivered_divergent_targets": [
+    "ge",
+    "gl"
+   ]
+  }
+ ],
+ "bit_matrix_law": {
+  "targets": "5 outputs vs the native strict fold (reach, ge, gl, kn, kept); 4 public outputs vs the delivered numba fastmath fold (the public call does not expose kept)",
+  "mechanical_facts": {
+   "reach_bit_equal_vs_native_every_case": true,
+   "kept_bit_equal_vs_native_every_case": true,
+   "gl_diverges_vs_native_every_case": true,
+   "flat_decay_kn_bit_equal_vs_native_every_flat_case": true,
+   "rep4000_outputs_bit_equal_vs_delivered_numba": 0
+  },
+  "reading": "reach and kept are bit-equal to the strict host fold in EVERY case: same-order IEEE adds and integer counts reproduce exactly on the device. ge/gl/kn diverge only where a transcendental is involved: gl diverges in every case (it always carries exp), kn is bit-equal on every flat-decay case (no exp in that branch), and ge/kn divergences are bounded (max 2-4 ULP) - libdevice exp is not bit-equal to glibc exp on the tested inputs. Against the DELIVERED numba fastmath authority the substitution domain is EMPTY at cohort-representative scale (0 of 4 outputs equal on every rep4000 case), consistent with the N00 map's strict-sequential divergence."
+ },
+ "crossover_measured": {
+  "protocol": "warm full-service AB/BA x6 alternating blocks on the SAME device node, C=1, identical inputs; device arm = upload+launch+sync+download via the G10 bridge; numba arm = the delivered per-origin driver",
+  "numba_driver_median_s": 0.04291464574635029,
+  "device_full_service_median_s": 0.13535481644794345,
+  "ratio_device_over_numba": 3.154047157885599,
+  "cold_jit_s": 1.295501722022891,
+  "blocks": [
+   {
+    "order": "AB",
+    "numba_s": 0.04321628715842962,
+    "fold_s": 0.1351371305063367
+   },
+   {
+    "order": "BA",
+    "numba_s": 0.04274035058915615,
+    "fold_s": 0.13552853278815746
+   },
+   {
+    "order": "AB",
+    "numba_s": 0.04246888682246208,
+    "fold_s": 0.13527140207588673
+   },
+   {
+    "order": "BA",
+    "numba_s": 0.04298233054578304,
+    "fold_s": 0.13517122622579336
+   },
+   {
+    "order": "AB",
+    "numba_s": 0.042846960946917534,
+    "fold_s": 0.13631664868444204
+   },
+   {
+    "order": "BA",
+    "numba_s": 0.04314684309065342,
+    "fold_s": 0.13543823082000017
+   }
+  ],
+  "law": "descriptive region walls; they decide CPU-vs-GPU route selection only and NEVER feed the CPU 10x gate"
+ },
+ "decision": "CPU_ROUTE_RETAINED",
+ "decision_text": "The device fold is NOT admitted: two independent measured grounds, either sufficient. (1) BINDING - the substitution domain vs the delivered numba fastmath authority is EMPTY on the device (0/4 outputs bit-equal at rep4000, every decay), so the mandatory bitwise parity law excludes the route regardless of speed; device-vs-strict divergences (ge/gl/kn, <=4 ULP, exp-sourced) would additionally require a strict-domain admission that the N00 map already refused for the host strict fold itself. (2) The measured crossover loses: the full-service device region is ~3.15x SLOWER than the delivered numba arm on the same node at C=1 (0.1354s vs 0.0429s per 4000-origin structure, transfer+launch+sync included; one-thread-per-origin parallelism does not amortize the region's sequential order-bearing loops at this scale). Per the region law, CPU is chosen when the complete GPU region loses; the delivered CPU route is unchanged.",
+ "capability_status": {
+  "substantive_real_device_region": true,
+  "detail": "dossier 08's GPU requirement - at least one substantive real-device region plus installed engagement and numerical validation, not capability detection or copying through a GPU - is MET as a demonstrated capability: the G10 kernel compiled and executed on real hardware (V100 sm_70), produced outputs, and passed a per-profile numerical validation whose refusal matrix is recorded above; engagement law intact (production never imports the module). What is NOT met is exact-domain ADMISSION: no profile tested admits the device fold under the bit law, so GPU support stands as implemented+validated+not-admitted, with the unrun gate now run.",
+  "not_claimed": [
+   "GPU acceleration",
+   "GPU parity on any profile",
+   "GPU route in the 10x claim",
+   "equal-resource comparability"
+  ]
+ },
+ "cross_references": {
+  "g10_receipt_sha256": "9e23a28147b2cf0985c7af2f225f92a125c171e447ca98289973af3b2bb3fe53",
+  "g00_receipt_sha256": "677eeb3a735d756598cbaf5ba7772896744000e9d0446ee21d9ef6ad6e063af2",
+  "n00_map": "tests/tenx/native/_measured_map.py (committed battery law; device result consistent with it)"
+ },
+ "budget": {
+  "charged_walls_s": 0.0,
+  "law": "G11 walls are probe-scale device evidence walls (sbatch 11s probe + 32s battery on synthetic structures); charged per the fa92dca/958e25b precedent; the salloc compute itself was user-authorized for this scope",
+  "cumulative_s": 4454.3,
+  "cap_s": 28800.0,
+  "reserve_s": 7200.0,
+  "remaining_before_reserve_s": 17145.7
+ }
+}

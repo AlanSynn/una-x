@@ -9,6 +9,7 @@ injected wait within seconds, failing the test.
 """
 from __future__ import annotations
 
+from conftest import runtime_residue
 import os
 import queue
 from dataclasses import replace
@@ -44,9 +45,10 @@ def test_two_independent_rows_run_concurrently(make_batch, tmp_path,
     orig_job_for = rt._job_for
 
     def job_for(una, plan, i, staging_dir, analysis, script_output_folder,
-                need_state):
+                need_state, **runtime_kwargs):
         job = orig_job_for(una, plan, i, staging_dir, analysis,
-                           script_output_folder, need_state)
+                           script_output_folder, need_state,
+                           **runtime_kwargs)
         specs = getattr(una.projects[i], "inject_specs", None)
         if specs:
             object.__setattr__(job, "inject", specs)  # frozen dataclass
@@ -95,8 +97,7 @@ def test_serialized_runtime_fails_the_barrier(make_batch, tmp_path,
     assert held, "sabotage never saw a worker result"
     # nothing was ever published: no row folders, no staging residue
     assert not os.path.exists(out) or \
-        not [n for n in os.listdir(out)
-             if n.startswith(("row", ".una-batch"))]
+        not runtime_residue(out)
     assert "deadline" in str(ei.value)
     assert hasattr(ei.value, "batch_rows")
 
