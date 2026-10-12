@@ -100,7 +100,7 @@ many analyses from a pairings CSV.
 
 
 
-## Performance and verification status (2026-10-11)
+## Performance and verification status (2026-10-12)
 
 Measured claims from the una_10x / una_platform verification campaigns. Every
 number below comes from a preregistered, paired, bitwise-checked measurement
@@ -124,8 +124,14 @@ stretch target of 10x; the gate was evaluated at full strength and reported
 as `target_unmet` rather than lowered. Single-job `RunAccessibility`
 throughput was not separately claimed (batch scope only). A further,
 independently gated **1.11x** lazy-import improvement (median 1.10654, 95% LB
-1.07908, byte-identical outputs) is completed on branch `perf/exp-lazy-1`
-and not yet part of the measured headline.
+1.07908, byte-identical outputs) is merged here together with independently
+reviewed batch checkpoint/resume correctness fixes; on the combined tree a
+confirmatory paired gate (G4RC, `g4rc-20261012T0512Z`) measured **3.08x**
+median (one-sided 95% lower bound **3.03x**, 7/7 windows positive, export
+outputs byte-identical in every window) over the pre-merge tree, recorded as
+merge-decision evidence — a different comparator and timing boundary than
+the headline above, which remains measured against `395cdc5` on installed
+wheels at a cold call boundary.
 
 **GPU.** Substantive GPU execution is implemented and qualified on a real
 NVIDIA A100: the device kernel gate passed (rc=0) with the
