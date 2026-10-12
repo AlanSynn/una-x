@@ -8,7 +8,9 @@ text checks stay recording-only.
 
 C10-NOTE-3: a SECOND, permanently independent derivation of the fold's
 metric dependency facts, cross-checked against the C10 table
-(metric_dependencies.json): the engine fold's own signature is
+(metric_dependencies.gen2.json, generation 2; generation 1 is
+preserved untouched as metric_dependencies.json): the engine fold's
+own signature is
 introspected at runtime, the engine file's bytes are re-hashed, the
 replay binding is compared to the C10 unanimous binding record, and
 each metric-only input is poison-tested behaviorally (a changed value
@@ -27,8 +29,11 @@ from conftest import (RESULT_FIELDS, admitted_case, bits, build)
 REPO = Path(__file__).resolve().parents[3]
 ENGINE_PATH = (REPO / "src" / "urban_network_analysis" / "Engines" /
                "AccessibilityWElevation.py")
+# Generation 2: the engine evolved by the gated lazy-import change
+# (exl-20261011T164228Z); generation 1 stays preserved untouched as
+# metric_dependencies.json (Z00 campaign-close record).
 DEPS_PATH = (REPO / "campaigns" / "una_10x" / "identity" /
-             "metric_dependencies.json")
+             "metric_dependencies.gen2.json")
 KNN = np.array([1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1])
 METRIC_ONLY = ("gravity_beta", "gravity_plateau",
                "gravity_logistic_midpoint", "gravity_growth_rate",

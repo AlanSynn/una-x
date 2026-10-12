@@ -48,8 +48,11 @@ def contract():
 
 @pytest.fixture(scope="session")
 def table():
+    # Generation 2: the engine evolved by the gated lazy-import change
+    # (exl-20261011T164228Z); generation 1 stays preserved untouched as
+    # metric_dependencies.json (Z00 campaign-close record).
     return json.loads(
-        (IDENTITY_DIR / "metric_dependencies.json").read_text())
+        (IDENTITY_DIR / "metric_dependencies.gen2.json").read_text())
 
 
 @pytest.fixture(scope="session")

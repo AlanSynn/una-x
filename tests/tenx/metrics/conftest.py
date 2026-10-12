@@ -81,8 +81,10 @@ def splits(live_params):
 @pytest.fixture(scope="session")
 def table():
     import json
+    # Generation 2 (see tests/tenx/identity/conftest.py); generation 1
+    # stays preserved untouched as metric_dependencies.json.
     return json.loads(
-        (IDENTITY_DIR / "metric_dependencies.json").read_text())
+        (IDENTITY_DIR / "metric_dependencies.gen2.json").read_text())
 
 
 @pytest.fixture(scope="session")
