@@ -1,0 +1,266 @@
+{
+ "schema": "una10x-next-p01p-parallel-region-1",
+ "purpose": "parallel prepared-boundary telemetry on current main; no claim",
+ "python": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11",
+ "package": "/storage/scratch1/1/dsynn6/una-x-next-20261012/src/urban_network_analysis/__init__.py",
+ "manifest": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv",
+ "manifest_sha256": "1161f4857a3d11640b883cbd25dac212ffda84c1157c1dba9d2cfd18ee95daaf",
+ "manifest_sha_matches_p00_pin": true,
+ "numba_cache_dir": "/storage/scratch1/1/dsynn6/campaign_data/numba_cache_p00_cand",
+ "numba_num_threads_env": "1",
+ "workers": 4,
+ "regime": "parallel public call w4t1; pass 1 untimed warm, pass 2 parent-cProfiled; worker-internal time invisible except as wait buckets (declared asymmetry)",
+ "bucket_regexes": [
+  [
+   "coordinator_commit",
+   "commit|journal|checkpoint|_publish|cohort_store|finalize|_commit"
+  ],
+  [
+   "ipc",
+   "pickle|queue|_send|_recv|_pack|_unpack|feed|put\\(|get\\(|pipe"
+  ],
+  [
+   "verify_hash",
+   "sha256|hashlib|verify|digest|_file_identity"
+  ],
+  [
+   "prepared_route",
+   "prepared|prep_session|flight|arena|PrepSession|_prepared_stage_cache"
+  ],
+  [
+   "restore_decode",
+   "from_wkb|_restore|sindex|strtree|STRtree|_geoms_from"
+  ],
+  [
+   "load_gis",
+   "pyogrio|read_arrow|geoio|geopandas|read_file|read_feather"
+  ],
+  [
+   "metrics_fold",
+   "fold|reach|gravity|knn|scope|integrated_scope_access"
+  ],
+  [
+   "export_io",
+   "export|to_csv|to_file|writer|_write|write_feather"
+  ],
+  [
+   "pool_wait",
+   "join|wait|result\\(|apply_async|map\\(|monitor|drain"
+  ],
+  [
+   "topology",
+   "topology|networkx|csr|adjacency|BuildTopology"
+  ]
+ ],
+ "prepared_store_root": "/storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/Results/.una-batch-prepared",
+ "prepared_store_before": {
+  "exists": true,
+  "files": 38,
+  "bytes": 16481671
+ },
+ "cpuset_cpus": 4,
+ "loadavg_start": [
+  13.12,
+  13.95,
+  14.31
+ ],
+ "warm_pass_wall_s": 16.91381055302918,
+ "profiled_pass_wall_s": 15.384682569012512,
+ "prepared_store_after": {
+  "exists": true,
+  "files": 38,
+  "bytes": 16481671
+ },
+ "prepared_store_regime_observed": "warm_hits",
+ "loadavg_end": [
+  14.21,
+  14.11,
+  14.35
+ ],
+ "total_profiled_parent_self_s": 15.382662051000006,
+ "parent_buckets": {
+  "coordinator_commit": {
+   "tottime_s": 0.0064388710000000005,
+   "cumtime_max_s": 3.5644653300000004,
+   "share_of_profiled_self": 0.0004185797606846221
+  },
+  "ipc": {
+   "tottime_s": 0.07828803800000002,
+   "cumtime_max_s": 0.7254123680000001,
+   "share_of_profiled_self": 0.0050893686502662665
+  },
+  "verify_hash": {
+   "tottime_s": 0.534401576,
+   "cumtime_max_s": 0.778622412,
+   "share_of_profiled_self": 0.034740513327812424
+  },
+  "prepared_route": {
+   "tottime_s": 0.0,
+   "cumtime_max_s": 0.0,
+   "share_of_profiled_self": 0.0
+  },
+  "restore_decode": {
+   "tottime_s": 0.365035854,
+   "cumtime_max_s": 0.5910300900000001,
+   "share_of_profiled_self": 0.023730343473044674
+  },
+  "load_gis": {
+   "tottime_s": 6.2834e-05,
+   "cumtime_max_s": 0.052926645,
+   "share_of_profiled_self": 4.08472862445257e-06
+  },
+  "metrics_fold": {
+   "tottime_s": 0.00017599100000000002,
+   "cumtime_max_s": 0.000287063,
+   "share_of_profiled_self": 1.144086760903384e-05
+  },
+  "export_io": {
+   "tottime_s": 3.6850000000000003e-06,
+   "cumtime_max_s": 3.6850000000000003e-06,
+   "share_of_profiled_self": 2.39555415556987e-07
+  },
+  "pool_wait": {
+   "tottime_s": 0.04983833,
+   "cumtime_max_s": 10.206988902,
+   "share_of_profiled_self": 0.003239902809719471
+  },
+  "topology": {
+   "tottime_s": 0.0,
+   "cumtime_max_s": 0.0,
+   "share_of_profiled_self": 0.0
+  },
+  "other": {
+   "tottime_s": 14.34841687200001,
+   "cumtime_max_s": 15.384586308000001,
+   "share_of_profiled_self": 0.9327655268268238
+  }
+ },
+ "parent_top_self": [
+  {
+   "tottime_s": 10.18,
+   "cumtime_s": 10.18,
+   "loc": "~:0:<method 'poll' of 'select.poll' objects>"
+  },
+  {
+   "tottime_s": 2.143,
+   "cumtime_s": 2.143,
+   "loc": "~:0:<built-in method posix.fsync>"
+  },
+  {
+   "tottime_s": 0.533,
+   "cumtime_s": 0.533,
+   "loc": "~:0:<method 'update' of '_hashlib.HASH' objects>"
+  },
+  {
+   "tottime_s": 0.344,
+   "cumtime_s": 0.591,
+   "loc": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/shapely/io.py:308:from_wkb"
+  },
+  {
+   "tottime_s": 0.324,
+   "cumtime_s": 0.324,
+   "loc": "~:0:<built-in method posix.close>"
+  },
+  {
+   "tottime_s": 0.312,
+   "cumtime_s": 0.312,
+   "loc": "~:0:<built-in method posix.open>"
+  },
+  {
+   "tottime_s": 0.22,
+   "cumtime_s": 0.22,
+   "loc": "~:0:<method 'stat' of 'posix.DirEntry' objects>"
+  },
+  {
+   "tottime_s": 0.15,
+   "cumtime_s": 0.15,
+   "loc": "~:0:<built-in method posix.replace>"
+  },
+  {
+   "tottime_s": 0.121,
+   "cumtime_s": 0.121,
+   "loc": "~:0:<built-in method posix.rmdir>"
+  },
+  {
+   "tottime_s": 0.093,
+   "cumtime_s": 0.093,
+   "loc": "~:0:<built-in method posix.stat>"
+  },
+  {
+   "tottime_s": 0.085,
+   "cumtime_s": 0.085,
+   "loc": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/enum.py:785:__getitem__"
+  },
+  {
+   "tottime_s": 0.081,
+   "cumtime_s": 0.497,
+   "loc": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/shutil.py:629:_rmtree_safe_fd"
+  },
+  {
+   "tottime_s": 0.08,
+   "cumtime_s": 0.08,
+   "loc": "~:0:<method 'read' of '_io.BufferedReader' objects>"
+  },
+  {
+   "tottime_s": 0.08,
+   "cumtime_s": 0.08,
+   "loc": "~:0:<method '__exit__' of '_io._IOBase' objects>"
+  },
+  {
+   "tottime_s": 0.077,
+   "cumtime_s": 0.077,
+   "loc": "~:0:<built-in method io.open>"
+  },
+  {
+   "tottime_s": 0.075,
+   "cumtime_s": 0.688,
+   "loc": "~:0:<built-in method _pickle.loads>"
+  },
+  {
+   "tottime_s": 0.048,
+   "cumtime_s": 0.048,
+   "loc": "~:0:<built-in method posix.lstat>"
+  },
+  {
+   "tottime_s": 0.047,
+   "cumtime_s": 0.174,
+   "loc": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/shapely/_enum.py:12:get_value"
+  },
+  {
+   "tottime_s": 0.037,
+   "cumtime_s": 0.047,
+   "loc": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/numpy/_core/numeric.py:1975:isscalar"
+  },
+  {
+   "tottime_s": 0.031,
+   "cumtime_s": 0.041,
+   "loc": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/enum.py:192:__get__"
+  },
+  {
+   "tottime_s": 0.027,
+   "cumtime_s": 0.027,
+   "loc": "~:0:<built-in method numpy.asarray>"
+  },
+  {
+   "tottime_s": 0.021,
+   "cumtime_s": 0.022,
+   "loc": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/shapely/strtree.py:76:__init__"
+  },
+  {
+   "tottime_s": 0.019,
+   "cumtime_s": 0.099,
+   "loc": "<frozen posixpath>:421:_joinrealpath"
+  },
+  {
+   "tottime_s": 0.019,
+   "cumtime_s": 0.03,
+   "loc": "<frozen posixpath>:71:join"
+  },
+  {
+   "tottime_s": 0.018,
+   "cumtime_s": 0.018,
+   "loc": "~:0:<method 'write' of '_io.BytesIO' objects>"
+  }
+ ],
+ "pstats": "campaign_runs/una_10x/tenx-20261012T1600Z/p01p_parallel/runs/prof_parent_w4.pstats"
+}
