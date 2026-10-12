@@ -1,0 +1,809 @@
+{
+ "schema": "una10x-gpu-exp-bitreconstruct-1",
+ "purpose": "Direction 1 road (a): can a numba-CUDA exp reconstruction be BITWISE equal to the delivered host (glibc 2.34) exp over the cohort domain; gate = any divergence in domain => no-go",
+ "python": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11",
+ "numpy": "2.4.6",
+ "numba": "0.67.0",
+ "seed": 20261012,
+ "glibc_source": "glibc release/2.34/master: sysdeps/ieee754/dbl-64/e_exp.c + e_exp_data.c (N=128, EXP_TABLE_BITS=7, EXP_POLY_ORDER=5, TOINT_INTRINSICS=0, WANT_ROUNDING=1); tab parsed mechanically from the raw source",
+ "domain": "gate domain |x| <= 32 plus the tiny path (incl 0.0), covering ge/gl/kn cohort feeds with margin; ood_large is informational only",
+ "groups": {
+  "dense_grid_1m": "np.linspace(-32, 32, 2^20), uniform grid",
+  "random_uniform_2m": "rng.uniform(-32, 32), 2e6",
+  "random_bitpat_1m": "random exponent band 2^-5..2^4 + random 52-bit mantissa + random sign, 1e6",
+  "k_boundary": "x = (m+1/2)/InvLn2N +-1..3 ulp for m in [-4600, 4600] (rounding flip surfaces)",
+  "idx_boundary": "x = i/InvLn2N with true 1-ulp neighbors (nextafter both directions), i in [0, 128] (idx flips)",
+  "tiny_path": "0, +-min-subnormal, ulp neighborhood of 2^-54, 2e5 uniform in +-2^-52 (the 1.0+x fast path)",
+  "actual_rep4000": "rep4000 seeded structure, dist<=1500: ge=beta*max(0,d-plateau), gl=-gr*((d-plateau)-mid), kn(knn=1) crop args per origin (both decay forms); beta=0.001 gr=0.01 plateau=0 mid=500 (the residual-probe logistic scalars)",
+  "ge_box": "beta in 32 manifest betas (0.001..0.004) x d in 4096-grid [0, 1500]: x = beta*max(0, d)",
+  "gl_box": "gr in {0.002,0.004,0.006,0.008,0.01} x p in 4096-grid [0, 1500]: x = -gr*(p-500)",
+  "ood_large": "|x| in (32, 745] incl. overflow/underflow edges, +-inf, nan (informational, OUTSIDE the gate domain; exercises specialcase)"
+ },
+ "case_counts": {
+  "dense_grid_1m": 1048576,
+  "random_uniform_2m": 2000000,
+  "random_bitpat_1m": 1000000,
+  "k_boundary": 64407,
+  "idx_boundary": 387,
+  "tiny_path": 200009,
+  "actual_rep4000": 365554,
+  "ge_box": 131072,
+  "gl_box": 20480,
+  "ood_large": 40009
+ },
+ "gate_domain_cases": 4830485,
+ "host_leg_mismatches_vs_numba_5000": {
+  "ctypes_libm": 0,
+  "math_exp": 0,
+  "np_exp": 223
+ },
+ "authority": "glibc 2.34 scalar exp: numba njit math.exp == ctypes libm == math.exp; np.exp is a different host implementation (recorded mismatches), not the authority",
+ "variant_identification": {
+  "subsample": 20000,
+  "mismatches_vs_glibc": {
+   "sim_plain": 13,
+   "sim_fma_full": 0,
+   "sim_fma_alt1": 0,
+   "sim_fma_alt2": 0
+  },
+  "identified": "sim_fma_full",
+  "note": "bit-level comparison (f2i); 0 mismatches = exact variant; the matching device fma-scheme port targets it"
+ },
+ "variant_identification_boundaries": {
+  "subsample": 21598,
+  "stride": 3,
+  "mismatches_vs_glibc": {
+   "sim_plain": 31,
+   "sim_fma_full": 0,
+   "sim_fma_alt1": 2,
+   "sim_fma_alt2": 2
+  },
+  "note": "bit-level comparison; discriminates fusion orders (kd/r fma placement) that random args cannot"
+ },
+ "device": {
+  "status": "ok",
+  "name": "Tesla V100-PCIE-32GB",
+  "uuid": "GPU-10a60efa-8c00-3931-fa41-25a465f257e9",
+  "cc": "7.0",
+  "schemes": {
+   "libdevice": {
+    "groups": {
+     "dense_grid_1m": {
+      "n": 1048576,
+      "n_diff": 65323,
+      "max_ulp_finite": 1,
+      "n_sign_flips": 0,
+      "first_mismatch": [
+       {
+        "x_hex": "0xc03fff73fff73fff",
+        "authority_hex": "0x3d0c9401a40611e6",
+        "scheme_hex": "0x3d0c9401a40611e7"
+       },
+       {
+        "x_hex": "0xc03ffefbffefbfff",
+        "authority_hex": "0x3d0ca16a29e202a4",
+        "scheme_hex": "0x3d0ca16a29e202a5"
+       },
+       {
+        "x_hex": "0xc03ffeb3ffeb3fff",
+        "authority_hex": "0x3d0ca978b23c46dd",
+        "scheme_hex": "0x3d0ca978b23c46de"
+       },
+       {
+        "x_hex": "0xc03ffe67ffe67ffe",
+        "authority_hex": "0x3d0cb1fc461159a4",
+        "scheme_hex": "0x3d0cb1fc461159a5"
+       },
+       {
+        "x_hex": "0xc03ffe5bffe5bffe",
+        "authority_hex": "0x3d0cb354a60c5830",
+        "scheme_hex": "0x3d0cb354a60c5831"
+       },
+       {
+        "x_hex": "0xc03ffd67ffd67ffd",
+        "authority_hex": "0x3d0ccebca1ec00f6",
+        "scheme_hex": "0x3d0ccebca1ec00f7"
+       },
+       {
+        "x_hex": "0xc03ffcefffcefffd",
+        "authority_hex": "0x3d0cdc40b5e57c20",
+        "scheme_hex": "0x3d0cdc40b5e57c21"
+       },
+       {
+        "x_hex": "0xc03ffcbfffcbfffd",
+        "authority_hex": "0x3d0ce1aa84457dad",
+        "scheme_hex": "0x3d0ce1aa84457dae"
+       }
+      ]
+     },
+     "random_uniform_2m": {
+      "n": 2000000,
+      "n_diff": 124808,
+      "max_ulp_finite": 1,
+      "n_sign_flips": 0,
+      "first_mismatch": [
+       {
+        "x_hex": "0x401c4f02817a6ae8",
+        "authority_hex": "0x409282636e578b0d",
+        "scheme_hex": "0x409282636e578b0e"
+       },
+       {
+        "x_hex": "0x403c2c3314c68536",
+        "authority_hex": "0x42790312cdb847e4",
+        "scheme_hex": "0x42790312cdb847e5"
+       },
+       {
+        "x_hex": "0x40331c6ad9f1a4ae",
+        "authority_hex": "0x41a7c6500ed862fd",
+        "scheme_hex": "0x41a7c6500ed862fc"
+       },
+       {
+        "x_hex": "0xc01d27f8a5bf4510",
+        "authority_hex": "0x3f46614fd331bbd2",
+        "scheme_hex": "0x3f46614fd331bbd3"
+       },
+       {
+        "x_hex": "0x4019654933c5f910",
+        "authority_hex": "0x4081def62fb6e64b",
+        "scheme_hex": "0x4081def62fb6e64c"
+       },
+       {
+        "x_hex": "0x4031df10c7717c5c",
+        "authority_hex": "0x418b878ecf0d303a",
+        "scheme_hex": "0x418b878ecf0d3039"
+       },
+       {
+        "x_hex": "0x40317f98733036cc",
+        "authority_hex": "0x4182f5bfa801888d",
+        "scheme_hex": "0x4182f5bfa801888c"
+       },
+       {
+        "x_hex": "0xc03884796872a4a4",
+        "authority_hex": "0x3db8bd5db25e4c18",
+        "scheme_hex": "0x3db8bd5db25e4c19"
+       }
+      ]
+     },
+     "random_bitpat_1m": {
+      "n": 1000000,
+      "n_diff": 57011,
+      "max_ulp_finite": 1,
+      "n_sign_flips": 0,
+      "first_mismatch": [
+       {
+        "x_hex": "0x3fedf9da8409793e",
+        "authority_hex": "0x400469d42da83628",
+        "scheme_hex": "0x400469d42da83629"
+       },
+       {
+        "x_hex": "0xc0084b212df9c735",
+        "authority_hex": "0x3fa892a3310f48c0",
+        "scheme_hex": "0x3fa892a3310f48c1"
+       },
+       {
+        "x_hex": "0x3fa13c9b95a2d279",
+        "authority_hex": "0x3ff08c3dcc35b1dd",
+        "scheme_hex": "0x3ff08c3dcc35b1de"
+       },
+       {
+        "x_hex": "0x4028ac576ef0fd1b",
+        "authority_hex": "0x410bd176e483a8b2",
+        "scheme_hex": "0x410bd176e483a8b3"
+       },
+       {
+        "x_hex": "0xc02ed471b8112e0f",
+        "authority_hex": "0x3e8b1d23acd904d2",
+        "scheme_hex": "0x3e8b1d23acd904d1"
+       },
+       {
+        "x_hex": "0x3fd3d4448bf49802",
+        "authority_hex": "0x3ff5cfa4f832b67f",
+        "scheme_hex": "0x3ff5cfa4f832b67e"
+       },
+       {
+        "x_hex": "0x401574f0191391ea",
+        "authority_hex": "0x406ab3d44453e09f",
+        "scheme_hex": "0x406ab3d44453e09e"
+       },
+       {
+        "x_hex": "0x3fc5c02eed6b646d",
+        "authority_hex": "0x3ff2f6a81366b882",
+        "scheme_hex": "0x3ff2f6a81366b881"
+       }
+      ]
+     },
+     "k_boundary": {
+      "n": 64407,
+      "n_diff": 4123,
+      "max_ulp_finite": 1,
+      "n_sign_flips": 0,
+      "first_mismatch": [
+       {
+        "x_hex": "0xc038e15456525e09",
+        "authority_hex": "0x3db136a814f204e3",
+        "scheme_hex": "0x3db136a814f204e2"
+       },
+       {
+        "x_hex": "0xc038da65e162afdd",
+        "authority_hex": "0x3db1af99f81389e9",
+        "scheme_hex": "0x3db1af99f81389ea"
+       },
+       {
+        "x_hex": "0xc038d7a01902d093",
+        "authority_hex": "0x3db1e0e75eb44025",
+        "scheme_hex": "0x3db1e0e75eb44024"
+       },
+       {
+        "x_hex": "0xc038cdebdbb3431d",
+        "authority_hex": "0x3db291ba7591bb30",
+        "scheme_hex": "0x3db291ba7591bb2f"
+       },
+       {
+        "x_hex": "0xc038c9c32f237431",
+        "authority_hex": "0x3db2df961f64155e",
+        "scheme_hex": "0x3db2df961f64155d"
+       },
+       {
+        "x_hex": "0xc038c59a8293a546",
+        "authority_hex": "0x3db32eb83ba8ea08",
+        "scheme_hex": "0x3db32eb83ba8ea07"
+       },
+       {
+        "x_hex": "0xc038beac0da3f712",
+        "authority_hex": "0x3db3b57fbfec6cef",
+        "scheme_hex": "0x3db3b57fbfec6cee"
+       },
+       {
+        "x_hex": "0xc038b65ab484593f",
+        "authority_hex": "0x3db45c2042a7d1f4",
+        "scheme_hex": "0x3db45c2042a7d1f5"
+       }
+      ]
+     },
+     "idx_boundary": {
+      "n": 387,
+      "n_diff": 13,
+      "max_ulp_finite": 1,
+      "n_sign_flips": 0,
+      "first_mismatch": [
+       {
+        "x_hex": "0x3fd1acdd632f662a",
+        "authority_hex": "0x3ff516daa2cf6642",
+        "scheme_hex": "0x3ff516daa2cf6641"
+       },
+       {
+        "x_hex": "0x3fd3687a9f1af2b2",
+        "authority_hex": "0x3ff5ab07dd48542a",
+        "scheme_hex": "0x3ff5ab07dd485429"
+       },
+       {
+        "x_hex": "0x3fd419ecb712c481",
+        "authority_hex": "0x3ff5e76f15ad2149",
+        "scheme_hex": "0x3ff5e76f15ad2148"
+       },
+       {
+        "x_hex": "0x3fd472a5c30ead68",
+        "authority_hex": "0x3ff605e1b976dc09",
+        "scheme_hex": "0x3ff605e1b976dc08"
+       },
+       {
+        "x_hex": "0x3fd6dfb516f20bc0",
+        "authority_hex": "0x3ff6dfb23c651a2f",
+        "scheme_hex": "0x3ff6dfb23c651a30"
+       },
+       {
+        "x_hex": "0x3fd7386e22edf4a8",
+        "authority_hex": "0x3ff6ff7df9519484",
+        "scheme_hex": "0x3ff6ff7df9519485"
+       },
+       {
+        "x_hex": "0x3fd791272ee9dd8d",
+        "authority_hex": "0x3ff71f75e8ec5f73",
+        "scheme_hex": "0x3ff71f75e8ec5f74"
+       },
+       {
+        "x_hex": "0x3fdaafa89ac50db5",
+        "authority_hex": "0x3ff8471a4623c7ad",
+        "scheme_hex": "0x3ff8471a4623c7ae"
+       }
+      ]
+     },
+     "tiny_path": {
+      "n": 200009,
+      "n_diff": 0
+     },
+     "actual_rep4000": {
+      "n": 365554,
+      "n_diff": 21979,
+      "max_ulp_finite": 1,
+      "n_sign_flips": 0,
+      "first_mismatch": [
+       {
+        "x_hex": "0x3f8641f21d171960",
+        "authority_hex": "0x3ff02cc20aa35a6a",
+        "scheme_hex": "0x3ff02cc20aa35a69"
+       },
+       {
+        "x_hex": "0x3f8643d1de100996",
+        "authority_hex": "0x3ff02cc5d4a1d7c6",
+        "scheme_hex": "0x3ff02cc5d4a1d7c5"
+       },
+       {
+        "x_hex": "0x3f88fc456fba8c57",
+        "authority_hex": "0x3ff03246e50fb304",
+        "scheme_hex": "0x3ff03246e50fb305"
+       },
+       {
+        "x_hex": "0x3f8a029fdd0fce2a",
+        "authority_hex": "0x3ff0345a2cbb2e34",
+        "scheme_hex": "0x3ff0345a2cbb2e35"
+       },
+       {
+        "x_hex": "0x3f91dc8b95333382",
+        "authority_hex": "0x3ff04812a112e5ed",
+        "scheme_hex": "0x3ff04812a112e5ee"
+       },
+       {
+        "x_hex": "0x3f94492ac5581845",
+        "authority_hex": "0x3ff051f3ca7078f2",
+        "scheme_hex": "0x3ff051f3ca7078f1"
+       },
+       {
+        "x_hex": "0x3f9709cab757e6bd",
+        "authority_hex": "0x3ff05d328ca29bfa",
+        "scheme_hex": "0x3ff05d328ca29bfb"
+       },
+       {
+        "x_hex": "0x3f971c80584cc119",
+        "authority_hex": "0x3ff05d7f17c4c01b",
+        "scheme_hex": "0x3ff05d7f17c4c01c"
+       }
+      ]
+     },
+     "ge_box": {
+      "n": 131072,
+      "n_diff": 8397,
+      "max_ulp_finite": 1,
+      "n_sign_flips": 0,
+      "first_mismatch": [
+       {
+        "x_hex": "0x3fa7417417417417",
+        "authority_hex": "0x3ff0be55d86362c5",
+        "scheme_hex": "0x3ff0be55d86362c6"
+       },
+       {
+        "x_hex": "0x3fa8618618618618",
+        "authority_hex": "0x3ff0c7c426583a4e",
+        "scheme_hex": "0x3ff0c7c426583a4f"
+       },
+       {
+        "x_hex": "0x3fb4e94e94e94e95",
+        "authority_hex": "0x3ff15ca06b543594",
+        "scheme_hex": "0x3ff15ca06b543595"
+       },
+       {
+        "x_hex": "0x3fb6516516516516",
+        "authority_hex": "0x3ff1751d6893af29",
+        "scheme_hex": "0x3ff1751d6893af2a"
+       },
+       {
+        "x_hex": "0x3fb7117117117117",
+        "authority_hex": "0x3ff1823afaf4bbb0",
+        "scheme_hex": "0x3ff1823afaf4bbb1"
+       },
+       {
+        "x_hex": "0x3fba29a29a29a29a",
+        "authority_hex": "0x3ff1b8bd6fe4741f",
+        "scheme_hex": "0x3ff1b8bd6fe47420"
+       },
+       {
+        "x_hex": "0x3fbbf1bf1bf1bf1c",
+        "authority_hex": "0x3ff1d86cabf7dab9",
+        "scheme_hex": "0x3ff1d86cabf7dab8"
+       },
+       {
+        "x_hex": "0x3fbe49e49e49e49e",
+        "authority_hex": "0x3ff20273b81f9cb2",
+        "scheme_hex": "0x3ff20273b81f9cb3"
+       }
+      ]
+     },
+     "gl_box": {
+      "n": 20480,
+      "n_diff": 1191,
+      "max_ulp_finite": 1,
+      "n_sign_flips": 0,
+      "first_mismatch": [
+       {
+        "x_hex": "0x3fefe1fe1fe1fe20",
+        "authority_hex": "0x4005aaafb7959ea6",
+        "scheme_hex": "0x4005aaafb7959ea7"
+       },
+       {
+        "x_hex": "0x3fef6ff6ff6ff6ff",
+        "authority_hex": "0x40055e03be47f994",
+        "scheme_hex": "0x40055e03be47f995"
+       },
+       {
+        "x_hex": "0x3fef63f63f63f640",
+        "authority_hex": "0x400556017d40c7c1",
+        "scheme_hex": "0x400556017d40c7c2"
+       },
+       {
+        "x_hex": "0x3fef45f45f45f45f",
+        "authority_hex": "0x40054208fa471b6e",
+        "scheme_hex": "0x40054208fa471b6f"
+       },
+       {
+        "x_hex": "0x3feecdecdecdecdf",
+        "authority_hex": "0x4004f2e12d8805d4",
+        "scheme_hex": "0x4004f2e12d8805d5"
+       },
+       {
+        "x_hex": "0x3feec1ec1ec1ec1f",
+        "authority_hex": "0x4004eb071471a562",
+        "scheme_hex": "0x4004eb071471a563"
+       },
+       {
+        "x_hex": "0x3fee49e49e49e49f",
+        "authority_hex": "0x40049d23421ecb3d",
+        "scheme_hex": "0x40049d23421ecb3e"
+       },
+       {
+        "x_hex": "0x3fee43e43e43e43f",
+        "authority_hex": "0x40049945ea70091d",
+        "scheme_hex": "0x40049945ea70091e"
+       }
+      ]
+     },
+     "ood_large": {
+      "n": 40009,
+      "n_diff": 2494,
+      "max_ulp_finite": 1,
+      "n_sign_flips": 0,
+      "first_mismatch": [
+       {
+        "x_hex": "0x406c9f6fa4b4d723",
+        "authority_hex": "0x54946ae81c106261",
+        "scheme_hex": "0x54946ae81c106262"
+       },
+       {
+        "x_hex": "0x405490cf1db051e0",
+        "authority_hex": "0x4759a1ee5dbd565f",
+        "scheme_hex": "0x4759a1ee5dbd5660"
+       },
+       {
+        "x_hex": "0x40741b077a0fff36",
+        "authority_hex": "0x5cf124c00edb8b9e",
+        "scheme_hex": "0x5cf124c00edb8b9f"
+       },
+       {
+        "x_hex": "0x4084b9a15deb5cb3",
+        "authority_hex": "0x7bbbdf9de4ec243d",
+        "scheme_hex": "0x7bbbdf9de4ec243c"
+       },
+       {
+        "x_hex": "0x407a4e986948e0b3",
+        "authority_hex": "0x65e3001a0e6cb27f",
+        "scheme_hex": "0x65e3001a0e6cb280"
+       },
+       {
+        "x_hex": "0x4082618227705312",
+        "authority_hex": "0x74f7dcf116ad636d",
+        "scheme_hex": "0x74f7dcf116ad636c"
+       },
+       {
+        "x_hex": "0x407d0a78512bd8a9",
+        "authority_hex": "0x69d4752207f15640",
+        "scheme_hex": "0x69d4752207f1563f"
+       },
+       {
+        "x_hex": "0x40624eb6aa757754",
+        "authority_hex": "0x4d23a7ae01c08f96",
+        "scheme_hex": "0x4d23a7ae01c08f97"
+       }
+      ]
+     }
+    },
+    "gate_domain_diff": 282845,
+    "verdict": "NO-GO"
+   },
+   "plain": {
+    "groups": {
+     "dense_grid_1m": {
+      "n": 1048576,
+      "n_diff": 0
+     },
+     "random_uniform_2m": {
+      "n": 2000000,
+      "n_diff": 0
+     },
+     "random_bitpat_1m": {
+      "n": 1000000,
+      "n_diff": 0
+     },
+     "k_boundary": {
+      "n": 64407,
+      "n_diff": 0
+     },
+     "idx_boundary": {
+      "n": 387,
+      "n_diff": 0
+     },
+     "tiny_path": {
+      "n": 200009,
+      "n_diff": 0
+     },
+     "actual_rep4000": {
+      "n": 365554,
+      "n_diff": 0
+     },
+     "ge_box": {
+      "n": 131072,
+      "n_diff": 0
+     },
+     "gl_box": {
+      "n": 20480,
+      "n_diff": 0
+     },
+     "ood_large": {
+      "n": 40009,
+      "n_diff": 0
+     }
+    },
+    "gate_domain_diff": 0,
+    "verdict": "GO"
+   },
+   "fastmath": {
+    "groups": {
+     "dense_grid_1m": {
+      "n": 1048576,
+      "n_diff": 0
+     },
+     "random_uniform_2m": {
+      "n": 2000000,
+      "n_diff": 0
+     },
+     "random_bitpat_1m": {
+      "n": 1000000,
+      "n_diff": 0
+     },
+     "k_boundary": {
+      "n": 64407,
+      "n_diff": 0
+     },
+     "idx_boundary": {
+      "n": 387,
+      "n_diff": 0
+     },
+     "tiny_path": {
+      "n": 200009,
+      "n_diff": 0
+     },
+     "actual_rep4000": {
+      "n": 365554,
+      "n_diff": 0
+     },
+     "ge_box": {
+      "n": 131072,
+      "n_diff": 0
+     },
+     "gl_box": {
+      "n": 20480,
+      "n_diff": 0
+     },
+     "ood_large": {
+      "n": 40009,
+      "n_diff": 0
+     }
+    },
+    "gate_domain_diff": 0,
+    "verdict": "GO"
+   },
+   "fma_full": {
+    "groups": {
+     "dense_grid_1m": {
+      "n": 1048576,
+      "n_diff": 0
+     },
+     "random_uniform_2m": {
+      "n": 2000000,
+      "n_diff": 0
+     },
+     "random_bitpat_1m": {
+      "n": 1000000,
+      "n_diff": 0
+     },
+     "k_boundary": {
+      "n": 64407,
+      "n_diff": 0
+     },
+     "idx_boundary": {
+      "n": 387,
+      "n_diff": 0
+     },
+     "tiny_path": {
+      "n": 200009,
+      "n_diff": 0
+     },
+     "actual_rep4000": {
+      "n": 365554,
+      "n_diff": 0
+     },
+     "ge_box": {
+      "n": 131072,
+      "n_diff": 0
+     },
+     "gl_box": {
+      "n": 20480,
+      "n_diff": 0
+     },
+     "ood_large": {
+      "n": 40009,
+      "n_diff": 3,
+      "max_ulp_finite": 1,
+      "n_sign_flips": 0,
+      "first_mismatch": [
+       {
+        "x_hex": "0xc0860dfa37e3b903",
+        "authority_hex": "0x4c495fbd51226e",
+        "scheme_hex": "0x4c495fbd51226f"
+       },
+       {
+        "x_hex": "0xc0819d977b06148b",
+        "authority_hex": "0xd1afd2db26e0164",
+        "scheme_hex": "0xd1afd2db26e0165"
+       },
+       {
+        "x_hex": "0xc08561a9895e2626",
+        "authority_hex": "0x23dca9cbbc6b8de",
+        "scheme_hex": "0x23dca9cbbc6b8df"
+       }
+      ]
+     }
+    },
+    "gate_domain_diff": 0,
+    "verdict": "GO"
+   },
+   "fma_alt1": {
+    "groups": {
+     "dense_grid_1m": {
+      "n": 1048576,
+      "n_diff": 0
+     },
+     "random_uniform_2m": {
+      "n": 2000000,
+      "n_diff": 0
+     },
+     "random_bitpat_1m": {
+      "n": 1000000,
+      "n_diff": 0
+     },
+     "k_boundary": {
+      "n": 64407,
+      "n_diff": 0
+     },
+     "idx_boundary": {
+      "n": 387,
+      "n_diff": 0
+     },
+     "tiny_path": {
+      "n": 200009,
+      "n_diff": 0
+     },
+     "actual_rep4000": {
+      "n": 365554,
+      "n_diff": 0
+     },
+     "ge_box": {
+      "n": 131072,
+      "n_diff": 0
+     },
+     "gl_box": {
+      "n": 20480,
+      "n_diff": 0
+     },
+     "ood_large": {
+      "n": 40009,
+      "n_diff": 3,
+      "max_ulp_finite": 1,
+      "n_sign_flips": 0,
+      "first_mismatch": [
+       {
+        "x_hex": "0xc0860dfa37e3b903",
+        "authority_hex": "0x4c495fbd51226e",
+        "scheme_hex": "0x4c495fbd51226f"
+       },
+       {
+        "x_hex": "0xc0819d977b06148b",
+        "authority_hex": "0xd1afd2db26e0164",
+        "scheme_hex": "0xd1afd2db26e0165"
+       },
+       {
+        "x_hex": "0xc08561a9895e2626",
+        "authority_hex": "0x23dca9cbbc6b8de",
+        "scheme_hex": "0x23dca9cbbc6b8df"
+       }
+      ]
+     }
+    },
+    "gate_domain_diff": 0,
+    "verdict": "GO"
+   },
+   "fma_alt2": {
+    "groups": {
+     "dense_grid_1m": {
+      "n": 1048576,
+      "n_diff": 0
+     },
+     "random_uniform_2m": {
+      "n": 2000000,
+      "n_diff": 0
+     },
+     "random_bitpat_1m": {
+      "n": 1000000,
+      "n_diff": 0
+     },
+     "k_boundary": {
+      "n": 64407,
+      "n_diff": 0
+     },
+     "idx_boundary": {
+      "n": 387,
+      "n_diff": 0
+     },
+     "tiny_path": {
+      "n": 200009,
+      "n_diff": 0
+     },
+     "actual_rep4000": {
+      "n": 365554,
+      "n_diff": 0
+     },
+     "ge_box": {
+      "n": 131072,
+      "n_diff": 0
+     },
+     "gl_box": {
+      "n": 20480,
+      "n_diff": 0
+     },
+     "ood_large": {
+      "n": 40009,
+      "n_diff": 3,
+      "max_ulp_finite": 1,
+      "n_sign_flips": 0,
+      "first_mismatch": [
+       {
+        "x_hex": "0xc0860dfa37e3b903",
+        "authority_hex": "0x4c495fbd51226e",
+        "scheme_hex": "0x4c495fbd51226f"
+       },
+       {
+        "x_hex": "0xc0819d977b06148b",
+        "authority_hex": "0xd1afd2db26e0164",
+        "scheme_hex": "0xd1afd2db26e0165"
+       },
+       {
+        "x_hex": "0xc08561a9895e2626",
+        "authority_hex": "0x23dca9cbbc6b8de",
+        "scheme_hex": "0x23dca9cbbc6b8df"
+       }
+      ]
+     }
+    },
+    "gate_domain_diff": 0,
+    "verdict": "GO"
+   }
+  },
+  "contraction_detector": {
+   "triples_where_fma_differs": 1,
+   "device_matches_exact_fma": 5,
+   "device_matches_separate": 4,
+   "reading": "NVVM contracts a*b+c under default flags"
+  }
+ },
+ "road_a_verdict": "GO at the primitive level: plain, fastmath, fma_full, fma_alt1, fma_alt2 bitwise-equal to glibc on every gate-domain case; fold-level admission still additionally requires the delivered fold's compiled reduction lowering to match (gpuprobe2 census gap)",
+ "elapsed_s": 13.07972968800459,
+ "law": "bitwise only; any gate-domain divergence = no-go; no tolerance; no CPU fallback touched; no route/admission claim created"
+}

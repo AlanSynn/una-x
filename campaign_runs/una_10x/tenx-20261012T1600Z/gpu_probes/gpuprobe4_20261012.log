@@ -1,0 +1,75 @@
+salloc: Pending job allocation 13988533
+salloc: job 13988533 queued and waiting for resources
+salloc: job 13988533 has been allocated resources
+salloc: Granted job allocation 13988533
+salloc: Waiting for resource configuration
+salloc: Nodes atl1-1-03-006-35-0 are ready for job
+---------------------------------------
+Begin Slurm Prolog: Oct-12-2026 18:40:29
+Job ID:    13988533
+User ID:   dsynn6
+Account:   gts-hoh68
+Job name:  gpuprobe4
+Partition: gpu-v100
+QOS:       inferno
+---------------------------------------
++ module load cuda/12.6.1
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ cd /storage/scratch1/1/dsynn6/una-x-gpuplan-20261012
++ export PYTHONPATH=src
++ PYTHONPATH=src
++ export NUMBA_CACHE_DIR=/storage/scratch1/1/dsynn6/gpuprobe2_smoke/nbacache_device
++ NUMBA_CACHE_DIR=/storage/scratch1/1/dsynn6/gpuprobe2_smoke/nbacache_device
++ PY=/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11
++ OUT=campaign_runs/una_10x/tenx-20261012T1600Z/gpu_probes
++ mkdir -p campaign_runs/una_10x/tenx-20261012T1600Z/gpu_probes
+=== identity ===
++ echo '=== identity ==='
++ hostname
+atl1-1-03-006-35-0.pace.gatech.edu
++ nvidia-smi -L
+GPU 0: Tesla V100-PCIE-32GB (UUID: GPU-10a60efa-8c00-3931-fa41-25a465f257e9)
++ /storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11 -c 'import sys, numba, numpy; print('\''python'\'', sys.version.split()[0], '\''| numba'\'', numba.__version__, '\''| numpy'\'', numpy.__version__)'
+python 3.11.4 | numba 0.67.0 | numpy 2.4.6
++ echo '=== probe: gpu_exp_bit_reconstruct (road (a) gate) ==='
+=== probe: gpu_exp_bit_reconstruct (road (a) gate) ===
++ /storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11 campaigns/una_10x/next/probes/gpu_exp_bit_reconstruct.py --out campaign_runs/una_10x/tenx-20261012T1600Z/gpu_probes/exp_bit_reconstruct.json
+{"stage": "args", "gate_cases": 4830485, "total": 4870494}
+{"stage": "host_legs", "mism": {"ctypes_libm": 0, "math_exp": 0, "np_exp": 223}}
+{"stage": "variant_id", "mism": {"sim_plain": 13, "sim_fma_full": 0, "sim_fma_alt1": 0, "sim_fma_alt2": 0}}
+{"stage": "variant_id_boundary", "mism": {"sim_plain": 31, "sim_fma_full": 0, "sim_fma_alt1": 2, "sim_fma_alt2": 2}}
+/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 4 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+{"stage": "scheme", "scheme": "libdevice", "gate_domain_diff": 282845}
+/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 4 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+{"stage": "scheme", "scheme": "plain", "gate_domain_diff": 0}
+/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 4 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+{"stage": "scheme", "scheme": "fastmath", "gate_domain_diff": 0}
+/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 4 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+{"stage": "scheme", "scheme": "fma_full", "gate_domain_diff": 0}
+/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 4 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+{"stage": "scheme", "scheme": "fma_alt1", "gate_domain_diff": 0}
+/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 4 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+{"stage": "scheme", "scheme": "fma_alt2", "gate_domain_diff": 0}
+/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 1 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+{"stage": "device", "status": "ok"}
+{"out": "campaign_runs/una_10x/tenx-20261012T1600Z/gpu_probes/exp_bit_reconstruct.json", "verdict": "GO at the primitive level: plain, fastmath, fma_full, fma_alt1, fma_alt2 bitwise"}
+probe exit: 0
+=== done ===
++ echo 'probe exit: 0'
++ echo '=== done ==='
+salloc: Relinquishing job allocation 13988533

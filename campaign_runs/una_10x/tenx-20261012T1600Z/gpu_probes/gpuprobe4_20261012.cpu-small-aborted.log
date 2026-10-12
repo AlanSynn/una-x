@@ -1,0 +1,15 @@
+salloc: Pending job allocation 13988323
+salloc: job 13988323 queued and waiting for resources
+salloc: job 13988323 has been allocated resources
+salloc: Granted job allocation 13988323
+salloc: Waiting for resource configuration
+salloc: Nodes atl1-1-02-002-26-1 are ready for job
+srun: Job 13988323 step creation temporarily disabled, retrying (Requested nodes are busy)
+srun: Job 13988323 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 13988323 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 13988323 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 13988323 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 13988323 step creation still disabled, retrying (Requested nodes are busy)
+srun: Cancelled pending job step with signal 15
+srun: error: Unable to create step for job 13988323: Job/step already completing or completed
+salloc: Relinquishing job allocation 13988323

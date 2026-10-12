@@ -89,6 +89,25 @@ Steps, each falsifiable:
 3. **Device match, two roads**:
    - a device-side exp implementation reconstructed to reproduce the captured delivered bits
      exactly (gate: 0 differing arguments on the census domain), or
+     **RESOLVED — GO at the primitive level** (measured on V100, 2026-10-12,
+     `receipts/gpuprobe4-20261012T2244Z.md`,
+     `tenx-20261012T1600Z/gpu_probes/exp_bit_reconstruct.json`): the delivered
+     host exp is identified EXACTLY as the glibc-2.34 FMA-fused scalar variant
+     (disassembly of `/lib64/libm.so.6` vaddr 0x6a390 + exact-fma simulation
+     bit-exact on 41,598 identification args, re-verified on the compute node
+     in-job). A numba-CUDA port of that skeleton (explicit IEEE-fma 'full' op
+     order + the glibc table) is **bitwise-equal to the on-node delivered
+     authority on all 4,830,485 gate-domain cases** (0 divergences; battery
+     4.8x the 10^6 requirement, covering dense/uniform/bit-pattern sweeps,
+     k/idx rounding-flip boundaries, the tiny path, and the cohort-actual
+     rep4000 ge/gl/kn feeds); all default-flag variants match too (NVVM
+     contracts a*b+c under default flags — measured), while device `libdevice
+     exp` is **NO-GO at 282,845/4,830,485 (5.85%, max 1 ULP, 0 sign flips)**.
+     Scope law unchanged: PRIMITIVE-level only — the fold stays 0/4 bit-equal
+     (reduction-lowering gap, item 2), CPU_ROUTE_RETAINED, no admission domain,
+     nothing feeds the CPU 10x gate; a fold-level bridge task (if pursued) needs
+     its own battery + review, and a V100-only measurement does not qualify
+     other devices.
    - an **admission-domain classification**: the sub-domain of arguments where libdevice
      already equals the delivered bits (the census identifies it exactly); admission would be
      declared on that domain only, with the refusal matrix extended to enforce it.
