@@ -269,10 +269,31 @@ class Topology:
                     pgdf, weight_warning=pww, no_crs=(self.crs is None))
                 return payload if payload is not None else ({}, None)
 
+            # R5: the lease marker is imported HERE, at the seam — a
+            # module-top import would cycle (preparation -> cohort ->
+            # Engines -> Topology); the prepared branches are the only
+            # consumers.
+            from .batch.preparation import _StageLease as _StageLease
             arrays, metadata, marker = prep.arrays_once(net_key, _produce)
             if isinstance(marker, _StageHit):
-                self._restore_network_from_cache(source_file, marker,
-                                                 replay_crs_line=True)
+                # R5: decode once into a shared resident, register it
+                # (best-effort; NO_FIT continues without residency), then
+                # bind this row from it — the SAME bind a lease row uses,
+                # so both tiers are byte- and stream-identical.
+                resident = self._network_resident_from_hit(marker)
+                prep.remember_decoded(
+                    net_key, resident,
+                    self._resident_payload_nbytes(arrays, metadata),
+                    dict(metadata), marker.generation, marker.source)
+                self._bind_network_from_resident(source_file, marker,
+                                                 resident)
+            elif isinstance(marker, _StageLease):
+                # R5 lease: the per-row decode is skipped entirely; the
+                # row binds wrappers + fresh numeric copies from the
+                # shared resident.  Validation/chronology already ran at
+                # the snapshot gate above.
+                self._bind_network_from_resident(source_file, marker,
+                                                 marker.resident)
             else:
                 # Owner (or bounded fallback): the derivation ran on self
                 # inside _produce; only the observed stage key remains.
@@ -541,6 +562,133 @@ class Topology:
             f"Topology restored from cache {hit.key[:12]}… "
             f"(stage {m.get('stage', '?')}, generation {hit.generation}, "
             f"{hit.source}).", v=2)
+
+    # ── R5 (una_10x-next): decoded-resident construction and lease bind ──
+    # On prepared hits every row re-decoded the same payload (from_wkb +
+    # GeoSeries + STRtree ≈ 0.49 s/row at cohort scale).  The R5 residency
+    # (batch.preparation.DecodedResidency) lets one decoded resident be
+    # LEASED to every same-key row of this worker: wrappers + fresh
+    # numeric copies per row, shared read-only GeometryArray/tree/CRS.
+    # The p02-audit mutation census found zero post-construction writes
+    # to decoded state in the admitted domain; the E10 copy law is
+    # unchanged for everything a row hands onward.
+
+    _NETWORK_RESIDENT_KEYS = ("lengths", "weights", "node_points",
+                              "start_nodes", "end_nodes", "degrees", "z",
+                              "start_degrees", "end_degrees",
+                              "min_degrees", "max_degrees")
+
+    def _network_resident_from_hit(self, hit) -> dict:
+        """Decode a verified topology payload ONCE into a shared resident:
+        the GeometryArray with its cached STRtree, the immutable pyproj
+        CRS, and the numeric payload arrays.  Built ONLY from payload this
+        row freshly decoded (a verified hit) — never from row-owned
+        producer objects (the owner row has no per-row decode to
+        amortize).  Read-only by convention; rows bind via wrappers plus
+        fresh copies and never mutate the resident."""
+        from pyproj import CRS
+        a = hit.arrays
+        m = hit.metadata
+        crs = CRS.from_json(m["crs_projjson"]) if m.get("crs_projjson") else None
+        # Exactly the restore-path construction: the STRtree caches on the
+        # GeometryArray (geopandas sindex internals), so building the same
+        # GeoSeries once harvests both the array and its tree.
+        gs = gpd.GeoSeries(
+            _geoms_from_wkb_payload(a["geometry_wkb"],
+                                    a["geometry_wkb_lens"]),
+            name="geometry", crs=crs)
+        ga = gs.values
+        tree = gs.sindex
+        return {"geometry_array": ga, "tree": tree, "crs": crs,
+                "arrays": {k: a[k] for k in self._NETWORK_RESIDENT_KEYS
+                           if k in a}}
+
+    def _resident_payload_nbytes(self, a, m) -> int:
+        """Residency-charge estimate for a decoded payload (the cap
+        governs residency, never correctness — an underestimate only
+        means more residents than bytes suggest).  2x covers the decoded
+        geometry array vs its raw WKB blob; +64 B/feature covers STRtree
+        nodes."""
+        n = 0
+        for v in a.values():
+            if v is not None and hasattr(v, "nbytes"):
+                n += int(v.nbytes)
+        return 2 * n + 64 * int(m.get("n_input_features", 0)
+                                or m.get("n_points", 0) or 0)
+
+    def _bind_network_from_resident(self, source_file, marker, resident,
+                                    ) -> None:
+        """Bind ``self.network`` (and ``self.crs``) from a shared decoded
+        resident (R5 — lease OR fresh StageHit row).  A fresh GeoSeries
+        wrapper over the resident GeometryArray (copy=False keeps array
+        identity and the wrapper inherits the array's CRS — the DEFAULT
+        copy path is what loses the cached tree, probed on geopandas
+        1.2.0; the shared STRtree is post-attached), FRESH copies of
+        every numeric field (E10 unchanged), and the row-invariant log
+        replay from the marker's recorded key/generation/source.
+
+        The log block below is deliberately VERBATIM against
+        ``_restore_network_from_cache`` (the CACHE_GRAPH restore keeps its
+        own historical copy and stream — documented C10-C31 divergence);
+        ``test_prepared_hit_replays_log_stream`` pins this stream."""
+        net = self.network
+        m = marker.metadata
+        crs = resident["crs"]
+        gs = gpd.GeoSeries(resident["geometry_array"], copy=False,
+                           name="geometry")
+        gs.values._sindex = resident["tree"]
+        net.geometry = gs
+        r = resident["arrays"]
+        net.lengths = r["lengths"].copy()
+        net.weights = r["weights"].copy()
+        net.node_points = r["node_points"].copy()
+        net.start_nodes = r["start_nodes"].copy()
+        net.end_nodes = r["end_nodes"].copy()
+        net.degrees = r["degrees"].copy()
+        net.z = r["z"].copy() if r.get("z") is not None else None
+        net.start_degrees = r["start_degrees"].copy()
+        net.end_degrees = r["end_degrees"].copy()
+        net.min_degrees = r["min_degrees"].copy()
+        net.max_degrees = r["max_degrees"].copy()
+        # Derived state: the SHARED tree (the R5 point) — queried only
+        # (mutation audit: no consumer writes to it or rebuilds it).
+        net.edge_sindex = resident["tree"]
+        net._stage_key = marker.key
+        self.crs = crs
+        if m.get("no_crs"):
+            self.logger.log(
+                "Network added", "Warning: Network file has no CRS defined.",
+                v=1)
+        else:
+            # NF-1: every caller of this bind is a prepared-path row, so
+            # the produce stream's "CRS set to {label}." line replays
+            # (replay_crs_line=True); the label comes from the payload's
+            # crs_label (the owner-path str() form), not CRS.from_json's
+            # PROJJSON stringification.
+            label = m.get("crs_label") or self.crs
+            self.logger.log("Network added", f"CRS set to {label}.", v=2)
+        self.logger.log(
+            "Network added",
+            f"Network added from source {source_file}, "
+            f"with {m['n_input_features']} edges.", v=1)
+        if m.get("weight_warning"):
+            self.logger.log("Network added", m["weight_warning"], v=1)
+        if m.get("n_empty_removed"):
+            self.logger.log(
+                "BuildTopology",
+                f"Removing {m['n_empty_removed']} empty geometries from "
+                f"network before topology build.", v=1)
+        self.logger.log(
+            "BuildTopology",
+            f"Topology built with {m['n_nodes']} nodes and "
+            f"{m['n_edges']} edges.", v=2)
+        self.logger.log('create topology', f"edge_sindex created", v=2)
+        self.logger.log('create topology', "edge_list_dict created", v=2)
+        self.logger.log(
+            "Network added",
+            f"Topology restored from cache {marker.key[:12]}… "
+            f"(stage {m.get('stage', '?')}, generation {marker.generation}, "
+            f"{marker.source}).", v=2)
 
     def _derive_access_points(self, gdf, source_file, label,
                               cost_attribute, default_cost,
@@ -811,6 +959,75 @@ class Topology:
             f"Snapped layer restored from cache {hit.key[:12]}… "
             f"(stage {m.get('stage', '?')}, generation {hit.generation}, "
             f"{hit.source}).", v=2)
+        return pt
+
+    # ── R5: snap-stage decoded residents (same law as the network side;
+    # no spatial index is cached for snap layers — none is consumed). ──
+
+    def _snap_resident_from_hit(self, hit) -> dict:
+        """Decode a verified snap payload ONCE into a shared resident:
+        the decoded geometry lists, the immutable CRS, the raw uid
+        payload, and the numeric arrays (built only from payload this row
+        freshly decoded — a verified hit)."""
+        from pyproj import CRS
+        a = hit.arrays
+        m = hit.metadata
+        crs = CRS.from_json(m["crs_projjson"]) if m.get("crs_projjson") else None
+        return {
+            "geoms": _geoms_from_wkb_payload(a["geometry_wkb"],
+                                             a["geometry_wkb_lens"]),
+            "uid": a.get("uid"),
+            "nep_geoms": (
+                _geoms_from_wkb_payload(a["nearest_edge_point_wkb"],
+                                        a["nearest_edge_point_wkb_lens"])
+                if m.get("snapped") else None),
+            "crs": crs,
+            "arrays": {k: a[k] for k in (
+                "node_weight", "nearest_edge_id", "edge_start_node",
+                "edge_end_node", "weight_to_start", "weight_to_end")
+                if k in a},
+        }
+
+    def _bind_access_points_from_resident(self, marker, source_file,
+                                          resident) -> AccessPoints:
+        """Bind one AccessPoints object from a shared decoded snap
+        resident (R5 — lease OR fresh StageHit row).  Verbatim against
+        ``_restore_access_points_from_cache`` (fresh per-row GeoSeries/
+        Series/GeometryArray wrappers, FRESH numeric copies; the shared
+        resident objects are never handed over).  ``snap_to`` /
+        ``snapped_node_id`` / ``direction`` / ``penalty`` stay
+        caller-derived exactly as in the restore path."""
+        m = marker.metadata
+        r = resident["arrays"]
+        pt = AccessPoints(self.logger)
+        pt.geometry = gpd.GeoSeries(resident["geoms"], name="geometry",
+                                    crs=resident["crs"])
+        pt.node_weight = r["node_weight"].copy()
+        # .copy() under the Series: pandas 2.x without CoW would wrap the
+        # resident's buffer (E10 letter); 3.x always copies either way.
+        pt.uid = (pd.Series(r["uid"].copy()) if m.get("uid_is_series")
+                  else (r["uid"].copy() if r.get("uid") is not None
+                        else None))
+        if m.get("snapped"):
+            pt.nearest_edge_point = gpd.array.GeometryArray(
+                resident["nep_geoms"])
+            pt.nearest_edge_id = r["nearest_edge_id"].copy()
+            pt.edge_start_node = r["edge_start_node"].copy()
+            pt.edge_end_node = r["edge_end_node"].copy()
+            pt.weight_to_start = r["weight_to_start"].copy()
+            pt.weight_to_end = r["weight_to_end"].copy()
+        pt._stage_key = marker.key
+        self.logger.log(
+            "Build AccessPoints",
+            f"Access points are built from source {source_file}, "
+            f"with {m['n_points']} points.", v=1)
+        _cache_log_replays({"log_replay": m.get("log_extras", [])},
+                           self.logger)
+        self.logger.log(
+            "Build AccessPoints",
+            f"Snapped layer restored from cache {marker.key[:12]}… "
+            f"(stage {m.get('stage', '?')}, generation {marker.generation}, "
+            f"{marker.source}).", v=2)
         return pt
 
     def AddOrigins(self, settings: Settings):
@@ -1346,10 +1563,27 @@ class Topology:
                 payload = self._access_points_payload(ppt, n_pts, extras)
                 return payload if payload is not None else ({}, None)
 
+            # R5: lease marker imported at the seam (module-top import
+            # would cycle: preparation -> cohort -> Engines -> Topology).
+            from .batch.preparation import _StageLease as _StageLease
             arrays, metadata, marker = prep.arrays_once(store_key, _produce)
             if isinstance(marker, _StageHit):
-                pt = self._restore_access_points_from_cache(marker,
-                                                            source_file)
+                # R5: decode once into a shared resident, register it
+                # under the STORE key (the lease consults store keys;
+                # BF-1), then bind this row from it.
+                resident = self._snap_resident_from_hit(marker)
+                prep.remember_decoded(
+                    store_key, resident,
+                    self._resident_payload_nbytes(arrays, metadata),
+                    dict(metadata), marker.generation, marker.source)
+                pt = self._bind_access_points_from_resident(marker,
+                                                            source_file,
+                                                            resident)
+            elif isinstance(marker, _StageLease):
+                # R5 lease: per-row decode skipped; bind from the shared
+                # resident (wrappers + fresh copies).
+                pt = self._bind_access_points_from_resident(
+                    marker, source_file, marker.resident)
             else:
                 # Owner (or bounded fallback): the derivation ran inside
                 # _produce; the fresh AccessPoints object is in the holder.

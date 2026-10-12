@@ -1398,7 +1398,9 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
 
     # P02 prepared aggregation (una_10x, design 02 counters — never
     # collapsed: cold_build / verified_hit / contention_wait /
-    # fallback_compute / arena_nofit / refusals).  The NF-7 engagement
+    # fallback_compute / arena_nofit / refusals; R5 adds lease_hits /
+    # decoded_nofit — lease-serve truth and residency refusals, kept
+    # separate from the payload-tier counters).  The NF-7 engagement
     # gate (builds <= distinct identities, equality asserted only when
     # every contention-fallback counter is zero) is asserted by the
     # test island, where identities are constructed explicitly; the
@@ -1408,7 +1410,8 @@ def run_batch_parallel(una, analysis: str, *, workers: Optional[int],
         totals = {
             "stages": 0, "cold_build": 0, "verified_hit": 0,
             "contention_wait": 0, "fallback_compute": 0,
-            "arena_nofit": 0, "build_s": 0.0,
+            "arena_nofit": 0, "lease_hits": 0, "decoded_nofit": 0,
+            "build_s": 0.0,
             # NR-3 (P02R review): store-level counters ride the per-row
             # deltas; the contract's corruption_rebuild counter is the
             # quarantined delta, so rebuilds surface in the report

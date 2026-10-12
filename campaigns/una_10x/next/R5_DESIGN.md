@@ -1,9 +1,10 @@
 # R5 — in-worker decoded-stage lease reuse: design note (2026-10-12)
 
-Status: DESIGN — implementation gated on the p02-audit mutation report (delegated
-2026-10-12; resend requested after the compaction boundary). This note records the
-measured mechanism and the smallest-lawful shape so implementation can start the
-moment the verdict lands. Branch `perf/una-10x-next`.
+Status: IMPLEMENTED 2026-10-12 on `perf/una-10x-next` (audit verdict FEASIBLE —
+option 2, lease everything incl. sindex; law tests in
+`tests/tenx/post_p00/test_preparation.py::test_r5_*`, island battery green).
+This note records the measured mechanism and the smallest-lawful shape; see the
+ERRATA below for the corrected lease-bind measurement. Branch `perf/una-10x-next`.
 
 ## Problem (measured)
 
@@ -26,12 +27,16 @@ inferred.
   `_data`; `GeoSeries.sindex` → `geometry.values.sindex`).
 - `gpd.GeoSeries(arr, copy=False)` shares the array AND its cached tree
   (verified: `gs.values is arr`, `gs.sindex is arr._sindex`).
-- Passing `crs=` forces an array copy (pandas crs semantics) → tree lost.
-  **Attach sequence for the lease**: construct the fresh wrapper with
-  `copy=False` + the payload CRS, then `gs.values._sindex = resident_tree`;
-  verified `gs.sindex is tree`, element identity preserved, query answers
-  identical. If a future geopandas changes `_sindex`, the attach must degrade
-  LOUDLY (diagnostic counter + full rebuild correctness path) — never silently.
+- The DEFAULT copy path (no copy kwarg) is what loses the tree; the
+  review probe on installed 1.2.0 confirmed `GeoSeries(arr, copy=False,
+  crs=<same>)` PRESERVES array identity — the implemented wrapper uses
+  `copy=False` with NO crs kwarg and lets the array's own CRS propagate
+  (probe: wrapper crs correct, `gs.values is arr`, attach idempotent).
+  **Attach sequence for the lease**: `gs.values._sindex = resident_tree`
+  post-attach; verified `gs.sindex is tree`, element identity preserved,
+  query answers identical. If a future geopandas changes `_sindex`, the
+  attach must degrade LOUDLY (diagnostic counter + full rebuild
+  correctness path) — never silently.
 
 ## Smallest-lawful shape (pending audit confirmation)
 
@@ -78,3 +83,24 @@ inferred.
 - No change to store format, keys, or the single-flight protocol.
 - No GPU/native coupling; no claim creation — a fresh tenx-law paired gate is
   the only throughput authority (plan §6.6).
+
+## ERRATA (2026-10-12, implementation day)
+
+1. **Lease-path micro-benchmark corrected: 33.4 ms → 0.81 ms.** The 33.4 ms
+   figure above came from the FIRST bench, which accidentally forced an sindex
+   REBUILD inside the "lease" leg (the `crs=` kwarg copies the array and loses
+   the cached tree). Decomposition at 100k edges: from_wkb 446.9 ms +
+   GeoSeries(list) 6.2 ms + sindex build 35.2 ms; the true lease bind — fresh
+   GeoSeries wrapper over the resident GeometryArray with the shared tree
+   post-attached — is **0.81 ms**. The per-row save at cohort scale is
+   therefore ≈ 488 ms (the full restore), not ≈ 472 ms; same conclusion,
+   slightly stronger.
+2. **Registration law refined during implementation**: residents are
+   registered ONLY on verified-hit rows (arena/store — the row that freshly
+   decoded the payload), never on the owner row (its objects are its own; it
+   has no per-row decode to amortize). Within one worker this costs one extra
+   decode per (worker, key) — accepted (row 1 builds, row 2 decodes+registers,
+   rows 3+ lease).
+3. **Import placement**: the `_StageLease` marker is imported AT THE SEAM
+   (AddNetwork/BuildAccessPoints prepared branches), not module-top — a
+   module-top import cycles (preparation → cohort → Engines → Topology).

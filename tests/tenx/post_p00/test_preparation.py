@@ -514,3 +514,314 @@ def test_file_disappearance_gates_at_seam(smoke_fixture, tmp_path):
     t2._prepared_session = _prep_session(str(tmp_path / "prep"))
     with pytest.raises(FileNotFoundError):
         t2.AddNetwork(s)
+
+
+# ---------------------------------------------------------------------------
+# R5 (una_10x-next): decoded-stage lease reuse — the lease tier laws
+# ---------------------------------------------------------------------------
+
+def _prepared_topology(root, data_folder, num_threads=1):
+    """Fresh Topology with a fresh PrepSession on ``root``.  Same process
+    across calls: the registry Stores pair — and with it the decoded
+    residency — persists between rows, exactly as inside one worker."""
+    from urban_network_analysis.Topology import Topology
+    s = _bare_settings(data_folder)
+    t = Topology(verbosity=0, num_threads=num_threads)
+    t._prepared_session = _prep_session(str(root))
+    return t, s
+
+
+def test_r5_lease_shares_decoded_state_with_fresh_numerics(
+        smoke_fixture, tmp_path):
+    """Rows 2+ of one worker lease the decoded resident: shared
+    GeometryArray + shared cached STRtree (the R5 point), fresh wrappers
+    and FRESH numeric copies per row (E10 unchanged), byte-equal
+    geometry and CRS, and mutation isolation — a row that mutates what
+    it received never corrupts the next serve."""
+    root = tmp_path / "prep"
+    t1, s = _prepared_topology(root, smoke_fixture)
+    t1.AddNetwork(s)
+    c1 = t1._prepared_session.counters
+    assert c1["cold_build"] == 1 and c1["lease_hits"] == 0
+    # the owner row registers nothing (its objects are its own)
+    assert len(t1._prepared_session.pair().decoded) == 0
+
+    t2, _ = _prepared_topology(root, smoke_fixture)
+    t2.AddNetwork(s)  # arena hit -> decodes once and registers
+    c2 = t2._prepared_session.counters
+    assert c2["verified_hit"] == 1 and c2["lease_hits"] == 0
+    assert c2["decoded_nofit"] == 0
+    assert len(t2._prepared_session.pair().decoded) == 1
+
+    t3, _ = _prepared_topology(root, smoke_fixture)
+    t3.AddNetwork(s)  # lease: the per-row decode is skipped
+    c3 = t3._prepared_session.counters
+    assert c3["lease_hits"] == 1 and c3["verified_hit"] == 1
+    assert len(t3._prepared_session.pair().decoded) == 1
+
+    g2, g3 = t2.network, t3.network
+    # the lease law: shared decoded array + shared tree, fresh wrapper
+    assert g3.edge_sindex is g2.edge_sindex
+    assert g3.geometry.values is g2.geometry.values
+    assert g3.geometry is not g2.geometry
+    # E10 unchanged: fresh numeric copies, byte-equal
+    assert g3.lengths is not g2.lengths
+    assert np.array_equal(g3.lengths, g2.lengths)
+    assert np.array_equal(g3.weights, g2.weights)
+    assert np.array_equal(g3.node_points, g2.node_points)
+    assert g3.geometry.crs == g2.geometry.crs
+    assert ([g.wkb_hex for g in g3.geometry]
+            == [g.wkb_hex for g in t1.network.geometry])
+
+    # mutation isolation: a row's writes die with the row
+    g3.lengths[0] = -999.0
+    g3.weights[0] = -999.0
+    t4, _ = _prepared_topology(root, smoke_fixture)
+    t4.AddNetwork(s)
+    assert t4.network.lengths[0] == g2.lengths[0]
+    assert t4.network.weights[0] == g2.weights[0]
+    assert t4.network.edge_sindex is g2.edge_sindex
+    assert t4.network.geometry.values is g2.geometry.values
+
+
+def test_r5_lease_stream_is_row_invariant(smoke_fixture, tmp_path):
+    """A lease row's log stream is byte-identical to the registering
+    row's stream (E2 across the lease tier) — for arena-hit registration
+    (source 'memory') and, after wiping the in-process residency, for
+    disk-hit registration (recorded generation/source replayed)."""
+    from urban_network_analysis.batch import preparation as P
+    root = tmp_path / "prep"
+    t1, s = _prepared_topology(root, smoke_fixture)
+    t1.AddNetwork(s)
+    t2, _ = _prepared_topology(root, smoke_fixture)
+    t2.AddNetwork(s)  # arena hit -> registers
+    t3, _ = _prepared_topology(root, smoke_fixture)
+    t3.AddNetwork(s)  # lease
+    hit = [(e["event"], e["details"]) for e in t2.logger.log_list]
+    lease = [(e["event"], e["details"]) for e in t3.logger.log_list]
+    assert hit, "hit row logged nothing"
+    assert lease == hit, (lease, hit)
+    assert any(d.startswith("Topology restored from cache")
+               for _e, d in lease)
+
+    # disk variant: wipe arena+residency; the registering row re-decodes
+    # from the verified store and the lease replays ITS record
+    P.close_registry()
+    P.reopen_registry()
+    t4, _ = _prepared_topology(root, smoke_fixture)
+    t4.AddNetwork(s)  # store hit (disk)
+    t5, _ = _prepared_topology(root, smoke_fixture)
+    t5.AddNetwork(s)  # lease of the disk-registered resident
+    hit_d = [(e["event"], e["details"]) for e in t4.logger.log_list]
+    lease_d = [(e["event"], e["details"]) for e in t5.logger.log_list]
+    assert lease_d == hit_d, (lease_d, hit_d)
+    assert any(d.startswith("Topology restored from cache") and "disk" in d
+               for _e, d in lease_d), lease_d
+
+
+def test_r5_snap_lease_and_role_separation(smoke_fixture, tmp_path):
+    """Snap stages lease under the ROLE-CARRYING store key (BF-1):
+    origins and destinations register separate residents and lease
+    independently; served snap objects are fresh per row."""
+    root = tmp_path / "prep"
+    ts = []
+    for _i in range(3):
+        t, s = _prepared_topology(root, smoke_fixture)
+        t.AddNetwork(s)
+        t.AddOrigins(s)
+        t.AddDestinations(s)
+        ts.append(t)
+    c2 = ts[1]._prepared_session.counters
+    assert c2["lease_hits"] == 0 and c2["verified_hit"] == 3
+    # three separate residents: network + origins + destinations (roles
+    # never collide even though the observed _stage_keys stay role-free)
+    assert len(ts[1]._prepared_session.pair().decoded) == 3
+    c3 = ts[2]._prepared_session.counters
+    assert c3["lease_hits"] == 3 and c3["verified_hit"] == 3
+    p2, p3 = ts[1].origins, ts[2].origins
+    assert p3.nearest_edge_id is not p2.nearest_edge_id
+    assert np.array_equal(p3.nearest_edge_id, p2.nearest_edge_id)
+    assert p3.node_weight is not p2.node_weight
+    assert np.array_equal(p3.node_weight, p2.node_weight)
+    assert ([g.wkb_hex for g in p3.geometry]
+            == [g.wkb_hex for g in p2.geometry])
+    assert ([g.wkb_hex for g in ts[2].destinations.geometry]
+            == [g.wkb_hex for g in ts[1].destinations.geometry])
+
+
+def test_r5_flight_lease_tier_and_nofit(tmp_path):
+    """Flight unit laws: a registered resident is served WITHOUT calling
+    produce (lease tier, counters carry the truth); an oversized resident
+    is refused (decoded_nofit) and the row falls through to the payload
+    tiers; mark() exposes the new counters."""
+    from urban_network_analysis.batch.preparation import _StageLease
+    root = tmp_path / "prep"
+    s1 = _prep_session(str(root))
+    fl = s1.stage_cache("una:topology:v1")
+    k = _key("lease-unit")
+    res = {"geometry_array": None, "tree": None, "crs": None,
+           "arrays": {"w": np.arange(4, dtype=np.float64)}}
+    assert fl.remember_decoded(k, res, 128, {"stage": "t"}, 7, "disk")
+    called = []
+
+    def _prod():
+        called.append(1)
+        return {}, None
+
+    arr, meta, marker = fl.arrays_once(k, _prod)
+    assert arr is None and meta == {"stage": "t"}
+    assert isinstance(marker, _StageLease)
+    assert marker.resident is res
+    assert marker.key == k and marker.generation == 7
+    assert marker.source == "disk"
+    assert called == []  # produce never ran
+    c = s1.counters
+    assert c["lease_hits"] == 1 and c["verified_hit"] == 1
+    assert c["cold_build"] == 0
+    m = s1.mark()
+    assert "lease_hits" in m and "decoded_nofit" in m
+
+    # NO_FIT: an oversized resident is refused and counted; the same key
+    # then falls through to the payload tiers (no lease)
+    root2 = tmp_path / "prep2"
+    s2 = _prep_session(str(root2), cap=64)
+    fl2 = s2.stage_cache("una:topology:v1")
+    k2 = _key("nofit-lease")
+    good = {"w": np.arange(3, dtype=np.float64)}
+    fl2.arrays_once(k2, lambda: (good, {"stage": "t"}))
+    big = {"arrays": {"w": np.zeros(256, dtype=np.float64)}}
+    assert not fl2.remember_decoded(k2, big, 4096, {}, None, "disk")
+    assert s2.counters["decoded_nofit"] == 1
+    _arr, _meta, marker2 = fl2.arrays_once(
+        k2, lambda: (good, {"stage": "t"}))
+    assert not isinstance(marker2, _StageLease)
+    assert s2.counters["decoded_nofit"] == 1
+    assert s2.counters["lease_hits"] == 0
+
+
+def test_r5_decoded_residency_lru_and_nofit():
+    """DecodedResidency unit laws: LRU eviction under the cap, LRU
+    refresh on get, NO_FIT above the whole cap (ledger unchanged),
+    drop/len."""
+    from urban_network_analysis.batch.preparation import DecodedResidency
+    d = DecodedResidency(100)
+    assert d.put("a", {"n": 1}, 40, {}, None, "disk")
+    assert d.put("b", {"n": 2}, 40, {}, None, "disk")
+    assert d.get("a") is not None  # refresh: 'a' becomes newest
+    assert d.put("c", {"n": 3}, 40, {}, None, "disk")
+    assert d.get("b") is None  # 'b' evicted, 'a' retained
+    assert d.get("a") is not None and d.get("c") is not None
+    assert not d.put("d", {"n": 4}, 200, {}, None, "disk")  # NO_FIT
+    assert d.get("a") is not None and d.get("c") is not None
+    assert len(d) == 2
+    d.drop("a")
+    assert len(d) == 1 and d.get("a") is None
+
+
+def test_r5_invalidation_never_leases_stale(smoke_fixture, tmp_path):
+    """A byte change (same size, restored mtime) yields a DIFFERENT key:
+    the old resident is never consulted and the fresh build serves the
+    new bytes (E5 extended to the lease tier)."""
+    import shutil
+    work = tmp_path / "data"
+    shutil.copytree(smoke_fixture, work)
+    net = work / "network.geojson"
+    t1, s = _prepared_topology(tmp_path / "prep", work)
+    t1.AddNetwork(s)
+    t2, _ = _prepared_topology(tmp_path / "prep", work)
+    t2.AddNetwork(s)  # arena hit -> registers
+    assert t2._prepared_session.counters["lease_hits"] == 0
+    t2b, _ = _prepared_topology(tmp_path / "prep", work)
+    t2b.AddNetwork(s)
+    assert t2b._prepared_session.counters["lease_hits"] == 1
+
+    st = os.stat(net)
+    raw = net.read_text()
+    ci = raw.index('"coordinates"')
+    idx = next(i for i in range(ci, len(raw))
+               if raw[i].isdigit() and raw[i] != '0')
+    j = next(i for i in range(idx + 1, len(raw))
+             if raw[i].isdigit() and raw[i] != raw[idx])
+    raw2 = raw[:idx] + raw[j] + raw[idx + 1:j] + raw[idx] + raw[j + 1:]
+    assert len(raw2) == len(raw) and raw2 != raw
+    net.write_text(raw2)
+    os.utime(net, (st.st_atime, st.st_mtime))
+
+    t3, _ = _prepared_topology(tmp_path / "prep", work)
+    t3.AddNetwork(s)
+    c3 = t3._prepared_session.counters
+    assert c3["lease_hits"] == 0 and c3["cold_build"] == 1, c3
+    assert ([g.wkb_hex for g in t3.network.geometry]
+            != [g.wkb_hex for g in t1.network.geometry])
+
+
+def test_r5_batch_warm_leases_bitwise(smoke_fixture, tmp_path, make_batch):
+    """Public route: an 8-row parallel run over one input identity
+    leases the decoded residents in every worker that repeats a stage
+    key, and the exports stay bitwise vs the serial route — cold AND
+    warm repeats."""
+    ser = make_batch(8, out_folder=tmp_path / "ser")
+    ser.RunBatch("accessibility")
+
+    out = tmp_path / "par"
+    par = make_batch(8, out_folder=out)
+    par.RunBatch("accessibility", parallel=True, workers=2)
+    prep = (getattr(par.batch_report, "extra", None) or {}).get(
+        "preparation")
+    assert prep is not None and prep["rows"] == 8
+    assert prep["fallback_compute"] == 0 and prep["refusals"] == {}
+    assert prep["lease_hits"] >= 1, prep  # the tier engaged
+    cold = tree_bytes(out, skip_hidden=True)
+    assert cold == tree_bytes(tmp_path / "ser", skip_hidden=True)
+
+    par2 = make_batch(8, out_folder=out)
+    par2.RunBatch("accessibility", parallel=True, workers=2)
+    prep2 = (getattr(par2.batch_report, "extra", None) or {}).get(
+        "preparation")
+    assert prep2 is not None and prep2["stages"] == 24
+    assert prep2["cold_build"] == 0 and prep2["fallback_compute"] == 0
+    assert prep2["lease_hits"] >= 1, prep2
+    assert tree_bytes(out, skip_hidden=True) == cold
+
+
+def test_r5_optional_fields_survive_residency(tmp_path):
+    """Field-completeness law: every optional payload field the restore
+    path binds — 'z' foremost (elevation networks) — must survive the
+    resident round-trip; a lease row missing z would be a silent parity
+    break."""
+    import geopandas as gpd
+    import shapely
+    from urban_network_analysis.Topology import Topology, Network
+    from urban_network_analysis.cache.stages import StageHit
+
+    geoms = shapely.LineString([(0, 0), (1, 1)]).wkb
+    a = {
+        "geometry_wkb": np.frombuffer(geoms, dtype=np.uint8),
+        "geometry_wkb_lens": np.array([len(geoms)], dtype=np.int64),
+        "lengths": np.array([2.0], dtype=np.float64),
+        "weights": np.array([2.0], dtype=np.float64),
+        "node_points": np.array([[0.0, 0.0], [1.0, 1.0]]),
+        "start_nodes": np.array([0]),
+        "end_nodes": np.array([1]),
+        "degrees": np.array([1, 1], dtype=np.int64),
+        "z": np.array([7.5, 9.0]),  # the elevation field
+        "start_degrees": np.array([1]),
+        "end_degrees": np.array([1]),
+        "min_degrees": np.array([1]),
+        "max_degrees": np.array([1]),
+    }
+    m = {"stage": "una:topology:v1", "n_input_features": 1,
+         "n_nodes": 2, "n_edges": 1, "crs_projjson": None}
+    hit = StageHit(key=_key("z"), generation=3, arrays=a, metadata=m,
+                   source="disk")
+
+    t = Topology(verbosity=0)
+    t.network = Network(logger=t.logger)
+    resident = t._network_resident_from_hit(hit)
+    assert "z" in resident["arrays"]
+    t._bind_network_from_resident("src.geojson", hit, resident)
+    assert t.network.z is not None
+    assert np.array_equal(t.network.z, a["z"])
+    # the lease row binds a fresh copy, not the resident's array
+    assert t.network.z is not a["z"]
+    assert len(t.network.geometry) == 1

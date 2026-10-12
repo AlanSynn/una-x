@@ -32,7 +32,9 @@ Laws (prepared_contract.json @ f139dd3, tree 050b316):
 
 Counters (design 02: different counters, never collapsed): cold_build,
 verified_hit, contention_wait, fallback_compute (spin-exhaust/wait-timeout
-local compute — NF-7's engagement gate), arena_nofit, refusals.
+local compute — NF-7's engagement gate), arena_nofit, lease_hits /
+decoded_nofit (R5 decoded-residency tier: lease serve truth and
+residency-refusals), refusals.
 corruption_rebuild is store-level (store stats at report time).
 Engagement law (NF-7): builds <= distinct identities; equality asserted
 only when fallback_compute == 0.
@@ -129,8 +131,73 @@ class Arena:
         return len(self._ent)
 
 
+class DecodedResidency:
+    """Bounded in-worker residency for DECODED stage residents (R5,
+    una_10x-next): the expensive decode products (GeometryArray + its
+    cached STRtree + CRS + numeric payload arrays) are decoded ONCE per
+    identity in this worker and LEASED read-only to every same-key row,
+    instead of being re-decoded per row.
+
+    Distinct from Arena (which retains raw ARRAYS payloads and serves
+    fresh copies — E10): a resident is the shared decoded object graph
+    itself.  A row binds from a lease via wrappers (fresh GeoSeries over
+    the resident GeometryArray with a post-attached shared tree) plus
+    FRESH copies of every numeric field — the resident's own objects are
+    never handed to a row (E10 unchanged for everything an engine
+    touches; the R5 mutation audit found zero post-construction writes
+    to decoded state in the admitted domain).
+
+    Single-threaded like Arena (one worker process, one flight at a
+    time).  LRU eviction; a resident larger than the whole cap is
+    NO_FIT (False, ledger unchanged) — the cap governs residency, never
+    correctness: a no-fit row serves from its own decode exactly as
+    before R5."""
+
+    def __init__(self, cap: int):
+        self.cap = int(cap)
+        self._ent: "OrderedDict[str, tuple]" = OrderedDict()
+        self._n = 0
+
+    def put(self, key: str, resident: Any, nbytes: int,
+            meta: Mapping[str, object], gen: Optional[int],
+            source: str) -> bool:
+        """Retain a decoded resident under ``key``.  NO copy — the
+        caller transfers ownership of the resident object graph, so it
+        must be built from freshly decoded payload (never from
+        row-owned producer objects).  True when retained."""
+        n = int(nbytes)
+        if n > self.cap:
+            return False
+        self.drop(key)
+        while self._n + n > self.cap:
+            _, old = self._ent.popitem(last=False)
+            self._n -= old[1]
+        self._ent[key] = (resident, n, dict(meta), gen, source)
+        self._n += n
+        return True
+
+    def get(self, key: str) -> Optional[tuple]:
+        """LRU-refresh; returns the retained (resident, meta, gen,
+        source).  The resident is LEASED, not handed over — bind
+        wrappers + fresh numeric copies only, never retain or mutate."""
+        e = self._ent.get(key)
+        if e is None:
+            return None
+        self._ent.move_to_end(key)
+        return (e[0], e[2], e[3], e[4])
+
+    def drop(self, key: str) -> None:
+        e = self._ent.pop(key, None)
+        if e is not None:
+            self._n -= e[1]
+
+    def __len__(self) -> int:
+        return len(self._ent)
+
+
 class Stores:
-    """Per-process (store, arena) pair for one prepared root."""
+    """Per-process (store, arena, decoded-residency) triple for one
+    prepared root."""
 
     def __init__(self, root: str, cap: int):
         os.makedirs(root, exist_ok=True)
@@ -139,11 +206,13 @@ class Stores:
                                                directory=root,
                                                verification="on_read"))
         self.arena = Arena(cap)
+        self.decoded = DecodedResidency(cap)
 
     def close(self) -> None:
         # Explicit lease release (design 02 line 120); store bytes stay
         # on disk for the run root's own lifecycle (no unlink in v1).
         self.arena = Arena(self.arena.cap)
+        self.decoded = DecodedResidency(self.decoded.cap)
 
 
 _REG_MAX = 4  # design 02 line 121: bounded, not per-distinct-root
@@ -167,6 +236,7 @@ def _stores_for(root: str, cap: int) -> Stores:
                 old.close()
         else:
             p.arena.cap = int(cap)
+            p.decoded.cap = int(cap)
         _REG.move_to_end(root)
         return p
 
@@ -210,6 +280,8 @@ class PrepSession:
             "contention_wait": 0,
             "fallback_compute": 0,
             "arena_nofit": 0,
+            "lease_hits": 0,
+            "decoded_nofit": 0,
             "refusals": {},
             "build_s": 0.0,
         }
@@ -262,6 +334,8 @@ class PrepSession:
                 "contention_wait": c["contention_wait"],
                 "fallback_compute": c["fallback_compute"],
                 "arena_nofit": c["arena_nofit"],
+                "lease_hits": c["lease_hits"],
+                "decoded_nofit": c["decoded_nofit"],
                 "refusals": dict(c["refusals"]),
                 "build_s": c["build_s"]}
         # NR-3 (P02R review): store-level counters ride the same
@@ -290,6 +364,9 @@ class PrepSession:
                 "fallback_compute":
                     c["fallback_compute"] - before["fallback_compute"],
                 "arena_nofit": c["arena_nofit"] - before["arena_nofit"],
+                "lease_hits": c["lease_hits"] - before["lease_hits"],
+                "decoded_nofit":
+                    c["decoded_nofit"] - before["decoded_nofit"],
                 "refusals": ref,
                 "build_s": c["build_s"] - before["build_s"]}
         # NR-3: per-row distinct identities (NF-7's engagement gate is
@@ -321,15 +398,37 @@ class PrepSession:
         return Flight(self)
 
 
+class _StageLease:
+    """A read-only lease on a decoded stage resident (R5).  The seam
+    binds a row from it exactly as from a StageHit, except the per-row
+    decode is skipped: wrappers + fresh numeric copies come from the
+    shared resident, and the resident's recorded key/generation/source
+    keep the per-row log replay row-invariant (E2) — the counters carry
+    the lease truth (lease_hits)."""
+
+    __slots__ = ("key", "generation", "resident", "metadata", "source")
+
+    def __init__(self, key: str, generation: Optional[int], resident: Any,
+                 metadata: Mapping[str, object], source: str):
+        self.key = key
+        self.generation = generation
+        self.resident = resident
+        self.metadata = dict(metadata)
+        self.source = source
+
+
 class Flight:
     """The prepared single-flight for one stage of one row.
 
     Mirrors StageCache.arrays_once exactly (same spin threshold, same
     timeout fallback, same commit law, same StageProduced marker
     semantics) with session counters observed per outcome, plus the
-    bounded arena in front of the store.  Outcomes: verified_hit (arena
-    or store, content verified on read), cold_build (owner: produce +
-    commit), contention_wait (loser re-got the owner's commit),
+    bounded arena and the R5 decoded residency in front of the store.
+    Outcomes, cheapest first: verified_hit via the DECODED LEASE tier
+    (a resident a prior row registered; returns a _StageLease, decode
+    skipped), verified_hit (arena fresh copies or store, content
+    verified on read), cold_build (owner: produce + commit),
+    contention_wait (loser re-got the owner's commit),
     fallback_compute (spin-exhaust or wait-timeout: local compute WITHOUT
     commit).  An unrepresentable producer payload — the empty ``({}, None)``
     sentinel the Topology builders return for a stage that cannot be
@@ -347,16 +446,49 @@ class Flight:
     def __init__(self, session: PrepSession):
         self.s = session
 
+    def remember_decoded(self, key: str, resident: Any, nbytes: int,
+                         meta: Mapping[str, object], gen: Optional[int],
+                         source: str) -> bool:
+        """Register a just-decoded resident (R5).  Call only with a
+        resident built from payload THIS row freshly decoded (a verified
+        hit) — never from row-owned producer objects (the owner row has
+        no per-row decode to amortize, and its arrays are its own).
+        NO_FIT counts decoded_nofit and continues WITHOUT residency:
+        this row serves from its own decode, later rows re-decode (the
+        pre-R5 path) — the cap governs residency, never correctness."""
+        ok = self.s.pair().decoded.put(key, resident, nbytes, meta, gen,
+                                       source)
+        if not ok:
+            self.s.counters["decoded_nofit"] += 1
+        return ok
+
     def arrays_once(self, key: str,
                     produce: Callable[[], Tuple[Dict[str, Any],
                                                 Optional[Mapping[str, object]]]],
                     ) -> Tuple[Dict[str, Any], Optional[Mapping[str, object]],
-                               Union[StageHit, StageProduced]]:
+                               Union[StageHit, StageProduced,
+                                     "_StageLease"]]:
         c = self.s.counters
         p = self.s.pair()
         store, arena = p.store, p.arena
         c["stages"] += 1
         self.s._keys.add(key)  # NR-3: per-row distinct-identity count
+
+        # Decoded-lease hit (R5, first tier): a previous row of this
+        # worker registered the decoded resident under the SAME
+        # identity-closed key.  This replaces only the per-row DECODE —
+        # the row still binds via wrappers + fresh numeric copies and
+        # never touches the resident itself.  The per-row validation and
+        # read chronology (snapshot gates at the seam) already ran
+        # BEFORE this consult, so the hit chronology is unchanged.
+        res = p.decoded.get(key)
+        if res is not None:
+            resident, meta, gen, src = res
+            c["verified_hit"] += 1
+            c["lease_hits"] += 1
+            return (None, dict(meta),
+                    _StageLease(key=key, generation=gen, resident=resident,
+                                metadata=meta, source=src))
 
         # Arena hit: fresh copies, never the retained objects (E10).
         got = arena.get(key)

@@ -115,10 +115,20 @@ required** for G=10:
    slice that identity-keyed leasing can remove: in-worker decoded-stage lease
    reuse across rows (immutable internal leases, no public mutable aliasing — the
    goal's own "immutable internals with leases, fresh mutable outputs" law; the
-   architecture's "independent row objects" step preserved). Design BLOCKED on the
-   p02-audit mutation report (mutation sites, smallest-lawful shape). Remaining
-   warm-gap arithmetic after P01F: R5 ≈ 4 s off the loaded worker's busy time;
-   R3 (typed metric reuse) is the remainder lever; R2 is gone (§3.2).
+   architecture's "independent row objects" step preserved). **IMPLEMENTED
+   2026-10-12** on this branch after the p02-audit mutation census came back CLEAN
+   (zero post-construction writes to decoded state in the admitted domain):
+   `DecodedResidency` in `batch/preparation.py` (cap-bounded LRU behind the same
+   `per_worker_residency_cap`; lease tier FIRST in `Flight.arrays_once`, counters
+   `lease_hits`/`decoded_nofit`) + resident construction/lease-bind in
+   `Topology.py` (shared GeometryArray + shared STRtree post-attached, fresh
+   wrappers and fresh numeric copies per row — E10 unchanged; row-invariant log
+   replay E2; registration only on verified-hit rows). Measured lease bind
+   0.81 ms vs ≈488 ms per-row restore at cohort scale (R5_DESIGN.md ERRATA).
+   Island battery 21/21 incl. bitwise e2e cold+warm with `lease_hits >= 1`;
+   batch/cache/execution islands green. Remaining warm-gap arithmetic after
+   P01F: R5 ≈ 4 s off the loaded worker's busy time; R3 (typed metric reuse)
+   is the remainder lever; R2 is gone (§3.2).
    **Pipelining floor (P01F errata model):** coordinator commit duty ≈0.302 s/row
    (publish 0.129 + staged-verify 0.022 + span-own; max publish 1.356 s) vs worker
    arrival ≈0.37 s/result today — workers bind by only ~10%. Once R5(+R3) push
@@ -189,8 +199,10 @@ variance (25–28% same-config spread — paired windows mandatory).**
    (`receipts/next-p03c-20261012T2000Z.md`: W4T1 15.695 s optimal, threads
    neutral, oversubscription cliff does NOT reproduce on the merged tree).
 5. Implementation increments, each island battery + independent review:
-   **R5 decoded-stage lease reuse (binding; blocked on p02-audit mutation
-   report)**; R3 metric reuse (typed identity, gen2 law) — R2 removed from the
+   **R5 decoded-stage lease reuse — IMPLEMENTED 2026-10-12** (design note +
+   ERRATA: `R5_DESIGN.md`; audit verdict FEASIBLE/clean census; law tests
+   `test_r5_*`; independent review pending before commit promotion); then
+   R3 metric reuse (typed identity, gen2 law) — R2 removed from the
    sequence (§5).
 6. Then a fresh tenx-law paired gate of main's bytes vs the 395cdc5 installed wheel
    (cold and warm declared separately) — the published headline (2.3798x) binds treatment
