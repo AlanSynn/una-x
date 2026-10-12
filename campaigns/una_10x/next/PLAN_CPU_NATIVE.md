@@ -119,6 +119,16 @@ required** for G=10:
    p02-audit mutation report (mutation sites, smallest-lawful shape). Remaining
    warm-gap arithmetic after P01F: R5 ≈ 4 s off the loaded worker's busy time;
    R3 (typed metric reuse) is the remainder lever; R2 is gone (§3.2).
+   **Pipelining floor (P01F errata model):** coordinator commit duty ≈0.302 s/row
+   (publish 0.129 + staged-verify 0.022 + span-own; max publish 1.356 s) vs worker
+   arrival ≈0.37 s/result today — workers bind by only ~10%. Once R5(+R3) push
+   per-row service below ≈1.2 s, the commit cadence becomes the wall floor
+   (≈9.7 s + tail on the warm login-node boundary). That floor is contract-fenced
+   duty (fsync/rename/state/journal law) — it moves only if the durability
+   contract itself is amended (user-gated) or the filesystem changes. Honest
+   projection: R5+R3 exhaust the worker side; the remainder is commit-bound and
+   the 10x gate stays target_unmet on this boundary unless that contract question
+   is reopened by the user.
 
 **Sum-law projection (labeled projection, not a claim):** serial-equivalent cohort work
 188 s → ≈40–55 s (R1+R3+banked R4); at W4 with R2 efficiency ≥0.75 ⇒ wall ≈ 13–20 s vs the

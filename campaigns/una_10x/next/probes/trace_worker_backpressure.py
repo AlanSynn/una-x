@@ -99,7 +99,8 @@ def main() -> int:
 
     # ── post-process the JSONL timelines ────────────────────────────────
     pool_files = sorted(phase_dir.glob("phase_events.workerpool.*.jsonl"))
-    coord_files = sorted(phase_dir.glob("phase_events.coordinator.*.jsonl"))
+    # the coordinator file carries no pid segment (single coordinator)
+    coord_files = sorted(phase_dir.glob("phase_events.coordinator*.jsonl"))
     result["workerpool_jsonl_files"] = [p.name for p in pool_files]
     result["coordinator_jsonl_files"] = [p.name for p in coord_files]
 
