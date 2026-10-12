@@ -1,0 +1,102 @@
+{
+  "schema": "g4rc-receipt-1",
+  "task": "G4RC confirmatory paired-throughput gate (T4): bind the speedup claim to the FINAL reconciled branch bytes vs current main",
+  "actor": "gate-reconf (subagent)",
+  "date": "2026-10-12",
+  "decision": "CONFIRMED",
+  "verdict": {
+    "median_improvement_factor": 3.076,
+    "median_r_ln": 1.123629,
+    "mean_r_ln": 1.125548,
+    "sd_r_ln": 0.016589,
+    "moe_ln_onesided95_n7": 0.015342,
+    "one_sided_95_LB_factor": 3.03499,
+    "pass_law": "median(r) > 0 AND exp(mean_r - 2.4469*sd_r/sqrt(7)) > 1",
+    "pass": true,
+    "windows": 7,
+    "windows_positive": 7,
+    "r_values_ln": [1.120328, 1.146438, 1.096358, 1.123629, 1.133787, 1.140056, 1.118243],
+    "claim_as_stated": "On the reconciled branch bytes (perf/exp-batch-reconcile 9d82a0d) vs current main c1f8614, in this worktree context with warm counted legs, the public API batch throughput improvement is median 3.07x (one-sided 95% LB 3.03x)."
+  },
+  "arms": {
+    "A_reference": {
+      "branch": "main", "head": "c1f8614a2733903b3fa9664579ba2fdce7ef7a74",
+      "worktree": "/storage/scratch1/1/dsynn6/una-x-g4main-20261012 (fresh pristine, clean)"
+    },
+    "B_candidate": {
+      "branch": "perf/exp-batch-reconcile", "head": "9d82a0d8d092e00fb590e6e5411ccbd3259bb263",
+      "merge_provenance": "208ab718 (parents be56059 batchdef + 4658344 exp-lazy, base c1f8614) + 2f7dc55 evidence + 9d82a0d option-A resolution",
+      "worktree": "/storage/scratch1/1/dsynn6/una-x-g4cand-20261012 (fresh pristine; tolerated dirty set = the untracked run dir only)"
+    }
+  },
+  "protocol": {
+    "reference": "exl gate m2gate-20261011T164228Z, copied mechanically; every driver diff recorded in drivers_diff_vs_exl.md",
+    "runner": "run_baseline_legs.py UNCHANGED (byte-identical to the tenx-20261005T2331Z p01f copy)",
+    "public_call": "RunBatch('accessibility') --parallel --workers 4, cache off, exports on, 32-row cohort_manifest.csv (sha256 1161f485...daaf in every leg pin); timer brackets ONLY the public call",
+    "interpreter": "alan micromamba env; PYTHONHASHSEED=0; shared fresh Numba cache (A warmed by S1 cold, B by S3 cold; counted legs warm; guards used a separate throwaway cache dir)",
+    "pairing": "7 AB/BA windows: w1 A,B; w2 B,A; ... w7 A,B",
+    "pass_law": "median(r)>0 AND exp(mean_r - 2.4469*sd_r/sqrt(7)) > 1",
+    "inherited_exl_deviations_as_law": [
+      "sd estimator from the steady-state A-A pair (S2,S2b)",
+      "byte law on CONTENT under wallclock stamp-prefix normalization",
+      "stamp-dir minute-straddle tolerance"
+    ]
+  },
+  "preregistration": {
+    "file": "PREREGISTRATION.md (written BEFORE any timed leg; S1 retained from INC01 per Amendment A1)",
+    "amendments": [
+      "Amendment A1 (2026-10-12, team-lead ruling OPTION 1, recorded BEFORE any counted leg): two-tier byte law - tier 1 cross-arm EXPORT equality absolute (64 files), tier 2 per-arm infra censuses recorded and stable within each arm, tier 3 the 43-file/+18046104-byte residency-store delta reported as the candidate's designed public artifact. INC01 and the amendment recorded as preregistration history. All other laws unchanged."
+    ],
+    "incidents": [
+      "INC01: inherited per-leg census pin (107 files/165876776 bytes, from the exl receipt) structurally unsatisfiable for main - main writes exactly the 64 stamp-dir export files (147830672 bytes); the delta is the .una-batch-cohort/.una-batch-prepared immutable residency stores (43 files, +18046104 bytes) written by modules NEW on the candidate and ABSENT on main. S1 runner completed and was RETAINED (zero failed/32 rows); all 64 exports sha256-identical to exl's S1 (f2ea398). Halted and reported before any counted window; resolved by Amendment A1. See incident_INC01_perleg_census_halt.json.",
+      "INC02: leg S4_B tier-2 pin assert crashed on a JSON tuple/list serialization artifact (pin values load as lists, census values are tuples; arm A's empty infra made S4_A pass vacuously). S4_B runner COMPLETED and was retained (valid); raw S3-vs-S4_B infra censuses identical on all 43 files. Fix normalized the pin comparison to lists; shakedown analysis re-derived from the retained raw leg JSONs by g4rc_shakedown_adjudicate.py. One driver attempt on this failure. See incident_INC02_pin_serialization.json."
+    ]
+  },
+  "shakedown": {
+    "decision": "POWER_OK",
+    "e_prelim_ln": 1.109594,
+    "effect_prelim_factor": 3.03313,
+    "sd_hat_ln_steady_AA_pair": 0.000301,
+    "moe_n7_ln": 0.000279,
+    "cold_start_step_A_ln": 0.318485,
+    "r_BB_ln": 0.512588,
+    "note": "e_prelim 3.03313x is slightly above the lead's no-surprise guidance band (ln 2.3-2.6); recorded without surprise handling per the ruling; the counted-window result (3.076x) confirmed it."
+  },
+  "byte_laws": {
+    "tier1_cross_arm_exports": "PASS - all 8 counted pairs (S4 + w1..w7) export-equal under the stamp-normalized content law; 64 files every leg; every counted leg's exports census digest identical on both arms (df65032d4c52... full digest in results.json comparisons)",
+    "tier2_per_arm_infra": "PASS - arm A infra empty (0 files) on all 11 A legs; arm B infra 43 files/18046104 bytes identical on all 9 B legs; per-arm totals stable (A 64/147830672, B 107/165876776 - the latter matches the exl-lineage totals exactly)",
+    "tier3_store_delta": "+43 files/+18046104 bytes on arm B in every comparison - the immutable residency stores (.una-batch-cohort/.una-batch-prepared), the candidate's designed public artifact (BATCH_EXEC/CACHE_GRAPH reviewed work); reported, not penalized",
+    "g1_fresh_import_guard": "PASS - plain una import pulls no sklearn*/networkx* modules on the reconciled bytes",
+    "g2a_RunFlow": "ok (6.78 s)",
+    "g2b_BuildClusters": "ok, sklearn.cluster present in sys.modules after the call; trace_module_sha256 recorded 9676e5727bd4329e878ebf528b0eb7bd64a06c3137c7e58049bc96c3ff16763c (not asserted against exl pin - different bytes)",
+    "tests_batch_island": "99 passed, 3 skipped in 184.89 s"
+  },
+  "load_discipline": {
+    "lanes": "session affinity 8-11 asserted at every block; every lane check clean",
+    "external_consumers": "single persistent 1333%-CPU python pid 841886 pinned to cores 0-7,12-19 (affinity-disjoint from lanes) at every check",
+    "bounded_waits": "preregistered max 3x10 min while 1-min load > 8, before each timed block: shakedown 11.58 -> 13.56 after 3 rounds; gate 14.87 -> 14.41 after 3 rounds; ran anyway per policy and recorded",
+    "per_leg_load_1min": "shakedown 13.56-18.14, gate 14.41-19.5 (host is busy; protection is the exclusive-lane affinity law, which held at every check)"
+  },
+  "warm_leg_wall_s": {
+    "A_counted": [65.1066, 64.4325, 63.0428, 62.7454, 63.1331, 63.2937, 63.6698],
+    "B_counted": [21.236, 20.4745, 21.0617, 20.3984, 20.317, 20.2414, 20.8107]
+  },
+  "scope_law": "This gate binds MERGE-DECISION evidence: reconciled branch perf/exp-batch-reconcile 9d82a0d vs current main c1f8614, worktree context, warm counted legs, 32-row cohort, w4, exports on, route cache off. It does NOT replace or restate the README headline claim (tenx-20261005T2331Z: 2.38x vs 395cdc5, installed wheels, cold boundary - different comparator and boundary). The measured ratio is stated on its own terms.",
+  "artifacts": {
+    "tracked_trio": "campaigns/una_10x/evidence/tasks/G4RC/g4rc-20261012T0512Z/{results.json, receipt.json, raw_index.sha256}",
+    "raw_run_dir": "/storage/scratch1/1/dsynn6/una-x-g4cand-20261012/campaign_runs/una_10x/g4rc-20261012T0512Z/ (untracked; 20 leg JSONs with full per-file censuses, shakedown.json, windows.json, arm_census_pins.json, guards, incidents, drivers, consoles, out_* dirs, shared numba caches)",
+    "raw_index": "raw_index.sha256 b86d05b6aa5966d508d246a555683ad09c99109cffdddb462777947f94cbe49d covers every run-dir file except numba_cache* paths",
+    "results_json": "assembled solely from retained raw leg JSONs; tier-1 equality re-derived from raw per-file censuses, not trusted from driver summaries"
+  },
+  "authorization_and_boundaries": {
+    "pushes": "none",
+    "merges_to_main": "none",
+    "source_edits_during_gate": "zero (driver-only fixes after INC01/INC02, before/without touching measurements; preregistration amended before any counted leg)",
+    "user_branches": "no force-update or reset of any user branch"
+  },
+  "implementation_vs_verification": {
+    "implemented": "gate execution complete: pristine worktrees at both pins, preregistration + Amendment A1, shakedown POWER_OK, 7/7 counted windows, guards, byte-law tiers, evidence trio assembled",
+    "verified": "all numbers above re-derived from retained raw leg JSONs by g4rc_report.py; tier-1 cross-arm export equality holds on all 8 pairs with a single shared census digest; decision CONFIRMED",
+    "not_verified_here": "installed-wheel/cold-boundary headline numbers (out of scope law), machines other than this host, cohorts other than the 32-row w4 manifest"
+  }
+}

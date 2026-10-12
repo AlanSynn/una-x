@@ -131,6 +131,17 @@ Post-decision verification (amended bytes, alan, PYTHONHASHSEED=0):
 3. The M2 import-census byte law (107-file) remains the M2 owner's obligation on
    the shipped bytes.
 
+**CLOSURE: item 1 EXECUTED by the gate owner (G4RC gate-reconf) on these bytes and
+landed on this branch by ff-only handoff — `dd9c5acf91bfba818e4121cb95f7af0588036594`
+(parent `9d82a0d`, evidence-only delta verified from the object before the ff: the
+3-file trio under `campaigns/una_10x/evidence/tasks/G4RC/g4rc-20261012T0512Z/`,
+803 insertions, zero src/tests paths). Verdict CONFIRMED: median 3.076x, one-sided
+95% LB 3.03499x, 7/7 windows, tier-1 export byte law equal on all 8 counted pairs
+(Amendment A1 two-tier law); guards on the reconciled bytes: G1 import law,
+G2a/G2b, tests/batch island 99 passed / 3 skipped / 0 failed.**
+Item 3 (M2 census) remains with the M2 owner; item 2's re-review notification
+remains owed.
+
 ## 7. Scope
 
 Only the reconcile worktree touched; no pushes, no merges to main, no releases, no
