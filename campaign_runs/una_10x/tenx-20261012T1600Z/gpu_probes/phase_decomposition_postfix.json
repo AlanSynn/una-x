@@ -1,0 +1,41 @@
+{
+ "schema": "una10x-gpu-phase-decomposition-1",
+ "purpose": "Direction 3 evidence (PLAN_GPU.md \u00a75); walls only",
+ "python": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11",
+ "shape": {
+  "origins": 4000,
+  "nnz": 238387,
+  "cutoff": 1500.0,
+  "replays": 32
+ },
+ "device": {
+  "name": "Tesla V100-PCIE-16GB"
+ },
+ "full_service_bridge_s": {
+  "median": 0.004929383983835578,
+  "min": 0.0045855939970351756,
+  "max": 1.8222439370001666
+ },
+ "phase_decomposition": {
+  "h2d": {
+   "indptr_s": 0.00026768597308546305,
+   "dist_s": 0.000580693013034761,
+   "ids_s": 0.0006138120079413056,
+   "weights_s": 0.0002602729946374893,
+   "knn_s": 0.00020330899860709906,
+   "alloc_s": 0.0008720069890841842
+  },
+  "d2h": {},
+  "launch_s": 0.00023329997202381492,
+  "sync_s": 0.00014668900985270739,
+  "d2h_outputs_s": 0.00023954000789672136,
+  "total_s": 0.003417308966163546
+ },
+ "residency_upload_once": {
+  "replays": 32,
+  "total_s": 0.01766070700250566,
+  "per_replay_median_s": 0.0005462249973788857,
+  "per_replay_min_s": 0.0005369089776650071
+ },
+ "law": "walls only; hardware addition recorded separately; never fed to the CPU 10x gate; not a route claim"
+}

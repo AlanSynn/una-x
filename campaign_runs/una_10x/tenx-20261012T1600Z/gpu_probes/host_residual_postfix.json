@@ -1,0 +1,120 @@
+{
+ "schema": "una10x-gpu-host-residual-1",
+ "purpose": "Direction 4 prerequisite (PLAN_GPU.md \u00a76); host residual attribution; walls only",
+ "python": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11",
+ "shape": {
+  "origins": 4000,
+  "nnz": 238387,
+  "cutoff": 1500.0
+ },
+ "device": {
+  "name": "Tesla V100-PCIE-16GB",
+  "uuid": "GPU-ac4b883f-236b-9265-6827-c95402145e28"
+ },
+ "protocol": {
+  "full_service_reps": 6,
+  "full_service_warmup": false,
+  "section_reps": 9,
+  "section_warmup_passes": 1,
+  "section_order_mirrors_source": true,
+  "source_ref": "src/urban_network_analysis/Engines/_gpu_fold.py gpu_replay_fold",
+  "phase_b_implementation": "njit _phase_b_fast (battery gpu_phase_b_battery.py PASSED 26027 cases before this device run)",
+  "caveat": "sections are timed in isolated re-execution on warm state; the sum of isolated sections need not equal the in-context cost (caches/allocator/dispatch) \u2014 the remainder quantifies exactly that gap"
+ },
+ "full_service_bridge_s": {
+  "median": 0.004902759974356741,
+  "min": 0.004551439022179693,
+  "max": 1.0348606610205024
+ },
+ "host_sections": [
+  {
+   "section": "input_layout_normalization_ascontiguousarray_x5",
+   "source_ref": "_gpu_fold.py:213-217",
+   "median_s": 1.5069963410496712e-06,
+   "min_s": 1.3509998098015785e-06,
+   "max_s": 1.827022060751915e-06
+  },
+  {
+   "section": "input_dtype_law_checks_req_x5",
+   "source_ref": "_gpu_fold.py:218-222",
+   "median_s": 4.803005140274763e-06,
+   "min_s": 4.50195511803031e-06,
+   "max_s": 5.919951945543289e-06
+  },
+  {
+   "section": "shape_endpoint_validation",
+   "source_ref": "_gpu_fold.py:223-230",
+   "median_s": 4.330999217927456e-06,
+   "min_s": 4.06801700592041e-06,
+   "max_s": 5.2810064516961575e-06
+  },
+  {
+   "section": "decay_code_scalar_normalization_finiteness",
+   "source_ref": "_gpu_fold.py:234-240",
+   "median_s": 1.2095959391444921e-05,
+   "min_s": 1.145701389759779e-05,
+   "max_s": 1.8160033505409956e-05
+  },
+  {
+   "section": "phase_b_structural_scan",
+   "source_ref": "_gpu_fold.py:290 + _phase_b_fast:230-248 (njit)",
+   "median_s": 0.0005452120094560087,
+   "min_s": 0.0005362600204534829,
+   "max_s": 0.0005718659958802164
+  },
+  {
+   "section": "device_availability_gate",
+   "source_ref": "_gpu_fold.py:246 + require_device:76-87",
+   "median_s": 3.37539822794497e-05,
+   "min_s": 3.2863987144082785e-05,
+   "max_s": 4.133401671424508e-05
+  },
+  {
+   "section": "kernel_lookup_cached",
+   "source_ref": "_gpu_fold.py:253 + _kernel:90-175",
+   "median_s": 5.220063030719757e-07,
+   "min_s": 4.6798959374427795e-07,
+   "max_s": 1.435982994735241e-06
+  },
+  {
+   "section": "device_input_upload_h2d_x5",
+   "source_ref": "_gpu_fold.py:254-258",
+   "median_s": 0.0020671450183726847,
+   "min_s": 0.0019068330293521285,
+   "max_s": 0.00224415201228112
+  },
+  {
+   "section": "device_output_scratch_alloc_x10",
+   "source_ref": "_gpu_fold.py:259-269",
+   "median_s": 0.0009044549660757184,
+   "min_s": 0.0008821969968266785,
+   "max_s": 0.0009371539927087724
+  },
+  {
+   "section": "kernel_launch",
+   "source_ref": "_gpu_fold.py:270-278",
+   "median_s": 0.00022255402291193604,
+   "min_s": 0.00021485204342752695,
+   "max_s": 0.0003170149866491556
+  },
+  {
+   "section": "device_synchronize",
+   "source_ref": "_gpu_fold.py:279-280",
+   "median_s": 0.00014693598495796323,
+   "min_s": 0.00014492898480966687,
+   "max_s": 0.0001485220273025334
+  },
+  {
+   "section": "result_download_d2h_x5",
+   "source_ref": "_gpu_fold.py:281-285",
+   "median_s": 0.00024621596094220877,
+   "min_s": 0.00023619300918653607,
+   "max_s": 0.0002541670110076666
+  }
+ ],
+ "replayed_sequence_median_s": 0.0042075649835169315,
+ "host_sections_sum_median_s": 0.004189530911389738,
+ "unattributed_residual_s": 0.0007132290629670024,
+ "unattributed_share_of_full_service": 0.14547501136042879,
+ "law": "walls only; hardware addition recorded separately; never fed to the CPU 10x gate; not a route claim"
+}

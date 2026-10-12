@@ -97,8 +97,9 @@ def _section_replay(g, cuda, indptr, ids, dist, d_weights, knn_weights,
             raise g.GpuRefused("fold scalars must be finite")
     t4 = time.perf_counter()
     t.append(t4 - t3)
-    # section 5: Phase B host structural scan (pure-Python O(origins+nnz))
-    rc = g._phase_b(indptr, ids_all, d_w.shape[0], nnz)
+    # section 5: Phase B host structural scan (njit re-expression; the
+    # battery-validated fast path the bridge now calls)
+    rc = g._phase_b_fast(indptr, ids_all, d_w.shape[0], nnz)
     if rc == 2:
         raise g.GpuRefused("slice-order corruption (Phase B refusal)")
     if rc != 0:
@@ -167,7 +168,8 @@ _SECTIONS = [
     ("shape_endpoint_validation", "_gpu_fold.py:223-230"),
     ("decay_code_scalar_normalization_finiteness",
      "_gpu_fold.py:234-240"),
-    ("phase_b_structural_scan", "_gpu_fold.py:241-245 + _phase_b:185-199"),
+    ("phase_b_structural_scan",
+     "_gpu_fold.py:290 + _phase_b_fast:230-248 (njit)"),
     ("device_availability_gate", "_gpu_fold.py:246 + require_device:76-87"),
     ("kernel_lookup_cached", "_gpu_fold.py:253 + _kernel:90-175"),
     ("device_input_upload_h2d_x5", "_gpu_fold.py:254-258"),
@@ -226,6 +228,9 @@ def main() -> int:
         "section_order_mirrors_source": True,
         "source_ref": "src/urban_network_analysis/Engines/_gpu_fold.py "
                       "gpu_replay_fold",
+        "phase_b_implementation": "njit _phase_b_fast (battery "
+                                  "gpu_phase_b_battery.py PASSED 26027 "
+                                  "cases before this device run)",
         "caveat": "sections are timed in isolated re-execution on warm "
                   "state; the sum of isolated sections need not equal the "
                   "in-context cost (caches/allocator/dispatch) — the "

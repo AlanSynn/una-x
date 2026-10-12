@@ -148,30 +148,46 @@ in-context gap. Note the chronology law requires the Phase-B refusal check to pr
 device work, so every one-shot call pays the scan; a residency batch pays it once per
 structure, not per row.
 
-## 6. Direction 4 — parallelism shape, within the order law
+**Post-fix re-measurement — EXECUTED 2026-10-12** (`receipts/gpuprobe3-20261012T1630Z.md`,
+`.../gpu_probes/host_residual_postfix.json`, `phase_decomposition_postfix.json`, slurm
+13986006, SAME node/device as the pre-fix phase-decomposition run): the scan now runs as
+the battery-validated njit `_phase_b_fast` (26,027-case bit-identity battery, 0
+divergences, seed 20261012) and the one-shot full-service median drops to **0.004903 s**
+(host-residual probe; 0.004929 s on the phase probe) — **~28x vs the 0.13535/0.13718/0.13836
+lineage**. Section medians: scan 0.545 ms (11.1% of the wall; 243x on the section), device
+phases 3.587 ms (73.2%), unattributed 0.713 ms (14.5%). Residency per-replay unchanged
+(0.546 vs 0.553 ms — that shape already amortized the scan).
+
+## 6. Direction 4 — parallelism shape, within the order law — RESOLVED (2026-10-12)
 
 The crossover loss was attributed to transfer+launch+sync and per-origin sequential
 order-bearing loops (≈60 nnz/origin at rep4000). The 2026-10-12 phase decomposition
 revised the attribution to a ~133 ms host residual, and the same-day residual probe
-**settles it** (§5): the wall is ~96% the bridge's own Phase-B Python scan
+**settled it** (§5): the wall was ~96% the bridge's own Phase-B Python scan
 (`_gpu_fold.py:185-199`), with transfer (2.03 ms), scratch/output allocation (0.87 ms),
-launch (0.22 ms), sync (0.15 ms) and D2H (0.24 ms) jointly ~2.5%. Consequences for
-Direction 4: no device-side tuning axis (occupancy, tpb, tail effects) can move a wall
-dominated by a host scan — those axes remain legal but are measured at ~3.5 ms of headroom,
-not ~137 ms. The legal levers this evidence actually points to: (i) a bit-identical
-vectorized re-expression of the Phase-B checks (same refusal codes, same chronology —
-refusals still precede any device work), which is a change to the bridge instrument
-`src/urban_network_analysis/Engines/_gpu_fold.py` and therefore needs its own task,
-bit-identical-refusal gate and review; production never imports the bridge, so this moves
-GPU-qualification walls, not the production route; (ii) the Direction-3 residency shape,
-which pays the scan once per structure and so amortizes it per row (K rows share one
-validated upload + one scan) but leaves the one-shot full-service cost unchanged. The
-order law still forbids the
-tempting device axes: no atomics, no completion-order sums, no reduction reassociation —
-a warp cannot cooperate on one origin's ordered sum without reassociating. Legal
-parallelism axes: across origins, across rows (Direction 3 batch launches), across
-independent metric jobs. Re-measure the crossover only after a Direction-4 lever actually
-lands; do not tune against the one-shot shape.
+launch (0.22 ms), sync (0.15 ms) and D2H (0.24 ms) jointly ~2.5%. The legal lever that
+evidence pointed to — a code-identical-return re-expression of the Phase-B scan — is now
+**IMPLEMENTED AND MEASURED** (`receipts/gpuprobe3-20261012T1630Z.md`): `_phase_b_fast`
+(njit, sequential — no prange; the precedence law is stated in the module and pinned by a
+26,027-case bit-identity battery with 0 divergences, seed 20261012; the Python `_phase_b`
+is retained as the battery oracle; refusal chronology unchanged — Phase-B still precedes
+all device work; kernel/inputs untouched, so outputs are unchanged by construction).
+Measured on V100 (slurm 13986006, same node/device as the pre-fix phase decomposition):
+one-shot full-service median 0.13718 → **0.004929 s** (same probe/node, 27.8x;
+0.13836 → 0.004903 s on the residual probe, 28.2x). The scan section: 0.13259 s →
+**0.545 ms** (243x). The wall is now ~74% device phases (H2D 2.07 ms, alloc 0.90 ms,
+launch 0.22 ms, sync 0.15 ms, D2H 0.25 ms) with 0.713 ms (14.5%) unattributed — no
+host-scan lever remains; the next axes are Direction 3 (residency: per-replay 0.546 ms,
+already measured) and Direction 1/2 (bit-parity admission). Device-side tuning axes
+(occupancy, tpb, tail) remain legal with ~3.6 ms of headroom. The order law still forbids
+the tempting device axes: no atomics, no completion-order sums, no reduction
+reassociation — a warp cannot cooperate on one origin's ordered sum without
+reassociating. Legal parallelism axes: across origins, across rows (Direction 3 batch
+launches), across independent metric jobs. SCOPE LAW: this moves GPU-QUALIFICATION
+instrument walls only — production never imports the bridge, the fold remains 0/4
+bit-equal vs the delivered authority, `CPU_ROUTE_RETAINED` unchanged, and nothing here
+feeds the CPU 10x gate. Re-measure the G11 crossover (vs the delivered CPU driver) only
+if a future task needs that specific comparator; do not tune against the one-shot shape.
 
 ## 7. What is NOT planned and why
 
@@ -202,14 +218,27 @@ lands; do not tune against the one-shot shape.
   **EXECUTED** same job — results in §3. The probe's certification leg decomposes
   failures (arg-bit identity vs statement-lowering identity); on this host CPU the arg
   bits certify and the fold-output reproduction does not (1 ULP, named gap).
+- `probes/gpu_phase_b_battery.py` — Phase-B bit-identity battery (oracle `_phase_b` vs
+  njit `_phase_b_fast`), 26,027 cases (24,000 randomized adversarial + 2,000 valid CSR +
+  20 hand + 7 rep4000-scale, seed 20261012), **PASS 0 divergences**; gate ran on the
+  login node BEFORE the device job; result in `.../gpu_probes/phase_b_battery.json` and
+  `receipts/gpuprobe3-20261012T1630Z.md`. Two battery-construction bugs were caught by
+  the battery itself and fixed (all failures had oracle == fast — described in the
+  receipt); the committed JSON is the final passing run.
 - Device legs ran under a real salloc device; an earlier attempt without one returned the
   typed `device_unavailable` blocker (never simulated). Operational lessons recorded in
   the receipt: salloc executes its command on the LOCAL node (wrap in `srun`), bare
   `srun --gres` failed step creation on this cluster (allocate with `salloc`, step with
   `srun`), and `/tmp` is node-local (scripts must live on shared `/storage`).
+- Post-fix re-measurement job: slurm **13986006** (15 s wall, node
+  `atl1-1-02-006-31-0`, UUID GPU-ac4b883f… — same node/device as 13983444), re-running
+  `gpu_phase_decomposition.py` → `phase_decomposition_postfix.json` and
+  `gpu_host_residual.py` (section 5 now times `_phase_b_fast`) →
+  `host_residual_postfix.json`; pre-fix JSONs preserved untouched. Results in §5/§6.
 - Compute accounting: first probe job ≈4 min wall (13983444); second probe job 35 s wall
-  (13985066) — both 1-GPU allocations charged to the GPU probe scope under the standing
-  salloc authorization; no route/parity claim created.
+  (13985066); third probe job 15 s wall (13986006) — all 1-GPU allocations charged to
+  the GPU probe scope under the standing salloc authorization; no route/parity claim
+  created.
 
 ## 9. Honesty / unrun gates
 
