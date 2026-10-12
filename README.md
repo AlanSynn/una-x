@@ -100,6 +100,63 @@ many analyses from a pairings CSV.
 
 
 
+## Performance and verification status (2026-10-11)
+
+Measured claims from the una_10x / una_platform verification campaigns. Every
+number below comes from a preregistered, paired, bitwise-checked measurement
+campaign; raw evidence is retained under `campaigns/` and `evidence/` in this
+repository's campaign records.
+
+**Throughput (CPU, public `RunBatch`).** On the frozen observed-network cohort
+of 32 distinct parameter jobs (Boston network, workload sha256
+`235405de67cf22dc…a60a`), through the installed public `RunBatch` API at a
+**cold** call boundary (initial trace/JIT cost included, timer brackets only
+the public call), the optimized engine is **2.38x faster than the baseline
+`395cdc5` build** (median paired ratio **2.3798**, one-sided 95% bootstrap
+lower bound **2.2345**; 7 paired windows, seed 20261003, 20000 resamples;
+installed wheels, equal worker resources, cache off). The comparator
+`395cdc5` is itself an already-optimized build — this is the margin over the
+strongest current implementation, not over a slow original. Outputs were
+bitwise identical between the arms in every window (64 files per window,
+per-file sha256), and protected cells showed no degradation (median 0.85,
+95% upper 0.93). This is an honest measured result below the program's
+stretch target of 10x; the gate was evaluated at full strength and reported
+as `target_unmet` rather than lowered. Single-job `RunAccessibility`
+throughput was not separately claimed (batch scope only). A further,
+independently gated **1.11x** lazy-import improvement (median 1.10654, 95% LB
+1.07908, byte-identical outputs) is completed on branch `perf/exp-lazy-1`
+and not yet part of the measured headline.
+
+**GPU.** Substantive GPU execution is implemented and qualified on a real
+NVIDIA A100: the device kernel gate passed (rc=0) with the
+association-free device stages bit-exact against host references, and a
+declared-order fold cell is durably recorded. The parity domain of the GPU
+fold is the certified battery row set only — general rows diverge by ±1 ulp
+because device transcendental functions (libdevice `exp`) differ from host
+NumPy by 1 ulp on specific arguments. The GPU route therefore remains
+battery-domain, **CPU is the default**, and **no GPU-vs-baseline end-to-end
+speedup multiple is claimed** — none was measured through the public API,
+and promoting the GPU cell on parity grounds was refused.
+
+**Native backend.** An ahead-of-time C++17 native core
+(`urban_network_analysis.backends.native`) implements the characterized
+scope search and destination adjustment for both numerical profiles,
+verified bitwise against the compiled engines (legacy) and the independent
+reference (corrected_v1), with ASan/UBSan-clean builds, fail-sentinel
+engagement tests, and a portable pure-Python fallback that is
+byte-identical. It ships as an explicit route, not a silent default.
+
+**Madina API parity.** `urban_network_analysis.compat.madina` mirrors the
+pinned upstream City-Form-Lab/madina (`8b5c3bd3`): the zonal and una
+namespaces (tools, paths, betweenness, workflows) are delivered with
+adversarially reviewed suites (131 tests green), and top-level namespace
+parity is machine-checked live — 61 of 62 upstream public names, with the
+single missing name (`pdk`) recorded in the attribution ledger; the `m.una`
+attribute chain and all submodule identities are pinned. A drop-in
+installable `madina` shim distribution is specified but not yet packaged
+(open packaging item). Numerical profiles `una_legacy`, `madina_legacy`,
+and `corrected_v1` are retained as distinct, separately tested references.
+
 ## Versioning
 
 The package version is defined once, in
