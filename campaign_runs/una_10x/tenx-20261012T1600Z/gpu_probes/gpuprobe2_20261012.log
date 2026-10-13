@@ -1,0 +1,86 @@
+salloc: Pending job allocation 13985066
+salloc: job 13985066 queued and waiting for resources
+salloc: job 13985066 has been allocated resources
+salloc: Granted job allocation 13985066
+salloc: Waiting for resource configuration
+salloc: Nodes atl1-1-02-005-30-0 are ready for job
+---------------------------------------
+Begin Slurm Prolog: Oct-12-2026 16:01:00
+Job ID:    13985066
+User ID:   dsynn6
+Account:   gts-hoh68
+Job name:  gpuprobe2
+Partition: gpu-v100
+QOS:       inferno
+---------------------------------------
++ module load cuda/12.6.1
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ cd /storage/scratch1/1/dsynn6/una-x-gpuplan-20261012
++ export PYTHONPATH=src
++ PYTHONPATH=src
++ export NUMBA_CACHE_DIR=/storage/scratch1/1/dsynn6/gpuprobe2_smoke/nbacache_device
++ NUMBA_CACHE_DIR=/storage/scratch1/1/dsynn6/gpuprobe2_smoke/nbacache_device
++ PY=/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11
++ OUT=campaign_runs/una_10x/tenx-20261012T1600Z/gpu_probes
++ mkdir -p campaign_runs/una_10x/tenx-20261012T1600Z/gpu_probes
++ echo '=== identity ==='
+=== identity ===
++ hostname
+atl1-1-02-005-30-0.pace.gatech.edu
++ nvidia-smi -L
+GPU 0: Tesla V100-PCIE-16GB (UUID: GPU-f18ae2ec-bda3-dbe2-2f3a-9bdfcd428606)
++ /storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11 -c 'import sys, numba, numpy; print('\''python'\'', sys.version.split()[0], '\''| numba'\'', numba.__version__, '\''| numpy'\'', numpy.__version__)'
+python 3.11.4 | numba 0.67.0 | numpy 2.4.6
+=== probe 1: gpu_host_residual ===
++ echo '=== probe 1: gpu_host_residual ==='
++ /storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11 campaigns/una_10x/next/probes/gpu_host_residual.py --out campaign_runs/una_10x/tenx-20261012T1600Z/gpu_probes/host_residual.json
+/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 32 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+{"stage": "full_service", "rep": 0, "s": 1.5021399029938038}
+{"stage": "full_service", "rep": 1, "s": 0.14031699299812317}
+{"stage": "full_service", "rep": 2, "s": 0.13835620300960727}
+{"stage": "full_service", "rep": 3, "s": 0.13689443399198353}
+{"stage": "full_service", "rep": 4, "s": 0.13668925399542786}
+{"stage": "full_service", "rep": 5, "s": 0.1372305839904584}
+{"stage": "sections", "rep": 0, "sum_s": 0.1360672639857512, "phase_b_s": 0.1325251450180076}
+{"stage": "sections", "rep": 1, "sum_s": 0.13632521100225858, "phase_b_s": 0.13260216999333352}
+{"stage": "sections", "rep": 2, "sum_s": 0.1361584599944763, "phase_b_s": 0.1325957410153933}
+{"stage": "sections", "rep": 3, "sum_s": 0.13613128900760785, "phase_b_s": 0.13263549900148064}
+{"stage": "sections", "rep": 4, "sum_s": 0.1362365400127601, "phase_b_s": 0.13256007901509292}
+{"stage": "sections", "rep": 5, "sum_s": 0.1362080649996642, "phase_b_s": 0.13251935300650075}
+{"stage": "sections", "rep": 6, "sum_s": 0.13606940899626352, "phase_b_s": 0.1325933710031677}
+{"stage": "sections", "rep": 7, "sum_s": 0.13732154900208116, "phase_b_s": 0.13390397798502818}
+{"stage": "sections", "rep": 8, "sum_s": 0.13620558299589902, "phase_b_s": 0.13253498898120597}
+{"out": "campaign_runs/una_10x/tenx-20261012T1600Z/gpu_probes/host_residual.json", "full_service_median_s": 0.13835620300960727, "phase_b_median_s": 0.1325933710031677, "sections_sum_median_s": 0.1361587280407548, "unattributed_residual_s": 0.0021974749688524753}
+probe1 exit: 0
++ echo 'probe1 exit: 0'
++ echo '=== probe 2: gpu_fold_box_census ==='
+=== probe 2: gpu_fold_box_census ===
++ /storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11 campaigns/una_10x/next/probes/gpu_fold_box_census.py --out campaign_runs/una_10x/tenx-20261012T1600Z/gpu_probes/fold_box_census.json
+{"stage": "manifest", "n_rows": 32, "betas_n": 32, "mids": [500.0], "radii": [400.0]}
+{"stage": "box_host", "box": "ge_box", "n": 131072, "np_vs_fastmath_diff": 6271}
+{"stage": "box_host", "box": "gl_box", "n": 20480, "np_vs_fastmath_diff": 900}
+{"stage": "derived_groups", "sizes": {"ge_positive": 178777, "gl": 178777, "kn_exponential": 4000, "kn_logistic": 4000}}
+{"stage": "certification", "certified": false, "arg_bits_identical": true, "outputs_bit_equal": false, "n_checks": 4, "gaps": ["rand96_unrounded exponential kn: bit-verified derived args through the exp-consuming statements differ from the delivered fold by 1 ULP (compiled statement lowering, not the arg derivation)"]}
+{"stage": "device_eval", "target": "ge_box", "n_diff": 8071, "n_unique_args_diff": 6961}
+{"stage": "device_eval", "target": "gl_box", "n_diff": 1109, "n_unique_args_diff": 1109}
+{"stage": "device_eval", "target": "group:ge_positive", "n_diff": 10649, "n_unique_args_diff": 10649}
+{"stage": "device_eval", "target": "group:gl", "n_diff": 11087, "n_unique_args_diff": 11087}
+/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/lib/python3.11/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 32 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+{"stage": "device_eval", "target": "group:kn_exponential", "n_diff": 45, "n_unique_args_diff": 45}
+{"stage": "device_eval", "target": "group:kn_logistic", "n_diff": 206, "n_unique_args_diff": 206}
+{"out": "campaign_runs/una_10x/tenx-20261012T1600Z/gpu_probes/fold_box_census.json", "certified": false, "status": "device_ok"}
+probe2 exit: 0
+=== done ===
++ echo 'probe2 exit: 0'
++ echo '=== done ==='
+salloc: Relinquishing job allocation 13985066

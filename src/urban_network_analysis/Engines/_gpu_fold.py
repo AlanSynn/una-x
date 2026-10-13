@@ -6,6 +6,12 @@ A numba.cuda port of the strict per-origin reach/gravity/knn fold
 sequential order-bearing sums inside an origin, ``(d, filtered-index)``
 insertion-sorted knn crop (total key order - the sorted result is
 unique), and the three decay branches mirroring the delivered fold.
+The Phase-B host structural scan also has a battery-validated njit
+re-expression (``_phase_b_fast``, bit-identical return codes vs the
+``_phase_b`` Python oracle on every battery case - see
+``probes/gpu_phase_b_battery.py``); the oracle is retained for that
+battery.  The scan is a per-call host cost, so the fold's validation
+chronology (Phase-B refusal BEFORE any device work) is unchanged.
 
 ENGAGEMENT LAW (identical to the N00 native bridge): the production
 batch route NEVER consults this module - it is imported lazily and
@@ -38,6 +44,13 @@ try:  # device-gated: the module must import on CPU-only hosts
 except Exception as _e:  # pragma: no cover - depends on host
     _cuda = None
     _CUDA_IMPORT_ERROR = _e
+
+try:  # CPU njit for the Phase-B scan; same availability class as cuda
+    from numba import njit as _njit
+    _NUMBA_IMPORT_ERROR = None
+except Exception as _e:  # pragma: no cover - depends on host
+    _njit = None
+    _NUMBA_IMPORT_ERROR = _e
 
 
 class GpuUnavailable(RuntimeError):
@@ -183,7 +196,12 @@ def _req(a, dtype, name):
 
 
 def _phase_b(indptr, ids_all, node_count, nnz):
-    """Host structural scan; same codes as the native fold."""
+    """Host structural scan; same codes as the native fold.
+
+    Retained as the ORACLE for the bit-identity battery
+    (``probes/gpu_phase_b_battery.py``); the bridge calls the
+    battery-validated :func:`_phase_b_fast` below.
+    """
     for o in range(indptr.shape[0] - 1):
         lo = int(indptr[o])
         hi = int(indptr[o + 1])
@@ -197,6 +215,37 @@ def _phase_b(indptr, ids_all, node_count, nnz):
             if ids_all[j] < 0 or ids_all[j] >= node_count:
                 return 1
     return 0
+
+
+# Precedence law of the scan (verified against the oracle above): per
+# origin ascending, (a) hi<lo or lo<0 -> 1, (b) hi>nnz -> 1, then per j
+# ascending in [lo,hi): (c) j>lo and ids_all[j] <= ids_all[j-1] -> 2,
+# (d) ids_all[j] < 0 or >= node_count -> 1.  (c) is checked BEFORE (d)
+# at the same j, so at one j code 2 wins; across j the earlier j's
+# class wins; origin order precedes both.  The fast form is a verbatim
+# transplant of that loop under njit (parallel=False: sequential order
+# keeps the precedence law trivially; early exit is NOT preserved and
+# need not be - only the returned code must be identical on every
+# input, which the battery asserts case by case).
+if _njit is not None:
+    @_njit(cache=False, nogil=True, parallel=False)
+    def _phase_b_fast(indptr, ids_all, node_count, nnz):
+        n_origins = indptr.shape[0] - 1
+        for o in range(n_origins):
+            lo = indptr[o]
+            hi = indptr[o + 1]
+            if hi < lo or lo < 0:
+                return 1
+            if hi > nnz:
+                return 1
+            for j in range(lo, hi):
+                if j > lo and ids_all[j] <= ids_all[j - 1]:
+                    return 2
+                if ids_all[j] < 0 or ids_all[j] >= node_count:
+                    return 1
+        return 0
+else:  # pragma: no cover - numba absent: bridge is device-gated anyway
+    _phase_b_fast = _phase_b
 
 
 def gpu_replay_fold(indptr, ids_all, dist_all, d_weights, cutoff,
@@ -238,7 +287,7 @@ def gpu_replay_fold(indptr, ids_all, dist_all, d_weights, cutoff,
         fv = float(v)
         if not np.isfinite(fv):
             raise GpuRefused("fold scalars must be finite")
-    rc = _phase_b(indptr, ids_all, d_weights.shape[0], nnz)
+    rc = _phase_b_fast(indptr, ids_all, d_weights.shape[0], nnz)
     if rc == 2:
         raise GpuRefused("slice-order corruption (Phase B refusal)")
     if rc != 0:

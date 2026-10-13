@@ -1,0 +1,536 @@
+{
+ "schema": "una10x-gpu-fold-box-census-1",
+ "purpose": "Direction 1 road (b) input (PLAN_GPU.md \u00a73); box census + derived-arg classification; census only, no admission",
+ "python": "/storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11",
+ "numba": "0.67.0",
+ "numpy": "2.4.6",
+ "manifest_derived": {
+  "n_rows": 32,
+  "betas_n": 32,
+  "mids": [
+   500.0
+  ],
+  "radii": [
+   400.0
+  ]
+ },
+ "gr_grid": [
+  0.0001,
+  0.001,
+  0.01,
+  0.1,
+  1.0
+ ],
+ "ge_box": {
+  "construction": "x = -b * c; b in manifest betas (32); c = linspace(0, radius, 4096); radius from manifest",
+  "n": 131072,
+  "host_np_vs_fastmath": {
+   "n": 131072,
+   "n_diff": 6271,
+   "max_ulp": 1,
+   "n_sign_flips": 0
+  },
+  "device_vs_fastmath": {
+   "n": 131072,
+   "n_diff_device_vs_fastmath": 8071,
+   "max_ulp": 1,
+   "n_sign_flips": 0,
+   "share_divergent": 0.06157684326171875,
+   "n_unique_args": 112710,
+   "n_unique_args_diff": 6961,
+   "divergent_absx_min": 0.010161881129623065,
+   "divergent_absx_max": 1.5917948717948718,
+   "divergent_absx_hist_16bins": {
+    "range_absx": [
+     0.0,
+     1.6
+    ],
+    "edges": [
+     0.0,
+     0.1,
+     0.2,
+     0.30000000000000004,
+     0.4,
+     0.5,
+     0.6000000000000001,
+     0.7000000000000001,
+     0.8,
+     0.9,
+     1.0,
+     1.1,
+     1.2000000000000002,
+     1.3,
+     1.4000000000000001,
+     1.5,
+     1.6
+    ],
+    "counts": [
+     302,
+     669,
+     926,
+     1888,
+     1329,
+     426,
+     149,
+     325,
+     333,
+     723,
+     524,
+     271,
+     112,
+     28,
+     42,
+     24
+    ]
+   },
+   "device_vs_np": {
+    "n": 131072,
+    "n_diff": 10700,
+    "max_ulp": 1,
+    "n_sign_flips": 0
+   }
+  }
+ },
+ "gl_box": {
+  "construction": "x = -gr * (p - mid); gr in [1e-4,1e-3,1e-2,1e-1,1.0]; p = linspace(0, max_radius, 4096); mid from manifest; note: p <= radius < mid over this grid, so the spec box covers positive args only - the negative side of actual gl arguments is covered by the derived-arg groups",
+  "n": 20480,
+  "host_np_vs_fastmath": {
+   "n": 20480,
+   "n_diff": 900,
+   "max_ulp": 1,
+   "n_sign_flips": 0
+  },
+  "device_vs_fastmath": {
+   "n": 20480,
+   "n_diff_device_vs_fastmath": 1109,
+   "max_ulp": 1,
+   "n_sign_flips": 0,
+   "share_divergent": 0.054150390625,
+   "n_unique_args": 20480,
+   "n_unique_args_diff": 1109,
+   "divergent_absx_min": 0.010146520146520146,
+   "divergent_absx_max": 499.5115995115995,
+   "divergent_absx_hist_16bins": {
+    "range_absx": [
+     0.0,
+     500.0
+    ],
+    "edges": [
+     0.0,
+     31.25,
+     62.5,
+     93.75,
+     125.0,
+     156.25,
+     187.5,
+     218.75,
+     250.0,
+     281.25,
+     312.5,
+     343.75,
+     375.0,
+     406.25,
+     437.5,
+     468.75,
+     500.0
+    ],
+    "counts": [
+     731,
+     125,
+     0,
+     17,
+     19,
+     23,
+     19,
+     27,
+     16,
+     16,
+     18,
+     19,
+     22,
+     18,
+     15,
+     24
+    ]
+   },
+   "device_vs_np": {
+    "n": 20480,
+    "n_diff": 1549,
+    "max_ulp": 1,
+    "n_sign_flips": 0
+   }
+  }
+ },
+ "rep4000_derived_args": {
+  "structure": {
+   "origins": 4000,
+   "nnz": 238387,
+   "cutoff": 1500.0,
+   "filtered_nnz": 178777,
+   "seed": 20261012,
+   "builder": "probes/gpu_phase_decomposition.py _rep4000 (same seed)"
+  },
+  "fold_params": {
+   "gravity_beta": 0.001,
+   "gravity_plateau": 0.0,
+   "gravity_logistic_midpoint": 500.0,
+   "gravity_growth_rate": 0.01,
+   "knn_weights_n": 1
+  },
+  "source_ref": "delivered host fold src/urban_network_analysis/Engines/Accessibility.py reach_gravity_knn_access (njit fastmath); device mirror _gpu_fold.py:120-121,164-169",
+  "constructions": {
+   "ge_positive": "+beta * maximum(0, d - plateau); the fold computes w / exp(arg)",
+   "gl": "-gr * ((d - plateau) - mid)",
+   "kn_exponential": "-beta * maximum(0, d_cropped - plateau)",
+   "kn_logistic": "-gr * ((d_cropped - plateau) - mid)"
+  },
+  "groups": {
+   "ge_positive": {
+    "n": 178777,
+    "n_unique_bits": 178777,
+    "device_vs_fastmath": {
+     "n": 178777,
+     "n_diff_device_vs_fastmath": 10649,
+     "max_ulp": 1,
+     "n_sign_flips": 0,
+     "share_divergent": 0.059565827819014754,
+     "n_unique_args": 178777,
+     "n_unique_args_diff": 10649,
+     "divergent_absx_min": 0.010867969048274417,
+     "divergent_absx_max": 1.49941617001852,
+     "divergent_absx_hist_16bins": {
+      "range_absx": [
+       0.0,
+       1.4999978019679856
+      ],
+      "edges": [
+       0.0,
+       0.0937498626229991,
+       0.1874997252459982,
+       0.2812495878689973,
+       0.3749994504919964,
+       0.4687493131149955,
+       0.5624991757379946,
+       0.6562490383609937,
+       0.7499989009839928,
+       0.8437487636069919,
+       0.937498626229991,
+       1.03124848885299,
+       1.1249983514759891,
+       1.2187482140989883,
+       1.3124980767219874,
+       1.4062479393449865,
+       1.4999978019679856
+      ],
+      "counts": [
+       149,
+       405,
+       642,
+       1216,
+       1457,
+       670,
+       339,
+       107,
+       341,
+       565,
+       1486,
+       1064,
+       943,
+       843,
+       191,
+       231
+      ]
+     },
+     "device_vs_np": null
+    }
+   },
+   "gl": {
+    "n": 178777,
+    "n_unique_bits": 178777,
+    "device_vs_fastmath": {
+     "n": 178777,
+     "n_diff_device_vs_fastmath": 11087,
+     "max_ulp": 1,
+     "n_sign_flips": 0,
+     "share_divergent": 0.06201580740251822,
+     "n_unique_args": 178777,
+     "n_unique_args_diff": 11087,
+     "divergent_absx_min": 0.010135009205793608,
+     "divergent_absx_max": 9.999117252628473,
+     "divergent_absx_hist_16bins": {
+      "range_absx": [
+       0.0,
+       9.999978019679856
+      ],
+      "edges": [
+       0.0,
+       0.624998626229991,
+       1.249997252459982,
+       1.874995878689973,
+       2.499994504919964,
+       3.1249931311499552,
+       3.749991757379946,
+       4.374990383609937,
+       4.999989009839928,
+       5.624987636069919,
+       6.2499862622999105,
+       6.874984888529902,
+       7.499983514759892,
+       8.124982140989884,
+       8.749980767219874,
+       9.374979393449866,
+       9.999978019679856
+      ],
+      "counts": [
+       905,
+       1037,
+       873,
+       1053,
+       906,
+       693,
+       921,
+       1027,
+       433,
+       477,
+       528,
+       537,
+       492,
+       398,
+       453,
+       354
+      ]
+     },
+     "device_vs_np": null
+    }
+   },
+   "kn_exponential": {
+    "n": 4000,
+    "n_unique_bits": 4000,
+    "device_vs_fastmath": {
+     "n": 4000,
+     "n_diff_device_vs_fastmath": 45,
+     "max_ulp": 1,
+     "n_sign_flips": 0,
+     "share_divergent": 0.01125,
+     "n_unique_args": 4000,
+     "n_unique_args_diff": 45,
+     "divergent_absx_min": 0.0015314590739966842,
+     "divergent_absx_max": 0.14409210859849828,
+     "divergent_absx_hist_16bins": {
+      "range_absx": [
+       0.0,
+       0.2883782891884972
+      ],
+      "edges": [
+       0.0,
+       0.018023643074281077,
+       0.03604728614856215,
+       0.054070929222843234,
+       0.0720945722971243,
+       0.09011821537140538,
+       0.10814185844568647,
+       0.12616550151996753,
+       0.1441891445942486,
+       0.1622127876685297,
+       0.18023643074281076,
+       0.19826007381709185,
+       0.21628371689137293,
+       0.234307359965654,
+       0.25233100303993505,
+       0.27035464611421617,
+       0.2883782891884972
+      ],
+      "counts": [
+       2,
+       6,
+       11,
+       8,
+       9,
+       4,
+       4,
+       1,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     "device_vs_np": null
+    }
+   },
+   "kn_logistic": {
+    "n": 4000,
+    "n_unique_bits": 4000,
+    "device_vs_fastmath": {
+     "n": 4000,
+     "n_diff_device_vs_fastmath": 206,
+     "max_ulp": 1,
+     "n_sign_flips": 0,
+     "share_divergent": 0.0515,
+     "n_unique_args": 4000,
+     "n_unique_args_diff": 206,
+     "divergent_absx_min": 3.1093196723131102,
+     "divergent_absx_max": 4.9858292192602045,
+     "divergent_absx_hist_16bins": {
+      "range_absx": [
+       0.0,
+       4.98986222560892
+      ],
+      "edges": [
+       0.0,
+       0.3118663891005575,
+       0.623732778201115,
+       0.9355991673016724,
+       1.24746555640223,
+       1.5593319455027874,
+       1.8711983346033447,
+       2.1830647237039025,
+       2.49493111280446,
+       2.806797501905017,
+       3.118663891005575,
+       3.430530280106132,
+       3.7423966692066895,
+       4.054263058307247,
+       4.366129447407805,
+       4.677995836508362,
+       4.98986222560892
+      ],
+      "counts": [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       1,
+       1,
+       3,
+       16,
+       12,
+       96,
+       77
+      ]
+     },
+     "device_vs_np": null
+    }
+   }
+  }
+ },
+ "derivation_certification": {
+  "cases": [
+   {
+    "case": "small3_distinct",
+    "n": 6,
+    "arg_bit_diffs": {
+     "ge_positive": 0,
+     "gl": 0,
+     "kn_exponential": 0,
+     "kn_logistic": 0
+    },
+    "decay_summaries": {
+     "exponential": {
+      "param_reimpl_bit_equal": {
+       "ge": true,
+       "gl": true,
+       "kn": true
+      },
+      "param_reimpl_max_ulp": {
+       "ge": 0,
+       "gl": 0,
+       "kn": 0
+      },
+      "inline_reimpl_bit_equal": {
+       "ge": true,
+       "gl": true,
+       "kn": true
+      }
+     },
+     "logistic": {
+      "param_reimpl_bit_equal": {
+       "ge": true,
+       "gl": true,
+       "kn": true
+      },
+      "param_reimpl_max_ulp": {
+       "ge": 0,
+       "gl": 0,
+       "kn": 0
+      },
+      "inline_reimpl_bit_equal": {
+       "ge": true,
+       "gl": true,
+       "kn": true
+      }
+     }
+    }
+   },
+   {
+    "case": "rand96_unrounded",
+    "n": 96,
+    "arg_bit_diffs": {
+     "ge_positive": 0,
+     "gl": 0,
+     "kn_exponential": 0,
+     "kn_logistic": 0
+    },
+    "decay_summaries": {
+     "exponential": {
+      "param_reimpl_bit_equal": {
+       "ge": true,
+       "gl": true,
+       "kn": false
+      },
+      "param_reimpl_max_ulp": {
+       "ge": 0,
+       "gl": 0,
+       "kn": 1
+      },
+      "inline_reimpl_bit_equal": {
+       "ge": true,
+       "gl": true,
+       "kn": true
+      }
+     },
+     "logistic": {
+      "param_reimpl_bit_equal": {
+       "ge": true,
+       "gl": true,
+       "kn": true
+      },
+      "param_reimpl_max_ulp": {
+       "ge": 0,
+       "gl": 0,
+       "kn": 0
+      },
+      "inline_reimpl_bit_equal": {
+       "ge": true,
+       "gl": true,
+       "kn": true
+      }
+     }
+    }
+   }
+  ],
+  "gaps": [
+   "rand96_unrounded exponential kn: bit-verified derived args through the exp-consuming statements differ from the delivered fold by 1 ULP (compiled statement lowering, not the arg derivation)"
+  ],
+  "n_checks": 4,
+  "arg_bits_identical": true,
+  "outputs_bit_equal": false,
+  "certified": false,
+  "method": "certified requires BOTH: derived args bit-identical to the delivered fold's inline fastmath arg construction, AND derived args fed through verbatim re-implementations of the fold's exp-consuming statements (njit fastmath=True, cache=False) reproducing delivered ge/gl/kn bit-exactly on every small case and both decay branches; a verbatim inline re-implementation separates arg-derivation failures from statement-lowering failures; reach/kept are exp-free and flat decay consumes no exp - both out of scope",
+  "scope_note": "host-only: validates the derived-arg construction against the DELIVERED host fold, not the device"
+ },
+ "device": {
+  "name": "Tesla V100-PCIE-16GB",
+  "uuid": "GPU-f18ae2ec-bda3-dbe2-2f3a-9bdfcd428606"
+ },
+ "law": "census only; no admission domain declared; 1 ULP divergence is a recorded fact, not a tolerance; never fed to the CPU 10x gate"
+}

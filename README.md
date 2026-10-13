@@ -134,12 +134,18 @@ the headline above, which remains measured against `395cdc5` on installed
 wheels at a cold call boundary.
 
 **GPU.** Substantive GPU execution is implemented and qualified on a real
-NVIDIA A100: the device kernel gate passed (rc=0) with the
+NVIDIA device — recorded as a Tesla V100-PCIE-16GB (sm_70, partition
+`gpu-v100`; an earlier revision of this paragraph said "A100", which no
+tracked evidence supports — see `campaign_runs/una_10x/tenx-20261004T155640Z/
+g11_gpu/gpu_qualification.json` and `campaigns/una_10x/next/PLAN_GPU.md`
+§2): the device kernel gate passed (rc=0) with the
 association-free device stages bit-exact against host references, and a
 declared-order fold cell is durably recorded. The parity domain of the GPU
 fold is the certified battery row set only — general rows diverge by ±1 ulp
 because device transcendental functions (libdevice `exp`) differ from host
-NumPy by 1 ulp on specific arguments. The GPU route therefore remains
+NumPy by 1 ulp on specific arguments, and the substitution domain against
+the delivered numba fastmath fold is empty at cohort-representative scale
+(0/4 outputs bit-equal). The GPU route therefore remains
 battery-domain, **CPU is the default**, and **no GPU-vs-baseline end-to-end
 speedup multiple is claimed** — none was measured through the public API,
 and promoting the GPU cell on parity grounds was refused.
