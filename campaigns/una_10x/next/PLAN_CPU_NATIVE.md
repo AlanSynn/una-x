@@ -99,10 +99,22 @@ required** for G=10:
    runtime.py:1087-1120). Coordinator batching has ≈ no wall to recover; P04
    stays gated OFF. The warm-boundary wall ≈ worker-execution window
    (per-row service ≈ 1.4–1.7 s) + ≈1.5 s serial head/tail.
-3. **R3 — per-metric reuse (C31-NOTE-1).** reach + knn are beta-invariant on this cohort
-   (identity-table keyed, dtype-exact — see `metric_dependencies.gen2.json`); gravity folds
-   must recompute. Upper bound ≈ half the fold region (20.5 s → ≈10–12 s). Typed identity
-   reuse only; no identical-answer cache semantics.
+3. **R3 — per-metric reuse (C31-NOTE-1) — CLOSED 2026-10-12: already armed.**
+   The planned beta-arm execution (serve reach+gl, fold ge+knn, per the
+   `_metric_reuse_scratch.plan_replay` model) is NOT needed for the frozen cohort:
+   the counter probe (`probes/r3_cohort_counters.py`, runs JSON committed) shows the
+   EXISTING P03M machinery fully live on it — `metric_split_folds 28` (every leasing
+   row), `metric_field_hits 84` (28 × the reach/gravity_logistic/knn_access trio),
+   `metric_field_produced 12` (4 fault-in rows), `metric_fallbacks 0`,
+   `metric_errors 0`, `split_s 0.584`. Under knn_decay=logistic all three trio ids
+   are beta-free BY THE FOLD'S OWN MATH (reach and logistic gravity do not read
+   gravity_beta; logistic knn reads growth_rate/plateau/midpoint), so trio-serve +
+   the admitted ge-only split is exact, not an identical-answer shortcut (the gen2
+   ids bind the actual scalars; a growth_rate change rekeys). The beta-arm execution
+   remains a design-only extension for exponential-decay cohorts (planner models it;
+   nothing in src/ consults plan_replay). An earlier mid-investigation claim that
+   "the trio never completes on this cohort" was WRONG — corrected in the R5 receipt
+   addendum.
 4. **R4 — window amortization (partially banked).** Import 3.42→≈1.5 s/worker landed with the
    lazy-import merge; remaining overhead amortizes only via multi-cohort windows per
    BENCHMARKS.md window-composition law (bounds 10x on a single 92–118 s arm-A window).
@@ -199,15 +211,22 @@ variance (25–28% same-config spread — paired windows mandatory).**
    (`receipts/next-p03c-20261012T2000Z.md`: W4T1 15.695 s optimal, threads
    neutral, oversubscription cliff does NOT reproduce on the merged tree).
 5. Implementation increments, each island battery + independent review:
-   **R5 decoded-stage lease reuse — IMPLEMENTED 2026-10-12** (design note +
-   ERRATA: `R5_DESIGN.md`; audit verdict FEASIBLE/clean census; law tests
-   `test_r5_*`; independent review pending before commit promotion); then
-   R3 metric reuse (typed identity, gen2 law) — R2 removed from the
+   **R5 decoded-stage lease reuse — LANDED 2026-10-12, commit 007c1b7** (design note
+   + ERRATA: `R5_DESIGN.md`; p02-audit mutation census CLEAN; 8 law tests
+   `test_r5_*`; independent SHIP review with items F1–F4 applied and the full island
+   battery re-stamped green on the final bytes — receipt
+   `receipts/next-r5-20261012T2117Z.md` incl. the same-day diagnostics addendum:
+   clean cohort wall 13.034/12.654 s, lease engagement exact 84/96).
+   **R3 — CLOSED: already armed** (§3 item 3; counter probe). R2 removed from the
    sequence (§5).
-6. Then a fresh tenx-law paired gate of main's bytes vs the 395cdc5 installed wheel
-   (cold and warm declared separately) — the published headline (2.3798x) binds treatment
-   `1e7237b`, which is NOT main's lineage (ancestry machine-checked), so main's bytes have
-   no qualifying gate yet.
+6. Diagnostic paired gate vs the FROZEN comparator 395cdc5 under the G4RC protocol
+   (worktree context, warm counted legs, 7 AB/BA windows, two-tier byte law) —
+   **RUNNING 2026-10-12** (`campaign_runs/una_10x/diag10x-20261012T2213Z/`,
+   preregistered DIAGNOSTIC scope law; does not replace the tenx-20261005T2331Z
+   headline, which binds treatment `1e7237b` — NOT main's lineage — on the installed-
+   wheel cold boundary, so main's lineage still has no qualifying headline gate).
+   Cold/warm declared separately; a cold-boundary headline gate remains available
+   future work if the user reopens the claim.
 7. R2/R4 receiver work only with measured residual backpressure (H2 stays refuted at this
    scale; P04 remains conditional).
 
