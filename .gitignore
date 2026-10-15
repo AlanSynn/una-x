@@ -22,3 +22,6 @@ src/urban_network_analysis/_build_info.py
 
 # Campaign-pinned reference environments (una_legacy / madina_legacy venvs)
 .refs/
+
+# Numba owner cache for tests/tenx (relocated from campaign_runs)
+.numba_cache_owner/

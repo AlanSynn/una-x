@@ -3,7 +3,8 @@
 The compiled fold is bound POSITIONALLY in the order extracted from the
 engine AST (``facts['params']``) — no fold parameter name is retyped
 anywhere in this suite.  The dependency table and the trace contract are
-loaded from campaigns/una_10x/identity/ and cross-checked against the
+loaded from identity/tables/ (relocated byte-identically from
+campaigns/una_10x/identity/) and cross-checked against the
 live AST facts.
 """
 import importlib
@@ -22,7 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import _engine_facts as ef  # noqa: E402  (suite-local live-facts module)
 
-IDENTITY_DIR = REPO / "campaigns" / "una_10x" / "identity"
+IDENTITY_DIR = REPO / "tests" / "tenx" / "identity" / "tables"
 FOLD_NAME = "reach_gravity_knn_access"
 
 

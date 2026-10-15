@@ -1,9 +1,0 @@
-{
- "schema": "una-10x-final-cache-matrix-1",
- "task": "Z00",
- "gate_cache_policy": "2795996befe1ee26382afefc8b270d8d39bb73aa4c8133b233719e8abe619cfb",
- "regime": "FIRST_COHORT: fresh outdir per measured run, asserted non-existent before the call (outdir_existed_before=false on all 14 measured runs); numba caches warmed per tree by the two untimed warmups only",
- "no_same_answer_hits": "the gate never reuses an identical-answer store; cohort cold stores are the measured surface",
- "content_addressed_store": "CACHE_STORE closed on perf/una-platform (X00 ledger; merged locally, no push)",
- "residency": "trace residency + prepared single-flight bound actual observed bytes, reader settings, profile and code closure (P02I/P03M receipts)"
-}

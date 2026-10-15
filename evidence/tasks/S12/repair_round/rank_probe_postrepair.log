@@ -1,7 +1,0 @@
-dwt_2d         baseline=('runs', None)         sparse=('runs', 'compact_fallback', 'shape', True)    PARITY-OK
-dwt_0d         baseline=('raises', 'TypingError') sparse=('raises', 'TypingError')                      PARITY-OK
-dw_1d          baseline=('raises', 'TypingError') sparse=('raises', 'TypingError')                      PARITY-OK
-d_1d           baseline=('raises', 'TypingError') sparse=('raises', 'TypingError')                      PARITY-OK
-ow_1d          baseline=('raises', 'TypingError') sparse=('raises', 'TypingError')                      PARITY-OK
-o_1d           baseline=('raises', 'TypingError') sparse=('raises', 'TypingError')                      PARITY-OK
-SUMMARY: {'dwt_2d': 'PARITY-OK', 'dwt_0d': 'PARITY-OK', 'dw_1d': 'PARITY-OK', 'd_1d': 'PARITY-OK', 'ow_1d': 'PARITY-OK', 'o_1d': 'PARITY-OK'}

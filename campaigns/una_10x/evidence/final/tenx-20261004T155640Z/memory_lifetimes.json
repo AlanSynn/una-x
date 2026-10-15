@@ -1,8 +1,0 @@
-{
- "schema": "una-10x-final-memory-lifetimes-1",
- "task": "Z00",
- "immutable_leases": "prepared input-keyed single-flight and trace residency expose immutable internal leases; no public mutable aliasing (P02I prepared_proof_review.json)",
- "typed_identities": "MetricID v2 binds actual dtype/scalar bits/specialization; no float64 key coercion; v1 f32/f64 collision retired from reuse (C31-NOTE-1; P03M receipts + P03R review)",
- "chronology": "read/validation/failure chronology preserved on cache hits (P00 law; trace + post_p00 islands)",
- "outputs": "fresh mutable outputs per call; GDAL/GEOS pointers never shared across processes"
-}

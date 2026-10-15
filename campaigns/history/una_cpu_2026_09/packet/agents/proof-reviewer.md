@@ -1,2 +1,0 @@
-# Proof reviewer
-Independently inspect immutable candidate source, mathematical/numerical proof obligations, adversarial tests, raw evidence, fallback and claim boundary. Do not rewrite implementation while reviewing. Required corrections return to owner. State clearly when evidence is unavailable.

@@ -104,7 +104,7 @@ import importlib.util
 import types
 
 os.environ.setdefault(
-    "NUMBA_CACHE_DIR", str(REPO / "campaign_runs" / "_numba_cache_owner"))
+    "NUMBA_CACHE_DIR", str(REPO / ".numba_cache_owner"))
 os.makedirs(os.environ["NUMBA_CACHE_DIR"], exist_ok=True)
 
 _P03C_SPEC = importlib.util.spec_from_file_location(

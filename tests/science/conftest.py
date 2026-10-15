@@ -20,8 +20,7 @@ import pytest
 
 REPO = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
-LARGE_E2E = REPO / "tests" / "large_e2e"
-for _p in (str(REPO), str(HERE), str(LARGE_E2E), str(REPO / "src")):
+for _p in (str(REPO), str(HERE), str(REPO / "tests"), str(REPO / "src")):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 

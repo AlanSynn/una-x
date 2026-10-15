@@ -2,8 +2,8 @@
 
 The case battery is imported verbatim from its single sources (the
 cpu_kernels battery via the S11 sparse conftest).  The preserved packet
-reference chain (``campaigns/una_10x/prior/una_10x_investigation/
-probe.py``) is loaded from its IMMUTABLE bytes by importlib — never
+reference chain (``_reference_probe.py``, relocated byte-identically
+from campaigns/una_10x/prior/una_10x_investigation/probe.py) is loaded from its IMMUTABLE bytes by importlib — never
 retyped — with its runtime sha256 recorded; the numba cache directory
 is forced to the owner-owned scratch so ``cache=True`` jitting can
 never write into the immutable packet.
@@ -18,10 +18,9 @@ import numpy as np
 import pytest
 
 # Force (not setdefault): the packet and every cached engine module
-# must jit into owner-owned scratch, never into prior/ or site data.
+# must jit into owner-owned scratch, never into the suite or site data.
 os.environ["NUMBA_CACHE_DIR"] = str(
-    Path(__file__).resolve().parents[3] / "campaign_runs"
-    / "_numba_cache_owner")
+    Path(__file__).resolve().parents[3] / ".numba_cache_owner")
 os.makedirs(os.environ["NUMBA_CACHE_DIR"], exist_ok=True)
 
 REPO_SRC = Path(__file__).resolve().parents[3] / "src"
@@ -52,9 +51,7 @@ metric_args = s11.metric_args
 RESULT_FIELDS = s11.RESULT_FIELDS
 METRIC_PARAMS = s11.METRIC_PARAMS
 
-PROBE_PATH = (Path(__file__).resolve().parents[3] / "campaigns"
-              / "una_10x" / "prior" / "una_10x_investigation"
-              / "probe.py")
+PROBE_PATH = Path(__file__).resolve().parent / "_reference_probe.py"
 
 
 def load_probe():

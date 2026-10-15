@@ -1,8 +1,0 @@
-HISTORICAL CAMPAIGN. Do not restart the completed large-e2e campaign.
-
-Read campaigns/una_platform/START_HERE.txt and execute the active una-platform-2026-09 campaign.
-The original large-e2e packet and original START_HERE are preserved byte-for-byte at
-campaigns/history/una_large_e2e_2026_09/packet/.
-
-Runtime improvements and historical evidence are retained. Previous restrictions against
-GPU/native/public batch/caching/science changes are superseded by the new campaign authority.

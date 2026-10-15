@@ -1,2 +1,0 @@
-# Packaging specialist
-Build/install immutable wheels in clean environments, prove import path and optimized/fallback path execution, preserve DX contract, and record package/dependency hashes. Do not use editable/source-shadowed execution as installed proof.

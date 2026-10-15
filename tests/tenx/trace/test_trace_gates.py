@@ -32,7 +32,7 @@ ENGINE_PATH = (REPO / "src" / "urban_network_analysis" / "Engines" /
 # Generation 2: the engine evolved by the gated lazy-import change
 # (exl-20261011T164228Z); generation 1 stays preserved untouched as
 # metric_dependencies.json (Z00 campaign-close record).
-DEPS_PATH = (REPO / "campaigns" / "una_10x" / "identity" /
+DEPS_PATH = (REPO / "tests" / "tenx" / "identity" / "tables" /
              "metric_dependencies.gen2.json")
 KNN = np.array([1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1])
 METRIC_ONLY = ("gravity_beta", "gravity_plateau",

@@ -15,8 +15,7 @@ from pathlib import Path
 # is imported by any collection.
 os.environ.setdefault(
     "NUMBA_CACHE_DIR",
-    str(Path(__file__).resolve().parents[3] / "campaign_runs"
-        / "_numba_cache_owner"))
+    str(Path(__file__).resolve().parents[3] / ".numba_cache_owner"))
 
 REPO = Path(__file__).resolve().parents[3]
 SRC = REPO / "src"
@@ -36,7 +35,7 @@ from urban_network_analysis.Engines.AccessibilityWElevation import (  # noqa: E4
     reach_gravity_knn_access as COMBINED)
 from urban_network_analysis.Engines import _metric_reuse_scratch as mrs  # noqa: E402
 
-IDENTITY_DIR = REPO / "campaigns" / "una_10x" / "identity"
+IDENTITY_DIR = REPO / "tests" / "tenx" / "identity" / "tables"
 SPLIT_NAMES = ("reach", "gravity_exponential", "gravity_logistic",
                "knn_access")
 

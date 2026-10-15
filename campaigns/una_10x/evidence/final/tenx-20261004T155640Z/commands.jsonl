@@ -1,6 +1,0 @@
-{"what": "Q10 gate supervisor: warmups + 7 paired AB/BA windows + bootstrap decision", "command": "./_py _q10r_windows.py", "recorded_in": "q10_windows/raw_index.json (16 run docs by sha256)"}
-{"what": "per-run public driver (timer brackets ONLY UNA.RunBatch; bitwise 64/64 outside timing)", "command": "./_py _q10r_run_one.py --tree {base|cand} --workers 4 --threads-per-worker 1 --queue-depth 64 --writer-concurrency 1 --cold-store 1 --verify 1", "recorded_in": "q10_windows/runs/*.json (uncommitted, P00 law)"}
-{"what": "I00R wheel rebuilds/installs (both arms) + installed parallel pool smoke", "command": "./_py _i00r_build_base.py ; ./_py _i00r_build_cand.py", "recorded_in": "i00r_repair/installed_manifest.json"}
-{"what": "V00R installed-wheel gauntlet (11 islands + AB bit parity + backend matrix)", "command": "./_py _v00r_run.py", "recorded_in": "v00r_validation/*.json"}
-{"what": "Z00 disposable-worktree integration rehearsal", "command": "./_py _z00_rehearse.py", "recorded_in": "z00_close/rehearsal.json"}
-{"what": "read-only merge probe", "command": "git merge-tree --write-tree main 129c53f94e85210b1d4e5bbbc1a9d0d86b34e2e9", "recorded_in": "z00_close/rehearsal.json"}

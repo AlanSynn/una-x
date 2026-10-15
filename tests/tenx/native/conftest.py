@@ -16,7 +16,7 @@ for p in (str(REPO / "src"),):
         sys.path.insert(0, p)
 
 os.environ.setdefault(
-    "NUMBA_CACHE_DIR", str(REPO / "campaign_runs" / "_numba_cache_owner"))
+    "NUMBA_CACHE_DIR", str(REPO / ".numba_cache_owner"))
 os.makedirs(os.environ["NUMBA_CACHE_DIR"], exist_ok=True)
 
 

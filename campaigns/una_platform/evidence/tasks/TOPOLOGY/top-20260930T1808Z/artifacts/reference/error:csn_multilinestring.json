@@ -1,1 +1,0 @@
-{"message": "Sub-geometries may have coordinate sequences, but multi-part geometries do not", "raised": "NotImplementedError"}

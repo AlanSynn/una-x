@@ -1,4 +1,0 @@
-..............s......................................................    [100%]
-=========================== short test summary info ============================
-SKIPPED [1] tests/tenx/sparse/test_sparse_l1_parity.py:30: float32 variant refuses on dtype; covered by the fallback test
-68 passed, 1 skipped in 8.39s

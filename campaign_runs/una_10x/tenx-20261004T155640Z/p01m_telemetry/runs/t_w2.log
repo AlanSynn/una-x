@@ -1,9 +1,0 @@
-cmd: /storage/project/r-hoh68-0/dsynn6/deps/micromamba/envs/alan/bin/python3.11 /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/_p01m_run_one.py --mode par --tag t_w2 --outdir /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261004T155640Z/p01m_telemetry/out/t_w2 --telemetry 1 --load-cores 0 --verify 1 --workers 2
-
-stdout:
-    0.0001 |        0.000108 | UNA | UNA instance created. Topology and Settings initialized
-    0.0135 |        0.013376 | RunBatch | Loaded 32 settings from /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv
-run t_w2 wall 97.391 s | asserts_ok True | bitwise True | tel True | load 0
-wrote /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaign_runs/una_10x/tenx-20261004T155640Z/p01m_telemetry/runs/t_w2.json
-
-stderr:

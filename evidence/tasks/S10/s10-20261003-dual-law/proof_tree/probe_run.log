@@ -1,8 +1,0 @@
-passed: 138159 | failed: 6
-  FAIL: e2/same00/nan/0.5 | events diverge at 0: [('seed', 0, nan)] vs [('seed', 0, nan)]
-  FAIL: e4/warts/0.1/nan | frozen oracle vs engine bitwise
-  FAIL: e4/warts/0.1/nan | events diverge at 1: [('seed', 2, nan)] vs [('seed', 2, nan)]
-  FAIL: e4/warts/nan/0.5 | frozen oracle vs engine bitwise
-  FAIL: e4/warts/nan/0.5 | events diverge at 0: [('seed', 0, nan)] vs [('seed', 0, nan)]
-  FAIL: e5/pump | cap flags False False
-written: /storage/scratch1/1/dsynn6/una-x/.claude/worktrees/cpu-kernels/campaigns/una_10x/evidence/proofs/S10_sparse_projection/sparse_admission.json

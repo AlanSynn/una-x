@@ -1,5 +1,0 @@
-    0.0001 |        0.000108 | UNA | UNA instance created. Topology and Settings initialized
-    0.0248 |        0.024719 | RunBatch | Loaded 32 settings from /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv
-    0.0002 |        0.000190 | UNA | UNA instance created. Topology and Settings initialized
-    0.0220 |        0.021751 | RunBatch | Loaded 32 settings from /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv
-{"out": "campaign_runs/una_10x/tenx-20261012T1600Z/p01e_ticks/runs/coordinator_ticks.json", "warm_s": 16.265385822975077, "wall_s": 15.779479061020538, "poll_total_s": 9.4714, "active_total_s": 6.3081, "durable_split": {"fsync": {"count": 96, "total_s": 3.7627, "overlap_with_worker_wait_s": 0.0, "outside_worker_wait_s": 3.7627}, "replace": {"count": 64, "total_s": 0.1167, "overlap_with_worker_wait_s": 0.0, "outside_worker_wait_s": 0.1167}, "rmdir": {"count": 65, "total_s": 0.0708, "overlap_with_worker_wait_s": 0.0, "outside_worker_wait_s": 0.0708}, "mkdir": {"count": 96, "total_s": 0.0013, "overlap_with_worker_wait_s": 0.0, "outside_worker_wait_s": 0.0013}}}

@@ -1,5 +1,0 @@
-    0.0001 |        0.000096 | UNA | UNA instance created. Topology and Settings initialized
-    0.0200 |        0.019944 | RunBatch | Loaded 32 settings from /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv
-    0.0001 |        0.000090 | UNA | UNA instance created. Topology and Settings initialized
-    0.0074 |        0.007325 | RunBatch | Loaded 32 settings from /storage/scratch1/1/dsynn6/campaign_data/inputs/upstream_Boston/Boston/cohort_manifest.csv
-{"out": "campaign_runs/una_10x/tenx-20261012T1600Z/p01f_backpressure/runs/worker_backpressure.json", "warm_s": 15.314584467036184, "telemetry_wall_s": 15.791715827013832, "aggregate": {"workers_measured": 8, "makespan_s": 14.3172, "starved_worker_seconds_midrun": 0.0096, "total_jobs": 64}}
