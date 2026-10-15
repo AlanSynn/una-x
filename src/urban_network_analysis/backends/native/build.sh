@@ -59,7 +59,7 @@ OUT="${HERE}/_native_core${EXT_SUFFIX}"
     "${SRC_DIR}/native_core.cpp" \
     "${SRC_DIR}/scope_core.cpp" \
     "${SRC_DIR}/isa.cpp" \
-    "${LDLIBS[@]}" \
+    ${LDLIBS[@]+"${LDLIBS[@]}"} \
     -o "${OUT}"
 
 echo "built ${OUT}"

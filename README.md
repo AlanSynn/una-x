@@ -104,8 +104,10 @@ many analyses from a pairings CSV.
 
 Measured claims from the una_10x / una_platform verification campaigns. Every
 number below comes from a preregistered, paired, bitwise-checked measurement
-campaign; raw evidence is retained under `campaigns/` and `evidence/` in this
-repository's campaign records.
+campaign; the campaign records (receipts and raw evidence) were archived
+off-repository on 2026-10-15 to Dropbox `Alan Synn/Research/una-x/` (per-file
+sha256 manifests included) and remain recoverable from this repository's git
+history.
 
 **Throughput (CPU, public `RunBatch`).** On the frozen observed-network cohort
 of 32 distinct parameter jobs (Boston network, workload sha256
@@ -136,9 +138,9 @@ wheels at a cold call boundary.
 **GPU.** Substantive GPU execution is implemented and qualified on a real
 NVIDIA device — recorded as a Tesla V100-PCIE-16GB (sm_70, partition
 `gpu-v100`; an earlier revision of this paragraph said "A100", which no
-tracked evidence supports — see `campaign_runs/una_10x/tenx-20261004T155640Z/
-g11_gpu/gpu_qualification.json` and `campaigns/una_10x/next/PLAN_GPU.md`
-§2): the device kernel gate passed (rc=0) with the
+tracked evidence supports — see `gpu_qualification.json` and `PLAN_GPU.md`
+§2, archived 2026-10-15 (git history / Dropbox `Alan Synn/Research/una-x/`)):
+the device kernel gate passed (rc=0) with the
 association-free device stages bit-exact against host references, and a
 declared-order fold cell is durably recorded. The parity domain of the GPU
 fold is the certified battery row set only — general rows diverge by ±1 ulp
